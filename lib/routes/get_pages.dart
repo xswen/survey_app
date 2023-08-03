@@ -32,7 +32,7 @@ import '../routes/route_names.dart';
 List<GetPage> pages = [
   GetPage(
     name: Routes.main,
-    page: () => const MyHomePage(title: "appTitle"),
+    page: () => MyHomePage(title: "appTitle"),
   ),
   GetPage(
     name: Routes.surveySelect,

@@ -73,13 +73,36 @@ class Database extends _$Database {
   int get schemaVersion => 1;
 
   @override
-  MigrationStrategy get migration => MigrationStrategy(
-        onCreate: (m) async {
-          await m.createAll();
-          final jsonData = await loadJsonData();
-          await insertTreeGenuses(jsonData);
-        },
-      );
+  MigrationStrategy get migration => MigrationStrategy(onCreate: (m) async {
+        await m.createAll();
+        final jsonData = await loadJsonData();
+        await insertTreeGenuses(jsonData);
+      }, beforeOpen: (m) async {
+        referenceTablesDao.clearTables();
+        woodyDebrisTablesDao.clearTables();
+        surfaceSubstrateTablesDao.clearTables();
+        ecologicalPlotTablesDao.clearTables();
+
+        await batch((b) {
+          b.insertAll(plots, [
+            const PlotsCompanion(
+                nfiPlot: Value(1), code: Value("ON"), lastMeasNum: Value(0)),
+            const PlotsCompanion(nfiPlot: Value(2), code: Value("ON")),
+            const PlotsCompanion(
+                nfiPlot: Value(3), code: Value("AB"), lastMeasNum: Value(3)),
+          ]);
+          b.insertAll(jurisdictions, [
+            const JurisdictionsCompanion(
+                code: Value("ON"),
+                nameEn: Value("Ontario"),
+                nameFr: Value("Ontario_Fr")),
+            const JurisdictionsCompanion(
+                code: Value("AB"),
+                nameEn: Value("Alberta"),
+                nameFr: Value("Alberta_Fr")),
+          ]);
+        });
+      });
 
   Future<List<TreeGenus>> loadJsonData() async {
     final jsonFile =

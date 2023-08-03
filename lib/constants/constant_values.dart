@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 const int kMaxTransects = 9;
 
 const List<String> kTransectNumsList = [
@@ -22,3 +24,6 @@ const kColHeaderMapKeyName = "name";
 const kColHeaderMapKeySort = "sort";
 const kColHeaderMapKeyId = "id";
 const kColHeaderMapKeyEdit = "Edit";
+
+const kLocaleFr = Locale("en", "CA");
+const kLocaleEn = Locale("fr", "CA");

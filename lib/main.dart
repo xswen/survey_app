@@ -1,91 +1,75 @@
+import 'package:drift/native.dart';
+import 'package:drift_db_viewer/drift_db_viewer.dart';
 import 'package:easy_localization/easy_localization.dart';
+//import 'package:easy_localization_loader/easy_localization_loader.dart'; // import custom loaders
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:provider/provider.dart';
+import 'package:survey_app/bindings.dart';
+import 'package:survey_app/constants/constant_values.dart';
+import 'package:survey_app/routes/router_routes.dart';
+import 'package:survey_app/widgets/app_bar.dart';
 
-import '../bindings.dart';
-import '../routes/get_pages.dart';
 import 'database/database.dart';
-import 'error_page.dart';
-import 'routes/route_names.dart';
-import 'widgets/app_bar.dart';
+import 'l10n/locale_keys.g.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+  await DbBinding();
+
   runApp(EasyLocalization(
     supportedLocales: const [
-      Locale('en', 'CA'),
-      Locale('fr', 'CA'),
+      kLocaleEn,
+      kLocaleFr,
     ],
     path: 'assets/l10n',
-    child: MyApp(),
-    // fallbackLocale: Locale('en', 'US'),
-    // startLocale: Locale('de', 'DE'),
-    // saveLocale: false,
-    // useOnlyLangCode: true,
-
-    // optional assetLoader default used is RootBundleAssetLoader which uses flutter's assetloader
-    // install easy_localization_loader for enable custom loaders
-    // assetLoader: RootBundleAssetLoader()
-    // assetLoader: HttpAssetLoader()
-    // assetLoader: FileAssetLoader()
-    // assetLoader: CsvAssetLoader()
-    // assetLoader: YamlAssetLoader() //multiple files
-    // assetLoader: YamlSingleAssetLoader() //single file
-    // assetLoader: XmlAssetLoader() //multiple files
-    // assetLoader: XmlSingleAssetLoader() //single file
-    // assetLoader: CodegenLoader()
+    child: Provider<Database>(
+        create: (context) => Database(NativeDatabase.memory()), child: MyApp()),
   ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'NFI Ground Plot Survey',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      initialBinding: DbBinding(),
-      initialRoute: Routes.main,
-      unknownRoute: GetPage(name: Routes.error, page: () => const ErrorPage()),
-      getPages: pages,
+    return MaterialApp.router(
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      routerConfig: router,
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  MyHomePage({Key? key, required this.title}) : super(key: key);
+
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final _db = Get.find<Database>();
-
   @override
   Widget build(BuildContext context) {
+    final _db = Provider.of<Database>(context);
     return Scaffold(
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 50.0, horizontal: 20.0),
+          padding: EdgeInsets.symmetric(vertical: 50.0, horizontal: 20.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              const Align(
+              Align(
                 alignment: Alignment.topRight,
                 child: Menu(),
               ),
               Text(
-                widget.title,
+                LocaleKeys.appTitle,
+                //widget.title,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headlineMedium,
               ).tr(),
@@ -95,11 +79,26 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: [
                     ElevatedButton(
                         onPressed: () async {
-                          Get.toNamed(Routes.surveySelect,
-                              arguments:
-                                  (await _db.surveyInfoTablesDao.allSurveys));
+                          // Get.toNamed(Routes.surveySelect,
+                          //     arguments:
+                          //     (await _db.surveyInfoTablesDao.allSurveys));
                         },
-                        child: const Text("Start")),
+                        child: Text(LocaleKeys.start).tr()),
+                    ElevatedButton(
+                        onPressed: () async {
+                          print(context.locale.toString());
+                          context.locale == kLocaleEn
+                              ? await context.setLocale(kLocaleFr)
+                              : await context.setLocale(kLocaleEn);
+                        },
+                        child: Text(
+                            "Change to ${context.locale == kLocaleFr ? "French" : "English"}")),
+                    ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => DriftDbViewer(_db)));
+                        },
+                        child: const Text("View Database")),
                   ],
                 ),
               )
