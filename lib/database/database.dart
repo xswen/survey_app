@@ -1,7 +1,13 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:drift/drift.dart' as d;
 import 'package:drift/drift.dart';
+import 'package:drift/native.dart';
+import 'package:flutter/cupertino.dart' as c;
 import 'package:flutter/services.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 
 import '../database/daos/reference_tables_dao.dart';
 import '../database/daos/survey_info_tables_dao.dart';
@@ -67,52 +73,84 @@ const String woodyDebrisPieceViewQuery =
     //views: [WoodyDebrisPiecesView],
     )
 class Database extends _$Database {
-  Database(QueryExecutor e) : super(e);
+  //Database(QueryExecutor e) : super(e);
+  Database() : super(_debugConnection());
 
   @override
   int get schemaVersion => 1;
 
-  @override
-  MigrationStrategy get migration => MigrationStrategy(onCreate: (m) async {
-        await m.createAll();
-        final jsonData = await loadJsonData();
-        await insertTreeGenuses(jsonData);
-      }, beforeOpen: (m) async {
-        referenceTablesDao.clearTables();
-        woodyDebrisTablesDao.clearTables();
-        surfaceSubstrateTablesDao.clearTables();
-        ecologicalPlotTablesDao.clearTables();
+  //Temporary database that resets every hot restart
+  static _debugConnection() {
+    return NativeDatabase.memory();
+  }
 
-        await batch((b) {
-          b.insertAll(plots, [
-            const PlotsCompanion(
-                nfiPlot: Value(1), code: Value("ON"), lastMeasNum: Value(0)),
-            const PlotsCompanion(nfiPlot: Value(2), code: Value("ON")),
-            const PlotsCompanion(
-                nfiPlot: Value(3), code: Value("AB"), lastMeasNum: Value(3)),
-          ]);
-          b.insertAll(jurisdictions, [
-            const JurisdictionsCompanion(
-                code: Value("ON"),
-                nameEn: Value("Ontario"),
-                nameFr: Value("Ontario_Fr")),
-            const JurisdictionsCompanion(
-                code: Value("AB"),
-                nameEn: Value("Alberta"),
-                nameFr: Value("Alberta_Fr")),
-          ]);
-        });
-      });
+  static LazyDatabase _openConnection() {
+    return LazyDatabase(() async {
+      final dbFolder = await getApplicationDocumentsDirectory();
+      final file = File(p.join(dbFolder.path, 'db.sqlite'));
+      return NativeDatabase(file);
+    });
+  }
+
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+        onCreate: (m) async {
+          await m.createAll();
+          final jsonData = await loadJsonData();
+          await insertTreeGenuses(jsonData);
+
+          // referenceTablesDao.clearTables();
+          // woodyDebrisTablesDao.clearTables();
+          // surfaceSubstrateTablesDao.clearTables();
+          // ecologicalPlotTablesDao.clearTables();
+
+          c.debugPrint("Init Values");
+          await batch((b) {
+            b.insertAll(plots, [
+              const PlotsCompanion(
+                  nfiPlot: d.Value(1),
+                  code: d.Value("ON"),
+                  lastMeasNum: d.Value(0)),
+              const PlotsCompanion(nfiPlot: d.Value(2), code: d.Value("ON")),
+              const PlotsCompanion(
+                  nfiPlot: d.Value(3),
+                  code: d.Value("AB"),
+                  lastMeasNum: d.Value(3)),
+            ]);
+            b.insertAll(jurisdictions, [
+              const JurisdictionsCompanion(
+                  code: d.Value("ON"),
+                  nameEn: d.Value("Ontario"),
+                  nameFr: d.Value("Ontario_Fr")),
+              const JurisdictionsCompanion(
+                  code: d.Value("AB"),
+                  nameEn: d.Value("Alberta"),
+                  nameFr: d.Value("Alberta_Fr")),
+            ]);
+          });
+        },
+        beforeOpen: (m) async {
+          print("hi");
+          final jsonData = await loadJsonData();
+          await insertTreeGenuses(jsonData);
+        },
+      );
 
   Future<List<TreeGenus>> loadJsonData() async {
     final jsonFile =
         await rootBundle.loadString('assets/db_reference_data/tree_list.json');
     final jsonData = json.decode(jsonFile) as List<dynamic>;
+    print(jsonData[0]);
     //return jsonData.map((entry) => TreeGenus.fromJson(entry)).toList();
     return [];
   }
 
-  Future<void> insertTreeGenuses(List<TreeGenus> treeGenuses) async {
+  Future<void> insertTreeGenuses(List<TreeGenus> treeGenusList) async {
+    // await batch((b) {for (int i = 0; i < treeGenusList.length; i++) {
+    //   TreeGenus tree = treeGenusList[i];
+    //   b.insert(treeGenus, TreeGenusCompanion(genusCode: d.Value(tree.genusCode), ))
+    // }});
+
     // await into(treeGenus)
     //     .insertAll(treeGenuses, mode: InsertMode.insertOrReplace);
   }

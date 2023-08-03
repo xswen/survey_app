@@ -1,4 +1,3 @@
-import 'package:drift/native.dart';
 import 'package:drift_db_viewer/drift_db_viewer.dart';
 import 'package:easy_localization/easy_localization.dart';
 //import 'package:easy_localization_loader/easy_localization_loader.dart'; // import custom loaders
@@ -23,8 +22,7 @@ void main() async {
       kLocaleFr,
     ],
     path: 'assets/l10n',
-    child: Provider<Database>(
-        create: (context) => Database(NativeDatabase.memory()), child: MyApp()),
+    child: Provider<Database>(create: (context) => Database(), child: MyApp()),
   ));
 }
 
@@ -55,7 +53,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    final _db = Provider.of<Database>(context);
+    final db = Provider.of<Database>(context);
+
     return Scaffold(
       body: Center(
         child: Padding(
@@ -73,6 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headlineMedium,
               ).tr(),
+              Text("test"),
               Align(
                 alignment: Alignment.topCenter,
                 child: Column(
@@ -96,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ElevatedButton(
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => DriftDbViewer(_db)));
+                              builder: (context) => DriftDbViewer(db)));
                         },
                         child: const Text("View Database")),
                   ],

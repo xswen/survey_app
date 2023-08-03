@@ -19,7 +19,7 @@ class DbBinding implements Bindings {
     });
 
 //    Get.lazyPut<Database>(() => Database(db));
-    Get.lazyPut<Database>(() => Database(NativeDatabase.memory()));
+    // Get.lazyPut<Database>(() => Database(NativeDatabase.memory()));
     Get.find<Database>().referenceTablesDao.clearTables();
     Get.find<Database>().woodyDebrisTablesDao.clearTables();
     Get.find<Database>().surfaceSubstrateTablesDao.clearTables();
