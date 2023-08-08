@@ -72,7 +72,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headlineMedium,
               ).tr(),
-              Text("test"),
               Align(
                 alignment: Alignment.topCenter,
                 child: Column(
