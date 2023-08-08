@@ -36,7 +36,10 @@ List<GetPage> pages = [
   ),
   GetPage(
     name: Routes.surveySelect,
-    page: () => const SurveyInfoSelect(title: "Survey Info"),
+    page: () => Dashboard(
+      title: "Survey Info",
+      surveys: [],
+    ),
   ),
   GetPage(
     name: Routes.surveyInfoPage,

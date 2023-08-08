@@ -1,43 +1,44 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:provider/provider.dart';
+import 'package:survey_app/l10n/locale_keys.g.dart';
 
 import '../../constants/margins_padding.dart';
 import '../../database/database.dart';
 import '../../formatters/format_date.dart';
-import '../../routes/route_names.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/text/text_line_label.dart';
 
-class SurveyInfoSelect extends StatefulWidget {
-  const SurveyInfoSelect({super.key, required this.title});
+class Dashboard extends StatefulWidget {
+  Dashboard({super.key, required this.title, required this.surveys});
 
   final String title;
+  List<SurveyHeader>? surveys;
 
   @override
-  State<SurveyInfoSelect> createState() => _SurveyInfoSelectState();
+  State<Dashboard> createState() => _DashboardState();
 }
 
-class _SurveyInfoSelectState extends State<SurveyInfoSelect> {
-  final _db = Get.find<Database>();
-  List<SurveyHeader> surveys = Get.arguments;
+class _DashboardState extends State<Dashboard> {
+  final String title = LocaleKeys.dashboardTitle;
   int idx = 0;
 
   @override
   Scaffold build(BuildContext context) {
+    final db = Provider.of<Database>(context);
     return Scaffold(
       appBar: OurAppBar(widget.title),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          var temp = await Get.toNamed(Routes.surveyInfoCreate);
-          setState(() {
-            _db.surveyInfoTablesDao.allSurveys
-                .then((value) => setState(() => surveys = value));
-          });
+          // var temp = await Get.toNamed(Routes.surveyInfoCreate);
+          // setState(() {
+          //   _db.surveyInfoTablesDao.allSurveys
+          //       .then((value) => setState(() => surveys = value));
+          // });
         },
         child: const Icon(Icons.add),
       ),
       body: ListView.builder(
-        itemCount: surveys.length,
+        itemCount: (widget.surveys ?? []).length,
         itemBuilder: (BuildContext cxt, int index) {
           return _createSurveyButton(index);
         },
@@ -46,20 +47,20 @@ class _SurveyInfoSelectState extends State<SurveyInfoSelect> {
   }
 
   Widget _createSurveyButton(int index) {
-    SurveyHeader survey = surveys[index];
+    SurveyHeader survey = (widget.surveys ?? [])[index];
 
     return Container(
       margin: const EdgeInsets.symmetric(
           horizontal: kPaddingH, vertical: kPaddingV / 2),
       child: ElevatedButton(
           onPressed: () async {
-            Get.toNamed(Routes.surveyInfoPage,
-                arguments:
-                    (await _db.surveyInfoTablesDao.getSurvey(survey.id)));
-            setState(() {
-              _db.surveyInfoTablesDao.allSurveys
-                  .then((value) => setState(() => surveys = value));
-            });
+            // Get.toNamed(Routes.surveyInfoPage,
+            //     arguments:
+            //         (await _db.surveyInfoTablesDao.getSurvey(survey.id)));
+            // setState(() {
+            //   _db.surveyInfoTablesDao.allSurveys
+            //       .then((value) => setState(() => surveys = value));
+            // });
           },
           child: Container(
             padding: const EdgeInsets.symmetric(

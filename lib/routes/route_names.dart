@@ -1,6 +1,8 @@
 class Routes {
-  static const String error = _Paths.error;
-  static const String main = _Paths.main;
+  static const String error = "error";
+  static const String main = "home";
+
+  static const String dashboard = "dashboard";
 
   static const String surveySelect = _Paths.surveySelect;
   static const String surveyInfoPage = _Paths.surveyInfo;
