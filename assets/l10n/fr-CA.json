@@ -1,5 +1,6 @@
 {
     "appTitle": "(tmp fr) NFI Ground Plot Survey in English",
     "start": "(tmp fr) Start",
-    "dashboardTitle": "(tmp fr) Dashboard"
+    "dashboardTitle": "(tmp fr) Dashboard",
+    "dashboardNoSurveys": "(tmp fr) There are currently no surveys. Please create a new survey to continue."
 }

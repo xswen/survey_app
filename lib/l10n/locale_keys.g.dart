@@ -4,5 +4,6 @@ abstract class  LocaleKeys {
   static const appTitle = 'appTitle';
   static const start = 'start';
   static const dashboardTitle = 'dashboardTitle';
+  static const dashboardNoSurveys = 'dashboardNoSurveys';
 
 }

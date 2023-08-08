@@ -118,6 +118,19 @@ class Database extends _$Database {
                   code: d.Value("AB"),
                   lastMeasNum: d.Value(3)),
             ]);
+            // b.insertAll(surveyHeaders, [
+            //   SurveyHeadersCompanion(
+            //       id: const d.Value(1),
+            //       nfiPlot: const d.Value(1),
+            //       measDate: d.Value(DateTime.now()),
+            //       measNum: const d.Value(1),
+            //       province: const d.Value("ON")),
+            //   SurveyHeadersCompanion(
+            //       nfiPlot: const d.Value(2),
+            //       measDate: d.Value(DateTime.now()),
+            //       measNum: const d.Value(0),
+            //       province: const d.Value("ON")),
+            // ]);
             b.insertAll(jurisdictions, jurisdictionsList);
             b.insertAllOnConflictUpdate(treeGenus, treeList);
           });
