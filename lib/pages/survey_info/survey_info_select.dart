@@ -27,7 +27,7 @@ class _DashboardState extends State<Dashboard> {
   Scaffold build(BuildContext context) {
     final db = Provider.of<Database>(context);
     return Scaffold(
-      appBar: OurAppBar(widget.title),
+      appBar: OurAppBar(title),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           // var temp = await Get.toNamed(Routes.surveyInfoCreate);
