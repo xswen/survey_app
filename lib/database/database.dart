@@ -96,7 +96,9 @@ class Database extends _$Database {
   MigrationStrategy get migration => MigrationStrategy(
         onCreate: (m) async {
           await m.createAll();
-          List<TreeGenusCompanion> trees = await insertTreeGenuses();
+          List<TreeGenusCompanion> treeList = await getTreeGenuses();
+          List<JurisdictionsCompanion> jurisdictionsList =
+              await getJurisdictions();
 
           // referenceTablesDao.clearTables();
           // woodyDebrisTablesDao.clearTables();
@@ -116,17 +118,8 @@ class Database extends _$Database {
                   code: d.Value("AB"),
                   lastMeasNum: d.Value(3)),
             ]);
-            b.insertAll(jurisdictions, [
-              const JurisdictionsCompanion(
-                  code: d.Value("ON"),
-                  nameEn: d.Value("Ontario"),
-                  nameFr: d.Value("Ontario_Fr")),
-              const JurisdictionsCompanion(
-                  code: d.Value("AB"),
-                  nameEn: d.Value("Alberta"),
-                  nameFr: d.Value("Alberta_Fr")),
-            ]);
-            b.insertAllOnConflictUpdate(treeGenus, trees);
+            b.insertAll(jurisdictions, jurisdictionsList);
+            b.insertAllOnConflictUpdate(treeGenus, treeList);
           });
         },
         beforeOpen: (m) async {},
@@ -139,7 +132,19 @@ class Database extends _$Database {
     //return jsonData.map((entry) => TreeGenus.fromJson(entry)).toList();
   }
 
-  Future<List<TreeGenusCompanion>> insertTreeGenuses() async {
+  Future<List<JurisdictionsCompanion>> getJurisdictions() async {
+    List<dynamic> jsonData =
+        await loadJsonData('assets/db_reference_data/jurisdiction_list.json');
+    return jsonData.map((dynamic item) {
+      return JurisdictionsCompanion(
+        code: Value(item['code']),
+        nameEn: Value(item['nameEn']),
+        nameFr: Value(item['nameFr']),
+      );
+    }).toList();
+  }
+
+  Future<List<TreeGenusCompanion>> getTreeGenuses() async {
     List<dynamic> jsonData =
         await loadJsonData('assets/db_reference_data/tree_list.json');
     return jsonData.map((dynamic item) {
