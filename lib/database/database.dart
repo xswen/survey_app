@@ -96,8 +96,7 @@ class Database extends _$Database {
   MigrationStrategy get migration => MigrationStrategy(
         onCreate: (m) async {
           await m.createAll();
-          final jsonData = await loadJsonData();
-          await insertTreeGenuses(jsonData);
+          List<TreeGenusCompanion> trees = await insertTreeGenuses();
 
           // referenceTablesDao.clearTables();
           // woodyDebrisTablesDao.clearTables();
@@ -127,31 +126,31 @@ class Database extends _$Database {
                   nameEn: d.Value("Alberta"),
                   nameFr: d.Value("Alberta_Fr")),
             ]);
+            b.insertAllOnConflictUpdate(treeGenus, trees);
           });
         },
-        beforeOpen: (m) async {
-          print("hi");
-          final jsonData = await loadJsonData();
-          await insertTreeGenuses(jsonData);
-        },
+        beforeOpen: (m) async {},
       );
 
-  Future<List<TreeGenus>> loadJsonData() async {
-    final jsonFile =
-        await rootBundle.loadString('assets/db_reference_data/tree_list.json');
-    final jsonData = json.decode(jsonFile) as List<dynamic>;
-    print(jsonData[0]);
+  Future<List<dynamic>> loadJsonData(String path) async {
+    final jsonFile = await rootBundle.loadString(path);
+    final List<dynamic> jsonData = json.decode(jsonFile) as List<dynamic>;
+    return jsonData;
     //return jsonData.map((entry) => TreeGenus.fromJson(entry)).toList();
-    return [];
   }
 
-  Future<void> insertTreeGenuses(List<TreeGenus> treeGenusList) async {
-    // await batch((b) {for (int i = 0; i < treeGenusList.length; i++) {
-    //   TreeGenus tree = treeGenusList[i];
-    //   b.insert(treeGenus, TreeGenusCompanion(genusCode: d.Value(tree.genusCode), ))
-    // }});
-
-    // await into(treeGenus)
-    //     .insertAll(treeGenuses, mode: InsertMode.insertOrReplace);
+  Future<List<TreeGenusCompanion>> insertTreeGenuses() async {
+    List<dynamic> jsonData =
+        await loadJsonData('assets/db_reference_data/tree_list.json');
+    return jsonData.map((dynamic item) {
+      return TreeGenusCompanion(
+        genusCode: Value(item['genusCode'] ?? ""),
+        speciesCode: Value(item['speciesCode'] ?? ""),
+        genusLatinName: Value(item['genusLatinName'] ?? ""),
+        speciesLatinName: Value(item['speciesLatinName'] ?? ""),
+        commonNameEn: Value(item['commonNameEn'] ?? ""),
+        commonNameFr: Value(item['commonNameFr'] ?? ""),
+      );
+    }).toList();
   }
 }
