@@ -100,37 +100,9 @@ class Database extends _$Database {
           List<JurisdictionsCompanion> jurisdictionsList =
               await getJurisdictions();
 
-          // referenceTablesDao.clearTables();
-          // woodyDebrisTablesDao.clearTables();
-          // surfaceSubstrateTablesDao.clearTables();
-          // ecologicalPlotTablesDao.clearTables();
-
           c.debugPrint("Init Values");
           await batch((b) {
-            b.insertAll(plots, [
-              const PlotsCompanion(
-                  nfiPlot: d.Value(1),
-                  code: d.Value("ON"),
-                  lastMeasNum: d.Value(0)),
-              const PlotsCompanion(nfiPlot: d.Value(2), code: d.Value("ON")),
-              const PlotsCompanion(
-                  nfiPlot: d.Value(3),
-                  code: d.Value("AB"),
-                  lastMeasNum: d.Value(3)),
-            ]);
-            // b.insertAll(surveyHeaders, [
-            //   SurveyHeadersCompanion(
-            //       id: const d.Value(1),
-            //       nfiPlot: const d.Value(1),
-            //       measDate: d.Value(DateTime.now()),
-            //       measNum: const d.Value(1),
-            //       province: const d.Value("ON")),
-            //   SurveyHeadersCompanion(
-            //       nfiPlot: const d.Value(2),
-            //       measDate: d.Value(DateTime.now()),
-            //       measNum: const d.Value(0),
-            //       province: const d.Value("ON")),
-            // ]);
+            initTest(b);
             b.insertAll(jurisdictions, jurisdictionsList);
             b.insertAllOnConflictUpdate(treeGenus, treeList);
           });
@@ -170,5 +142,85 @@ class Database extends _$Database {
         commonNameFr: Value(item['commonNameFr'] ?? ""),
       );
     }).toList();
+  }
+
+  void initTest(Batch b) {
+    initPlots(b);
+    initSurveys(b);
+    initWoodyDebris(b);
+  }
+
+  void initSurveys(Batch b) {
+    b.insertAll(surveyHeaders, [
+      SurveyHeadersCompanion(
+          id: const d.Value(1),
+          nfiPlot: const d.Value(1),
+          measDate: d.Value(DateTime.now()),
+          measNum: const d.Value(1),
+          province: const d.Value("ON")),
+      SurveyHeadersCompanion(
+          nfiPlot: const d.Value(2),
+          measDate: d.Value(DateTime.now()),
+          measNum: const d.Value(0),
+          province: const d.Value("ON")),
+    ]);
+  }
+
+  void initPlots(Batch b) {
+    b.insertAll(plots, [
+      const PlotsCompanion(
+          nfiPlot: d.Value(1), code: d.Value("ON"), lastMeasNum: d.Value(0)),
+      const PlotsCompanion(nfiPlot: d.Value(2), code: d.Value("ON")),
+      const PlotsCompanion(
+          nfiPlot: d.Value(3), code: d.Value("AB"), lastMeasNum: d.Value(3)),
+    ]);
+  }
+
+  void initWoodyDebris(Batch b) {
+    b.insert(
+        woodyDebrisSummary,
+        WoodyDebrisSummaryCompanion(
+          id: const d.Value(1),
+          surveyId: const d.Value(1),
+          measDate: d.Value(DateTime.now()),
+          numTransects: const d.Value(1),
+        ));
+    b.insert(
+        woodyDebrisHeader,
+        const WoodyDebrisHeaderCompanion(
+            id: d.Value(1), wdId: d.Value(1), transNum: d.Value(1)));
+    b.insertAll(woodyDebrisOdd, [
+      const WoodyDebrisOddCompanion(
+        wdHeaderId: d.Value(1),
+        pieceNum: d.Value(1),
+        accumOdd: d.Value("AC"),
+        genus: d.Value("UNKN"),
+        species: d.Value("UNK"),
+        horLength: d.Value(55.5),
+        verDepth: d.Value(55.5),
+        decayClass: d.Value(-1),
+      ),
+      const WoodyDebrisOddCompanion(
+        wdHeaderId: d.Value(1),
+        pieceNum: d.Value(2),
+        accumOdd: d.Value("AC"),
+        genus: d.Value("ACER"),
+        species: d.Value("UNK"),
+        horLength: d.Value(55.5),
+        verDepth: d.Value(55.5),
+        decayClass: d.Value(-1),
+      )
+    ]);
+    b.insert(
+        woodyDebrisRound,
+        const WoodyDebrisRoundCompanion(
+          wdHeaderId: d.Value(1),
+          pieceNum: d.Value(3),
+          genus: d.Value("ACER"),
+          species: d.Value("UNK"),
+          diameter: d.Value(55.5),
+          tiltAngle: d.Value(44),
+          decayClass: d.Value(-1),
+        ));
   }
 }
