@@ -13,7 +13,7 @@ import '../../widgets/data_input/data_input.dart';
 import '../../widgets/dropdowns/drop_down_default.dart';
 import '../../widgets/popups/popup_content_format.dart';
 import '../../widgets/popups/popup_continue.dart';
-import '../../widgets/popups/popup_dismiss.dart';
+import '../../widgets/popups/popup_dismiss_dep.dart';
 
 class EcologicalPlotSpeciesPage extends StatefulWidget {
   const EcologicalPlotSpeciesPage({Key? key}) : super(key: key);
@@ -232,7 +232,7 @@ class _EcologicalPlotSpeciesPageState extends State<EcologicalPlotSpeciesPage>
           ecpHeaderId: _ecpSpecies.ecpHeaderId,
           speciesNum: d.Value(nextSpeciesNum));
     }
-    Get.dialog(PopupDismiss(
+    Get.dialog(PopupDismissDep(
       title: "Error were found in the following places",
       contentWidget: PopupContentFormat(
         titles: const [""],

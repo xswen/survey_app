@@ -15,7 +15,7 @@ import '../../widgets/app_bar.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
 import '../../widgets/data_input/data_input.dart';
 import '../../widgets/popups/popup_content_format.dart';
-import '../../widgets/popups/popup_dismiss.dart';
+import '../../widgets/popups/popup_dismiss_dep.dart';
 
 class _ColNames {
   static String id = "id";
@@ -93,9 +93,9 @@ class _SurfaceSubstrateHeaderPageState extends State<SurfaceSubstrateHeaderPage>
 
   late _TallyDataSource tallyDs = _TallyDataSource(stations: []);
 
-  final PopupDismiss _completeWarningPopup =
+  final PopupDismissDep _completeWarningPopup =
       Global.generateCompleteErrorPopup("Transect");
-  final PopupDismiss _prevPageCompleteWarning =
+  final PopupDismissDep _prevPageCompleteWarning =
       Global.generatePreviousMarkedCompleteErrorPopup("Surface Substrate");
 
   //remove id columns
@@ -124,7 +124,7 @@ class _SurfaceSubstrateHeaderPageState extends State<SurfaceSubstrateHeaderPage>
               _updateSsData(ssh);
               setState(() {});
             } else {
-              Get.dialog(PopupDismiss(
+              Get.dialog(PopupDismissDep(
                 title: "Error were found in the following places",
                 contentWidget: PopupContentFormat(
                   titles: const [""],

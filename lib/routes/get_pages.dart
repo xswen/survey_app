@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:survey_app/database/database.dart';
 
 import '../main.dart';
 import '../pages/ecological_plot/ecological_plot_header_page.dart';
@@ -18,9 +19,9 @@ import '../pages/soil_pit/soil_pit_summary_page.dart';
 import '../pages/surface_substrate/surface_substrate_header_page.dart';
 import '../pages/surface_substrate/surface_substrate_station_info_page.dart';
 import '../pages/surface_substrate/surface_substrate_summary_page.dart';
-import '../pages/survey_info/survey_info_create.dart';
+import '../pages/survey_info/create_survey_page.dart';
+import '../pages/survey_info/dashboard.dart';
 import '../pages/survey_info/survey_info_page.dart';
-import '../pages/survey_info/survey_info_select.dart';
 import '../pages/woody_debris/piece_measurements/woody_debris_piece_add_odd_accu_page.dart';
 import '../pages/woody_debris/piece_measurements/woody_debris_piece_add_round_page.dart';
 import '../pages/woody_debris/piece_measurements/woody_debris_piece_main_page.dart';
@@ -36,7 +37,10 @@ List<GetPage> pages = [
   ),
   GetPage(
     name: Routes.surveySelect,
-    page: () => const SurveyInfoSelect(title: "Survey Info"),
+    page: () => Dashboard(
+      title: "Survey Info",
+      surveys: [],
+    ),
   ),
   GetPage(
     name: Routes.surveyInfoPage,
@@ -44,7 +48,9 @@ List<GetPage> pages = [
   ),
   GetPage(
     name: Routes.surveyInfoCreate,
-    page: () => const SurveyInfoCreate(),
+    page: () => CreateSurvey(
+      surveyHeader: const SurveyHeadersCompanion(),
+    ),
   ),
   //Woody Debris
   GetPage(

@@ -1,20 +1,22 @@
-import 'dart:developer';
-
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
+
+import '../constants/constant_values.dart';
 
 class OurAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const OurAppBar(this.title, {super.key, this.backFn});
+  const OurAppBar(this.title, {super.key, this.backFn, this.onLocaleChange});
+  final VoidCallback? onLocaleChange;
   final String title;
   final void Function()? backFn;
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(title),
+      title: Text(title).tr(),
       leading: BackButton(
-        onPressed: backFn ?? () => Get.back(),
+        onPressed: backFn ?? () => context.pop(),
         //
       ),
       actions: <Widget>[
@@ -22,8 +24,13 @@ class OurAppBar extends StatelessWidget implements PreferredSizeWidget {
           icon: const Icon(FontAwesomeIcons.bars),
           tooltip: 'Show Snackbar',
           onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('This is a snackbar')));
+            context.locale == kLocaleEn
+                ? context.setLocale(kLocaleFr)
+                : context.setLocale(kLocaleEn);
+            onLocaleChange;
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text('Language has been changed to '
+                    '${context.locale == kLocaleFr ? "French" : "English"}')));
           },
         ),
       ],
@@ -42,7 +49,12 @@ class Menu extends StatelessWidget {
     return IconButton(
       icon: const Icon(FontAwesomeIcons.bars),
       onPressed: () {
-        log("hello");
+        context.locale == kLocaleEn
+            ? context.setLocale(kLocaleFr)
+            : context.setLocale(kLocaleEn);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+                'Language has been changed to ${context.locale == kLocaleFr ? "French" : "English"}')));
       },
       tooltip: 'Menu',
     );

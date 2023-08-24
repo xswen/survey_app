@@ -33,4 +33,13 @@ class SurveyInfoTablesDao extends DatabaseAccessor<Database>
     return (select(surveyHeaders)..where((tbl) => tbl.id.equals(id)))
         .getSingle();
   }
+
+  Future<bool> checkSurveyExists(SurveyHeadersCompanion survey) async {
+    SurveyHeader? exists = await (select(surveyHeaders)
+          ..where((tbl) => (tbl.nfiPlot.equals(survey.nfiPlot.value) &
+              tbl.measNum.equals(survey.measNum.value))))
+        .getSingleOrNull();
+
+    return exists != null ? true : false;
+  }
 }

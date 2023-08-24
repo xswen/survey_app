@@ -1,21 +1,20 @@
-import 'package:drift/native.dart';
 import 'package:drift_db_viewer/drift_db_viewer.dart';
 import 'package:easy_localization/easy_localization.dart';
 //import 'package:easy_localization_loader/easy_localization_loader.dart'; // import custom loaders
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:survey_app/bindings.dart';
 import 'package:survey_app/constants/constant_values.dart';
 import 'package:survey_app/routes/router_routes.dart';
 import 'package:survey_app/widgets/app_bar.dart';
 
 import 'database/database.dart';
 import 'l10n/locale_keys.g.dart';
+import 'routes/route_names.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
-  await DbBinding();
 
   runApp(EasyLocalization(
     supportedLocales: const [
@@ -24,11 +23,13 @@ void main() async {
     ],
     path: 'assets/l10n',
     child: Provider<Database>(
-        create: (context) => Database(NativeDatabase.memory()), child: MyApp()),
+        create: (context) => Database(), child: const MyApp()),
   ));
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
@@ -44,26 +45,27 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    final _db = Provider.of<Database>(context);
+    final db = Provider.of<Database>(context);
+
     return Scaffold(
       body: Center(
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 50.0, horizontal: 20.0),
+          padding: const EdgeInsets.symmetric(vertical: 50.0, horizontal: 20.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Align(
+              const Align(
                 alignment: Alignment.topRight,
                 child: Menu(),
               ),
@@ -79,14 +81,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: [
                     ElevatedButton(
                         onPressed: () async {
-                          // Get.toNamed(Routes.surveySelect,
-                          //     arguments:
-                          //     (await _db.surveyInfoTablesDao.allSurveys));
+                          context.goNamed(Routes.dashboard,
+                              extra: await db.surveyInfoTablesDao.allSurveys);
                         },
-                        child: Text(LocaleKeys.start).tr()),
+                        child: const Text(LocaleKeys.start).tr()),
                     ElevatedButton(
                         onPressed: () async {
-                          print(context.locale.toString());
                           context.locale == kLocaleEn
                               ? await context.setLocale(kLocaleFr)
                               : await context.setLocale(kLocaleEn);
@@ -96,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ElevatedButton(
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => DriftDbViewer(_db)));
+                              builder: (context) => DriftDbViewer(db)));
                         },
                         child: const Text("View Database")),
                   ],

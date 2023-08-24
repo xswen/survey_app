@@ -12,7 +12,7 @@ import '../../widgets/buttons/icon_nav_button.dart';
 import '../../widgets/data_input/data_input.dart';
 import '../../widgets/date_select.dart';
 import '../../widgets/dropdowns/drop_down_default.dart';
-import '../../widgets/popups/popup_dismiss.dart';
+import '../../widgets/popups/popup_dismiss_dep.dart';
 
 class SiteInfoSummary extends StatefulWidget {
   const SiteInfoSummary({super.key, required this.title});
@@ -28,7 +28,7 @@ class _SiteInfoSummaryState extends State<SiteInfoSummary> {
   String comp = "";
   String reason = "";
 
-  final PopupDismiss completeWarningPopup =
+  final PopupDismissDep completeWarningPopup =
       Global.generateCompleteErrorPopup("Site Info");
 
   @override
@@ -45,7 +45,7 @@ class _SiteInfoSummaryState extends State<SiteInfoSummary> {
             //TODO: error check
             _checkSummaryComplete()
                 ? _updateSummary()
-                : Get.dialog(const PopupDismiss(
+                : Get.dialog(const PopupDismissDep(
                     title: "Error", contentText: "Please complete"));
           }
           setState(() {});

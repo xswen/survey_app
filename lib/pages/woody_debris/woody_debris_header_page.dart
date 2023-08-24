@@ -13,7 +13,7 @@ import '../../widgets/buttons/edit_icon_button.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
 import '../../widgets/buttons/icon_nav_button.dart';
 import '../../widgets/popups/popup_content_format.dart';
-import '../../widgets/popups/popup_dismiss.dart';
+import '../../widgets/popups/popup_dismiss_dep.dart';
 import '../../widgets/text/text_in_line.dart';
 import '../../widgets/titled_border.dart';
 import 'piece_measurements/woody_debris_error_check.dart';
@@ -32,9 +32,9 @@ class _WoodyDebrisHeaderPageState extends State<WoodyDebrisHeaderPage>
   WoodyDebrisHeaderData wdh = Get.arguments["wdh"];
   bool summaryComplete = Get.arguments["summaryComplete"];
 
-  final PopupDismiss _completeWarningPopup =
+  final PopupDismissDep _completeWarningPopup =
       Global.generateCompleteErrorPopup("Transect");
-  final PopupDismiss _prevPageCompleteWarning =
+  final PopupDismissDep _prevPageCompleteWarning =
       Global.generatePreviousMarkedCompleteErrorPopup("Surface Substrate");
 
   void _deleteTransect(BuildContext context) {
@@ -79,7 +79,7 @@ class _WoodyDebrisHeaderPageState extends State<WoodyDebrisHeaderPage>
                   .then((value) => wdh = value);
               setState(() {});
             } else {
-              Get.dialog(PopupDismiss(
+              Get.dialog(PopupDismissDep(
                   title: "Error has been found in the following places",
                   contentWidget: errorMsg));
             }

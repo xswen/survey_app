@@ -15,7 +15,7 @@ import '../../widgets/builders/decay_class_select_builder.dart';
 import '../../widgets/data_input/data_input.dart';
 import '../../widgets/popups/popup_content_format.dart';
 import '../../widgets/popups/popup_continue.dart';
-import '../../widgets/popups/popup_dismiss.dart';
+import '../../widgets/popups/popup_dismiss_dep.dart';
 import 'piece_measurements/woody_debris_error_check.dart';
 
 class WoodyDebrisTransectMeasurementPage extends StatefulWidget {
@@ -35,7 +35,7 @@ class _TransectMeasurementPageState
     String? result = WdErrorCheck.allHeaderData(wdh);
 
     if (result != null) {
-      Get.dialog(PopupDismiss(
+      Get.dialog(PopupDismissDep(
         title: "Error were found in the following places",
         contentWidget: PopupContentFormat(
           titles: const [""],

@@ -12,7 +12,7 @@ import '../../widgets/buttons/floating_complete_button.dart';
 import '../../widgets/buttons/summary_section_button_generator.dart';
 import '../../widgets/date_select.dart';
 import '../../widgets/dropdowns/drop_down_default.dart';
-import '../../widgets/popups/popup_dismiss.dart';
+import '../../widgets/popups/popup_dismiss_dep.dart';
 
 class WoodyDebrisSummaryPage extends StatefulWidget {
   const WoodyDebrisSummaryPage({super.key, required this.title});
@@ -28,7 +28,7 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage>
   WoodyDebrisSummaryData wdSummary = Get.arguments[0];
   List<WoodyDebrisHeaderData> transList = Get.arguments[1];
 
-  final PopupDismiss _completeWarningPopup =
+  final PopupDismissDep _completeWarningPopup =
       Global.generateCompleteErrorPopup("Woody Debris");
 
   @override
@@ -43,14 +43,14 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage>
             _updateWdSummary(
                 const WoodyDebrisSummaryCompanion(complete: d.Value(false)));
           } else if (transList.isEmpty) {
-            Get.dialog(const PopupDismiss(
+            Get.dialog(const PopupDismissDep(
                 title: "Error: Missing Transect",
                 contentText: "Please add at least one transect"));
           } else {
             _checkHeadersComplete()
                 ? _updateWdSummary(
                     const WoodyDebrisSummaryCompanion(complete: d.Value(true)))
-                : Get.dialog(const PopupDismiss(
+                : Get.dialog(const PopupDismissDep(
                     title: "Error: Incomplete transects",
                     contentText:
                         "Please mark all transects as complete to continue"));

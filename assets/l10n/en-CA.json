@@ -1,4 +1,14 @@
 {
-  "appTitle":"NFI Ground Plot Survey in English",
-  "start" : "start"
+    "appTitle": "NFI Ground Plot Survey in English",
+    "start": "Start",
+    "dashboardTitle": "Dashboard",
+    "dashboardNoSurveys": "There are currently no surveys. Please create a new survey to continue.",
+    "createSurveyTitle": "Create Survey",
+    "enterMeasDate": "Enter Measurement Date",
+    "jurisdiction": "Jurisdiction",
+    "plotNum": "Plot Number",
+    "pleaseSelectPlot": "Please Select Plot",
+    "pleaseSelectJurisdiction": "Please Select Jurisdiction",
+    "pleaseSelectAJurisdictionFirst": "Please select a jurisdiction first",
+    "measurementNum": "Measurement Number"
 }

@@ -9,7 +9,7 @@ import '../../../database/database.dart';
 import '../../../global.dart';
 import '../../../routes/route_names.dart';
 import '../../../widgets/app_bar.dart';
-import '../../../widgets/popups/popup_dismiss.dart';
+import '../../../widgets/popups/popup_dismiss_dep.dart';
 import '../../../widgets/tables/table_creation_builder.dart';
 import '../../../widgets/tables/table_data_grid_source_builder.dart';
 import '../../../widgets/text/text_header_separator.dart';
@@ -63,7 +63,7 @@ class _WoodyDebrisPieceMainPageState extends State<WoodyDebrisPieceMainPage> {
   late DataGridSourceBuilder largePieceDataSource =
       DataGridSourceBuilder(dataGridRows: []);
 
-  final PopupDismiss completeWarningPopup =
+  final PopupDismissDep completeWarningPopup =
       Global.generateCompleteErrorPopup("Transect");
 
   @override

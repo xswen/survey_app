@@ -17,7 +17,7 @@ import '../../../widgets/builders/tree_species_select_builder.dart';
 import '../../../widgets/data_input/data_input.dart';
 import '../../../widgets/popups/popup_content_format.dart';
 import '../../../widgets/popups/popup_continue.dart';
-import '../../../widgets/popups/popup_dismiss.dart';
+import '../../../widgets/popups/popup_dismiss_dep.dart';
 
 class WoodyDebrisPieceAddOddAccuPage extends StatefulWidget {
   const WoodyDebrisPieceAddOddAccuPage({Key? key}) : super(key: key);
@@ -181,7 +181,7 @@ class _WoodyDebrisPieceAddOddAccuPageState
   _continueCheck() {
     String? result = _error.checkErrorOddAcum(piece);
     if (result != null) {
-      Get.dialog(PopupDismiss(
+      Get.dialog(PopupDismissDep(
           title: "Errors found in the following places:",
           contentWidget: PopupContentFormat(
             titles: const [""],

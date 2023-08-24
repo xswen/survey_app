@@ -1,12 +1,12 @@
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 
 import '../constants/margins_padding.dart';
-import 'popups/popup_dismiss.dart';
+import 'popups/popup_dismiss_dep.dart';
 
 String formatDate(DateTime date) {
   return DateFormat.yMMMd().format(date);
@@ -41,7 +41,7 @@ class CalendarSelect extends StatefulWidget {
   final String label;
   final Function setStateFn;
   final bool? readOnly;
-  final PopupDismiss? readOnlyPopup;
+  final PopupDismissDep? readOnlyPopup;
 
   @override
   State<CalendarSelect> createState() => _CalendarSelectState();
@@ -67,7 +67,7 @@ class _CalendarSelectState extends State<CalendarSelect> {
           decoration: InputDecoration(
               icon:
                   const Icon(FontAwesomeIcons.calendarDay), //icon of text field
-              labelText: widget.label //label text of field
+              labelText: tr(widget.label) //label text of field
               ),
           readOnly: true,
           //set it true, so that user will not able to edit text
