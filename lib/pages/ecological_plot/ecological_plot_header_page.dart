@@ -16,7 +16,7 @@ import '../../widgets/app_bar.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
 import '../../widgets/data_input/data_input.dart';
 import '../../widgets/popups/popup_content_format.dart';
-import '../../widgets/popups/popup_dismiss.dart';
+import '../../widgets/popups/popup_dismiss_dep.dart';
 import '../../widgets/tables/table_creation_builder.dart';
 import '../../widgets/tables/table_data_grid_source_builder.dart';
 
@@ -61,10 +61,10 @@ class _EcologicalPlotHeaderPageState extends State<EcologicalPlotHeaderPage>
 
   late String _layers;
 
-  final PopupDismiss _completeWarningPopup =
+  final PopupDismissDep _completeWarningPopup =
       Global.generateCompleteErrorPopup("Plot");
 
-  final PopupDismiss _prevPageCompleteWarning =
+  final PopupDismissDep _prevPageCompleteWarning =
       Global.generatePreviousMarkedCompleteErrorPopup("Ecological Plot");
 
   @override
@@ -125,7 +125,7 @@ class _EcologicalPlotHeaderPageState extends State<EcologicalPlotHeaderPage>
               _updateEcpHeader(ecpH);
               setState(() {});
             } else {
-              Get.dialog(PopupDismiss(
+              Get.dialog(PopupDismissDep(
                 title: "Error were found in the following places",
                 contentWidget: PopupContentFormat(
                   titles: const [""],

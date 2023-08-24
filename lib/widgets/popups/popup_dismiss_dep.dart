@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class PopupDismiss extends StatelessWidget {
-  const PopupDismiss(
+class PopupDismissDep extends StatelessWidget {
+  const PopupDismissDep(
       {super.key,
       required this.title,
       this.contentText,

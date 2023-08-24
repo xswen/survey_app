@@ -12,7 +12,7 @@ import '../../widgets/buttons/floating_complete_button.dart';
 import '../../widgets/buttons/summary_section_button_generator.dart';
 import '../../widgets/date_select.dart';
 import '../../widgets/dropdowns/drop_down_default.dart';
-import '../../widgets/popups/popup_dismiss.dart';
+import '../../widgets/popups/popup_dismiss_dep.dart';
 
 class SurfaceSubstrateSummaryPage extends StatefulWidget {
   const SurfaceSubstrateSummaryPage({super.key, required this.title});
@@ -29,7 +29,7 @@ class _SurfaceSubstrateSummaryPageState
   SurfaceSubstrateSummaryData ssSummary = Get.arguments[0];
   List<SurfaceSubstrateHeaderData> transList = Get.arguments[1];
 
-  final PopupDismiss completeWarningPopup =
+  final PopupDismissDep completeWarningPopup =
       Global.generateCompleteErrorPopup("Surface Substrate");
 
   @override
@@ -44,14 +44,14 @@ class _SurfaceSubstrateSummaryPageState
             _updateSsSummary(const SurfaceSubstrateSummaryCompanion(
                 complete: d.Value(false)));
           } else if (transList.isEmpty) {
-            Get.dialog(const PopupDismiss(
+            Get.dialog(const PopupDismissDep(
                 title: "Error",
                 contentText: "Please add at least one Ecological Plot"));
           } else {
             _checkHeadersComplete()
                 ? _updateSsSummary(const SurfaceSubstrateSummaryCompanion(
                     complete: d.Value(true)))
-                : Get.dialog(const PopupDismiss(
+                : Get.dialog(const PopupDismissDep(
                     title: "Error",
                     contentText: "There are plots still left incomplete"));
           }

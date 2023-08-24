@@ -9,7 +9,7 @@ import '../../widgets/app_bar.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
 import '../../widgets/data_input/data_input.dart';
 import '../../widgets/dropdowns/drop_down_default.dart';
-import '../../widgets/popups/popup_dismiss.dart';
+import '../../widgets/popups/popup_dismiss_dep.dart';
 
 class SiteInfoTreatmentPage extends StatefulWidget {
   const SiteInfoTreatmentPage({super.key, required this.title});
@@ -21,7 +21,7 @@ class SiteInfoTreatmentPage extends StatefulWidget {
 
 class _SiteInfoTreatmentPageState extends State<SiteInfoTreatmentPage> {
   bool complete = false;
-  final PopupDismiss completeWarningPopup =
+  final PopupDismissDep completeWarningPopup =
       Global.generateCompleteErrorPopup("Site Info Disturbance");
 
   String treatType = "";
@@ -40,7 +40,7 @@ class _SiteInfoTreatmentPageState extends State<SiteInfoTreatmentPage> {
             //TODO: error check
             _checkComplete()
                 ? _update()
-                : Get.dialog(const PopupDismiss(
+                : Get.dialog(const PopupDismissDep(
                     title: "Error", contentText: "Please complete"));
           }
           setState(() {});

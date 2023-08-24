@@ -103,10 +103,11 @@ class Database extends _$Database {
 
           c.debugPrint("Init Values");
           await batch((b) {
-            initTest(b);
             b.insertAll(jurisdictions, jurisdictionsList);
             b.insertAllOnConflictUpdate(treeGenus, treeList);
             b.insertAll(plots, nfiPlotList);
+
+            initTest(b);
           });
         },
         beforeOpen: (m) async {},
@@ -160,6 +161,10 @@ class Database extends _$Database {
   }
 
   void initTest(Batch b) {
+    b.replace(
+        plots,
+        const PlotsCompanion(
+            nfiPlot: Value(916316), code: Value("PE"), lastMeasNum: Value(1)));
     initSurveys(b);
     initWoodyDebris(b);
   }
@@ -168,15 +173,10 @@ class Database extends _$Database {
     b.insertAll(surveyHeaders, [
       SurveyHeadersCompanion(
           id: const d.Value(1),
-          nfiPlot: const d.Value(1),
+          nfiPlot: const d.Value(916316),
           measDate: d.Value(DateTime.now()),
           measNum: const d.Value(1),
-          province: const d.Value("ON")),
-      SurveyHeadersCompanion(
-          nfiPlot: const d.Value(2),
-          measDate: d.Value(DateTime.now()),
-          measNum: const d.Value(0),
-          province: const d.Value("ON")),
+          province: const d.Value("PE")),
     ]);
   }
 

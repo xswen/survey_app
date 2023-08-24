@@ -8,7 +8,7 @@ import '../../../global.dart';
 import '../../../widgets/box_increment.dart';
 import '../../../widgets/builders/decay_class_select_builder.dart';
 import '../../../widgets/popups/popup_continue.dart';
-import '../../../widgets/popups/popup_dismiss.dart';
+import '../../../widgets/popups/popup_dismiss_dep.dart';
 import '../../../widgets/text/text_header_separator.dart';
 
 /// Widget for small woody debris input
@@ -30,7 +30,7 @@ class _WoodyDebrisSmallPieceBuilderState
   final _db = Get.find<Database>();
   late WoodyDebrisSmallData wdSm;
 
-  final PopupDismiss completeWarningPopup =
+  final PopupDismissDep completeWarningPopup =
       Global.generateCompleteErrorPopup("Transect");
 
   @override

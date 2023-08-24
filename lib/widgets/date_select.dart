@@ -6,7 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 import '../constants/margins_padding.dart';
-import 'popups/popup_dismiss.dart';
+import 'popups/popup_dismiss_dep.dart';
 
 String formatDate(DateTime date) {
   return DateFormat.yMMMd().format(date);
@@ -41,7 +41,7 @@ class CalendarSelect extends StatefulWidget {
   final String label;
   final Function setStateFn;
   final bool? readOnly;
-  final PopupDismiss? readOnlyPopup;
+  final PopupDismissDep? readOnlyPopup;
 
   @override
   State<CalendarSelect> createState() => _CalendarSelectState();

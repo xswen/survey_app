@@ -55,7 +55,7 @@ class _DataInputState extends State<DataInput> {
     return widget.errorMsg;
   }
 
-  late final TextEditingController _controller;
+  late final TextEditingController controller;
 
   @override
   void initState() {
@@ -67,22 +67,25 @@ class _DataInputState extends State<DataInput> {
           )
         : null;
 
-    _controller = widget.controller ?? TextEditingController();
-    _controller.text = widget.startingStr;
+    controller = widget.controller ?? TextEditingController();
+    controller.text = widget.startingStr;
     super.initState();
   }
 
   // dispose it when the widget is unmounted
   @override
   void dispose() {
-    _controller.dispose();
+    if (widget.controller == null) {
+      debugPrint("No parent controller found. Disposing widget controller");
+      controller.dispose();
+    }
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-        valueListenable: _controller,
+        valueListenable: controller,
         builder: (context, TextEditingValue value, __) {
           return Padding(
             padding: widget.generalPadding,
@@ -95,7 +98,7 @@ class _DataInputState extends State<DataInput> {
                     padding: widget.textBoxPadding,
                     child: TextField(
                       readOnly: widget.readOnly,
-                      controller: _controller,
+                      controller: controller,
                       onTap: widget.onTap,
                       onChanged: (s) {
                         widget.onSubmit(s);

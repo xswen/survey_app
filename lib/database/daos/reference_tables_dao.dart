@@ -93,7 +93,7 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
       (select(plots)..where((tbl) => tbl.code.equals(code)))
           .map((p0) => p0.nfiPlot)
           .get();
-  Future<int> getLastMeasDate(int plotNum) async {
+  Future<int> getLastMeasNum(int plotNum) async {
     Plot plot = await (select(plots)
           ..where((tbl) => tbl.nfiPlot.equals(plotNum)))
         .getSingle();

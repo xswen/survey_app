@@ -18,7 +18,7 @@ import '../../../widgets/data_input/data_input.dart';
 import '../../../widgets/hide_info_checkbox.dart';
 import '../../../widgets/popups/popup_content_format.dart';
 import '../../../widgets/popups/popup_continue.dart';
-import '../../../widgets/popups/popup_dismiss.dart';
+import '../../../widgets/popups/popup_dismiss_dep.dart';
 
 class WoodyDebrisPieceAddRoundPage extends StatefulWidget {
   const WoodyDebrisPieceAddRoundPage({Key? key}) : super(key: key);
@@ -201,7 +201,7 @@ class _WoodyDebrisPieceAddRoundPageState
   _continueCheck() {
     String? result = _error.checkErrorRound(piece);
     if (result != null) {
-      Get.dialog(PopupDismiss(
+      Get.dialog(PopupDismissDep(
         title: "Error were found in the following places",
         contentWidget: PopupContentFormat(
           titles: const [""],

@@ -1,19 +1,22 @@
+import 'dart:math';
+
 import 'package:drift/drift.dart' as d;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:survey_app/widgets/data_input/data_input.dart';
 
 import '../../constants/margins_padding.dart';
-import '../../constants/text_designs.dart';
 import '../../database/database.dart';
-import '../../formatters/thousands_formatter.dart';
 import '../../global.dart';
 import '../../l10n/locale_keys.g.dart';
+import '../../routes/route_names.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/date_select.dart';
 import '../../widgets/dropdowns/drop_down_async_list.dart';
+import '../../widgets/popups/popups.dart';
 
 class CreateSurvey extends StatefulWidget {
   const CreateSurvey({Key? key}) : super(key: key);
@@ -25,29 +28,18 @@ class CreateSurvey extends StatefulWidget {
 class _CreateSurveyState extends State<CreateSurvey> with Global {
   final _controller = TextEditingController();
   static const int _kDataMissing = -1;
-  SurveyHeadersCompanion surveyHeader =
-      SurveyHeadersCompanion(measDate: d.Value(DateTime.now()));
+  SurveyHeadersCompanion surveyHeader = SurveyHeadersCompanion(
+      measNum: const d.Value(-1), measDate: d.Value(DateTime.now()));
   String? provinceName;
   String? nfiPlot;
-  String lastMeas = "";
+  int? lastMeasNum;
   bool jurisdictionSelected = false;
   bool plotSelected = false;
-  @override
-  void initState() {
-    _controller.text = Global.dbCompanionValueToStr(surveyHeader.measNum);
-    super.initState();
-  }
-
-  // dispose it when the widget is unmounted
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
 
   @override
   Scaffold build(BuildContext context) {
     final db = Provider.of<Database>(context);
+
     return Scaffold(
       appBar: const OurAppBar(LocaleKeys.createSurveyTitle),
       body: Column(
@@ -82,8 +74,8 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
                             measNum: const d.Value(_kDataMissing));
                         provinceName = s;
                         nfiPlot = LocaleKeys.pleaseSelectPlot;
-                        lastMeas = "";
-                        _controller.text = "";
+                        if (context.mounted) _controller.text = "";
+
                         plotSelected = false;
                         setState(() {});
                       }
@@ -97,70 +89,31 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
                   child: DropDownAsyncList(
                     title: LocaleKeys.plotNum,
                     onChangedFn: (s) => setState(() {
-                      _handlePlot(s);
+                      _handlePlot(db, s);
                       setState(() {});
                     }),
                     selectedItem: tr(nfiPlot ?? ""),
-                    asyncItems: (s) => _getPlotNums(),
+                    asyncItems: (s) => _getPlotNums(db),
                   ),
                 ),
-                ValueListenableBuilder(
-                    valueListenable: _controller,
-                    builder: (context, TextEditingValue value, __) {
-                      return Padding(
-                        padding: const EdgeInsets.only(
-                            top: kPaddingV * 2, bottom: 0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text("Measurement Number",
-                                style: kTitleStyle),
-                            SizedBox(
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: kPaddingV),
-                                child: TextField(
-                                  controller: _controller,
-                                  onChanged: (s) {
-                                    setState(() {
-                                      int.tryParse(s) != null
-                                          ? surveyHeader =
-                                              surveyHeader.copyWith(
-                                                  measNum:
-                                                      d.Value(int.parse(s)))
-                                          : surveyHeader =
-                                              surveyHeader.copyWith(
-                                                  measNum: const d.Value(
-                                                      _kDataMissing));
-                                    });
-                                  },
-                                  readOnly: !plotSelected,
-                                  keyboardType:
-                                      const TextInputType.numberWithOptions(
-                                          decimal: false),
-                                  inputFormatters: [
-                                    LengthLimitingTextInputFormatter(3),
-                                    ThousandsFormatter(
-                                        allowFraction: true, decimalPlaces: 1),
-                                  ],
-                                  decoration: InputDecoration(
-                                    labelText: "",
-                                    errorText: _handleMeasNumError(
-                                        _controller.value.text, lastMeas),
-                                    prefixIcon:
-                                        const Icon(FontAwesomeIcons.ruler),
-                                    suffixIconConstraints: const BoxConstraints(
-                                        minWidth: 0, minHeight: 0),
-                                    border: const OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            width: 3, color: Colors.grey)),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }),
+                DataInput(
+                    title: "Measurement Number",
+                    inputType: const TextInputType.numberWithOptions(),
+                    inputFormatters: [LengthLimitingTextInputFormatter(3)],
+                    startingStr: surveyHeader.measNum.value == _kDataMissing
+                        ? ""
+                        : Global.dbCompanionValueToStr(surveyHeader.measNum),
+                    readOnly: !plotSelected,
+                    controller: mounted ? _controller : null,
+                    onSubmit: (String s) {
+                      int.tryParse(s) != null
+                          ? setState(() => surveyHeader = surveyHeader.copyWith(
+                              measNum: d.Value(int.parse(s))))
+                          : setState(() => surveyHeader = surveyHeader.copyWith(
+                              measNum: const d.Value(_kDataMissing)));
+                    },
+                    errorMsg: _handleMeasNumError(
+                        surveyHeader.measNum.value.toString())),
               ],
             ),
           ),
@@ -170,17 +123,33 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
               onPressed: () async {
                 String? result = _checkSurveyHeader();
                 if (result != null) {
-                  // Get.dialog(PopupDismiss(
-                  //     title: "Error",
-                  //     contentText:
-                  //         "Errors were found in the following places:\n $result"));
+                  Popups.showDismiss(context, "Error",
+                      contentText:
+                          "Errors were found in the following places:\n $result");
+                } else if (lastMeasNum != null &&
+                    lastMeasNum! >= surveyHeader.measNum.value) {
+                  Popups.showContinue(
+                    context,
+                    "Warning: Last Measurement Number Mismatch",
+                    "You are trying to input a measurement value of ${surveyHeader.measNum.value} "
+                        "when the last measurement value on file is $lastMeasNum. "
+                        "\n Would you like to proceed?",
+                    rightBtnOnPressed: () async {
+                      int id = await _insertSurvey(db);
+                      if (context.mounted) {
+                        context.goNamed(Routes.dashboard,
+                            extra: await db.surveyInfoTablesDao.allSurveys);
+                      }
+                    },
+                  );
                 } else {
-                  // final db = Get.find<Database>();
-                  // debugPrint(
-                  //     "Survey being created for ${surveyHeader.nfiPlot.toString()}");
-                  // int id = await db.into(db.surveyHeaders).insert(surveyHeader);
-                  // Get.offNamed(Routes.surveyInfoPage,
-                  //     arguments: (await db.surveyInfoTablesDao.getSurvey(id)));
+                  debugPrint(
+                      "Survey being created for ${surveyHeader.toString()}");
+                  int id = await _insertSurvey(db);
+                  if (context.mounted) {
+                    context.goNamed(Routes.dashboard,
+                        extra: await db.surveyInfoTablesDao.allSurveys);
+                  }
                 }
               },
               style: ElevatedButton.styleFrom(
@@ -194,66 +163,68 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
     );
   }
 
-  void _handlePlot(String? plot) async {
-    print(plot);
+  Future<int> _insertSurvey(Database db) async {
+    int id = await db.into(db.surveyHeaders).insert(surveyHeader);
+    var val = await db.referenceTablesDao.updatePlot(PlotsCompanion(
+        nfiPlot: surveyHeader.nfiPlot,
+        code: surveyHeader.province,
+        lastMeasNum: d.Value(max(surveyHeader.measNum.value, lastMeasNum!))));
+    return id;
+  }
+
+  void _handlePlot(Database db, String? plot) async {
     if (plot == null) {
       return;
     }
-
     surveyHeader = surveyHeader.copyWith(nfiPlot: d.Value(int.parse(plot)));
     nfiPlot = plot;
-    lastMeas = (await Database()
-            .referenceTablesDao
-            .getLastMeasDate(int.parse(nfiPlot!)))
-        .toString();
+    lastMeasNum =
+        await db.referenceTablesDao.getLastMeasNum(int.parse(nfiPlot!)) ??
+            _kDataMissing;
     surveyHeader = surveyHeader.copyWith(measNum: const d.Value(_kDataMissing));
-    plotSelected = true;
     _controller.text = "";
+    plotSelected = true;
+    setState(() {});
   }
 
-  Future<List<String>> _getPlotNums() async {
-    final db = Database();
-
+  Future<List<String>> _getPlotNums(Database db) async {
     if (surveyHeader.province == const d.Value.absent()) {
       return [""];
     }
 
     final List<int> nums =
         await db.referenceTablesDao.getPlotNums(surveyHeader.province.value);
+
     return nums.map((e) => e.toString()).toList();
   }
 
   //Error handlers
   String? _checkSurveyHeader() {
     String result = "";
-    if (surveyHeader.province == d.Value.absent() ||
+    if (surveyHeader.province == const d.Value.absent() ||
         surveyHeader.province.value.isEmpty) {
       result += "Missing Jurisdiction Info";
     }
-    if (surveyHeader.nfiPlot == d.Value.absent() ||
+    if (surveyHeader.nfiPlot == const d.Value.absent() ||
         surveyHeader.nfiPlot.value == _kDataMissing) {
       result += "\n Missing Plot Number";
     }
-    if (surveyHeader.measNum == d.Value.absent() ||
+    if (surveyHeader.measNum == const d.Value.absent() ||
         surveyHeader.measNum.value == _kDataMissing) {
-      result += "\n Missing Plot Number";
+      result += "\n Missing Measurement Number";
     }
 
     return result.isNotEmpty ? result : null;
   }
 
-  String? _handleMeasNumError(String text, String lastMeas) {
-    if (lastMeas.isEmpty) {
-      return "Please choose plot number first";
-    }
-    if (text.isEmpty) {
-      return "Cannot be empty";
-    }
-    if (lastMeas == _kDataMissing.toString()) {
+  String? _handleMeasNumError(String? text) {
+    if (text == null) {
       return null;
     }
-    if (int.parse(text) < int.parse(lastMeas)) {
-      return "Invalid meas number. Last recorded measurement number was $lastMeas";
+    if (lastMeasNum == null) {
+      return "Please choose plot number first";
+    } else if (text!.isEmpty || text == _kDataMissing.toString()) {
+      return "Cannot be empty";
     }
     return null;
   }

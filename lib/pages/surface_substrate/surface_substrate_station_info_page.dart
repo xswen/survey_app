@@ -11,7 +11,7 @@ import '../../widgets/app_bar.dart';
 import '../../widgets/data_input/data_input.dart';
 import '../../widgets/dropdowns/drop_down_default.dart';
 import '../../widgets/popups/popup_content_format.dart';
-import '../../widgets/popups/popup_dismiss.dart';
+import '../../widgets/popups/popup_dismiss_dep.dart';
 
 class SurfaceSubstrateStationInfoPage extends StatefulWidget {
   const SurfaceSubstrateStationInfoPage({Key? key}) : super(key: key);
@@ -157,7 +157,7 @@ class _SurfaceSubstrateStationInfoPageState
           ssDataId: station.ssDataId, stationNum: d.Value(nextStationNum));
     }
 
-    Get.dialog(PopupDismiss(
+    Get.dialog(PopupDismissDep(
       title: "Error were found in the following places",
       contentWidget: PopupContentFormat(
         titles: const [""],

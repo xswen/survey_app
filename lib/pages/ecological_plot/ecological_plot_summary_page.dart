@@ -12,7 +12,7 @@ import '../../widgets/buttons/floating_complete_button.dart';
 import '../../widgets/buttons/summary_section_button_generator.dart';
 import '../../widgets/date_select.dart';
 import '../../widgets/dropdowns/drop_down_default.dart';
-import '../../widgets/popups/popup_dismiss.dart';
+import '../../widgets/popups/popup_dismiss_dep.dart';
 
 class EcologicalPlotSummaryPage extends StatefulWidget {
   const EcologicalPlotSummaryPage({super.key, required this.title});
@@ -29,7 +29,7 @@ class _EcologicalPlotSummaryPageState extends State<EcologicalPlotSummaryPage>
 
   EcpSummaryData ecpS = Get.arguments[0];
   List<EcpHeaderData> ecpList = Get.arguments[1];
-  final PopupDismiss _completeWarningPopup =
+  final PopupDismissDep _completeWarningPopup =
       Global.generateCompleteErrorPopup("Ecological Plot");
 
   @override
@@ -44,14 +44,14 @@ class _EcologicalPlotSummaryPageState extends State<EcologicalPlotSummaryPage>
             _updateEcpSummary(
                 const EcpSummaryCompanion(complete: d.Value(false)));
           } else if (ecpList.isEmpty) {
-            Get.dialog(const PopupDismiss(
+            Get.dialog(const PopupDismissDep(
                 title: "Error",
                 contentText: "Please add at least one Ecological Plot"));
           } else {
             _checkHeadersComplete()
                 ? _updateEcpSummary(
                     const EcpSummaryCompanion(complete: d.Value(true)))
-                : Get.dialog(const PopupDismiss(
+                : Get.dialog(const PopupDismissDep(
                     title: "Error",
                     contentText: "There are plots still left incomplete"));
           }

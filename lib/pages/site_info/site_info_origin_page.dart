@@ -9,7 +9,7 @@ import '../../widgets/app_bar.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
 import '../../widgets/data_input/data_input.dart';
 import '../../widgets/dropdowns/drop_down_default.dart';
-import '../../widgets/popups/popup_dismiss.dart';
+import '../../widgets/popups/popup_dismiss_dep.dart';
 
 class SiteInfoOriginPage extends StatefulWidget {
   const SiteInfoOriginPage({super.key, required this.title});
@@ -21,7 +21,7 @@ class SiteInfoOriginPage extends StatefulWidget {
 
 class _SiteInfoOriginPageState extends State<SiteInfoOriginPage> {
   bool complete = false;
-  final PopupDismiss completeWarningPopup =
+  final PopupDismissDep completeWarningPopup =
       Global.generateCompleteErrorPopup("Site Info Disturbance");
 
   String vegOrig = "";
@@ -41,7 +41,7 @@ class _SiteInfoOriginPageState extends State<SiteInfoOriginPage> {
             //TODO: error check
             _checkComplete()
                 ? _update()
-                : Get.dialog(const PopupDismiss(
+                : Get.dialog(const PopupDismissDep(
                     title: "Error", contentText: "Please complete"));
           }
           setState(() {});

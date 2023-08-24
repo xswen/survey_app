@@ -8,7 +8,7 @@ import '../../widgets/app_bar.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
 import '../../widgets/data_input/data_input.dart';
 import '../../widgets/dropdowns/drop_down_default.dart';
-import '../../widgets/popups/popup_dismiss.dart';
+import '../../widgets/popups/popup_dismiss_dep.dart';
 
 class SiteInfoDetailsPage extends StatefulWidget {
   const SiteInfoDetailsPage({super.key, required this.title});
@@ -31,7 +31,7 @@ class _SiteInfoDetailsPageState extends State<SiteInfoDetailsPage> {
   String succStage = "";
   String wetlandClass = "";
 
-  final PopupDismiss completeWarningPopup =
+  final PopupDismissDep completeWarningPopup =
       Global.generateCompleteErrorPopup("Site Info Details");
 
   @override
@@ -48,7 +48,7 @@ class _SiteInfoDetailsPageState extends State<SiteInfoDetailsPage> {
             //TODO: error check
             _checkComplete()
                 ? _update()
-                : Get.dialog(const PopupDismiss(
+                : Get.dialog(const PopupDismissDep(
                     title: "Error", contentText: "Please complete"));
           }
           setState(() {});

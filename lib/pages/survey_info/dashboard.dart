@@ -36,11 +36,6 @@ class _DashboardState extends State<Dashboard> {
             db.surveyInfoTablesDao.allSurveys
                 .then((value) => setState(() => widget.surveys = value));
           });
-          // var temp = await Get.toNamed(Routes.surveyInfoCreate);
-          // setState(() {
-          //   _db.surveyInfoTablesDao.allSurveys
-          //       .then((value) => setState(() => surveys = value));
-          // });
         },
         child: const Icon(Icons.add),
       ),

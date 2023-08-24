@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart' as d;
 
-import 'widgets/popups/popup_dismiss.dart';
+import 'widgets/popups/popup_dismiss_dep.dart';
 
 mixin Global {
   static String globalLocale = "en_CA";
@@ -11,14 +11,15 @@ mixin Global {
       ? ""
       : value.value.toString();
 
-  static PopupDismiss generateCompleteErrorPopup(String location) => PopupDismiss(
-      title: "Error: $location Marked as Complete",
-      contentText:
-          "$location has already been marked as complete. Please click 'Edit' to make any changes");
+  static PopupDismissDep generateCompleteErrorPopup(String location) =>
+      PopupDismissDep(
+          title: "Error: $location Marked as Complete",
+          contentText:
+              "$location has already been marked as complete. Please click 'Edit' to make any changes");
 
-  static PopupDismiss generatePreviousMarkedCompleteErrorPopup(
+  static PopupDismissDep generatePreviousMarkedCompleteErrorPopup(
           String location) =>
-      PopupDismiss(
+      PopupDismissDep(
           title: "Error: $location Marked as Complete",
           contentText:
               "$location has already been marked as complete. Please go back and press 'Edit' to make changes here");
