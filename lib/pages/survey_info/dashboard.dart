@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart' as d;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -31,7 +32,10 @@ class _DashboardState extends State<Dashboard> {
       appBar: const OurAppBar(LocaleKeys.dashboardTitle),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          var temp = await context.pushNamed(Routes.createSurvey);
+          var temp = await context.pushNamed(Routes.createSurvey,
+              extra: SurveyHeadersCompanion(
+                  measNum: const d.Value(-1),
+                  measDate: d.Value(DateTime.now())));
           setState(() {
             db.surveyInfoTablesDao.allSurveys
                 .then((value) => setState(() => widget.surveys = value));

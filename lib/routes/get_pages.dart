@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:survey_app/database/database.dart';
 
 import '../main.dart';
 import '../pages/ecological_plot/ecological_plot_header_page.dart';
@@ -47,7 +48,9 @@ List<GetPage> pages = [
   ),
   GetPage(
     name: Routes.surveyInfoCreate,
-    page: () => const CreateSurvey(),
+    page: () => CreateSurvey(
+      surveyHeader: const SurveyHeadersCompanion(),
+    ),
   ),
   //Woody Debris
   GetPage(

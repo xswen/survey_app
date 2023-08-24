@@ -29,7 +29,9 @@ GoRouter router = GoRouter(
               name: Routes.createSurvey,
               path: Routes.createSurvey,
               builder: (context, state) {
-                return const CreateSurvey();
+                SurveyHeadersCompanion survey =
+                    state.extra as SurveyHeadersCompanion;
+                return CreateSurvey(surveyHeader: survey);
               })
         ]),
   ],

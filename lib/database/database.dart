@@ -177,6 +177,12 @@ class Database extends _$Database {
           measDate: d.Value(DateTime.now()),
           measNum: const d.Value(1),
           province: const d.Value("PE")),
+      SurveyHeadersCompanion(
+          id: const d.Value(2),
+          nfiPlot: const d.Value(1121871),
+          measDate: d.Value(DateTime.now()),
+          measNum: const d.Value(2),
+          province: const d.Value("AB")),
     ]);
   }
 

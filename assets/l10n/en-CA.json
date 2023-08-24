@@ -7,5 +7,8 @@
     "enterMeasDate": "Enter Measurement Date",
     "jurisdiction": "Jurisdiction",
     "plotNum": "Plot Number",
-    "pleaseSelectPlot": "Please Select Plot"
+    "pleaseSelectPlot": "Please Select Plot",
+    "pleaseSelectJurisdiction": "Please Select Jurisdiction",
+    "pleaseSelectAJurisdictionFirst": "Please select a jurisdiction first",
+    "measurementNum": "Measurement Number"
 }

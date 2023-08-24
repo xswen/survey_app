@@ -10,5 +10,8 @@ abstract class  LocaleKeys {
   static const jurisdiction = 'jurisdiction';
   static const plotNum = 'plotNum';
   static const pleaseSelectPlot = 'pleaseSelectPlot';
+  static const pleaseSelectJurisdiction = 'pleaseSelectJurisdiction';
+  static const pleaseSelectAJurisdictionFirst = 'pleaseSelectAJurisdictionFirst';
+  static const measurementNum = 'measurementNum';
 
 }

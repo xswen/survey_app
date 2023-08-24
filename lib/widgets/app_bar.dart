@@ -6,7 +6,8 @@ import 'package:go_router/go_router.dart';
 import '../constants/constant_values.dart';
 
 class OurAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const OurAppBar(this.title, {super.key, this.backFn});
+  const OurAppBar(this.title, {super.key, this.backFn, this.onLocaleChange});
+  final VoidCallback? onLocaleChange;
   final String title;
   final void Function()? backFn;
 
@@ -26,9 +27,10 @@ class OurAppBar extends StatelessWidget implements PreferredSizeWidget {
             context.locale == kLocaleEn
                 ? context.setLocale(kLocaleFr)
                 : context.setLocale(kLocaleEn);
+            onLocaleChange;
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text(
-                    'Language has been changed to ${context.locale == kLocaleFr ? "French" : "English"}')));
+                content: Text('Language has been changed to '
+                    '${context.locale == kLocaleFr ? "French" : "English"}')));
           },
         ),
       ],
