@@ -99,12 +99,14 @@ class Database extends _$Database {
           List<TreeGenusCompanion> treeList = await getTreeGenuses();
           List<JurisdictionsCompanion> jurisdictionsList =
               await getJurisdictions();
+          List<PlotsCompanion> nfiPlotList = await getNfiPlots();
 
           c.debugPrint("Init Values");
           await batch((b) {
             initTest(b);
             b.insertAll(jurisdictions, jurisdictionsList);
             b.insertAllOnConflictUpdate(treeGenus, treeList);
+            b.insertAll(plots, nfiPlotList);
           });
         },
         beforeOpen: (m) async {},
@@ -144,8 +146,20 @@ class Database extends _$Database {
     }).toList();
   }
 
+  Future<List<PlotsCompanion>> getNfiPlots() async {
+    List<dynamic> jsonData =
+        await loadJsonData('assets/db_reference_data/gp_plots_list.json');
+    return jsonData.map((dynamic item) {
+      return PlotsCompanion(
+          code: Value(item["code"]),
+          nfiPlot: Value(item["nfiPlot"]),
+          lastMeasNum: item["lastMeasNum"] == null
+              ? Value(item["lastMeasNum"])
+              : const Value.absent());
+    }).toList();
+  }
+
   void initTest(Batch b) {
-    initPlots(b);
     initSurveys(b);
     initWoodyDebris(b);
   }
@@ -163,16 +177,6 @@ class Database extends _$Database {
           measDate: d.Value(DateTime.now()),
           measNum: const d.Value(0),
           province: const d.Value("ON")),
-    ]);
-  }
-
-  void initPlots(Batch b) {
-    b.insertAll(plots, [
-      const PlotsCompanion(
-          nfiPlot: d.Value(1), code: d.Value("ON"), lastMeasNum: d.Value(0)),
-      const PlotsCompanion(nfiPlot: d.Value(2), code: d.Value("ON")),
-      const PlotsCompanion(
-          nfiPlot: d.Value(3), code: d.Value("AB"), lastMeasNum: d.Value(3)),
     ]);
   }
 

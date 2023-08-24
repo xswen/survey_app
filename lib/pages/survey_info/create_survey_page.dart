@@ -1,31 +1,31 @@
 import 'package:drift/drift.dart' as d;
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants/margins_padding.dart';
 import '../../constants/text_designs.dart';
 import '../../database/database.dart';
 import '../../formatters/thousands_formatter.dart';
 import '../../global.dart';
-import '../../routes/route_names.dart';
+import '../../l10n/locale_keys.g.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/date_select.dart';
 import '../../widgets/dropdowns/drop_down_async_list.dart';
-import '../../widgets/popups/popup_dismiss.dart';
 
-class SurveyInfoCreate extends StatefulWidget {
-  const SurveyInfoCreate({Key? key}) : super(key: key);
+class CreateSurvey extends StatefulWidget {
+  const CreateSurvey({Key? key}) : super(key: key);
 
   @override
-  State<SurveyInfoCreate> createState() => _SurveyInfoCreateState();
+  State<CreateSurvey> createState() => _CreateSurveyState();
 }
 
-class _SurveyInfoCreateState extends State<SurveyInfoCreate> with Global {
+class _CreateSurveyState extends State<CreateSurvey> with Global {
   final _controller = TextEditingController();
-  static const int _DATAMISSING = -1;
-  SurveyHeadersCompanion sh =
+  static const int _kDataMissing = -1;
+  SurveyHeadersCompanion surveyHeader =
       SurveyHeadersCompanion(measDate: d.Value(DateTime.now()));
   String? provinceName;
   String? nfiPlot;
@@ -34,7 +34,7 @@ class _SurveyInfoCreateState extends State<SurveyInfoCreate> with Global {
   bool plotSelected = false;
   @override
   void initState() {
-    _controller.text = Global.dbCompanionValueToStr(sh.measNum);
+    _controller.text = Global.dbCompanionValueToStr(surveyHeader.measNum);
     super.initState();
   }
 
@@ -47,36 +47,60 @@ class _SurveyInfoCreateState extends State<SurveyInfoCreate> with Global {
 
   @override
   Scaffold build(BuildContext context) {
+    final db = Provider.of<Database>(context);
     return Scaffold(
-      appBar: const OurAppBar("Create New Survey"),
+      appBar: const OurAppBar(LocaleKeys.createSurveyTitle),
       body: Column(
         children: [
           CalendarSelect(
-              date: sh.measDate.value,
-              label: "Enter Measurement Date",
-              setStateFn: (DateTime date) =>
-                  setState(() => sh = sh.copyWith(measDate: d.Value(date)))),
+              date: surveyHeader.measDate.value,
+              label: LocaleKeys.enterMeasDate,
+              setStateFn: (DateTime date) => setState(() => surveyHeader =
+                  surveyHeader.copyWith(measDate: d.Value(date)))),
           Container(
             margin: const EdgeInsets.fromLTRB(
                 kPaddingH, 0, kPaddingH, kPaddingV / 2),
             child: Column(
               children: [
                 DropDownAsyncList(
-                  title: "Jurisdiction",
-                  onChangedFn: (s) => _handleJurisdiction(s),
-                  selectedItem: provinceName ?? "Please select a jurisdiction",
-                  asyncItems: (s) =>
-                      Get.find<Database>().referenceTablesDao.jurisdictionNames,
-                ),
+                    searchable: true,
+                    title: LocaleKeys.jurisdiction,
+                    onChangedFn: (s) async {
+                      if (s == null) {
+                        return;
+                      }
+
+                      String code = await db.referenceTablesDao
+                          .getJurisdictionCode(context.locale, s);
+                      jurisdictionSelected = true;
+
+                      if (surveyHeader.province == const d.Value.absent() ||
+                          code != surveyHeader.province.value) {
+                        surveyHeader = surveyHeader.copyWith(
+                            province: d.Value(code),
+                            nfiPlot: const d.Value(_kDataMissing),
+                            measNum: const d.Value(_kDataMissing));
+                        provinceName = s;
+                        nfiPlot = LocaleKeys.pleaseSelectPlot;
+                        lastMeas = "";
+                        _controller.text = "";
+                        plotSelected = false;
+                        setState(() {});
+                      }
+                    },
+                    selectedItem:
+                        provinceName ?? "Please select a jurisdiction",
+                    asyncItems: (s) => db.referenceTablesDao
+                        .getJurisdictionNames(context.locale)),
                 AbsorbPointer(
                   absorbing: !jurisdictionSelected,
                   child: DropDownAsyncList(
-                    title: "Plot Number",
+                    title: LocaleKeys.plotNum,
                     onChangedFn: (s) => setState(() {
                       _handlePlot(s);
                       setState(() {});
                     }),
-                    selectedItem: nfiPlot ?? "",
+                    selectedItem: tr(nfiPlot ?? ""),
                     asyncItems: (s) => _getPlotNums(),
                   ),
                 ),
@@ -99,11 +123,14 @@ class _SurveyInfoCreateState extends State<SurveyInfoCreate> with Global {
                                   onChanged: (s) {
                                     setState(() {
                                       int.tryParse(s) != null
-                                          ? sh = sh.copyWith(
-                                              measNum: d.Value(int.parse(s)))
-                                          : sh = sh.copyWith(
-                                              measNum:
-                                                  const d.Value(_DATAMISSING));
+                                          ? surveyHeader =
+                                              surveyHeader.copyWith(
+                                                  measNum:
+                                                      d.Value(int.parse(s)))
+                                          : surveyHeader =
+                                              surveyHeader.copyWith(
+                                                  measNum: const d.Value(
+                                                      _kDataMissing));
                                     });
                                   },
                                   readOnly: !plotSelected,
@@ -143,17 +170,17 @@ class _SurveyInfoCreateState extends State<SurveyInfoCreate> with Global {
               onPressed: () async {
                 String? result = _checkSurveyHeader();
                 if (result != null) {
-                  Get.dialog(PopupDismiss(
-                      title: "Error",
-                      contentText:
-                          "Errors were found in the following places:\n $result"));
+                  // Get.dialog(PopupDismiss(
+                  //     title: "Error",
+                  //     contentText:
+                  //         "Errors were found in the following places:\n $result"));
                 } else {
-                  final db = Get.find<Database>();
-                  debugPrint(
-                      "Survey being created for ${sh.nfiPlot.toString()}");
-                  int id = await db.into(db.surveyHeaders).insert(sh);
-                  Get.offNamed(Routes.surveyInfoPage,
-                      arguments: (await db.surveyInfoTablesDao.getSurvey(id)));
+                  // final db = Get.find<Database>();
+                  // debugPrint(
+                  //     "Survey being created for ${surveyHeader.nfiPlot.toString()}");
+                  // int id = await db.into(db.surveyHeaders).insert(surveyHeader);
+                  // Get.offNamed(Routes.surveyInfoPage,
+                  //     arguments: (await db.surveyInfoTablesDao.getSurvey(id)));
                 }
               },
               style: ElevatedButton.styleFrom(
@@ -167,68 +194,48 @@ class _SurveyInfoCreateState extends State<SurveyInfoCreate> with Global {
     );
   }
 
-  void _handleJurisdiction(String? jurisdiction) async {
-    if (jurisdiction == null) {
-      return;
-    }
-
-    String code = await Get.find<Database>()
-        .referenceTablesDao
-        .getJurisdictionCode(jurisdiction);
-    jurisdictionSelected = true;
-    if (sh.province == const d.Value.absent() || code != sh.province.value) {
-      sh = sh.copyWith(
-          province: d.Value(code),
-          nfiPlot: const d.Value(_DATAMISSING),
-          measNum: const d.Value(_DATAMISSING));
-      provinceName = jurisdiction;
-      nfiPlot = "Please select plot";
-      lastMeas = "";
-      _controller.text = "";
-      plotSelected = false;
-      setState(() {});
-    }
-  }
-
   void _handlePlot(String? plot) async {
     print(plot);
     if (plot == null) {
       return;
     }
 
-    sh = sh.copyWith(nfiPlot: d.Value(int.parse(plot)));
+    surveyHeader = surveyHeader.copyWith(nfiPlot: d.Value(int.parse(plot)));
     nfiPlot = plot;
-    lastMeas = (await Get.find<Database>()
+    lastMeas = (await Database()
             .referenceTablesDao
             .getLastMeasDate(int.parse(nfiPlot!)))
         .toString();
-    sh = sh.copyWith(measNum: const d.Value(_DATAMISSING));
+    surveyHeader = surveyHeader.copyWith(measNum: const d.Value(_kDataMissing));
     plotSelected = true;
     _controller.text = "";
   }
 
   Future<List<String>> _getPlotNums() async {
-    final db = Get.find<Database>();
+    final db = Database();
 
-    if (sh.province == const d.Value.absent()) {
+    if (surveyHeader.province == const d.Value.absent()) {
       return [""];
     }
 
     final List<int> nums =
-        await db.referenceTablesDao.getPlotNums(sh.province.value);
+        await db.referenceTablesDao.getPlotNums(surveyHeader.province.value);
     return nums.map((e) => e.toString()).toList();
   }
 
   //Error handlers
   String? _checkSurveyHeader() {
     String result = "";
-    if (sh.province == d.Value.absent() || sh.province.value.isEmpty) {
+    if (surveyHeader.province == d.Value.absent() ||
+        surveyHeader.province.value.isEmpty) {
       result += "Missing Jurisdiction Info";
     }
-    if (sh.nfiPlot == d.Value.absent() || sh.nfiPlot.value == _DATAMISSING) {
+    if (surveyHeader.nfiPlot == d.Value.absent() ||
+        surveyHeader.nfiPlot.value == _kDataMissing) {
       result += "\n Missing Plot Number";
     }
-    if (sh.measNum == d.Value.absent() || sh.measNum.value == _DATAMISSING) {
+    if (surveyHeader.measNum == d.Value.absent() ||
+        surveyHeader.measNum.value == _kDataMissing) {
       result += "\n Missing Plot Number";
     }
 
@@ -242,7 +249,7 @@ class _SurveyInfoCreateState extends State<SurveyInfoCreate> with Global {
     if (text.isEmpty) {
       return "Cannot be empty";
     }
-    if (lastMeas == _DATAMISSING.toString()) {
+    if (lastMeas == _kDataMissing.toString()) {
       return null;
     }
     if (int.parse(text) < int.parse(lastMeas)) {

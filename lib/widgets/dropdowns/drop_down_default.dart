@@ -1,4 +1,5 @@
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/margins_padding.dart';
@@ -43,7 +44,7 @@ class _DropDownDefaultState extends State<DropDownDefault> {
             child: Text(
               widget.title,
               style: kTitleStyle,
-            ),
+            ).tr(),
           );
 
     super.initState();

@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:drift/drift.dart';
+import 'package:survey_app/constants/constant_values.dart';
 
 import '../database.dart';
 import '../database_creation_files/reference_tables.dart';
@@ -21,7 +24,7 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
 
   //====================Jurisdictions====================
   //--------------------get--------------------
-  Future<String> getJurisdictionCode(String name) async {
+  Future<String> getJurisdictionCodeDepricate(String name) async {
     //TODO: Add french support
     String language = "en";
     Jurisdiction data;
@@ -31,6 +34,19 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
             .getSingle()
         : data = await (select(jurisdictions)
               ..where((tbl) => tbl.nameEn.equals(name)))
+            .getSingle();
+
+    return data.code;
+  }
+
+  Future<String> getJurisdictionCode(Locale locale, String name) async {
+    Jurisdiction data;
+    locale == kLocaleEn
+        ? data = await (select(jurisdictions)
+              ..where((tbl) => tbl.nameEn.equals(name)))
+            .getSingle()
+        : data = await (select(jurisdictions)
+              ..where((tbl) => tbl.nameFr.equals(name)))
             .getSingle();
 
     return data.code;
@@ -53,11 +69,9 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
   //Full replace
   Future<void> updateJurisdiction(JurisdictionsCompanion entry) async =>
       update(jurisdictions).replace(entry);
-  Future<List<String>> get jurisdictionNames {
-    //TODO: add language swap support
-    String language = "en";
 
-    return language == "en"
+  Future<List<String>> getJurisdictionNames(Locale locale) {
+    return locale == kLocaleEn
         ? select(jurisdictions).map((row) => row.nameEn).get()
         : select(jurisdictions).map((row) => row.nameFr).get();
   }

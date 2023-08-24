@@ -83,9 +83,6 @@ class _MyHomePageState extends State<MyHomePage> {
                         onPressed: () async {
                           context.goNamed(Routes.dashboard,
                               extra: await db.surveyInfoTablesDao.allSurveys);
-                          // Get.toNamed(Routes.surveySelect,
-                          //     arguments:
-                          //     (await _db.surveyInfoTablesDao.allSurveys));
                         },
                         child: const Text(LocaleKeys.start).tr()),
                     ElevatedButton(

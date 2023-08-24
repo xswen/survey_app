@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:survey_app/database/database.dart';
-import 'package:survey_app/pages/survey_info/survey_info_select.dart';
+import 'package:survey_app/pages/survey_info/create_survey_page.dart';
+import 'package:survey_app/pages/survey_info/dashboard.dart';
 
 import '../main.dart';
 import 'route_names.dart';
@@ -24,6 +25,12 @@ GoRouter router = GoRouter(
                   surveys: surveys,
                 );
               }),
+          GoRoute(
+              name: Routes.createSurvey,
+              path: Routes.createSurvey,
+              builder: (context, state) {
+                return const CreateSurvey();
+              })
         ]),
   ],
 );

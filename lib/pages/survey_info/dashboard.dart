@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:survey_app/constants/text_designs.dart';
 import 'package:survey_app/l10n/locale_keys.g.dart';
@@ -7,6 +8,7 @@ import 'package:survey_app/l10n/locale_keys.g.dart';
 import '../../constants/margins_padding.dart';
 import '../../database/database.dart';
 import '../../formatters/format_date.dart';
+import '../../routes/route_names.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/text/text_line_label.dart';
 
@@ -21,15 +23,19 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  final String title = LocaleKeys.dashboardTitle;
   int idx = 0;
   @override
   Scaffold build(BuildContext context) {
     final db = Provider.of<Database>(context);
     return Scaffold(
-      appBar: OurAppBar(title),
+      appBar: const OurAppBar(LocaleKeys.dashboardTitle),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
+          var temp = await context.pushNamed(Routes.createSurvey);
+          setState(() {
+            db.surveyInfoTablesDao.allSurveys
+                .then((value) => setState(() => widget.surveys = value));
+          });
           // var temp = await Get.toNamed(Routes.surveyInfoCreate);
           // setState(() {
           //   _db.surveyInfoTablesDao.allSurveys
