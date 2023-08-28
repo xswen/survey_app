@@ -31,7 +31,9 @@ GoRouter router = GoRouter(
               builder: (context, state) {
                 SurveyHeadersCompanion survey =
                     state.extra as SurveyHeadersCompanion;
-                return CreateSurvey(surveyHeader: survey);
+                return CreateSurvey(
+                    surveyHeader: survey,
+                    province: state.uri.queryParameters["province"] ?? "");
               })
         ]),
   ],

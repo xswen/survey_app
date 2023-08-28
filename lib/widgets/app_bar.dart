@@ -27,7 +27,7 @@ class OurAppBar extends StatelessWidget implements PreferredSizeWidget {
             context.locale == kLocaleEn
                 ? context.setLocale(kLocaleFr)
                 : context.setLocale(kLocaleEn);
-            onLocaleChange;
+            onLocaleChange!();
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text('Language has been changed to '
                     '${context.locale == kLocaleFr ? "French" : "English"}')));

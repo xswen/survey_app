@@ -92,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               : await context.setLocale(kLocaleEn);
                         },
                         child: Text(
-                            "Change to ${context.locale == kLocaleFr ? "French" : "English"}")),
+                            "Change to ${context.locale == kLocaleEn ? "French" : "English"}")),
                     ElevatedButton(
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(

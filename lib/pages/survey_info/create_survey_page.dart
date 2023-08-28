@@ -19,8 +19,9 @@ import '../../widgets/dropdowns/drop_down_async_list.dart';
 import '../../widgets/popups/popups.dart';
 
 class CreateSurvey extends StatefulWidget {
-  CreateSurvey({super.key, required this.surveyHeader});
+  CreateSurvey({super.key, required this.surveyHeader, required this.province});
   SurveyHeadersCompanion surveyHeader;
+  String province;
 
   @override
   State<CreateSurvey> createState() => _CreateSurveyState();
@@ -29,9 +30,17 @@ class CreateSurvey extends StatefulWidget {
 class _CreateSurveyState extends State<CreateSurvey> with Global {
   final _controller = TextEditingController();
   static const int _kDataMissing = -1;
-  String? provinceName;
+  late SurveyHeadersCompanion surveyHeader;
+  late String provinceName;
   int? lastMeasNum;
   bool jurisdictionSelected = false;
+
+  @override
+  void initState() {
+    provinceName = widget.province;
+    surveyHeader = widget.surveyHeader;
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -44,18 +53,22 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
     final db = Provider.of<Database>(context);
 
     return Scaffold(
-      appBar: OurAppBar(
-        LocaleKeys.createSurveyTitle,
-        onLocaleChange: () => setState(() {}),
-      ),
+      appBar: OurAppBar(LocaleKeys.createSurveyTitle, onLocaleChange: () {
+        if (Global.dbCompanionValueToStr(surveyHeader.province).isNotEmpty) {
+          db.referenceTablesDao
+              .getJurisdictionName(surveyHeader.province.value, context.locale)
+              .then((value) => setState(() {
+                    provinceName = value;
+                  }));
+        }
+      }),
       body: Column(
         children: [
           CalendarSelect(
-              date: widget.surveyHeader.measDate.value,
+              date: surveyHeader.measDate.value,
               label: LocaleKeys.enterMeasDate,
-              setStateFn: (DateTime date) => setState(() =>
-                  widget.surveyHeader =
-                      widget.surveyHeader.copyWith(measDate: d.Value(date)))),
+              setStateFn: (DateTime date) => setState(() => surveyHeader =
+                  surveyHeader.copyWith(measDate: d.Value(date)))),
           Container(
             margin: const EdgeInsets.fromLTRB(
                 kPaddingH, 0, kPaddingH, kPaddingV / 2),
@@ -68,15 +81,15 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
                       if (s == null) {
                         return;
                       }
+                      if (s == provinceName) return;
 
                       String code = await db.referenceTablesDao
                           .getJurisdictionCode(context.locale, s);
                       jurisdictionSelected = true;
 
-                      if (widget.surveyHeader.province ==
-                              const d.Value.absent() ||
-                          code != widget.surveyHeader.province.value) {
-                        widget.surveyHeader = widget.surveyHeader.copyWith(
+                      if (surveyHeader.province == const d.Value.absent() ||
+                          code != surveyHeader.province.value) {
+                        surveyHeader = surveyHeader.copyWith(
                             province: d.Value(code),
                             nfiPlot: const d.Value(_kDataMissing),
                             measNum: const d.Value(_kDataMissing));
@@ -85,15 +98,17 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
                         setState(() {});
                       }
                     },
-                    selectedItem: provinceName ??
-                        LocaleKeys.pleaseSelectJurisdiction.tr(),
+                    selectedItem:
+                        Global.dbCompanionValueToStr(surveyHeader.province)
+                                .isEmpty
+                            ? LocaleKeys.pleaseSelectJurisdiction.tr()
+                            : provinceName,
                     asyncItems: (s) => db.referenceTablesDao
                         .getJurisdictionNames(context.locale)),
                 DropDownAsyncList(
                   title: LocaleKeys.plotNum,
                   onBeforePopup: (String? s) async {
-                    if (Global.dbCompanionValueToStr(
-                            widget.surveyHeader.province)
+                    if (Global.dbCompanionValueToStr(surveyHeader.province)
                         .isEmpty) {
                       Popups.showDismiss(context,
                           LocaleKeys.pleaseSelectAJurisdictionFirst.tr());
@@ -106,45 +121,34 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
                     _handlePlot(db, s);
                     setState(() {});
                   }),
-                  selectedItem:
-                      Global.dbCompanionValueToStr(widget.surveyHeader.nfiPlot)
+                  selectedItem: Global.dbCompanionValueToStr(
+                                  surveyHeader.province)
+                              .isNotEmpty &&
+                          (Global.dbCompanionValueToStr(surveyHeader.nfiPlot)
                                   .isEmpty ||
-                              widget.surveyHeader.nfiPlot.value == -1
-                          ? LocaleKeys.pleaseSelectPlot.tr()
-                          : Global.dbCompanionValueToStr(
-                              widget.surveyHeader.nfiPlot),
+                              surveyHeader.nfiPlot.value == -1)
+                      ? LocaleKeys.pleaseSelectPlot.tr()
+                      : Global.dbCompanionValueToStr(surveyHeader.nfiPlot),
                   asyncItems: (s) => _getPlotNums(db),
                 ),
                 DataInput(
-                    title: LocaleKeys.measurementNum.tr(),
-                    inputType: const TextInputType.numberWithOptions(),
-                    inputFormatters: [LengthLimitingTextInputFormatter(3)],
-                    startingStr:
-                        widget.surveyHeader.measNum.value == _kDataMissing
-                            ? ""
-                            : Global.dbCompanionValueToStr(
-                                widget.surveyHeader.measNum),
-                    readOnly: Global.dbCompanionValueToStr(
-                            widget.surveyHeader.nfiPlot)
-                        .isEmpty,
-                    onTap: () => Global.dbCompanionValueToStr(
-                                widget.surveyHeader.nfiPlot)
-                            .isEmpty
-                        ? Popups.showDismiss(
-                            context, "Please select a plot number first")
-                        : null,
-                    controller: mounted ? _controller : null,
-                    onSubmit: (String s) {
-                      int.tryParse(s) != null
-                          ? setState(() => widget.surveyHeader = widget
-                              .surveyHeader
-                              .copyWith(measNum: d.Value(int.parse(s))))
-                          : setState(() => widget.surveyHeader = widget
-                              .surveyHeader
-                              .copyWith(measNum: const d.Value(_kDataMissing)));
-                    },
-                    errorMsg: _handleMeasNumError(
-                        widget.surveyHeader.measNum.value.toString())),
+                  title: LocaleKeys.measurementNum.tr(),
+                  controller: _controller,
+                  startingStr: surveyHeader.measNum.value == _kDataMissing
+                      ? ""
+                      : Global.dbCompanionValueToStr(surveyHeader.nfiPlot),
+                  onSubmit: (String s) {
+                    int.tryParse(s) != null
+                        ? setState(() => surveyHeader = surveyHeader.copyWith(
+                            measNum: d.Value(int.parse(s))))
+                        : setState(() => surveyHeader = surveyHeader.copyWith(
+                            measNum: const d.Value(_kDataMissing)));
+                  },
+                  errorMsg: _handleMeasNumError(
+                      surveyHeader.measNum.value.toString()),
+                  inputType: const TextInputType.numberWithOptions(),
+                  inputFormatters: [LengthLimitingTextInputFormatter(3)],
+                ),
               ],
             ),
           ),
@@ -152,15 +156,16 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
             padding: const EdgeInsets.only(top: kPaddingV * 2),
             child: ElevatedButton(
               onPressed: () async {
+                print(surveyHeader);
                 String? result = _checkSurveyHeader();
 
                 if (result == null) {
                   bool exists = await db.surveyInfoTablesDao
-                      .checkSurveyExists(widget.surveyHeader);
+                      .checkSurveyExists(surveyHeader);
                   exists
                       ? result =
-                          "A survey for NFI Plot #${widget.surveyHeader.nfiPlot.value} "
-                              "with measurement number ${widget.surveyHeader.measNum.value} "
+                          "A survey for NFI Plot #${surveyHeader.nfiPlot.value} "
+                              "with measurement number ${surveyHeader.measNum.value} "
                               "already exists."
                       : null;
                 }
@@ -170,12 +175,12 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
                     Popups.showDismiss(context, "Error", contentText: result);
                   }
                 } else if (lastMeasNum != null &&
-                    lastMeasNum! >= widget.surveyHeader.measNum.value) {
+                    lastMeasNum! >= surveyHeader.measNum.value) {
                   if (context.mounted) {
                     Popups.showContinue(
                       context,
                       "Warning: Last Measurement Number Mismatch",
-                      "You are trying to input a measurement value of ${widget.surveyHeader.measNum.value} "
+                      "You are trying to input a measurement value of ${surveyHeader.measNum.value} "
                           "when the last measurement value on file is $lastMeasNum. "
                           "\n Would you like to proceed?",
                       rightBtnOnPressed: () async {
@@ -189,7 +194,7 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
                   }
                 } else {
                   debugPrint(
-                      "Survey being created for ${widget.surveyHeader.toString()}");
+                      "Survey being created for ${surveyHeader.toString()}");
                   int id = await _insertSurvey(db);
                   if (context.mounted) {
                     context.goNamed(Routes.dashboard,
@@ -209,12 +214,11 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
   }
 
   Future<int> _insertSurvey(Database db) async {
-    int id = await db.into(db.surveyHeaders).insert(widget.surveyHeader);
+    int id = await db.into(db.surveyHeaders).insert(surveyHeader);
     var val = await db.referenceTablesDao.updatePlot(PlotsCompanion(
-        nfiPlot: widget.surveyHeader.nfiPlot,
-        code: widget.surveyHeader.province,
-        lastMeasNum:
-            d.Value(max(widget.surveyHeader.measNum.value, lastMeasNum!))));
+        nfiPlot: surveyHeader.nfiPlot,
+        code: surveyHeader.province,
+        lastMeasNum: d.Value(max(surveyHeader.measNum.value, lastMeasNum!))));
     return id;
   }
 
@@ -222,24 +226,22 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
     if (plot == null) {
       return;
     }
-    widget.surveyHeader =
-        widget.surveyHeader.copyWith(nfiPlot: d.Value(int.parse(plot)));
+    surveyHeader = surveyHeader.copyWith(nfiPlot: d.Value(int.parse(plot)));
     lastMeasNum =
         await db.referenceTablesDao.getLastMeasNum(int.parse(plot!)) ??
             _kDataMissing;
-    widget.surveyHeader =
-        widget.surveyHeader.copyWith(measNum: const d.Value(_kDataMissing));
+    surveyHeader = surveyHeader.copyWith(measNum: const d.Value(_kDataMissing));
     _controller.text = "";
     setState(() {});
   }
 
   Future<List<String>> _getPlotNums(Database db) async {
-    if (widget.surveyHeader.province == const d.Value.absent()) {
+    if (surveyHeader.province == const d.Value.absent()) {
       return [""];
     }
 
-    final List<int> nums = await db.referenceTablesDao
-        .getPlotNums(widget.surveyHeader.province.value);
+    final List<int> nums =
+        await db.referenceTablesDao.getPlotNums(surveyHeader.province.value);
 
     return nums.map((e) => e.toString()).toList();
   }
@@ -247,16 +249,16 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
   //Error handlers
   String? _checkSurveyHeader() {
     String result = "";
-    if (widget.surveyHeader.province == const d.Value.absent() ||
-        widget.surveyHeader.province.value.isEmpty) {
+    if (surveyHeader.province == const d.Value.absent() ||
+        surveyHeader.province.value.isEmpty) {
       result += "Missing Jurisdiction Info";
     }
-    if (widget.surveyHeader.nfiPlot == const d.Value.absent() ||
-        widget.surveyHeader.nfiPlot.value == _kDataMissing) {
+    if (surveyHeader.nfiPlot == const d.Value.absent() ||
+        surveyHeader.nfiPlot.value == _kDataMissing) {
       result += "\n Missing Plot Number";
     }
-    if (widget.surveyHeader.measNum == const d.Value.absent() ||
-        widget.surveyHeader.measNum.value == _kDataMissing) {
+    if (surveyHeader.measNum == const d.Value.absent() ||
+        surveyHeader.measNum.value == _kDataMissing) {
       result += "\n Missing Measurement Number";
     }
 

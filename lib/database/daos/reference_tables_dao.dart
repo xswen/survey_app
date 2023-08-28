@@ -52,14 +52,15 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
     return data.code;
   }
 
-  Future<String> getJurisdictionName(String code) async {
-    String language = "en";
+  Future<String> getJurisdictionName(String code, Locale locale) async {
     Jurisdiction jurisdiction = await (select(jurisdictions)
           ..where((tbl) => tbl.code.equals(code)))
         .getSingle();
     String name;
 
-    language == "en" ? name = jurisdiction.nameEn : name = jurisdiction.nameFr;
+    locale == kLocaleEn
+        ? name = jurisdiction.nameEn
+        : name = jurisdiction.nameFr;
 
     return name;
   }

@@ -32,10 +32,11 @@ class _DashboardState extends State<Dashboard> {
       appBar: const OurAppBar(LocaleKeys.dashboardTitle),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          var temp = await context.pushNamed(Routes.createSurvey,
-              extra: SurveyHeadersCompanion(
-                  measNum: const d.Value(-1),
-                  measDate: d.Value(DateTime.now())));
+          var temp = await context.pushNamed(
+            Routes.createSurvey,
+            extra: SurveyHeadersCompanion(
+                measNum: const d.Value(-1), measDate: d.Value(DateTime.now())),
+          );
           setState(() {
             db.surveyInfoTablesDao.allSurveys
                 .then((value) => setState(() => widget.surveys = value));

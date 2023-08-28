@@ -25,5 +25,5 @@ const kColHeaderMapKeySort = "sort";
 const kColHeaderMapKeyId = "id";
 const kColHeaderMapKeyEdit = "Edit";
 
-const kLocaleFr = Locale("en", "CA");
-const kLocaleEn = Locale("fr", "CA");
+const kLocaleFr = Locale("fr", "CA");
+const kLocaleEn = Locale("en", "CA");
