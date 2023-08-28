@@ -10,6 +10,7 @@ import 'package:survey_app/widgets/data_input/data_input.dart';
 
 import '../../constants/margins_padding.dart';
 import '../../database/database.dart';
+import '../../formatters/thousands_formatter.dart';
 import '../../global.dart';
 import '../../l10n/locale_keys.g.dart';
 import '../../routes/route_names.dart';
@@ -147,7 +148,10 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
                   errorMsg: _handleMeasNumError(
                       surveyHeader.measNum.value.toString()),
                   inputType: const TextInputType.numberWithOptions(),
-                  inputFormatters: [LengthLimitingTextInputFormatter(3)],
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(3),
+                    ThousandsFormatter()
+                  ],
                 ),
               ],
             ),
