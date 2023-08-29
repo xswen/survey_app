@@ -2,6 +2,7 @@ import 'package:drift/drift.dart' as d;
 import 'package:drift_db_viewer/drift_db_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants/margins_padding.dart';
 import '../../database/database.dart';
@@ -12,19 +13,27 @@ import '../../widgets/text/text_line_label.dart';
 import '../../widgets/titled_border.dart';
 
 class SurveyInfoPage extends StatefulWidget {
-  const SurveyInfoPage({super.key, required this.title});
-  final String title;
+  SurveyInfoPage({super.key, required this.surveyHeader});
+  final String title = "Survey Info Page";
+
+  SurveyHeader surveyHeader;
 
   @override
   State<SurveyInfoPage> createState() => _SurveyInfoPageState();
 }
 
 class _SurveyInfoPageState extends State<SurveyInfoPage> {
-  final _db = Get.find<Database>();
-  SurveyHeader survey = Get.arguments;
+  late SurveyHeader survey;
+
+  @override
+  void initState() {
+    survey = widget.surveyHeader;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final db = Provider.of<Database>(context);
     return Scaffold(
       appBar: OurAppBar(widget.title),
       body: Center(
@@ -85,20 +94,20 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
                 ),
                 ElevatedButton(
                     onPressed: () async {
-                      WoodyDebrisSummaryData? wdSummary = await (_db
-                              .select(_db.woodyDebrisSummary)
+                      WoodyDebrisSummaryData? wdSummary = await (db
+                              .select(db.woodyDebrisSummary)
                             ..where((tbl) => tbl.surveyId.equals(survey.id)))
                           .getSingleOrNull();
 
                       wdSummary ??
-                          _db.woodyDebrisTablesDao.addWdSummary(
+                          db.woodyDebrisTablesDao.addWdSummary(
                               WoodyDebrisSummaryCompanion(
                                   surveyId: d.Value(survey.id),
                                   measDate: d.Value(survey.measDate)));
 
-                      WoodyDebrisSummaryData wd = await _db.woodyDebrisTablesDao
-                          .getWdSummary(survey.id);
-                      List<WoodyDebrisHeaderData> transList = await _db
+                      WoodyDebrisSummaryData wd =
+                          await db.woodyDebrisTablesDao.getWdSummary(survey.id);
+                      List<WoodyDebrisHeaderData> transList = await db
                           .woodyDebrisTablesDao
                           .getWdHeadersFromWdsId(wd.id);
                       Get.toNamed(Routes.woodyDebris,
@@ -107,23 +116,23 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
                     child: const Text("Woody Debris")),
                 ElevatedButton(
                     onPressed: () async {
-                      SurfaceSubstrateSummaryData? ssH = await _db
+                      SurfaceSubstrateSummaryData? ssH = await db
                           .surfaceSubstrateTablesDao
                           .getSsSummary(survey.id);
 
                       if (ssH == null) {
-                        _db.surfaceSubstrateTablesDao
+                        db.surfaceSubstrateTablesDao
                             .addSsSummary(SurfaceSubstrateSummaryCompanion(
                           surveyId: d.Value(survey.id),
                           measDate: d.Value(survey.measDate),
                         ));
 
-                        ssH = await _db.surfaceSubstrateTablesDao
+                        ssH = await db.surfaceSubstrateTablesDao
                             .getSsSummary(survey.id);
                       }
 
                       if (ssH != null) {
-                        List<SurfaceSubstrateHeaderData> transList = await _db
+                        List<SurfaceSubstrateHeaderData> transList = await db
                             .surfaceSubstrateTablesDao
                             .getSsHeaderWithSshId(ssH.id);
                         Get.toNamed(Routes.surfaceSubstrate,
@@ -138,22 +147,22 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
                 ElevatedButton(
                     //ECP
                     onPressed: () async {
-                      EcpSummaryData? ecpS = await _db.ecologicalPlotTablesDao
+                      EcpSummaryData? ecpS = await db.ecologicalPlotTablesDao
                           .getSummaryWithSurveyId(survey.id);
 
                       if (ecpS == null) {
-                        _db.ecologicalPlotTablesDao
+                        db.ecologicalPlotTablesDao
                             .addSummary(EcpSummaryCompanion(
                           surveyId: d.Value(survey.id),
                           measDate: d.Value(survey.measDate),
                         ));
 
-                        ecpS = await _db.ecologicalPlotTablesDao
+                        ecpS = await db.ecologicalPlotTablesDao
                             .getSummaryWithSurveyId(survey.id);
                       }
 
                       if (ecpS != null) {
-                        List<EcpHeaderData> ecpList = await _db
+                        List<EcpHeaderData> ecpList = await db
                             .ecologicalPlotTablesDao
                             .getHeaderWithEcpSummryId(ecpS.id);
 
@@ -180,7 +189,7 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
                 ElevatedButton(
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => DriftDbViewer(_db)));
+                          builder: (context) => DriftDbViewer(db)));
                     },
                     child: const Text("Large Tree Plot")),
               ],

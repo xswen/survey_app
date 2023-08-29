@@ -58,13 +58,13 @@ class _DashboardState extends State<Dashboard> {
           : ListView.builder(
               itemCount: (widget.surveys ?? []).length,
               itemBuilder: (BuildContext cxt, int index) {
-                return _createSurveyButton(index);
+                return _createSurveyButton(db, index);
               },
             ),
     );
   }
 
-  Widget _createSurveyButton(int index) {
+  Widget _createSurveyButton(Database db, int index) {
     SurveyHeader survey = (widget.surveys ?? [])[index];
 
     return Container(
@@ -72,13 +72,15 @@ class _DashboardState extends State<Dashboard> {
           horizontal: kPaddingH, vertical: kPaddingV / 2),
       child: ElevatedButton(
           onPressed: () async {
-            // Get.toNamed(Routes.surveyInfoPage,
-            //     arguments:
-            //         (await _db.surveyInfoTablesDao.getSurvey(survey.id)));
-            // setState(() {
-            //   _db.surveyInfoTablesDao.allSurveys
-            //       .then((value) => setState(() => surveys = value));
-            // });
+            var temp = await context.pushNamed(
+              Routes.surveyInfo,
+              extra: await db.surveyInfoTablesDao.getSurvey(survey.id),
+            );
+
+            setState(() {
+              db.surveyInfoTablesDao.allSurveys
+                  .then((value) => setState(() => widget.surveys = value));
+            });
           },
           child: Container(
             padding: const EdgeInsets.symmetric(

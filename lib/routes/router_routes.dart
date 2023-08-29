@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:survey_app/database/database.dart';
 import 'package:survey_app/pages/survey_info/create_survey_page.dart';
 import 'package:survey_app/pages/survey_info/dashboard.dart';
+import 'package:survey_app/pages/survey_info/survey_info_page.dart';
 
 import '../main.dart';
 import 'route_names.dart';
@@ -34,6 +35,13 @@ GoRouter router = GoRouter(
                 return CreateSurvey(
                     surveyHeader: survey,
                     province: state.uri.queryParameters["province"] ?? "");
+              }),
+          GoRoute(
+              name: Routes.surveyInfo,
+              path: Routes.surveyInfo,
+              builder: (context, state) {
+                SurveyHeader survey = state.extra as SurveyHeader;
+                return SurveyInfoPage(surveyHeader: survey);
               })
         ]),
   ],

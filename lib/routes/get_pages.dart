@@ -18,8 +18,6 @@ import '../pages/soil_pit/soil_pit_summary_page.dart';
 import '../pages/surface_substrate/surface_substrate_header_page.dart';
 import '../pages/surface_substrate/surface_substrate_station_info_page.dart';
 import '../pages/surface_substrate/surface_substrate_summary_page.dart';
-import '../pages/survey_info/dashboard.dart';
-import '../pages/survey_info/survey_info_page.dart';
 import '../pages/woody_debris/piece_measurements/woody_debris_piece_add_odd_accu_page.dart';
 import '../pages/woody_debris/piece_measurements/woody_debris_piece_add_round_page.dart';
 import '../pages/woody_debris/piece_measurements/woody_debris_piece_main_page.dart';
@@ -32,17 +30,6 @@ List<GetPage> pages = [
   GetPage(
     name: Routes.main,
     page: () => MyHomePage(title: "appTitle"),
-  ),
-  GetPage(
-    name: Routes.surveySelect,
-    page: () => Dashboard(
-      title: "Survey Info",
-      surveys: [],
-    ),
-  ),
-  GetPage(
-    name: Routes.surveyInfoPage,
-    page: () => const SurveyInfoPage(title: "Survey Info"),
   ),
   //Woody Debris
   GetPage(

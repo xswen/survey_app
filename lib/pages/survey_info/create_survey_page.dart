@@ -54,7 +54,10 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
     final db = Provider.of<Database>(context);
 
     return Scaffold(
-      appBar: OurAppBar(LocaleKeys.createSurveyTitle, onLocaleChange: () {
+      appBar: OurAppBar(
+          Global.dbCompanionValueToStr(surveyHeader.province).isEmpty
+              ? LocaleKeys.createSurveyTitle
+              : "Edit Survey", onLocaleChange: () {
         if (Global.dbCompanionValueToStr(surveyHeader.province).isNotEmpty) {
           db.referenceTablesDao
               .getJurisdictionName(surveyHeader.province.value, context.locale)
@@ -160,18 +163,26 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
             padding: const EdgeInsets.only(top: kPaddingV * 2),
             child: ElevatedButton(
               onPressed: () async {
-                print(surveyHeader);
+                print(GoRouter.of(context)
+                    .routerDelegate
+                    .currentConfiguration
+                    .matches
+                    .toString());
                 String? result = _checkSurveyHeader();
 
                 if (result == null) {
-                  bool exists = await db.surveyInfoTablesDao
+                  int? existingSurveyId = await db.surveyInfoTablesDao
                       .checkSurveyExists(surveyHeader);
-                  exists
-                      ? result =
+
+                  //Check that the existing found survey isn't an update
+                  existingSurveyId == null ||
+                          Global.dbCompanionValueToStr(surveyHeader.id) ==
+                              existingSurveyId?.toString()
+                      ? null
+                      : result =
                           "A survey for NFI Plot #${surveyHeader.nfiPlot.value} "
                               "with measurement number ${surveyHeader.measNum.value} "
-                              "already exists."
-                      : null;
+                              "already exists.";
                 }
 
                 if (result != null) {
@@ -188,22 +199,14 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
                           "when the last measurement value on file is $lastMeasNum. "
                           "\n Would you like to proceed?",
                       rightBtnOnPressed: () async {
-                        int id = await _insertSurvey(db);
-                        if (context.mounted) {
-                          context.goNamed(Routes.dashboard,
-                              extra: await db.surveyInfoTablesDao.allSurveys);
-                        }
+                        _goToSurvey(context, db);
                       },
                     );
                   }
                 } else {
                   debugPrint(
                       "Survey being created for ${surveyHeader.toString()}");
-                  int id = await _insertSurvey(db);
-                  if (context.mounted) {
-                    context.goNamed(Routes.dashboard,
-                        extra: await db.surveyInfoTablesDao.allSurveys);
-                  }
+                  if (context.mounted) _goToSurvey(context, db);
                 }
               },
               style: ElevatedButton.styleFrom(
@@ -215,6 +218,16 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
         ],
       ),
     );
+  }
+
+  Future<void> _goToSurvey(BuildContext context, Database db) async {
+    int id = await _insertSurvey(db);
+    if (context.mounted) {
+      context.pushReplacementNamed(
+        Routes.surveyInfo,
+        extra: await db.surveyInfoTablesDao.getSurvey(id),
+      );
+    }
   }
 
   Future<int> _insertSurvey(Database db) async {

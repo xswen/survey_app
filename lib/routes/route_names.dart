@@ -5,10 +5,7 @@ class Routes {
   static const String dashboard = "dashboard";
 
   static const String createSurvey = "create-survey";
-
-  static const String surveySelect = _Paths.surveySelect;
-  static const String surveyInfoPage = _Paths.surveyInfo;
-  static const String surveyInfoCreate = "${_Paths.surveyInfo}/create";
+  static const String surveyInfo = "survey-info";
 
   static const String woodyDebris = _Paths.woodyDebris;
   static const String woodyDebrisHeader = "${_Paths.woodyDebris}/header";
