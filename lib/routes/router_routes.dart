@@ -17,32 +17,38 @@ GoRouter router = GoRouter(
             ),
         routes: [
           GoRoute(
-              name: Routes.dashboard,
-              path: Routes.dashboard,
-              builder: (context, state) {
-                List<SurveyHeader> surveys = state.extra as List<SurveyHeader>;
-                return Dashboard(
-                  title: "Dashboard",
-                  surveys: surveys,
-                );
-              }),
-          GoRoute(
-              name: Routes.createSurvey,
-              path: Routes.createSurvey,
-              builder: (context, state) {
-                SurveyHeadersCompanion survey =
-                    state.extra as SurveyHeadersCompanion;
-                return CreateSurvey(
-                    surveyHeader: survey,
-                    province: state.uri.queryParameters["province"] ?? "");
-              }),
-          GoRoute(
-              name: Routes.surveyInfo,
-              path: Routes.surveyInfo,
-              builder: (context, state) {
-                SurveyHeader survey = state.extra as SurveyHeader;
-                return SurveyInfoPage(surveyHeader: survey);
-              })
+            name: Routes.dashboard,
+            path: Routes.dashboard,
+            builder: (context, state) {
+              List<SurveyHeader> surveys = state.extra as List<SurveyHeader>;
+              return Dashboard(
+                title: "Dashboard",
+                surveys: surveys,
+              );
+            },
+            routes: [
+              GoRoute(
+                  name: Routes.createSurvey,
+                  path: Routes.createSurvey,
+                  builder: (context, state) {
+                    SurveyHeadersCompanion survey =
+                        state.extra as SurveyHeadersCompanion;
+                    return CreateSurvey(
+                        surveyHeader: survey,
+                        province: state.uri.queryParameters["province"] ?? "");
+                  }),
+              GoRoute(
+                  name: Routes.surveyInfo,
+                  path: Routes.surveyInfo,
+                  builder: (context, state) {
+                    Map<String, dynamic> data =
+                        state.extra as Map<String, dynamic>;
+                    SurveyHeader survey = data["survey"];
+                    List<Map<String, dynamic>> cards = data["cards"];
+                    return SurveyInfoPage(surveyHeader: survey, cards: cards);
+                  })
+            ],
+          ),
         ]),
   ],
 );

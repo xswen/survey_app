@@ -25,6 +25,14 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   int idx = 0;
+  late List<SurveyHeader> surveys;
+  @override
+  void initState() {
+    // TODO: implement initState
+    surveys = widget.surveys;
+    super.initState();
+  }
+
   @override
   Scaffold build(BuildContext context) {
     final db = Provider.of<Database>(context);
@@ -39,12 +47,12 @@ class _DashboardState extends State<Dashboard> {
           );
           setState(() {
             db.surveyInfoTablesDao.allSurveys
-                .then((value) => setState(() => widget.surveys = value));
+                .then((value) => setState(() => surveys = value));
           });
         },
         child: const Icon(Icons.add),
       ),
-      body: widget.surveys.isEmpty
+      body: surveys.isEmpty
           ? Padding(
               padding: const EdgeInsets.symmetric(
                   vertical: 0.0, horizontal: kPaddingH),
@@ -56,7 +64,7 @@ class _DashboardState extends State<Dashboard> {
               ),
             )
           : ListView.builder(
-              itemCount: (widget.surveys ?? []).length,
+              itemCount: (surveys ?? []).length,
               itemBuilder: (BuildContext cxt, int index) {
                 return _createSurveyButton(db, index);
               },
@@ -65,7 +73,7 @@ class _DashboardState extends State<Dashboard> {
   }
 
   Widget _createSurveyButton(Database db, int index) {
-    SurveyHeader survey = (widget.surveys ?? [])[index];
+    SurveyHeader survey = (surveys ?? [])[index];
 
     return Container(
       margin: const EdgeInsets.symmetric(
@@ -74,12 +82,15 @@ class _DashboardState extends State<Dashboard> {
           onPressed: () async {
             var temp = await context.pushNamed(
               Routes.surveyInfo,
-              extra: await db.surveyInfoTablesDao.getSurvey(survey.id),
+              extra: {
+                "survey": await db.surveyInfoTablesDao.getSurvey(survey.id),
+                "cards": await db.getCards(survey.id)
+              },
             );
-
-            setState(() {
+            setState(() async {
+              surveys = await db.surveyInfoTablesDao.allSurveys;
               db.surveyInfoTablesDao.allSurveys
-                  .then((value) => setState(() => widget.surveys = value));
+                  .then((value) => setState(() => surveys = value));
             });
           },
           child: Container(

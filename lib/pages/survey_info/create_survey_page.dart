@@ -111,6 +111,7 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
                         .getJurisdictionNames(context.locale)),
                 DropDownAsyncList(
                   title: LocaleKeys.plotNum,
+                  searchable: true,
                   onBeforePopup: (String? s) async {
                     if (Global.dbCompanionValueToStr(surveyHeader.province)
                         .isEmpty) {
@@ -163,11 +164,6 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
             padding: const EdgeInsets.only(top: kPaddingV * 2),
             child: ElevatedButton(
               onPressed: () async {
-                print(GoRouter.of(context)
-                    .routerDelegate
-                    .currentConfiguration
-                    .matches
-                    .toString());
                 String? result = _checkSurveyHeader();
 
                 if (result == null) {
@@ -223,10 +219,15 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
   Future<void> _goToSurvey(BuildContext context, Database db) async {
     int id = await _insertSurvey(db);
     if (context.mounted) {
-      context.pushReplacementNamed(
-        Routes.surveyInfo,
-        extra: await db.surveyInfoTablesDao.getSurvey(id),
-      );
+      if (context.mounted) {
+        context.pushReplacementNamed(
+          Routes.surveyInfo,
+          extra: {
+            "survey": await db.surveyInfoTablesDao.getSurvey(id),
+            "cards": await db.getCards(id)
+          },
+        );
+      }
     }
   }
 
