@@ -18,11 +18,11 @@ import '../pages/soil_pit/soil_pit_summary_page.dart';
 import '../pages/surface_substrate/surface_substrate_header_page.dart';
 import '../pages/surface_substrate/surface_substrate_station_info_page.dart';
 import '../pages/surface_substrate/surface_substrate_summary_page.dart';
+import '../pages/woody_debris/dep_woody_debris_summary_page.dart';
 import '../pages/woody_debris/piece_measurements/woody_debris_piece_add_odd_accu_page.dart';
 import '../pages/woody_debris/piece_measurements/woody_debris_piece_add_round_page.dart';
 import '../pages/woody_debris/piece_measurements/woody_debris_piece_main_page.dart';
 import '../pages/woody_debris/woody_debris_header_page.dart';
-import '../pages/woody_debris/woody_debris_summary_page.dart';
 import '../pages/woody_debris/woody_debris_transect_measurement_page.dart';
 import '../routes/route_names.dart';
 
@@ -34,7 +34,7 @@ List<GetPage> pages = [
   //Woody Debris
   GetPage(
     name: Routes.woodyDebris,
-    page: () => const WoodyDebrisSummaryPage(title: "Woody Debris"),
+    page: () => const DepWoodyDebrisSummaryPage(title: "Woody Debris"),
   ),
   GetPage(
     name: Routes.woodyDebrisHeader,

@@ -8,7 +8,9 @@ import 'package:flutter/cupertino.dart' as c;
 import 'package:flutter/services.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:survey_app/constants/constant_values.dart';
 
+import '../constants/card_names.dart';
 import '../database/daos/reference_tables_dao.dart';
 import '../database/daos/survey_info_tables_dao.dart';
 import '../database/daos/woody_debris_tables_dao.dart';
@@ -74,7 +76,10 @@ const String woodyDebrisPieceViewQuery =
     )
 class Database extends _$Database {
   //Database(QueryExecutor e) : super(e);
-  Database() : super(_debugConnection());
+  Database._() : super(_debugConnection());
+
+  static final Database _instance = Database._();
+  static Database get instance => _instance;
 
   @override
   int get schemaVersion => 1;
@@ -252,8 +257,8 @@ class Database extends _$Database {
     };
 
     return [
-      {"name": "Woody Debris", "data": wd},
-      {"name": "Surface Substrate", "data": ss}
+      {kCardTitleName: KCardNames.woodyDebris, kCardData: wd},
+      {kCardTitleName: KCardNames.surfaceSubstrate, kCardData: ss}
     ];
   }
 }

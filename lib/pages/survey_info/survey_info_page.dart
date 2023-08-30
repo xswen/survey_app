@@ -1,12 +1,16 @@
+import 'package:drift/drift.dart' as d;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:survey_app/constants/constant_values.dart';
 
+import '../../constants/card_names.dart';
 import '../../constants/margins_padding.dart';
 import '../../database/database.dart';
 import '../../formatters/format_date.dart';
 import '../../routes/route_names.dart';
 import '../../widgets/app_bar.dart';
+import '../../widgets/popups/popups.dart';
 import '../../widgets/text/text_line_label.dart';
 import '../../widgets/titled_border.dart';
 
@@ -23,10 +27,12 @@ class SurveyInfoPage extends StatefulWidget {
 
 class _SurveyInfoPageState extends State<SurveyInfoPage> {
   late SurveyHeader survey;
+  late List<Card> tileCards;
 
   @override
   void initState() {
     survey = widget.surveyHeader;
+    tileCards = _generateTileCards(widget.cards);
     super.initState();
   }
 
@@ -83,7 +89,7 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
             ),
             Expanded(
               child: ListView(
-                children: [],
+                children: tileCards,
               ),
             ),
           ],
@@ -104,5 +110,81 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
 
   bool _checkAllComplete() {
     return true;
+  }
+
+  List<Card> _generateTileCards(List<Map<String, dynamic>> cards) {
+    List<Card> tileCards = [];
+
+    String generateSubtitle(dynamic? data) {
+      if (data == null) {
+        return "Not started";
+      } else if (data?.complete) {
+        return "Complete";
+      } else {
+        return "In Progress";
+      }
+    }
+
+    Color generateColour(dynamic? data) {
+      if (data == null) {
+        return Colors.blueGrey;
+      } else if (data?.complete) {
+        return Colors.grey;
+      } else {
+        return Colors.blue;
+      }
+    }
+
+    for (int i = 0; i < cards.length; i++) {
+      String name = cards[i][kCardTitleName];
+      dynamic data = cards[i][kCardData];
+
+      tileCards.add(Card(
+        color: generateColour(data),
+        child: ListTile(
+          title: Text(
+            name,
+            style: const TextStyle(color: Colors.white),
+          ),
+          subtitle: Text(generateSubtitle(data)),
+          onTap: () {
+            _getNav(name, data);
+          },
+        ),
+      ));
+    }
+
+    return tileCards;
+  }
+
+  void _getNav(String cardName, dynamic? data) async {
+    final Database db = Database.instance;
+
+    switch (cardName) {
+      case KCardNames.woodyDebris:
+        var tmp = await context.pushNamed(
+          Routes.woodyDebris,
+          extra: data == null
+              ?
+              //Insert empty wdSummaryCompanion
+              {
+                  "wdSummaryCompanion": WoodyDebrisSummaryCompanion(
+                      surveyId: d.Value(widget.surveyHeader.id)),
+                  "transList": <WoodyDebrisHeaderData>[]
+                }
+              : {
+                  "wdSummaryCompanion": data.toCompanion(true),
+                  "transList": await db.woodyDebrisTablesDao
+                      .getWdHeadersFromWdsId(data.id)
+                },
+        );
+        print("here we are");
+
+        db.getCards(widget.surveyHeader.id).then(
+            (value) => setState(() => tileCards = _generateTileCards(value)));
+        break;
+      case KCardNames.surfaceSubstrate:
+        Popups.showDismiss(context, "Placeholder");
+    }
   }
 }

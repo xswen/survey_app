@@ -7,15 +7,12 @@ class Routes {
   static const String createSurvey = "create-survey";
   static const String surveyInfo = "survey-info";
 
-  static const String woodyDebris = _Paths.woodyDebris;
-  static const String woodyDebrisHeader = "${_Paths.woodyDebris}/header";
-  static const String woodyDebrisTransectMeasurement =
-      "${_Paths.woodyDebris}/transectMeasurements";
-  static const String woodyDebrisPieceMain = "${_Paths.woodyDebris}/piecesMain";
-  static const String woodyDebrisPieceAddRound =
-      "${_Paths.woodyDebris}/pieceAddRound";
-  static const String woodyDebrisPieceAddOddAccu =
-      "${_Paths.woodyDebris}/pieceAddOddAccu";
+  static const String woodyDebris = "woody-debris";
+  static const String woodyDebrisHeader = "header";
+  static const String woodyDebrisTransectMeasurement = "transect-measurements";
+  static const String woodyDebrisPieceMain = "pieces-main";
+  static const String woodyDebrisPieceAddRound = "piece-add-round";
+  static const String woodyDebrisPieceAddOddAccu = "piece-add-odd-accu";
 
   static const String surfaceSubstrate = _Paths.surfaceSubstrate;
   static const String surfaceSubstrateTransect =

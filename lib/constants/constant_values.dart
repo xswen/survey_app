@@ -20,6 +20,9 @@ const String kDecayClassMissingStr = "kDecayClassMissingStr";
 
 const String kContinue = "kContinue";
 
+const kCardTitleName = "name";
+const kCardData = "data";
+
 const kColHeaderMapKeyName = "name";
 const kColHeaderMapKeySort = "sort";
 const kColHeaderMapKeyId = "id";
