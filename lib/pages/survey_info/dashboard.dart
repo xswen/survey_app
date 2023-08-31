@@ -12,6 +12,7 @@ import '../../formatters/format_date.dart';
 import '../../routes/route_names.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/text/text_line_label.dart';
+import '../../widgets/tile_card_dashboard.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key, required this.title, required this.surveys});
@@ -92,6 +93,55 @@ class _DashboardState extends State<Dashboard> {
             )),
       );
     }
+
+    return Scaffold(
+      appBar: const OurAppBar(LocaleKeys.dashboardTitle),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context.pushNamed(
+            Routes.createSurvey,
+            extra: {
+              "survey": SurveyHeadersCompanion(
+                  measNum: const d.Value(-1),
+                  measDate: d.Value(DateTime.now())),
+              "updateDashboard": updateDashboard
+            },
+          );
+        },
+        child: const Icon(Icons.add),
+      ),
+      body: surveys.isEmpty
+          ? Padding(
+              padding: const EdgeInsets.symmetric(
+                  vertical: 0.0, horizontal: kPaddingH),
+              child: Center(
+                child: const Text(
+                  LocaleKeys.dashboardNoSurveys,
+                  style: TextStyle(fontSize: kTextHeaderSize),
+                ).tr(),
+              ),
+            )
+          : ListView.builder(
+              itemCount: (surveys).length,
+              itemBuilder: (BuildContext cxt, int index) {
+                SurveyHeader survey = surveys[index];
+                return TitleCardDashboard(
+                  surveyHeader: survey,
+                  onTap: () async {
+                    context.pushNamed(
+                      Routes.surveyInfo,
+                      extra: {
+                        "survey":
+                            await db.surveyInfoTablesDao.getSurvey(survey.id),
+                        "cards": await db.getCards(survey.id),
+                        "updateDashboard": updateDashboard
+                      },
+                    );
+                  },
+                );
+              },
+            ),
+    );
 
     return Scaffold(
       appBar: const OurAppBar(LocaleKeys.dashboardTitle),

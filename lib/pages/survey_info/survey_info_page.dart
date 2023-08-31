@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart' as d;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +11,7 @@ import '../../database/database.dart';
 import '../../formatters/format_date.dart';
 import '../../routes/route_names.dart';
 import '../../widgets/app_bar.dart';
+import '../../widgets/buttons/floating_complete_button.dart';
 import '../../widgets/popups/popups.dart';
 import '../../widgets/text/text_line_label.dart';
 import '../../widgets/titled_border.dart';
@@ -46,11 +48,28 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
   @override
   Widget build(BuildContext context) {
     final db = Provider.of<Database>(context);
+
+    Future<void> updateSummary(SurveyHeadersCompanion entry) async {
+      (db.update(db.surveyHeaders)..where((t) => t.id.equals(survey.id)))
+          .write(entry);
+      db.surveyInfoTablesDao
+          .getSurvey(survey.id)
+          .then((value) => setState(() => survey = value));
+    }
+
     return Scaffold(
       appBar: OurAppBar(backFn: () {
         widget.updateDashboard();
         context.pop();
       }, widget.title),
+      floatingActionButton: FloatingCompleteButton(
+        title: survey.complete ? "Edit Survey" : "Mark survey complete",
+        complete: survey.complete,
+        onPressed: () async {
+          updateSummary(
+              SurveyHeadersCompanion(complete: d.Value(!survey.complete)));
+        },
+      ),
       body: Center(
         child: Column(
           children: [
