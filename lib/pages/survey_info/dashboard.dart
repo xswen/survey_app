@@ -14,10 +14,10 @@ import '../../widgets/app_bar.dart';
 import '../../widgets/text/text_line_label.dart';
 
 class Dashboard extends StatefulWidget {
-  Dashboard({super.key, required this.title, required this.surveys});
+  const Dashboard({super.key, required this.title, required this.surveys});
 
   final String title;
-  List<SurveyHeader> surveys;
+  final List<SurveyHeader> surveys;
 
   @override
   State<Dashboard> createState() => _DashboardState();
@@ -26,9 +26,9 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   int idx = 0;
   late List<SurveyHeader> surveys;
+
   @override
   void initState() {
-    // TODO: implement initState
     surveys = widget.surveys;
     super.initState();
   }
@@ -36,19 +36,76 @@ class _DashboardState extends State<Dashboard> {
   @override
   Scaffold build(BuildContext context) {
     final db = Provider.of<Database>(context);
+
+    void updateDashboard() {
+      db.surveyInfoTablesDao.allSurveys
+          .then((value) => setState(() => surveys = value));
+    }
+
+    Widget createSurveyButton(Database db, int index) {
+      SurveyHeader survey = (surveys)[index];
+
+      return Container(
+        margin: const EdgeInsets.symmetric(
+            horizontal: kPaddingH, vertical: kPaddingV / 2),
+        child: ElevatedButton(
+            onPressed: () async {
+              context.pushNamed(
+                Routes.surveyInfo,
+                extra: {
+                  "survey": await db.surveyInfoTablesDao.getSurvey(survey.id),
+                  "cards": await db.getCards(survey.id),
+                  "updateDashboard": updateDashboard
+                },
+              );
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: kPaddingH, vertical: kPaddingV),
+              child: Column(
+                children: [
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        TextLineLabelTop(
+                            value: Text(survey.province),
+                            label: const Text("Jurisdiction")),
+                        TextLineLabelTop(
+                            value: Text(survey.nfiPlot.toString()),
+                            label: const Text("Plot Number")),
+                        TextLineLabelTop(
+                            value: Text(survey.measNum.toString()),
+                            label: const Text("Meas. Number")),
+                      ]),
+                  kDividerV,
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        TextLineLabelTop(
+                            value: Text(FormatDate.toStr(survey.measDate)),
+                            label: const Text("Meas. Date"))
+                      ])
+                ],
+              ),
+            )),
+      );
+    }
+
     return Scaffold(
       appBar: const OurAppBar(LocaleKeys.dashboardTitle),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          var temp = await context.pushNamed(
+        onPressed: () {
+          context.pushNamed(
             Routes.createSurvey,
-            extra: SurveyHeadersCompanion(
-                measNum: const d.Value(-1), measDate: d.Value(DateTime.now())),
+            extra: {
+              "survey": SurveyHeadersCompanion(
+                  measNum: const d.Value(-1),
+                  measDate: d.Value(DateTime.now())),
+              "updateDashboard": updateDashboard
+            },
           );
-          setState(() {
-            db.surveyInfoTablesDao.allSurveys
-                .then((value) => setState(() => surveys = value));
-          });
         },
         child: const Icon(Icons.add),
       ),
@@ -64,66 +121,11 @@ class _DashboardState extends State<Dashboard> {
               ),
             )
           : ListView.builder(
-              itemCount: (surveys ?? []).length,
+              itemCount: (surveys).length,
               itemBuilder: (BuildContext cxt, int index) {
-                return _createSurveyButton(db, index);
+                return createSurveyButton(db, index);
               },
             ),
-    );
-  }
-
-  Widget _createSurveyButton(Database db, int index) {
-    SurveyHeader survey = (surveys ?? [])[index];
-
-    return Container(
-      margin: const EdgeInsets.symmetric(
-          horizontal: kPaddingH, vertical: kPaddingV / 2),
-      child: ElevatedButton(
-          onPressed: () async {
-            var temp = await context.pushNamed(
-              Routes.surveyInfo,
-              extra: {
-                "survey": await db.surveyInfoTablesDao.getSurvey(survey.id),
-                "cards": await db.getCards(survey.id)
-              },
-            );
-            setState(() async {
-              surveys = await db.surveyInfoTablesDao.allSurveys;
-              db.surveyInfoTablesDao.allSurveys
-                  .then((value) => setState(() => surveys = value));
-            });
-          },
-          child: Container(
-            padding: const EdgeInsets.symmetric(
-                horizontal: kPaddingH, vertical: kPaddingV),
-            child: Column(
-              children: [
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      TextLineLabelTop(
-                          value: Text(survey.province),
-                          label: const Text("Jurisdiction")),
-                      TextLineLabelTop(
-                          value: Text(survey.nfiPlot.toString()),
-                          label: const Text("Plot Number")),
-                      TextLineLabelTop(
-                          value: Text(survey.measNum.toString()),
-                          label: const Text("Meas. Number")),
-                    ]),
-                kDividerV,
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      TextLineLabelTop(
-                          value: Text(FormatDate.toStr(survey.measDate)),
-                          label: const Text("Meas. Date"))
-                    ])
-              ],
-            ),
-          )),
     );
   }
 }

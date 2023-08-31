@@ -20,9 +20,14 @@ import '../../widgets/dropdowns/drop_down_async_list.dart';
 import '../../widgets/popups/popups.dart';
 
 class CreateSurvey extends StatefulWidget {
-  CreateSurvey({super.key, required this.surveyHeader, required this.province});
+  CreateSurvey(
+      {super.key,
+      required this.surveyHeader,
+      required this.province,
+      required this.updateDashboard});
   SurveyHeadersCompanion surveyHeader;
   String province;
+  final void Function() updateDashboard;
 
   @override
   State<CreateSurvey> createState() => _CreateSurveyState();
@@ -224,7 +229,8 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
           Routes.surveyInfo,
           extra: {
             "survey": await db.surveyInfoTablesDao.getSurvey(id),
-            "cards": await db.getCards(id)
+            "cards": await db.getCards(id),
+            "updateDashboard": widget.updateDashboard
           },
         );
       }

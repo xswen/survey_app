@@ -8,9 +8,9 @@ import 'package:flutter/cupertino.dart' as c;
 import 'package:flutter/services.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import 'package:survey_app/constants/constant_values.dart';
+import 'package:survey_app/enums/enums.dart';
+import 'package:survey_app/wrappers/survey_card.dart';
 
-import '../constants/card_names.dart';
 import '../database/daos/reference_tables_dao.dart';
 import '../database/daos/survey_info_tables_dao.dart';
 import '../database/daos/woody_debris_tables_dao.dart';
@@ -239,26 +239,20 @@ class Database extends _$Database {
         ));
   }
 
-  Future<List<Map<String, dynamic>>> getCards(int surveyId) async {
-    WoodyDebrisSummaryData? wd = await (select(woodyDebrisSummary)
-          ..where((tbl) => tbl.surveyId.equals(surveyId)))
-        .getSingleOrNull();
-    Map<String, dynamic> wdEntry = {
-      "name": "Woody Debris",
-      "complete": wd == null ? false : wd.complete
-    };
-
-    SurfaceSubstrateSummaryData? ss = await (select(surfaceSubstrateSummary)
-          ..where((tbl) => tbl.surveyId.equals(surveyId)))
-        .getSingleOrNull();
-    Map<String, dynamic> ssEntry = {
-      "name": "Surface Substrate",
-      "complete": ss == null ? false : ss.complete
-    };
-
+  Future<List<SurveyCard>> getCards(int surveyId) async {
     return [
-      {kCardTitleName: KCardNames.woodyDebris, kCardData: wd},
-      {kCardTitleName: KCardNames.surfaceSubstrate, kCardData: ss}
+      SurveyCard(
+          SurveyCardCategories.woodyDebris,
+          "Woody Debris",
+          await (select(woodyDebrisSummary)
+                ..where((tbl) => tbl.surveyId.equals(surveyId)))
+              .getSingleOrNull()),
+      SurveyCard(
+          SurveyCardCategories.surfaceSubstrate,
+          "Surface Substrate",
+          await (select(surfaceSubstrateSummary)
+                ..where((tbl) => tbl.surveyId.equals(surveyId)))
+              .getSingleOrNull()),
     ];
   }
 }

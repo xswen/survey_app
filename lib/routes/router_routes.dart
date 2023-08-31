@@ -6,6 +6,7 @@ import 'package:survey_app/pages/survey_info/survey_info_page.dart';
 import 'package:survey_app/pages/woody_debris/woody_debris_summary_page.dart';
 
 import '../main.dart';
+import '../wrappers/survey_card.dart';
 import 'route_names.dart';
 
 GoRouter router = GoRouter(
@@ -32,11 +33,14 @@ GoRouter router = GoRouter(
                   name: Routes.createSurvey,
                   path: "create-survey",
                   builder: (context, state) {
-                    SurveyHeadersCompanion survey =
-                        state.extra as SurveyHeadersCompanion;
+                    Map<String, dynamic> data =
+                        state.extra as Map<String, dynamic>;
+                    SurveyHeadersCompanion survey = data["survey"];
+                    void Function() updateDashboard = data["updateDashboard"];
                     return CreateSurvey(
                         surveyHeader: survey,
-                        province: state.uri.queryParameters["province"] ?? "");
+                        province: state.uri.queryParameters["province"] ?? "",
+                        updateDashboard: updateDashboard);
                   }),
               GoRoute(
                 name: Routes.surveyInfo,
@@ -45,8 +49,12 @@ GoRouter router = GoRouter(
                   Map<String, dynamic> data =
                       state.extra as Map<String, dynamic>;
                   SurveyHeader survey = data["survey"];
-                  List<Map<String, dynamic>> cards = data["cards"];
-                  return SurveyInfoPage(surveyHeader: survey, cards: cards);
+                  List<SurveyCard> cards = data["cards"];
+                  void Function() updateDashboard = data["updateDashboard"];
+                  return SurveyInfoPage(
+                      surveyHeader: survey,
+                      cards: cards,
+                      updateDashboard: updateDashboard);
                 },
                 routes: [
                   GoRoute(

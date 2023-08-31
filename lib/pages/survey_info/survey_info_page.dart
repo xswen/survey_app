@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:survey_app/constants/constant_values.dart';
 import 'package:survey_app/enums/enums.dart';
 import 'package:survey_app/widgets/selection_tile_card.dart';
+import 'package:survey_app/wrappers/survey_card.dart';
 
-import '../../constants/card_names.dart';
 import '../../constants/margins_padding.dart';
 import '../../database/database.dart';
 import '../../formatters/format_date.dart';
@@ -17,11 +16,15 @@ import '../../widgets/titled_border.dart';
 
 class SurveyInfoPage extends StatefulWidget {
   const SurveyInfoPage(
-      {super.key, required this.surveyHeader, required this.cards});
+      {super.key,
+      required this.surveyHeader,
+      required this.cards,
+      required this.updateDashboard});
   final String title = "Survey Info Page";
 
   final SurveyHeader surveyHeader;
-  final List<Map<String, dynamic>> cards;
+  final List<SurveyCard> cards;
+  final void Function() updateDashboard;
 
   @override
   State<SurveyInfoPage> createState() => _SurveyInfoPageState();
@@ -29,7 +32,7 @@ class SurveyInfoPage extends StatefulWidget {
 
 class _SurveyInfoPageState extends State<SurveyInfoPage> {
   late SurveyHeader survey;
-  late List<Map<String, dynamic>> cards;
+  late List<SurveyCard> cards;
   late List<SelectionTileCard> tileCards;
 
   @override
@@ -44,9 +47,9 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
   Widget build(BuildContext context) {
     final db = Provider.of<Database>(context);
     return Scaffold(
-      appBar: OurAppBar(backFn: () async {
-        context.goNamed(Routes.dashboard,
-            extra: await db.surveyInfoTablesDao.allSurveys);
+      appBar: OurAppBar(backFn: () {
+        widget.updateDashboard();
+        context.pop();
       }, widget.title),
       body: Center(
         child: Column(
@@ -105,14 +108,15 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
 
   bool checkAllComplete() {
     for (int i = 0; i < cards.length; i++) {
-      if (cards[i][kCardData] == null || !cards[i][kCardData].complete) {
+      if (cards[i].surveyCardData == null ||
+          !cards[i].surveyCardData.complete) {
         return false;
       }
     }
     return true;
   }
 
-  List<SelectionTileCard> generateTileCards(List<Map<String, dynamic>> cards) {
+  List<SelectionTileCard> generateTileCards(List<SurveyCard> cards) {
     List<SelectionTileCard> tileCards = [];
 
     SurveyStatus getStatus(dynamic data) {
@@ -126,8 +130,8 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
     }
 
     for (int i = 0; i < cards.length; i++) {
-      String name = cards[i][kCardTitleName];
-      dynamic data = cards[i][kCardData];
+      String name = cards[i].name;
+      dynamic data = cards[i].surveyCardData;
 
       tileCards.add(SelectionTileCard(
           title: name,
@@ -142,7 +146,7 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
     final Database db = Database.instance;
 
     switch (cardName) {
-      case KCardNames.woodyDebris:
+      case SurveyCardCategories.woodyDebris:
         var tmp = await context.pushNamed(
           Routes.woodyDebris,
           extra: data == null
@@ -165,7 +169,7 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
               tileCards = generateTileCards(value);
             }));
         break;
-      case KCardNames.surfaceSubstrate:
+      case SurveyCardCategories.surfaceSubstrate:
         Popups.showDismiss(context, "Placeholder");
     }
   }
