@@ -1,12 +1,12 @@
 import 'dart:developer';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get.dart';
 
 import '../constants/margins_padding.dart';
-import 'popups/popup_dismiss_dep.dart';
+import 'popups/popups.dart';
 
 String formatDate(DateTime date) {
   return DateFormat.yMMMd().format(date);
@@ -41,7 +41,7 @@ class CalendarSelect extends StatefulWidget {
   final String label;
   final Function setStateFn;
   final bool? readOnly;
-  final PopupDismissDep? readOnlyPopup;
+  final CupertinoAlertDialog? readOnlyPopup;
 
   @override
   State<CalendarSelect> createState() => _CalendarSelectState();
@@ -76,7 +76,7 @@ class _CalendarSelectState extends State<CalendarSelect> {
 
             if (readOnly) {
               widget.readOnlyPopup != null
-                  ? Get.dialog(widget.readOnlyPopup as Widget)
+                  ? Popups.show(context, widget.readOnlyPopup!)
                   : null;
             } else {
               DateTime date = await datePicker(context, widget.date);

@@ -65,7 +65,7 @@ class _EcologicalPlotHeaderPageState extends State<EcologicalPlotHeaderPage>
       Global.generateCompleteErrorPopup("Plot");
 
   final PopupDismissDep _prevPageCompleteWarning =
-      Global.generatePreviousMarkedCompleteErrorPopup("Ecological Plot");
+      Global.generatePreviousMarkedCompleteErrorPopupDep("Ecological Plot");
 
   @override
   void initState() {

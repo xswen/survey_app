@@ -1,4 +1,3 @@
-import 'package:drift/drift.dart' as d;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -27,11 +26,13 @@ class SurveyInfoPage extends StatefulWidget {
 
 class _SurveyInfoPageState extends State<SurveyInfoPage> {
   late SurveyHeader survey;
+  late List<Map<String, dynamic>> cards;
   late List<Card> tileCards;
 
   @override
   void initState() {
     survey = widget.surveyHeader;
+    cards = widget.cards;
     tileCards = _generateTileCards(widget.cards);
     super.initState();
   }
@@ -87,6 +88,7 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
             const Divider(
               thickness: 2,
             ),
+            Text(_checkAllComplete() ? "Complete" : "No"),
             Expanded(
               child: ListView(
                 children: tileCards,
@@ -98,17 +100,12 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
     );
   }
 
-  List<int> _createTransNumList(int numTransects) {
-    List<int> result = [];
-
-    for (int i = 0; i < numTransects; i++) {
-      result.add(i + 1);
-    }
-
-    return result;
-  }
-
   bool _checkAllComplete() {
+    for (int i = 0; i < cards.length; i++) {
+      if (cards[i][kCardData] == null || !cards[i][kCardData].complete) {
+        return false;
+      }
+    }
     return true;
   }
 
@@ -168,20 +165,21 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
               ?
               //Insert empty wdSummaryCompanion
               {
-                  "wdSummaryCompanion": WoodyDebrisSummaryCompanion(
-                      surveyId: d.Value(widget.surveyHeader.id)),
+                  "wdSummaryData": await db.woodyDebrisTablesDao
+                      .addAndReturnDefaultWdSummary(survey.id, survey.measDate),
                   "transList": <WoodyDebrisHeaderData>[]
                 }
               : {
-                  "wdSummaryCompanion": data.toCompanion(true),
+                  "wdSummaryData": data,
                   "transList": await db.woodyDebrisTablesDao
                       .getWdHeadersFromWdsId(data.id)
                 },
         );
-        print("here we are");
 
-        db.getCards(widget.surveyHeader.id).then(
-            (value) => setState(() => tileCards = _generateTileCards(value)));
+        db.getCards(widget.surveyHeader.id).then((value) => setState(() {
+              cards = value;
+              tileCards = _generateTileCards(value);
+            }));
         break;
       case KCardNames.surfaceSubstrate:
         Popups.showDismiss(context, "Placeholder");

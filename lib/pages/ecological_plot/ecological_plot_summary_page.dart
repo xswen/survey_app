@@ -9,10 +9,10 @@ import '../../global.dart';
 import '../../routes/route_names.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
-import '../../widgets/buttons/summary_section_button_generator.dart';
 import '../../widgets/date_select.dart';
 import '../../widgets/dropdowns/drop_down_default.dart';
 import '../../widgets/popups/popup_dismiss_dep.dart';
+import '../../widgets/selection_tile_card.dart';
 
 class EcologicalPlotSummaryPage extends StatefulWidget {
   const EcologicalPlotSummaryPage({super.key, required this.title});
@@ -105,7 +105,7 @@ class _EcologicalPlotSummaryPageState extends State<EcologicalPlotSummaryPage>
                   itemCount: ecpList.length,
                   itemBuilder: (BuildContext cxt, int index) {
                     EcpHeaderData ecpH = ecpList[index];
-                    return SummarySectionButton(
+                    return SelectionTileCard(
                         title: "Plot ${index + 1}",
                         onPressed: () async {
                           var tmp = await Get.toNamed(

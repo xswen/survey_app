@@ -55,8 +55,7 @@ GoRouter router = GoRouter(
                     builder: (context, state) {
                       Map<String, dynamic> data =
                           state.extra as Map<String, dynamic>;
-                      WoodyDebrisSummaryCompanion wd =
-                          data["wdSummaryCompanion"];
+                      WoodyDebrisSummaryData wd = data["wdSummaryData"];
                       List<WoodyDebrisHeaderData> transList = data["transList"];
                       return WoodyDebrisSummaryPage(
                           wd: wd, transList: transList);

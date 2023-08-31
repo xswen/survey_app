@@ -35,7 +35,7 @@ class _WoodyDebrisHeaderPageState extends State<WoodyDebrisHeaderPage>
   final PopupDismissDep _completeWarningPopup =
       Global.generateCompleteErrorPopup("Transect");
   final PopupDismissDep _prevPageCompleteWarning =
-      Global.generatePreviousMarkedCompleteErrorPopup("Surface Substrate");
+      Global.generatePreviousMarkedCompleteErrorPopupDep("Surface Substrate");
 
   void _deleteTransect(BuildContext context) {
     //TODO: Fix

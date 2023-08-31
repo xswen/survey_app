@@ -9,10 +9,10 @@ import '../../global.dart';
 import '../../routes/route_names.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
-import '../../widgets/buttons/summary_section_button_generator.dart';
 import '../../widgets/date_select.dart';
 import '../../widgets/dropdowns/drop_down_default.dart';
 import '../../widgets/popups/popup_dismiss_dep.dart';
+import '../../widgets/selection_tile_card.dart';
 
 class SurfaceSubstrateSummaryPage extends StatefulWidget {
   const SurfaceSubstrateSummaryPage({super.key, required this.title});
@@ -107,7 +107,7 @@ class _SurfaceSubstrateSummaryPageState
                   itemCount: transList.length,
                   itemBuilder: (BuildContext cxt, int index) {
                     SurfaceSubstrateHeaderData ssd = transList[index];
-                    return SummarySectionButton(
+                    return SelectionTileCard(
                         title: "Transect ${index + 1}",
                         onPressed: () async {
                           List<SurfaceSubstrateTallyData> stations = await _db

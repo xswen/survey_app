@@ -9,10 +9,10 @@ import '../../global.dart';
 import '../../routes/route_names.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
-import '../../widgets/buttons/summary_section_button_generator.dart';
 import '../../widgets/date_select.dart';
 import '../../widgets/dropdowns/drop_down_default.dart';
 import '../../widgets/popups/popup_dismiss_dep.dart';
+import '../../widgets/selection_tile_card.dart';
 
 class DepWoodyDebrisSummaryPage extends StatefulWidget {
   const DepWoodyDebrisSummaryPage({super.key, required this.title});
@@ -106,7 +106,7 @@ class _DepWoodyDebrisSummaryPageState extends State<DepWoodyDebrisSummaryPage>
                   itemCount: transList.length,
                   itemBuilder: (BuildContext cxt, int index) {
                     WoodyDebrisHeaderData ssd = transList[index];
-                    return SummarySectionButton(
+                    return SelectionTileCard(
                         title: "Transect ${index + 1}",
                         onPressed: () async {
                           WoodyDebrisHeaderData wdh = transList[index];
