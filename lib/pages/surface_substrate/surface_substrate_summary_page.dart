@@ -1,10 +1,12 @@
 import 'package:drift/drift.dart' as d;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:survey_app/database/database.dart';
 
 import '../../widgets/app_bar.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
+import '../../widgets/popups/popups.dart';
 
 class SurfaceSubstrateSummaryPage extends StatefulWidget {
   const SurfaceSubstrateSummaryPage(
@@ -21,6 +23,7 @@ class SurfaceSubstrateSummaryPage extends StatefulWidget {
 
 class _SurfaceSubstrateSummaryPageState
     extends State<SurfaceSubstrateSummaryPage> {
+  String title = "Surface Substrate";
   late SurfaceSubstrateSummaryData ss;
   late List<SurfaceSubstrateHeaderData> transList;
 
@@ -34,6 +37,10 @@ class _SurfaceSubstrateSummaryPageState
   @override
   Widget build(BuildContext context) {
     final db = Provider.of<Database>(context);
+    final CupertinoAlertDialog completeWarningPopup =
+        Popups.generateCompleteErrorPopup(context, title);
+    final CupertinoAlertDialog surveyCompleteWarningPopup =
+        Popups.generatePreviousMarkedCompleteErrorPopup(context, "Survey");
 
     Future<void> updateSummary(SurfaceSubstrateSummaryCompanion entry) async {
       (db.update(db.surfaceSubstrateSummary)..where((t) => t.id.equals(ss.id)))
@@ -49,8 +56,15 @@ class _SurfaceSubstrateSummaryPageState
         title: "Surface Substrate Summary",
         complete: ss.complete,
         onPressed: () {
-          updateSummary(SurfaceSubstrateSummaryCompanion(
-              complete: d.Value(!ss.complete)));
+          db.surveyInfoTablesDao.getSurvey(ss.surveyId).then((value) {
+            bool surveyComplete = value.complete;
+            if (surveyComplete) {
+              Popups.show(context, surveyCompleteWarningPopup);
+            } else {
+              updateSummary(SurfaceSubstrateSummaryCompanion(
+                  complete: d.Value(!ss.complete)));
+            }
+          });
         },
       ),
       body: Center(

@@ -46,7 +46,7 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
     final CupertinoAlertDialog completeWarningPopup =
         Popups.generateCompleteErrorPopup(context, title);
     final CupertinoAlertDialog surveyCompleteWarningPopup =
-        Popups.generatePreviousMarkedCompleteErrorPopup(context, "survey");
+        Popups.generatePreviousMarkedCompleteErrorPopup(context, "Survey");
 
     return Scaffold(
       appBar: OurAppBar(title),
