@@ -13,6 +13,7 @@ import '../../formatters/format_date.dart';
 import '../../routes/route_names.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
+import '../../widgets/popups/popups.dart';
 import '../../widgets/text/text_line_label.dart';
 import '../../widgets/titled_border.dart';
 
@@ -66,8 +67,33 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
         title: widget.title,
         complete: survey.complete,
         onPressed: () async {
-          updateSummary(
-              SurveyHeadersCompanion(complete: d.Value(!survey.complete)));
+          Map<SurveyStatus, String>? result = checkAllComplete();
+          //All good
+          if (result == null) {
+            updateSummary(
+                SurveyHeadersCompanion(complete: d.Value(!survey.complete)));
+          }
+          //Some are left in progress
+          else if (result!.containsKey(SurveyStatus.inProgress)) {
+            Popups.showDismiss(context, "Error: Surveys in progress",
+                contentText:
+                    "There are survey cards that are still in progress."
+                    "${result![SurveyStatus.inProgress]}"
+                    "\nPlease complete or delete to continue.");
+          }
+          //Case where no card has been started
+          else if (result!.containsKey(SurveyStatus.complete)) {
+            Popups.showDismiss(context, "Error: No survey cards complete",
+                contentText: "No survey cards have been marked as complete."
+                    "${result![SurveyStatus.inProgress]}"
+                    "\nPlease complete or delete to continue.");
+          }
+          //Case where at least one card has been started
+          else if (result!.containsKey(SurveyStatus.notStarted)) {
+            Popups.showDismiss(context, "Warning: Surveys not started",
+                contentText:
+                    "Please complete at least one survey card to mark as completed.");
+          }
         },
       ),
       body: Center(
@@ -113,7 +139,6 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
             const Divider(
               thickness: 2,
             ),
-            Text(checkAllComplete() ? "Complete" : "No"),
             Expanded(
               child: ListView(
                 children: tileCards,
@@ -125,30 +150,53 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
     );
   }
 
-  bool checkAllComplete() {
-    for (int i = 0; i < cards.length; i++) {
-      if (cards[i].surveyCardData == null ||
-          !cards[i].surveyCardData.complete) {
-        return false;
+  Map<SurveyStatus, String>? checkAllComplete() {
+    String notStarted = "";
+    String inProgress = "";
+    bool oneComplete = false;
+
+    for (SurveyCard card in cards) {
+      SurveyStatus status = getStatus(card.surveyCardData);
+      if (status == SurveyStatus.inProgress) {
+        inProgress = "$inProgress\n${card.name}";
+      } else if (status == SurveyStatus.notStarted) {
+        notStarted = "$notStarted\n${card.name}";
+      } else if (!oneComplete && status == SurveyStatus.complete) {
+        oneComplete = true;
       }
     }
-    return true;
+
+    //Case there are surveys left in progress
+    if (inProgress.isNotEmpty) {
+      return {SurveyStatus.inProgress: inProgress};
+    }
+    //Case there are no surveys in progress or marked as complete
+    else if (!oneComplete) {
+      return {SurveyStatus.complete: ""};
+    }
+    //Case there is none in progress, at least one marked as complete
+    else if (notStarted.isNotEmpty) {
+      return {SurveyStatus.notStarted: notStarted};
+    }
+
+    //Case every card is marked complete
+    return null;
+  }
+
+  SurveyStatus getStatus(dynamic data) {
+    if (data == null) {
+      return SurveyStatus.notStarted;
+    } else if (data?.complete) {
+      return SurveyStatus.complete;
+    } else {
+      return SurveyStatus.inProgress;
+    }
   }
 
   List<TileCardSelection> generateTileCards(List<SurveyCard> cards) {
     final Database db = Database.instance;
 
     List<TileCardSelection> tileCards = [];
-
-    SurveyStatus getStatus(dynamic data) {
-      if (data == null) {
-        return SurveyStatus.notStarted;
-      } else if (data?.complete) {
-        return SurveyStatus.complete;
-      } else {
-        return SurveyStatus.inProgress;
-      }
-    }
 
     for (int i = 0; i < cards.length; i++) {
       SurveyCardCategories category = cards[i].category;
