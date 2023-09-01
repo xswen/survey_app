@@ -66,6 +66,18 @@ class Popups {
         });
   }
 
+  static CupertinoAlertDialog generateCompleteErrorPopup(
+          BuildContext context, String location) =>
+      Popups.widgetDismiss(context, "Error: $location Marked as Complete",
+          contentText:
+              "$location has already been marked as complete. Please click 'Edit' to make any changes");
+
+  static CupertinoAlertDialog generatePreviousMarkedCompleteErrorPopup(
+          BuildContext context, String location) =>
+      Popups.widgetDismiss(context, "Error: $location Marked as Complete",
+          contentText:
+              "$location has already been marked as complete. Please go back and press 'Edit' to make changes here");
+
   static show(BuildContext context, CupertinoAlertDialog popup) {
     showDialog(
         context: context,

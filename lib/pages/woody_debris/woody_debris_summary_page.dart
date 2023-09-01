@@ -45,30 +45,42 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
     final db = Provider.of<Database>(context);
     final CupertinoAlertDialog completeWarningPopup =
         Global.generateCompleteErrorPopup(context, title);
+    final CupertinoAlertDialog surveyCompleteWarningPopup =
+        Global.generatePreviousMarkedCompleteErrorPopup(context, "survey");
 
     return Scaffold(
       appBar: OurAppBar(title),
       floatingActionButton: FloatingCompleteButton(
         title: title,
         complete: wd.complete,
-        onPressed: () async {
-          if (wd.complete) {
-            updateWdSummary(db,
-                    const WoodyDebrisSummaryCompanion(complete: d.Value(false)))
-                .then((value) => null);
-          } else if (transList.isEmpty) {
-            Popups.showDismiss(context, "Error Missing Transect",
-                contentText: "Please add at least one transect");
-          } else {
-            !checkHeadersComplete()
-                ? updateWdSummary(db,
-                    const WoodyDebrisSummaryCompanion(complete: d.Value(true)))
-                : Popups.show(
-                    context,
-                    Popups.widgetDismiss(context, "Error: Incomplete transects",
-                        contentText:
-                            "Please mark all transects as complete to continue"));
-          }
+        onPressed: () {
+          db.surveyInfoTablesDao.getSurvey(wd.surveyId).then((value) {
+            bool surveyComplete = value.complete;
+            if (surveyComplete) {
+              Popups.show(context, surveyCompleteWarningPopup);
+            } else if (wd.complete) {
+              updateWdSummary(
+                      db,
+                      const WoodyDebrisSummaryCompanion(
+                          complete: d.Value(false)))
+                  .then((value) => null);
+            } else if (transList.isEmpty) {
+              Popups.showDismiss(context, "Error Missing Transect",
+                  contentText: "Please add at least one transect");
+            } else {
+              !checkHeadersComplete()
+                  ? updateWdSummary(
+                      db,
+                      const WoodyDebrisSummaryCompanion(
+                          complete: d.Value(true)))
+                  : Popups.show(
+                      context,
+                      Popups.widgetDismiss(
+                          context, "Error: Incomplete transects",
+                          contentText:
+                              "Please mark all transects as complete to continue"));
+            }
+          });
         },
       ),
       body: Center(
