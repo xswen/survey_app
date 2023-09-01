@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:survey_app/enums/enum_router_extra_key_names.dart';
 import 'package:survey_app/enums/enums.dart';
-import 'package:survey_app/widgets/selection_tile_card.dart';
+import 'package:survey_app/widgets/tile_cards/tile_card_selection.dart';
 import 'package:survey_app/wrappers/survey_card.dart';
 
 import '../../constants/margins_padding.dart';
@@ -35,7 +35,7 @@ class SurveyInfoPage extends StatefulWidget {
 class _SurveyInfoPageState extends State<SurveyInfoPage> {
   late SurveyHeader survey;
   late List<SurveyCard> cards;
-  late List<SelectionTileCard> tileCards;
+  late List<TileCardSelection> tileCards;
 
   @override
   void initState() {
@@ -135,10 +135,10 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
     return true;
   }
 
-  List<SelectionTileCard> generateTileCards(List<SurveyCard> cards) {
+  List<TileCardSelection> generateTileCards(List<SurveyCard> cards) {
     final Database db = Database.instance;
 
-    List<SelectionTileCard> tileCards = [];
+    List<TileCardSelection> tileCards = [];
 
     SurveyStatus getStatus(dynamic data) {
       if (data == null) {
@@ -155,7 +155,7 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
       String name = cards[i].name;
       dynamic data = cards[i].surveyCardData;
 
-      tileCards.add(SelectionTileCard(
+      tileCards.add(TileCardSelection(
           title: name,
           status: getStatus(data),
           onPressed: () {

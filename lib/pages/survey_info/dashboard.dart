@@ -12,7 +12,7 @@ import '../../formatters/format_date.dart';
 import '../../routes/route_names.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/text/text_line_label.dart';
-import '../../widgets/tile_card_dashboard.dart';
+import '../../widgets/tile_cards/tile_card_dashboard.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key, required this.title, required this.surveys});

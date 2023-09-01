@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:survey_app/database/database.dart';
 import 'package:survey_app/enums/enums.dart';
-import 'package:survey_app/widgets/selection_tile_card.dart';
+import 'package:survey_app/widgets/tile_cards/tile_card_selection.dart';
 
 import '../../constants/constant_values.dart';
 import '../../constants/margins_padding.dart';
@@ -118,7 +118,7 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
                   itemCount: transList.length,
                   itemBuilder: (BuildContext cxt, int index) {
                     WoodyDebrisHeaderData wdh = transList[index];
-                    return SelectionTileCard(
+                    return TileCardSelection(
                         title: "Transect ${index + 1}",
                         onPressed: () async {
                           if (wd.complete) {

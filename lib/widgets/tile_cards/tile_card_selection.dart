@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:survey_app/enums/enums.dart';
 
-class SelectionTileCard extends StatelessWidget {
-  const SelectionTileCard(
+class TileCardSelection extends StatelessWidget {
+  const TileCardSelection(
       {Key? key,
       required this.title,
       this.subtitle,
