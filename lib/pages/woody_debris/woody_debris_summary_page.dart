@@ -44,9 +44,9 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
     debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
     final db = Provider.of<Database>(context);
     final CupertinoAlertDialog completeWarningPopup =
-        Global.generateCompleteErrorPopup(context, title);
+        Popups.generateCompleteErrorPopup(context, title);
     final CupertinoAlertDialog surveyCompleteWarningPopup =
-        Global.generatePreviousMarkedCompleteErrorPopup(context, "survey");
+        Popups.generatePreviousMarkedCompleteErrorPopup(context, "survey");
 
     return Scaffold(
       appBar: OurAppBar(title),

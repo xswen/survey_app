@@ -30,7 +30,7 @@ class _EcologicalPlotSummaryPageState extends State<EcologicalPlotSummaryPage>
   EcpSummaryData ecpS = Get.arguments[0];
   List<EcpHeaderData> ecpList = Get.arguments[1];
   final PopupDismissDep _completeWarningPopup =
-      Global.generateCompleteErrorPopup("Ecological Plot");
+      Global.generateCompleteErrorPopupDep("Ecological Plot");
 
   @override
   Widget build(BuildContext context) {
