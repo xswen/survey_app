@@ -1,5 +1,4 @@
 import 'package:drift/drift.dart' as d;
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +15,7 @@ import '../../widgets/app_bar.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
 import '../../widgets/date_select.dart';
 import '../../widgets/dropdowns/drop_down_default.dart';
+import '../../widgets/popups/popup_dismiss.dart';
 import '../../widgets/popups/popups.dart';
 
 class WoodyDebrisSummaryPage extends StatefulWidget {
@@ -49,9 +49,9 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
   Widget build(BuildContext context) {
     debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
     final db = Provider.of<Database>(context);
-    final CupertinoAlertDialog completeWarningPopup =
+    final PopupDismiss completeWarningPopup =
         Popups.generateCompleteErrorPopup(context, title);
-    final CupertinoAlertDialog surveyCompleteWarningPopup =
+    final PopupDismiss surveyCompleteWarningPopup =
         Popups.generatePreviousMarkedCompleteErrorPopup(context, "Survey");
 
     return Scaffold(
@@ -81,8 +81,7 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
                           complete: d.Value(true)))
                   : Popups.show(
                       context,
-                      Popups.widgetDismiss(
-                          context, "Error: Incomplete transects",
+                      const PopupDismiss("Error: Incomplete transects",
                           contentText:
                               "Please mark all transects as complete to continue"));
             }
@@ -145,9 +144,7 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
                             context.pushNamed(Routes.woodyDebrisHeader, extra: {
                               WoodyDebrisHeaderPage.keyWdHeader: wdh,
                               WoodyDebrisHeaderPage.keySummaryComplete:
-                                  (await db.surveyInfoTablesDao
-                                          .getSurvey(wd.surveyId))
-                                      .complete
+                                  wd.complete
                             });
                           }
                         },

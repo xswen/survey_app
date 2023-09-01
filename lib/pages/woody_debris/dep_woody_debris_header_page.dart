@@ -13,12 +13,10 @@ import '../../widgets/buttons/edit_icon_button.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
 import '../../widgets/buttons/icon_nav_button.dart';
 import '../../widgets/popups/popup_content_format.dart';
-import '../../widgets/popups/popup_dismiss_dep.dart';
 import '../../widgets/text/text_in_line.dart';
 import '../../widgets/titled_border.dart';
-import 'piece_measurements/woody_debris_error_check.dart';
 
-class DepWoodyDebrisHeaderPage extends StatefulWidget {
+class DepWoodyDebgrisHeaderPage extends StatefulWidget {
   const DepWoodyDebrisHeaderPage({super.key});
 
   @override
