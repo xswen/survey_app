@@ -1,5 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:survey_app/database/database.dart';
+import 'package:survey_app/enums/enum_router_extra_key_names.dart';
+import 'package:survey_app/pages/surface_substrate/surface_substrate_summary_page.dart';
 import 'package:survey_app/pages/survey_info/create_survey_page.dart';
 import 'package:survey_app/pages/survey_info/dashboard.dart';
 import 'package:survey_app/pages/survey_info/survey_info_page.dart';
@@ -69,6 +71,20 @@ GoRouter router = GoRouter(
                           wd: wd, transList: transList);
                     },
                   ),
+                  GoRoute(
+                    name: Routes.surfaceSubstrate,
+                    path: "surface-substrate",
+                    builder: (context, state) {
+                      Map<RouterExtraKeys, dynamic> data =
+                          state.extra as Map<RouterExtraKeys, dynamic>;
+                      SurfaceSubstrateSummaryData ss =
+                          data[RouterExtraKeys.surfaceSubstrateSummary];
+                      List<SurfaceSubstrateHeaderData> transList =
+                          data[RouterExtraKeys.transList];
+                      return SurfaceSubstrateSummaryPage(
+                          ss: ss, transList: transList);
+                    },
+                  )
                 ],
               )
             ],

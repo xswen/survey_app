@@ -26,10 +26,19 @@ class SurfaceSubstrateTablesDao extends DatabaseAccessor<Database>
   //====================Surface Substrate Summary====================
   Future<int> addSsSummary(SurfaceSubstrateSummaryCompanion entry) =>
       into(surfaceSubstrateSummary).insert(entry);
-  Future<SurfaceSubstrateSummaryData?> getSsSummary(int surveyId) =>
+
+  Future<SurfaceSubstrateSummaryData> getSsSummary(int surveyId) =>
       (select(surfaceSubstrateSummary)
             ..where((tbl) => tbl.surveyId.equals(surveyId)))
-          .getSingleOrNull();
+          .getSingle();
+
+  Future<SurfaceSubstrateSummaryData> addAndReturnDefaultSsSummary(
+      int surveyId, DateTime measDate) async {
+    int summaryId = await addSsSummary(SurfaceSubstrateSummaryCompanion(
+        surveyId: Value(surveyId), measDate: Value(measDate)));
+
+    return getSsSummary(surveyId);
+  }
 
   //====================Surface Substrate Header====================
   Future<int> addSsHeader(SurfaceSubstrateHeaderCompanion entry) =>

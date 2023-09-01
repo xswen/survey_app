@@ -139,8 +139,8 @@ class _DepSurfaceSubstrateSummaryPageState
     (_db.update(_db.surfaceSubstrateSummary)
           ..where((t) => t.id.equals(ssSummary.id)))
         .write(entry);
-    ssSummary =
-        (await _db.surfaceSubstrateTablesDao.getSsSummary(ssSummary.surveyId))!;
+    ssSummary = (await _db.surfaceSubstrateTablesDao
+        .getSsSummaryFromSurvey(ssSummary.surveyId))!;
   }
 
   Future<SurfaceSubstrateHeaderData> _getOrCreateSsData(int transNum) async {

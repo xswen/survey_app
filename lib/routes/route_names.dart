@@ -4,17 +4,17 @@ class Routes {
 
   static const String dashboard = "dashboard";
 
-  static const String createSurvey = "create-survey";
-  static const String surveyInfo = "survey-info";
+  static const String createSurvey = "createSurvey";
+  static const String surveyInfo = "surveyInfo";
 
-  static const String woodyDebris = "woody-debris";
+  static const String woodyDebris = "woodyDebris";
   static const String woodyDebrisHeader = "header";
   static const String woodyDebrisTransectMeasurement = "transect-measurements";
   static const String woodyDebrisPieceMain = "pieces-main";
   static const String woodyDebrisPieceAddRound = "piece-add-round";
   static const String woodyDebrisPieceAddOddAccu = "piece-add-odd-accu";
 
-  static const String surfaceSubstrate = _Paths.surfaceSubstrate;
+  static const String surfaceSubstrate = "surfaceSubstrate";
   static const String surfaceSubstrateTransect =
       "${_Paths.surfaceSubstrate}/transect";
   static const String surfaceSubstrateStationInfo =

@@ -2,6 +2,7 @@ import 'package:drift/drift.dart' as d;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:survey_app/enums/enum_router_extra_key_names.dart';
 import 'package:survey_app/enums/enums.dart';
 import 'package:survey_app/widgets/selection_tile_card.dart';
 import 'package:survey_app/wrappers/survey_card.dart';
@@ -12,7 +13,6 @@ import '../../formatters/format_date.dart';
 import '../../routes/route_names.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
-import '../../widgets/popups/popups.dart';
 import '../../widgets/text/text_line_label.dart';
 import '../../widgets/titled_border.dart';
 
@@ -63,7 +63,7 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
         context.pop();
       }, widget.title),
       floatingActionButton: FloatingCompleteButton(
-        title: survey.complete ? "Edit Survey" : "Mark survey complete",
+        title: widget.title,
         complete: survey.complete,
         onPressed: () async {
           updateSummary(
@@ -136,6 +136,8 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
   }
 
   List<SelectionTileCard> generateTileCards(List<SurveyCard> cards) {
+    final Database db = Database.instance;
+
     List<SelectionTileCard> tileCards = [];
 
     SurveyStatus getStatus(dynamic data) {
@@ -149,22 +151,25 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
     }
 
     for (int i = 0; i < cards.length; i++) {
+      SurveyCardCategories category = cards[i].category;
       String name = cards[i].name;
       dynamic data = cards[i].surveyCardData;
 
       tileCards.add(SelectionTileCard(
           title: name,
           status: getStatus(data),
-          onPressed: () => getNav(name, data)));
+          onPressed: () {
+            getNav(category, data);
+          }));
     }
 
     return tileCards;
   }
 
-  void getNav(String cardName, dynamic data) async {
+  void getNav(SurveyCardCategories category, dynamic data) async {
     final Database db = Database.instance;
 
-    switch (cardName) {
+    switch (category) {
       case SurveyCardCategories.woodyDebris:
         var tmp = await context.pushNamed(
           Routes.woodyDebris,
@@ -182,14 +187,29 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
                       .getWdHeadersFromWdsId(data.id)
                 },
         );
-
-        db.getCards(widget.surveyHeader.id).then((value) => setState(() {
-              cards = value;
-              tileCards = generateTileCards(value);
-            }));
         break;
       case SurveyCardCategories.surfaceSubstrate:
-        Popups.showDismiss(context, "Placeholder");
+        var tmp = await context.pushNamed(
+          Routes.surfaceSubstrate,
+          extra: data == null
+              ?
+              //Insert empty wdSummaryCompanion
+              {
+                  RouterExtraKeys.surfaceSubstrateSummary: await db
+                      .surfaceSubstrateTablesDao
+                      .addAndReturnDefaultSsSummary(survey.id, survey.measDate),
+                  RouterExtraKeys.transList: <SurfaceSubstrateHeaderData>[]
+                }
+              : {
+                  RouterExtraKeys.surfaceSubstrateSummary: data,
+                  RouterExtraKeys.transList: <SurfaceSubstrateHeaderData>[]
+                },
+        );
+        break;
     }
+    db.getCards(widget.surveyHeader.id).then((value) => setState(() {
+          cards = value;
+          tileCards = generateTileCards(value);
+        }));
   }
 }
