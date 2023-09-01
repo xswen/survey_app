@@ -19,14 +19,15 @@ import '../../widgets/dropdowns/drop_down_default.dart';
 import '../../widgets/popups/popups.dart';
 
 class WoodyDebrisSummaryPage extends StatefulWidget {
-  WoodyDebrisSummaryPage({Key? key, required this.wd, required this.transList})
-      : super(key: key);
-
-  WoodyDebrisSummaryData wd;
-  List<WoodyDebrisHeaderData> transList;
-
   static const String keyWdSummary = "wdHeader";
   static const String keyTransList = "transList";
+
+  const WoodyDebrisSummaryPage(
+      {Key? key, required this.wd, required this.transList})
+      : super(key: key);
+
+  final WoodyDebrisSummaryData wd;
+  final List<WoodyDebrisHeaderData> transList;
 
   @override
   State<WoodyDebrisSummaryPage> createState() => _WoodyDebrisSummaryPageState();

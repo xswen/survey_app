@@ -9,15 +9,15 @@ import '../../widgets/buttons/floating_complete_button.dart';
 import '../../widgets/popups/popups.dart';
 
 class SurfaceSubstrateSummaryPage extends StatefulWidget {
+  static const String keySsSummary = "ssSummary";
+  static const String keyTransList = "transList";
+
   const SurfaceSubstrateSummaryPage(
       {Key? key, required this.ss, required this.transList})
       : super(key: key);
 
   final SurfaceSubstrateSummaryData ss;
   final List<SurfaceSubstrateHeaderData> transList;
-
-  static const String keySsSummary = "ssSummary";
-  static const String keyTransList = "transList";
 
   @override
   State<SurfaceSubstrateSummaryPage> createState() =>

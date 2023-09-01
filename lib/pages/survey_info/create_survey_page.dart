@@ -24,13 +24,13 @@ class CreateSurvey extends StatefulWidget {
   static const String keySurvey = "survey";
   static const String keyUpdateDash = "updateDash";
 
-  CreateSurvey(
+  const CreateSurvey(
       {super.key,
       required this.surveyHeader,
       required this.province,
       required this.updateDashboard});
-  SurveyHeadersCompanion surveyHeader;
-  String province;
+  final SurveyHeadersCompanion surveyHeader;
+  final String province;
   final void Function() updateDashboard;
 
   @override
@@ -182,7 +182,7 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
                   //Check that the existing found survey isn't an update
                   existingSurveyId == null ||
                           Global.dbCompanionValueToStr(surveyHeader.id) ==
-                              existingSurveyId?.toString()
+                              existingSurveyId.toString()
                       ? null
                       : result =
                           "A survey for NFI Plot #${surveyHeader.nfiPlot.value} "
@@ -190,7 +190,6 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
                               "already exists.";
                 }
 
-                print(lastMeasNum);
                 if (result != null) {
                   if (context.mounted) {
                     Popups.showDismiss(context, "Error", contentText: result);
@@ -257,9 +256,7 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
       return;
     }
     surveyHeader = surveyHeader.copyWith(nfiPlot: d.Value(int.parse(plot)));
-    lastMeasNum =
-        await db.referenceTablesDao.getLastMeasNum(int.parse(plot!)) ??
-            _kDataMissing;
+    lastMeasNum = await db.referenceTablesDao.getLastMeasNum(int.parse(plot));
     surveyHeader = surveyHeader.copyWith(measNum: const d.Value(_kDataMissing));
     _controller.text = "";
     setState(() {});

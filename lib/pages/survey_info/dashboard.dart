@@ -145,40 +145,5 @@ class _DashboardState extends State<Dashboard> {
               },
             ),
     );
-
-    return Scaffold(
-      appBar: const OurAppBar(LocaleKeys.dashboardTitle),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.pushNamed(
-            Routes.createSurvey,
-            extra: {
-              "survey": SurveyHeadersCompanion(
-                  measNum: const d.Value(-1),
-                  measDate: d.Value(DateTime.now())),
-              "updateDashboard": updateDashboard
-            },
-          );
-        },
-        child: const Icon(Icons.add),
-      ),
-      body: surveys.isEmpty
-          ? Padding(
-              padding: const EdgeInsets.symmetric(
-                  vertical: 0.0, horizontal: kPaddingH),
-              child: Center(
-                child: const Text(
-                  LocaleKeys.dashboardNoSurveys,
-                  style: TextStyle(fontSize: kTextHeaderSize),
-                ).tr(),
-              ),
-            )
-          : ListView.builder(
-              itemCount: (surveys).length,
-              itemBuilder: (BuildContext cxt, int index) {
-                return createSurveyButton(db, index);
-              },
-            ),
-    );
   }
 }

@@ -79,22 +79,22 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
                 SurveyHeadersCompanion(complete: d.Value(!survey.complete)));
           }
           //Some are left in progress
-          else if (result!.containsKey(SurveyStatus.inProgress)) {
+          else if (result.containsKey(SurveyStatus.inProgress)) {
             Popups.showDismiss(context, "Error: Surveys in progress",
                 contentText:
                     "There are survey cards that are still in progress."
-                    "${result![SurveyStatus.inProgress]}"
+                    "${result[SurveyStatus.inProgress]}"
                     "\nPlease complete or delete to continue.");
           }
           //Case where no card has been started
-          else if (result!.containsKey(SurveyStatus.complete)) {
+          else if (result.containsKey(SurveyStatus.complete)) {
             Popups.showDismiss(context, "Error: No survey cards complete",
                 contentText: "No survey cards have been marked as complete."
-                    "${result![SurveyStatus.inProgress]}"
+                    "${result[SurveyStatus.inProgress]}"
                     "\nPlease complete or delete to continue.");
           }
           //Case where at least one card has been started
-          else if (result!.containsKey(SurveyStatus.notStarted)) {
+          else if (result.containsKey(SurveyStatus.notStarted)) {
             Popups.showDismiss(context, "Warning: Surveys not started",
                 contentText:
                     "Please complete at least one survey card to mark as completed.");
@@ -199,8 +199,6 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
   }
 
   List<TileCardSelection> generateTileCards(List<SurveyCard> cards) {
-    final Database db = Database.instance;
-
     List<TileCardSelection> tileCards = [];
 
     for (int i = 0; i < cards.length; i++) {
