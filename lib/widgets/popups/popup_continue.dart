@@ -1,21 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class PopupContinue extends StatelessWidget {
-  const PopupContinue({
-    super.key,
-    required this.title,
-    required this.content,
-    this.cancelResult = "Cancel",
-    required this.rightBtnOnPressed,
-  });
-
+  const PopupContinue(this.title, this.content,
+      {super.key, this.cancelResult, this.rightBtnOnPressed});
   final String title;
   final String content;
   final Object? cancelResult;
   final VoidCallback? rightBtnOnPressed;
-
   @override
   Widget build(BuildContext context) {
     return CupertinoAlertDialog(
@@ -23,7 +16,7 @@ class PopupContinue extends StatelessWidget {
       content: Text(content),
       actions: <Widget>[
         TextButton(
-          onPressed: () => Get.back(result: cancelResult),
+          onPressed: () => context.pop(cancelResult),
           child: const Text('Cancel'),
         ),
         TextButton(

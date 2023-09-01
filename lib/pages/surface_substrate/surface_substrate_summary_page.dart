@@ -1,8 +1,8 @@
 import 'package:drift/drift.dart' as d;
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:survey_app/database/database.dart';
+import 'package:survey_app/widgets/popups/popup_dismiss.dart';
 
 import '../../widgets/app_bar.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
@@ -40,9 +40,9 @@ class _SurfaceSubstrateSummaryPageState
   @override
   Widget build(BuildContext context) {
     final db = Provider.of<Database>(context);
-    final CupertinoAlertDialog completeWarningPopup =
+    final PopupDismiss completeWarningPopup =
         Popups.generateCompleteErrorPopup(context, title);
-    final CupertinoAlertDialog surveyCompleteWarningPopup =
+    final PopupDismiss surveyCompleteWarningPopup =
         Popups.generatePreviousMarkedCompleteErrorPopup(context, "Survey");
 
     Future<void> updateSummary(SurfaceSubstrateSummaryCompanion entry) async {

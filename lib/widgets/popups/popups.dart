@@ -1,58 +1,19 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:survey_app/widgets/popups/popup_continue.dart';
+import 'package:survey_app/widgets/popups/popup_dismiss.dart';
 
 class Popups {
-  static CupertinoAlertDialog widgetDismiss(BuildContext context, String title,
-      {String? contentText, Widget? contentWidget, String? buttonTitle}) {
-    return CupertinoAlertDialog(
-      title: Text(title),
-      content: contentWidget ??
-          Text(
-            contentText ?? "",
-            style: const TextStyle(
-              color: Colors.black,
-            ),
-          ),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () => context.pop(),
-          child: Text(buttonTitle ?? "Ok"),
-        ),
-      ],
-    );
-  }
-
   static showDismiss(BuildContext context, String title,
       {String? contentText, Widget? contentWidget, String? buttonTitle}) {
     showDialog(
         context: context,
         barrierDismissible: true,
         builder: (context) {
-          return widgetDismiss(context, title,
+          return PopupDismiss(title,
               contentText: contentText,
               contentWidget: contentWidget,
               buttonTitle: buttonTitle);
         });
-  }
-
-  static CupertinoAlertDialog widgetContinue(
-      BuildContext context, String title, String content,
-      {Object? cancelResult, VoidCallback? rightBtnOnPressed}) {
-    return CupertinoAlertDialog(
-      title: Text(title),
-      content: Text(content),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () => context.pop(cancelResult),
-          child: const Text('Cancel'),
-        ),
-        TextButton(
-          onPressed: rightBtnOnPressed,
-          child: const Text('Continue'),
-        ),
-      ],
-    );
   }
 
   static showContinue(BuildContext context, String title, String content,
@@ -61,24 +22,24 @@ class Popups {
         context: context,
         barrierDismissible: true,
         builder: (context) {
-          return widgetContinue(context, title, content,
+          return PopupContinue(title, content,
               cancelResult: cancelResult, rightBtnOnPressed: rightBtnOnPressed);
         });
   }
 
-  static CupertinoAlertDialog generateCompleteErrorPopup(
+  static PopupDismiss generateCompleteErrorPopup(
           BuildContext context, String location) =>
-      Popups.widgetDismiss(context, "Error: $location Marked as Complete",
+      PopupDismiss("Error: $location Marked as Complete",
           contentText:
               "$location has already been marked as complete. Please click 'Edit' to make any changes");
 
-  static CupertinoAlertDialog generatePreviousMarkedCompleteErrorPopup(
+  static PopupDismiss generatePreviousMarkedCompleteErrorPopup(
           BuildContext context, String location) =>
-      Popups.widgetDismiss(context, "Error: $location Marked as Complete",
+      PopupDismiss("Error: $location Marked as Complete",
           contentText:
               "$location has already been marked as complete. Please go back and press 'Edit' to make changes here");
 
-  static show(BuildContext context, CupertinoAlertDialog popup) {
+  static show(BuildContext context, Widget popup) {
     showDialog(
         context: context,
         barrierDismissible: true,

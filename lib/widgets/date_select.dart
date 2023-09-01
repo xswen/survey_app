@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -41,7 +40,7 @@ class CalendarSelect extends StatefulWidget {
   final String label;
   final Function setStateFn;
   final bool? readOnly;
-  final CupertinoAlertDialog? readOnlyPopup;
+  final Widget? readOnlyPopup;
 
   @override
   State<CalendarSelect> createState() => _CalendarSelectState();
