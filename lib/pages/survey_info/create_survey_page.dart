@@ -186,6 +186,7 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
                               "already exists.";
                 }
 
+                print(lastMeasNum);
                 if (result != null) {
                   if (context.mounted) {
                     Popups.showDismiss(context, "Error", contentText: result);

@@ -170,6 +170,10 @@ class Database extends _$Database {
         plots,
         const PlotsCompanion(
             nfiPlot: Value(916316), code: Value("PE"), lastMeasNum: Value(1)));
+    b.replace(
+        plots,
+        const PlotsCompanion(
+            nfiPlot: Value(1121871), code: Value("AB"), lastMeasNum: Value(2)));
     _initSurveys(b);
     _initWoodyDebris(b);
   }
