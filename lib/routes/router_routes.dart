@@ -5,6 +5,7 @@ import 'package:survey_app/pages/surface_substrate/surface_substrate_summary_pag
 import 'package:survey_app/pages/survey_info/create_survey_page.dart';
 import 'package:survey_app/pages/survey_info/dashboard.dart';
 import 'package:survey_app/pages/survey_info/survey_info_page.dart';
+import 'package:survey_app/pages/woody_debris/woody_debris_header_page.dart';
 import 'package:survey_app/pages/woody_debris/woody_debris_summary_page.dart';
 
 import '../main.dart';
@@ -60,17 +61,33 @@ GoRouter router = GoRouter(
                 },
                 routes: [
                   GoRoute(
-                    name: Routes.woodyDebris,
-                    path: "woody-debris",
-                    builder: (context, state) {
-                      Map<String, dynamic> data =
-                          state.extra as Map<String, dynamic>;
-                      WoodyDebrisSummaryData wd = data["wdSummaryData"];
-                      List<WoodyDebrisHeaderData> transList = data["transList"];
-                      return WoodyDebrisSummaryPage(
-                          wd: wd, transList: transList);
-                    },
-                  ),
+                      name: Routes.woodyDebris,
+                      path: "woody-debris",
+                      builder: (context, state) {
+                        Map<String, dynamic> data =
+                            state.extra as Map<String, dynamic>;
+                        WoodyDebrisSummaryData wd = data["wdSummaryData"];
+                        List<WoodyDebrisHeaderData> transList =
+                            data["transList"];
+                        return WoodyDebrisSummaryPage(
+                            wd: wd, transList: transList);
+                      },
+                      routes: [
+                        GoRoute(
+                            name: Routes.woodyDebrisHeader,
+                            path: "header",
+                            builder: (context, state) {
+                              Map<String, dynamic> data =
+                                  state.extra as Map<String, dynamic>;
+                              WoodyDebrisHeaderData wdh =
+                                  data[WoodyDebrisHeaderPage.keyWdHeader];
+                              bool summaryComplete = data[
+                                  WoodyDebrisHeaderPage.keySummaryComplete];
+
+                              return WoodyDebrisHeaderPage(
+                                  wdh: wdh, summaryComplete: summaryComplete);
+                            })
+                      ]),
                   GoRoute(
                     name: Routes.surfaceSubstrate,
                     path: "surface-substrate",

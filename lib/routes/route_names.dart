@@ -8,7 +8,8 @@ class Routes {
   static const String surveyInfo = "surveyInfo";
 
   static const String woodyDebris = "woodyDebris";
-  static const String woodyDebrisHeader = "header";
+  static const String woodyDebrisHeader = "woodyDebrisHeader";
+
   static const String woodyDebrisTransectMeasurement = "transect-measurements";
   static const String woodyDebrisPieceMain = "pieces-main";
   static const String woodyDebrisPieceAddRound = "piece-add-round";

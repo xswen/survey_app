@@ -5,11 +5,13 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:survey_app/database/database.dart';
 import 'package:survey_app/enums/enums.dart';
+import 'package:survey_app/pages/woody_debris/woody_debris_header_page.dart';
 import 'package:survey_app/widgets/tile_cards/tile_card_selection.dart';
 
 import '../../constants/constant_values.dart';
 import '../../constants/margins_padding.dart';
 import '../../global.dart';
+import '../../routes/route_names.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
 import '../../widgets/date_select.dart';
@@ -137,6 +139,13 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
                             Popups.show(context, completeWarningPopup);
                           } else {
                             //TODO: Add navigation
+                            context.pushNamed(Routes.woodyDebrisHeader, extra: {
+                              WoodyDebrisHeaderPage.keyWdHeader: wdh,
+                              WoodyDebrisHeaderPage.keySummaryComplete:
+                                  (await db.surveyInfoTablesDao
+                                          .getSurvey(wd.surveyId))
+                                      .complete
+                            });
                           }
                         },
                         status: getStatus(wdh));
