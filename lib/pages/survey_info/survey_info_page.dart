@@ -2,7 +2,6 @@ import 'package:drift/drift.dart' as d;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:survey_app/enums/enum_router_extra_key_names.dart';
 import 'package:survey_app/enums/enums.dart';
 import 'package:survey_app/widgets/tile_cards/tile_card_selection.dart';
 import 'package:survey_app/wrappers/survey_card.dart';
@@ -16,8 +15,14 @@ import '../../widgets/buttons/floating_complete_button.dart';
 import '../../widgets/popups/popups.dart';
 import '../../widgets/text/text_line_label.dart';
 import '../../widgets/titled_border.dart';
+import '../surface_substrate/surface_substrate_summary_page.dart';
+import '../woody_debris/woody_debris_summary_page.dart';
 
 class SurveyInfoPage extends StatefulWidget {
+  static const String keySurvey = "survey";
+  static const String keyCards = "cards";
+  static const String keyUpdateDash = "updateDashboard";
+
   const SurveyInfoPage(
       {super.key,
       required this.surveyHeader,
@@ -225,13 +230,15 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
               ?
               //Insert empty wdSummaryCompanion
               {
-                  "wdSummaryData": await db.woodyDebrisTablesDao
+                  WoodyDebrisSummaryPage.keyWdSummary: await db
+                      .woodyDebrisTablesDao
                       .addAndReturnDefaultWdSummary(survey.id, survey.measDate),
-                  "transList": <WoodyDebrisHeaderData>[]
+                  WoodyDebrisSummaryPage.keyTransList: <WoodyDebrisHeaderData>[]
                 }
               : {
-                  "wdSummaryData": data,
-                  "transList": await db.woodyDebrisTablesDao
+                  WoodyDebrisSummaryPage.keyWdSummary: data,
+                  WoodyDebrisSummaryPage.keyTransList: await db
+                      .woodyDebrisTablesDao
                       .getWdHeadersFromWdsId(data.id)
                 },
         );
@@ -243,14 +250,16 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
               ?
               //Insert empty wdSummaryCompanion
               {
-                  RouterExtraKeys.surfaceSubstrateSummary: await db
+                  SurfaceSubstrateSummaryPage.keySsSummary: await db
                       .surfaceSubstrateTablesDao
                       .addAndReturnDefaultSsSummary(survey.id, survey.measDate),
-                  RouterExtraKeys.transList: <SurfaceSubstrateHeaderData>[]
+                  SurfaceSubstrateSummaryPage.keyTransList:
+                      <SurfaceSubstrateHeaderData>[]
                 }
               : {
-                  RouterExtraKeys.surfaceSubstrateSummary: data,
-                  RouterExtraKeys.transList: <SurfaceSubstrateHeaderData>[]
+                  SurfaceSubstrateSummaryPage.keySsSummary: data,
+                  SurfaceSubstrateSummaryPage.keyTransList:
+                      <SurfaceSubstrateHeaderData>[]
                 },
         );
         break;

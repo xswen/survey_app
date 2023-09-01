@@ -25,6 +25,9 @@ class WoodyDebrisSummaryPage extends StatefulWidget {
   WoodyDebrisSummaryData wd;
   List<WoodyDebrisHeaderData> transList;
 
+  static const String keyWdSummary = "wdHeader";
+  static const String keyTransList = "transList";
+
   @override
   State<WoodyDebrisSummaryPage> createState() => _WoodyDebrisSummaryPageState();
 }
@@ -138,7 +141,6 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
                           if (wd.complete) {
                             Popups.show(context, completeWarningPopup);
                           } else {
-                            //TODO: Add navigation
                             context.pushNamed(Routes.woodyDebrisHeader, extra: {
                               WoodyDebrisHeaderPage.keyWdHeader: wdh,
                               WoodyDebrisHeaderPage.keySummaryComplete:

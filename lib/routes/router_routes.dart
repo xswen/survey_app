@@ -1,6 +1,5 @@
 import 'package:go_router/go_router.dart';
 import 'package:survey_app/database/database.dart';
-import 'package:survey_app/enums/enum_router_extra_key_names.dart';
 import 'package:survey_app/pages/surface_substrate/surface_substrate_summary_page.dart';
 import 'package:survey_app/pages/survey_info/create_survey_page.dart';
 import 'package:survey_app/pages/survey_info/dashboard.dart';
@@ -38,8 +37,10 @@ GoRouter router = GoRouter(
                   builder: (context, state) {
                     Map<String, dynamic> data =
                         state.extra as Map<String, dynamic>;
-                    SurveyHeadersCompanion survey = data["survey"];
-                    void Function() updateDashboard = data["updateDashboard"];
+                    SurveyHeadersCompanion survey =
+                        data[CreateSurvey.keySurvey];
+                    void Function() updateDashboard =
+                        data[CreateSurvey.keyUpdateDash];
                     return CreateSurvey(
                         surveyHeader: survey,
                         province: state.uri.queryParameters["province"] ?? "",
@@ -51,9 +52,10 @@ GoRouter router = GoRouter(
                 builder: (context, state) {
                   Map<String, dynamic> data =
                       state.extra as Map<String, dynamic>;
-                  SurveyHeader survey = data["survey"];
-                  List<SurveyCard> cards = data["cards"];
-                  void Function() updateDashboard = data["updateDashboard"];
+                  SurveyHeader survey = data[SurveyInfoPage.keySurvey];
+                  List<SurveyCard> cards = data[SurveyInfoPage.keyCards];
+                  void Function() updateDashboard =
+                      data[SurveyInfoPage.keyUpdateDash];
                   return SurveyInfoPage(
                       surveyHeader: survey,
                       cards: cards,
@@ -66,9 +68,10 @@ GoRouter router = GoRouter(
                       builder: (context, state) {
                         Map<String, dynamic> data =
                             state.extra as Map<String, dynamic>;
-                        WoodyDebrisSummaryData wd = data["wdSummaryData"];
+                        WoodyDebrisSummaryData wd =
+                            data[WoodyDebrisSummaryPage.keyWdSummary];
                         List<WoodyDebrisHeaderData> transList =
-                            data["transList"];
+                            data[WoodyDebrisSummaryPage.keyTransList];
                         return WoodyDebrisSummaryPage(
                             wd: wd, transList: transList);
                       },
@@ -92,12 +95,12 @@ GoRouter router = GoRouter(
                     name: Routes.surfaceSubstrate,
                     path: "surface-substrate",
                     builder: (context, state) {
-                      Map<RouterExtraKeys, dynamic> data =
-                          state.extra as Map<RouterExtraKeys, dynamic>;
+                      Map<String, dynamic> data =
+                          state.extra as Map<String, dynamic>;
                       SurfaceSubstrateSummaryData ss =
-                          data[RouterExtraKeys.surfaceSubstrateSummary];
+                          data[SurfaceSubstrateSummaryPage.keySsSummary];
                       List<SurfaceSubstrateHeaderData> transList =
-                          data[RouterExtraKeys.transList];
+                          data[SurfaceSubstrateSummaryPage.keyTransList];
                       return SurfaceSubstrateSummaryPage(
                           ss: ss, transList: transList);
                     },

@@ -13,6 +13,8 @@ import '../../routes/route_names.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/text/text_line_label.dart';
 import '../../widgets/tile_cards/tile_card_dashboard.dart';
+import 'create_survey_page.dart';
+import 'survey_info_page.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key, required this.title, required this.surveys});
@@ -54,9 +56,10 @@ class _DashboardState extends State<Dashboard> {
               context.pushNamed(
                 Routes.surveyInfo,
                 extra: {
-                  "survey": await db.surveyInfoTablesDao.getSurvey(survey.id),
-                  "cards": await db.getCards(survey.id),
-                  "updateDashboard": updateDashboard
+                  SurveyInfoPage.keySurvey:
+                      await db.surveyInfoTablesDao.getSurvey(survey.id),
+                  SurveyInfoPage.keyCards: await db.getCards(survey.id),
+                  SurveyInfoPage.keyUpdateDash: updateDashboard
                 },
               );
             },
@@ -101,10 +104,10 @@ class _DashboardState extends State<Dashboard> {
           context.pushNamed(
             Routes.createSurvey,
             extra: {
-              "survey": SurveyHeadersCompanion(
+              CreateSurvey.keySurvey: SurveyHeadersCompanion(
                   measNum: const d.Value(-1),
                   measDate: d.Value(DateTime.now())),
-              "updateDashboard": updateDashboard
+              CreateSurvey.keyUpdateDash: updateDashboard
             },
           );
         },
@@ -131,10 +134,10 @@ class _DashboardState extends State<Dashboard> {
                     context.pushNamed(
                       Routes.surveyInfo,
                       extra: {
-                        "survey":
+                        SurveyInfoPage.keySurvey:
                             await db.surveyInfoTablesDao.getSurvey(survey.id),
-                        "cards": await db.getCards(survey.id),
-                        "updateDashboard": updateDashboard
+                        SurveyInfoPage.keyCards: await db.getCards(survey.id),
+                        SurveyInfoPage.keyUpdateDash: updateDashboard
                       },
                     );
                   },

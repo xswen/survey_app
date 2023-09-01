@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:survey_app/pages/survey_info/survey_info_page.dart';
 import 'package:survey_app/widgets/data_input/data_input.dart';
 
 import '../../constants/margins_padding.dart';
@@ -20,6 +21,9 @@ import '../../widgets/dropdowns/drop_down_async_list.dart';
 import '../../widgets/popups/popups.dart';
 
 class CreateSurvey extends StatefulWidget {
+  static const String keySurvey = "survey";
+  static const String keyUpdateDash = "updateDash";
+
   CreateSurvey(
       {super.key,
       required this.surveyHeader,
@@ -229,9 +233,10 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
         context.pushReplacementNamed(
           Routes.surveyInfo,
           extra: {
-            "survey": await db.surveyInfoTablesDao.getSurvey(id),
-            "cards": await db.getCards(id),
-            "updateDashboard": widget.updateDashboard
+            SurveyInfoPage.keySurvey:
+                await db.surveyInfoTablesDao.getSurvey(id),
+            SurveyInfoPage.keyCards: await db.getCards(id),
+            SurveyInfoPage.keyUpdateDash: widget.updateDashboard
           },
         );
       }

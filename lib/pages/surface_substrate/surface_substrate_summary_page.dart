@@ -16,6 +16,9 @@ class SurfaceSubstrateSummaryPage extends StatefulWidget {
   final SurfaceSubstrateSummaryData ss;
   final List<SurfaceSubstrateHeaderData> transList;
 
+  static const String keySsSummary = "ssSummary";
+  static const String keyTransList = "transList";
+
   @override
   State<SurfaceSubstrateSummaryPage> createState() =>
       _SurfaceSubstrateSummaryPageState();

@@ -8,15 +8,15 @@ import '../../widgets/buttons/floating_complete_button.dart';
 import '../../widgets/popups/popups.dart';
 
 class WoodyDebrisHeaderPage extends StatefulWidget {
+  static const String keyWdHeader = "wdHeader";
+  static const String keySummaryComplete = "summaryComplete";
+
   const WoodyDebrisHeaderPage(
       {Key? key, required this.wdh, required this.summaryComplete})
       : super(key: key);
 
   final WoodyDebrisHeaderData wdh;
   final bool summaryComplete;
-
-  static const String keyWdHeader = "wdHeader";
-  static const String keySummaryComplete = "summaryComplete";
 
   @override
   State<WoodyDebrisHeaderPage> createState() => _WoodyDebrisHeaderPageState();
