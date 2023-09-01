@@ -68,7 +68,7 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
               Popups.showDismiss(context, "Error Missing Transect",
                   contentText: "Please add at least one transect");
             } else {
-              !checkHeadersComplete()
+              checkHeadersComplete()
                   ? updateWdSummary(
                       db,
                       const WoodyDebrisSummaryCompanion(
