@@ -4,23 +4,18 @@ class Routes {
 
   static const String dashboard = "dashboard";
 
-  static const String createSurvey = "create-survey";
+  static const String createSurvey = "createSurvey";
+  static const String surveyInfo = "surveyInfo";
 
-  static const String surveySelect = _Paths.surveySelect;
-  static const String surveyInfoPage = _Paths.surveyInfo;
-  static const String surveyInfoCreate = "${_Paths.surveyInfo}/create";
+  static const String woodyDebris = "woodyDebris";
+  static const String woodyDebrisHeader = "woodyDebrisHeader";
 
-  static const String woodyDebris = _Paths.woodyDebris;
-  static const String woodyDebrisHeader = "${_Paths.woodyDebris}/header";
-  static const String woodyDebrisTransectMeasurement =
-      "${_Paths.woodyDebris}/transectMeasurements";
-  static const String woodyDebrisPieceMain = "${_Paths.woodyDebris}/piecesMain";
-  static const String woodyDebrisPieceAddRound =
-      "${_Paths.woodyDebris}/pieceAddRound";
-  static const String woodyDebrisPieceAddOddAccu =
-      "${_Paths.woodyDebris}/pieceAddOddAccu";
+  static const String woodyDebrisTransectMeasurement = "transect-measurements";
+  static const String woodyDebrisPieceMain = "pieces-main";
+  static const String woodyDebrisPieceAddRound = "piece-add-round";
+  static const String woodyDebrisPieceAddOddAccu = "piece-add-odd-accu";
 
-  static const String surfaceSubstrate = _Paths.surfaceSubstrate;
+  static const String surfaceSubstrate = "surfaceSubstrate";
   static const String surfaceSubstrateTransect =
       "${_Paths.surfaceSubstrate}/transect";
   static const String surfaceSubstrateStationInfo =

@@ -11,13 +11,13 @@ mixin Global {
       ? ""
       : value.value.toString();
 
-  static PopupDismissDep generateCompleteErrorPopup(String location) =>
+  static PopupDismissDep generateCompleteErrorPopupDep(String location) =>
       PopupDismissDep(
           title: "Error: $location Marked as Complete",
           contentText:
               "$location has already been marked as complete. Please click 'Edit' to make any changes");
 
-  static PopupDismissDep generatePreviousMarkedCompleteErrorPopup(
+  static PopupDismissDep generatePreviousMarkedCompleteErrorPopupDep(
           String location) =>
       PopupDismissDep(
           title: "Error: $location Marked as Complete",

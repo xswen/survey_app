@@ -23,7 +23,7 @@ void main() async {
     ],
     path: 'assets/l10n',
     child: Provider<Database>(
-        create: (context) => Database(), child: const MyApp()),
+        create: (context) => Database.instance, child: const MyApp()),
   ));
 }
 

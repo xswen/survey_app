@@ -96,7 +96,7 @@ class _SurfaceSubstrateHeaderPageState extends State<SurfaceSubstrateHeaderPage>
   final PopupDismissDep _completeWarningPopup =
       Global.generateCompleteErrorPopup("Transect");
   final PopupDismissDep _prevPageCompleteWarning =
-      Global.generatePreviousMarkedCompleteErrorPopup("Surface Substrate");
+      Global.generatePreviousMarkedCompleteErrorPopupDep("Surface Substrate");
 
   //remove id columns
   late final List<String> _tallyColumnNames;

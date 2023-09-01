@@ -1,22 +1,23 @@
 import 'package:drift/drift.dart' as d;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:provider/provider.dart';
+import 'package:survey_app/database/database.dart';
 
-import '../../constants/constant_values.dart';
-import '../../constants/margins_padding.dart';
-import '../../database/database.dart';
-import '../../global.dart';
-import '../../routes/route_names.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
-import '../../widgets/buttons/summary_section_button_generator.dart';
-import '../../widgets/date_select.dart';
-import '../../widgets/dropdowns/drop_down_default.dart';
-import '../../widgets/popups/popup_dismiss_dep.dart';
+import '../../widgets/popups/popups.dart';
 
 class SurfaceSubstrateSummaryPage extends StatefulWidget {
-  const SurfaceSubstrateSummaryPage({super.key, required this.title});
-  final String title;
+  static const String keySsSummary = "ssSummary";
+  static const String keyTransList = "transList";
+
+  const SurfaceSubstrateSummaryPage(
+      {Key? key, required this.ss, required this.transList})
+      : super(key: key);
+
+  final SurfaceSubstrateSummaryData ss;
+  final List<SurfaceSubstrateHeaderData> transList;
 
   @override
   State<SurfaceSubstrateSummaryPage> createState() =>
@@ -24,145 +25,54 @@ class SurfaceSubstrateSummaryPage extends StatefulWidget {
 }
 
 class _SurfaceSubstrateSummaryPageState
-    extends State<SurfaceSubstrateSummaryPage> with Global {
-  final _db = Get.find<Database>();
-  SurfaceSubstrateSummaryData ssSummary = Get.arguments[0];
-  List<SurfaceSubstrateHeaderData> transList = Get.arguments[1];
+    extends State<SurfaceSubstrateSummaryPage> {
+  String title = "Surface Substrate";
+  late SurfaceSubstrateSummaryData ss;
+  late List<SurfaceSubstrateHeaderData> transList;
 
-  final PopupDismissDep completeWarningPopup =
-      Global.generateCompleteErrorPopup("Surface Substrate");
+  @override
+  void initState() {
+    ss = widget.ss;
+    transList = widget.transList;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final db = Provider.of<Database>(context);
+    final CupertinoAlertDialog completeWarningPopup =
+        Popups.generateCompleteErrorPopup(context, title);
+    final CupertinoAlertDialog surveyCompleteWarningPopup =
+        Popups.generatePreviousMarkedCompleteErrorPopup(context, "Survey");
+
+    Future<void> updateSummary(SurfaceSubstrateSummaryCompanion entry) async {
+      (db.update(db.surfaceSubstrateSummary)..where((t) => t.id.equals(ss.id)))
+          .write(entry);
+      db.surfaceSubstrateTablesDao
+          .getSsSummary(ss.surveyId)
+          .then((value) => setState(() => ss = value));
+    }
+
     return Scaffold(
-      appBar: OurAppBar(widget.title),
+      appBar: const OurAppBar(""),
       floatingActionButton: FloatingCompleteButton(
-        title: "Ecological Plot",
-        complete: ssSummary.complete,
-        onPressed: () async {
-          if (ssSummary.complete) {
-            _updateSsSummary(const SurfaceSubstrateSummaryCompanion(
-                complete: d.Value(false)));
-          } else if (transList.isEmpty) {
-            Get.dialog(const PopupDismissDep(
-                title: "Error",
-                contentText: "Please add at least one Ecological Plot"));
-          } else {
-            _checkHeadersComplete()
-                ? _updateSsSummary(const SurfaceSubstrateSummaryCompanion(
-                    complete: d.Value(true)))
-                : Get.dialog(const PopupDismissDep(
-                    title: "Error",
-                    contentText: "There are plots still left incomplete"));
-          }
-          setState(() {});
+        title: "Surface Substrate Summary",
+        complete: ss.complete,
+        onPressed: () {
+          db.surveyInfoTablesDao.getSurvey(ss.surveyId).then((value) {
+            bool surveyComplete = value.complete;
+            if (surveyComplete) {
+              Popups.show(context, surveyCompleteWarningPopup);
+            } else {
+              updateSummary(SurfaceSubstrateSummaryCompanion(
+                  complete: d.Value(!ss.complete)));
+            }
+          });
         },
       ),
       body: Center(
-        child: Column(
-          children: [
-            CalendarSelect(
-                date: ssSummary.measDate,
-                label: "Enter Measurement Date",
-                readOnly: ssSummary.complete,
-                readOnlyPopup: completeWarningPopup,
-                setStateFn: (DateTime date) async {
-                  _updateSsSummary(SurfaceSubstrateSummaryCompanion(
-                      measDate: d.Value(date)));
-
-                  setState(() {});
-                }),
-            Container(
-              margin: const EdgeInsets.fromLTRB(
-                  kPaddingH, 0, kPaddingH, kPaddingV / 2),
-              child: DropDownDefault(
-                  title: "Number of Transects Assessed",
-                  onBeforePopup: (String? s) async {
-                    if (ssSummary.complete) {
-                      Get.dialog(completeWarningPopup);
-                      return false;
-                    } else {
-                      return true;
-                    }
-                  },
-                  onChangedFn: (String? s) async {
-                    int i = int.parse(s!);
-                    _updateSsSummary(SurfaceSubstrateSummaryCompanion(
-                        numTransects: d.Value(i)));
-                    int transListLen = transList.length;
-                    for (int idx = transListLen; idx < i; idx++) {
-                      transList.add(await _getOrCreateSsData(idx + 1));
-                    }
-                    setState(() {});
-                  },
-                  disabledFn: (String? s) =>
-                      int.parse(s!) < (ssSummary.numTransects ?? 0),
-                  itemsList: kTransectNumsList,
-                  selectedItem: Global.nullableToStr(ssSummary.numTransects)),
-            ),
-            const SizedBox(height: kPaddingV),
-            const Text("Select a Transect to enter data for:"),
-            Expanded(
-              child: ListView.builder(
-                  itemCount: transList.length,
-                  itemBuilder: (BuildContext cxt, int index) {
-                    SurfaceSubstrateHeaderData ssd = transList[index];
-                    return SummarySectionButton(
-                        title: "Transect ${index + 1}",
-                        onPressed: () async {
-                          List<SurfaceSubstrateTallyData> stations = await _db
-                              .surfaceSubstrateTablesDao
-                              .getSsTallyList(ssd.id);
-                          var tmp = await Get.toNamed(
-                              Routes.surfaceSubstrateTransect,
-                              arguments: {
-                                "ssc": ssd.toCompanion(true),
-                                "stations": stations,
-                                "summaryComplete": ssd.complete
-                              });
-
-                          _db.surfaceSubstrateTablesDao
-                              .getSsHeaderWithSshId(ssSummary.id)
-                              .then(
-                                  (value) => setState(() => transList = value));
-                        },
-                        complete: ssd.complete);
-                  }),
-            )
-          ],
-        ),
+        child: Text("Surface substrate is ${ss.complete}"),
       ),
     );
-  }
-
-  Future<void> _updateSsSummary(SurfaceSubstrateSummaryCompanion entry) async {
-    (_db.update(_db.surfaceSubstrateSummary)
-          ..where((t) => t.id.equals(ssSummary.id)))
-        .write(entry);
-    ssSummary =
-        (await _db.surfaceSubstrateTablesDao.getSsSummary(ssSummary.surveyId))!;
-  }
-
-  Future<SurfaceSubstrateHeaderData> _getOrCreateSsData(int transNum) async {
-    SurfaceSubstrateHeaderData? ssd = await _db.surfaceSubstrateTablesDao
-        .getSsHeaderFromTransNum(ssSummary.id, transNum);
-
-    if (ssd == null) {
-      _db.surfaceSubstrateTablesDao.addSsHeader(SurfaceSubstrateHeaderCompanion(
-          ssHeaderId: d.Value(ssSummary.id), transNum: d.Value(transNum)));
-      ssd = await _db.surfaceSubstrateTablesDao
-          .getSsHeaderFromTransNum(ssSummary.id, transNum);
-    }
-
-    return ssd!;
-  }
-
-  bool _checkHeadersComplete() {
-    for (int i = 0; i < transList.length; i++) {
-      if (!transList[i].complete) {
-        return false;
-      }
-    }
-    return true;
   }
 }

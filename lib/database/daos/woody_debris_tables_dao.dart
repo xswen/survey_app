@@ -36,10 +36,20 @@ class WoodyDebrisTablesDao extends DatabaseAccessor<Database>
 //====================Woody Debris Summary====================
   Future<int> addWdSummary(WoodyDebrisSummaryCompanion entry) =>
       into(woodyDebrisSummary).insert(entry);
+
   Future<WoodyDebrisSummaryData> getWdSummary(int surveyId) =>
       (select(woodyDebrisSummary)
             ..where((tbl) => tbl.surveyId.equals(surveyId)))
           .getSingle();
+
+  Future<WoodyDebrisSummaryData> addAndReturnDefaultWdSummary(
+      int surveyId, DateTime measDate) async {
+    int summaryId = await addWdSummary(WoodyDebrisSummaryCompanion(
+        surveyId: Value(surveyId), measDate: Value(measDate)));
+
+    return getWdSummary(surveyId);
+  }
+
 //====================Woody Debris Header====================
   Future<int> addWdHeader(WoodyDebrisHeaderCompanion entry) =>
       into(woodyDebrisHeader).insert(entry);

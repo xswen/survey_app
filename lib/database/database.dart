@@ -8,6 +8,8 @@ import 'package:flutter/cupertino.dart' as c;
 import 'package:flutter/services.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:survey_app/enums/enums.dart';
+import 'package:survey_app/wrappers/survey_card.dart';
 
 import '../database/daos/reference_tables_dao.dart';
 import '../database/daos/survey_info_tables_dao.dart';
@@ -74,7 +76,10 @@ const String woodyDebrisPieceViewQuery =
     )
 class Database extends _$Database {
   //Database(QueryExecutor e) : super(e);
-  Database() : super(_debugConnection());
+  Database._() : super(_debugConnection());
+
+  static final Database _instance = Database._();
+  static Database get instance => _instance;
 
   @override
   int get schemaVersion => 1;
@@ -96,10 +101,10 @@ class Database extends _$Database {
   MigrationStrategy get migration => MigrationStrategy(
         onCreate: (m) async {
           await m.createAll();
-          List<TreeGenusCompanion> treeList = await getTreeGenuses();
+          List<TreeGenusCompanion> treeList = await _getTreeGenuses();
           List<JurisdictionsCompanion> jurisdictionsList =
-              await getJurisdictions();
-          List<PlotsCompanion> nfiPlotList = await getNfiPlots();
+              await _getJurisdictions();
+          List<PlotsCompanion> nfiPlotList = await _getNfiPlots();
 
           c.debugPrint("Init Values");
           await batch((b) {
@@ -107,22 +112,22 @@ class Database extends _$Database {
             b.insertAllOnConflictUpdate(treeGenus, treeList);
             b.insertAll(plots, nfiPlotList);
 
-            initTest(b);
+            _initTest(b);
           });
         },
         beforeOpen: (m) async {},
       );
 
-  Future<List<dynamic>> loadJsonData(String path) async {
+  Future<List<dynamic>> _loadJsonData(String path) async {
     final jsonFile = await rootBundle.loadString(path);
     final List<dynamic> jsonData = json.decode(jsonFile) as List<dynamic>;
     return jsonData;
     //return jsonData.map((entry) => TreeGenus.fromJson(entry)).toList();
   }
 
-  Future<List<JurisdictionsCompanion>> getJurisdictions() async {
+  Future<List<JurisdictionsCompanion>> _getJurisdictions() async {
     List<dynamic> jsonData =
-        await loadJsonData('assets/db_reference_data/jurisdiction_list.json');
+        await _loadJsonData('assets/db_reference_data/jurisdiction_list.json');
     return jsonData.map((dynamic item) {
       return JurisdictionsCompanion(
         code: Value(item['code']),
@@ -132,9 +137,9 @@ class Database extends _$Database {
     }).toList();
   }
 
-  Future<List<TreeGenusCompanion>> getTreeGenuses() async {
+  Future<List<TreeGenusCompanion>> _getTreeGenuses() async {
     List<dynamic> jsonData =
-        await loadJsonData('assets/db_reference_data/tree_list.json');
+        await _loadJsonData('assets/db_reference_data/tree_list.json');
     return jsonData.map((dynamic item) {
       return TreeGenusCompanion(
         genusCode: Value(item['genusCode'] ?? ""),
@@ -147,9 +152,9 @@ class Database extends _$Database {
     }).toList();
   }
 
-  Future<List<PlotsCompanion>> getNfiPlots() async {
+  Future<List<PlotsCompanion>> _getNfiPlots() async {
     List<dynamic> jsonData =
-        await loadJsonData('assets/db_reference_data/gp_plots_list.json');
+        await _loadJsonData('assets/db_reference_data/gp_plots_list.json');
     return jsonData.map((dynamic item) {
       return PlotsCompanion(
           code: Value(item["code"]),
@@ -160,16 +165,20 @@ class Database extends _$Database {
     }).toList();
   }
 
-  void initTest(Batch b) {
+  void _initTest(Batch b) {
     b.replace(
         plots,
         const PlotsCompanion(
             nfiPlot: Value(916316), code: Value("PE"), lastMeasNum: Value(1)));
-    initSurveys(b);
-    initWoodyDebris(b);
+    b.replace(
+        plots,
+        const PlotsCompanion(
+            nfiPlot: Value(1121871), code: Value("AB"), lastMeasNum: Value(2)));
+    _initSurveys(b);
+    _initWoodyDebris(b);
   }
 
-  void initSurveys(Batch b) {
+  void _initSurveys(Batch b) {
     b.insertAll(surveyHeaders, [
       SurveyHeadersCompanion(
           id: const d.Value(1),
@@ -186,7 +195,7 @@ class Database extends _$Database {
     ]);
   }
 
-  void initWoodyDebris(Batch b) {
+  void _initWoodyDebris(Batch b) {
     b.insert(
         woodyDebrisSummary,
         WoodyDebrisSummaryCompanion(
@@ -232,5 +241,22 @@ class Database extends _$Database {
           tiltAngle: d.Value(44),
           decayClass: d.Value(-1),
         ));
+  }
+
+  Future<List<SurveyCard>> getCards(int surveyId) async {
+    return [
+      SurveyCard(
+          SurveyCardCategories.woodyDebris,
+          "Woody Debris",
+          await (select(woodyDebrisSummary)
+                ..where((tbl) => tbl.surveyId.equals(surveyId)))
+              .getSingleOrNull()),
+      SurveyCard(
+          SurveyCardCategories.surfaceSubstrate,
+          "Surface Substrate",
+          await (select(surfaceSubstrateSummary)
+                ..where((tbl) => tbl.surveyId.equals(surveyId)))
+              .getSingleOrNull()),
+    ];
   }
 }
