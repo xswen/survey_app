@@ -145,7 +145,10 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
                               WoodyDebrisHeaderPage.keyWdHeader: wdh,
                               WoodyDebrisHeaderPage.keySummaryComplete:
                                   wd.complete
-                            });
+                            }).then((value) => db.woodyDebrisTablesDao
+                                .getWdHeaderFromId(wdh.id)
+                                .then((value) =>
+                                    setState(() => transList[index] = value)));
                           }
                         },
                         status: getStatus(wdh));
@@ -158,6 +161,8 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
   }
 
   SurveyStatus getStatus(WoodyDebrisHeaderData wdh) {
+    if (wdh.complete) return SurveyStatus.complete;
+
     //Check that none of the header data is inputted
     if (wdh.transAzimuth == null &&
         wdh.lcwdMeasLen == null &&
@@ -167,7 +172,6 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
         wdh.swdMeasLen == null) {
       return SurveyStatus.notStarted;
     }
-    if (wdh.complete) return SurveyStatus.complete;
 
     return SurveyStatus.inProgress;
   }
