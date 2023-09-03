@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:survey_app/database/database.dart';
 import 'package:survey_app/enums/enums.dart';
 import 'package:survey_app/pages/woody_debris/woody_debris_header_page.dart';
+import 'package:survey_app/widgets/popups/popup_continue.dart';
 import 'package:survey_app/widgets/tile_cards/tile_card_selection.dart';
 
 import '../../constants/constant_values.dart';
@@ -141,7 +142,28 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
                         title: "Transect ${index + 1}",
                         onPressed: () async {
                           if (wd.complete) {
-                            Popups.show(context, completeWarningPopup);
+                            Popups.show(
+                                context,
+                                PopupContinue(
+                                  "Notice: Woody Debris has been marked as complete",
+                                  contentText:
+                                      "You will be able to see Woody debris info but not make any edits. "
+                                      "Please click edit if you want to make any changes.",
+                                  rightBtnOnPressed: () {
+                                    context.pop();
+                                    context.pushNamed(Routes.woodyDebrisHeader,
+                                        extra: {
+                                          WoodyDebrisHeaderPage.keyWdHeader:
+                                              wdh,
+                                          WoodyDebrisHeaderPage
+                                              .keySummaryComplete: wd.complete
+                                        }).then((value) => db
+                                        .woodyDebrisTablesDao
+                                        .getWdHeaderFromId(wdh.id)
+                                        .then((value) => setState(
+                                            () => transList[index] = value)));
+                                  },
+                                ));
                           } else {
                             context.pushNamed(Routes.woodyDebrisHeader, extra: {
                               WoodyDebrisHeaderPage.keyWdHeader: wdh,
