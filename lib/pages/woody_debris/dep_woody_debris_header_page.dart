@@ -12,7 +12,7 @@ import '../../widgets/app_bar.dart';
 import '../../widgets/buttons/edit_icon_button.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
 import '../../widgets/buttons/icon_nav_button.dart';
-import '../../widgets/popups/popup_content_format.dart';
+import '../../widgets/popups/popup_content_list_format.dart';
 import '../../widgets/text/text_in_line.dart';
 import '../../widgets/titled_border.dart';
 

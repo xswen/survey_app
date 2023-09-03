@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:survey_app/enums/enums.dart';
+import 'package:survey_app/formatters/format_string.dart';
+import 'package:survey_app/widgets/popups/popup_continue.dart';
+import 'package:survey_app/widgets/popups/popup_dismiss.dart';
 import 'package:survey_app/widgets/tile_cards/tile_card_selection.dart';
 import 'package:survey_app/wrappers/survey_card.dart';
 
@@ -51,121 +54,17 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
     super.initState();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final db = Provider.of<Database>(context);
-
-    Future<void> updateSummary(SurveyHeadersCompanion entry) async {
-      (db.update(db.surveyHeaders)..where((t) => t.id.equals(survey.id)))
-          .write(entry);
-      db.surveyInfoTablesDao
-          .getSurvey(survey.id)
-          .then((value) => setState(() => survey = value));
-    }
-
-    return Scaffold(
-      appBar: OurAppBar(backFn: () {
-        widget.updateDashboard();
-        context.pop();
-      }, widget.title),
-      floatingActionButton: FloatingCompleteButton(
-        title: widget.title,
-        complete: survey.complete,
-        onPressed: () async {
-          Map<SurveyStatus, String>? result = checkAllComplete();
-          //All good
-          if (result == null) {
-            updateSummary(
-                SurveyHeadersCompanion(complete: d.Value(!survey.complete)));
-          }
-          //Some are left in progress
-          else if (result.containsKey(SurveyStatus.inProgress)) {
-            Popups.showDismiss(context, "Error: Surveys in progress",
-                contentText:
-                    "There are survey cards that are still in progress."
-                    "${result[SurveyStatus.inProgress]}"
-                    "\nPlease complete or delete to continue.");
-          }
-          //Case where no card has been started
-          else if (result.containsKey(SurveyStatus.complete)) {
-            Popups.showDismiss(context, "Error: No survey cards complete",
-                contentText: "No survey cards have been marked as complete."
-                    "${result[SurveyStatus.inProgress]}"
-                    "\nPlease complete or delete to continue.");
-          }
-          //Case where at least one card has been started
-          else if (result.containsKey(SurveyStatus.notStarted)) {
-            Popups.showDismiss(context, "Warning: Surveys not started",
-                contentText:
-                    "Please complete at least one survey card to mark as completed.");
-          }
-        },
-      ),
-      body: Center(
-        child: Column(
-          children: [
-            //Header Data
-            TitledBorder(
-                title: "Header Data",
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            TextLineLabelTop(
-                                value: Text(survey.province),
-                                label: const Text("Jurisdiction")),
-                            TextLineLabelTop(
-                                value: Text(survey.nfiPlot.toString()),
-                                label: const Text("Plot Number")),
-                          ],
-                        ),
-                        kDividerV,
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            TextLineLabelTop(
-                                value: Text(survey.measNum.toString()),
-                                label: const Text("Meas. Number")),
-                            TextLineLabelTop(
-                                value: Text(FormatDate.toStr(survey.measDate)),
-                                label: const Text("Meas. Date")),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                )),
-            const Divider(
-              thickness: 2,
-            ),
-            Expanded(
-              child: ListView(
-                children: tileCards,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Map<SurveyStatus, String>? checkAllComplete() {
-    String notStarted = "";
-    String inProgress = "";
+  Map<SurveyStatus, List<String>>? checkAllComplete() {
+    List<String> notStarted = [];
+    List<String> inProgress = [];
     bool oneComplete = false;
 
     for (SurveyCard card in cards) {
       SurveyStatus status = getStatus(card.surveyCardData);
       if (status == SurveyStatus.inProgress) {
-        inProgress = "$inProgress\n${card.name}";
+        inProgress.add(card.name);
       } else if (status == SurveyStatus.notStarted) {
-        notStarted = "$notStarted\n${card.name}";
+        notStarted.add(card.name);
       } else if (!oneComplete && status == SurveyStatus.complete) {
         oneComplete = true;
       }
@@ -177,7 +76,9 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
     }
     //Case there are no surveys in progress or marked as complete
     else if (!oneComplete) {
-      return {SurveyStatus.complete: ""};
+      return {
+        SurveyStatus.complete: ["None complete"]
+      };
     }
     //Case there is none in progress, at least one marked as complete
     else if (notStarted.isNotEmpty) {
@@ -266,5 +167,164 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
           cards = value;
           tileCards = generateTileCards(value);
         }));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final db = Provider.of<Database>(context);
+
+    Future<void> updateSummary(SurveyHeadersCompanion entry) async {
+      (db.update(db.surveyHeaders)..where((t) => t.id.equals(survey.id)))
+          .write(entry);
+      db.surveyInfoTablesDao
+          .getSurvey(survey.id)
+          .then((value) => setState(() => survey = value));
+    }
+
+    return Scaffold(
+      appBar: OurAppBar(backFn: () {
+        widget.updateDashboard();
+        context.pop();
+      }, widget.title),
+      floatingActionButton: FloatingCompleteButton(
+        title: widget.title,
+        complete: survey.complete,
+        onPressed: () async {
+          if (survey.complete) {
+            updateSummary(
+                const SurveyHeadersCompanion(complete: d.Value(false)));
+          } else {
+            Map<SurveyStatus, List<String>>? result = checkAllComplete();
+            //All good
+            if (result == null) {
+              updateSummary(
+                  SurveyHeadersCompanion(complete: d.Value(!survey.complete)));
+            }
+            //Some are left in progress
+            else if (result.containsKey(SurveyStatus.inProgress)) {
+              Popups.show(
+                  context,
+                  PopupDismiss(
+                    "Error: Surveys in progress",
+                    contentWidget: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "There are survey cards that are still in progress.",
+                          textAlign: TextAlign.start,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 12),
+                          child: Text(
+                            FormatString.generateBulletList(
+                                result[SurveyStatus.inProgress] ??
+                                    ["Error no in progress found"]),
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
+                        const Text(
+                          "Please complete or delete to continue.",
+                          textAlign: TextAlign.start,
+                        )
+                      ],
+                    ),
+                  ));
+            }
+            //Case where no card has been started
+            else if (result.containsKey(SurveyStatus.complete)) {
+              Popups.show(
+                  context,
+                  const PopupDismiss("Error: No survey cards complete",
+                      contentText:
+                          "No survey cards have been marked as complete."
+                          "\nPlease complete at least one survey card to mark as completed."));
+            }
+            //Case where at least one card has been started
+            else if (result.containsKey(SurveyStatus.notStarted)) {
+              Popups.show(
+                  context,
+                  PopupContinue("Warning: Not all survey cards are completed",
+                      contentWidget: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "The following survey cards are still not completed",
+                            textAlign: TextAlign.start,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 12),
+                            child: Text(
+                              FormatString.generateBulletList(
+                                  result[SurveyStatus.notStarted] ??
+                                      ["Error no notStarted found"]),
+                              textAlign: TextAlign.start,
+                            ),
+                          ),
+                          const Text(
+                            "Are you sure you want to continue?",
+                            textAlign: TextAlign.start,
+                          )
+                        ],
+                      ), rightBtnOnPressed: () {
+                    updateSummary(SurveyHeadersCompanion(
+                        complete: d.Value(!survey.complete)));
+                    context.pop();
+                  }));
+            }
+          }
+        },
+      ),
+      body: Center(
+        child: Column(
+          children: [
+            //Header Data
+            TitledBorder(
+                title: "Header Data",
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            TextLineLabelTop(
+                                value: Text(survey.province),
+                                label: const Text("Jurisdiction")),
+                            TextLineLabelTop(
+                                value: Text(survey.nfiPlot.toString()),
+                                label: const Text("Plot Number")),
+                          ],
+                        ),
+                        kDividerV,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            TextLineLabelTop(
+                                value: Text(survey.measNum.toString()),
+                                label: const Text("Meas. Number")),
+                            TextLineLabelTop(
+                                value: Text(FormatDate.toStr(survey.measDate)),
+                                label: const Text("Meas. Date")),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                )),
+            const Divider(
+              thickness: 2,
+            ),
+            Expanded(
+              child: ListView(
+                children: tileCards,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

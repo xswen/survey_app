@@ -8,6 +8,8 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:survey_app/pages/survey_info/survey_info_page.dart';
 import 'package:survey_app/widgets/data_input/data_input.dart';
+import 'package:survey_app/widgets/popups/popup_continue.dart';
+import 'package:survey_app/widgets/popups/popup_dismiss.dart';
 
 import '../../constants/margins_padding.dart';
 import '../../database/database.dart';
@@ -124,8 +126,10 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
                   onBeforePopup: (String? s) async {
                     if (Global.dbCompanionValueToStr(surveyHeader.province)
                         .isEmpty) {
-                      Popups.showDismiss(context,
-                          LocaleKeys.pleaseSelectAJurisdictionFirst.tr());
+                      Popups.show(
+                          context,
+                          PopupDismiss(
+                              LocaleKeys.pleaseSelectAJurisdictionFirst.tr()));
                       return false;
                     } else {
                       return true;
@@ -192,21 +196,24 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
 
                 if (result != null) {
                   if (context.mounted) {
-                    Popups.showDismiss(context, "Error", contentText: result);
+                    Popups.show(
+                        context, PopupDismiss("Error", contentText: result));
                   }
                 } else if (lastMeasNum != null &&
                     lastMeasNum! >= surveyHeader.measNum.value) {
                   if (context.mounted) {
-                    Popups.showContinue(
-                      context,
-                      "Warning: Last Measurement Number Mismatch",
-                      "You are trying to input a measurement value of ${surveyHeader.measNum.value} "
-                          "when the last measurement value on file is $lastMeasNum. "
-                          "\n Would you like to proceed?",
-                      rightBtnOnPressed: () async {
-                        _goToSurvey(context, db);
-                      },
-                    );
+                    Popups.show(
+                        context,
+                        PopupContinue(
+                          "Warning: Last Measurement Number Mismatch",
+                          contentText:
+                              "You are trying to input a measurement value of ${surveyHeader.measNum.value} "
+                              "when the last measurement value on file is $lastMeasNum. "
+                              "\n Would you like to proceed?",
+                          rightBtnOnPressed: () async {
+                            _goToSurvey(context, db);
+                          },
+                        ));
                   }
                 } else {
                   debugPrint(
