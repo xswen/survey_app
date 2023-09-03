@@ -259,4 +259,10 @@ class Database extends _$Database {
               .getSingleOrNull()),
     ];
   }
+
+  String companionValueToStr(value) => (value == null ||
+          value == const d.Value.absent() ||
+          value == const d.Value(null))
+      ? ""
+      : value.value.toString();
 }

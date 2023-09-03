@@ -5,17 +5,17 @@ class ErrorWoodyDebrisPiece with Global {
   String? checkErrorRound(WoodyDebrisRoundCompanion piece) {
     String result = "";
 
-    if (diameter(Global.dbCompanionValueToStr(piece.diameter)) != null) {
+    if (diameter(db.companionValueToStr(piece.diameter)) != null) {
       result += "Diameter \n";
     }
-    if (tiltAngle(Global.dbCompanionValueToStr(piece.tiltAngle)) != null) {
+    if (tiltAngle(db.companionValueToStr(piece.tiltAngle)) != null) {
       result += "Tilt Angle \n";
     }
 
     result += _treeAndDecayClass(
-        Global.dbCompanionValueToStr(piece.genus),
-        Global.dbCompanionValueToStr(piece.species),
-        Global.dbCompanionValueToStr(piece.decayClass));
+        db.companionValueToStr(piece.genus),
+        db.companionValueToStr(piece.species),
+        db.companionValueToStr(piece.decayClass));
 
     return result.isEmpty ? null : result;
   }
@@ -47,17 +47,17 @@ class ErrorWoodyDebrisPiece with Global {
   String? checkErrorOddAcum(WoodyDebrisOddCompanion piece) {
     String result = "";
 
-    if (horizontal(Global.dbCompanionValueToStr(piece.horLength)) != null) {
+    if (horizontal(db.companionValueToStr(piece.horLength)) != null) {
       result += "Horizontal Piece Length \n";
     }
-    if (vertical(Global.dbCompanionValueToStr(piece.verDepth)) != null) {
+    if (vertical(db.companionValueToStr(piece.verDepth)) != null) {
       result += "Vertical Depth \n";
     }
 
     result += _treeAndDecayClass(
-        Global.dbCompanionValueToStr(piece.genus),
-        Global.dbCompanionValueToStr(piece.species),
-        Global.dbCompanionValueToStr(piece.decayClass));
+        db.companionValueToStr(piece.genus),
+        db.companionValueToStr(piece.species),
+        db.companionValueToStr(piece.decayClass));
 
     return result.isEmpty ? null : result;
   }

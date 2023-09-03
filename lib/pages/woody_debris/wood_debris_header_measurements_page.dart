@@ -7,7 +7,6 @@ import 'package:survey_app/database/database.dart';
 
 import '../../constants/margins_padding.dart';
 import '../../formatters/thousands_formatter.dart';
-import '../../global.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
 import '../../widgets/data_input/data_input.dart';
@@ -69,9 +68,8 @@ class _WoodyDebrisHeaderMeasurementsState
             boxLabel: "Report to the nearest 0.1m",
             prefixIcon: FontAwesomeIcons.ruler,
             suffixVal: "m",
-            startingStr: Global.dbCompanionValueToStr(wdh.nomTransLen),
-            errorMsg:
-                nomTransLen(Global.dbCompanionValueToStr(wdh.nomTransLen)),
+            startingStr: db.companionValueToStr(wdh.nomTransLen),
+            errorMsg: nomTransLen(db.companionValueToStr(wdh.nomTransLen)),
             inputType: const TextInputType.numberWithOptions(decimal: true),
             inputFormatters: [
               LengthLimitingTextInputFormatter(5),

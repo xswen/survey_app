@@ -66,10 +66,10 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
 
     return Scaffold(
       appBar: OurAppBar(
-          Global.dbCompanionValueToStr(surveyHeader.province).isEmpty
+          db.companionValueToStr(surveyHeader.province).isEmpty
               ? LocaleKeys.createSurveyTitle
               : "Edit Survey", onLocaleChange: () {
-        if (Global.dbCompanionValueToStr(surveyHeader.province).isNotEmpty) {
+        if (db.companionValueToStr(surveyHeader.province).isNotEmpty) {
           db.referenceTablesDao
               .getJurisdictionName(surveyHeader.province.value, context.locale)
               .then((value) => setState(() {
@@ -114,8 +114,7 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
                       }
                     },
                     selectedItem:
-                        Global.dbCompanionValueToStr(surveyHeader.province)
-                                .isEmpty
+                        db.companionValueToStr(surveyHeader.province).isEmpty
                             ? LocaleKeys.pleaseSelectJurisdiction.tr()
                             : provinceName,
                     asyncItems: (s) => db.referenceTablesDao
@@ -124,8 +123,7 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
                   title: LocaleKeys.plotNum,
                   searchable: true,
                   onBeforePopup: (String? s) async {
-                    if (Global.dbCompanionValueToStr(surveyHeader.province)
-                        .isEmpty) {
+                    if (db.companionValueToStr(surveyHeader.province).isEmpty) {
                       Popups.show(
                           context,
                           PopupDismiss(
@@ -139,14 +137,15 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
                     _handlePlot(db, s);
                     setState(() {});
                   }),
-                  selectedItem: Global.dbCompanionValueToStr(
-                                  surveyHeader.province)
+                  selectedItem: db
+                              .companionValueToStr(surveyHeader.province)
                               .isNotEmpty &&
-                          (Global.dbCompanionValueToStr(surveyHeader.nfiPlot)
+                          (db
+                                  .companionValueToStr(surveyHeader.nfiPlot)
                                   .isEmpty ||
                               surveyHeader.nfiPlot.value == -1)
                       ? LocaleKeys.pleaseSelectPlot.tr()
-                      : Global.dbCompanionValueToStr(surveyHeader.nfiPlot),
+                      : db.companionValueToStr(surveyHeader.nfiPlot),
                   asyncItems: (s) => _getPlotNums(db),
                 ),
                 DataInput(
@@ -154,7 +153,7 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
                   controller: _controller,
                   startingStr: surveyHeader.measNum.value == _kDataMissing
                       ? ""
-                      : Global.dbCompanionValueToStr(surveyHeader.nfiPlot),
+                      : db.companionValueToStr(surveyHeader.nfiPlot),
                   onSubmit: (String s) {
                     int.tryParse(s) != null
                         ? setState(() => surveyHeader = surveyHeader.copyWith(
@@ -185,7 +184,7 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
 
                   //Check that the existing found survey isn't an update
                   existingSurveyId == null ||
-                          Global.dbCompanionValueToStr(surveyHeader.id) ==
+                          db.companionValueToStr(surveyHeader.id) ==
                               existingSurveyId.toString()
                       ? null
                       : result =
