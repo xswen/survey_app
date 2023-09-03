@@ -9,6 +9,8 @@ class Routes {
 
   static const String woodyDebris = "woodyDebris";
   static const String woodyDebrisHeader = "woodyDebrisHeader";
+  static const String woodyDebrisHeaderMeasurement =
+      "woodyDebrisHeaderMeasurement";
 
   static const String woodyDebrisTransectMeasurement = "transect-measurements";
   static const String woodyDebrisPieceMain = "pieces-main";

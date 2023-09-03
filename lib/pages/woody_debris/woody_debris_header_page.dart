@@ -1,11 +1,13 @@
 import 'package:drift/drift.dart' as d;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/margins_padding.dart';
 import '../../constants/text_designs.dart';
 import '../../database/database.dart';
+import '../../routes/route_names.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/buttons/edit_icon_button.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
@@ -132,12 +134,12 @@ class _WoodyDebrisHeaderPageState extends State<WoodyDebrisHeaderPage> {
                 } else if (wdh.complete) {
                   Popups.show(context, completeWarningPopup);
                 } else {
-                  // final result = await Get.toNamed(
-                  //     Routes.woodyDebrisTransectMeasurement,
-                  //     arguments: wdh);
-                  // if (Global.nullableToStr(result).isNotEmpty) {
-                  //   setState(() => wdh = result);
-                  // }
+                  context
+                      .pushNamed(Routes.woodyDebrisHeaderMeasurement,
+                          extra: wdh)
+                      .then((value) => db.woodyDebrisTablesDao
+                          .getWdHeaderFromId(wdh.id)
+                          .then((value) => setState(() => wdh = value)));
                 }
               }),
               child: Column(

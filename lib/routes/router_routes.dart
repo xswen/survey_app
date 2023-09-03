@@ -4,6 +4,7 @@ import 'package:survey_app/pages/surface_substrate/surface_substrate_summary_pag
 import 'package:survey_app/pages/survey_info/create_survey_page.dart';
 import 'package:survey_app/pages/survey_info/dashboard.dart';
 import 'package:survey_app/pages/survey_info/survey_info_page.dart';
+import 'package:survey_app/pages/woody_debris/wood_debris_header_measurements_page.dart';
 import 'package:survey_app/pages/woody_debris/woody_debris_header_page.dart';
 import 'package:survey_app/pages/woody_debris/woody_debris_summary_page.dart';
 
@@ -89,7 +90,18 @@ GoRouter router = GoRouter(
 
                               return WoodyDebrisHeaderPage(
                                   wdh: wdh, summaryComplete: summaryComplete);
-                            })
+                            },
+                            routes: [
+                              GoRoute(
+                                  name: Routes.woodyDebrisHeaderMeasurement,
+                                  path: "measurements",
+                                  builder: (context, state) {
+                                    WoodyDebrisHeaderData data =
+                                        state.extra as WoodyDebrisHeaderData;
+                                    return WoodyDebrisHeaderMeasurements(
+                                        wdh: data);
+                                  }),
+                            ])
                       ]),
                   GoRoute(
                     name: Routes.surfaceSubstrate,
