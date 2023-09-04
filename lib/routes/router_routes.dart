@@ -6,6 +6,7 @@ import 'package:survey_app/pages/survey_info/dashboard.dart';
 import 'package:survey_app/pages/survey_info/survey_info_page.dart';
 import 'package:survey_app/pages/woody_debris/wood_debris_header_measurements_page.dart';
 import 'package:survey_app/pages/woody_debris/woody_debris_header_page.dart';
+import 'package:survey_app/pages/woody_debris/woody_debris_piece_measurements/woody_debris_header_piece_main.dart';
 import 'package:survey_app/pages/woody_debris/woody_debris_summary_page.dart';
 
 import '../main.dart';
@@ -100,6 +101,24 @@ GoRouter router = GoRouter(
                                         state.extra as WoodyDebrisHeaderData;
                                     return WoodyDebrisHeaderMeasurements(
                                         wdh: data);
+                                  }),
+                              GoRoute(
+                                  name: Routes.woodyDebrisHeaderPieceMain,
+                                  path: "piece-main",
+                                  builder: (context, state) {
+                                    Map<String, dynamic> data =
+                                        state.extra as Map<String, dynamic>;
+                                    WoodyDebrisSmallData wdSm = data[
+                                        WoodyDebrisHeaderPieceMain.keyWdSmall];
+                                    int transNum = data[
+                                        WoodyDebrisHeaderPieceMain.keyTransNum];
+                                    bool transComplete = data[
+                                        WoodyDebrisHeaderPieceMain
+                                            .keyTransComplete];
+                                    return WoodyDebrisHeaderPieceMain(
+                                        wdSmall: wdSm,
+                                        transNum: transNum,
+                                        transComplete: transComplete);
                                   }),
                             ])
                       ]),

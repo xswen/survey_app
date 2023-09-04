@@ -17,6 +17,7 @@ import '../../widgets/popups/popup_dismiss.dart';
 import '../../widgets/popups/popups.dart';
 import '../../widgets/text/text_in_line.dart';
 import '../../widgets/titled_border.dart';
+import 'woody_debris_piece_measurements/woody_debris_header_piece_main.dart';
 
 class WoodyDebrisHeaderPage extends StatefulWidget {
   static const String keyWdHeader = "wdHeader";
@@ -245,15 +246,17 @@ class _WoodyDebrisHeaderPageState extends State<WoodyDebrisHeaderPage> {
               label: "Piece Measurements",
               onPressed: () async {
                 //TODO: Add woodyDebrisSmall
-                //  WoodyDebrisSmallData? wdSm = await _getOrCreateWdSmall();
-                //
-                //  wdSm == null
-                //      ? printError(info: "Small Wd returned null")
-                //      : Get.toNamed(Routes.woodyDebrisPieceMain, arguments: {
-                //    "wdSmall": (wdSm),
-                //    "transNum": wdh.transNum,
-                //    "transectComplete": wdh.complete,
-                //  });
+                getOrCreateWdSmall().then((wdSmall) {
+                  wdSmall == null
+                      ? debugPrint("Error, wdSmall returned null")
+                      : context
+                          .pushNamed(Routes.woodyDebrisHeaderPieceMain, extra: {
+                          WoodyDebrisHeaderPieceMain.keyWdSmall: wdSmall,
+                          WoodyDebrisHeaderPieceMain.keyTransNum: wdh.transNum,
+                          WoodyDebrisHeaderPieceMain.keyTransComplete:
+                              wdh.complete,
+                        }).then((value) => null);
+                });
               },
               padding: const EdgeInsets.symmetric(
                   vertical: kPaddingV, horizontal: kPaddingH),
