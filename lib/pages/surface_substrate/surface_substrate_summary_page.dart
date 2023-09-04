@@ -9,6 +9,7 @@ import '../../widgets/buttons/floating_complete_button.dart';
 import '../../widgets/popups/popups.dart';
 
 class SurfaceSubstrateSummaryPage extends StatefulWidget {
+  static const String routeName = "surfaceSubstrate";
   static const String keySsSummary = "ssSummary";
   static const String keyTransList = "transList";
 

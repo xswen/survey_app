@@ -12,7 +12,6 @@ import 'package:survey_app/wrappers/survey_card.dart';
 import '../../constants/margins_padding.dart';
 import '../../database/database.dart';
 import '../../formatters/format_date.dart';
-import '../../routes/route_names.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
 import '../../widgets/popups/popups.dart';
@@ -22,6 +21,7 @@ import '../surface_substrate/surface_substrate_summary_page.dart';
 import '../woody_debris/woody_debris_summary_page.dart';
 
 class SurveyInfoPage extends StatefulWidget {
+  static const String routeName = "surveyInfo";
   static const String keySurvey = "survey";
   static const String keyCards = "cards";
   static const String keyUpdateDash = "updateDashboard";
@@ -124,7 +124,7 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
     switch (category) {
       case SurveyCardCategories.woodyDebris:
         var tmp = await context.pushNamed(
-          Routes.woodyDebris,
+          WoodyDebrisSummaryPage.routeName,
           extra: data == null
               ?
               //Insert empty wdSummaryCompanion
@@ -144,7 +144,7 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
         break;
       case SurveyCardCategories.surfaceSubstrate:
         var tmp = await context.pushNamed(
-          Routes.surfaceSubstrate,
+          SurfaceSubstrateSummaryPage.routeName,
           extra: data == null
               ?
               //Insert empty wdSummaryCompanion

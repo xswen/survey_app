@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:survey_app/constants/constant_values.dart';
-import 'package:survey_app/routes/router_routes.dart';
+import 'package:survey_app/pages/survey_info/dashboard.dart';
+import 'package:survey_app/routes/router_routes_main.dart';
 import 'package:survey_app/widgets/app_bar.dart';
 
 import 'database/database.dart';
 import 'l10n/locale_keys.g.dart';
-import 'routes/route_names.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -81,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: [
                     ElevatedButton(
                         onPressed: () async {
-                          context.goNamed(Routes.dashboard,
+                          context.goNamed(DashboardPage.routeName,
                               extra: await db.surveyInfoTablesDao.allSurveys);
                         },
                         child: const Text(LocaleKeys.start).tr()),

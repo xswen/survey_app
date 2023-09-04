@@ -9,24 +9,24 @@ import 'package:survey_app/l10n/locale_keys.g.dart';
 import '../../constants/margins_padding.dart';
 import '../../database/database.dart';
 import '../../formatters/format_date.dart';
-import '../../routes/route_names.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/text/text_line_label.dart';
 import '../../widgets/tile_cards/tile_card_dashboard.dart';
 import 'create_survey_page.dart';
 import 'survey_info_page.dart';
 
-class Dashboard extends StatefulWidget {
-  const Dashboard({super.key, required this.title, required this.surveys});
+class DashboardPage extends StatefulWidget {
+  static const String routeName = "dashboard";
+  const DashboardPage({super.key, required this.title, required this.surveys});
 
   final String title;
   final List<SurveyHeader> surveys;
 
   @override
-  State<Dashboard> createState() => _DashboardState();
+  State<DashboardPage> createState() => _DashboardPageState();
 }
 
-class _DashboardState extends State<Dashboard> {
+class _DashboardPageState extends State<DashboardPage> {
   int idx = 0;
   late List<SurveyHeader> surveys;
 
@@ -54,7 +54,7 @@ class _DashboardState extends State<Dashboard> {
         child: ElevatedButton(
             onPressed: () async {
               context.pushNamed(
-                Routes.surveyInfo,
+                SurveyInfoPage.routeName,
                 extra: {
                   SurveyInfoPage.keySurvey:
                       await db.surveyInfoTablesDao.getSurvey(survey.id),
@@ -102,12 +102,12 @@ class _DashboardState extends State<Dashboard> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           context.pushNamed(
-            Routes.createSurvey,
+            CreateSurveyPage.routeName,
             extra: {
-              CreateSurvey.keySurvey: SurveyHeadersCompanion(
+              CreateSurveyPage.keySurvey: SurveyHeadersCompanion(
                   measNum: const d.Value(-1),
                   measDate: d.Value(DateTime.now())),
-              CreateSurvey.keyUpdateDash: updateDashboard
+              CreateSurveyPage.keyUpdateDash: updateDashboard
             },
           );
         },
@@ -132,7 +132,7 @@ class _DashboardState extends State<Dashboard> {
                   surveyHeader: survey,
                   onTap: () async {
                     context.pushNamed(
-                      Routes.surveyInfo,
+                      SurveyInfoPage.routeName,
                       extra: {
                         SurveyInfoPage.keySurvey:
                             await db.surveyInfoTablesDao.getSurvey(survey.id),

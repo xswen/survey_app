@@ -11,7 +11,6 @@ import 'package:survey_app/widgets/tile_cards/tile_card_selection.dart';
 import '../../constants/constant_values.dart';
 import '../../constants/margins_padding.dart';
 import '../../global.dart';
-import '../../routes/route_names.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
 import '../../widgets/date_select.dart';
@@ -20,6 +19,7 @@ import '../../widgets/popups/popup_dismiss.dart';
 import '../../widgets/popups/popups.dart';
 
 class WoodyDebrisSummaryPage extends StatefulWidget {
+  static const String routeName = "woodyDebrisSummary";
   static const String keyWdSummary = "wdHeader";
   static const String keyTransList = "transList";
 
@@ -151,7 +151,8 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
                                       "Please click edit if you want to make any changes.",
                                   rightBtnOnPressed: () {
                                     context.pop();
-                                    context.pushNamed(Routes.woodyDebrisHeader,
+                                    context.pushNamed(
+                                        WoodyDebrisHeaderPage.routeName,
                                         extra: {
                                           WoodyDebrisHeaderPage.keyWdHeader:
                                               wdh,
@@ -165,11 +166,12 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
                                   },
                                 ));
                           } else {
-                            context.pushNamed(Routes.woodyDebrisHeader, extra: {
-                              WoodyDebrisHeaderPage.keyWdHeader: wdh,
-                              WoodyDebrisHeaderPage.keySummaryComplete:
-                                  wd.complete
-                            }).then((value) => db.woodyDebrisTablesDao
+                            context.pushNamed(WoodyDebrisHeaderPage.routeName,
+                                extra: {
+                                  WoodyDebrisHeaderPage.keyWdHeader: wdh,
+                                  WoodyDebrisHeaderPage.keySummaryComplete:
+                                      wd.complete
+                                }).then((value) => db.woodyDebrisTablesDao
                                 .getWdHeaderFromId(wdh.id)
                                 .then((value) =>
                                     setState(() => transList[index] = value)));

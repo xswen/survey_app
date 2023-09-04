@@ -18,6 +18,7 @@ import '../../widgets/data_input/data_input.dart';
 import '../../widgets/popups/popups.dart';
 
 class WoodyDebrisHeaderMeasurements extends StatefulWidget {
+  static const String routeName = "woodyDebrisHeaderMeasurement";
   static const String keyWdHeader = "wdHeader";
 
   const WoodyDebrisHeaderMeasurements({Key? key, required this.wdh})
