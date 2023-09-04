@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:survey_app/pages/woody_debris/wood_debris_header_measurements_page.dart';
 
 import '../../constants/margins_padding.dart';
 import '../../constants/text_designs.dart';
 import '../../database/database.dart';
-import '../../routes/route_names.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/buttons/edit_icon_button.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
@@ -20,6 +20,7 @@ import '../../widgets/titled_border.dart';
 import 'woody_debris_piece_measurements/woody_debris_header_piece_main.dart';
 
 class WoodyDebrisHeaderPage extends StatefulWidget {
+  static const String routeName = "woodyDebrisHeader";
   static const String keyWdHeader = "wdHeader";
   static const String keySummaryComplete = "summaryComplete";
 
@@ -136,7 +137,7 @@ class _WoodyDebrisHeaderPageState extends State<WoodyDebrisHeaderPage> {
                   Popups.show(context, completeWarningPopup);
                 } else {
                   context
-                      .pushNamed(Routes.woodyDebrisHeaderMeasurement,
+                      .pushNamed(WoodyDebrisHeaderMeasurements.routeName,
                           extra: wdh)
                       .then((value) => db.woodyDebrisTablesDao
                           .getWdHeaderFromId(wdh.id)
@@ -249,13 +250,14 @@ class _WoodyDebrisHeaderPageState extends State<WoodyDebrisHeaderPage> {
                 getOrCreateWdSmall().then((wdSmall) {
                   wdSmall == null
                       ? debugPrint("Error, wdSmall returned null")
-                      : context
-                          .pushNamed(Routes.woodyDebrisHeaderPieceMain, extra: {
-                          WoodyDebrisHeaderPieceMain.keyWdSmall: wdSmall,
-                          WoodyDebrisHeaderPieceMain.keyTransNum: wdh.transNum,
-                          WoodyDebrisHeaderPieceMain.keyTransComplete:
-                              wdh.complete,
-                        }).then((value) => null);
+                      : context.pushNamed(WoodyDebrisHeaderPieceMain.routeName,
+                          extra: {
+                              WoodyDebrisHeaderPieceMain.keyWdSmall: wdSmall,
+                              WoodyDebrisHeaderPieceMain.keyTransNum:
+                                  wdh.transNum,
+                              WoodyDebrisHeaderPieceMain.keyTransComplete:
+                                  wdh.complete,
+                            }).then((value) => null);
                 });
               },
               padding: const EdgeInsets.symmetric(

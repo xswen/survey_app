@@ -10,6 +10,7 @@ import '../../../widgets/popups/popup_dismiss.dart';
 import '../../../widgets/popups/popups.dart';
 
 class WoodyDebrisHeaderPieceMain extends StatefulWidget {
+  static const String routeName = "woodyDebrisTransectPieceMain";
   static const keyWdSmall = "wdSmall";
   static const keyTransNum = "transNum";
   static const keyTransComplete = "transectComplete";

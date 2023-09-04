@@ -16,17 +16,17 @@ import '../../database/database.dart';
 import '../../formatters/thousands_formatter.dart';
 import '../../global.dart';
 import '../../l10n/locale_keys.g.dart';
-import '../../routes/route_names.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/date_select.dart';
 import '../../widgets/dropdowns/drop_down_async_list.dart';
 import '../../widgets/popups/popups.dart';
 
-class CreateSurvey extends StatefulWidget {
+class CreateSurveyPage extends StatefulWidget {
+  static const String routeName = "createSurvey";
   static const String keySurvey = "survey";
   static const String keyUpdateDash = "updateDash";
 
-  const CreateSurvey(
+  const CreateSurveyPage(
       {super.key,
       required this.surveyHeader,
       required this.province,
@@ -36,10 +36,10 @@ class CreateSurvey extends StatefulWidget {
   final void Function() updateDashboard;
 
   @override
-  State<CreateSurvey> createState() => _CreateSurveyState();
+  State<CreateSurveyPage> createState() => _CreateSurveyPageState();
 }
 
-class _CreateSurveyState extends State<CreateSurvey> with Global {
+class _CreateSurveyPageState extends State<CreateSurveyPage> with Global {
   final _controller = TextEditingController();
   static const int _kDataMissing = -1;
   late SurveyHeadersCompanion surveyHeader;
@@ -236,7 +236,7 @@ class _CreateSurveyState extends State<CreateSurvey> with Global {
     if (context.mounted) {
       if (context.mounted) {
         context.pushReplacementNamed(
-          Routes.surveyInfo,
+          SurveyInfoPage.routeName,
           extra: {
             SurveyInfoPage.keySurvey:
                 await db.surveyInfoTablesDao.getSurvey(id),

@@ -23,33 +23,33 @@ GoRouter router = GoRouter(
             ),
         routes: [
           GoRoute(
-            name: Routes.dashboard,
+            name: DashboardPage.routeName,
             path: "dashboard",
             builder: (context, state) {
               List<SurveyHeader> surveys = state.extra as List<SurveyHeader>;
-              return Dashboard(
+              return DashboardPage(
                 title: "Dashboard",
                 surveys: surveys,
               );
             },
             routes: [
               GoRoute(
-                  name: Routes.createSurvey,
+                  name: CreateSurveyPage.routeName,
                   path: "create-survey",
                   builder: (context, state) {
                     Map<String, dynamic> data =
                         state.extra as Map<String, dynamic>;
                     SurveyHeadersCompanion survey =
-                        data[CreateSurvey.keySurvey];
+                        data[CreateSurveyPage.keySurvey];
                     void Function() updateDashboard =
-                        data[CreateSurvey.keyUpdateDash];
-                    return CreateSurvey(
+                        data[CreateSurveyPage.keyUpdateDash];
+                    return CreateSurveyPage(
                         surveyHeader: survey,
                         province: state.uri.queryParameters["province"] ?? "",
                         updateDashboard: updateDashboard);
                   }),
               GoRoute(
-                name: Routes.surveyInfo,
+                name: SurveyInfoPage.routeName,
                 path: "survey-info",
                 builder: (context, state) {
                   Map<String, dynamic> data =
@@ -65,7 +65,7 @@ GoRouter router = GoRouter(
                 },
                 routes: [
                   GoRoute(
-                      name: Routes.woodyDebris,
+                      name: WoodyDebrisSummaryPage.routeName,
                       path: "woody-debris",
                       builder: (context, state) {
                         Map<String, dynamic> data =
@@ -79,7 +79,7 @@ GoRouter router = GoRouter(
                       },
                       routes: [
                         GoRoute(
-                            name: Routes.woodyDebrisHeader,
+                            name: WoodyDebrisHeaderPage.routeName,
                             path: "header",
                             builder: (context, state) {
                               Map<String, dynamic> data =
@@ -94,7 +94,7 @@ GoRouter router = GoRouter(
                             },
                             routes: [
                               GoRoute(
-                                  name: Routes.woodyDebrisHeaderMeasurement,
+                                  name: WoodyDebrisHeaderMeasurements.routeName,
                                   path: "measurements",
                                   builder: (context, state) {
                                     WoodyDebrisHeaderData data =
@@ -103,7 +103,7 @@ GoRouter router = GoRouter(
                                         wdh: data);
                                   }),
                               GoRoute(
-                                  name: Routes.woodyDebrisHeaderPieceMain,
+                                  name: WoodyDebrisHeaderPieceMain.routeName,
                                   path: "piece-main",
                                   builder: (context, state) {
                                     Map<String, dynamic> data =
@@ -123,7 +123,7 @@ GoRouter router = GoRouter(
                             ])
                       ]),
                   GoRoute(
-                    name: Routes.surfaceSubstrate,
+                    name: SurfaceSubstrateSummaryPage.routeName,
                     path: "surface-substrate",
                     builder: (context, state) {
                       Map<String, dynamic> data =
