@@ -34,7 +34,8 @@ class _WoodyDebrisHeaderMeasurementsState
     extends State<WoodyDebrisHeaderMeasurements> {
   late WoodyDebrisHeaderCompanion wdh;
 
-  String get title => "Woody Debris Transect";
+  final String title = "Woody Debris Transect";
+  bool changeMade = false;
 
   @override
   void initState() {
@@ -124,8 +125,19 @@ class _WoodyDebrisHeaderMeasurementsState
     final db = Provider.of<Database>(context);
 
     return Scaffold(
-      appBar:
-          OurAppBar("Woody Debris Measurement Data: Transect ${wdh.transNum}"),
+      appBar: OurAppBar(
+          "Woody Debris Measurement Data: Transect ${wdh.transNum.value}",
+          backFn: () => changeMade
+              ? Popups.show(
+                  context,
+                  PopupContinue("Warning: Unsaved changes.",
+                      contentText:
+                          "Going back now will delete any changes that have been made. Are you sure you wish to continue?",
+                      rightBtnOnPressed: () {
+                    context.pop();
+                    context.pop();
+                  }))
+              : context.pop(context.pop)),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: kPaddingH),
         children: [
@@ -142,6 +154,7 @@ class _WoodyDebrisHeaderMeasurementsState
               ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
             ],
             onSubmit: (String s) {
+              changeMade = true;
               if (s == "") {
                 updateWdhCompanion(
                     wdh.copyWith(nomTransLen: const d.Value.absent()));
@@ -165,6 +178,7 @@ class _WoodyDebrisHeaderMeasurementsState
                 ThousandsFormatter(allowFraction: false),
               ],
               onSubmit: (String s) {
+                changeMade = true;
                 if (s == "") {
                   updateWdhCompanion(
                       wdh.copyWith(transAzimuth: const d.Value.absent()));
@@ -188,6 +202,7 @@ class _WoodyDebrisHeaderMeasurementsState
                 ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
               ],
               onSubmit: (String s) {
+                changeMade = true;
                 if (s == "") {
                   updateWdhCompanion(
                       wdh.copyWith(swdMeasLen: const d.Value.absent()));
@@ -212,6 +227,7 @@ class _WoodyDebrisHeaderMeasurementsState
                 ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
               ],
               onSubmit: (String s) {
+                changeMade = true;
                 if (s == "") {
                   updateWdhCompanion(
                       wdh.copyWith(mcwdMeasLen: const d.Value.absent()));
@@ -235,6 +251,7 @@ class _WoodyDebrisHeaderMeasurementsState
                 ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
               ],
               onSubmit: (String s) {
+                changeMade = true;
                 if (s == "") {
                   updateWdhCompanion(
                       wdh.copyWith(lcwdMeasLen: const d.Value.absent()));
@@ -249,6 +266,7 @@ class _WoodyDebrisHeaderMeasurementsState
             checkTitle: "Mark decay class as missing",
             checkValue: wdh.swdDecayClass == const d.Value(-1),
             onChange: (b) {
+              changeMade = true;
               b!
                   ? updateWdhCompanion(
                       wdh.copyWith(swdDecayClass: const d.Value(-1)))
@@ -256,8 +274,11 @@ class _WoodyDebrisHeaderMeasurementsState
                       wdh.copyWith(swdDecayClass: const d.Value.absent()));
             },
             child: DecayClassSelectBuilder(
-              onChangedFn: (s) => updateWdhCompanion(
-                  wdh.copyWith(swdDecayClass: d.Value(int.parse(s!)))),
+              onChangedFn: (s) {
+                changeMade = true;
+                updateWdhCompanion(
+                    wdh.copyWith(swdDecayClass: d.Value(int.parse(s!))));
+              },
               selectedItem: db.companionValueToStr(wdh.swdDecayClass),
             ),
           ),
