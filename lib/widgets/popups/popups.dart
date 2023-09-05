@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:survey_app/widgets/popups/popup_continue.dart';
 import 'package:survey_app/widgets/popups/popup_dismiss.dart';
 
 class Popups {
@@ -12,6 +13,14 @@ class Popups {
       PopupDismiss("Error: $location Marked as Complete",
           contentText:
               "$location has already been marked as complete. Please go back and press 'Edit' to make changes here");
+
+  static PopupContinue generateWarningUnsavedChanges(
+      void Function() rightBtnOnPressed) {
+    return PopupContinue("Warning: Unsaved changes.",
+        contentText:
+            "Going back now will delete any changes that have been made. Are you sure you wish to continue?",
+        rightBtnOnPressed: () => rightBtnOnPressed());
+  }
 
   static show(BuildContext context, Widget popup) {
     showDialog(

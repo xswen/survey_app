@@ -128,15 +128,10 @@ class _WoodyDebrisHeaderMeasurementsState
       appBar: OurAppBar(
           "Woody Debris Measurement Data: Transect ${wdh.transNum.value}",
           backFn: () => changeMade
-              ? Popups.show(
-                  context,
-                  PopupContinue("Warning: Unsaved changes.",
-                      contentText:
-                          "Going back now will delete any changes that have been made. Are you sure you wish to continue?",
-                      rightBtnOnPressed: () {
-                    context.pop();
-                    context.pop();
-                  }))
+              ? Popups.show(context, Popups.generateWarningUnsavedChanges(() {
+                  context.pop();
+                  context.pop();
+                }))
               : context.pop(context.pop)),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: kPaddingH),

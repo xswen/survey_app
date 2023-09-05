@@ -22,6 +22,8 @@ class _WoodyDebrisPieceRoundPageState extends State<WoodyDebrisPieceRoundPage> {
   final Database db = Database.instance;
 
   final String title = "tmp";
+  final controller = TextEditingController();
+  final int kDataMissing = -1;
 
   late WoodyDebrisRoundCompanion piece;
   late String genusCode;
@@ -33,6 +35,12 @@ class _WoodyDebrisPieceRoundPageState extends State<WoodyDebrisPieceRoundPage> {
     genusCode = db.companionValueToStr(piece.genus);
     speciesName = db.companionValueToStr(piece.species);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   @override
