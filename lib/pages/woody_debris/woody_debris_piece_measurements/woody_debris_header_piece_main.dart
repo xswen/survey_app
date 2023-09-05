@@ -1,7 +1,9 @@
+import 'package:drift/drift.dart' as d;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:survey_app/database/database.dart';
+import 'package:survey_app/pages/woody_debris/woody_debris_piece_measurements/woody_debris_piece_round_page.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../constants/constant_values.dart';
@@ -10,7 +12,9 @@ import '../../../widgets/app_bar.dart';
 import '../../../widgets/buttons/floating_complete_button.dart';
 import '../../../widgets/popups/popup_dismiss.dart';
 import '../../../widgets/popups/popups.dart';
+import '../../../widgets/tables/table_creation_builder.dart';
 import '../../../widgets/tables/table_data_grid_source_builder.dart';
+import '../../../widgets/text/text_header_separator.dart';
 import 'builders/woody_debris_small_piece_builder.dart';
 
 class _ColNames {
@@ -174,6 +178,73 @@ class _WoodyDebrisHeaderPieceMainState
     final PopupDismiss surveyCompleteWarningPopup =
         Popups.generatePreviousMarkedCompleteErrorPopup("Survey");
 
+    void addPiece() => Popups.show(
+        context,
+        SimpleDialog(
+          title: const Text("Create New: "),
+          children: [
+            SimpleDialogOption(
+              onPressed: () async {
+                //_createOdd(_db.woodyDebrisTablesDao.odd);
+              },
+              child: const Text("Odd Piece"),
+            ),
+            SimpleDialogOption(
+              onPressed: () {
+                //_createOdd(_db.woodyDebrisTablesDao.accumulation);
+              },
+              child: const Text("Accumulation"),
+            ),
+            SimpleDialogOption(
+              onPressed: () async {
+                db.woodyDebrisTablesDao
+                    .getLastWdPieceNum(wdSm.wdHeaderId)
+                    .then((lastPieceNum) {
+                  int pieceNum = lastPieceNum + 1;
+                  WoodyDebrisRoundCompanion wdRound = WoodyDebrisRoundCompanion(
+                      wdHeaderId: d.Value(wdSm.wdHeaderId),
+                      pieceNum: d.Value(pieceNum));
+                  context.pop();
+                  context
+                      .pushNamed(WoodyDebrisPieceRoundPage.routeName,
+                          extra: wdRound)
+                      .then((value) => updatePieces());
+                });
+                WoodyDebrisRoundCompanion wdRound = WoodyDebrisRoundCompanion(
+                    wdHeaderId: d.Value(wdSm.wdHeaderId),
+                    pieceNum: d.Value((await db.woodyDebrisTablesDao
+                            .getLastWdPieceNum(wdSm.wdHeaderId)) +
+                        1));
+              },
+              child: const Text("Round Piece"),
+            ),
+            SimpleDialogOption(
+              onPressed: () => context.pop(),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [Text("Cancel")],
+              ),
+            ),
+          ],
+        ));
+
+    void changeWdPieceData(
+        WoodyDebrisOddData? odd, WoodyDebrisRoundData? round) async {
+      if (transComplete) {
+        Popups.show(context, completeWarningPopup);
+      } else if (odd != null) {
+        // var tmp = await Get.toNamed(Routes.woodyDebrisPieceAddOddAccu,
+        //     arguments: odd.toCompanion(true));
+      } else if (round != null) {
+        // var tmp = await Get.toNamed(Routes.woodyDebrisPieceAddRound,
+        //     arguments: round.toCompanion(true));
+      } else {
+        // printError(info: "Error: No data given");
+      }
+
+      updatePieces();
+    }
+
     return Scaffold(
       appBar: OurAppBar("$title: Transect $transNum"),
       floatingActionButton: FloatingCompleteButton(
@@ -187,6 +258,55 @@ class _WoodyDebrisHeaderPieceMainState
             WoodyDebrisSmallPieceBuilder(wdSm: wdSm, complete: transComplete),
             const SizedBox(
               height: kPaddingV * 2,
+            ),
+            TextHeaderSeparator(
+              title: "Large Woody Debris",
+              sideWidget: Padding(
+                padding: const EdgeInsets.only(left: kPaddingH),
+                child: ElevatedButton(
+                    onPressed: () => transComplete
+                        ? Popups.show(context, completeWarningPopup)
+                        : addPiece(),
+                    style: ButtonStyle(
+                        backgroundColor: transComplete
+                            ? MaterialStateProperty.all<Color>(Colors.grey)
+                            : null),
+                    child: const Text("Add Piece")),
+              ),
+            ),
+            Expanded(
+              child: TableCreationBuilder(
+                source: largePieceDataSource,
+                colNames: _ColNames.colHeadersList,
+                onCellTap: (DataGridCellTapDetails details) async {
+                  // Assuming the "edit" column index is 2
+                  if (details.column.columnName == _ColNames.edit &&
+                      details.rowColumnIndex.rowIndex != 0) {
+                    if (transComplete) {
+                      Popups.show(context, completeWarningPopup);
+                    } else {
+                      int pId = largePieceDataSource
+                          .dataGridRows[details.rowColumnIndex.rowIndex - 1]
+                          .getCells()[0]
+                          .value;
+
+                      if (largePieceDataSource
+                              .dataGridRows[details.rowColumnIndex.rowIndex - 1]
+                              .getCells()[2]
+                              .value ==
+                          "R") {
+                        WoodyDebrisRoundData wdRound =
+                            await db.woodyDebrisTablesDao.getWdRound(pId);
+                        changeWdPieceData(null, wdRound);
+                      } else {
+                        WoodyDebrisOddData wdOdd =
+                            await db.woodyDebrisTablesDao.getWdOddAccu(pId);
+                        changeWdPieceData(wdOdd, null);
+                      }
+                    }
+                  }
+                },
+              ),
             ),
           ],
         ),

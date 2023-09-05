@@ -3,6 +3,7 @@ import 'package:survey_app/database/database.dart';
 import 'package:survey_app/pages/woody_debris/wood_debris_header_measurements_page.dart';
 import 'package:survey_app/pages/woody_debris/woody_debris_header_page.dart';
 import 'package:survey_app/pages/woody_debris/woody_debris_piece_measurements/woody_debris_header_piece_main.dart';
+import 'package:survey_app/pages/woody_debris/woody_debris_piece_measurements/woody_debris_piece_round_page.dart';
 import 'package:survey_app/pages/woody_debris/woody_debris_summary_page.dart';
 
 GoRoute goRouteWoodyDebris = GoRoute(
@@ -39,7 +40,7 @@ GoRoute goRouteWoodyDebris = GoRoute(
                 }),
             GoRoute(
                 name: WoodyDebrisHeaderPieceMain.routeName,
-                path: "piece-main",
+                path: "pieces",
                 builder: (context, state) {
                   Map<String, dynamic> data =
                       state.extra as Map<String, dynamic>;
@@ -52,6 +53,16 @@ GoRoute goRouteWoodyDebris = GoRoute(
                       wdSmall: wdSm,
                       transNum: transNum,
                       transComplete: transComplete);
-                }),
+                },
+                routes: [
+                  GoRoute(
+                      name: WoodyDebrisPieceRoundPage.routeName,
+                      path: "round",
+                      builder: (context, state) {
+                        WoodyDebrisRoundCompanion data =
+                            state.extra as WoodyDebrisRoundCompanion;
+                        return WoodyDebrisPieceRoundPage(piece: data);
+                      }),
+                ]),
           ])
     ]);
