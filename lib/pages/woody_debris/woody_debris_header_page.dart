@@ -52,12 +52,11 @@ class _WoodyDebrisHeaderPageState extends State<WoodyDebrisHeaderPage> {
   Widget build(BuildContext context) {
     final db = Provider.of<Database>(context);
     final PopupDismiss completeWarningPopup =
-        Popups.generateCompleteErrorPopup(context, title);
+        Popups.generateCompleteErrorPopup(title);
     final PopupDismiss surveyCompleteWarningPopup =
-        Popups.generatePreviousMarkedCompleteErrorPopup(
-            context, "Woody Debris");
+        Popups.generatePreviousMarkedCompleteErrorPopup("Woody Debris");
 
-    Future<void> updateWdhData(WoodyDebrisHeaderCompanion entry) async {
+    void updateWdhData(WoodyDebrisHeaderCompanion entry) {
       (db.update(db.woodyDebrisHeader)..where((t) => t.id.equals(wdh.id)))
           .write(entry);
       db.woodyDebrisTablesDao
@@ -246,7 +245,6 @@ class _WoodyDebrisHeaderPageState extends State<WoodyDebrisHeaderPage> {
               space: kPaddingIcon,
               label: "Piece Measurements",
               onPressed: () async {
-                //TODO: Add woodyDebrisSmall
                 getOrCreateWdSmall().then((wdSmall) {
                   wdSmall == null
                       ? debugPrint("Error, wdSmall returned null")

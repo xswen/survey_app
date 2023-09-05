@@ -266,10 +266,23 @@ class _WoodyDebrisHeaderMeasurementsState
             checkTitle: "Mark decay class as missing",
             checkValue: wdh.swdDecayClass == const d.Value(-1),
             onChange: (b) {
+              //Don't need to check if wdh is complete bc you'd never get here
+              //if it was
+
               changeMade = true;
               b!
-                  ? updateWdhCompanion(
-                      wdh.copyWith(swdDecayClass: const d.Value(-1)))
+                  ? Popups.show(
+                      context,
+                      PopupContinue(
+                        "Warning: Setting decay class as Missing",
+                        contentText:
+                            "Are you sure you want to set decay class to missing?",
+                        rightBtnOnPressed: () {
+                          updateWdhCompanion(
+                              wdh.copyWith(swdDecayClass: const d.Value(-1)));
+                          context.pop();
+                        },
+                      ))
                   : updateWdhCompanion(
                       wdh.copyWith(swdDecayClass: const d.Value.absent()));
             },

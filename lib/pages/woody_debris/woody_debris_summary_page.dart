@@ -51,9 +51,9 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
     debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
     final db = Provider.of<Database>(context);
     final PopupDismiss completeWarningPopup =
-        Popups.generateCompleteErrorPopup(context, title);
+        Popups.generateCompleteErrorPopup(title);
     final PopupDismiss surveyCompleteWarningPopup =
-        Popups.generatePreviousMarkedCompleteErrorPopup(context, "Survey");
+        Popups.generatePreviousMarkedCompleteErrorPopup("Survey");
 
     return Scaffold(
       appBar: OurAppBar(title),

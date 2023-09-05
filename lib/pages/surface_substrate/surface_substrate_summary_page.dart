@@ -42,9 +42,9 @@ class _SurfaceSubstrateSummaryPageState
   Widget build(BuildContext context) {
     final db = Provider.of<Database>(context);
     final PopupDismiss completeWarningPopup =
-        Popups.generateCompleteErrorPopup(context, title);
+        Popups.generateCompleteErrorPopup(title);
     final PopupDismiss surveyCompleteWarningPopup =
-        Popups.generatePreviousMarkedCompleteErrorPopup(context, "Survey");
+        Popups.generatePreviousMarkedCompleteErrorPopup("Survey");
 
     Future<void> updateSummary(SurfaceSubstrateSummaryCompanion entry) async {
       (db.update(db.surfaceSubstrateSummary)..where((t) => t.id.equals(ss.id)))
@@ -72,7 +72,9 @@ class _SurfaceSubstrateSummaryPageState
         },
       ),
       body: Center(
-        child: Text("Surface substrate is ${ss.complete}"),
+        child: Text("This is just for proof of concept. Will be added later."
+            "\nSurface substrate is "
+            "${ss.complete ? "Complete" : "Not Complete"}"),
       ),
     );
   }
