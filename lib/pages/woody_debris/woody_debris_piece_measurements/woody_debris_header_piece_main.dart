@@ -15,6 +15,7 @@ import '../../../widgets/popups/popups.dart';
 import '../../../widgets/tables/table_creation_builder.dart';
 import '../../../widgets/tables/table_data_grid_source_builder.dart';
 import '../../../widgets/text/text_header_separator.dart';
+import '../woody_debris_piece_accu_odd_page.dart';
 import 'builders/woody_debris_small_piece_builder.dart';
 
 class _ColNames {
@@ -178,20 +179,37 @@ class _WoodyDebrisHeaderPieceMainState
     final PopupDismiss surveyCompleteWarningPopup =
         Popups.generatePreviousMarkedCompleteErrorPopup("Survey");
 
+    void createOddOrAccuPiece(String type) {
+      db.woodyDebrisTablesDao
+          .getLastWdPieceNum(wdSm.wdHeaderId)
+          .then((lastPieceNum) {
+        int pieceNum = lastPieceNum + 1;
+        WoodyDebrisOddCompanion wdOdd = WoodyDebrisOddCompanion(
+            wdHeaderId: d.Value(wdSm.wdHeaderId),
+            pieceNum: d.Value(pieceNum),
+            accumOdd: d.Value(type));
+        context
+            .pushNamed(WoodyDebrisPieceAccuOddPage.routeName, extra: wdOdd)
+            .then((value) => updatePieces());
+      });
+    }
+
     void addPiece() => Popups.show(
         context,
         SimpleDialog(
           title: const Text("Create New: "),
           children: [
             SimpleDialogOption(
-              onPressed: () async {
-                //_createOdd(_db.woodyDebrisTablesDao.odd);
+              onPressed: () {
+                context.pop();
+                createOddOrAccuPiece(db.woodyDebrisTablesDao.odd);
               },
               child: const Text("Odd Piece"),
             ),
             SimpleDialogOption(
               onPressed: () {
-                //_createOdd(_db.woodyDebrisTablesDao.accumulation);
+                context.pop();
+                createOddOrAccuPiece(db.woodyDebrisTablesDao.accumulation);
               },
               child: const Text("Accumulation"),
             ),
@@ -210,11 +228,6 @@ class _WoodyDebrisHeaderPieceMainState
                           extra: wdRound)
                       .then((value) => updatePieces());
                 });
-                WoodyDebrisRoundCompanion wdRound = WoodyDebrisRoundCompanion(
-                    wdHeaderId: d.Value(wdSm.wdHeaderId),
-                    pieceNum: d.Value((await db.woodyDebrisTablesDao
-                            .getLastWdPieceNum(wdSm.wdHeaderId)) +
-                        1));
               },
               child: const Text("Round Piece"),
             ),
@@ -233,9 +246,10 @@ class _WoodyDebrisHeaderPieceMainState
       if (transComplete) {
         Popups.show(context, completeWarningPopup);
       } else if (odd != null) {
-        //context.pushNamed()
-        // var tmp = await Get.toNamed(Routes.woodyDebrisPieceAddOddAccu,
-        //     arguments: odd.toCompanion(true));
+        context
+            .pushNamed(WoodyDebrisPieceAccuOddPage.routeName,
+                extra: odd.toCompanion(true))
+            .then((value) => WoodyDebrisPieceAccuOddPage);
       } else if (round != null) {
         context
             .pushNamed(WoodyDebrisPieceRoundPage.routeName,
@@ -244,8 +258,6 @@ class _WoodyDebrisHeaderPieceMainState
       } else {
         debugPrint("Error: No data given");
       }
-
-      updatePieces();
     }
 
     return Scaffold(

@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart' as d;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:survey_app/database/database.dart';
@@ -7,23 +8,24 @@ import '../../../widgets/buttons/floating_complete_button.dart';
 import '../../../widgets/popups/popup_dismiss.dart';
 import '../../../widgets/popups/popups.dart';
 
-class WoodyDebrisPieceRoundPage extends StatefulWidget {
-  static const String routeName = "woodyDebrisPieceRound";
-  const WoodyDebrisPieceRoundPage({Key? key, required this.piece})
+class WoodyDebrisPieceAccuOddPage extends StatefulWidget {
+  static const String routeName = "woodyDebrisPieceAccuOdd";
+  const WoodyDebrisPieceAccuOddPage({Key? key, required this.piece})
       : super(key: key);
 
-  final WoodyDebrisRoundCompanion piece;
+  final WoodyDebrisOddCompanion piece;
   @override
-  State<WoodyDebrisPieceRoundPage> createState() =>
-      _WoodyDebrisPieceRoundPageState();
+  State<WoodyDebrisPieceAccuOddPage> createState() =>
+      _WoodyDebrisPieceAccuOddPageState();
 }
 
-class _WoodyDebrisPieceRoundPageState extends State<WoodyDebrisPieceRoundPage> {
+class _WoodyDebrisPieceAccuOddPageState
+    extends State<WoodyDebrisPieceAccuOddPage> {
   final Database db = Database.instance;
 
   final String title = "tmp";
 
-  late WoodyDebrisRoundCompanion piece;
+  late WoodyDebrisOddCompanion piece;
   late String genusCode;
   late String speciesName;
   //static final ErrorWoodyDebrisPiece _error = ErrorWoodyDebrisPiece();
@@ -32,6 +34,7 @@ class _WoodyDebrisPieceRoundPageState extends State<WoodyDebrisPieceRoundPage> {
     piece = widget.piece;
     genusCode = db.companionValueToStr(piece.genus);
     speciesName = db.companionValueToStr(piece.species);
+    d.Value("hi");
     super.initState();
   }
 

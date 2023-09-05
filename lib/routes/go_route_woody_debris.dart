@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:survey_app/database/database.dart';
 import 'package:survey_app/pages/woody_debris/wood_debris_header_measurements_page.dart';
 import 'package:survey_app/pages/woody_debris/woody_debris_header_page.dart';
+import 'package:survey_app/pages/woody_debris/woody_debris_piece_accu_odd_page.dart';
 import 'package:survey_app/pages/woody_debris/woody_debris_piece_measurements/woody_debris_header_piece_main.dart';
 import 'package:survey_app/pages/woody_debris/woody_debris_piece_measurements/woody_debris_piece_round_page.dart';
 import 'package:survey_app/pages/woody_debris/woody_debris_summary_page.dart';
@@ -62,6 +63,14 @@ GoRoute goRouteWoodyDebris = GoRoute(
                         WoodyDebrisRoundCompanion data =
                             state.extra as WoodyDebrisRoundCompanion;
                         return WoodyDebrisPieceRoundPage(piece: data);
+                      }),
+                  GoRoute(
+                      name: WoodyDebrisPieceAccuOddPage.routeName,
+                      path: "oddOrAccu",
+                      builder: (context, state) {
+                        WoodyDebrisOddCompanion data =
+                            state.extra as WoodyDebrisOddCompanion;
+                        return WoodyDebrisPieceAccuOddPage(piece: data);
                       }),
                 ]),
           ])
