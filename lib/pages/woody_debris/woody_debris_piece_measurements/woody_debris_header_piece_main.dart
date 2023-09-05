@@ -265,7 +265,11 @@ class _WoodyDebrisHeaderPieceMainState
       floatingActionButton: FloatingCompleteButton(
         title: "",
         complete: false,
-        onPressed: () {},
+        onPressed: () {
+          if (transComplete) {
+            Popups.show(context, surveyCompleteWarningPopup);
+          } else {}
+        },
       ),
       body: Center(
         child: Column(
