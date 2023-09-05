@@ -229,17 +229,20 @@ class _WoodyDebrisHeaderPieceMainState
         ));
 
     void changeWdPieceData(
-        WoodyDebrisOddData? odd, WoodyDebrisRoundData? round) async {
+        {WoodyDebrisOddData? odd, WoodyDebrisRoundData? round}) {
       if (transComplete) {
         Popups.show(context, completeWarningPopup);
       } else if (odd != null) {
+        //context.pushNamed()
         // var tmp = await Get.toNamed(Routes.woodyDebrisPieceAddOddAccu,
         //     arguments: odd.toCompanion(true));
       } else if (round != null) {
-        // var tmp = await Get.toNamed(Routes.woodyDebrisPieceAddRound,
-        //     arguments: round.toCompanion(true));
+        context
+            .pushNamed(WoodyDebrisPieceRoundPage.routeName,
+                extra: round.toCompanion(true))
+            .then((value) => updatePieces());
       } else {
-        // printError(info: "Error: No data given");
+        debugPrint("Error: No data given");
       }
 
       updatePieces();
@@ -295,13 +298,12 @@ class _WoodyDebrisHeaderPieceMainState
                               .getCells()[2]
                               .value ==
                           "R") {
-                        WoodyDebrisRoundData wdRound =
-                            await db.woodyDebrisTablesDao.getWdRound(pId);
-                        changeWdPieceData(null, wdRound);
+                        db.woodyDebrisTablesDao.getWdRound(pId).then(
+                            (wdRound) => changeWdPieceData(round: wdRound));
                       } else {
-                        WoodyDebrisOddData wdOdd =
-                            await db.woodyDebrisTablesDao.getWdOddAccu(pId);
-                        changeWdPieceData(wdOdd, null);
+                        db.woodyDebrisTablesDao
+                            .getWdOddAccu(pId)
+                            .then((wdOdd) => changeWdPieceData(odd: wdOdd));
                       }
                     }
                   }
