@@ -22,6 +22,15 @@ class Popups {
         rightBtnOnPressed: () => rightBtnOnPressed());
   }
 
+  static PopupContinue generateWarningMarkingAsMissing(
+      void Function() rightBtnOnPressed,
+      {String? extraInfo}) {
+    return PopupContinue("Warning: Missing field.",
+        contentText:
+            "Are you sure you want to mark field as missing? ${extraInfo ?? ""}",
+        rightBtnOnPressed: () => rightBtnOnPressed());
+  }
+
   static show(BuildContext context, Widget popup) {
     showDialog(
         context: context,

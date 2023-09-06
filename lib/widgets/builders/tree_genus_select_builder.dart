@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import '../../database/database.dart';
 import '../dropdowns/drop_down_async_list.dart';
@@ -20,7 +19,14 @@ class TreeGenusSelectBuilder extends StatefulWidget {
 }
 
 class _TreeGenusSelectBuilderState extends State<TreeGenusSelectBuilder> {
+  final Database db = Database.instance;
   String genusName = "";
+
+  void _getGenusName() {
+    db.referenceTablesDao
+        .getGenusNameFromCode(widget.genusCode)
+        .then((value) => setState(() => genusName = value));
+  }
 
   @override
   void initState() {
@@ -32,25 +38,16 @@ class _TreeGenusSelectBuilderState extends State<TreeGenusSelectBuilder> {
 
   @override
   Widget build(BuildContext context) {
+    Future<List<String>> getGenusList() =>
+        db.referenceTablesDao.genusLatinNames;
+
     return DropDownAsyncList(
       searchable: true,
       title: "Tree Genus",
       onBeforePopup: widget.onBeforePopup,
       onChangedFn: widget.onChangedFn,
-      asyncItems: (s) => _getGenusList(),
+      asyncItems: (s) => getGenusList(),
       selectedItem: genusName,
     );
-  }
-
-  Future<List<String>> _getGenusList() {
-    final db = Get.find<Database>();
-    return db.referenceTablesDao.genusLatinNames;
-  }
-
-  void _getGenusName() {
-    final db = Get.find<Database>();
-    db.referenceTablesDao
-        .getGenusNameFromCode(widget.genusCode)
-        .then((value) => setState(() => genusName = value));
   }
 }

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:survey_app/pages/woody_debris/wood_debris_header_measurements_page.dart';
 
 import '../../constants/margins_padding.dart';
 import '../../constants/text_designs.dart';
@@ -17,7 +16,8 @@ import '../../widgets/popups/popup_dismiss.dart';
 import '../../widgets/popups/popups.dart';
 import '../../widgets/text/text_in_line.dart';
 import '../../widgets/titled_border.dart';
-import 'woody_debris_piece_measurements/woody_debris_header_piece_main.dart';
+import 'wood_debris_header_measurements_page.dart';
+import 'woody_debris_piece/woody_debris_header_piece_main.dart';
 
 class WoodyDebrisHeaderPage extends StatefulWidget {
   static const String routeName = "woodyDebrisHeader";

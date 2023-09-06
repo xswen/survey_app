@@ -78,11 +78,11 @@ class WoodyDebrisTablesDao extends DatabaseAccessor<Database>
             ..where((tbl) => tbl.wdHeaderId.equals(wdHeaderId)))
           .getSingleOrNull();
 //====================Woody Debris Pieces====================
-  Future<int> addWdPieceOddAccu(WoodyDebrisOddCompanion entry) =>
-      into(woodyDebrisOdd).insert(entry);
+  Future<int> addOrUpdateWdPieceOddAccu(WoodyDebrisOddCompanion entry) =>
+      into(woodyDebrisOdd).insertOnConflictUpdate(entry);
 
-  Future<int> addWdPieceRound(WoodyDebrisRoundCompanion entry) =>
-      into(woodyDebrisRound).insert(entry);
+  Future<int> addOrUpdateWdPieceRound(WoodyDebrisRoundCompanion entry) =>
+      into(woodyDebrisRound).insertOnConflictUpdate(entry);
 
   Future<WoodyDebrisRoundData> getWdRound(int id) =>
       (select(woodyDebrisRound)..where((tbl) => tbl.id.equals(id))).getSingle();

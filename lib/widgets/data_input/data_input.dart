@@ -92,7 +92,9 @@ class _DataInputState extends State<DataInput> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(widget.title, style: widget.titleStyle),
+                widget.title.isNotEmpty
+                    ? Text(widget.title, style: widget.titleStyle)
+                    : Container(),
                 SizedBox(
                   child: Padding(
                     padding: widget.textBoxPadding,

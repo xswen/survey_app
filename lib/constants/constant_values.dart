@@ -30,3 +30,5 @@ const kColHeaderMapKeyEdit = "Edit";
 
 const kLocaleFr = Locale("fr", "CA");
 const kLocaleEn = Locale("en", "CA");
+
+const kDegreeSign = "\u00B0";
