@@ -20,6 +20,7 @@ import '../../../widgets/app_bar.dart';
 import '../../../widgets/builders/decay_class_select_builder.dart';
 import '../../../widgets/data_input/data_input.dart';
 import '../../../widgets/popups/popups.dart';
+import '../../delete_page.dart';
 
 class WoodyDebrisPieceRoundPage extends StatefulWidget {
   static const String routeName = "woodyDebrisPieceRound";
@@ -291,7 +292,28 @@ class _WoodyDebrisPieceRoundPageState extends State<WoodyDebrisPieceRoundPage> {
                 ),
               ),
               widget.deleteFn != null
-                  ? DeleteButton(delete: widget.deleteFn!)
+                  ? DeleteButton(
+                      delete: () => Popups.show(
+                        context,
+                        PopupContinue("Warning: Deleting Piece",
+                            contentText: "You are about to delete this piece. "
+                                "Are you sure you want to continue?",
+                            rightBtnOnPressed: () {
+                          //close popup
+                          context.pop();
+                          context.pushNamed(DeletePage.routeName, extra: {
+                            DeletePage.keyObjectName: "Round Piece",
+                            DeletePage.keyDeleteFn: widget.deleteFn!,
+                            DeletePage.keyAfterDeleteFn: () {
+                              //Leave delete page
+                              context.pop();
+                              //Leave edit page
+                              context.pop();
+                            }
+                          });
+                        }),
+                      ),
+                    )
                   : Container(),
             ],
           ),

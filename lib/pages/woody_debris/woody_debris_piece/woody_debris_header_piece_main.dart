@@ -318,8 +318,11 @@ class _WoodyDebrisHeaderPieceMainState
                         db.woodyDebrisTablesDao.getWdRound(pId).then(
                             (wdRound) => changeWdPieceData(
                                 round: wdRound,
-                                deleteFn: () => db.delete(db.woodyDebrisRound)
-                                  ..where((tbl) => tbl.id.equals(wdRound.id))));
+                                deleteFn: () async => await (db
+                                        .delete(db.woodyDebrisRound)
+                                      ..where(
+                                          (tbl) => tbl.id.equals(wdRound.id)))
+                                    .go()));
                       } else {
                         db.woodyDebrisTablesDao
                             .getWdOddAccu(pId)

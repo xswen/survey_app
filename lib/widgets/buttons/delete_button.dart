@@ -7,11 +7,13 @@ class DeleteButton extends StatelessWidget {
       {super.key,
       this.title = "Delete",
       this.padding = const EdgeInsets.only(top: kPaddingV * 2),
-      required this.delete});
+      required this.delete,
+      this.fullWidth = true});
 
   final String title;
   final EdgeInsets padding;
   final void Function() delete;
+  final bool fullWidth;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class DeleteButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () => delete(),
         style: ElevatedButton.styleFrom(
-            minimumSize: const Size.fromHeight(50),
+            minimumSize: fullWidth ? const Size.fromHeight(50) : null,
             backgroundColor: Colors.red // NEW
             ),
         child: Text(title),
