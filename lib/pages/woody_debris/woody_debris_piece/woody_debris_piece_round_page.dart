@@ -9,6 +9,7 @@ import 'package:survey_app/formatters/format_string.dart';
 import 'package:survey_app/pages/woody_debris/woody_debris_piece/woody_debris_piece_error_checks.dart';
 import 'package:survey_app/widgets/builders/tree_genus_select_builder.dart';
 import 'package:survey_app/widgets/builders/tree_species_select_builder.dart';
+import 'package:survey_app/widgets/buttons/delete_button.dart';
 import 'package:survey_app/widgets/hide_info_checkbox.dart';
 import 'package:survey_app/widgets/popups/popup_continue.dart';
 import 'package:survey_app/widgets/popups/popup_dismiss.dart';
@@ -286,9 +287,12 @@ class _WoodyDebrisPieceRoundPageState extends State<WoodyDebrisPieceRoundPage> {
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size.fromHeight(50), // NEW
                   ),
-                  child: const Text("Continue"),
+                  child: const Text("Save"),
                 ),
               ),
+              widget.deleteFn != null
+                  ? DeleteButton(delete: widget.deleteFn!)
+                  : Container(),
             ],
           ),
         ]),
