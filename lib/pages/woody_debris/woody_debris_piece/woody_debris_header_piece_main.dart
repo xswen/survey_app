@@ -8,7 +8,6 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import '../../../constants/constant_values.dart';
 import '../../../constants/margins_padding.dart';
 import '../../../widgets/app_bar.dart';
-import '../../../widgets/buttons/floating_complete_button.dart';
 import '../../../widgets/popups/popup_dismiss.dart';
 import '../../../widgets/popups/popups.dart';
 import '../../../widgets/tables/table_creation_builder.dart';
@@ -264,15 +263,6 @@ class _WoodyDebrisHeaderPieceMainState
 
     return Scaffold(
       appBar: OurAppBar("$title: Transect $transNum"),
-      floatingActionButton: FloatingCompleteButton(
-        title: "",
-        complete: false,
-        onPressed: () {
-          if (transComplete) {
-            Popups.show(context, surveyCompleteWarningPopup);
-          } else {}
-        },
-      ),
       body: Center(
         child: Column(
           children: [
