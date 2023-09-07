@@ -9,6 +9,7 @@ import 'package:survey_app/formatters/format_string.dart';
 import 'package:survey_app/pages/woody_debris/woody_debris_piece/woody_debris_piece_error_checks.dart';
 import 'package:survey_app/widgets/builders/tree_genus_select_builder.dart';
 import 'package:survey_app/widgets/builders/tree_species_select_builder.dart';
+import 'package:survey_app/widgets/buttons/delete_button.dart';
 import 'package:survey_app/widgets/hide_info_checkbox.dart';
 import 'package:survey_app/widgets/popups/popup_continue.dart';
 import 'package:survey_app/widgets/popups/popup_dismiss.dart';
@@ -19,13 +20,19 @@ import '../../../widgets/app_bar.dart';
 import '../../../widgets/builders/decay_class_select_builder.dart';
 import '../../../widgets/data_input/data_input.dart';
 import '../../../widgets/popups/popups.dart';
+import '../../delete_page.dart';
 
 class WoodyDebrisPieceRoundPage extends StatefulWidget {
   static const String routeName = "woodyDebrisPieceRound";
-  const WoodyDebrisPieceRoundPage({Key? key, required this.piece})
+  static const String keyPiece = "piece";
+  static const String keyDeleteFn = "deleteFn";
+  const WoodyDebrisPieceRoundPage(
+      {Key? key, required this.piece, this.deleteFn})
       : super(key: key);
 
   final WoodyDebrisRoundCompanion piece;
+  final void Function()? deleteFn;
+
   @override
   State<WoodyDebrisPieceRoundPage> createState() =>
       _WoodyDebrisPieceRoundPageState();
@@ -281,9 +288,33 @@ class _WoodyDebrisPieceRoundPageState extends State<WoodyDebrisPieceRoundPage> {
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size.fromHeight(50), // NEW
                   ),
-                  child: const Text("Continue"),
+                  child: const Text("Save"),
                 ),
               ),
+              widget.deleteFn != null
+                  ? DeleteButton(
+                      delete: () => Popups.show(
+                        context,
+                        PopupContinue("Warning: Deleting Piece",
+                            contentText: "You are about to delete this piece. "
+                                "Are you sure you want to continue?",
+                            rightBtnOnPressed: () {
+                          //close popup
+                          context.pop();
+                          context.pushNamed(DeletePage.routeName, extra: {
+                            DeletePage.keyObjectName: "Round Piece",
+                            DeletePage.keyDeleteFn: widget.deleteFn!,
+                            DeletePage.keyAfterDeleteFn: () {
+                              //Leave delete page
+                              context.pop();
+                              //Leave edit page
+                              context.pop();
+                            }
+                          });
+                        }),
+                      ),
+                    )
+                  : Container(),
             ],
           ),
         ]),

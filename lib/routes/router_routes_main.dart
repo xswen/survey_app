@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:survey_app/database/database.dart';
+import 'package:survey_app/pages/delete_page.dart';
 import 'package:survey_app/pages/survey_info/create_survey_page.dart';
 import 'package:survey_app/pages/survey_info/dashboard.dart';
 import 'package:survey_app/pages/survey_info/survey_info_page.dart';
@@ -18,6 +19,21 @@ GoRouter router = GoRouter(
               title: 'Test',
             ),
         routes: [
+          GoRoute(
+              name: DeletePage.routeName,
+              path: "delete",
+              builder: (context, state) {
+                Map<String, dynamic> data = state.extra as Map<String, dynamic>;
+                String objectName = data[DeletePage.keyObjectName];
+                void Function() deleteFn = data[DeletePage.keyDeleteFn];
+                void Function()? afterDeleteFn =
+                    data[DeletePage.keyAfterDeleteFn];
+
+                return DeletePage(
+                    objectName: objectName,
+                    deleteFn: deleteFn,
+                    afterDeleteFn: afterDeleteFn);
+              }),
           GoRoute(
             name: DashboardPage.routeName,
             path: "dashboard",

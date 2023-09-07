@@ -223,10 +223,10 @@ class _WoodyDebrisHeaderPieceMainState
                       wdHeaderId: d.Value(wdSm.wdHeaderId),
                       pieceNum: d.Value(pieceNum));
                   context.pop();
-                  context
-                      .pushNamed(WoodyDebrisPieceRoundPage.routeName,
-                          extra: wdRound)
-                      .then((value) => updatePieces());
+                  context.pushNamed(WoodyDebrisPieceRoundPage.routeName,
+                      extra: {
+                        WoodyDebrisPieceRoundPage.keyPiece: wdRound
+                      }).then((value) => updatePieces());
                 });
               },
               child: const Text("Round Piece"),
@@ -242,19 +242,21 @@ class _WoodyDebrisHeaderPieceMainState
         ));
 
     void changeWdPieceData(
-        {WoodyDebrisOddData? odd, WoodyDebrisRoundData? round}) {
+        {WoodyDebrisOddData? odd,
+        WoodyDebrisRoundData? round,
+        void Function()? deleteFn}) {
       if (transComplete) {
         Popups.show(context, completeWarningPopup);
       } else if (odd != null) {
         context
             .pushNamed(WoodyDebrisPieceAccuOddPage.routeName,
                 extra: odd.toCompanion(true))
-            .then((value) => WoodyDebrisPieceAccuOddPage);
-      } else if (round != null) {
-        context
-            .pushNamed(WoodyDebrisPieceRoundPage.routeName,
-                extra: round.toCompanion(true))
             .then((value) => updatePieces());
+      } else if (round != null) {
+        context.pushNamed(WoodyDebrisPieceRoundPage.routeName, extra: {
+          WoodyDebrisPieceRoundPage.keyPiece: round.toCompanion(true),
+          WoodyDebrisPieceRoundPage.keyDeleteFn: deleteFn
+        }).then((value) => updatePieces());
       } else {
         debugPrint("Error: No data given");
       }
@@ -314,7 +316,13 @@ class _WoodyDebrisHeaderPieceMainState
                               .value ==
                           "R") {
                         db.woodyDebrisTablesDao.getWdRound(pId).then(
-                            (wdRound) => changeWdPieceData(round: wdRound));
+                            (wdRound) => changeWdPieceData(
+                                round: wdRound,
+                                deleteFn: () async => await (db
+                                        .delete(db.woodyDebrisRound)
+                                      ..where(
+                                          (tbl) => tbl.id.equals(wdRound.id)))
+                                    .go()));
                       } else {
                         db.woodyDebrisTablesDao
                             .getWdOddAccu(pId)
