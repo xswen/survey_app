@@ -22,7 +22,7 @@ class PopupDismiss extends StatelessWidget {
             ),
           ),
       actions: <Widget>[
-        TextButton(
+        CupertinoDialogAction(
           onPressed: () => context.pop(),
           child: Text(buttonTitle ?? "Ok"),
         ),

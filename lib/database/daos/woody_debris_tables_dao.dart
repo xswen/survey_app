@@ -53,23 +53,42 @@ class WoodyDebrisTablesDao extends DatabaseAccessor<Database>
 //====================Woody Debris Header====================
   Future<int> addWdHeader(WoodyDebrisHeaderCompanion entry) =>
       into(woodyDebrisHeader).insert(entry);
+  Future<WoodyDebrisHeaderData> updateWdHeaderTransNum(
+      int wdhId, int transNum) async {
+    var tmp = await ((update(woodyDebrisHeader)
+          ..where((tbl) => tbl.id.equals(wdhId)))
+        .write(WoodyDebrisHeaderCompanion(
+            id: Value(wdhId), transNum: Value(transNum))));
+    return getWdHeaderFromId(wdhId);
+  }
+
   Future<WoodyDebrisHeaderData> getWdHeaderFromId(int id) =>
       (select(woodyDebrisHeader)..where((tbl) => tbl.id.equals(id)))
           .getSingle();
-  Future<List<WoodyDebrisHeaderData>> getWdHeadersFromWdsId(int wdsId) async =>
+  Future<List<WoodyDebrisHeaderData>> getWdHeadersFromWdsId(int wdsId) =>
       (select(woodyDebrisHeader)
             ..where((tbl) => tbl.wdId.equals(wdsId))
             ..orderBy([
-              (t) =>
-                  OrderingTerm(expression: t.transNum, mode: OrderingMode.asc)
+              (t) => OrderingTerm(
+                  expression: t.transNum,
+                  mode: OrderingMode.asc,
+                  nulls: NullsOrder.last)
             ]))
           .get();
+
+  Future<List<int?>> getUsedTransnums(int wdsId) {
+    final query = select(woodyDebrisHeader)
+      ..where((tbl) => tbl.wdId.equals(wdsId));
+    return query.map((row) => row.transNum).get();
+  }
+
   Future<WoodyDebrisHeaderData?> getWdHeaderFromTransNum(
           int wdId, int transNum) =>
       (select(woodyDebrisHeader)
             ..where(
                 (tbl) => tbl.wdId.equals(wdId) & tbl.transNum.equals(transNum)))
           .getSingleOrNull();
+
 //====================Woody Debris Small====================
   Future<int> addWdSmall(WoodyDebrisSmallCompanion entry) =>
       into(woodyDebrisSmall).insert(entry);

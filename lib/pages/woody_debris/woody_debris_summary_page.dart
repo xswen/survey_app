@@ -5,13 +5,13 @@ import 'package:provider/provider.dart';
 import 'package:survey_app/database/database.dart';
 import 'package:survey_app/enums/enums.dart';
 import 'package:survey_app/pages/woody_debris/woody_debris_header_page.dart';
-import 'package:survey_app/widgets/popups/popup_continue.dart';
 import 'package:survey_app/widgets/tile_cards/tile_card_selection.dart';
 
 import '../../constants/constant_values.dart';
 import '../../constants/margins_padding.dart';
 import '../../global.dart';
 import '../../widgets/app_bar.dart';
+import '../../widgets/builders/set_transect_num_builder.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
 import '../../widgets/date_select.dart';
 import '../../widgets/dropdowns/drop_down_default.dart';
@@ -55,6 +55,52 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
     final PopupDismiss surveyCompleteWarningPopup =
         Popups.generatePreviousMarkedCompleteErrorPopup("Survey");
 
+    void updateTransList() => db.woodyDebrisTablesDao
+        .getWdHeadersFromWdsId(wd.id)
+        .then((value) => setState(() => transList = value));
+
+    void goToWdhPage(WoodyDebrisHeaderData wdh) =>
+        context.pushNamed(WoodyDebrisHeaderPage.routeName, extra: {
+          WoodyDebrisHeaderPage.keyWdHeader: wdh,
+          WoodyDebrisHeaderPage.keySummaryComplete: wd.complete
+        }).then((value) => updateTransList());
+
+    void goAndHandleUninitializedTransect(WoodyDebrisHeaderData wdh) {
+      int? transNum;
+      db.woodyDebrisTablesDao.getUsedTransnums(wd.id).then(
+            (usedTransNums) => Popups.show(
+              context,
+              Popups.show(
+                  context,
+                  SetTransectNumBuilder(
+                    selectedItem: "PLease select a transect number",
+                    disabledFn: (s) =>
+                        usedTransNums.contains(int.tryParse(s) ?? -1),
+                    onChanged: (s) => transNum = int.tryParse(s ?? "-1"),
+                    onSubmit: () {
+                      if (transNum == null || transNum! < 1) {
+                        debugPrint(
+                            "Error: selected item didn't parse correctly");
+                        Popups.show(
+                            context,
+                            const PopupDismiss(
+                              "Error: in parsing",
+                              contentText: "There was a system error. "
+                                  "Request cannot be completed",
+                            ));
+                        context.pop();
+                      } else {
+                        db.woodyDebrisTablesDao
+                            .updateWdHeaderTransNum(wdh.id, transNum!)
+                            .then((newWdh) => goToWdhPage(newWdh));
+                        context.pop();
+                      }
+                    },
+                  )),
+            ),
+          );
+    }
+
     return Scaffold(
       appBar: OurAppBar(title),
       floatingActionButton: FloatingCompleteButton(
@@ -66,20 +112,17 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
             if (surveyComplete) {
               Popups.show(context, surveyCompleteWarningPopup);
             } else if (wd.complete) {
-              updateWdSummary(
-                      db,
-                      const WoodyDebrisSummaryCompanion(
-                          complete: d.Value(false)))
-                  .then((value) => null);
+              updateWdSummary(db,
+                  const WoodyDebrisSummaryCompanion(complete: d.Value(false)));
             } else if (transList.isEmpty) {
-              Popups.missingTransect(context);
+              Popups.showMissingTransect(context);
             } else {
               checkHeadersComplete()
                   ? updateWdSummary(
                       db,
                       const WoodyDebrisSummaryCompanion(
                           complete: d.Value(true)))
-                  : Popups.incompleteTransect(context);
+                  : Popups.showIncompleteTransect(context);
             }
           });
         },
@@ -88,15 +131,13 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
         child: Column(
           children: [
             CalendarSelect(
-                date: wd.measDate,
-                label: "Enter Measurement Date",
-                readOnly: wd.complete,
-                readOnlyPopup: completeWarningPopup,
-                setStateFn: (DateTime date) async {
-                  updateWdSummary(
-                      db, WoodyDebrisSummaryCompanion(measDate: d.Value(date)));
-                  setState(() {});
-                }),
+              date: wd.measDate,
+              label: "Enter Measurement Date",
+              readOnly: wd.complete,
+              readOnlyPopup: completeWarningPopup,
+              setStateFn: (DateTime date) async => updateWdSummary(
+                  db, WoodyDebrisSummaryCompanion(measDate: d.Value(date))),
+            ),
             Container(
               margin: const EdgeInsets.fromLTRB(
                   kPaddingH, 0, kPaddingH, kPaddingV / 2),
@@ -132,17 +173,15 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
                   itemBuilder: (BuildContext cxt, int index) {
                     WoodyDebrisHeaderData wdh = transList[index];
                     return TileCardSelection(
-                        title: "Transect ${index + 1}",
+                        title:
+                            "Transect ${wdh.transNum ?? "number not yet initialized"}",
                         onPressed: () async {
                           if (wd.complete) {
                             Popups.show(
                                 context,
-                                PopupContinue(
-                                  "Notice: Woody Debris has been marked as complete",
-                                  contentText:
-                                      "You will be able to see Woody debris info but not make any edits. "
-                                      "Please click edit if you want to make any changes.",
-                                  rightBtnOnPressed: () {
+                                Popups.generateNoticeSurveyComplete(
+                                  "Woody Debris",
+                                  () {
                                     context.pop();
                                     context.pushNamed(
                                         WoodyDebrisHeaderPage.routeName,
@@ -159,15 +198,11 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
                                   },
                                 ));
                           } else {
-                            context.pushNamed(WoodyDebrisHeaderPage.routeName,
-                                extra: {
-                                  WoodyDebrisHeaderPage.keyWdHeader: wdh,
-                                  WoodyDebrisHeaderPage.keySummaryComplete:
-                                      wd.complete
-                                }).then((value) => db.woodyDebrisTablesDao
-                                .getWdHeaderFromId(wdh.id)
-                                .then((value) =>
-                                    setState(() => transList[index] = value)));
+                            if (wdh.transNum == null) {
+                              goAndHandleUninitializedTransect(wdh);
+                            } else {
+                              goToWdhPage(wdh);
+                            }
                           }
                         },
                         status: getStatus(wdh));
@@ -179,8 +214,11 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
     );
   }
 
-  SurveyStatus getStatus(WoodyDebrisHeaderData wdh) =>
-      wdh.complete ? SurveyStatus.complete : SurveyStatus.inProgress;
+  SurveyStatus getStatus(WoodyDebrisHeaderData wdh) {
+    if (wdh.complete) return SurveyStatus.complete;
+    if (wdh.transNum == null) return SurveyStatus.notStarted;
+    return SurveyStatus.inProgress;
+  }
 
   Future<void> updateWdSummary(
       Database db, WoodyDebrisSummaryCompanion entry) async {
@@ -196,10 +234,9 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
         await db.woodyDebrisTablesDao.getWdHeaderFromTransNum(wd.id, transNum);
 
     if (wdh == null) {
-      db.woodyDebrisTablesDao.addWdHeader(WoodyDebrisHeaderCompanion(
-          wdId: d.Value(wd.id), transNum: d.Value(transNum)));
-      wdh = await db.woodyDebrisTablesDao
-          .getWdHeaderFromTransNum(wd.id, transNum);
+      int id = await db.woodyDebrisTablesDao
+          .addWdHeader(WoodyDebrisHeaderCompanion(wdId: d.Value(wd.id)));
+      wdh = await db.woodyDebrisTablesDao.getWdHeaderFromId(id);
     }
 
     return wdh!;

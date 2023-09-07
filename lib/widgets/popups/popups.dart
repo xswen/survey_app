@@ -31,14 +31,23 @@ class Popups {
         rightBtnOnPressed: () => rightBtnOnPressed());
   }
 
-  static void missingTransect(BuildContext context,
+  static PopupContinue generateNoticeSurveyComplete(
+          String location, void Function() rightBtnOnPressed) =>
+      PopupContinue(
+        "Notice: $location has been marked as complete",
+        contentText:
+            "You will be able to see $location info but not make any edits. "
+            "Please click edit if you want to make any changes.",
+        rightBtnOnPressed: rightBtnOnPressed,
+      );
+  static void showMissingTransect(BuildContext context,
           {String cardName = "transect"}) =>
       show(
           context,
           PopupDismiss("Error Missing $cardName",
               contentText: "Please add at least one $cardName"));
 
-  static void incompleteTransect(BuildContext context,
+  static void showIncompleteTransect(BuildContext context,
           {String cardName = "transects"}) =>
       show(
           context,

@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class PopupContinue extends StatelessWidget {
@@ -20,11 +19,11 @@ class PopupContinue extends StatelessWidget {
       title: Text(title),
       content: contentWidget ?? Text(contentText ?? ""),
       actions: <Widget>[
-        TextButton(
+        CupertinoDialogAction(
           onPressed: () => context.pop(cancelResult),
           child: const Text('Cancel'),
         ),
-        TextButton(
+        CupertinoDialogAction(
           onPressed: rightBtnOnPressed,
           child: const Text('Continue'),
         ),
