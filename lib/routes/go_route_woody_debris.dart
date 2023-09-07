@@ -61,9 +61,17 @@ GoRoute goRouteWoodyDebris = GoRoute(
                       name: WoodyDebrisPieceRoundPage.routeName,
                       path: "round",
                       builder: (context, state) {
-                        WoodyDebrisRoundCompanion data =
-                            state.extra as WoodyDebrisRoundCompanion;
-                        return WoodyDebrisPieceRoundPage(piece: data);
+                        Map<String, dynamic> data =
+                            state.extra as Map<String, dynamic>;
+
+                        WoodyDebrisRoundCompanion piece =
+                            data[WoodyDebrisPieceRoundPage.keyPiece];
+                        void Function()? deleteFn =
+                            data[WoodyDebrisPieceRoundPage.keyDeleteFn];
+                        return WoodyDebrisPieceRoundPage(
+                          piece: piece,
+                          deleteFn: deleteFn,
+                        );
                       }),
                   GoRoute(
                       name: WoodyDebrisPieceAccuOddPage.routeName,

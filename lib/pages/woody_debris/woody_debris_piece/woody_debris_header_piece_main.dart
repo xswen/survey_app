@@ -242,14 +242,16 @@ class _WoodyDebrisHeaderPieceMainState
         ));
 
     void changeWdPieceData(
-        {WoodyDebrisOddData? odd, WoodyDebrisRoundData? round}) {
+        {WoodyDebrisOddData? odd,
+        WoodyDebrisRoundData? round,
+        void Function()? deleteFn}) {
       if (transComplete) {
         Popups.show(context, completeWarningPopup);
       } else if (odd != null) {
         context
             .pushNamed(WoodyDebrisPieceAccuOddPage.routeName,
                 extra: odd.toCompanion(true))
-            .then((value) => WoodyDebrisPieceAccuOddPage);
+            .then((value) => updatePieces());
       } else if (round != null) {
         context
             .pushNamed(WoodyDebrisPieceRoundPage.routeName,

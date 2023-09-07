@@ -22,10 +22,15 @@ import '../../../widgets/popups/popups.dart';
 
 class WoodyDebrisPieceRoundPage extends StatefulWidget {
   static const String routeName = "woodyDebrisPieceRound";
-  const WoodyDebrisPieceRoundPage({Key? key, required this.piece})
+  static const String keyPiece = "piece";
+  static const String keyDeleteFn = "deleteFn";
+  const WoodyDebrisPieceRoundPage(
+      {Key? key, required this.piece, this.deleteFn})
       : super(key: key);
 
   final WoodyDebrisRoundCompanion piece;
+  final void Function()? deleteFn;
+
   @override
   State<WoodyDebrisPieceRoundPage> createState() =>
       _WoodyDebrisPieceRoundPageState();
