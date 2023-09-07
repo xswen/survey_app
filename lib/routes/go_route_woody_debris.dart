@@ -68,6 +68,7 @@ GoRoute goRouteWoodyDebris = GoRoute(
                             data[WoodyDebrisPieceRoundPage.keyPiece];
                         void Function()? deleteFn =
                             data[WoodyDebrisPieceRoundPage.keyDeleteFn];
+
                         return WoodyDebrisPieceRoundPage(
                           piece: piece,
                           deleteFn: deleteFn,
@@ -77,9 +78,18 @@ GoRoute goRouteWoodyDebris = GoRoute(
                       name: WoodyDebrisPieceAccuOddPage.routeName,
                       path: "oddOrAccu",
                       builder: (context, state) {
-                        WoodyDebrisOddCompanion data =
-                            state.extra as WoodyDebrisOddCompanion;
-                        return WoodyDebrisPieceAccuOddPage(piece: data);
+                        Map<String, dynamic> data =
+                            state.extra as Map<String, dynamic>;
+
+                        WoodyDebrisOddCompanion piece =
+                            data[WoodyDebrisPieceAccuOddPage.keyPiece];
+                        void Function()? deleteFn =
+                            data[WoodyDebrisPieceAccuOddPage.keyDeleteFn];
+
+                        return WoodyDebrisPieceAccuOddPage(
+                          piece: piece,
+                          deleteFn: deleteFn,
+                        );
                       }),
                 ]),
           ])

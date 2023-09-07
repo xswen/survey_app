@@ -47,15 +47,11 @@ class _WoodyDebrisPieceRoundPageState extends State<WoodyDebrisPieceRoundPage> {
   final int kDataMissing = -1;
 
   late WoodyDebrisRoundCompanion piece;
-  late String genusCode;
-  late String speciesCode;
   bool changeMade = false;
 
   @override
   void initState() {
     piece = widget.piece;
-    genusCode = db.companionValueToStr(widget.piece.genus);
-    speciesCode = db.companionValueToStr(widget.piece.species);
     super.initState();
   }
 

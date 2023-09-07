@@ -188,9 +188,9 @@ class _WoodyDebrisHeaderPieceMainState
             wdHeaderId: d.Value(wdSm.wdHeaderId),
             pieceNum: d.Value(pieceNum),
             accumOdd: d.Value(type));
-        context
-            .pushNamed(WoodyDebrisPieceAccuOddPage.routeName, extra: wdOdd)
-            .then((value) => updatePieces());
+        context.pushNamed(WoodyDebrisPieceAccuOddPage.routeName, extra: {
+          WoodyDebrisPieceAccuOddPage.keyPiece: wdOdd
+        }).then((value) => updatePieces());
       });
     }
 
@@ -248,10 +248,10 @@ class _WoodyDebrisHeaderPieceMainState
       if (transComplete) {
         Popups.show(context, completeWarningPopup);
       } else if (odd != null) {
-        context
-            .pushNamed(WoodyDebrisPieceAccuOddPage.routeName,
-                extra: odd.toCompanion(true))
-            .then((value) => updatePieces());
+        context.pushNamed(WoodyDebrisPieceAccuOddPage.routeName, extra: {
+          WoodyDebrisPieceAccuOddPage.keyPiece: odd.toCompanion(true),
+          WoodyDebrisPieceAccuOddPage.keyDeleteFn: deleteFn
+        }).then((value) => updatePieces());
       } else if (round != null) {
         context.pushNamed(WoodyDebrisPieceRoundPage.routeName, extra: {
           WoodyDebrisPieceRoundPage.keyPiece: round.toCompanion(true),
@@ -324,9 +324,13 @@ class _WoodyDebrisHeaderPieceMainState
                                           (tbl) => tbl.id.equals(wdRound.id)))
                                     .go()));
                       } else {
-                        db.woodyDebrisTablesDao
-                            .getWdOddAccu(pId)
-                            .then((wdOdd) => changeWdPieceData(odd: wdOdd));
+                        db.woodyDebrisTablesDao.getWdOddAccu(pId).then(
+                            (wdOdd) => changeWdPieceData(
+                                odd: wdOdd,
+                                deleteFn: () async => await (db
+                                        .delete(db.woodyDebrisOdd)
+                                      ..where((tbl) => tbl.id.equals(wdOdd.id)))
+                                    .go()));
                       }
                     }
                   }
