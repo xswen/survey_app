@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 import '../../database/database.dart';
 import '../dropdowns/drop_down_async_list.dart';
 
-class TreeSpeciesSelectBuilder extends StatefulWidget {
-  const TreeSpeciesSelectBuilder({
-    Key? key,
-    this.onBeforePopup,
-    required this.onChangedFn,
-    required this.selectedSpeciesCode,
-    required this.genusCode,
-  }) : super(key: key);
+class TreeSpeciesSelectBuilder extends StatelessWidget {
+  const TreeSpeciesSelectBuilder(
+      {super.key,
+      this.onBeforePopup,
+      required this.onChangedFn,
+      required this.selectedSpeciesCode,
+      required this.genusCode});
 
   final Future<bool?> Function(String?)? onBeforePopup;
   final void Function(String?) onChangedFn;
@@ -18,37 +17,24 @@ class TreeSpeciesSelectBuilder extends StatefulWidget {
   final String genusCode;
 
   @override
-  State<TreeSpeciesSelectBuilder> createState() =>
-      _TreeSpeciesSelectBuilderState();
-}
-
-class _TreeSpeciesSelectBuilderState extends State<TreeSpeciesSelectBuilder> {
-  final Database db = Database.instance;
-  late String speciesName;
-
-  Future<String> getSpeciesName() async {
-    if (widget.genusCode.isEmpty) {
-      return "Please select genus";
-    } else if (widget.selectedSpeciesCode.isEmpty) {
-      return "Please select species";
-    } else {
-      return db.referenceTablesDao
-          .getSpeciesName(widget.genusCode, widget.selectedSpeciesCode);
-    }
-  }
-
-  @override
-  void initState() {
-    getSpeciesName();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final Database db = Database.instance;
+
+    Future<String> getSpeciesName() async {
+      if (genusCode.isEmpty) {
+        return "Please select genus";
+      } else if (selectedSpeciesCode.isEmpty) {
+        return "Please select species";
+      } else {
+        return db.referenceTablesDao
+            .getSpeciesName(genusCode, selectedSpeciesCode);
+      }
+    }
+
     Future<List<String>> getSpeciesList() {
-      return widget.genusCode.isEmpty
+      return genusCode.isEmpty
           ? Future(() => [])
-          : db.referenceTablesDao.getSpeciesNamesFromGenus(widget.genusCode);
+          : db.referenceTablesDao.getSpeciesNamesFromGenus(genusCode);
     }
 
     return FutureBuilder(
@@ -58,8 +44,8 @@ class _TreeSpeciesSelectBuilderState extends State<TreeSpeciesSelectBuilder> {
           return DropDownAsyncList(
             searchable: true,
             title: "Tree Species",
-            onBeforePopup: widget.onBeforePopup,
-            onChangedFn: widget.onChangedFn,
+            onBeforePopup: onBeforePopup,
+            onChangedFn: onChangedFn,
             asyncItems: (s) => getSpeciesList(),
             selectedItem: text.data ?? "Error. Null received",
           );
