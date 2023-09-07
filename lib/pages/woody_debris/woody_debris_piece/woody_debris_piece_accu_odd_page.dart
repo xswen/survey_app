@@ -41,7 +41,7 @@ class _WoodyDebrisPieceAccuOddPageState
     extends State<WoodyDebrisPieceAccuOddPage> {
   final Database db = Database.instance;
 
-  final String title = "Woody Debris Piece";
+  late final String title;
   final controllerHor = TextEditingController();
   final controllerVer = TextEditingController();
   final d.Value<int> kDataMissing = const d.Value(-1);
@@ -51,6 +51,8 @@ class _WoodyDebrisPieceAccuOddPageState
 
   @override
   void initState() {
+    title =
+        "Woody Debris ${widget.piece.accumOdd.value == db.woodyDebrisTablesDao.accumulation ? "Accumulation" : "Odd"} Piece";
     piece = widget.piece;
     super.initState();
   }
@@ -293,8 +295,7 @@ class _WoodyDebrisPieceAccuOddPageState
                           //close popup
                           context.pop();
                           context.pushNamed(DeletePage.routeName, extra: {
-                            DeletePage.keyObjectName:
-                                "${piece.accumOdd.value == db.woodyDebrisTablesDao.accumulation ? "Accumulation" : "Odd"} Piece",
+                            DeletePage.keyObjectName: title,
                             DeletePage.keyDeleteFn: widget.deleteFn!,
                             DeletePage.keyAfterDeleteFn: () {
                               //Leave delete page
