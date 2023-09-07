@@ -45,20 +45,23 @@ class WoodyDebrisPieceErrorChecks {
     return null;
   }
 
-  static String? checkErrorOddAcum(Database db, WoodyDebrisOddCompanion piece) {
-    String result = "";
+  static List<String>? checkErrorOddAcum(
+      Database db, WoodyDebrisOddCompanion piece) {
+    List<String> result = [];
 
     if (horizontal(db.companionValueToStr(piece.horLength)) != null) {
-      result += "Horizontal Piece Length \n";
+      result.add("Horizontal Piece Length");
     }
     if (vertical(db.companionValueToStr(piece.verDepth)) != null) {
-      result += "Vertical Depth \n";
+      result.add("Vertical Depth");
     }
-
-    // result += _treeAndDecayClass(
-    //     db.companionValueToStr(piece.genus),
-    //     db.companionValueToStr(piece.species),
-    //     db.companionValueToStr(piece.decayClass));
+    result = [
+      ...result,
+      ..._treeAndDecayClass(
+          db.companionValueToStr(piece.genus),
+          db.companionValueToStr(piece.species),
+          db.companionValueToStr(piece.decayClass))
+    ];
 
     return result.isEmpty ? null : result;
   }
@@ -76,7 +79,7 @@ class WoodyDebrisPieceErrorChecks {
   static String? vertical(String text) {
     if (text.isEmpty) {
       return "Can't be empty";
-    } else if (int.parse(text) == -1) {
+    } else if (double.parse(text) == -1) {
       return null;
     } else if (0.0 > double.parse(text) || double.parse(text) > 9999.9) {
       return "Input out of range. Must be between 0.1 to 9999.9 inclusive.";

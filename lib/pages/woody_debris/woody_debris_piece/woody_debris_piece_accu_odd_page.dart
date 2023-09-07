@@ -1,12 +1,25 @@
 import 'package:drift/drift.dart' as d;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:survey_app/database/database.dart';
+import 'package:survey_app/pages/woody_debris/woody_debris_piece/woody_debris_piece_error_checks.dart';
 
 import '../../../../widgets/app_bar.dart';
-import '../../../../widgets/buttons/floating_complete_button.dart';
 import '../../../../widgets/popups/popup_dismiss.dart';
 import '../../../../widgets/popups/popups.dart';
+import '../../../constants/margins_padding.dart';
+import '../../../formatters/format_string.dart';
+import '../../../formatters/thousands_formatter.dart';
+import '../../../widgets/builders/decay_class_select_builder.dart';
+import '../../../widgets/builders/tree_genus_select_builder.dart';
+import '../../../widgets/builders/tree_species_select_builder.dart';
+import '../../../widgets/buttons/delete_button.dart';
+import '../../../widgets/data_input/data_input.dart';
+import '../../../widgets/hide_info_checkbox.dart';
+import '../../../widgets/popups/popup_continue.dart';
+import '../../delete_page.dart';
 
 class WoodyDebrisPieceAccuOddPage extends StatefulWidget {
   static const String routeName = "woodyDebrisPieceAccuOdd";
@@ -28,38 +41,275 @@ class _WoodyDebrisPieceAccuOddPageState
     extends State<WoodyDebrisPieceAccuOddPage> {
   final Database db = Database.instance;
 
-  final String title = "tmp";
+  final String title = "Woody Debris Piece";
+  final controllerHor = TextEditingController();
+  final controllerVer = TextEditingController();
+  final d.Value<int> kDataMissing = const d.Value(-1);
 
   late WoodyDebrisOddCompanion piece;
-  late String genusCode;
-  late String speciesName;
-  //static final ErrorWoodyDebrisPiece _error = ErrorWoodyDebrisPiece();
+  bool changeMade = false;
+
   @override
   void initState() {
     piece = widget.piece;
-    genusCode = db.companionValueToStr(piece.genus);
-    speciesName = db.companionValueToStr(piece.species);
-    d.Value("hi");
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    controllerHor.dispose();
+    controllerVer.dispose();
+    super.dispose();
+  }
+
+  void updatePiece(WoodyDebrisOddCompanion newPiece) {
+    changeMade = true;
+    setState(() => piece = newPiece);
   }
 
   @override
   Widget build(BuildContext context) {
     debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
-    final PopupDismiss completeWarningPopup =
-        Popups.generateCompleteErrorPopup(title);
-    final PopupDismiss surveyCompleteWarningPopup =
-        Popups.generatePreviousMarkedCompleteErrorPopup("Survey");
+
+    void continueCheck() {
+      List<String>? results =
+          WoodyDebrisPieceErrorChecks.checkErrorOddAcum(db, piece);
+      if (results != null) {
+        Popups.show(
+            context,
+            PopupDismiss(
+              "Error: Incorrect Data",
+              contentWidget: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Errors were found in the following places",
+                    textAlign: TextAlign.start,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 12),
+                    child: Text(
+                      FormatString.generateBulletList(results),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                ],
+              ),
+            ));
+      } else {
+        List<String> missFields = [];
+        piece.verDepth == kDataMissing ? missFields.add("Tilt Angle") : null;
+        piece.decayClass == kDataMissing ? missFields.add("Decay Class") : null;
+
+        if (missFields.isNotEmpty) {
+          Popups.show(
+              context,
+              PopupContinue(
+                "Warning: Submitting with missing fields",
+                contentWidget: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "You are trying to submit the following data as missing.",
+                      textAlign: TextAlign.start,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 12),
+                      child: Text(
+                        FormatString.generateBulletList(missFields),
+                        textAlign: TextAlign.start,
+                      ),
+                    ),
+                    const Text(
+                      "Are you sure you want to continue?",
+                      textAlign: TextAlign.start,
+                    ),
+                  ],
+                ),
+                rightBtnOnPressed: () {
+                  db.woodyDebrisTablesDao.addOrUpdateWdPieceOddAccu(piece);
+                  context.pop();
+                  context.pop();
+                },
+              ));
+        } else {
+          db.woodyDebrisTablesDao.addOrUpdateWdPieceOddAccu(piece);
+          context.pop();
+        }
+      }
+    }
 
     return Scaffold(
-      appBar: OurAppBar("$title"),
-      floatingActionButton: FloatingCompleteButton(
-        title: "",
-        complete: false,
-        onPressed: () {},
+      appBar: OurAppBar(
+        "$title: Piece ${piece.pieceNum.value}",
+        backFn: () {
+          changeMade
+              ? Popups.show(context, Popups.generateWarningUnsavedChanges(() {
+                  context.pop();
+                  context.pop();
+                }))
+              : context.pop();
+        },
       ),
-      body: Center(
-        child: Text("Hi"),
+      body: Padding(
+        padding:
+            const EdgeInsets.fromLTRB(kPaddingH, 0, kPaddingH, kPaddingV / 2),
+        child: ListView(children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              DataInput(
+                title: "Horizontal Piece Length",
+                boxLabel: "Reported to the nearest 0.1cm",
+                prefixIcon: FontAwesomeIcons.ruler,
+                suffixVal: "CM",
+                controller: controllerHor,
+                startingStr: db.companionValueToStr(piece.horLength),
+                onSubmit: (String s) {
+                  double.tryParse(s) != null
+                      ? updatePiece(
+                          piece.copyWith(horLength: d.Value(double.parse(s))))
+                      : updatePiece(
+                          piece.copyWith(horLength: const d.Value.absent()));
+                },
+                errorMsg: WoodyDebrisPieceErrorChecks.horizontal(
+                    db.companionValueToStr(piece.horLength)),
+                inputType: const TextInputType.numberWithOptions(decimal: true),
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(6),
+                  ThousandsFormatter(allowFraction: true, decimalPlaces: 1)
+                ],
+              ),
+              HideInfoCheckbox(
+                title: "Vertical Piece Depth",
+                checkTitle: "Vertical piece depth missing",
+                checkValue: piece.verDepth == kDataMissing,
+                onChange: (angleMissing) {
+                  angleMissing!
+                      ? Popups.show(context,
+                          Popups.generateWarningMarkingAsMissing(() {
+                          updatePiece(
+                              piece.copyWith(verDepth: const d.Value(-1)));
+                          context.pop();
+                        }))
+                      : updatePiece(
+                          piece.copyWith(verDepth: const d.Value.absent()));
+                },
+                child: DataInput(
+                  generalPadding: const EdgeInsets.only(top: 0.0),
+                  textBoxPadding: const EdgeInsets.only(top: 0.0),
+                  boxLabel: "Reported to the nearest 0.1cm",
+                  prefixIcon: FontAwesomeIcons.angleLeft,
+                  suffixVal: "CM",
+                  inputType:
+                      const TextInputType.numberWithOptions(decimal: true),
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(6),
+                    ThousandsFormatter(allowFraction: true, decimalPlaces: 1)
+                  ],
+                  controller: controllerVer,
+                  startingStr: db.companionValueToStr(piece.verDepth),
+                  onSubmit: (String s) {
+                    double.tryParse(s) != null
+                        ? updatePiece(
+                            piece.copyWith(verDepth: d.Value(double.parse(s))))
+                        : updatePiece(
+                            piece.copyWith(verDepth: const d.Value.absent()));
+                  },
+                  errorMsg: WoodyDebrisPieceErrorChecks.vertical(
+                      db.companionValueToStr(piece.verDepth)),
+                ),
+              ),
+              TreeGenusSelectBuilder(
+                  onChangedFn: (s) async {
+                    //Check that the same genus wasn't double selected so you
+                    //don't overwrite species
+                    if (db.companionValueToStr(piece.genus).isEmpty ||
+                        s != db.companionValueToStr(piece.genus)) {
+                      String newGenusCode =
+                          await db.referenceTablesDao.getGenusCodeFromName(s!);
+                      updatePiece(piece.copyWith(
+                          genus: d.Value(newGenusCode),
+                          species: const d.Value.absent()));
+                    }
+                  },
+                  genusCode: db.companionValueToStr(piece.genus)),
+              TreeSpeciesSelectBuilder(
+                  onChangedFn: (s) => db.referenceTablesDao
+                          .getSpeciesCode(
+                              db.companionValueToStr(piece.genus), s!)
+                          .then((newSpeciesCode) {
+                        updatePiece(
+                            piece.copyWith(species: d.Value(newSpeciesCode)));
+                      }),
+                  selectedSpeciesCode: db.companionValueToStr(piece.species),
+                  genusCode: db.companionValueToStr(piece.genus)),
+              const SizedBox(
+                height: kPaddingV * 2,
+              ),
+              HideInfoCheckbox(
+                title:
+                    "Average decay class is assigned to all pieces of small woody debris along each transect.",
+                checkTitle: "Mark decay class as missing",
+                checkValue: piece.decayClass == kDataMissing,
+                onChange: (b) {
+                  //Don't need to check if wdh is complete bc you'd never get here
+                  //if it was
+                  b!
+                      ? Popups.show(context,
+                          Popups.generateWarningMarkingAsMissing(() {
+                          updatePiece(
+                              piece.copyWith(decayClass: const d.Value(-1)));
+                          context.pop();
+                        }))
+                      : updatePiece(
+                          piece.copyWith(decayClass: const d.Value.absent()));
+                },
+                child: DecayClassSelectBuilder(
+                  onChangedFn: (s) => updatePiece(
+                      piece.copyWith(decayClass: d.Value(int.parse(s!)))),
+                  selectedItem: db.companionValueToStr(piece.decayClass),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: kPaddingV * 2),
+                child: ElevatedButton(
+                  onPressed: () => continueCheck(),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size.fromHeight(50), // NEW
+                  ),
+                  child: const Text("Save"),
+                ),
+              ),
+              widget.deleteFn != null
+                  ? DeleteButton(
+                      delete: () => Popups.show(
+                        context,
+                        PopupContinue("Warning: Deleting Piece",
+                            contentText: "You are about to delete this piece. "
+                                "Are you sure you want to continue?",
+                            rightBtnOnPressed: () {
+                          //close popup
+                          context.pop();
+                          context.pushNamed(DeletePage.routeName, extra: {
+                            DeletePage.keyObjectName:
+                                "${piece.accumOdd.value == db.woodyDebrisTablesDao.accumulation ? "Accumulation" : "Odd"} Piece",
+                            DeletePage.keyDeleteFn: widget.deleteFn!,
+                            DeletePage.keyAfterDeleteFn: () {
+                              //Leave delete page
+                              context.pop();
+                              //Leave edit page
+                              context.pop();
+                            }
+                          });
+                        }),
+                      ),
+                    )
+                  : Container(),
+            ],
+          ),
+        ]),
       ),
     );
   }
