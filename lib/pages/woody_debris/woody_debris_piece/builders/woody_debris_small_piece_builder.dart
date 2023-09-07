@@ -96,9 +96,8 @@ class _WoodyDebrisSmallPieceBuilderState
                 },
                 child: DecayClassSelectBuilder(
                   onChangedFn: (s) {
-                    // changeMade = true;
-                    // updateWdhCompanion(
-                    //     wdh.copyWith(swdDecayClass: d.Value(int.parse(s!))));
+                    updateWdSm(WoodyDebrisSmallCompanion(
+                        swdDecayClass: d.Value(int.parse(s!))));
                   },
                   selectedItem: wdSm.swdDecayClass == null
                       ? "Select Decay Class"

@@ -31,6 +31,21 @@ class Popups {
         rightBtnOnPressed: () => rightBtnOnPressed());
   }
 
+  static void missingTransect(BuildContext context,
+          {String cardName = "transect"}) =>
+      show(
+          context,
+          PopupDismiss("Error Missing $cardName",
+              contentText: "Please add at least one $cardName"));
+
+  static void incompleteTransect(BuildContext context,
+          {String cardName = "transects"}) =>
+      show(
+          context,
+          PopupDismiss("Error: Incomplete $cardName",
+              contentText:
+                  "Please mark all $cardName as complete to continue"));
+
   static show(BuildContext context, Widget popup) {
     showDialog(
         context: context,

@@ -5,12 +5,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:survey_app/database/database.dart';
 import 'package:survey_app/pages/woody_debris/woody_debris_piece/woody_debris_piece_error_checks.dart';
+import 'package:survey_app/widgets/popups/popup_errors_found_list.dart';
+import 'package:survey_app/widgets/popups/popup_warning_missing_fields_list.dart';
 
 import '../../../../widgets/app_bar.dart';
-import '../../../../widgets/popups/popup_dismiss.dart';
 import '../../../../widgets/popups/popups.dart';
 import '../../../constants/margins_padding.dart';
-import '../../../formatters/format_string.dart';
 import '../../../formatters/thousands_formatter.dart';
 import '../../../widgets/builders/decay_class_select_builder.dart';
 import '../../../widgets/builders/tree_genus_select_builder.dart';
@@ -77,27 +77,7 @@ class _WoodyDebrisPieceAccuOddPageState
       List<String>? results =
           WoodyDebrisPieceErrorChecks.checkErrorOddAcum(db, piece);
       if (results != null) {
-        Popups.show(
-            context,
-            PopupDismiss(
-              "Error: Incorrect Data",
-              contentWidget: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "Errors were found in the following places",
-                    textAlign: TextAlign.start,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 12),
-                    child: Text(
-                      FormatString.generateBulletList(results),
-                      textAlign: TextAlign.start,
-                    ),
-                  ),
-                ],
-              ),
-            ));
+        Popups.show(context, PopupErrorsFoundList(errors: results));
       } else {
         List<String> missFields = [];
         piece.verDepth == kDataMissing ? missFields.add("Tilt Angle") : null;
@@ -106,28 +86,8 @@ class _WoodyDebrisPieceAccuOddPageState
         if (missFields.isNotEmpty) {
           Popups.show(
               context,
-              PopupContinue(
-                "Warning: Submitting with missing fields",
-                contentWidget: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "You are trying to submit the following data as missing.",
-                      textAlign: TextAlign.start,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 12),
-                      child: Text(
-                        FormatString.generateBulletList(missFields),
-                        textAlign: TextAlign.start,
-                      ),
-                    ),
-                    const Text(
-                      "Are you sure you want to continue?",
-                      textAlign: TextAlign.start,
-                    ),
-                  ],
-                ),
+              PopupWarningMissingFieldsList(
+                missingFields: missFields,
                 rightBtnOnPressed: () {
                   db.woodyDebrisTablesDao.addOrUpdateWdPieceOddAccu(piece);
                   context.pop();

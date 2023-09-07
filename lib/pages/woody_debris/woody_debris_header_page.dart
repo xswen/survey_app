@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:survey_app/widgets/popups/popup_errors_found_list.dart';
+import 'package:survey_app/widgets/popups/popup_warning_missing_fields_list.dart';
 
 import '../../constants/margins_padding.dart';
 import '../../constants/text_designs.dart';
@@ -11,7 +13,6 @@ import '../../widgets/app_bar.dart';
 import '../../widgets/buttons/edit_icon_button.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
 import '../../widgets/buttons/icon_nav_button.dart';
-import '../../widgets/popups/popup_content_format.dart';
 import '../../widgets/popups/popup_dismiss.dart';
 import '../../widgets/popups/popups.dart';
 import '../../widgets/text/text_in_line.dart';
@@ -77,28 +78,22 @@ class _WoodyDebrisHeaderPageState extends State<WoodyDebrisHeaderPage> {
     }
 
     //Return null on no issue. Otherwise return error message
-    PopupContentFormat? errorCheck(WoodyDebrisSmallData? smd) {
-      List<String> titles = [];
-      List<String> details = [];
+    List<String>? errorCheck(WoodyDebrisSmallData? wdSm) {
+      List<String> results = [];
 
-      // String headerData = WdErrorCheck.allHeaderData(wdh) ?? "";
-      // String smWdData = WdErrorCheck.smallWdData(smd) ?? "";
-
-      String headerData = "";
-      String smWdData = "";
-
-      if (headerData.isNotEmpty) {
-        titles.add("Header Data");
-        details.add(headerData);
+      if (wdh.transAzimuth == null ||
+          wdh.lcwdMeasLen == null ||
+          wdh.mcwdMeasLen == null ||
+          wdh.nomTransLen == null ||
+          wdh.swdDecayClass == null ||
+          wdh.swdMeasLen == null) {
+        results.add("Measurement Data");
       }
-      if (smWdData.isNotEmpty) {
-        titles.add("Piece Measurements");
-        details.add(smWdData);
+      if (wdSm == null || wdSm.swdDecayClass == null) {
+        results.add("Piece Measurements");
       }
 
-      return headerData.isEmpty && smWdData.isEmpty
-          ? null
-          : PopupContentFormat(titles: titles, details: details);
+      return results.isEmpty ? null : results;
     }
 
     return Scaffold(
@@ -113,14 +108,36 @@ class _WoodyDebrisHeaderPageState extends State<WoodyDebrisHeaderPage> {
             updateWdhData(
                 const WoodyDebrisHeaderCompanion(complete: d.Value(false)));
           } else {
-            //TODO: Error check
-            bool errorCheck = false;
-            if (errorCheck) {
-              db.woodyDebrisTablesDao.getWdSmall(wdh.id).then((value) {});
-            } else {
-              updateWdhData(
-                  const WoodyDebrisHeaderCompanion(complete: d.Value(true)));
-            }
+            (db.woodyDebrisTablesDao.getWdSmall(wdh.id)).then((wdSm) {
+              List<String>? errors = errorCheck(wdSm);
+
+              if (errors == null) {
+                List<String> missingData = [];
+                wdh.swdDecayClass == -1
+                    ? missingData.add("Measurement Data")
+                    : null;
+                wdSm!.swdDecayClass == -1
+                    ? missingData.add("Piece Measurements")
+                    : null;
+                missingData.isEmpty
+                    ? updateWdhData(const WoodyDebrisHeaderCompanion(
+                        complete: d.Value(true)))
+                    : Popups.show(
+                        context,
+                        PopupWarningMissingFieldsList(
+                            missingFields: missingData,
+                            rightBtnOnPressed: () {
+                              updateWdhData(const WoodyDebrisHeaderCompanion(
+                                  complete: d.Value(true)));
+                              context.pop();
+                            }));
+              } else {
+                Popups.show(
+                  context,
+                  PopupErrorsFoundList(errors: errors),
+                );
+              }
+            });
           }
         },
       ),

@@ -72,21 +72,14 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
                           complete: d.Value(false)))
                   .then((value) => null);
             } else if (transList.isEmpty) {
-              Popups.show(
-                  context,
-                  const PopupDismiss("Error Missing Transect",
-                      contentText: "Please add at least one transect"));
+              Popups.missingTransect(context);
             } else {
               checkHeadersComplete()
                   ? updateWdSummary(
                       db,
                       const WoodyDebrisSummaryCompanion(
                           complete: d.Value(true)))
-                  : Popups.show(
-                      context,
-                      const PopupDismiss("Error: Incomplete transects",
-                          contentText:
-                              "Please mark all transects as complete to continue"));
+                  : Popups.incompleteTransect(context);
             }
           });
         },
@@ -186,21 +179,8 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
     );
   }
 
-  SurveyStatus getStatus(WoodyDebrisHeaderData wdh) {
-    if (wdh.complete) return SurveyStatus.complete;
-
-    //Check that none of the header data is inputted
-    if (wdh.transAzimuth == null &&
-        wdh.lcwdMeasLen == null &&
-        wdh.mcwdMeasLen == null &&
-        wdh.nomTransLen == null &&
-        wdh.swdDecayClass == null &&
-        wdh.swdMeasLen == null) {
-      return SurveyStatus.notStarted;
-    }
-
-    return SurveyStatus.inProgress;
-  }
+  SurveyStatus getStatus(WoodyDebrisHeaderData wdh) =>
+      wdh.complete ? SurveyStatus.complete : SurveyStatus.inProgress;
 
   Future<void> updateWdSummary(
       Database db, WoodyDebrisSummaryCompanion entry) async {
