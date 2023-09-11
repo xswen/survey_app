@@ -33,6 +33,41 @@ class WoodyDebrisTablesDao extends DatabaseAccessor<Database>
     delete(woodyDebrisRound).go();
   }
 
+  //==================Deletion===============================
+  Future<void> deleteWoodyDebrisSummary(int surveyId) async {
+    WoodyDebrisSummaryData wdS = await getWdSummary(surveyId);
+    List<WoodyDebrisHeaderData> wdHList = await getWdHeadersFromWdSId(wdS.id);
+
+    for (WoodyDebrisHeaderData wdH in wdHList) {
+      var tmp = await deleteWoodyDebrisTransect(wdH.id);
+    }
+
+    var tmp = await (delete(woodyDebrisSummary)
+          ..where((tbl) => tbl.id.equals(wdS.id)))
+        .go();
+  }
+
+  Future<void> deleteWoodyDebrisTransect(int wdHeaderId) async {
+    var tmp = await deleteAllPiecesOddByHeader(wdHeaderId);
+    tmp = await deleteAllPiecesRoundByHeader(wdHeaderId);
+    tmp = await deleteWdSmallByHeader(wdHeaderId);
+    tmp = await (delete(woodyDebrisHeader)
+          ..where((tbl) => tbl.id.equals(wdHeaderId)))
+        .go();
+  }
+
+  Future<int> deleteWdSmallByHeader(int wdHeaderId) => (delete(woodyDebrisSmall)
+        ..where((tbl) => tbl.wdHeaderId.equals(wdHeaderId)))
+      .go();
+  Future<int> deleteAllPiecesRoundByHeader(int wdHeaderId) =>
+      (delete(woodyDebrisRound)
+            ..where((tbl) => tbl.wdHeaderId.equals(wdHeaderId)))
+          .go();
+  Future<int> deleteAllPiecesOddByHeader(int wdHeaderId) =>
+      (delete(woodyDebrisOdd)
+            ..where((tbl) => tbl.wdHeaderId.equals(wdHeaderId)))
+          .go();
+
 //====================Woody Debris Summary====================
   Future<int> addWdSummary(WoodyDebrisSummaryCompanion entry) =>
       into(woodyDebrisSummary).insert(entry);
@@ -65,9 +100,9 @@ class WoodyDebrisTablesDao extends DatabaseAccessor<Database>
   Future<WoodyDebrisHeaderData> getWdHeaderFromId(int id) =>
       (select(woodyDebrisHeader)..where((tbl) => tbl.id.equals(id)))
           .getSingle();
-  Future<List<WoodyDebrisHeaderData>> getWdHeadersFromWdsId(int wdsId) =>
+  Future<List<WoodyDebrisHeaderData>> getWdHeadersFromWdSId(int wdSId) =>
       (select(woodyDebrisHeader)
-            ..where((tbl) => tbl.wdId.equals(wdsId))
+            ..where((tbl) => tbl.wdId.equals(wdSId))
             ..orderBy([
               (t) => OrderingTerm(
                   expression: t.transNum,

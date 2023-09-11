@@ -1526,16 +1526,13 @@ class $SurveyHeadersTable extends SurveyHeaders
   static const VerificationMeta _completeMeta =
       const VerificationMeta('complete');
   @override
-  late final GeneratedColumn<bool> complete =
-      GeneratedColumn<bool>('complete', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
-            SqlDialect.sqlite: 'CHECK ("complete" IN (0, 1))',
-            SqlDialect.mysql: '',
-            SqlDialect.postgres: '',
-          }),
-          defaultValue: const Constant(false));
+  late final GeneratedColumn<bool> complete = GeneratedColumn<bool>(
+      'complete', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("complete" IN (0, 1))'),
+      defaultValue: const Constant(false));
   @override
   List<GeneratedColumn> get $columns =>
       [id, nfiPlot, measDate, measNum, province, complete];
@@ -2110,16 +2107,13 @@ class $WoodyDebrisSummaryTable extends WoodyDebrisSummary
   static const VerificationMeta _completeMeta =
       const VerificationMeta('complete');
   @override
-  late final GeneratedColumn<bool> complete =
-      GeneratedColumn<bool>('complete', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
-            SqlDialect.sqlite: 'CHECK ("complete" IN (0, 1))',
-            SqlDialect.mysql: '',
-            SqlDialect.postgres: '',
-          }),
-          defaultValue: const Constant(false));
+  late final GeneratedColumn<bool> complete = GeneratedColumn<bool>(
+      'complete', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("complete" IN (0, 1))'),
+      defaultValue: const Constant(false));
   @override
   List<GeneratedColumn> get $columns =>
       [id, surveyId, measDate, numTransects, complete];
@@ -2459,16 +2453,13 @@ class $WoodyDebrisHeaderTable extends WoodyDebrisHeader
   static const VerificationMeta _completeMeta =
       const VerificationMeta('complete');
   @override
-  late final GeneratedColumn<bool> complete =
-      GeneratedColumn<bool>('complete', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
-            SqlDialect.sqlite: 'CHECK ("complete" IN (0, 1))',
-            SqlDialect.mysql: '',
-            SqlDialect.postgres: '',
-          }),
-          defaultValue: const Constant(false));
+  late final GeneratedColumn<bool> complete = GeneratedColumn<bool>(
+      'complete', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("complete" IN (0, 1))'),
+      defaultValue: const Constant(false));
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -4223,16 +4214,13 @@ class $SurfaceSubstrateSummaryTable extends SurfaceSubstrateSummary
   static const VerificationMeta _completeMeta =
       const VerificationMeta('complete');
   @override
-  late final GeneratedColumn<bool> complete =
-      GeneratedColumn<bool>('complete', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
-            SqlDialect.sqlite: 'CHECK ("complete" IN (0, 1))',
-            SqlDialect.mysql: '',
-            SqlDialect.postgres: '',
-          }),
-          defaultValue: const Constant(false));
+  late final GeneratedColumn<bool> complete = GeneratedColumn<bool>(
+      'complete', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("complete" IN (0, 1))'),
+      defaultValue: const Constant(false));
   @override
   List<GeneratedColumn> get $columns =>
       [id, surveyId, measDate, numTransects, complete];
@@ -4539,16 +4527,13 @@ class $SurfaceSubstrateHeaderTable extends SurfaceSubstrateHeader
   static const VerificationMeta _completeMeta =
       const VerificationMeta('complete');
   @override
-  late final GeneratedColumn<bool> complete =
-      GeneratedColumn<bool>('complete', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
-            SqlDialect.sqlite: 'CHECK ("complete" IN (0, 1))',
-            SqlDialect.mysql: '',
-            SqlDialect.postgres: '',
-          }),
-          defaultValue: const Constant(false));
+  late final GeneratedColumn<bool> complete = GeneratedColumn<bool>(
+      'complete', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("complete" IN (0, 1))'),
+      defaultValue: const Constant(false));
   @override
   List<GeneratedColumn> get $columns =>
       [id, ssHeaderId, transNum, nomTransLen, transAzimuth, complete];
@@ -5222,16 +5207,13 @@ class $EcpSummaryTable extends EcpSummary
   static const VerificationMeta _completeMeta =
       const VerificationMeta('complete');
   @override
-  late final GeneratedColumn<bool> complete =
-      GeneratedColumn<bool>('complete', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
-            SqlDialect.sqlite: 'CHECK ("complete" IN (0, 1))',
-            SqlDialect.mysql: '',
-            SqlDialect.postgres: '',
-          }),
-          defaultValue: const Constant(false));
+  late final GeneratedColumn<bool> complete = GeneratedColumn<bool>(
+      'complete', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("complete" IN (0, 1))'),
+      defaultValue: const Constant(false));
   @override
   List<GeneratedColumn> get $columns =>
       [id, surveyId, measDate, numEcps, complete];
@@ -5511,16 +5493,13 @@ class $EcpHeaderTable extends EcpHeader
   static const VerificationMeta _completeMeta =
       const VerificationMeta('complete');
   @override
-  late final GeneratedColumn<bool> complete =
-      GeneratedColumn<bool>('complete', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
-            SqlDialect.sqlite: 'CHECK ("complete" IN (0, 1))',
-            SqlDialect.mysql: '',
-            SqlDialect.postgres: '',
-          }),
-          defaultValue: const Constant(false));
+  late final GeneratedColumn<bool> complete = GeneratedColumn<bool>(
+      'complete', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("complete" IN (0, 1))'),
+      defaultValue: const Constant(false));
   static const VerificationMeta _plotTypeMeta =
       const VerificationMeta('plotType');
   @override

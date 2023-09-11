@@ -138,7 +138,7 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
                   WoodyDebrisSummaryPage.keyWdSummary: data,
                   WoodyDebrisSummaryPage.keyTransList: await db
                       .woodyDebrisTablesDao
-                      .getWdHeadersFromWdsId(data.id)
+                      .getWdHeadersFromWdSId(data.id)
                 },
         );
         break;

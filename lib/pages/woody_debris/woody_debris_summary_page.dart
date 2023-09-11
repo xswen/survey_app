@@ -2,6 +2,7 @@ import 'package:drift/drift.dart' as d;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:survey_app/constants/text_designs.dart';
 import 'package:survey_app/database/database.dart';
 import 'package:survey_app/enums/enums.dart';
 import 'package:survey_app/pages/woody_debris/woody_debris_header_page.dart';
@@ -56,7 +57,7 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
         Popups.generatePreviousMarkedCompleteErrorPopup("Survey");
 
     void updateTransList() => db.woodyDebrisTablesDao
-        .getWdHeadersFromWdsId(wd.id)
+        .getWdHeadersFromWdSId(wd.id)
         .then((value) => setState(() => transList = value));
 
     void goToWdhPage(WoodyDebrisHeaderData wdh) =>
@@ -166,7 +167,17 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
                   selectedItem: Global.nullableToStr(wd.numTransects)),
             ),
             const SizedBox(height: kPaddingV),
-            const Text("Select a Transect to enter data for:"),
+            Row(
+              children: [
+                Container(
+                    margin: const EdgeInsets.fromLTRB(
+                        kPaddingH, 0, kPaddingH, kPaddingV / 2),
+                    child: const Text(
+                      "Select a Transect to enter data for:",
+                      style: TextStyle(fontSize: kTextHeaderSize),
+                    )),
+              ],
+            ),
             Expanded(
               child: ListView.builder(
                   itemCount: transList.length,
