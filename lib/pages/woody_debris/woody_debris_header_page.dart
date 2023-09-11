@@ -10,6 +10,7 @@ import '../../constants/margins_padding.dart';
 import '../../constants/text_designs.dart';
 import '../../database/database.dart';
 import '../../widgets/app_bar.dart';
+import '../../widgets/builders/set_transect_num_builder.dart';
 import '../../widgets/buttons/edit_icon_button.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
 import '../../widgets/buttons/icon_nav_button.dart';
@@ -283,8 +284,41 @@ class _WoodyDebrisHeaderPageState extends State<WoodyDebrisHeaderPage> {
               space: kPaddingIcon,
               label: "Edit Transect",
               onPressed: () {
-                //TODO: Add Deletion
-                //_deleteTransect(context);
+                int? transNum = wdh.transNum;
+                db.woodyDebrisTablesDao.getUsedTransnums(wdh.wdId).then(
+                      (usedTransNums) => Popups.show(
+                        context,
+                        Popups.show(
+                            context,
+                            SetTransectNumBuilder(
+                              selectedItem: "PLease select a transect number",
+                              disabledFn: (s) =>
+                                  usedTransNums.contains(int.tryParse(s) ?? -1),
+                              onChanged: (s) =>
+                                  transNum = int.tryParse(s ?? "-1"),
+                              onSubmit: () {
+                                if (transNum == null || transNum! < 1) {
+                                  debugPrint(
+                                      "Error: selected item didn't parse correctly");
+                                  Popups.show(
+                                      context,
+                                      const PopupDismiss(
+                                        "Error: in parsing",
+                                        contentText:
+                                            "There was a system error. "
+                                            "Request cannot be completed",
+                                      ));
+                                  context.pop();
+                                } else {
+                                  updateWdhData(WoodyDebrisHeaderCompanion(
+                                      id: d.Value(wdh.id),
+                                      transNum: d.Value(transNum)));
+                                  context.pop();
+                                }
+                              },
+                            )),
+                      ),
+                    );
               },
               padding: const EdgeInsets.symmetric(
                   vertical: kPaddingV, horizontal: kPaddingH),
