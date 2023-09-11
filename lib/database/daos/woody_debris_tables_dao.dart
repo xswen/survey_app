@@ -44,7 +44,7 @@ class WoodyDebrisTablesDao extends DatabaseAccessor<Database>
 
   Future<WoodyDebrisSummaryData> addAndReturnDefaultWdSummary(
       int surveyId, DateTime measDate) async {
-    int summaryId = await addWdSummary(WoodyDebrisSummaryCompanion(
+    int tmp = await addWdSummary(WoodyDebrisSummaryCompanion(
         surveyId: Value(surveyId), measDate: Value(measDate)));
 
     return getWdSummary(surveyId);

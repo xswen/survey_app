@@ -174,7 +174,7 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
                     WoodyDebrisHeaderData wdh = transList[index];
                     return TileCardSelection(
                         title:
-                            "Transect ${wdh.transNum ?? "number not yet initialized"}",
+                            "Transect ${wdh.transNum ?? "not yet initialized"}",
                         onPressed: () async {
                           if (wd.complete) {
                             Popups.show(
