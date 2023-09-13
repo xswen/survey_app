@@ -1,4 +1,5 @@
 import 'package:drift/drift.dart' as d;
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -13,12 +14,14 @@ import '../../constants/margins_padding.dart';
 import '../../database/database.dart';
 import '../../formatters/format_date.dart';
 import '../../widgets/app_bar.dart';
+import '../../widgets/buttons/edit_icon_button.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
 import '../../widgets/popups/popups.dart';
 import '../../widgets/text/text_line_label.dart';
 import '../../widgets/titled_border.dart';
 import '../surface_substrate/surface_substrate_summary_page.dart';
 import '../woody_debris/woody_debris_summary_page.dart';
+import 'create_survey_page.dart';
 
 class SurveyInfoPage extends StatefulWidget {
   static const String routeName = "surveyInfo";
@@ -280,6 +283,30 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
             //Header Data
             TitledBorder(
                 title: "Header Data",
+                actions: EditIconButton(onPressed: () async {
+                  if (survey.complete) {
+                    Popups.show(
+                        context, Popups.generateCompleteErrorPopup("Survey"));
+                  } else {
+                    db.referenceTablesDao
+                        .getJurisdictionName(survey.province, context.locale)
+                        .then((provinceName) async => context.pushNamed(
+                              CreateSurveyPage.routeName,
+                              queryParameters: {"province": provinceName},
+                              extra: {
+                                CreateSurveyPage.keySurvey:
+                                    survey.toCompanion(true),
+                                CreateSurveyPage.keyUpdateDash: null,
+                                CreateSurveyPage.keyLastMeasNum: await (db
+                                    .referenceTablesDao
+                                    .getLastMeasNum(survey.nfiPlot))
+                              },
+                            ).then((value) => db.surveyInfoTablesDao
+                                .getSurvey(survey.id)
+                                .then((newSurvey) =>
+                                    setState(() => survey = newSurvey))));
+                  }
+                }),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.end,

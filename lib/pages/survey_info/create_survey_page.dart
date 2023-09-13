@@ -25,15 +25,19 @@ class CreateSurveyPage extends StatefulWidget {
   static const String routeName = "createSurvey";
   static const String keySurvey = "survey";
   static const String keyUpdateDash = "updateDash";
+  static const String keyLastMeasNum = "lastMeasNum";
+  static const String keyProvinceName = "province";
 
   const CreateSurveyPage(
       {super.key,
       required this.surveyHeader,
       required this.province,
-      required this.updateDashboard});
+      required this.updateDashboard,
+      this.lastMeasNum});
   final SurveyHeadersCompanion surveyHeader;
+  final int? lastMeasNum;
   final String province;
-  final void Function() updateDashboard;
+  final void Function()? updateDashboard;
 
   @override
   State<CreateSurveyPage> createState() => _CreateSurveyPageState();
@@ -51,6 +55,7 @@ class _CreateSurveyPageState extends State<CreateSurveyPage> with Global {
   void initState() {
     provinceName = widget.province;
     surveyHeader = widget.surveyHeader;
+    lastMeasNum = widget.lastMeasNum;
     super.initState();
   }
 
@@ -153,7 +158,7 @@ class _CreateSurveyPageState extends State<CreateSurveyPage> with Global {
                   controller: _controller,
                   startingStr: surveyHeader.measNum.value == _kDataMissing
                       ? ""
-                      : db.companionValueToStr(surveyHeader.nfiPlot),
+                      : db.companionValueToStr(surveyHeader.measNum),
                   onSubmit: (String s) {
                     int.tryParse(s) != null
                         ? setState(() => surveyHeader = surveyHeader.copyWith(
@@ -182,10 +187,18 @@ class _CreateSurveyPageState extends State<CreateSurveyPage> with Global {
                   int? existingSurveyId = await db.surveyInfoTablesDao
                       .checkSurveyExists(surveyHeader);
 
-                  //Check that the existing found survey isn't an update
-                  existingSurveyId == null ||
-                          db.companionValueToStr(surveyHeader.id) ==
-                              existingSurveyId.toString()
+                  //if survey is the same with no changes then exit
+                  if (db.companionValueToStr(surveyHeader.id) ==
+                      existingSurveyId.toString()) {
+                    var tmp = await db
+                        .into(db.surveyHeaders)
+                        .insertOnConflictUpdate(surveyHeader);
+                    if (context.mounted) {
+                      context.pop();
+                    }
+                    return;
+                  }
+                  existingSurveyId == null
                       ? null
                       : result =
                           "A survey for NFI Plot #${surveyHeader.nfiPlot.value} "
@@ -232,28 +245,39 @@ class _CreateSurveyPageState extends State<CreateSurveyPage> with Global {
   }
 
   Future<void> _goToSurvey(BuildContext context, Database db) async {
-    int id = await _insertSurvey(db);
-    if (context.mounted) {
-      if (context.mounted) {
-        context.pushReplacementNamed(
-          SurveyInfoPage.routeName,
-          extra: {
-            SurveyInfoPage.keySurvey:
-                await db.surveyInfoTablesDao.getSurvey(id),
-            SurveyInfoPage.keyCards: await db.getCards(id),
-            SurveyInfoPage.keyUpdateDash: widget.updateDashboard
-          },
-        );
-      }
-    }
+    _insertOrUpdateSurvey(db).then((id) async => widget.updateDashboard == null
+        ? context.pop()
+        : context.pushReplacementNamed(
+            SurveyInfoPage.routeName,
+            extra: {
+              SurveyInfoPage.keySurvey:
+                  await db.surveyInfoTablesDao.getSurvey(id),
+              SurveyInfoPage.keyCards: await db.getCards(id),
+              SurveyInfoPage.keyUpdateDash: widget.updateDashboard
+            },
+          ));
   }
 
-  Future<int> _insertSurvey(Database db) async {
-    int id = await db.into(db.surveyHeaders).insert(surveyHeader);
+  Future<int> _insertOrUpdateSurvey(Database db) async {
+    //Remove the last recorded meas number if this entry was the lastMeasNum
+    //if widget.updateDashboard == null then that means that this is an edit
+    // and not a new one
+    if (widget.updateDashboard == null &&
+        widget.lastMeasNum == widget.surveyHeader.measNum.value) {
+      var tmp = db.referenceTablesDao.updatePlot(PlotsCompanion(
+          nfiPlot: widget.surveyHeader.nfiPlot,
+          code: widget.surveyHeader.province,
+          lastMeasNum: d.Value(await db.surveyInfoTablesDao
+              .getSecondLargestMeasNum(surveyHeader.nfiPlot.value))));
+    }
+
+    int id =
+        await db.into(db.surveyHeaders).insertOnConflictUpdate(surveyHeader);
     var val = await db.referenceTablesDao.updatePlot(PlotsCompanion(
         nfiPlot: surveyHeader.nfiPlot,
         code: surveyHeader.province,
-        lastMeasNum: d.Value(max(surveyHeader.measNum.value, lastMeasNum!))));
+        lastMeasNum:
+            d.Value(max(surveyHeader.measNum.value, lastMeasNum ?? -1))));
     return id;
   }
 

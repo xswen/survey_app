@@ -53,11 +53,15 @@ GoRouter router = GoRouter(
                         state.extra as Map<String, dynamic>;
                     SurveyHeadersCompanion survey =
                         data[CreateSurveyPage.keySurvey];
-                    void Function() updateDashboard =
+                    void Function()? updateDashboard =
                         data[CreateSurveyPage.keyUpdateDash];
+                    int? lastMeasNum = data[CreateSurveyPage.keyLastMeasNum];
                     return CreateSurveyPage(
                         surveyHeader: survey,
-                        province: state.uri.queryParameters["province"] ?? "",
+                        lastMeasNum: lastMeasNum,
+                        province: state.uri.queryParameters[
+                                CreateSurveyPage.keyProvinceName] ??
+                            "",
                         updateDashboard: updateDashboard);
                   }),
               GoRoute(

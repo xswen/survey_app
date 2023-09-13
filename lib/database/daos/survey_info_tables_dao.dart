@@ -42,4 +42,15 @@ class SurveyInfoTablesDao extends DatabaseAccessor<Database>
 
     return exists?.id;
   }
+
+  Future<int?> getSecondLargestMeasNum(int nfiPlotNum) async {
+    List<SurveyHeader> surveys = await (select(surveyHeaders)
+          ..where((tbl) => tbl.nfiPlot.equals(nfiPlotNum))
+          ..orderBy([
+            (u) => OrderingTerm(mode: OrderingMode.desc, expression: u.measNum)
+          ]))
+        .get();
+
+    return surveys.length < 2 ? null : surveys[1].measNum;
+  }
 }

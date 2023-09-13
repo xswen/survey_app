@@ -24,21 +24,6 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
 
   //====================Jurisdictions====================
   //--------------------get--------------------
-  Future<String> getJurisdictionCodeDepricate(String name) async {
-    //TODO: Add french support
-    String language = "en";
-    Jurisdiction data;
-    language == "en"
-        ? data = await (select(jurisdictions)
-              ..where((tbl) => tbl.nameEn.equals(name)))
-            .getSingle()
-        : data = await (select(jurisdictions)
-              ..where((tbl) => tbl.nameEn.equals(name)))
-            .getSingle();
-
-    return data.code;
-  }
-
   Future<String> getJurisdictionCode(Locale locale, String name) async {
     Jurisdiction data;
     locale == kLocaleEn
