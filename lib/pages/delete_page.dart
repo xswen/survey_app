@@ -46,7 +46,7 @@ class DeletePage extends StatelessWidget {
               ),
               DeleteButton(delete: () {
                 deleteFn();
-                afterDeleteFn != null ? afterDeleteFn!() : context.pop();
+                context.pop();
               })
             ],
           ),

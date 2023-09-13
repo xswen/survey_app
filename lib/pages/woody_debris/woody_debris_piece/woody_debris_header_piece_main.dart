@@ -8,7 +8,6 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import '../../../constants/constant_values.dart';
 import '../../../constants/margins_padding.dart';
 import '../../../widgets/app_bar.dart';
-import '../../../widgets/buttons/floating_complete_button.dart';
 import '../../../widgets/popups/popup_dismiss.dart';
 import '../../../widgets/popups/popups.dart';
 import '../../../widgets/tables/table_creation_builder.dart';
@@ -264,15 +263,6 @@ class _WoodyDebrisHeaderPieceMainState
 
     return Scaffold(
       appBar: OurAppBar("$title: Transect $transNum"),
-      floatingActionButton: FloatingCompleteButton(
-        title: "",
-        complete: false,
-        onPressed: () {
-          if (transComplete) {
-            Popups.show(context, surveyCompleteWarningPopup);
-          } else {}
-        },
-      ),
       body: Center(
         child: Column(
           children: [
@@ -318,19 +308,19 @@ class _WoodyDebrisHeaderPieceMainState
                         db.woodyDebrisTablesDao.getWdRound(pId).then(
                             (wdRound) => changeWdPieceData(
                                 round: wdRound,
-                                deleteFn: () async => await (db
-                                        .delete(db.woodyDebrisRound)
+                                deleteFn: () => (db.delete(db.woodyDebrisRound)
                                       ..where(
                                           (tbl) => tbl.id.equals(wdRound.id)))
-                                    .go()));
+                                    .go()
+                                    .then((value) => context.pop())));
                       } else {
                         db.woodyDebrisTablesDao.getWdOddAccu(pId).then(
                             (wdOdd) => changeWdPieceData(
                                 odd: wdOdd,
-                                deleteFn: () async => await (db
-                                        .delete(db.woodyDebrisOdd)
+                                deleteFn: () => (db.delete(db.woodyDebrisOdd)
                                       ..where((tbl) => tbl.id.equals(wdOdd.id)))
-                                    .go()));
+                                    .go()
+                                    .then((value) => context.pop())));
                       }
                     }
                   }
