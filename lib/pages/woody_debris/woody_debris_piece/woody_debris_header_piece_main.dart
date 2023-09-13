@@ -308,19 +308,19 @@ class _WoodyDebrisHeaderPieceMainState
                         db.woodyDebrisTablesDao.getWdRound(pId).then(
                             (wdRound) => changeWdPieceData(
                                 round: wdRound,
-                                deleteFn: () async => await (db
-                                        .delete(db.woodyDebrisRound)
+                                deleteFn: () => (db.delete(db.woodyDebrisRound)
                                       ..where(
                                           (tbl) => tbl.id.equals(wdRound.id)))
-                                    .go()));
+                                    .go()
+                                    .then((value) => context.pop())));
                       } else {
                         db.woodyDebrisTablesDao.getWdOddAccu(pId).then(
                             (wdOdd) => changeWdPieceData(
                                 odd: wdOdd,
-                                deleteFn: () async => await (db
-                                        .delete(db.woodyDebrisOdd)
+                                deleteFn: () => (db.delete(db.woodyDebrisOdd)
                                       ..where((tbl) => tbl.id.equals(wdOdd.id)))
-                                    .go()));
+                                    .go()
+                                    .then((value) => context.pop())));
                       }
                     }
                   }

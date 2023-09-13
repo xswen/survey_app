@@ -10,7 +10,6 @@ import 'package:survey_app/widgets/tile_cards/tile_card_selection.dart';
 
 import '../../constants/constant_values.dart';
 import '../../constants/margins_padding.dart';
-import '../../global.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/builders/set_transect_num_builder.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
@@ -56,9 +55,17 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
     final PopupDismiss surveyCompleteWarningPopup =
         Popups.generatePreviousMarkedCompleteErrorPopup("Survey");
 
-    void updateTransList() => db.woodyDebrisTablesDao
-        .getWdHeadersFromWdSId(wd.id)
-        .then((value) => setState(() => transList = value));
+    void updateTransList() =>
+        db.woodyDebrisTablesDao.getWdHeadersFromWdSId(wd.id).then((value) {
+          transList = value;
+          updateWdSummary(
+              db,
+              WoodyDebrisSummaryCompanion(
+                  id: d.Value(wd.id),
+                  numTransects: value.isEmpty
+                      ? const d.Value(null)
+                      : d.Value(value.length)));
+        });
 
     void goToWdhPage(WoodyDebrisHeaderData wdh) =>
         context.pushNamed(WoodyDebrisHeaderPage.routeName, extra: {
@@ -70,35 +77,31 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
       int? transNum;
       db.woodyDebrisTablesDao.getUsedTransnums(wd.id).then(
             (usedTransNums) => Popups.show(
-              context,
-              Popups.show(
-                  context,
-                  SetTransectNumBuilder(
-                    selectedItem: "PLease select a transect number",
-                    disabledFn: (s) =>
-                        usedTransNums.contains(int.tryParse(s) ?? -1),
-                    onChanged: (s) => transNum = int.tryParse(s ?? "-1"),
-                    onSubmit: () {
-                      if (transNum == null || transNum! < 1) {
-                        debugPrint(
-                            "Error: selected item didn't parse correctly");
-                        Popups.show(
-                            context,
-                            const PopupDismiss(
-                              "Error: in parsing",
-                              contentText: "There was a system error. "
-                                  "Request cannot be completed",
-                            ));
-                        context.pop();
-                      } else {
-                        db.woodyDebrisTablesDao
-                            .updateWdHeaderTransNum(wdh.id, transNum!)
-                            .then((newWdh) => goToWdhPage(newWdh));
-                        context.pop();
-                      }
-                    },
-                  )),
-            ),
+                context,
+                SetTransectNumBuilder(
+                  selectedItem: "PLease select a transect number",
+                  disabledFn: (s) =>
+                      usedTransNums.contains(int.tryParse(s) ?? -1),
+                  onChanged: (s) => transNum = int.tryParse(s ?? "-1"),
+                  onSubmit: () {
+                    if (transNum == null || transNum! < 1) {
+                      debugPrint("Error: selected item didn't parse correctly");
+                      Popups.show(
+                          context,
+                          const PopupDismiss(
+                            "Error: in parsing",
+                            contentText: "There was a system error. "
+                                "Request cannot be completed",
+                          ));
+                      context.pop();
+                    } else {
+                      db.woodyDebrisTablesDao
+                          .updateWdHeaderTransNum(wdh.id, transNum!)
+                          .then((newWdh) => goToWdhPage(newWdh));
+                      context.pop();
+                    }
+                  },
+                )),
           );
     }
 
@@ -153,18 +156,17 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
                   },
                   onChangedFn: (String? s) async {
                     int i = int.parse(s!);
-                    updateWdSummary(db,
-                        WoodyDebrisSummaryCompanion(numTransects: d.Value(i)));
                     int transListLen = transList.length;
                     for (int idx = transListLen; idx < i; idx++) {
-                      transList.add(await getOrCreateWdhData(db, idx + 1));
+                      var tmp = createWdhData(db, idx + 1);
                     }
-                    setState(() {});
+                    updateTransList();
                   },
                   disabledFn: (String? s) =>
                       int.parse(s!) < (wd.numTransects ?? 0),
                   itemsList: kTransectNumsList,
-                  selectedItem: Global.nullableToStr(wd.numTransects)),
+                  selectedItem: wd.numTransects?.toString() ??
+                      "No transects exists, please add"),
             ),
             const SizedBox(height: kPaddingV),
             Row(
@@ -239,18 +241,9 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
     setState(() {});
   }
 
-  Future<WoodyDebrisHeaderData> getOrCreateWdhData(
-      Database db, int transNum) async {
-    WoodyDebrisHeaderData? wdh =
-        await db.woodyDebrisTablesDao.getWdHeaderFromTransNum(wd.id, transNum);
-
-    if (wdh == null) {
-      int id = await db.woodyDebrisTablesDao
-          .addWdHeader(WoodyDebrisHeaderCompanion(wdId: d.Value(wd.id)));
-      wdh = await db.woodyDebrisTablesDao.getWdHeaderFromId(id);
-    }
-
-    return wdh!;
+  Future<void> createWdhData(Database db, int transNum) async {
+    int id = await db.woodyDebrisTablesDao
+        .addWdHeader(WoodyDebrisHeaderCompanion(wdId: d.Value(wd.id)));
   }
 
   bool checkHeadersComplete() {

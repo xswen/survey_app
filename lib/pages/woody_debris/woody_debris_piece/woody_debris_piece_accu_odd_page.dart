@@ -257,12 +257,6 @@ class _WoodyDebrisPieceAccuOddPageState
                           context.pushNamed(DeletePage.routeName, extra: {
                             DeletePage.keyObjectName: title,
                             DeletePage.keyDeleteFn: widget.deleteFn!,
-                            DeletePage.keyAfterDeleteFn: () {
-                              //Leave delete page
-                              context.pop();
-                              //Leave edit page
-                              context.pop();
-                            }
                           });
                         }),
                       ),

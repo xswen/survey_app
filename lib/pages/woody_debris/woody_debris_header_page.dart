@@ -14,10 +14,12 @@ import '../../widgets/builders/set_transect_num_builder.dart';
 import '../../widgets/buttons/edit_icon_button.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
 import '../../widgets/buttons/icon_nav_button.dart';
+import '../../widgets/popups/popup_continue.dart';
 import '../../widgets/popups/popup_dismiss.dart';
 import '../../widgets/popups/popups.dart';
 import '../../widgets/text/text_in_line.dart';
 import '../../widgets/titled_border.dart';
+import '../delete_page.dart';
 import 'wood_debris_header_measurements_page.dart';
 import 'woody_debris_piece/woody_debris_header_piece_main.dart';
 
@@ -328,8 +330,29 @@ class _WoodyDebrisHeaderPageState extends State<WoodyDebrisHeaderPage> {
               space: kPaddingIcon,
               label: "Delete Transect",
               onPressed: () {
-                //TODO: Add Deletion
-                //_deleteTransect(context);
+                Popups.show(
+                  context,
+                  PopupContinue("Warning: Deleting Piece",
+                      contentText: "You are about to delete this piece. "
+                          "Are you sure you want to continue?",
+                      rightBtnOnPressed: () {
+                    //close popup
+                    context.pop();
+                    context.pushNamed(DeletePage.routeName, extra: {
+                      DeletePage.keyObjectName:
+                          "Woody Debris Transect ${wdh.transNum}",
+                      DeletePage.keyDeleteFn: () {
+                        db.woodyDebrisTablesDao
+                            .deleteWoodyDebrisTransect(wdh.id)
+                            .then((value) => context.pop());
+                      },
+                      DeletePage.keyAfterDeleteFn: () {
+                        //Leave delete page
+                        context.pop();
+                      }
+                    });
+                  }),
+                );
               },
               padding: const EdgeInsets.symmetric(
                   vertical: kPaddingV, horizontal: kPaddingH),

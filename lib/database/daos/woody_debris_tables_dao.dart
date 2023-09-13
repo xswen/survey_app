@@ -85,6 +85,13 @@ class WoodyDebrisTablesDao extends DatabaseAccessor<Database>
     return getWdSummary(surveyId);
   }
 
+  Future<void> updateNumTransects(int wdSId) async {
+    List<WoodyDebrisHeaderData> wdhList = await getWdHeadersFromWdSId(wdSId);
+    int numTransects = wdhList.length;
+    (update(woodyDebrisSummary)..where((tbl) => tbl.id.equals(wdSId)))
+        .write(WoodyDebrisSummaryCompanion(numTransects: Value(numTransects)));
+  }
+
 //====================Woody Debris Header====================
   Future<int> addWdHeader(WoodyDebrisHeaderCompanion entry) =>
       into(woodyDebrisHeader).insert(entry);

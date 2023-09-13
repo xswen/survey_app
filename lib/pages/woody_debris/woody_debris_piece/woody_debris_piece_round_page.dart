@@ -260,12 +260,6 @@ class _WoodyDebrisPieceRoundPageState extends State<WoodyDebrisPieceRoundPage> {
                           context.pushNamed(DeletePage.routeName, extra: {
                             DeletePage.keyObjectName: "Round Piece",
                             DeletePage.keyDeleteFn: widget.deleteFn!,
-                            DeletePage.keyAfterDeleteFn: () {
-                              //Leave delete page
-                              context.pop();
-                              //Leave edit page
-                              context.pop();
-                            }
                           });
                         }),
                       ),
