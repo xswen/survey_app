@@ -40,8 +40,6 @@ class WoodyDebrisHeaderPage extends StatefulWidget {
 }
 
 class _WoodyDebrisHeaderPageState extends State<WoodyDebrisHeaderPage> {
-  String get title => "Woody Debris Transect";
-
   late WoodyDebrisHeaderData wdh;
   late bool summaryComplete;
 
@@ -54,6 +52,7 @@ class _WoodyDebrisHeaderPageState extends State<WoodyDebrisHeaderPage> {
 
   @override
   Widget build(BuildContext context) {
+    String title = "Woody Debris Transect ${wdh.transNum}";
     final db = Provider.of<Database>(context);
     final PopupDismiss completeWarningPopup =
         Popups.generateCompleteErrorPopup(title);
@@ -286,6 +285,10 @@ class _WoodyDebrisHeaderPageState extends State<WoodyDebrisHeaderPage> {
               space: kPaddingIcon,
               label: "Edit Transect",
               onPressed: () {
+                if (summaryComplete || wdh.complete) {
+                  Popups.show(context, completeWarningPopup);
+                  return;
+                }
                 int? transNum = wdh.transNum;
                 db.woodyDebrisTablesDao.getUsedTransnums(wdh.wdId).then(
                       (usedTransNums) => Popups.show(
@@ -330,6 +333,10 @@ class _WoodyDebrisHeaderPageState extends State<WoodyDebrisHeaderPage> {
               space: kPaddingIcon,
               label: "Delete Transect",
               onPressed: () {
+                if (summaryComplete || wdh.complete) {
+                  Popups.show(context, completeWarningPopup);
+                  return;
+                }
                 Popups.show(
                   context,
                   PopupContinue("Warning: Deleting Piece",
