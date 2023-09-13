@@ -114,6 +114,17 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
           title: name,
           status: getStatus(data),
           onPressed: () {
+            if (survey.complete && data == null) {
+              Popups.show(
+                  context,
+                  PopupDismiss(
+                    "Nothing to show",
+                    contentText: "Survey has been marked as complete. "
+                        "No data found for $name. Please mark survey as "
+                        "edit if you wish to add data to $name",
+                  ));
+              return;
+            }
             getNav(category, data);
           }));
     }
