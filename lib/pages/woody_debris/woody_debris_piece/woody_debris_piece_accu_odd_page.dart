@@ -17,6 +17,7 @@ import '../../../widgets/builders/tree_genus_select_builder.dart';
 import '../../../widgets/builders/tree_species_select_builder.dart';
 import '../../../widgets/buttons/delete_button.dart';
 import '../../../widgets/data_input/data_input.dart';
+import '../../../widgets/drawer_menu.dart';
 import '../../../widgets/hide_info_checkbox.dart';
 import '../../../widgets/popups/popup_continue.dart';
 import '../../delete_page.dart';
@@ -113,6 +114,7 @@ class _WoodyDebrisPieceAccuOddPageState
               : context.pop();
         },
       ),
+      endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
       body: Padding(
         padding:
             const EdgeInsets.fromLTRB(kPaddingH, 0, kPaddingH, kPaddingV / 2),

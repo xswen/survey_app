@@ -4,6 +4,7 @@ import 'package:survey_app/constants/margins_padding.dart';
 import 'package:survey_app/widgets/buttons/delete_button.dart';
 
 import '../widgets/app_bar.dart';
+import '../widgets/drawer_menu.dart';
 
 class DeletePage extends StatelessWidget {
   static const String routeName = "delete";
@@ -26,6 +27,7 @@ class DeletePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: OurAppBar("Delete $objectName"),
+      endDrawer: const DrawerMenu(),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(kPaddingH),

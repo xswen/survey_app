@@ -14,6 +14,7 @@ import '../../widgets/app_bar.dart';
 import '../../widgets/builders/set_transect_num_builder.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
 import '../../widgets/date_select.dart';
+import '../../widgets/drawer_menu.dart';
 import '../../widgets/dropdowns/drop_down_default.dart';
 import '../../widgets/popups/popup_dismiss.dart';
 import '../../widgets/popups/popups.dart';
@@ -107,6 +108,7 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
 
     return Scaffold(
       appBar: OurAppBar(title),
+      endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
       floatingActionButton: FloatingCompleteButton(
         title: title,
         complete: wd.complete,

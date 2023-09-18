@@ -14,6 +14,7 @@ import '../../widgets/builders/set_transect_num_builder.dart';
 import '../../widgets/buttons/edit_icon_button.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
 import '../../widgets/buttons/icon_nav_button.dart';
+import '../../widgets/drawer_menu.dart';
 import '../../widgets/popups/popup_continue.dart';
 import '../../widgets/popups/popup_dismiss.dart';
 import '../../widgets/popups/popups.dart';
@@ -100,6 +101,7 @@ class _WoodyDebrisHeaderPageState extends State<WoodyDebrisHeaderPage> {
 
     return Scaffold(
       appBar: OurAppBar("Woody Debris: Transect ${wdh.transNum}"),
+      endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
       floatingActionButton: FloatingCompleteButton(
         title: title,
         complete: wdh.complete,

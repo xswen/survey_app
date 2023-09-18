@@ -2,12 +2,12 @@ import 'package:drift_db_viewer/drift_db_viewer.dart';
 import 'package:easy_localization/easy_localization.dart';
 //import 'package:easy_localization_loader/easy_localization_loader.dart'; // import custom loaders
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:survey_app/constants/constant_values.dart';
 import 'package:survey_app/pages/survey_info/dashboard.dart';
 import 'package:survey_app/routes/router_routes_main.dart';
-import 'package:survey_app/widgets/app_bar.dart';
 
 import 'database/database.dart';
 import 'l10n/locale_keys.g.dart';
@@ -65,9 +65,20 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              const Align(
+              Align(
                 alignment: Alignment.topRight,
-                child: Menu(),
+                child: IconButton(
+                  icon: const Icon(FontAwesomeIcons.globe),
+                  onPressed: () {
+                    context.locale == kLocaleEn
+                        ? context.setLocale(kLocaleFr)
+                        : context.setLocale(kLocaleEn);
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(
+                            'Language has been changed to ${context.locale == kLocaleFr ? "French" : "English"}')));
+                  },
+                  tooltip: 'Menu',
+                ),
               ),
               Text(
                 LocaleKeys.appTitle,

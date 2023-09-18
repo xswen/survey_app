@@ -15,6 +15,7 @@ import '../../formatters/format_string.dart';
 import '../../formatters/thousands_formatter.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/data_input/data_input.dart';
+import '../../widgets/drawer_menu.dart';
 import '../../widgets/popups/popups.dart';
 
 class WoodyDebrisHeaderMeasurements extends StatefulWidget {
@@ -133,6 +134,7 @@ class _WoodyDebrisHeaderMeasurementsState
                   context.pop();
                 }))
               : context.pop(context.pop)),
+      endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: kPaddingH),
         children: [

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:survey_app/constants/text_designs.dart';
 import 'package:survey_app/l10n/locale_keys.g.dart';
+import 'package:survey_app/widgets/drawer_menu.dart';
 
 import '../../constants/margins_padding.dart';
 import '../../database/database.dart';
@@ -99,6 +100,9 @@ class _DashboardPageState extends State<DashboardPage> {
 
     return Scaffold(
       appBar: const OurAppBar(LocaleKeys.dashboardTitle),
+      endDrawer: DrawerMenu(
+        onLocaleChange: () => setState(() {}),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           context.pushNamed(

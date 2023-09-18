@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:survey_app/pages/survey_info/survey_info_page.dart';
 import 'package:survey_app/widgets/data_input/data_input.dart';
+import 'package:survey_app/widgets/drawer_menu.dart';
 import 'package:survey_app/widgets/popups/popup_continue.dart';
 import 'package:survey_app/widgets/popups/popup_dismiss.dart';
 
@@ -70,18 +71,21 @@ class _CreateSurveyPageState extends State<CreateSurveyPage> with Global {
     final db = Provider.of<Database>(context);
 
     return Scaffold(
-      appBar: OurAppBar(
-          db.companionValueToStr(surveyHeader.province).isEmpty
-              ? LocaleKeys.createSurveyTitle
-              : "Edit Survey", onLocaleChange: () {
-        if (db.companionValueToStr(surveyHeader.province).isNotEmpty) {
-          db.referenceTablesDao
-              .getJurisdictionName(surveyHeader.province.value, context.locale)
-              .then((value) => setState(() {
-                    provinceName = value;
-                  }));
-        }
-      }),
+      appBar: OurAppBar(db.companionValueToStr(surveyHeader.province).isEmpty
+          ? LocaleKeys.createSurveyTitle
+          : "Edit Survey"),
+      endDrawer: DrawerMenu(
+        onLocaleChange: () {
+          if (db.companionValueToStr(surveyHeader.province).isNotEmpty) {
+            db.referenceTablesDao
+                .getJurisdictionName(
+                    surveyHeader.province.value, context.locale)
+                .then((value) => setState(() {
+                      provinceName = value;
+                    }));
+          }
+        },
+      ),
       body: Column(
         children: [
           CalendarSelect(

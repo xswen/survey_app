@@ -6,6 +6,7 @@ import 'package:survey_app/widgets/popups/popup_dismiss.dart';
 
 import '../../widgets/app_bar.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
+import '../../widgets/drawer_menu.dart';
 import '../../widgets/popups/popups.dart';
 
 class SurfaceSubstrateSummaryPage extends StatefulWidget {
@@ -56,6 +57,7 @@ class _SurfaceSubstrateSummaryPageState
 
     return Scaffold(
       appBar: const OurAppBar(""),
+      endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
       floatingActionButton: FloatingCompleteButton(
         title: "Surface Substrate Summary",
         complete: ss.complete,

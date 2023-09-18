@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../widgets/app_bar.dart';
+import '../widgets/drawer_menu.dart';
 
 class DeleteCheckPage extends StatelessWidget {
   const DeleteCheckPage(
@@ -17,6 +18,7 @@ class DeleteCheckPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: OurAppBar("Delete $object"),
+      endDrawer: const DrawerMenu(),
       body: Column(
         children: [
           Text(

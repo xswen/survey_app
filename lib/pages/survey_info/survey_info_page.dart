@@ -16,6 +16,7 @@ import '../../formatters/format_date.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/buttons/edit_icon_button.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
+import '../../widgets/drawer_menu.dart';
 import '../../widgets/popups/popups.dart';
 import '../../widgets/text/text_line_label.dart';
 import '../../widgets/titled_border.dart';
@@ -200,6 +201,7 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
         widget.updateDashboard();
         context.pop();
       }, widget.title),
+      endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
       floatingActionButton: FloatingCompleteButton(
         title: widget.title,
         complete: survey.complete,

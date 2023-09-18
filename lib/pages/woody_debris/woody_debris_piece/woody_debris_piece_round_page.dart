@@ -19,6 +19,7 @@ import '../../../formatters/thousands_formatter.dart';
 import '../../../widgets/app_bar.dart';
 import '../../../widgets/builders/decay_class_select_builder.dart';
 import '../../../widgets/data_input/data_input.dart';
+import '../../../widgets/drawer_menu.dart';
 import '../../../widgets/popups/popups.dart';
 import '../../delete_page.dart';
 
@@ -115,6 +116,7 @@ class _WoodyDebrisPieceRoundPageState extends State<WoodyDebrisPieceRoundPage> {
               : context.pop();
         },
       ),
+      endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
       body: Padding(
         padding:
             const EdgeInsets.fromLTRB(kPaddingH, 0, kPaddingH, kPaddingV / 2),
