@@ -1,5 +1,8 @@
+import 'dart:collection';
+
 import 'package:drift/drift.dart';
 
+import '../../enums/enums.dart';
 import '../database.dart';
 import '../database_creation_files/survey_info_tables.dart';
 
@@ -29,6 +32,20 @@ class SurveyInfoTablesDao extends DatabaseAccessor<Database>
       into(surveyHeaders).insert(entry);
 
   Future<List<SurveyHeader>> get allSurveys => select(surveyHeaders).get();
+
+  Future<List<SurveyHeader>> getSurveysFiltered(HashSet<SurveyStatus> filters) {
+    List<bool> filtersList = [];
+    if (filters.isEmpty) {
+      filtersList = [true, false];
+    } else {
+      if (filters.contains(SurveyStatus.complete)) filtersList.add(true);
+      if (filters.contains(SurveyStatus.inProgress)) filtersList.add(false);
+    }
+    return (select(surveyHeaders)
+          ..where((tbl) => tbl.complete.isIn(filtersList)))
+        .get();
+  }
+
   Future<SurveyHeader> getSurvey(int id) {
     return (select(surveyHeaders)..where((tbl) => tbl.id.equals(id)))
         .getSingle();
