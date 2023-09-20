@@ -97,14 +97,6 @@ class _MyHomePageState extends State<MyHomePage> {
                         },
                         child: const Text(LocaleKeys.start).tr()),
                     ElevatedButton(
-                        onPressed: () async {
-                          context.locale == kLocaleEn
-                              ? await context.setLocale(kLocaleFr)
-                              : await context.setLocale(kLocaleEn);
-                        },
-                        child: Text(
-                            "Change to ${context.locale == kLocaleEn ? "French" : "English"}")),
-                    ElevatedButton(
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => DriftDbViewer(db)));
