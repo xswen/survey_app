@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart' as d;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:survey_app/constants/text_designs.dart';
@@ -103,7 +104,9 @@ class _DashboardPageState extends State<DashboardPage> {
       endDrawer: DrawerMenu(
         onLocaleChange: () => setState(() {}),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
+        label: const Text("Create New Survey"),
+        icon: Icon(FontAwesomeIcons.circlePlus),
         onPressed: () {
           context.pushNamed(
             CreateSurveyPage.routeName,
@@ -115,7 +118,6 @@ class _DashboardPageState extends State<DashboardPage> {
             },
           );
         },
-        child: const Icon(Icons.add),
       ),
       body: surveys.isEmpty
           ? Padding(
