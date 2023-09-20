@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'buttons/round_icon_button.dart';
-
 class BoxIncrement extends StatelessWidget {
   const BoxIncrement(
       {Key? key,
@@ -42,16 +40,20 @@ class BoxIncrement extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            RoundIconButton(
-              icon: FontAwesomeIcons.minus,
-              size: 30,
-              onPressed: minusOnPress,
-            ),
-            RoundIconButton(
-              icon: FontAwesomeIcons.plus,
-              size: 30,
-              onPressed: addOnPress,
-            ),
+            IconButton(
+                onPressed: minusOnPress,
+                icon: const Icon(
+                  FontAwesomeIcons.circleMinus,
+                  size: 30,
+                  color: Colors.blue,
+                )),
+            IconButton(
+                onPressed: addOnPress,
+                icon: const Icon(
+                  FontAwesomeIcons.circlePlus,
+                  size: 30,
+                  color: Colors.blue,
+                )),
           ],
         ),
       ],
