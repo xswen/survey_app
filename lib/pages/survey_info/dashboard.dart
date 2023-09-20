@@ -77,7 +77,7 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         label: const Text("Create New Survey"),
-        icon: Icon(FontAwesomeIcons.circlePlus),
+        icon: const Icon(FontAwesomeIcons.circlePlus),
         onPressed: () {
           context.pushNamed(
             CreateSurveyPage.routeName,
@@ -90,51 +90,50 @@ class _DashboardPageState extends State<DashboardPage> {
           );
         },
       ),
-      body: surveys.isEmpty
-          ? Padding(
-              padding: const EdgeInsets.symmetric(
-                  vertical: 0.0, horizontal: kPaddingH),
-              child: Center(
-                child: const Text(
-                  LocaleKeys.dashboardNoSurveys,
-                  style: TextStyle(fontSize: kTextHeaderSize),
-                ).tr(),
+      body: Column(
+        children: [
+          Wrap(
+            alignment: WrapAlignment.start,
+            spacing: kPaddingH,
+            children: [
+              FilterChip(
+                backgroundColor: Colors.tealAccent[200],
+                label: const Text("All"),
+                selected: filters.isEmpty,
+                onSelected: (selected) async => filterOnSelect(selected, null),
+                selectedColor: Colors.purpleAccent,
               ),
-            )
-          : Column(
-              children: [
-                Wrap(
-                  alignment: WrapAlignment.start,
-                  spacing: kPaddingH,
-                  children: [
-                    FilterChip(
-                      backgroundColor: Colors.tealAccent[200],
-                      label: const Text("All"),
-                      selected: filters.isEmpty,
-                      onSelected: (selected) async =>
-                          filterOnSelect(selected, null),
-                      selectedColor: Colors.purpleAccent,
+              FilterChip(
+                backgroundColor: Colors.tealAccent[200],
+                label: const Text("Completed"),
+                selected: filters.contains(SurveyStatus.complete),
+                onSelected: (selected) async =>
+                    filterOnSelect(selected, SurveyStatus.complete),
+                selectedColor: Colors.purpleAccent,
+              ),
+              FilterChip(
+                backgroundColor: Colors.tealAccent[200],
+                label: const Text("In Progress"),
+                selected: filters.contains(SurveyStatus.inProgress),
+                onSelected: (selected) async =>
+                    filterOnSelect(selected, SurveyStatus.inProgress),
+                selectedColor: Colors.purpleAccent,
+              ),
+            ],
+          ),
+          Expanded(
+            child: surveys.isEmpty
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 0.0, horizontal: kPaddingH),
+                    child: Center(
+                      child: const Text(
+                        LocaleKeys.dashboardNoSurveys,
+                        style: TextStyle(fontSize: kTextHeaderSize),
+                      ).tr(),
                     ),
-                    FilterChip(
-                      backgroundColor: Colors.tealAccent[200],
-                      label: const Text("Completed"),
-                      selected: filters.contains(SurveyStatus.complete),
-                      onSelected: (selected) async =>
-                          filterOnSelect(selected, SurveyStatus.complete),
-                      selectedColor: Colors.purpleAccent,
-                    ),
-                    FilterChip(
-                      backgroundColor: Colors.tealAccent[200],
-                      label: const Text("In Progress"),
-                      selected: filters.contains(SurveyStatus.inProgress),
-                      onSelected: (selected) async =>
-                          filterOnSelect(selected, SurveyStatus.inProgress),
-                      selectedColor: Colors.purpleAccent,
-                    ),
-                  ],
-                ),
-                Expanded(
-                  child: ListView.builder(
+                  )
+                : ListView.builder(
                     itemCount: (surveys).length,
                     itemBuilder: (BuildContext cxt, int index) {
                       SurveyHeader survey = surveys[index];
@@ -156,9 +155,9 @@ class _DashboardPageState extends State<DashboardPage> {
                       );
                     },
                   ),
-                ),
-              ],
-            ),
+          ),
+        ],
+      ),
     );
   }
 }
