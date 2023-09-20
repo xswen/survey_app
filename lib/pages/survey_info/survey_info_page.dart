@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:drift/drift.dart' as d;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -49,6 +51,8 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
   late SurveyHeader survey;
   late List<SurveyCard> cards;
   late List<TileCardSelection> tileCards;
+
+  HashSet<SurveyStatus> filters = HashSet<SurveyStatus>();
 
   @override
   void initState() {
@@ -106,33 +110,35 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
   List<TileCardSelection> generateTileCards(List<SurveyCard> cards) {
     List<TileCardSelection> tileCards = [];
 
-    for (int i = 0; i < cards.length; i++) {
-      SurveyCardCategories category = cards[i].category;
-      String name = cards[i].name;
-      dynamic data = cards[i].surveyCardData;
+    for (SurveyCard card in cards) {
+      SurveyCardCategories category = card.category;
+      String name = card.name;
+      dynamic data = card.surveyCardData;
 
       tileCards.add(TileCardSelection(
-          title: name,
-          status: getStatus(data),
-          onPressed: () {
-            if (survey.complete && data == null) {
-              Popups.show(
-                  context,
-                  PopupDismiss(
-                    "Nothing to show",
-                    contentText: "Survey has been marked as complete. "
-                        "No data found for $name. Please mark survey as "
-                        "edit if you wish to add data to $name",
-                  ));
-              return;
-            }
-            getNav(category, data);
-          }));
+        title: name,
+        status: getStatus(data),
+        onPressed: () {
+          if (survey.complete && data == null) {
+            Popups.show(
+                context,
+                PopupDismiss(
+                  "Nothing to show",
+                  contentText: "Survey has been marked as complete. "
+                      "No data found for $name. Please mark survey as "
+                      "edit if you wish to add data to $name",
+                ));
+            return;
+          }
+          getNav(category, data);
+        },
+      ));
     }
 
     return tileCards;
   }
 
+  //Behaviour when tile is clicked. Set state and regenerate cards on return.
   void getNav(SurveyCardCategories category, dynamic data) async {
     final Database db = Database.instance;
 
@@ -178,10 +184,12 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
         );
         break;
     }
-    db.getCards(widget.surveyHeader.id).then((value) => setState(() {
-          cards = value;
-          tileCards = generateTileCards(value);
-        }));
+    db
+        .getCards(widget.surveyHeader.id, filters: filters)
+        .then((value) => setState(() {
+              cards = value;
+              tileCards = generateTileCards(value);
+            }));
   }
 
   @override
@@ -194,6 +202,28 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
       db.surveyInfoTablesDao
           .getSurvey(survey.id)
           .then((value) => setState(() => survey = value));
+    }
+
+    //Add or remove filter based on select and set state after call on db
+    // to update. Status set to null if "All" is selected
+    void filterOnSelect(bool selected, SurveyStatus? status) async {
+      if (selected) {
+        status == null
+            ? filters = HashSet<SurveyStatus>()
+            : filters.add(status);
+      } else {
+        status == null
+            ? filters = HashSet<SurveyStatus>.of({
+                SurveyStatus.complete,
+                SurveyStatus.inProgress,
+                SurveyStatus.notStarted
+              })
+            : filters.remove(status);
+      }
+
+      cards = await db.getCards(survey.id, filters: filters);
+      tileCards = generateTileCards(cards);
+      setState(() {});
     }
 
     return Scaffold(
@@ -356,6 +386,44 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
                 )),
             const Divider(
               thickness: 2,
+            ),
+            Wrap(
+              alignment: WrapAlignment.start,
+              spacing: kPaddingH,
+              children: [
+                FilterChip(
+                  backgroundColor: Colors.tealAccent[200],
+                  label: const Text("All"),
+                  selected: filters.isEmpty,
+                  onSelected: (selected) async =>
+                      filterOnSelect(selected, null),
+                  selectedColor: Colors.purpleAccent,
+                ),
+                FilterChip(
+                  backgroundColor: Colors.tealAccent[200],
+                  label: const Text("Completed"),
+                  selected: filters.contains(SurveyStatus.complete),
+                  onSelected: (selected) =>
+                      filterOnSelect(selected, SurveyStatus.complete),
+                  selectedColor: Colors.purpleAccent,
+                ),
+                FilterChip(
+                  backgroundColor: Colors.tealAccent[200],
+                  label: const Text("In Progress"),
+                  selected: filters.contains(SurveyStatus.inProgress),
+                  onSelected: (selected) async =>
+                      filterOnSelect(selected, SurveyStatus.inProgress),
+                  selectedColor: Colors.purpleAccent,
+                ),
+                FilterChip(
+                  backgroundColor: Colors.tealAccent[200],
+                  label: const Text("Not Started"),
+                  selected: filters.contains(SurveyStatus.notStarted),
+                  onSelected: (selected) async =>
+                      filterOnSelect(selected, SurveyStatus.notStarted),
+                  selectedColor: Colors.purpleAccent,
+                ),
+              ],
             ),
             Expanded(
               child: ListView(

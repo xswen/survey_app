@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 
@@ -243,21 +244,58 @@ class Database extends _$Database {
         ));
   }
 
-  Future<List<SurveyCard>> getCards(int surveyId) async {
-    return [
-      SurveyCard(
-          SurveyCardCategories.woodyDebris,
-          "Woody Debris",
-          await (select(woodyDebrisSummary)
-                ..where((tbl) => tbl.surveyId.equals(surveyId)))
-              .getSingleOrNull()),
-      SurveyCard(
-          SurveyCardCategories.surfaceSubstrate,
-          "Surface Substrate",
-          await (select(surfaceSubstrateSummary)
-                ..where((tbl) => tbl.surveyId.equals(surveyId)))
-              .getSingleOrNull()),
+  Future<List<SurveyCard>> getCards(int surveyId,
+      {HashSet<SurveyStatus>? filters}) async {
+    bool checkFilter(dynamic cardData) {
+      //No filter
+      if (filters == null || filters.isEmpty) {
+        return true;
+      }
+
+      //Check if notStarted cards are valid
+      if (cardData == null) {
+        return filters!.contains(SurveyStatus.notStarted);
+      }
+
+      if (filters!.contains(SurveyStatus.inProgress) &&
+          cardData!.complete == false) {
+        return true;
+      }
+
+      if (filters!.contains(SurveyStatus.complete) &&
+          cardData!.complete == true) {
+        return true;
+      }
+
+      return false;
+    }
+
+    var operations = [
+      {
+        "category": SurveyCardCategories.woodyDebris,
+        "name": "Woody Debris",
+        "surveyCardData": await (select(woodyDebrisSummary)
+              ..where((tbl) => tbl.surveyId.equals(surveyId)))
+            .getSingleOrNull()
+      },
+      {
+        "category": SurveyCardCategories.surfaceSubstrate,
+        "name": "Surface Substrate",
+        "surveyCardData": await (select(surfaceSubstrateSummary)
+              ..where((tbl) => tbl.surveyId.equals(surveyId)))
+            .getSingleOrNull()
+      }
     ];
+
+    List<SurveyCard> cards = [];
+    for (var op in operations) {
+      checkFilter(op["surveyCardData"])
+          ? cards.add(SurveyCard(op["category"] as SurveyCardCategories,
+              op["name"] as String, op["surveyCardData"] as dynamic))
+          : null;
+    }
+
+    return cards;
   }
 
   String companionValueToStr(value) => (value == null ||
