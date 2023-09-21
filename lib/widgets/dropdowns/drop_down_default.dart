@@ -54,6 +54,7 @@ class _DropDownDefaultState extends State<DropDownDefault> {
               showSelectedItems: true,
               showSearchBox: widget.searchable,
               disabledItemFn: widget.disabledFn,
+              searchDelay: const Duration(microseconds: 0),
             ),
             onBeforePopupOpening: widget.onBeforePopup,
             onChanged: widget.onChangedFn,

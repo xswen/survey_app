@@ -121,6 +121,15 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
       (select(treeGenus)..where((tbl) => tbl.genusCode.equals(genusCode)))
           .map((p0) => p0.speciesLatinName)
           .get();
+  Future<bool> checkGenusUnknown(String genusCode) async {
+    List<String> speciesCodes = await ((select(treeGenus)
+          ..where((tbl) => tbl.genusCode.equals(genusCode)))
+        .map((p0) => p0.speciesCode)
+        .get());
+
+    return speciesCodes.length == 1 && speciesCodes[0] == kSpeciesUnknownCode;
+  }
+
   Future<String> getSpeciesCode(String genusCode, String speciesName) =>
       (select(treeGenus)
             ..where((tbl) =>

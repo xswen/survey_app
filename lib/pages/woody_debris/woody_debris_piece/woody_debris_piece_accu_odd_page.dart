@@ -186,18 +186,8 @@ class _WoodyDebrisPieceAccuOddPageState
                 ),
               ),
               TreeGenusSelectBuilder(
-                  onChangedFn: (s) async {
-                    //Check that the same genus wasn't double selected so you
-                    //don't overwrite species
-                    if (db.companionValueToStr(piece.genus).isEmpty ||
-                        s != db.companionValueToStr(piece.genus)) {
-                      String newGenusCode =
-                          await db.referenceTablesDao.getGenusCodeFromName(s!);
-                      updatePiece(piece.copyWith(
-                          genus: d.Value(newGenusCode),
-                          species: const d.Value.absent()));
-                    }
-                  },
+                  updateGenusFn: (genusCode, speciesCode) => updatePiece(
+                      piece.copyWith(genus: genusCode, species: speciesCode)),
                   genusCode: db.companionValueToStr(piece.genus)),
               TreeSpeciesSelectBuilder(
                   onChangedFn: (s) => db.referenceTablesDao

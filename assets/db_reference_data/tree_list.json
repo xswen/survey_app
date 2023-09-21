@@ -451,7 +451,7 @@
     "genusCode": "ASIM",
     "speciesCode": "SPP",
     "genusLatinName": "Asimina",
-    "speciesLatinName": null,
+    "speciesLatinName": "unknown",
     "commonNameEn": "Unidentified asimina",
     "commonNameFr": "Asiminier non identifié"
   },
@@ -2059,7 +2059,7 @@
     "genusCode": "SASS",
     "speciesCode": "SPP",
     "genusLatinName": "Sassafras",
-    "speciesLatinName": null,
+    "speciesLatinName": "unknown",
     "commonNameEn": "Unidentified sassafras",
     "commonNameFr": "Sassafras non identifié"
   },
@@ -2315,7 +2315,7 @@
     "genusCode": "GENC",
     "speciesCode": "SPP",
     "genusLatinName": "Unidentified conifer",
-    "speciesLatinName": null,
+    "speciesLatinName": "unknown",
     "commonNameEn": "Unidentified softwood",
     "commonNameFr": "Conifères non identifié"
   },
@@ -2323,7 +2323,7 @@
     "genusCode": "GENH",
     "speciesCode": "SPP",
     "genusLatinName": "Unidentified hardwood",
-    "speciesLatinName": null,
+    "speciesLatinName": "unknown",
     "commonNameEn": "Unidentified hardwood",
     "commonNameFr": "Feuillus non identifié"
   },
@@ -2331,7 +2331,7 @@
     "genusCode": "GENX",
     "speciesCode": "SPP",
     "genusLatinName": "Unidentified exotic",
-    "speciesLatinName": null,
+    "speciesLatinName": "unknown",
     "commonNameEn": "Unidentified exotic",
     "commonNameFr": "Les espèces exotiques non identifié"
   },
@@ -2339,7 +2339,7 @@
     "genusCode": "UNKN",
     "speciesCode": "SPP",
     "genusLatinName": "Unknown species",
-    "speciesLatinName": null,
+    "speciesLatinName": "unknown",
     "commonNameEn": "Unknown species",
     "commonNameFr": null
   }

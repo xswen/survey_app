@@ -6,8 +6,6 @@ import 'package:go_router/go_router.dart';
 import 'package:survey_app/constants/constant_values.dart';
 import 'package:survey_app/database/database.dart';
 import 'package:survey_app/pages/woody_debris/woody_debris_piece/woody_debris_piece_error_checks.dart';
-import 'package:survey_app/widgets/builders/tree_genus_select_builder.dart';
-import 'package:survey_app/widgets/builders/tree_species_select_builder.dart';
 import 'package:survey_app/widgets/buttons/delete_button.dart';
 import 'package:survey_app/widgets/hide_info_checkbox.dart';
 import 'package:survey_app/widgets/popups/popup_continue.dart';
@@ -188,30 +186,30 @@ class _WoodyDebrisPieceRoundPageState extends State<WoodyDebrisPieceRoundPage> {
                       db.companionValueToStr(piece.tiltAngle)),
                 ),
               ),
-              TreeGenusSelectBuilder(
-                  onChangedFn: (s) async {
-                    //Check that the same genus wasn't double selected so you
-                    //don't overwrite species
-                    if (db.companionValueToStr(piece.genus).isEmpty ||
-                        s != db.companionValueToStr(piece.genus)) {
-                      String newGenusCode =
-                          await db.referenceTablesDao.getGenusCodeFromName(s!);
-                      updatePiece(piece.copyWith(
-                          genus: d.Value(newGenusCode),
-                          species: const d.Value.absent()));
-                    }
-                  },
-                  genusCode: db.companionValueToStr(piece.genus)),
-              TreeSpeciesSelectBuilder(
-                  onChangedFn: (s) => db.referenceTablesDao
-                          .getSpeciesCode(
-                              db.companionValueToStr(piece.genus), s!)
-                          .then((newSpeciesCode) {
-                        updatePiece(
-                            piece.copyWith(species: d.Value(newSpeciesCode)));
-                      }),
-                  selectedSpeciesCode: db.companionValueToStr(piece.species),
-                  genusCode: db.companionValueToStr(piece.genus)),
+              // TreeGenusSelectBuilder(
+              //     updateGenusFn: (s) async {
+              //       //Check that the same genus wasn't double selected so you
+              //       //don't overwrite species
+              //       if (db.companionValueToStr(piece.genus).isEmpty ||
+              //           s != db.companionValueToStr(piece.genus)) {
+              //         String newGenusCode =
+              //             await db.referenceTablesDao.getGenusCodeFromName(s!);
+              //         updatePiece(piece.copyWith(
+              //             genus: d.Value(newGenusCode),
+              //             species: const d.Value.absent()));
+              //       }
+              //     },
+              //     genusCode: db.companionValueToStr(piece.genus)),
+              // TreeSpeciesSelectBuilder(
+              //     onChangedFn: (s) => db.referenceTablesDao
+              //             .getSpeciesCode(
+              //                 db.companionValueToStr(piece.genus), s!)
+              //             .then((newSpeciesCode) {
+              //           updatePiece(
+              //               piece.copyWith(species: d.Value(newSpeciesCode)));
+              //         }),
+              //     selectedSpeciesCode: db.companionValueToStr(piece.species),
+              //     genusCode: db.companionValueToStr(piece.genus)),
               const SizedBox(
                 height: kPaddingV * 2,
               ),
