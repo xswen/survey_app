@@ -279,7 +279,7 @@ class _WoodyDebrisHeaderPieceMainState
               height: kPaddingV * 2,
             ),
             TextHeaderSeparator(
-              title: "Large Woody Debris",
+              title: "Coarse Woody Debris",
               sideWidget: Padding(
                 padding: const EdgeInsets.only(left: kPaddingH),
                 child: ElevatedButton(
