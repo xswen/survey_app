@@ -86,7 +86,7 @@ class _WoodyDebrisHeaderPageState extends State<WoodyDebrisHeaderPage> {
           wdh.nomTransLen == null ||
           wdh.swdDecayClass == null ||
           wdh.swdMeasLen == null) {
-        results.add("Measurement Data");
+        results.add("Transect Header Data");
       }
       if (wdSm == null) {
         results.add("Piece Measurements");
@@ -114,7 +114,7 @@ class _WoodyDebrisHeaderPageState extends State<WoodyDebrisHeaderPage> {
               if (errors == null) {
                 List<String> missingData = [];
                 wdh.swdDecayClass == -1
-                    ? missingData.add("Measurement Data")
+                    ? missingData.add("Transect Header Data")
                     : null;
                 missingData.isEmpty
                     ? updateWdhData(const WoodyDebrisHeaderCompanion(
@@ -144,7 +144,7 @@ class _WoodyDebrisHeaderPageState extends State<WoodyDebrisHeaderPage> {
             IconNavButton(
               icon: const Icon(FontAwesomeIcons.file),
               space: kPaddingIcon,
-              label: "Measurement Data",
+              label: "Transect Header Data",
               onPressed: () async {
                 context
                     .pushNamed(WoodyDebrisHeaderMeasurements.routeName,
