@@ -49,11 +49,14 @@ GoRoute goRouteWoodyDebris = GoRoute(
                   WoodyDebrisSmallData wdSm =
                       data[WoodyDebrisHeaderPieceMain.keyWdSmall];
                   int transNum = data[WoodyDebrisHeaderPieceMain.keyTransNum];
+                  int? decayClass =
+                      data[WoodyDebrisHeaderPieceMain.keyDecayClass];
                   bool transComplete =
                       data[WoodyDebrisHeaderPieceMain.keyTransComplete];
                   return WoodyDebrisHeaderPieceMain(
                       wdSmall: wdSm,
                       transNum: transNum,
+                      decayClass: decayClass,
                       transComplete: transComplete);
                 },
                 routes: [

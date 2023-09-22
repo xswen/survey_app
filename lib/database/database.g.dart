@@ -2915,12 +2915,6 @@ class $WoodyDebrisSmallTable extends WoodyDebrisSmall
       requiredDuringInsert: true,
       defaultConstraints: GeneratedColumn.constraintIsAlways(
           'UNIQUE REFERENCES woody_debris_header (id)'));
-  static const VerificationMeta _swdDiamClassMeta =
-      const VerificationMeta('swdDiamClass');
-  @override
-  late final GeneratedColumn<int> swdDiamClass = GeneratedColumn<int>(
-      'swd_diam_class', aliasedName, true,
-      type: DriftSqlType.int, requiredDuringInsert: false);
   static const VerificationMeta _swdTallySMeta =
       const VerificationMeta('swdTallyS');
   @override
@@ -2945,24 +2939,9 @@ class $WoodyDebrisSmallTable extends WoodyDebrisSmall
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultValue: const Constant(0));
-  static const VerificationMeta _swdDecayClassMeta =
-      const VerificationMeta('swdDecayClass');
   @override
-  late final GeneratedColumn<int> swdDecayClass = GeneratedColumn<int>(
-      'swd_decay_class', aliasedName, true,
-      check: () => swdDecayClass.isBetweenValues(-1, 5),
-      type: DriftSqlType.int,
-      requiredDuringInsert: false);
-  @override
-  List<GeneratedColumn> get $columns => [
-        id,
-        wdHeaderId,
-        swdDiamClass,
-        swdTallyS,
-        swdTallyM,
-        swdTallyL,
-        swdDecayClass
-      ];
+  List<GeneratedColumn> get $columns =>
+      [id, wdHeaderId, swdTallyS, swdTallyM, swdTallyL];
   @override
   String get aliasedName => _alias ?? 'woody_debris_small';
   @override
@@ -2984,12 +2963,6 @@ class $WoodyDebrisSmallTable extends WoodyDebrisSmall
     } else if (isInserting) {
       context.missing(_wdHeaderIdMeta);
     }
-    if (data.containsKey('swd_diam_class')) {
-      context.handle(
-          _swdDiamClassMeta,
-          swdDiamClass.isAcceptableOrUnknown(
-              data['swd_diam_class']!, _swdDiamClassMeta));
-    }
     if (data.containsKey('swd_tally_s')) {
       context.handle(
           _swdTallySMeta,
@@ -3008,12 +2981,6 @@ class $WoodyDebrisSmallTable extends WoodyDebrisSmall
           swdTallyL.isAcceptableOrUnknown(
               data['swd_tally_l']!, _swdTallyLMeta));
     }
-    if (data.containsKey('swd_decay_class')) {
-      context.handle(
-          _swdDecayClassMeta,
-          swdDecayClass.isAcceptableOrUnknown(
-              data['swd_decay_class']!, _swdDecayClassMeta));
-    }
     return context;
   }
 
@@ -3027,16 +2994,12 @@ class $WoodyDebrisSmallTable extends WoodyDebrisSmall
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       wdHeaderId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}wd_header_id'])!,
-      swdDiamClass: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}swd_diam_class']),
       swdTallyS: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}swd_tally_s'])!,
       swdTallyM: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}swd_tally_m'])!,
       swdTallyL: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}swd_tally_l'])!,
-      swdDecayClass: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}swd_decay_class']),
     );
   }
 
@@ -3050,33 +3013,23 @@ class WoodyDebrisSmallData extends DataClass
     implements Insertable<WoodyDebrisSmallData> {
   final int id;
   final int wdHeaderId;
-  final int? swdDiamClass;
   final int swdTallyS;
   final int swdTallyM;
   final int swdTallyL;
-  final int? swdDecayClass;
   const WoodyDebrisSmallData(
       {required this.id,
       required this.wdHeaderId,
-      this.swdDiamClass,
       required this.swdTallyS,
       required this.swdTallyM,
-      required this.swdTallyL,
-      this.swdDecayClass});
+      required this.swdTallyL});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['wd_header_id'] = Variable<int>(wdHeaderId);
-    if (!nullToAbsent || swdDiamClass != null) {
-      map['swd_diam_class'] = Variable<int>(swdDiamClass);
-    }
     map['swd_tally_s'] = Variable<int>(swdTallyS);
     map['swd_tally_m'] = Variable<int>(swdTallyM);
     map['swd_tally_l'] = Variable<int>(swdTallyL);
-    if (!nullToAbsent || swdDecayClass != null) {
-      map['swd_decay_class'] = Variable<int>(swdDecayClass);
-    }
     return map;
   }
 
@@ -3084,15 +3037,9 @@ class WoodyDebrisSmallData extends DataClass
     return WoodyDebrisSmallCompanion(
       id: Value(id),
       wdHeaderId: Value(wdHeaderId),
-      swdDiamClass: swdDiamClass == null && nullToAbsent
-          ? const Value.absent()
-          : Value(swdDiamClass),
       swdTallyS: Value(swdTallyS),
       swdTallyM: Value(swdTallyM),
       swdTallyL: Value(swdTallyL),
-      swdDecayClass: swdDecayClass == null && nullToAbsent
-          ? const Value.absent()
-          : Value(swdDecayClass),
     );
   }
 
@@ -3102,11 +3049,9 @@ class WoodyDebrisSmallData extends DataClass
     return WoodyDebrisSmallData(
       id: serializer.fromJson<int>(json['id']),
       wdHeaderId: serializer.fromJson<int>(json['wdHeaderId']),
-      swdDiamClass: serializer.fromJson<int?>(json['swdDiamClass']),
       swdTallyS: serializer.fromJson<int>(json['swdTallyS']),
       swdTallyM: serializer.fromJson<int>(json['swdTallyM']),
       swdTallyL: serializer.fromJson<int>(json['swdTallyL']),
-      swdDecayClass: serializer.fromJson<int?>(json['swdDecayClass']),
     );
   }
   @override
@@ -3115,125 +3060,99 @@ class WoodyDebrisSmallData extends DataClass
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'wdHeaderId': serializer.toJson<int>(wdHeaderId),
-      'swdDiamClass': serializer.toJson<int?>(swdDiamClass),
       'swdTallyS': serializer.toJson<int>(swdTallyS),
       'swdTallyM': serializer.toJson<int>(swdTallyM),
       'swdTallyL': serializer.toJson<int>(swdTallyL),
-      'swdDecayClass': serializer.toJson<int?>(swdDecayClass),
     };
   }
 
   WoodyDebrisSmallData copyWith(
           {int? id,
           int? wdHeaderId,
-          Value<int?> swdDiamClass = const Value.absent(),
           int? swdTallyS,
           int? swdTallyM,
-          int? swdTallyL,
-          Value<int?> swdDecayClass = const Value.absent()}) =>
+          int? swdTallyL}) =>
       WoodyDebrisSmallData(
         id: id ?? this.id,
         wdHeaderId: wdHeaderId ?? this.wdHeaderId,
-        swdDiamClass:
-            swdDiamClass.present ? swdDiamClass.value : this.swdDiamClass,
         swdTallyS: swdTallyS ?? this.swdTallyS,
         swdTallyM: swdTallyM ?? this.swdTallyM,
         swdTallyL: swdTallyL ?? this.swdTallyL,
-        swdDecayClass:
-            swdDecayClass.present ? swdDecayClass.value : this.swdDecayClass,
       );
   @override
   String toString() {
     return (StringBuffer('WoodyDebrisSmallData(')
           ..write('id: $id, ')
           ..write('wdHeaderId: $wdHeaderId, ')
-          ..write('swdDiamClass: $swdDiamClass, ')
           ..write('swdTallyS: $swdTallyS, ')
           ..write('swdTallyM: $swdTallyM, ')
-          ..write('swdTallyL: $swdTallyL, ')
-          ..write('swdDecayClass: $swdDecayClass')
+          ..write('swdTallyL: $swdTallyL')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, wdHeaderId, swdDiamClass, swdTallyS,
-      swdTallyM, swdTallyL, swdDecayClass);
+  int get hashCode =>
+      Object.hash(id, wdHeaderId, swdTallyS, swdTallyM, swdTallyL);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is WoodyDebrisSmallData &&
           other.id == this.id &&
           other.wdHeaderId == this.wdHeaderId &&
-          other.swdDiamClass == this.swdDiamClass &&
           other.swdTallyS == this.swdTallyS &&
           other.swdTallyM == this.swdTallyM &&
-          other.swdTallyL == this.swdTallyL &&
-          other.swdDecayClass == this.swdDecayClass);
+          other.swdTallyL == this.swdTallyL);
 }
 
 class WoodyDebrisSmallCompanion extends UpdateCompanion<WoodyDebrisSmallData> {
   final Value<int> id;
   final Value<int> wdHeaderId;
-  final Value<int?> swdDiamClass;
   final Value<int> swdTallyS;
   final Value<int> swdTallyM;
   final Value<int> swdTallyL;
-  final Value<int?> swdDecayClass;
   const WoodyDebrisSmallCompanion({
     this.id = const Value.absent(),
     this.wdHeaderId = const Value.absent(),
-    this.swdDiamClass = const Value.absent(),
     this.swdTallyS = const Value.absent(),
     this.swdTallyM = const Value.absent(),
     this.swdTallyL = const Value.absent(),
-    this.swdDecayClass = const Value.absent(),
   });
   WoodyDebrisSmallCompanion.insert({
     this.id = const Value.absent(),
     required int wdHeaderId,
-    this.swdDiamClass = const Value.absent(),
     this.swdTallyS = const Value.absent(),
     this.swdTallyM = const Value.absent(),
     this.swdTallyL = const Value.absent(),
-    this.swdDecayClass = const Value.absent(),
   }) : wdHeaderId = Value(wdHeaderId);
   static Insertable<WoodyDebrisSmallData> custom({
     Expression<int>? id,
     Expression<int>? wdHeaderId,
-    Expression<int>? swdDiamClass,
     Expression<int>? swdTallyS,
     Expression<int>? swdTallyM,
     Expression<int>? swdTallyL,
-    Expression<int>? swdDecayClass,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (wdHeaderId != null) 'wd_header_id': wdHeaderId,
-      if (swdDiamClass != null) 'swd_diam_class': swdDiamClass,
       if (swdTallyS != null) 'swd_tally_s': swdTallyS,
       if (swdTallyM != null) 'swd_tally_m': swdTallyM,
       if (swdTallyL != null) 'swd_tally_l': swdTallyL,
-      if (swdDecayClass != null) 'swd_decay_class': swdDecayClass,
     });
   }
 
   WoodyDebrisSmallCompanion copyWith(
       {Value<int>? id,
       Value<int>? wdHeaderId,
-      Value<int?>? swdDiamClass,
       Value<int>? swdTallyS,
       Value<int>? swdTallyM,
-      Value<int>? swdTallyL,
-      Value<int?>? swdDecayClass}) {
+      Value<int>? swdTallyL}) {
     return WoodyDebrisSmallCompanion(
       id: id ?? this.id,
       wdHeaderId: wdHeaderId ?? this.wdHeaderId,
-      swdDiamClass: swdDiamClass ?? this.swdDiamClass,
       swdTallyS: swdTallyS ?? this.swdTallyS,
       swdTallyM: swdTallyM ?? this.swdTallyM,
       swdTallyL: swdTallyL ?? this.swdTallyL,
-      swdDecayClass: swdDecayClass ?? this.swdDecayClass,
     );
   }
 
@@ -3246,9 +3165,6 @@ class WoodyDebrisSmallCompanion extends UpdateCompanion<WoodyDebrisSmallData> {
     if (wdHeaderId.present) {
       map['wd_header_id'] = Variable<int>(wdHeaderId.value);
     }
-    if (swdDiamClass.present) {
-      map['swd_diam_class'] = Variable<int>(swdDiamClass.value);
-    }
     if (swdTallyS.present) {
       map['swd_tally_s'] = Variable<int>(swdTallyS.value);
     }
@@ -3258,9 +3174,6 @@ class WoodyDebrisSmallCompanion extends UpdateCompanion<WoodyDebrisSmallData> {
     if (swdTallyL.present) {
       map['swd_tally_l'] = Variable<int>(swdTallyL.value);
     }
-    if (swdDecayClass.present) {
-      map['swd_decay_class'] = Variable<int>(swdDecayClass.value);
-    }
     return map;
   }
 
@@ -3269,11 +3182,9 @@ class WoodyDebrisSmallCompanion extends UpdateCompanion<WoodyDebrisSmallData> {
     return (StringBuffer('WoodyDebrisSmallCompanion(')
           ..write('id: $id, ')
           ..write('wdHeaderId: $wdHeaderId, ')
-          ..write('swdDiamClass: $swdDiamClass, ')
           ..write('swdTallyS: $swdTallyS, ')
           ..write('swdTallyM: $swdTallyM, ')
-          ..write('swdTallyL: $swdTallyL, ')
-          ..write('swdDecayClass: $swdDecayClass')
+          ..write('swdTallyL: $swdTallyL')
           ..write(')'))
         .toString();
   }

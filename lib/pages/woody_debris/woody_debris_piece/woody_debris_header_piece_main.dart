@@ -52,15 +52,18 @@ class WoodyDebrisHeaderPieceMain extends StatefulWidget {
   static const keyWdSmall = "wdSmall";
   static const keyTransNum = "transNum";
   static const keyTransComplete = "transectComplete";
+  static const keyDecayClass = "decayClass";
   const WoodyDebrisHeaderPieceMain(
       {Key? key,
       required this.wdSmall,
       required this.transNum,
+      required this.decayClass,
       required this.transComplete})
       : super(key: key);
 
   final WoodyDebrisSmallData wdSmall;
   final int transNum;
+  final int? decayClass;
   final bool transComplete;
 
   @override
@@ -74,6 +77,7 @@ class _WoodyDebrisHeaderPieceMainState
 
   late WoodyDebrisSmallData wdSm;
   late int transNum;
+  late int? decayClass;
   late bool transComplete;
   late DataGridSourceBuilder largePieceDataSource =
       DataGridSourceBuilder(dataGridRows: []);
@@ -165,6 +169,7 @@ class _WoodyDebrisHeaderPieceMainState
   void initState() {
     wdSm = widget.wdSmall;
     transNum = widget.transNum;
+    decayClass = widget.decayClass;
     transComplete = widget.transComplete;
     updatePieces();
     super.initState();
@@ -268,7 +273,8 @@ class _WoodyDebrisHeaderPieceMainState
       body: Center(
         child: Column(
           children: [
-            WoodyDebrisSmallPieceBuilder(wdSm: wdSm, complete: transComplete),
+            WoodyDebrisSmallPieceBuilder(
+                wdSm: wdSm, decayClass: decayClass, complete: transComplete),
             const SizedBox(
               height: kPaddingV * 2,
             ),

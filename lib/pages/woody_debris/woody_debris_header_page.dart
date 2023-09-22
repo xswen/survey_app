@@ -92,7 +92,7 @@ class _WoodyDebrisHeaderPageState extends State<WoodyDebrisHeaderPage> {
           wdh.swdMeasLen == null) {
         results.add("Measurement Data");
       }
-      if (wdSm == null || wdSm.swdDecayClass == null) {
+      if (wdSm == null) {
         results.add("Piece Measurements");
       }
 
@@ -119,9 +119,6 @@ class _WoodyDebrisHeaderPageState extends State<WoodyDebrisHeaderPage> {
                 List<String> missingData = [];
                 wdh.swdDecayClass == -1
                     ? missingData.add("Measurement Data")
-                    : null;
-                wdSm!.swdDecayClass == -1
-                    ? missingData.add("Piece Measurements")
                     : null;
                 missingData.isEmpty
                     ? updateWdhData(const WoodyDebrisHeaderCompanion(
@@ -274,6 +271,8 @@ class _WoodyDebrisHeaderPageState extends State<WoodyDebrisHeaderPage> {
                               WoodyDebrisHeaderPieceMain.keyWdSmall: wdSmall,
                               WoodyDebrisHeaderPieceMain.keyTransNum:
                                   wdh.transNum,
+                              WoodyDebrisHeaderPieceMain.keyDecayClass:
+                                  wdh.swdDecayClass,
                               WoodyDebrisHeaderPieceMain.keyTransComplete:
                                   wdh.complete,
                             }).then((value) => null);

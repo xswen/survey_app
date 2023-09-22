@@ -16,9 +16,13 @@ import '../../../../widgets/text/text_header_separator.dart';
 /// Widget for small woody debris input
 class WoodyDebrisSmallPieceBuilder extends StatefulWidget {
   const WoodyDebrisSmallPieceBuilder(
-      {Key? key, required this.wdSm, required this.complete})
+      {Key? key,
+      required this.decayClass,
+      required this.wdSm,
+      required this.complete})
       : super(key: key);
 
+  final int? decayClass;
   final WoodyDebrisSmallData wdSm;
   final bool complete;
 
@@ -29,12 +33,14 @@ class WoodyDebrisSmallPieceBuilder extends StatefulWidget {
 
 class _WoodyDebrisSmallPieceBuilderState
     extends State<WoodyDebrisSmallPieceBuilder> {
+  late int? decayClass;
   late WoodyDebrisSmallData wdSm;
   final PopupDismiss completeWarningPopup =
       Popups.generateCompleteErrorPopup("Transect");
 
   @override
   void initState() {
+    decayClass = widget.decayClass;
     wdSm = widget.wdSm;
     super.initState();
   }
@@ -49,6 +55,14 @@ class _WoodyDebrisSmallPieceBuilderState
       db.woodyDebrisTablesDao
           .getWdSmall(wdSm.wdHeaderId)
           .then((value) => setState(() => wdSm = value!));
+    }
+
+    void updateDecayClass(int? newDecayClass) {
+      (db.update(db.woodyDebrisHeader)
+            ..where((t) => t.id.equals(wdSm.wdHeaderId)))
+          .write(WoodyDebrisHeaderCompanion(
+              swdDecayClass: d.Value(newDecayClass)));
+      setState(() => decayClass = newDecayClass);
     }
 
     return Column(
@@ -72,7 +86,7 @@ class _WoodyDebrisSmallPieceBuilderState
                 title: "Average decay class is assigned to all pieces of small "
                     "woody debris along each transect.",
                 checkTitle: "Mark decay class as missing",
-                checkValue: wdSm.swdDecayClass == -1,
+                checkValue: decayClass == -1,
                 onChange: (b) {
                   if (widget.complete) {
                     Popups.show(context, completeWarningPopup);
@@ -85,23 +99,18 @@ class _WoodyDebrisSmallPieceBuilderState
                               contentText:
                                   "Are you sure you want to set decay class to missing?",
                               rightBtnOnPressed: () {
-                                updateWdSm(const WoodyDebrisSmallCompanion(
-                                    swdDecayClass: d.Value(-1)));
+                                updateDecayClass(-1);
                                 context.pop();
                               },
                             ))
-                        : updateWdSm(const WoodyDebrisSmallCompanion(
-                            swdDecayClass: d.Value(null)));
+                        : updateDecayClass(null);
                   }
                 },
                 child: DecayClassSelectBuilder(
-                  onChangedFn: (s) {
-                    updateWdSm(WoodyDebrisSmallCompanion(
-                        swdDecayClass: d.Value(int.parse(s!))));
-                  },
-                  selectedItem: wdSm.swdDecayClass == null
+                  onChangedFn: (s) => updateDecayClass(int.parse(s!)),
+                  selectedItem: decayClass == null
                       ? "Select Decay Class"
-                      : wdSm.swdDecayClass.toString(),
+                      : decayClass.toString(),
                 ),
               ),
             ],

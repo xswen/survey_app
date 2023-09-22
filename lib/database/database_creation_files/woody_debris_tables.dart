@@ -45,13 +45,9 @@ class WoodyDebrisSmall extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get wdHeaderId =>
       integer().unique().references(WoodyDebrisHeader, #id)();
-  //TODO: What's this class?
-  IntColumn get swdDiamClass => integer().nullable()();
   IntColumn get swdTallyS => integer().withDefault(const Constant(0))();
   IntColumn get swdTallyM => integer().withDefault(const Constant(0))();
   IntColumn get swdTallyL => integer().withDefault(const Constant(0))();
-  IntColumn get swdDecayClass =>
-      integer().check(swdDecayClass.isBetweenValues(-1, 5)).nullable()();
 }
 
 class WoodyDebrisOdd extends Table {
