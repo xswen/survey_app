@@ -14,6 +14,7 @@ import '../../widgets/app_bar.dart';
 import '../../widgets/data_input/data_input.dart';
 import '../../widgets/drawer_menu.dart';
 import '../../widgets/popups/popups.dart';
+import '../../widgets/text/text_header_separator.dart';
 
 class WoodyDebrisHeaderMeasurements extends StatefulWidget {
   static const String routeName = "woodyDebrisHeaderMeasurement";
@@ -133,7 +134,7 @@ class _WoodyDebrisHeaderMeasurementsState
         padding: const EdgeInsets.symmetric(horizontal: kPaddingH),
         children: [
           DataInput(
-            title: "The nominal length of the sample transect.",
+            title: "Length of the sample transect",
             boxLabel: "Report to the nearest 0.1m",
             prefixIcon: FontAwesomeIcons.ruler,
             suffixVal: "m",
@@ -178,10 +179,13 @@ class _WoodyDebrisHeaderMeasurementsState
                       wdh.copyWith(transAzimuth: d.Value(int.parse(s))));
                 }
               }),
+          const SizedBox(height: kPaddingV * 2),
+          const TextHeaderSeparator(
+            title: "Total distance along the transect assessed for:",
+            fontSize: 20,
+          ),
           DataInput(
-              title:
-                  "Total distance along the transect assessed for round and odd"
-                  "shaped pieces of small woody debris",
+              title: "Small Woody Debris (1.1cm - 7.5cm)",
               boxLabel: "Report to the nearest 0.1m",
               prefixIcon: FontAwesomeIcons.ruler,
               suffixVal: "m",
@@ -203,9 +207,7 @@ class _WoodyDebrisHeaderMeasurementsState
                 }
               }),
           DataInput(
-              title:
-                  "Total distance along the transect assessed for round and odd"
-                  "shaped pieces of MCWD",
+              title: "Medium Woody Debris (7.6cm - 30cm)",
               boxLabel: "Report to the nearest 0.1m",
               prefixIcon: FontAwesomeIcons.ruler,
               suffixVal: "m",
@@ -228,9 +230,7 @@ class _WoodyDebrisHeaderMeasurementsState
                 }
               }),
           DataInput(
-              title:
-                  "Total distance along the transect assessed for round and odd"
-                  "shaped pieces of LCWD",
+              title: "Large Woody Debris (>30cm)",
               boxLabel: "Report to the nearest 0.1m",
               prefixIcon: FontAwesomeIcons.ruler,
               suffixVal: "m",

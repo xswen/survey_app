@@ -8,11 +8,13 @@ class TextHeaderSeparator extends StatelessWidget {
     this.colAlignment = CrossAxisAlignment.start,
     this.rowAlignment = MainAxisAlignment.start,
     required this.title,
+    this.fontSize = kTextTitleSize,
     this.sideWidget = const SizedBox(),
   }) : super(key: key);
   final CrossAxisAlignment colAlignment;
   final MainAxisAlignment rowAlignment;
   final String title;
+  final double fontSize;
   final Widget sideWidget;
 
   @override
@@ -25,7 +27,7 @@ class TextHeaderSeparator extends StatelessWidget {
           children: [
             Text(
               title,
-              style: const TextStyle(fontSize: kTextTitleSize),
+              style: TextStyle(fontSize: fontSize),
             ),
             sideWidget
           ],
