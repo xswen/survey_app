@@ -53,7 +53,7 @@ class _WoodyDebrisPieceAccuOddPageState
   @override
   void initState() {
     title =
-        "Woody Debris ${widget.piece.accumOdd.value == db.woodyDebrisTablesDao.accumulation ? "Accumulation" : "Odd"} Piece";
+        "Woody Debris ${widget.piece.accumOdd.value == db.woodyDebrisTablesDao.accumulation ? "Accumulation" : "Odd"}";
     piece = widget.piece;
     super.initState();
   }
