@@ -238,8 +238,8 @@ class _WoodyDebrisHeaderPageState extends State<WoodyDebrisHeaderPage> {
                 }
                 Popups.show(
                   context,
-                  PopupContinue("Warning: Deleting Piece",
-                      contentText: "You are about to delete this piece. "
+                  PopupContinue("Warning: Deleting Transect",
+                      contentText: "You are about to delete this transect. "
                           "Are you sure you want to continue?",
                       rightBtnOnPressed: () {
                     //close popup
