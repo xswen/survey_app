@@ -171,7 +171,7 @@ class _WoodyDebrisSmallPieceBuilderState
               addOnPress: () => widget.complete
                   ? Popups.show(context, completeWarningPopup)
                   : updateWdSm(WoodyDebrisSmallCompanion(
-                      swdTallyL: d.Value(wdSm.swdTallyL - 1))),
+                      swdTallyL: d.Value(wdSm.swdTallyL + 1))),
             ),
           ],
         ),
