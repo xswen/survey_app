@@ -12,6 +12,8 @@ import 'package:survey_app/routes/router_routes_main.dart';
 import 'database/database.dart';
 import 'l10n/locale_keys.g.dart';
 
+String _versionCode = "Version 1";
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
@@ -86,6 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headlineMedium,
               ).tr(),
+              Text(_versionCode),
               Align(
                 alignment: Alignment.topCenter,
                 child: Column(
