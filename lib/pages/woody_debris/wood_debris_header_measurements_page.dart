@@ -5,9 +5,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:survey_app/database/database.dart';
-import 'package:survey_app/widgets/builders/decay_class_select_builder.dart';
-import 'package:survey_app/widgets/hide_info_checkbox.dart';
-import 'package:survey_app/widgets/popups/popup_continue.dart';
 import 'package:survey_app/widgets/popups/popup_dismiss.dart';
 
 import '../../constants/margins_padding.dart';
@@ -62,9 +59,6 @@ class _WoodyDebrisHeaderMeasurementsState
         : null;
     checkLgMeasLen(db.companionValueToStr(wdh.lcwdMeasLen)) != null
         ? result.add("Large Measurement Length")
-        : null;
-    wdh.swdDecayClass == const d.Value.absent()
-        ? result.add("Average Decay Class of Transect")
         : null;
 
     return result;
@@ -257,46 +251,17 @@ class _WoodyDebrisHeaderMeasurementsState
                       wdh.copyWith(lcwdMeasLen: d.Value(double.parse(s))));
                 }
               }),
-          HideInfoCheckbox(
-            title: "Average decay class is assigned to all pieces of "
-                "small woody debris along each transect.",
-            checkTitle: "Mark decay class as missing",
-            checkValue: wdh.swdDecayClass == const d.Value(-1),
-            onChange: (b) {
-              //Don't need to check if wdh is complete bc you'd never get here
-              //if it was
-
-              changeMade = true;
-              b!
-                  ? Popups.show(
-                      context,
-                      PopupContinue(
-                        "Warning: Setting decay class as Missing",
-                        contentText:
-                            "Are you sure you want to set decay class to missing?",
-                        rightBtnOnPressed: () {
-                          updateWdhCompanion(
-                              wdh.copyWith(swdDecayClass: const d.Value(-1)));
-                          context.pop();
-                        },
-                      ))
-                  : updateWdhCompanion(
-                      wdh.copyWith(swdDecayClass: const d.Value.absent()));
-            },
-            child: DecayClassSelectBuilder(
-              onChangedFn: (s) {
-                changeMade = true;
-                updateWdhCompanion(
-                    wdh.copyWith(swdDecayClass: d.Value(int.parse(s!))));
-              },
-              selectedItem: db.companionValueToStr(wdh.swdDecayClass),
-            ),
-          ),
           Container(
               margin: const EdgeInsets.only(
                   top: kPaddingV * 2, bottom: kPaddingV * 2),
               child: ElevatedButton(
                   onPressed: () {
+                    if (wdh.complete.value) {
+                      Popups.show(context,
+                          Popups.generateCompleteErrorPopup("Woody Debris"));
+                      return;
+                    }
+
                     List<String> errors = checkAll(db);
                     if (errors.isNotEmpty) {
                       Popups.show(
@@ -319,22 +284,6 @@ class _WoodyDebrisHeaderMeasurementsState
                                 ),
                               ],
                             ),
-                          ));
-                    } else if (wdh.swdDecayClass == const d.Value(-1)) {
-                      Popups.show(
-                          context,
-                          PopupContinue(
-                            "Warning: Missing Field",
-                            contentText:
-                                "Decay Class has been marked as missing. "
-                                "Are you sure you want to continue?",
-                            rightBtnOnPressed: () {
-                              (db.update(db.woodyDebrisHeader)
-                                    ..where((t) => t.id.equals(wdh.id.value)))
-                                  .write(wdh);
-                              context.pop();
-                              context.pop();
-                            },
                           ));
                     } else {
                       (db.update(db.woodyDebrisHeader)

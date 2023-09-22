@@ -7,19 +7,15 @@ import 'package:survey_app/widgets/popups/popup_errors_found_list.dart';
 import 'package:survey_app/widgets/popups/popup_warning_missing_fields_list.dart';
 
 import '../../constants/margins_padding.dart';
-import '../../constants/text_designs.dart';
 import '../../database/database.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/builders/set_transect_num_builder.dart';
-import '../../widgets/buttons/edit_icon_button.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
 import '../../widgets/buttons/icon_nav_button.dart';
 import '../../widgets/drawer_menu.dart';
 import '../../widgets/popups/popup_continue.dart';
 import '../../widgets/popups/popup_dismiss.dart';
 import '../../widgets/popups/popups.dart';
-import '../../widgets/text/text_in_line.dart';
-import '../../widgets/titled_border.dart';
 import '../delete_page.dart';
 import 'wood_debris_header_measurements_page.dart';
 import 'woody_debris_piece/woody_debris_header_piece_main.dart';
@@ -145,118 +141,20 @@ class _WoodyDebrisHeaderPageState extends State<WoodyDebrisHeaderPage> {
       body: Center(
         child: Column(
           children: [
-            TitledBorder(
-              title: "Measurement Data",
-              actions: EditIconButton(onPressed: () async {
-                if (summaryComplete) {
-                  Popups.show(context, surveyCompleteWarningPopup);
-                } else if (wdh.complete) {
-                  Popups.show(context, completeWarningPopup);
-                } else {
-                  context
-                      .pushNamed(WoodyDebrisHeaderMeasurements.routeName,
-                          extra: wdh)
-                      .then((value) => db.woodyDebrisTablesDao
-                          .getWdHeaderFromId(wdh.id)
-                          .then((value) => setState(() => wdh = value)));
-                }
-              }),
-              child: Column(
-                children: [
-                  TextInLine(
-                      label: const Text("Nominal Transect Length"),
-                      data: wdh.nomTransLen == null
-                          ? const Row(children: [
-                              Padding(
-                                padding: EdgeInsets.only(right: 5.0),
-                                child: Icon(
-                                  FontAwesomeIcons.circleExclamation,
-                                  size: kTextSize,
-                                  color: kError,
-                                ),
-                              ),
-                              Text("Empty mandatory field"),
-                            ])
-                          : Text("${wdh.nomTransLen}m")),
-                  TextInLine(
-                      label: const Text("Transect azimuth"),
-                      data: wdh.transAzimuth == null
-                          ? const Row(children: [
-                              Padding(
-                                padding: EdgeInsets.only(right: 5.0),
-                                child: Icon(
-                                  FontAwesomeIcons.circleExclamation,
-                                  size: kTextSize,
-                                  color: kError,
-                                ),
-                              ),
-                              Text("Empty mandatory field"),
-                            ])
-                          : Text("${wdh.transAzimuth}\u00b0")),
-                  TextInLine(
-                      label: const Text("Small woody debris"),
-                      data: wdh.swdMeasLen == null
-                          ? const Row(children: [
-                              Padding(
-                                padding: EdgeInsets.only(right: 5.0),
-                                child: Icon(
-                                  FontAwesomeIcons.circleExclamation,
-                                  size: kTextSize,
-                                  color: kError,
-                                ),
-                              ),
-                              Text("Empty mandatory field"),
-                            ])
-                          : Text("${wdh.swdMeasLen}m")),
-                  TextInLine(
-                      label: const Text("Medium woody debris"),
-                      data: wdh.mcwdMeasLen == null
-                          ? const Row(children: [
-                              Padding(
-                                padding: EdgeInsets.only(right: 5.0),
-                                child: Icon(
-                                  FontAwesomeIcons.circleExclamation,
-                                  size: kTextSize,
-                                  color: kError,
-                                ),
-                              ),
-                              Text("Empty mandatory field"),
-                            ])
-                          : Text("${wdh.mcwdMeasLen}m")),
-                  TextInLine(
-                      label: const Text("Large woody debris"),
-                      data: wdh.lcwdMeasLen == null
-                          ? const Row(children: [
-                              Padding(
-                                padding: EdgeInsets.only(right: 5.0),
-                                child: Icon(
-                                  FontAwesomeIcons.circleExclamation,
-                                  size: kTextSize,
-                                  color: kError,
-                                ),
-                              ),
-                              Text("Empty mandatory field"),
-                            ])
-                          : Text("${wdh.lcwdMeasLen}m")),
-                  TextInLine(
-                      label: const Text("Average decay class"),
-                      data: wdh.swdDecayClass == null
-                          ? const Row(children: [
-                              Padding(
-                                padding: EdgeInsets.only(right: 5.0),
-                                child: Icon(
-                                  FontAwesomeIcons.circleExclamation,
-                                  size: kTextSize,
-                                  color: kError,
-                                ),
-                              ),
-                              Text("Empty mandatory field"),
-                            ])
-                          : Text(wdh.swdDecayClass.toString() == "-1"
-                              ? "Missing"
-                              : wdh.swdDecayClass.toString())),
-                ],
-              ),
+            IconNavButton(
+              icon: const Icon(FontAwesomeIcons.file),
+              space: kPaddingIcon,
+              label: "Measurement Data",
+              onPressed: () async {
+                context
+                    .pushNamed(WoodyDebrisHeaderMeasurements.routeName,
+                        extra: wdh)
+                    .then((value) => db.woodyDebrisTablesDao
+                        .getWdHeaderFromId(wdh.id)
+                        .then((value) => setState(() => wdh = value)));
+              },
+              padding: const EdgeInsets.symmetric(
+                  vertical: kPaddingV, horizontal: kPaddingH),
             ),
             IconNavButton(
               icon: const Icon(FontAwesomeIcons.ruler),
