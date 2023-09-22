@@ -83,9 +83,10 @@ class _WoodyDebrisSmallPieceBuilderState
           child: Column(
             children: [
               HideInfoCheckbox(
-                title: "Average decay class is assigned to all pieces of small "
-                    "woody debris along each transect.",
-                checkTitle: "Mark decay class as missing",
+                title: "Average decay class of small woody debris pieces along "
+                    "this transect",
+                checkTitle:
+                    "Mark decay class as not measured or not applicable",
                 checkValue: decayClass == -1,
                 onChange: (b) {
                   if (widget.complete) {
@@ -97,7 +98,8 @@ class _WoodyDebrisSmallPieceBuilderState
                             PopupContinue(
                               "Warning: Setting decay class as Missing",
                               contentText:
-                                  "Are you sure you want to set decay class to missing?",
+                                  "Are you sure you want to set decay class not "
+                                  "measured/not applicable?",
                               rightBtnOnPressed: () {
                                 updateDecayClass(-1);
                                 context.pop();
