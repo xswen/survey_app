@@ -16,6 +16,8 @@ import '../../../constants/margins_padding.dart';
 import '../../../formatters/thousands_formatter.dart';
 import '../../../widgets/app_bar.dart';
 import '../../../widgets/builders/decay_class_select_builder.dart';
+import '../../../widgets/builders/tree_genus_select_builder.dart';
+import '../../../widgets/builders/tree_species_select_builder.dart';
 import '../../../widgets/data_input/data_input.dart';
 import '../../../widgets/drawer_menu.dart';
 import '../../../widgets/popups/popups.dart';
@@ -40,7 +42,7 @@ class WoodyDebrisPieceRoundPage extends StatefulWidget {
 class _WoodyDebrisPieceRoundPageState extends State<WoodyDebrisPieceRoundPage> {
   final Database db = Database.instance;
 
-  final String title = "Woody Debris Piece Round";
+  final String title = "Woody Debris Round Coarse";
   final controllerDiameter = TextEditingController();
   final controllerTiltAngle = TextEditingController();
   final int kDataMissing = -1;
@@ -124,8 +126,7 @@ class _WoodyDebrisPieceRoundPageState extends State<WoodyDebrisPieceRoundPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               DataInput(
-                title:
-                    "Piece diameter as determined by calipers or diameter tape measurement.",
+                title: "Piece diameter.",
                 boxLabel: "Reported to the nearest 0.1cm",
                 prefixIcon: FontAwesomeIcons.ruler,
                 suffixVal: "CM",
@@ -186,30 +187,21 @@ class _WoodyDebrisPieceRoundPageState extends State<WoodyDebrisPieceRoundPage> {
                       db.companionValueToStr(piece.tiltAngle)),
                 ),
               ),
-              // TreeGenusSelectBuilder(
-              //     updateGenusFn: (s) async {
-              //       //Check that the same genus wasn't double selected so you
-              //       //don't overwrite species
-              //       if (db.companionValueToStr(piece.genus).isEmpty ||
-              //           s != db.companionValueToStr(piece.genus)) {
-              //         String newGenusCode =
-              //             await db.referenceTablesDao.getGenusCodeFromName(s!);
-              //         updatePiece(piece.copyWith(
-              //             genus: d.Value(newGenusCode),
-              //             species: const d.Value.absent()));
-              //       }
-              //     },
-              //     genusCode: db.companionValueToStr(piece.genus)),
-              // TreeSpeciesSelectBuilder(
-              //     onChangedFn: (s) => db.referenceTablesDao
-              //             .getSpeciesCode(
-              //                 db.companionValueToStr(piece.genus), s!)
-              //             .then((newSpeciesCode) {
-              //           updatePiece(
-              //               piece.copyWith(species: d.Value(newSpeciesCode)));
-              //         }),
-              //     selectedSpeciesCode: db.companionValueToStr(piece.species),
-              //     genusCode: db.companionValueToStr(piece.genus)),
+              TreeGenusSelectBuilder(
+                  title: "Piece Genus",
+                  updateGenusFn: (genusCode, speciesCode) => updatePiece(
+                      piece.copyWith(genus: genusCode, species: speciesCode)),
+                  genusCode: db.companionValueToStr(piece.genus)),
+              TreeSpeciesSelectBuilder(
+                  onChangedFn: (s) => db.referenceTablesDao
+                          .getSpeciesCode(
+                              db.companionValueToStr(piece.genus), s!)
+                          .then((newSpeciesCode) {
+                        updatePiece(
+                            piece.copyWith(species: d.Value(newSpeciesCode)));
+                      }),
+                  selectedSpeciesCode: db.companionValueToStr(piece.species),
+                  genusCode: db.companionValueToStr(piece.genus)),
               const SizedBox(
                 height: kPaddingV * 2,
               ),
