@@ -182,7 +182,7 @@ class _WoodyDebrisHeaderPageState extends State<WoodyDebrisHeaderPage> {
             IconNavButton(
               icon: const Icon(FontAwesomeIcons.penToSquare),
               space: kPaddingIcon,
-              label: "Edit Transect",
+              label: "Edit Transect Number",
               onPressed: () {
                 if (summaryComplete || wdh.complete) {
                   Popups.show(context, completeWarningPopup);
