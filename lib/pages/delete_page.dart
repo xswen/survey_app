@@ -21,6 +21,7 @@ class DeletePage extends StatelessWidget {
   final String objectName;
   final void Function() deleteFn;
   //How to handle behaviour after deletion. Default context.pop;
+  //Mostly deprecated
   final void Function()? afterDeleteFn;
 
   @override

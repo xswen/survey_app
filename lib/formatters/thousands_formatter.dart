@@ -42,10 +42,9 @@ class ThousandsFormatter extends TextInputFormatter {
         if (allowNegative) {
           // filter negative sign in the middle
           // this will also remove redundant negative signs
-          if ('-'.allMatches(filteredString).length >= 1) {
+          if ('-'.allMatches(filteredString).isNotEmpty) {
             filteredString = (filteredString.startsWith('-') ? '-' : '') +
                 filteredString.replaceAll('-', '');
-            print(filteredString);
           }
         }
 

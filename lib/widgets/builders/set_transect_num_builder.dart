@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:survey_app/widgets/dropdowns/drop_down_default.dart';
 
-import '../../database/database.dart';
-
 class SetTransectNumBuilder extends StatelessWidget {
   const SetTransectNumBuilder({
     super.key,
@@ -25,7 +23,6 @@ class SetTransectNumBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Database db = Database.instance;
     return FutureBuilder<List<int?>>(
       future: getUsedTransNums, // replace with your function
       builder: (context, snapshot) {
@@ -45,7 +42,6 @@ class SetTransectNumBuilder extends StatelessWidget {
             selectedItem: selectedItem,
             itemsList: transList,
             disabledFn: (s) {
-              print(startingTransNum);
               if (selectedItem != startingTransNum && s == startingTransNum) {
                 return false;
               } else {

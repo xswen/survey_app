@@ -56,6 +56,9 @@ class _WoodyDebrisHeaderMeasurementsState
   List<String> checkAll(Database db) {
     List<String> result = [];
 
+    checkNomTransLen(db.companionValueToStr(wdh.nomTransLen)) != null
+        ? result.add("Length of Sample Transect")
+        : null;
     checkTransAzim(db.companionValueToStr(wdh.transAzimuth)) != null
         ? result.add("Transect Azimuth")
         : null;
@@ -69,6 +72,20 @@ class _WoodyDebrisHeaderMeasurementsState
         ? result.add("Large Measurement Length")
         : null;
 
+    if (result.isEmpty) {
+      if (wdh.swdMeasLen.value! > wdh.nomTransLen.value!) {
+        result.add(
+            "Small Measurement Length must be less or equal than the length of sample transect");
+      }
+      if (wdh.mcwdMeasLen.value! > wdh.nomTransLen.value!) {
+        result.add(
+            "Medium Measurement Length must be less or equal than the length of sample transect");
+      }
+      if (wdh.lcwdMeasLen.value! > wdh.nomTransLen.value!) {
+        result.add(
+            "Large Measurement Length must be less or equal than the length of sample transect");
+      }
+    }
     return result;
   }
 
@@ -97,7 +114,7 @@ class _WoodyDebrisHeaderMeasurementsState
     if (text.isEmpty) {
       return "Can't be empty";
     } else if (0.0 > double.parse(text) || double.parse(text) > 150.0) {
-      return "Input out of range. Must be between 0.0 to 150.0 inclusive.";
+      return "Input out of range. Must be between 0.0 to 150 inclusive.";
     }
     return null;
   }
@@ -107,7 +124,7 @@ class _WoodyDebrisHeaderMeasurementsState
     if (text.isEmpty) {
       return "Can't be empty";
     } else if (0.0 > double.parse(text) || double.parse(text) > 150.0) {
-      return "Input out of range. Must be between 0.0 to 150.0 inclusive.";
+      return "Input out of range. Must be between 0.0 to 150 inclusive.";
     }
     return null;
   }
@@ -117,7 +134,7 @@ class _WoodyDebrisHeaderMeasurementsState
     if (text.isEmpty) {
       return "Can't be empty";
     } else if (0.0 > double.parse(text) || double.parse(text) > 150.0) {
-      return "Input out of range. Must be between 0.0 to 150.0 inclusive.";
+      return "Input out of range. Must be between 0.0 to 150 inclusive.";
     }
     return null;
   }
@@ -135,7 +152,7 @@ class _WoodyDebrisHeaderMeasurementsState
                 .pushReplacementNamed(WoodyDebrisHeaderPage.routeName, extra: {
                 WoodyDebrisHeaderPage.keyWdHeader:
                     await db.woodyDebrisTablesDao.getWdHeaderFromId(id),
-                WoodyDebrisHeaderPage.keySummaryComplete: wdh.complete,
+                WoodyDebrisHeaderPage.keySummaryComplete: wdh.complete.value,
                 WoodyDebrisHeaderPage.keyUpdateSummaryPageTransList:
                     widget.updateSummaryPageTransList
               }));
@@ -224,7 +241,7 @@ class _WoodyDebrisHeaderMeasurementsState
               startingStr: db.companionValueToStr(wdh.swdMeasLen),
               errorMsg: checkSwdMeasLen(db.companionValueToStr(wdh.swdMeasLen)),
               inputFormatters: [
-                LengthLimitingTextInputFormatter(5),
+                LengthLimitingTextInputFormatter(3),
                 ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
               ],
               onSubmit: (String s) {
@@ -247,7 +264,7 @@ class _WoodyDebrisHeaderMeasurementsState
               errorMsg:
                   checkMwdMeasLen(db.companionValueToStr(wdh.mcwdMeasLen)),
               inputFormatters: [
-                LengthLimitingTextInputFormatter(5),
+                LengthLimitingTextInputFormatter(3),
                 ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
               ],
               onSubmit: (String s) {
@@ -269,7 +286,7 @@ class _WoodyDebrisHeaderMeasurementsState
               startingStr: db.companionValueToStr(wdh.lcwdMeasLen),
               errorMsg: checkLgMeasLen(db.companionValueToStr(wdh.lcwdMeasLen)),
               inputFormatters: [
-                LengthLimitingTextInputFormatter(5),
+                LengthLimitingTextInputFormatter(3),
                 ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
               ],
               onSubmit: (String s) {

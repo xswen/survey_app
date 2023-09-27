@@ -214,12 +214,11 @@ class _WoodyDebrisHeaderPageState extends State<WoodyDebrisHeaderPage> {
                       DeletePage.keyDeleteFn: () {
                         db.woodyDebrisTablesDao
                             .deleteWoodyDebrisTransect(wdh.id)
-                            .then((value) => context.pop());
+                            .then((value) {
+                          widget.updateSummaryPageTransList();
+                          context.pop();
+                        });
                       },
-                      DeletePage.keyAfterDeleteFn: () {
-                        //Leave delete page
-                        context.pop();
-                      }
                     });
                   }),
                 );
