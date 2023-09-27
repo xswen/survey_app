@@ -5,12 +5,15 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:survey_app/database/database.dart';
+import 'package:survey_app/pages/woody_debris/woody_debris_header_page.dart';
 import 'package:survey_app/widgets/popups/popup_dismiss.dart';
 
+import '../../constants/constant_values.dart';
 import '../../constants/margins_padding.dart';
 import '../../formatters/format_string.dart';
 import '../../formatters/thousands_formatter.dart';
 import '../../widgets/app_bar.dart';
+import '../../widgets/builders/set_transect_num_builder.dart';
 import '../../widgets/data_input/data_input.dart';
 import '../../widgets/drawer_menu.dart';
 import '../../widgets/popups/popups.dart';
@@ -19,10 +22,14 @@ import '../../widgets/text/text_header_separator.dart';
 class WoodyDebrisHeaderMeasurements extends StatefulWidget {
   static const String routeName = "woodyDebrisHeaderMeasurement";
   static const String keyWdHeader = "wdHeader";
+  static const String keyUpdateSummaryPageTransList =
+      "updateSummaryPageTransList";
 
-  const WoodyDebrisHeaderMeasurements({Key? key, required this.wdh})
+  const WoodyDebrisHeaderMeasurements(
+      {Key? key, required this.wdh, required this.updateSummaryPageTransList})
       : super(key: key);
-  final WoodyDebrisHeaderData wdh;
+  final WoodyDebrisHeaderCompanion wdh;
+  final VoidCallback? updateSummaryPageTransList;
 
   @override
   State<WoodyDebrisHeaderMeasurements> createState() =>
@@ -38,7 +45,7 @@ class _WoodyDebrisHeaderMeasurementsState
 
   @override
   void initState() {
-    wdh = widget.wdh.toCompanion(true);
+    wdh = widget.wdh;
     super.initState();
   }
 
@@ -49,6 +56,9 @@ class _WoodyDebrisHeaderMeasurementsState
   List<String> checkAll(Database db) {
     List<String> result = [];
 
+    checkNomTransLen(db.companionValueToStr(wdh.nomTransLen)) != null
+        ? result.add("Length of Sample Transect")
+        : null;
     checkTransAzim(db.companionValueToStr(wdh.transAzimuth)) != null
         ? result.add("Transect Azimuth")
         : null;
@@ -62,6 +72,20 @@ class _WoodyDebrisHeaderMeasurementsState
         ? result.add("Large Measurement Length")
         : null;
 
+    if (result.isEmpty) {
+      if (wdh.swdMeasLen.value! > wdh.nomTransLen.value!) {
+        result.add(
+            "Small Measurement Length must be less or equal than the length of sample transect");
+      }
+      if (wdh.mcwdMeasLen.value! > wdh.nomTransLen.value!) {
+        result.add(
+            "Medium Measurement Length must be less or equal than the length of sample transect");
+      }
+      if (wdh.lcwdMeasLen.value! > wdh.nomTransLen.value!) {
+        result.add(
+            "Large Measurement Length must be less or equal than the length of sample transect");
+      }
+    }
     return result;
   }
 
@@ -90,7 +114,7 @@ class _WoodyDebrisHeaderMeasurementsState
     if (text.isEmpty) {
       return "Can't be empty";
     } else if (0.0 > double.parse(text) || double.parse(text) > 150.0) {
-      return "Input out of range. Must be between 0.0 to 150.0 inclusive.";
+      return "Input out of range. Must be between 0.0 to 150 inclusive.";
     }
     return null;
   }
@@ -100,7 +124,7 @@ class _WoodyDebrisHeaderMeasurementsState
     if (text.isEmpty) {
       return "Can't be empty";
     } else if (0.0 > double.parse(text) || double.parse(text) > 150.0) {
-      return "Input out of range. Must be between 0.0 to 150.0 inclusive.";
+      return "Input out of range. Must be between 0.0 to 150 inclusive.";
     }
     return null;
   }
@@ -110,7 +134,7 @@ class _WoodyDebrisHeaderMeasurementsState
     if (text.isEmpty) {
       return "Can't be empty";
     } else if (0.0 > double.parse(text) || double.parse(text) > 150.0) {
-      return "Input out of range. Must be between 0.0 to 150.0 inclusive.";
+      return "Input out of range. Must be between 0.0 to 150 inclusive.";
     }
     return null;
   }
@@ -119,6 +143,19 @@ class _WoodyDebrisHeaderMeasurementsState
   Widget build(BuildContext context) {
     debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
     final db = Provider.of<Database>(context);
+
+    Future<void> goToHeaderPage() => db.woodyDebrisTablesDao
+        .addOrUpdateWdHeader(wdh)
+        .then((id) async => widget.updateSummaryPageTransList == null
+            ? context.pop()
+            : context
+                .pushReplacementNamed(WoodyDebrisHeaderPage.routeName, extra: {
+                WoodyDebrisHeaderPage.keyWdHeader:
+                    await db.woodyDebrisTablesDao.getWdHeaderFromId(id),
+                WoodyDebrisHeaderPage.keySummaryComplete: wdh.complete.value,
+                WoodyDebrisHeaderPage.keyUpdateSummaryPageTransList:
+                    widget.updateSummaryPageTransList
+              }));
 
     return Scaffold(
       appBar: OurAppBar(
@@ -133,6 +170,17 @@ class _WoodyDebrisHeaderMeasurementsState
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: kPaddingH),
         children: [
+          SetTransectNumBuilder(
+            getUsedTransNums:
+                db.woodyDebrisTablesDao.getUsedTransnums(wdh.wdId.value),
+            startingTransNum: db.companionValueToStr(widget.wdh.transNum),
+            selectedItem: db.companionValueToStr(wdh.transNum).isEmpty
+                ? "Please select transect number"
+                : db.companionValueToStr(wdh.transNum),
+            transList: kTransectNumsList,
+            updateTransNum: (int transNum) =>
+                updateWdhCompanion(wdh.copyWith(transNum: d.Value(transNum))),
+          ),
           DataInput(
             title: "Length of the sample transect",
             boxLabel: "Report to the nearest 0.1m",
@@ -193,7 +241,7 @@ class _WoodyDebrisHeaderMeasurementsState
               startingStr: db.companionValueToStr(wdh.swdMeasLen),
               errorMsg: checkSwdMeasLen(db.companionValueToStr(wdh.swdMeasLen)),
               inputFormatters: [
-                LengthLimitingTextInputFormatter(5),
+                LengthLimitingTextInputFormatter(3),
                 ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
               ],
               onSubmit: (String s) {
@@ -216,7 +264,7 @@ class _WoodyDebrisHeaderMeasurementsState
               errorMsg:
                   checkMwdMeasLen(db.companionValueToStr(wdh.mcwdMeasLen)),
               inputFormatters: [
-                LengthLimitingTextInputFormatter(5),
+                LengthLimitingTextInputFormatter(3),
                 ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
               ],
               onSubmit: (String s) {
@@ -238,7 +286,7 @@ class _WoodyDebrisHeaderMeasurementsState
               startingStr: db.companionValueToStr(wdh.lcwdMeasLen),
               errorMsg: checkLgMeasLen(db.companionValueToStr(wdh.lcwdMeasLen)),
               inputFormatters: [
-                LengthLimitingTextInputFormatter(5),
+                LengthLimitingTextInputFormatter(3),
                 ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
               ],
               onSubmit: (String s) {
@@ -286,10 +334,7 @@ class _WoodyDebrisHeaderMeasurementsState
                             ),
                           ));
                     } else {
-                      (db.update(db.woodyDebrisHeader)
-                            ..where((t) => t.id.equals(wdh.id.value)))
-                          .write(wdh);
-                      context.pop();
+                      goToHeaderPage();
                     }
                   },
                   child: const Text("Submit"))),

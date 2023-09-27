@@ -71,10 +71,7 @@ class _WoodyDebrisSmallPieceBuilderState
         const SizedBox(
           height: kPaddingV,
         ),
-        const TextHeaderSeparator(
-          title: "Small Woody Debris",
-          sideWidget: SizedBox(),
-        ),
+        const TextHeaderSeparator(title: "Small Woody Debris"),
         const SizedBox(
           height: kPaddingV,
         ),

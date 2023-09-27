@@ -208,7 +208,14 @@ class Database extends _$Database {
     b.insert(
         woodyDebrisHeader,
         const WoodyDebrisHeaderCompanion(
-            id: d.Value(1), wdId: d.Value(1), transNum: d.Value(1)));
+            id: d.Value(1),
+            wdId: d.Value(1),
+            transNum: d.Value(1),
+            nomTransLen: d.Value(150),
+            transAzimuth: d.Value(33),
+            swdMeasLen: d.Value(2),
+            mcwdMeasLen: d.Value(22),
+            lcwdMeasLen: d.Value(33)));
     b.insertAll(woodyDebrisOdd, [
       const WoodyDebrisOddCompanion(
         wdHeaderId: d.Value(1),

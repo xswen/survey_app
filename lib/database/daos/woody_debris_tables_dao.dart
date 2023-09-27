@@ -95,6 +95,10 @@ class WoodyDebrisTablesDao extends DatabaseAccessor<Database>
 //====================Woody Debris Header====================
   Future<int> addWdHeader(WoodyDebrisHeaderCompanion entry) =>
       into(woodyDebrisHeader).insert(entry);
+
+  Future<int> addOrUpdateWdHeader(WoodyDebrisHeaderCompanion entry) =>
+      into(woodyDebrisHeader).insertOnConflictUpdate(entry);
+
   Future<WoodyDebrisHeaderData> updateWdHeaderTransNum(
       int wdhId, int transNum) async {
     var tmp = await ((update(woodyDebrisHeader)

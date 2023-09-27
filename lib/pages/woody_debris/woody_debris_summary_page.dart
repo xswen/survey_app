@@ -1,5 +1,6 @@
 import 'package:drift/drift.dart' as d;
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:survey_app/constants/text_designs.dart';
@@ -8,16 +9,14 @@ import 'package:survey_app/enums/enums.dart';
 import 'package:survey_app/pages/woody_debris/woody_debris_header_page.dart';
 import 'package:survey_app/widgets/tile_cards/tile_card_selection.dart';
 
-import '../../constants/constant_values.dart';
 import '../../constants/margins_padding.dart';
 import '../../widgets/app_bar.dart';
-import '../../widgets/builders/set_transect_num_builder.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
 import '../../widgets/date_select.dart';
 import '../../widgets/drawer_menu.dart';
-import '../../widgets/dropdowns/drop_down_default.dart';
 import '../../widgets/popups/popup_dismiss.dart';
 import '../../widgets/popups/popups.dart';
+import 'wood_debris_header_measurements_page.dart';
 
 class WoodyDebrisSummaryPage extends StatefulWidget {
   static const String routeName = "woodyDebrisSummary";
@@ -56,55 +55,25 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
     final PopupDismiss surveyCompleteWarningPopup =
         Popups.generatePreviousMarkedCompleteErrorPopup("Survey");
 
-    void updateTransList() =>
-        db.woodyDebrisTablesDao.getWdHeadersFromWdSId(wd.id).then((value) {
-          transList = value;
-          updateWdSummary(
-              db,
-              WoodyDebrisSummaryCompanion(
-                  id: d.Value(wd.id),
-                  numTransects: value.isEmpty
-                      ? const d.Value(null)
-                      : d.Value(value.length)));
-        });
+    void updateTransList() {
+      db.woodyDebrisTablesDao.getWdHeadersFromWdSId(wd.id).then((value) {
+        setState(() => transList = value);
+        updateWdSummary(
+            db,
+            WoodyDebrisSummaryCompanion(
+                id: d.Value(wd.id),
+                numTransects: value.isEmpty
+                    ? const d.Value(null)
+                    : d.Value(value.length)));
+      });
+    }
 
     void goToWdhPage(WoodyDebrisHeaderData wdh) =>
         context.pushNamed(WoodyDebrisHeaderPage.routeName, extra: {
           WoodyDebrisHeaderPage.keyWdHeader: wdh,
-          WoodyDebrisHeaderPage.keySummaryComplete: wd.complete
-        }).then((value) => updateTransList());
-
-    void goAndHandleUninitializedTransect(WoodyDebrisHeaderData wdh) {
-      int? transNum;
-      db.woodyDebrisTablesDao.getUsedTransnums(wd.id).then(
-            (usedTransNums) => Popups.show(
-                context,
-                SetTransectNumBuilder(
-                  selectedItem: "PLease select a transect number",
-                  disabledFn: (s) =>
-                      usedTransNums.contains(int.tryParse(s) ?? -1),
-                  onChanged: (s) => transNum = int.tryParse(s ?? "-1"),
-                  onSubmit: () {
-                    if (transNum == null || transNum! < 1) {
-                      debugPrint("Error: selected item didn't parse correctly");
-                      Popups.show(
-                          context,
-                          const PopupDismiss(
-                            "Error: in parsing",
-                            contentText: "There was a system error. "
-                                "Request cannot be completed",
-                          ));
-                      context.pop();
-                    } else {
-                      db.woodyDebrisTablesDao
-                          .updateWdHeaderTransNum(wdh.id, transNum!)
-                          .then((newWdh) => goToWdhPage(newWdh));
-                      context.pop();
-                    }
-                  },
-                )),
-          );
-    }
+          WoodyDebrisHeaderPage.keySummaryComplete: wd.complete,
+          WoodyDebrisHeaderPage.keyUpdateSummaryPageTransList: updateTransList,
+        });
 
     return Scaffold(
       appBar: OurAppBar(title),
@@ -144,43 +113,43 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
               setStateFn: (DateTime date) async => updateWdSummary(
                   db, WoodyDebrisSummaryCompanion(measDate: d.Value(date))),
             ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(
-                  kPaddingH, 0, kPaddingH, kPaddingV / 2),
-              child: DropDownDefault(
-                  title: "Number of Transects Assessed",
-                  onBeforePopup: (String? s) async {
-                    if (wd.complete) {
-                      Popups.show(context, completeWarningPopup);
-                      return false;
-                    }
-                    return true;
-                  },
-                  onChangedFn: (String? s) async {
-                    int i = int.parse(s!);
-                    int transListLen = transList.length;
-                    for (int idx = transListLen; idx < i; idx++) {
-                      var tmp = createWdhData(db, idx + 1);
-                    }
-                    updateTransList();
-                  },
-                  disabledFn: (String? s) =>
-                      int.parse(s!) < (wd.numTransects ?? 0),
-                  itemsList: kTransectNumsList,
-                  selectedItem: wd.numTransects?.toString() ??
-                      "No transects exists, please add"),
-            ),
             const SizedBox(height: kPaddingV),
-            Row(
-              children: [
-                Container(
-                    margin: const EdgeInsets.fromLTRB(
-                        kPaddingH, 0, kPaddingH, kPaddingV / 2),
-                    child: const Text(
-                      "Select a Transect to enter data for:",
-                      style: TextStyle(fontSize: kTextHeaderSize),
-                    )),
-              ],
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                  kPaddingH, 0, kPaddingH, kPaddingV / 2),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "Select a Transect to enter data for:",
+                    style: TextStyle(fontSize: kTextHeaderSize),
+                  ),
+                  ElevatedButton(
+                      onPressed: () => context.pushNamed(
+                              WoodyDebrisHeaderMeasurements.routeName,
+                              extra: {
+                                WoodyDebrisHeaderMeasurements.keyWdHeader:
+                                    WoodyDebrisHeaderCompanion(
+                                        wdId: d.Value(wd.id),
+                                        complete: const d.Value(false)),
+                                WoodyDebrisHeaderMeasurements
+                                        .keyUpdateSummaryPageTransList:
+                                    updateTransList
+                              }),
+                      child: const Row(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(right: kPaddingH),
+                            child: Icon(
+                              FontAwesomeIcons.circlePlus,
+                              size: 20,
+                            ),
+                          ),
+                          Text("Add transect")
+                        ],
+                      ))
+                ],
+              ),
             ),
             Expanded(
               child: ListView.builder(
@@ -188,37 +157,16 @@ class _WoodyDebrisSummaryPageState extends State<WoodyDebrisSummaryPage> {
                   itemBuilder: (BuildContext cxt, int index) {
                     WoodyDebrisHeaderData wdh = transList[index];
                     return TileCardSelection(
-                        title:
-                            "Transect ${wdh.transNum ?? "not yet initialized"}",
+                        title: "Transect ${wdh.transNum}",
                         onPressed: () async {
-                          if (wd.complete) {
-                            Popups.show(
-                                context,
-                                Popups.generateNoticeSurveyComplete(
-                                  "Woody Debris",
-                                  () {
-                                    context.pop();
-                                    context.pushNamed(
-                                        WoodyDebrisHeaderPage.routeName,
-                                        extra: {
-                                          WoodyDebrisHeaderPage.keyWdHeader:
-                                              wdh,
-                                          WoodyDebrisHeaderPage
-                                              .keySummaryComplete: wd.complete
-                                        }).then((value) => db
-                                        .woodyDebrisTablesDao
-                                        .getWdHeaderFromId(wdh.id)
-                                        .then((value) => setState(
-                                            () => transList[index] = value)));
-                                  },
-                                ));
-                          } else {
-                            if (wdh.transNum == null) {
-                              goAndHandleUninitializedTransect(wdh);
-                            } else {
-                              goToWdhPage(wdh);
-                            }
-                          }
+                          wd.complete
+                              ? Popups.show(
+                                  context,
+                                  Popups.generateNoticeSurveyComplete(
+                                    "Woody Debris",
+                                    () => goToWdhPage(wdh),
+                                  ))
+                              : goToWdhPage(wdh);
                         },
                         status: getStatus(wdh));
                   }),
