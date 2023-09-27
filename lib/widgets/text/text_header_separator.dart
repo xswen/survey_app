@@ -25,9 +25,11 @@ class TextHeaderSeparator extends StatelessWidget {
         Row(
           mainAxisAlignment: rowAlignment,
           children: [
-            Text(
-              title,
-              style: TextStyle(fontSize: fontSize),
+            Expanded(
+              child: Text(
+                title,
+                style: TextStyle(fontSize: fontSize),
+              ),
             ),
             sideWidget
           ],
