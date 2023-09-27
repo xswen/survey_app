@@ -207,7 +207,6 @@ class _SurveyInfoPageState extends State<SurveyInfoPage> {
     //Add or remove filter based on select and set state after call on db
     // to update. Status set to null if "All" is selected
     void filterOnSelect(bool selected, SurveyStatus? status) async {
-      print("triggerd");
       if (selected) {
         status == null
             ? filters = HashSet<SurveyStatus>()

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:survey_app/database/database.dart';
 
@@ -28,8 +29,15 @@ GoRoute goRouteWoodyDebris = GoRoute(
             bool summaryComplete =
                 data[WoodyDebrisHeaderPage.keySummaryComplete];
 
+            VoidCallback updateSummaryPageTransList =
+                data[WoodyDebrisHeaderPage.keyUpdateSummaryPageTransList]
+                    as VoidCallback;
+
             return WoodyDebrisHeaderPage(
-                wdh: wdh, summaryComplete: summaryComplete);
+              wdh: wdh,
+              summaryComplete: summaryComplete,
+              updateSummaryPageTransList: updateSummaryPageTransList,
+            );
           },
           routes: [
             GoRoute(

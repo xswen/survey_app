@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:survey_app/constants/constant_values.dart';
+import 'package:survey_app/widgets/builders/set_transect_num_builder.dart';
 import 'package:survey_app/widgets/popups/popup_errors_found_list.dart';
 import 'package:survey_app/widgets/popups/popup_warning_missing_fields_list.dart';
 
 import '../../constants/margins_padding.dart';
 import '../../database/database.dart';
 import '../../widgets/app_bar.dart';
-import '../../widgets/builders/set_transect_num_builder.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
 import '../../widgets/buttons/icon_nav_button.dart';
 import '../../widgets/drawer_menu.dart';
@@ -24,13 +25,19 @@ class WoodyDebrisHeaderPage extends StatefulWidget {
   static const String routeName = "woodyDebrisHeader";
   static const String keyWdHeader = "wdHeader";
   static const String keySummaryComplete = "summaryComplete";
+  static const String keyUpdateSummaryPageTransList =
+      "updateSummaryPageTransList";
 
   const WoodyDebrisHeaderPage(
-      {Key? key, required this.wdh, required this.summaryComplete})
+      {Key? key,
+      required this.wdh,
+      required this.summaryComplete,
+      required this.updateSummaryPageTransList})
       : super(key: key);
 
   final WoodyDebrisHeaderData wdh;
   final bool summaryComplete;
+  final VoidCallback updateSummaryPageTransList;
 
   @override
   State<WoodyDebrisHeaderPage> createState() => _WoodyDebrisHeaderPageState();
@@ -96,7 +103,13 @@ class _WoodyDebrisHeaderPageState extends State<WoodyDebrisHeaderPage> {
     }
 
     return Scaffold(
-      appBar: OurAppBar("Woody Debris: Transect ${wdh.transNum}"),
+      appBar: OurAppBar(
+        "Woody Debris: Transect ${wdh.transNum}",
+        backFn: () {
+          widget.updateSummaryPageTransList();
+          context.pop();
+        },
+      ),
       endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
       floatingActionButton: FloatingCompleteButton(
         title: title,
@@ -179,6 +192,16 @@ class _WoodyDebrisHeaderPageState extends State<WoodyDebrisHeaderPage> {
               padding: const EdgeInsets.symmetric(
                   vertical: kPaddingV, horizontal: kPaddingH),
             ),
+            SetTransectNumBuilder(
+              getUsedTransNums:
+                  db.woodyDebrisTablesDao.getUsedTransnums(wdh.wdId),
+              selectedItem:
+                  wdh.transNum?.toString() ?? "Please select transect number",
+              transList: kTransectNumsList,
+              updateTransNum: (int transNum) => updateWdhData(
+                  WoodyDebrisHeaderCompanion(
+                      id: d.Value(wdh.id), transNum: d.Value(transNum))),
+            ),
             IconNavButton(
               icon: const Icon(FontAwesomeIcons.penToSquare),
               space: kPaddingIcon,
@@ -189,40 +212,36 @@ class _WoodyDebrisHeaderPageState extends State<WoodyDebrisHeaderPage> {
                   return;
                 }
                 int? transNum = wdh.transNum;
-                db.woodyDebrisTablesDao.getUsedTransnums(wdh.wdId).then(
-                      (usedTransNums) => Popups.show(
-                        context,
-                        Popups.show(
-                            context,
-                            SetTransectNumBuilder(
-                              selectedItem: "PLease select a transect number",
-                              disabledFn: (s) =>
-                                  usedTransNums.contains(int.tryParse(s) ?? -1),
-                              onChanged: (s) =>
-                                  transNum = int.tryParse(s ?? "-1"),
-                              onSubmit: () {
-                                if (transNum == null || transNum! < 1) {
-                                  debugPrint(
-                                      "Error: selected item didn't parse correctly");
-                                  Popups.show(
-                                      context,
-                                      const PopupDismiss(
-                                        "Error: in parsing",
-                                        contentText:
-                                            "There was a system error. "
-                                            "Request cannot be completed",
-                                      ));
-                                  context.pop();
-                                } else {
-                                  updateWdhData(WoodyDebrisHeaderCompanion(
-                                      id: d.Value(wdh.id),
-                                      transNum: d.Value(transNum)));
-                                  context.pop();
-                                }
-                              },
-                            )),
-                      ),
-                    );
+                // db.woodyDebrisTablesDao.getUsedTransnums(wdh.wdId).then(
+                //       (usedTransNums) => Popups.show(
+                //           context,
+                //           SetTransectNumBuilder(
+                //             selectedItem: "PLease select a transect number",
+                //             disabledFn: (s) =>
+                //                 usedTransNums.contains(int.tryParse(s) ?? -1),
+                //             onChanged: (s) =>
+                //                 transNum = int.tryParse(s ?? "-1"),
+                //             onSubmit: () {
+                //               if (transNum == null || transNum! < 1) {
+                //                 debugPrint(
+                //                     "Error: selected item didn't parse correctly");
+                //                 Popups.show(
+                //                     context,
+                //                     const PopupDismiss(
+                //                       "Error: in parsing",
+                //                       contentText: "There was a system error. "
+                //                           "Request cannot be completed",
+                //                     ));
+                //                 context.pop();
+                //               } else {
+                //                 updateWdhData(WoodyDebrisHeaderCompanion(
+                //                     id: d.Value(wdh.id),
+                //                     transNum: d.Value(transNum)));
+                //                 context.pop();
+                //               }
+                //             },
+                //           )),
+                //);
               },
               padding: const EdgeInsets.symmetric(
                   vertical: kPaddingV, horizontal: kPaddingH),
