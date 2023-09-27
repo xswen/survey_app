@@ -19,7 +19,7 @@ class DataGridSourceBuilder extends DataGridSource {
     return DataGridRowAdapter(
         cells: newRow.getCells().map<Widget>((dataGridCell) {
       return Container(
-          alignment: (dataGridCell.columnName == kColHeaderMapKeyId)
+          alignment: (dataGridCell.columnName == kColHeaderNameId)
               ? Alignment.centerRight
               : Alignment.center,
           padding: const EdgeInsets.symmetric(horizontal: 16.0),

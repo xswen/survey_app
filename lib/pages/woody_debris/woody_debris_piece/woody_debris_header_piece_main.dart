@@ -2,7 +2,9 @@ import 'package:drift/drift.dart' as d;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:survey_app/constants/text_designs.dart';
 import 'package:survey_app/database/database.dart';
+import 'package:survey_app/wrappers/column_header_object.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../constants/constant_values.dart';
@@ -13,38 +15,38 @@ import '../../../widgets/popups/popup_dismiss.dart';
 import '../../../widgets/popups/popups.dart';
 import '../../../widgets/tables/table_creation_builder.dart';
 import '../../../widgets/tables/table_data_grid_source_builder.dart';
-import '../../../widgets/text/text_header_separator.dart';
 import 'builders/woody_debris_small_piece_builder.dart';
 import 'woody_debris_piece_accu_odd_page.dart';
 import 'woody_debris_piece_round_page.dart';
 
 class _ColNames {
-  static String id = "id";
-  static String pieceNum = "Piece Number";
-  static String type = "Type";
-  static String genus = "Genus";
-  static String species = "Species";
-  static String horLen = "Horizontal Length";
-  static String verDep = "Vertical Depth";
-  static String diameter = "Diameter";
-  static String tiltAngle = "Tilt Angle";
-  static String decayClass = "Decay Class";
-  static String edit = kColHeaderMapKeyEdit;
+  _ColNames();
+  ColumnHeaders id = ColumnHeaders(kColHeaderNameId, visible: false);
+  ColumnHeaders pieceNum = ColumnHeaders("Piece Number");
+  ColumnHeaders type = ColumnHeaders("Type");
+  ColumnHeaders genus = ColumnHeaders("Genus");
+  ColumnHeaders species = ColumnHeaders("Species");
+  ColumnHeaders horLen = ColumnHeaders("Horizontal Length");
+  ColumnHeaders verDep = ColumnHeaders("Vertical Depth");
+  ColumnHeaders diameter = ColumnHeaders("Diameter");
+  ColumnHeaders tiltAngle = ColumnHeaders("Tilt Angle");
+  ColumnHeaders decayClass = ColumnHeaders("Decay Class");
+  ColumnHeaders edit = ColumnHeaders(kColHeaderMapKeyEdit, sort: false);
 
-  static String empty = "-";
+  String empty = "-";
 
-  static List<Map<String, Object>> colHeadersList = [
-    {kColHeaderMapKeyName: pieceNum, kColHeaderMapKeySort: true},
-    {kColHeaderMapKeyName: type, kColHeaderMapKeySort: true},
-    {kColHeaderMapKeyName: genus, kColHeaderMapKeySort: true},
-    {kColHeaderMapKeyName: species, kColHeaderMapKeySort: true},
-    {kColHeaderMapKeyName: horLen, kColHeaderMapKeySort: true},
-    {kColHeaderMapKeyName: verDep, kColHeaderMapKeySort: true},
-    {kColHeaderMapKeyName: diameter, kColHeaderMapKeySort: true},
-    {kColHeaderMapKeyName: tiltAngle, kColHeaderMapKeySort: true},
-    {kColHeaderMapKeyName: decayClass, kColHeaderMapKeySort: true},
-    {kColHeaderMapKeyName: edit, kColHeaderMapKeySort: false},
-  ];
+  List<ColumnHeaders> getColHeadersList() => [
+        pieceNum,
+        type,
+        genus,
+        species,
+        horLen,
+        verDep,
+        diameter,
+        tiltAngle,
+        decayClass,
+        edit
+      ];
 }
 
 class WoodyDebrisHeaderPieceMain extends StatefulWidget {
@@ -81,69 +83,80 @@ class _WoodyDebrisHeaderPieceMainState
   late bool transComplete;
   late DataGridSourceBuilder largePieceDataSource =
       DataGridSourceBuilder(dataGridRows: []);
+  _ColNames columnData = _ColNames();
 
   List<DataGridRow> generateDataGridRows(List<WoodyDebrisOddData> piecesOdd,
       List<WoodyDebrisRoundData> piecesRound) {
     List<DataGridRow> oddGrid = piecesOdd
         .map<DataGridRow>((dataGridRow) => DataGridRow(cells: [
               DataGridCell<int>(
-                  columnName: _ColNames.id, value: dataGridRow.id),
+                  columnName: columnData.id.name, value: dataGridRow.id),
               DataGridCell<int>(
-                  columnName: _ColNames.pieceNum, value: dataGridRow.pieceNum),
+                  columnName: columnData.pieceNum.name,
+                  value: dataGridRow.pieceNum),
               DataGridCell<String>(
-                  columnName: _ColNames.type, value: dataGridRow.accumOdd),
+                  columnName: columnData.type.name,
+                  value: dataGridRow.accumOdd),
               DataGridCell<String>(
-                  columnName: _ColNames.genus, value: dataGridRow.genus),
+                  columnName: columnData.genus.name, value: dataGridRow.genus),
               DataGridCell<String>(
-                  columnName: _ColNames.species, value: dataGridRow.species),
+                  columnName: columnData.species.name,
+                  value: dataGridRow.species),
               DataGridCell<String>(
-                  columnName: _ColNames.horLen,
+                  columnName: columnData.horLen.name,
                   value: dataGridRow.horLength.toString()),
               DataGridCell<String>(
-                  columnName: _ColNames.verDep,
+                  columnName: columnData.verDep.name,
                   value: dataGridRow.verDepth.toString()),
               DataGridCell<String>(
-                  columnName: _ColNames.diameter, value: _ColNames.empty),
+                  columnName: columnData.diameter.name,
+                  value: columnData.empty),
               DataGridCell<String>(
-                  columnName: _ColNames.tiltAngle, value: _ColNames.empty),
+                  columnName: columnData.tiltAngle.name,
+                  value: columnData.empty),
               DataGridCell<String>(
-                  columnName: _ColNames.decayClass,
+                  columnName: columnData.decayClass.name,
                   value: dataGridRow.decayClass == -1
                       ? "Missing"
                       : dataGridRow.decayClass.toString()),
-              DataGridCell<bool>(columnName: _ColNames.edit, value: false),
+              DataGridCell<bool>(
+                  columnName: columnData.edit.name, value: false),
             ]))
         .toList();
 
     List<DataGridRow> roundGrid = piecesRound
         .map<DataGridRow>((dataGridRow) => DataGridRow(cells: [
               DataGridCell<int>(
-                  columnName: _ColNames.id, value: dataGridRow.id),
+                  columnName: columnData.id.name, value: dataGridRow.id),
               DataGridCell<int>(
-                  columnName: _ColNames.pieceNum, value: dataGridRow.pieceNum),
-              DataGridCell<String>(columnName: _ColNames.type, value: "R"),
+                  columnName: columnData.pieceNum.name,
+                  value: dataGridRow.pieceNum),
               DataGridCell<String>(
-                  columnName: _ColNames.genus, value: dataGridRow.genus),
+                  columnName: columnData.type.name, value: "R"),
               DataGridCell<String>(
-                  columnName: _ColNames.species, value: dataGridRow.species),
+                  columnName: columnData.genus.name, value: dataGridRow.genus),
               DataGridCell<String>(
-                  columnName: _ColNames.horLen, value: _ColNames.empty),
+                  columnName: columnData.species.name,
+                  value: dataGridRow.species),
               DataGridCell<String>(
-                  columnName: _ColNames.verDep, value: _ColNames.empty),
+                  columnName: columnData.horLen.name, value: columnData.empty),
               DataGridCell<String>(
-                  columnName: _ColNames.diameter,
+                  columnName: columnData.verDep.name, value: columnData.empty),
+              DataGridCell<String>(
+                  columnName: columnData.diameter.name,
                   value: dataGridRow.diameter.toString()),
               DataGridCell<String>(
-                  columnName: _ColNames.tiltAngle,
+                  columnName: columnData.tiltAngle.name,
                   value: dataGridRow.tiltAngle == -1
                       ? "Missing"
                       : dataGridRow.tiltAngle.toString()),
               DataGridCell<String>(
-                  columnName: _ColNames.decayClass,
+                  columnName: columnData.decayClass.name,
                   value: dataGridRow.decayClass == -1
                       ? "Missing"
                       : dataGridRow.decayClass.toString()),
-              DataGridCell<String?>(columnName: _ColNames.edit, value: null),
+              DataGridCell<String?>(
+                  columnName: columnData.edit.name, value: null),
             ]))
         .toList();
 
@@ -157,7 +170,7 @@ class _WoodyDebrisHeaderPieceMainState
         largePieceDataSource = DataGridSourceBuilder(
             dataGridRows: generateDataGridRows(odd, round));
         largePieceDataSource.sortedColumns.add(SortColumnDetails(
-            name: _ColNames.pieceNum,
+            name: columnData.pieceNum.name,
             sortDirection: DataGridSortDirection.ascending));
         largePieceDataSource.sort();
         setState(() {});
@@ -278,28 +291,38 @@ class _WoodyDebrisHeaderPieceMainState
             const SizedBox(
               height: kPaddingV * 2,
             ),
-            TextHeaderSeparator(
-              title: "Coarse Woody Debris",
-              sideWidget: Padding(
-                padding: const EdgeInsets.only(left: kPaddingH),
-                child: ElevatedButton(
-                    onPressed: () => transComplete
-                        ? Popups.show(context, completeWarningPopup)
-                        : addPiece(),
-                    style: ButtonStyle(
-                        backgroundColor: transComplete
-                            ? MaterialStateProperty.all<Color>(Colors.grey)
-                            : null),
-                    child: const Text("Add Piece")),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: kPaddingH / 2),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "Coarse Woody Debris",
+                    style: TextStyle(fontSize: kTextTitleSize),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: kPaddingH),
+                    child: ElevatedButton(
+                        onPressed: () => transComplete
+                            ? Popups.show(context, completeWarningPopup)
+                            : addPiece(),
+                        style: ButtonStyle(
+                            backgroundColor: transComplete
+                                ? MaterialStateProperty.all<Color>(Colors.grey)
+                                : null),
+                        child: const Text("Add Piece")),
+                  ),
+                ],
               ),
             ),
             Expanded(
               child: TableCreationBuilder(
                 source: largePieceDataSource,
-                colNames: _ColNames.colHeadersList,
+                columnWidthMode: ColumnWidthMode.fitByColumnName,
+                colNames: columnData.getColHeadersList(),
                 onCellTap: (DataGridCellTapDetails details) async {
                   // Assuming the "edit" column index is 2
-                  if (details.column.columnName == _ColNames.edit &&
+                  if (details.column.columnName == columnData.edit.name &&
                       details.rowColumnIndex.rowIndex != 0) {
                     if (transComplete) {
                       Popups.show(context, completeWarningPopup);

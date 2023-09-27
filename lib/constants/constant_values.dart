@@ -23,9 +23,7 @@ const String kContinue = "kContinue";
 const kCardTitleName = "name";
 const kCardData = "data";
 
-const kColHeaderMapKeyName = "name";
-const kColHeaderMapKeySort = "sort";
-const kColHeaderMapKeyId = "id";
+const kColHeaderNameId = "ID";
 const kColHeaderMapKeyEdit = "Edit";
 
 const kLocaleFr = Locale("fr", "CA");
