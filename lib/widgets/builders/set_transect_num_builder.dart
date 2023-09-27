@@ -8,6 +8,7 @@ class SetTransectNumBuilder extends StatelessWidget {
     super.key,
     required this.getUsedTransNums,
     this.name = "Transect",
+    required this.startingTransNum,
     required this.selectedItem,
     required this.transList,
     this.onBeforePopup,
@@ -16,6 +17,7 @@ class SetTransectNumBuilder extends StatelessWidget {
 
   final Future<List<int?>> getUsedTransNums;
   final String name;
+  final String startingTransNum;
   final String selectedItem;
   final List<String> transList;
   final Future<bool?> Function(String?)? onBeforePopup;
@@ -40,10 +42,16 @@ class SetTransectNumBuilder extends StatelessWidget {
               int transNum = int.tryParse(s ?? "-1") ?? -1;
               updateTransNum(transNum);
             },
-            disabledFn: (s) =>
-                snapshot.data!.contains(int.tryParse(s ?? "-1") ?? -1),
             selectedItem: selectedItem,
             itemsList: transList,
+            disabledFn: (s) {
+              print(startingTransNum);
+              if (selectedItem != startingTransNum && s == startingTransNum) {
+                return false;
+              } else {
+                return snapshot.data!.contains(int.tryParse(s ?? "-1") ?? -1);
+              }
+            },
           );
         } else {
           return const SizedBox(); // return an empty widget or something else

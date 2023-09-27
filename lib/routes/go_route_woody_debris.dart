@@ -44,9 +44,19 @@ GoRoute goRouteWoodyDebris = GoRoute(
                 name: WoodyDebrisHeaderMeasurements.routeName,
                 path: "measurements",
                 builder: (context, state) {
-                  WoodyDebrisHeaderData data =
-                      state.extra as WoodyDebrisHeaderData;
-                  return WoodyDebrisHeaderMeasurements(wdh: data);
+                  Map<String, dynamic> data =
+                      state.extra as Map<String, dynamic>;
+
+                  WoodyDebrisHeaderCompanion wdh =
+                      data[WoodyDebrisHeaderMeasurements.keyWdHeader]
+                          as WoodyDebrisHeaderCompanion;
+                  VoidCallback? updateSummaryPageTransList = data[
+                      WoodyDebrisHeaderMeasurements
+                          .keyUpdateSummaryPageTransList] as VoidCallback?;
+                  return WoodyDebrisHeaderMeasurements(
+                    wdh: wdh,
+                    updateSummaryPageTransList: updateSummaryPageTransList,
+                  );
                 }),
             GoRoute(
                 name: WoodyDebrisHeaderPieceMain.routeName,
