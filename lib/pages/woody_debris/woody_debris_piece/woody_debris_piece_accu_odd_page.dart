@@ -145,45 +145,29 @@ class _WoodyDebrisPieceAccuOddPageState
                   ThousandsFormatter(allowFraction: true, decimalPlaces: 1)
                 ],
               ),
-              HideInfoCheckbox(
+              DataInput(
                 title: "Vertical Piece Depth",
-                checkTitle: "Vertical piece depth missing",
-                checkValue: piece.verDepth == kDataMissing,
-                onChange: (angleMissing) {
-                  angleMissing!
-                      ? Popups.show(context,
-                          Popups.generateWarningMarkingAsMissing(() {
-                          updatePiece(
-                              piece.copyWith(verDepth: const d.Value(-1)));
-                          context.pop();
-                        }))
+                generalPadding: const EdgeInsets.only(top: 0.0),
+                textBoxPadding: const EdgeInsets.only(top: 0.0),
+                boxLabel: "Reported to the nearest 0.1cm",
+                prefixIcon: FontAwesomeIcons.angleLeft,
+                suffixVal: "CM",
+                inputType: const TextInputType.numberWithOptions(decimal: true),
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(6),
+                  ThousandsFormatter(allowFraction: true, decimalPlaces: 1)
+                ],
+                controller: controllerVer,
+                startingStr: db.companionValueToStr(piece.verDepth),
+                onSubmit: (String s) {
+                  double.tryParse(s) != null
+                      ? updatePiece(
+                          piece.copyWith(verDepth: d.Value(double.parse(s))))
                       : updatePiece(
                           piece.copyWith(verDepth: const d.Value.absent()));
                 },
-                child: DataInput(
-                  generalPadding: const EdgeInsets.only(top: 0.0),
-                  textBoxPadding: const EdgeInsets.only(top: 0.0),
-                  boxLabel: "Reported to the nearest 0.1cm",
-                  prefixIcon: FontAwesomeIcons.angleLeft,
-                  suffixVal: "CM",
-                  inputType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(6),
-                    ThousandsFormatter(allowFraction: true, decimalPlaces: 1)
-                  ],
-                  controller: controllerVer,
-                  startingStr: db.companionValueToStr(piece.verDepth),
-                  onSubmit: (String s) {
-                    double.tryParse(s) != null
-                        ? updatePiece(
-                            piece.copyWith(verDepth: d.Value(double.parse(s))))
-                        : updatePiece(
-                            piece.copyWith(verDepth: const d.Value.absent()));
-                  },
-                  errorMsg: WoodyDebrisPieceErrorChecks.vertical(
-                      db.companionValueToStr(piece.verDepth)),
-                ),
+                errorMsg: WoodyDebrisPieceErrorChecks.vertical(
+                    db.companionValueToStr(piece.verDepth)),
               ),
               TreeGenusSelectBuilder(
                   updateGenusFn: (genusCode, speciesCode) => updatePiece(

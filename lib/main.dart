@@ -12,7 +12,7 @@ import 'package:survey_app/routes/router_routes_main.dart';
 import 'database/database.dart';
 import 'l10n/locale_keys.g.dart';
 
-String _versionCode = "Version 1";
+String _versionCode = "Version 2";
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

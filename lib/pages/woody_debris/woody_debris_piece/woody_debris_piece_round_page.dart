@@ -147,45 +147,29 @@ class _WoodyDebrisPieceRoundPageState extends State<WoodyDebrisPieceRoundPage> {
                   ThousandsFormatter(allowFraction: true, decimalPlaces: 1)
                 ],
               ),
-              HideInfoCheckbox(
+              DataInput(
                 title: "Tilt angle of piece",
-                checkTitle: "Tilt angle missing",
-                checkValue: piece.tiltAngle.value == kDataMissing,
-                onChange: (angleMissing) {
-                  angleMissing!
-                      ? Popups.show(context,
-                          Popups.generateWarningMarkingAsMissing(() {
-                          updatePiece(
-                              piece.copyWith(tiltAngle: const d.Value(-1)));
-                          context.pop();
-                        }))
+                generalPadding: const EdgeInsets.only(top: 0.0),
+                textBoxPadding: const EdgeInsets.only(top: 0.0),
+                boxLabel: "Reported to the nearest degree",
+                prefixIcon: FontAwesomeIcons.angleLeft,
+                suffixVal: kDegreeSign,
+                inputType: const TextInputType.numberWithOptions(decimal: true),
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(2),
+                  ThousandsFormatter(allowNegative: false)
+                ],
+                controller: controllerTiltAngle,
+                startingStr: db.companionValueToStr(piece.tiltAngle),
+                onSubmit: (String s) {
+                  int.tryParse(s) != null
+                      ? updatePiece(
+                          piece.copyWith(tiltAngle: d.Value(int.parse(s))))
                       : updatePiece(
                           piece.copyWith(tiltAngle: const d.Value.absent()));
                 },
-                child: DataInput(
-                  generalPadding: const EdgeInsets.only(top: 0.0),
-                  textBoxPadding: const EdgeInsets.only(top: 0.0),
-                  boxLabel: "Reported to the nearest degree",
-                  prefixIcon: FontAwesomeIcons.angleLeft,
-                  suffixVal: kDegreeSign,
-                  inputType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(2),
-                    ThousandsFormatter(allowNegative: false)
-                  ],
-                  controller: controllerTiltAngle,
-                  startingStr: db.companionValueToStr(piece.tiltAngle),
-                  onSubmit: (String s) {
-                    int.tryParse(s) != null
-                        ? updatePiece(
-                            piece.copyWith(tiltAngle: d.Value(int.parse(s))))
-                        : updatePiece(
-                            piece.copyWith(tiltAngle: const d.Value.absent()));
-                  },
-                  errorMsg: WoodyDebrisPieceErrorChecks.tiltAngle(
-                      db.companionValueToStr(piece.tiltAngle)),
-                ),
+                errorMsg: WoodyDebrisPieceErrorChecks.tiltAngle(
+                    db.companionValueToStr(piece.tiltAngle)),
               ),
               TreeGenusSelectBuilder(
                   title: "Piece Genus",
