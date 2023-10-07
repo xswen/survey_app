@@ -13,8 +13,7 @@ class SurfaceSubstrateSummary extends Table {
 
 class SurfaceSubstrateHeader extends Table {
   IntColumn get id => integer().autoIncrement()();
-  IntColumn get ssHeaderId =>
-      integer().references(SurfaceSubstrateSummary, #id)();
+  IntColumn get ssId => integer().references(SurfaceSubstrateSummary, #id)();
   IntColumn get transNum => integer().check(transNum.isBetweenValues(1, 9))();
   RealColumn get nomTransLen =>
       real().check(nomTransLen.isBetweenValues(10.0, 150.0)).nullable()();
@@ -25,7 +24,8 @@ class SurfaceSubstrateHeader extends Table {
 
 class SurfaceSubstrateTally extends Table {
   IntColumn get id => integer().autoIncrement()();
-  IntColumn get ssDataId => integer().references(SurfaceSubstrateHeader, #id)();
+  IntColumn get ssHeaderId =>
+      integer().references(SurfaceSubstrateHeader, #id)();
   IntColumn get stationNum =>
       integer().check(stationNum.isBetweenValues(1, 99))();
   TextColumn get substrateType => text()();

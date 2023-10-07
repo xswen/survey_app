@@ -49,18 +49,27 @@ class SurfaceSubstrateTablesDao extends DatabaseAccessor<Database>
   Future<List<SurfaceSubstrateHeaderData>> getSsHeaderWithSshId(
           int sshId) async =>
       (select(surfaceSubstrateHeader)
-            ..where((tbl) => tbl.ssHeaderId.equals(sshId))
+            ..where((tbl) => tbl.ssId.equals(sshId))
             ..orderBy([
               (t) =>
                   OrderingTerm(expression: t.transNum, mode: OrderingMode.asc)
             ]))
           .get();
-
+  Future<List<SurfaceSubstrateHeaderData>> getSSHeadersFromSSsId(int ssSId) =>
+      (select(surfaceSubstrateHeader)
+            ..where((tbl) => tbl.ssId.equals(ssSId))
+            ..orderBy([
+              (t) => OrderingTerm(
+                  expression: t.transNum,
+                  mode: OrderingMode.asc,
+                  nulls: NullsOrder.last)
+            ]))
+          .get();
   Future<SurfaceSubstrateHeaderData?> getSsHeaderFromTransNum(
           int sshId, int transNum) =>
       (select(surfaceSubstrateHeader)
             ..where((tbl) =>
-                tbl.ssHeaderId.equals(sshId) & tbl.transNum.equals(transNum)))
+                tbl.ssId.equals(sshId) & tbl.transNum.equals(transNum)))
           .getSingleOrNull();
 
   //====================Surface Substrate Tally====================
@@ -75,11 +84,12 @@ class SurfaceSubstrateTablesDao extends DatabaseAccessor<Database>
           int ssdId, int stationNum) =>
       (select(surfaceSubstrateTally)
             ..where((tbl) =>
-                tbl.ssDataId.equals(ssdId) & tbl.stationNum.equals(stationNum)))
+                tbl.ssHeaderId.equals(ssdId) &
+                tbl.stationNum.equals(stationNum)))
           .getSingleOrNull();
   Future<List<SurfaceSubstrateTallyData>> getSsTallyList(int ssDataId) =>
       (select(surfaceSubstrateTally)
-            ..where((tbl) => tbl.ssDataId.equals(ssDataId))
+            ..where((tbl) => tbl.ssHeaderId.equals(ssDataId))
             ..orderBy([
               (t) =>
                   OrderingTerm(expression: t.stationNum, mode: OrderingMode.asc)
@@ -87,7 +97,7 @@ class SurfaceSubstrateTablesDao extends DatabaseAccessor<Database>
           .get();
   Future<int> getNextStationNum(int ssDataId) async {
     final query = select(surfaceSubstrateTally)
-      ..where((tbl) => tbl.ssDataId.equals(ssDataId))
+      ..where((tbl) => tbl.ssHeaderId.equals(ssDataId))
       ..orderBy([
         (t) => OrderingTerm(expression: t.stationNum, mode: OrderingMode.desc)
       ]);

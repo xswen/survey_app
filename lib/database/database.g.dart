@@ -4402,11 +4402,10 @@ class $SurfaceSubstrateHeaderTable extends SurfaceSubstrateHeader
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _ssHeaderIdMeta =
-      const VerificationMeta('ssHeaderId');
+  static const VerificationMeta _ssIdMeta = const VerificationMeta('ssId');
   @override
-  late final GeneratedColumn<int> ssHeaderId = GeneratedColumn<int>(
-      'ss_header_id', aliasedName, false,
+  late final GeneratedColumn<int> ssId = GeneratedColumn<int>(
+      'ss_id', aliasedName, false,
       type: DriftSqlType.int,
       requiredDuringInsert: true,
       defaultConstraints: GeneratedColumn.constraintIsAlways(
@@ -4447,7 +4446,7 @@ class $SurfaceSubstrateHeaderTable extends SurfaceSubstrateHeader
       defaultValue: const Constant(false));
   @override
   List<GeneratedColumn> get $columns =>
-      [id, ssHeaderId, transNum, nomTransLen, transAzimuth, complete];
+      [id, ssId, transNum, nomTransLen, transAzimuth, complete];
   @override
   String get aliasedName => _alias ?? 'surface_substrate_header';
   @override
@@ -4461,13 +4460,11 @@ class $SurfaceSubstrateHeaderTable extends SurfaceSubstrateHeader
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    if (data.containsKey('ss_header_id')) {
+    if (data.containsKey('ss_id')) {
       context.handle(
-          _ssHeaderIdMeta,
-          ssHeaderId.isAcceptableOrUnknown(
-              data['ss_header_id']!, _ssHeaderIdMeta));
+          _ssIdMeta, ssId.isAcceptableOrUnknown(data['ss_id']!, _ssIdMeta));
     } else if (isInserting) {
-      context.missing(_ssHeaderIdMeta);
+      context.missing(_ssIdMeta);
     }
     if (data.containsKey('trans_num')) {
       context.handle(_transNumMeta,
@@ -4503,8 +4500,8 @@ class $SurfaceSubstrateHeaderTable extends SurfaceSubstrateHeader
     return SurfaceSubstrateHeaderData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      ssHeaderId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}ss_header_id'])!,
+      ssId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}ss_id'])!,
       transNum: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}trans_num'])!,
       nomTransLen: attachedDatabase.typeMapping
@@ -4525,14 +4522,14 @@ class $SurfaceSubstrateHeaderTable extends SurfaceSubstrateHeader
 class SurfaceSubstrateHeaderData extends DataClass
     implements Insertable<SurfaceSubstrateHeaderData> {
   final int id;
-  final int ssHeaderId;
+  final int ssId;
   final int transNum;
   final double? nomTransLen;
   final int? transAzimuth;
   final bool complete;
   const SurfaceSubstrateHeaderData(
       {required this.id,
-      required this.ssHeaderId,
+      required this.ssId,
       required this.transNum,
       this.nomTransLen,
       this.transAzimuth,
@@ -4541,7 +4538,7 @@ class SurfaceSubstrateHeaderData extends DataClass
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
-    map['ss_header_id'] = Variable<int>(ssHeaderId);
+    map['ss_id'] = Variable<int>(ssId);
     map['trans_num'] = Variable<int>(transNum);
     if (!nullToAbsent || nomTransLen != null) {
       map['nom_trans_len'] = Variable<double>(nomTransLen);
@@ -4556,7 +4553,7 @@ class SurfaceSubstrateHeaderData extends DataClass
   SurfaceSubstrateHeaderCompanion toCompanion(bool nullToAbsent) {
     return SurfaceSubstrateHeaderCompanion(
       id: Value(id),
-      ssHeaderId: Value(ssHeaderId),
+      ssId: Value(ssId),
       transNum: Value(transNum),
       nomTransLen: nomTransLen == null && nullToAbsent
           ? const Value.absent()
@@ -4573,7 +4570,7 @@ class SurfaceSubstrateHeaderData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return SurfaceSubstrateHeaderData(
       id: serializer.fromJson<int>(json['id']),
-      ssHeaderId: serializer.fromJson<int>(json['ssHeaderId']),
+      ssId: serializer.fromJson<int>(json['ssId']),
       transNum: serializer.fromJson<int>(json['transNum']),
       nomTransLen: serializer.fromJson<double?>(json['nomTransLen']),
       transAzimuth: serializer.fromJson<int?>(json['transAzimuth']),
@@ -4585,7 +4582,7 @@ class SurfaceSubstrateHeaderData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'ssHeaderId': serializer.toJson<int>(ssHeaderId),
+      'ssId': serializer.toJson<int>(ssId),
       'transNum': serializer.toJson<int>(transNum),
       'nomTransLen': serializer.toJson<double?>(nomTransLen),
       'transAzimuth': serializer.toJson<int?>(transAzimuth),
@@ -4595,14 +4592,14 @@ class SurfaceSubstrateHeaderData extends DataClass
 
   SurfaceSubstrateHeaderData copyWith(
           {int? id,
-          int? ssHeaderId,
+          int? ssId,
           int? transNum,
           Value<double?> nomTransLen = const Value.absent(),
           Value<int?> transAzimuth = const Value.absent(),
           bool? complete}) =>
       SurfaceSubstrateHeaderData(
         id: id ?? this.id,
-        ssHeaderId: ssHeaderId ?? this.ssHeaderId,
+        ssId: ssId ?? this.ssId,
         transNum: transNum ?? this.transNum,
         nomTransLen: nomTransLen.present ? nomTransLen.value : this.nomTransLen,
         transAzimuth:
@@ -4613,7 +4610,7 @@ class SurfaceSubstrateHeaderData extends DataClass
   String toString() {
     return (StringBuffer('SurfaceSubstrateHeaderData(')
           ..write('id: $id, ')
-          ..write('ssHeaderId: $ssHeaderId, ')
+          ..write('ssId: $ssId, ')
           ..write('transNum: $transNum, ')
           ..write('nomTransLen: $nomTransLen, ')
           ..write('transAzimuth: $transAzimuth, ')
@@ -4623,14 +4620,14 @@ class SurfaceSubstrateHeaderData extends DataClass
   }
 
   @override
-  int get hashCode => Object.hash(
-      id, ssHeaderId, transNum, nomTransLen, transAzimuth, complete);
+  int get hashCode =>
+      Object.hash(id, ssId, transNum, nomTransLen, transAzimuth, complete);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is SurfaceSubstrateHeaderData &&
           other.id == this.id &&
-          other.ssHeaderId == this.ssHeaderId &&
+          other.ssId == this.ssId &&
           other.transNum == this.transNum &&
           other.nomTransLen == this.nomTransLen &&
           other.transAzimuth == this.transAzimuth &&
@@ -4640,14 +4637,14 @@ class SurfaceSubstrateHeaderData extends DataClass
 class SurfaceSubstrateHeaderCompanion
     extends UpdateCompanion<SurfaceSubstrateHeaderData> {
   final Value<int> id;
-  final Value<int> ssHeaderId;
+  final Value<int> ssId;
   final Value<int> transNum;
   final Value<double?> nomTransLen;
   final Value<int?> transAzimuth;
   final Value<bool> complete;
   const SurfaceSubstrateHeaderCompanion({
     this.id = const Value.absent(),
-    this.ssHeaderId = const Value.absent(),
+    this.ssId = const Value.absent(),
     this.transNum = const Value.absent(),
     this.nomTransLen = const Value.absent(),
     this.transAzimuth = const Value.absent(),
@@ -4655,16 +4652,16 @@ class SurfaceSubstrateHeaderCompanion
   });
   SurfaceSubstrateHeaderCompanion.insert({
     this.id = const Value.absent(),
-    required int ssHeaderId,
+    required int ssId,
     required int transNum,
     this.nomTransLen = const Value.absent(),
     this.transAzimuth = const Value.absent(),
     this.complete = const Value.absent(),
-  })  : ssHeaderId = Value(ssHeaderId),
+  })  : ssId = Value(ssId),
         transNum = Value(transNum);
   static Insertable<SurfaceSubstrateHeaderData> custom({
     Expression<int>? id,
-    Expression<int>? ssHeaderId,
+    Expression<int>? ssId,
     Expression<int>? transNum,
     Expression<double>? nomTransLen,
     Expression<int>? transAzimuth,
@@ -4672,7 +4669,7 @@ class SurfaceSubstrateHeaderCompanion
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (ssHeaderId != null) 'ss_header_id': ssHeaderId,
+      if (ssId != null) 'ss_id': ssId,
       if (transNum != null) 'trans_num': transNum,
       if (nomTransLen != null) 'nom_trans_len': nomTransLen,
       if (transAzimuth != null) 'trans_azimuth': transAzimuth,
@@ -4682,14 +4679,14 @@ class SurfaceSubstrateHeaderCompanion
 
   SurfaceSubstrateHeaderCompanion copyWith(
       {Value<int>? id,
-      Value<int>? ssHeaderId,
+      Value<int>? ssId,
       Value<int>? transNum,
       Value<double?>? nomTransLen,
       Value<int?>? transAzimuth,
       Value<bool>? complete}) {
     return SurfaceSubstrateHeaderCompanion(
       id: id ?? this.id,
-      ssHeaderId: ssHeaderId ?? this.ssHeaderId,
+      ssId: ssId ?? this.ssId,
       transNum: transNum ?? this.transNum,
       nomTransLen: nomTransLen ?? this.nomTransLen,
       transAzimuth: transAzimuth ?? this.transAzimuth,
@@ -4703,8 +4700,8 @@ class SurfaceSubstrateHeaderCompanion
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
-    if (ssHeaderId.present) {
-      map['ss_header_id'] = Variable<int>(ssHeaderId.value);
+    if (ssId.present) {
+      map['ss_id'] = Variable<int>(ssId.value);
     }
     if (transNum.present) {
       map['trans_num'] = Variable<int>(transNum.value);
@@ -4725,7 +4722,7 @@ class SurfaceSubstrateHeaderCompanion
   String toString() {
     return (StringBuffer('SurfaceSubstrateHeaderCompanion(')
           ..write('id: $id, ')
-          ..write('ssHeaderId: $ssHeaderId, ')
+          ..write('ssId: $ssId, ')
           ..write('transNum: $transNum, ')
           ..write('nomTransLen: $nomTransLen, ')
           ..write('transAzimuth: $transAzimuth, ')
@@ -4750,11 +4747,11 @@ class $SurfaceSubstrateTallyTable extends SurfaceSubstrateTally
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _ssDataIdMeta =
-      const VerificationMeta('ssDataId');
+  static const VerificationMeta _ssHeaderIdMeta =
+      const VerificationMeta('ssHeaderId');
   @override
-  late final GeneratedColumn<int> ssDataId = GeneratedColumn<int>(
-      'ss_data_id', aliasedName, false,
+  late final GeneratedColumn<int> ssHeaderId = GeneratedColumn<int>(
+      'ss_header_id', aliasedName, false,
       type: DriftSqlType.int,
       requiredDuringInsert: true,
       defaultConstraints: GeneratedColumn.constraintIsAlways(
@@ -4788,7 +4785,7 @@ class $SurfaceSubstrateTallyTable extends SurfaceSubstrateTally
       type: DriftSqlType.string, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns =>
-      [id, ssDataId, stationNum, substrateType, depth, depthLimit];
+      [id, ssHeaderId, stationNum, substrateType, depth, depthLimit];
   @override
   String get aliasedName => _alias ?? 'surface_substrate_tally';
   @override
@@ -4802,11 +4799,13 @@ class $SurfaceSubstrateTallyTable extends SurfaceSubstrateTally
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    if (data.containsKey('ss_data_id')) {
-      context.handle(_ssDataIdMeta,
-          ssDataId.isAcceptableOrUnknown(data['ss_data_id']!, _ssDataIdMeta));
+    if (data.containsKey('ss_header_id')) {
+      context.handle(
+          _ssHeaderIdMeta,
+          ssHeaderId.isAcceptableOrUnknown(
+              data['ss_header_id']!, _ssHeaderIdMeta));
     } else if (isInserting) {
-      context.missing(_ssDataIdMeta);
+      context.missing(_ssHeaderIdMeta);
     }
     if (data.containsKey('station_num')) {
       context.handle(
@@ -4846,8 +4845,8 @@ class $SurfaceSubstrateTallyTable extends SurfaceSubstrateTally
     return SurfaceSubstrateTallyData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      ssDataId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}ss_data_id'])!,
+      ssHeaderId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}ss_header_id'])!,
       stationNum: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}station_num'])!,
       substrateType: attachedDatabase.typeMapping
@@ -4868,14 +4867,14 @@ class $SurfaceSubstrateTallyTable extends SurfaceSubstrateTally
 class SurfaceSubstrateTallyData extends DataClass
     implements Insertable<SurfaceSubstrateTallyData> {
   final int id;
-  final int ssDataId;
+  final int ssHeaderId;
   final int stationNum;
   final String substrateType;
   final int? depth;
   final String? depthLimit;
   const SurfaceSubstrateTallyData(
       {required this.id,
-      required this.ssDataId,
+      required this.ssHeaderId,
       required this.stationNum,
       required this.substrateType,
       this.depth,
@@ -4884,7 +4883,7 @@ class SurfaceSubstrateTallyData extends DataClass
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
-    map['ss_data_id'] = Variable<int>(ssDataId);
+    map['ss_header_id'] = Variable<int>(ssHeaderId);
     map['station_num'] = Variable<int>(stationNum);
     map['substrate_type'] = Variable<String>(substrateType);
     if (!nullToAbsent || depth != null) {
@@ -4899,7 +4898,7 @@ class SurfaceSubstrateTallyData extends DataClass
   SurfaceSubstrateTallyCompanion toCompanion(bool nullToAbsent) {
     return SurfaceSubstrateTallyCompanion(
       id: Value(id),
-      ssDataId: Value(ssDataId),
+      ssHeaderId: Value(ssHeaderId),
       stationNum: Value(stationNum),
       substrateType: Value(substrateType),
       depth:
@@ -4915,7 +4914,7 @@ class SurfaceSubstrateTallyData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return SurfaceSubstrateTallyData(
       id: serializer.fromJson<int>(json['id']),
-      ssDataId: serializer.fromJson<int>(json['ssDataId']),
+      ssHeaderId: serializer.fromJson<int>(json['ssHeaderId']),
       stationNum: serializer.fromJson<int>(json['stationNum']),
       substrateType: serializer.fromJson<String>(json['substrateType']),
       depth: serializer.fromJson<int?>(json['depth']),
@@ -4927,7 +4926,7 @@ class SurfaceSubstrateTallyData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'ssDataId': serializer.toJson<int>(ssDataId),
+      'ssHeaderId': serializer.toJson<int>(ssHeaderId),
       'stationNum': serializer.toJson<int>(stationNum),
       'substrateType': serializer.toJson<String>(substrateType),
       'depth': serializer.toJson<int?>(depth),
@@ -4937,14 +4936,14 @@ class SurfaceSubstrateTallyData extends DataClass
 
   SurfaceSubstrateTallyData copyWith(
           {int? id,
-          int? ssDataId,
+          int? ssHeaderId,
           int? stationNum,
           String? substrateType,
           Value<int?> depth = const Value.absent(),
           Value<String?> depthLimit = const Value.absent()}) =>
       SurfaceSubstrateTallyData(
         id: id ?? this.id,
-        ssDataId: ssDataId ?? this.ssDataId,
+        ssHeaderId: ssHeaderId ?? this.ssHeaderId,
         stationNum: stationNum ?? this.stationNum,
         substrateType: substrateType ?? this.substrateType,
         depth: depth.present ? depth.value : this.depth,
@@ -4954,7 +4953,7 @@ class SurfaceSubstrateTallyData extends DataClass
   String toString() {
     return (StringBuffer('SurfaceSubstrateTallyData(')
           ..write('id: $id, ')
-          ..write('ssDataId: $ssDataId, ')
+          ..write('ssHeaderId: $ssHeaderId, ')
           ..write('stationNum: $stationNum, ')
           ..write('substrateType: $substrateType, ')
           ..write('depth: $depth, ')
@@ -4965,13 +4964,13 @@ class SurfaceSubstrateTallyData extends DataClass
 
   @override
   int get hashCode =>
-      Object.hash(id, ssDataId, stationNum, substrateType, depth, depthLimit);
+      Object.hash(id, ssHeaderId, stationNum, substrateType, depth, depthLimit);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is SurfaceSubstrateTallyData &&
           other.id == this.id &&
-          other.ssDataId == this.ssDataId &&
+          other.ssHeaderId == this.ssHeaderId &&
           other.stationNum == this.stationNum &&
           other.substrateType == this.substrateType &&
           other.depth == this.depth &&
@@ -4981,14 +4980,14 @@ class SurfaceSubstrateTallyData extends DataClass
 class SurfaceSubstrateTallyCompanion
     extends UpdateCompanion<SurfaceSubstrateTallyData> {
   final Value<int> id;
-  final Value<int> ssDataId;
+  final Value<int> ssHeaderId;
   final Value<int> stationNum;
   final Value<String> substrateType;
   final Value<int?> depth;
   final Value<String?> depthLimit;
   const SurfaceSubstrateTallyCompanion({
     this.id = const Value.absent(),
-    this.ssDataId = const Value.absent(),
+    this.ssHeaderId = const Value.absent(),
     this.stationNum = const Value.absent(),
     this.substrateType = const Value.absent(),
     this.depth = const Value.absent(),
@@ -4996,17 +4995,17 @@ class SurfaceSubstrateTallyCompanion
   });
   SurfaceSubstrateTallyCompanion.insert({
     this.id = const Value.absent(),
-    required int ssDataId,
+    required int ssHeaderId,
     required int stationNum,
     required String substrateType,
     this.depth = const Value.absent(),
     this.depthLimit = const Value.absent(),
-  })  : ssDataId = Value(ssDataId),
+  })  : ssHeaderId = Value(ssHeaderId),
         stationNum = Value(stationNum),
         substrateType = Value(substrateType);
   static Insertable<SurfaceSubstrateTallyData> custom({
     Expression<int>? id,
-    Expression<int>? ssDataId,
+    Expression<int>? ssHeaderId,
     Expression<int>? stationNum,
     Expression<String>? substrateType,
     Expression<int>? depth,
@@ -5014,7 +5013,7 @@ class SurfaceSubstrateTallyCompanion
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (ssDataId != null) 'ss_data_id': ssDataId,
+      if (ssHeaderId != null) 'ss_header_id': ssHeaderId,
       if (stationNum != null) 'station_num': stationNum,
       if (substrateType != null) 'substrate_type': substrateType,
       if (depth != null) 'depth': depth,
@@ -5024,14 +5023,14 @@ class SurfaceSubstrateTallyCompanion
 
   SurfaceSubstrateTallyCompanion copyWith(
       {Value<int>? id,
-      Value<int>? ssDataId,
+      Value<int>? ssHeaderId,
       Value<int>? stationNum,
       Value<String>? substrateType,
       Value<int?>? depth,
       Value<String?>? depthLimit}) {
     return SurfaceSubstrateTallyCompanion(
       id: id ?? this.id,
-      ssDataId: ssDataId ?? this.ssDataId,
+      ssHeaderId: ssHeaderId ?? this.ssHeaderId,
       stationNum: stationNum ?? this.stationNum,
       substrateType: substrateType ?? this.substrateType,
       depth: depth ?? this.depth,
@@ -5045,8 +5044,8 @@ class SurfaceSubstrateTallyCompanion
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
-    if (ssDataId.present) {
-      map['ss_data_id'] = Variable<int>(ssDataId.value);
+    if (ssHeaderId.present) {
+      map['ss_header_id'] = Variable<int>(ssHeaderId.value);
     }
     if (stationNum.present) {
       map['station_num'] = Variable<int>(stationNum.value);
@@ -5067,7 +5066,7 @@ class SurfaceSubstrateTallyCompanion
   String toString() {
     return (StringBuffer('SurfaceSubstrateTallyCompanion(')
           ..write('id: $id, ')
-          ..write('ssDataId: $ssDataId, ')
+          ..write('ssHeaderId: $ssHeaderId, ')
           ..write('stationNum: $stationNum, ')
           ..write('substrateType: $substrateType, ')
           ..write('depth: $depth, ')

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '../../constants/constant_values.dart';
+import '../../wrappers/column_header_object.dart';
 
 class DataGridSourceBuilder extends DataGridSource {
   DataGridSourceBuilder({required this.dataGridRows});
@@ -19,11 +19,11 @@ class DataGridSourceBuilder extends DataGridSource {
     return DataGridRowAdapter(
         cells: newRow.getCells().map<Widget>((dataGridCell) {
       return Container(
-          alignment: (dataGridCell.columnName == kColHeaderNameId)
+          alignment: (dataGridCell.columnName == ColumnHeaders.headerNameId)
               ? Alignment.centerRight
               : Alignment.center,
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: (dataGridCell.columnName == kColHeaderMapKeyEdit)
+          child: (dataGridCell.columnName == ColumnHeaders.headerNameEdit)
               ? const Icon(FontAwesomeIcons.penToSquare)
               : Text(
                   dataGridCell.value.toString(),

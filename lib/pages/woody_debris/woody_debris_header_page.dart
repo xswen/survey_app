@@ -157,9 +157,9 @@ class _WoodyDebrisHeaderPageState extends State<WoodyDebrisHeaderPage> {
               space: kPaddingIcon,
               label: "Transect Header Data",
               onPressed: () async {
-                context.pushNamed(WoodyDebrisHeaderMeasurements.routeName,
+                context.pushNamed(WoodyDebrisHeaderMeasurementsPage.routeName,
                     extra: {
-                      WoodyDebrisHeaderMeasurements.keyWdHeader:
+                      WoodyDebrisHeaderMeasurementsPage.keyWdHeader:
                           wdh.toCompanion(true)
                     }).then((value) => db.woodyDebrisTablesDao
                     .getWdHeaderFromId(wdh.id)

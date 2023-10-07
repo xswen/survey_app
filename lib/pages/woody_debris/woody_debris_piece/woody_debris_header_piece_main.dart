@@ -7,7 +7,6 @@ import 'package:survey_app/database/database.dart';
 import 'package:survey_app/wrappers/column_header_object.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '../../../constants/constant_values.dart';
 import '../../../constants/margins_padding.dart';
 import '../../../widgets/app_bar.dart';
 import '../../../widgets/drawer_menu.dart';
@@ -21,7 +20,7 @@ import 'woody_debris_piece_round_page.dart';
 
 class _ColNames {
   _ColNames();
-  ColumnHeaders id = ColumnHeaders(kColHeaderNameId, visible: false);
+  ColumnHeaders id = ColumnHeaders(ColumnHeaders.headerNameId, visible: false);
   ColumnHeaders pieceNum = ColumnHeaders("Piece Number");
   ColumnHeaders type = ColumnHeaders("Type");
   ColumnHeaders genus = ColumnHeaders("Genus");
@@ -31,7 +30,7 @@ class _ColNames {
   ColumnHeaders diameter = ColumnHeaders("Diameter");
   ColumnHeaders tiltAngle = ColumnHeaders("Tilt Angle");
   ColumnHeaders decayClass = ColumnHeaders("Decay Class");
-  ColumnHeaders edit = ColumnHeaders(kColHeaderMapKeyEdit, sort: false);
+  ColumnHeaders edit = ColumnHeaders(ColumnHeaders.headerNameId, sort: false);
 
   String empty = "-";
 

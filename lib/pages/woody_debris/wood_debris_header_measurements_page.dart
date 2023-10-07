@@ -19,25 +19,25 @@ import '../../widgets/drawer_menu.dart';
 import '../../widgets/popups/popups.dart';
 import '../../widgets/text/text_header_separator.dart';
 
-class WoodyDebrisHeaderMeasurements extends StatefulWidget {
+class WoodyDebrisHeaderMeasurementsPage extends StatefulWidget {
   static const String routeName = "woodyDebrisHeaderMeasurement";
   static const String keyWdHeader = "wdHeader";
   static const String keyUpdateSummaryPageTransList =
       "updateSummaryPageTransList";
 
-  const WoodyDebrisHeaderMeasurements(
+  const WoodyDebrisHeaderMeasurementsPage(
       {Key? key, required this.wdh, required this.updateSummaryPageTransList})
       : super(key: key);
   final WoodyDebrisHeaderCompanion wdh;
   final VoidCallback? updateSummaryPageTransList;
 
   @override
-  State<WoodyDebrisHeaderMeasurements> createState() =>
-      _WoodyDebrisHeaderMeasurementsState();
+  State<WoodyDebrisHeaderMeasurementsPage> createState() =>
+      _WoodyDebrisHeaderMeasurementsPageState();
 }
 
-class _WoodyDebrisHeaderMeasurementsState
-    extends State<WoodyDebrisHeaderMeasurements> {
+class _WoodyDebrisHeaderMeasurementsPageState
+    extends State<WoodyDebrisHeaderMeasurementsPage> {
   late WoodyDebrisHeaderCompanion wdh;
 
   final String title = "Woody Debris Transect";
@@ -159,7 +159,7 @@ class _WoodyDebrisHeaderMeasurementsState
 
     return Scaffold(
       appBar: OurAppBar(
-          "Woody Debris Measurement Data: Transect ${wdh.transNum.value}",
+          "Woody Debris Measurement Data: Transect ${wdh.transNum.value ?? ""}",
           backFn: () => changeMade
               ? Popups.show(context, Popups.generateWarningUnsavedChanges(() {
                   context.pop();
