@@ -5,7 +5,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:survey_app/constants/text_designs.dart';
 import 'package:survey_app/l10n/locale_keys.g.dart';
 import 'package:survey_app/widgets/drawer_menu.dart';
@@ -30,9 +29,18 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+  final Database db = Database.instance;
   int idx = 0;
-  late List<SurveyHeader> surveys;
+  late Future<List<SurveyHeader>> futureSurveys =
+      db.surveyInfoTablesDao.allSurveys;
+
+  List<SurveyHeader> surveys = [];
   HashSet<SurveyStatus> filters = HashSet<SurveyStatus>();
+
+  Future<List<SurveyHeader>> getFutureSurveys() {
+    final Database db = Database.instance;
+    return db.surveyInfoTablesDao.allSurveys;
+  }
 
   @override
   void initState() {
@@ -41,14 +49,9 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   @override
-  Scaffold build(BuildContext context) {
-    final db = Provider.of<Database>(context);
-
-    void updateDashboard() {
-      db.surveyInfoTablesDao
-          .getSurveysFiltered(filters)
-          .then((value) => setState(() => surveys = value));
-    }
+  Widget build(BuildContext context) {
+    void updateDashboard() =>
+        futureSurveys = db.surveyInfoTablesDao.getSurveysFiltered(filters);
 
     //Add or remove filter based on select and set state after call on db
     // to update. Status set to null if "All" is selected
@@ -66,98 +69,128 @@ class _DashboardPageState extends State<DashboardPage> {
             : filters.remove(status);
       }
 
-      surveys = await db.surveyInfoTablesDao.getSurveysFiltered(filters);
+      futureSurveys = db.surveyInfoTablesDao.getSurveysFiltered(filters);
       setState(() {});
     }
 
-    return Scaffold(
-      appBar: const OurAppBar(LocaleKeys.dashboardTitle),
-      endDrawer: DrawerMenu(
-        onLocaleChange: () => setState(() {}),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        label: const Text("Create New Survey"),
-        icon: const Icon(FontAwesomeIcons.circlePlus),
-        onPressed: () {
-          context.pushNamed(
-            CreateSurveyPage.routeName,
-            extra: {
-              CreateSurveyPage.keySurvey: SurveyHeadersCompanion(
-                  measNum: const d.Value(-1),
-                  measDate: d.Value(DateTime.now())),
-              CreateSurveyPage.keyUpdateDash: updateDashboard
-            },
-          );
-        },
-      ),
-      body: Column(
-        children: [
-          Wrap(
-            alignment: WrapAlignment.start,
-            spacing: kPaddingH,
-            children: [
-              FilterChip(
-                backgroundColor: Colors.tealAccent[200],
-                label: const Text("All"),
-                selected: filters.isEmpty,
-                onSelected: (selected) async => filterOnSelect(selected, null),
-                selectedColor: Colors.purpleAccent,
+    return FutureBuilder<List<SurveyHeader>>(
+        future: futureSurveys,
+        builder:
+            (BuildContext context, AsyncSnapshot<List<SurveyHeader>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Scaffold(
+              appBar: const OurAppBar(LocaleKeys.dashboardTitle),
+              endDrawer: DrawerMenu(
+                onLocaleChange: () => setState(() {}),
               ),
-              FilterChip(
-                backgroundColor: Colors.tealAccent[200],
-                label: const Text("Completed"),
-                selected: filters.contains(SurveyStatus.complete),
-                onSelected: (selected) async =>
-                    filterOnSelect(selected, SurveyStatus.complete),
-                selectedColor: Colors.purpleAccent,
+              body: const Center(
+                child: CircularProgressIndicator(),
               ),
-              FilterChip(
-                backgroundColor: Colors.tealAccent[200],
-                label: const Text("In Progress"),
-                selected: filters.contains(SurveyStatus.inProgress),
-                onSelected: (selected) async =>
-                    filterOnSelect(selected, SurveyStatus.inProgress),
-                selectedColor: Colors.purpleAccent,
+            );
+          } else if (snapshot.hasError) {
+            return Scaffold(
+              appBar: const OurAppBar(LocaleKeys.dashboardTitle),
+              endDrawer: DrawerMenu(
+                onLocaleChange: () => setState(() {}),
               ),
-            ],
-          ),
-          Expanded(
-            child: surveys.isEmpty
-                ? Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 0.0, horizontal: kPaddingH),
-                    child: Center(
-                      child: const Text(
-                        LocaleKeys.dashboardNoSurveys,
-                        style: TextStyle(fontSize: kTextHeaderSize),
-                      ).tr(),
-                    ),
-                  )
-                : ListView.builder(
-                    itemCount: (surveys).length,
-                    itemBuilder: (BuildContext cxt, int index) {
-                      SurveyHeader survey = surveys[index];
-                      return TitleCardDashboard(
-                        surveyHeader: survey,
-                        onTap: () async {
-                          context.pushNamed(
-                            SurveyInfoPage.routeName,
-                            extra: {
-                              SurveyInfoPage.keySurvey: await db
-                                  .surveyInfoTablesDao
-                                  .getSurvey(survey.id),
-                              SurveyInfoPage.keyCards:
-                                  await db.getCards(survey.id),
-                              SurveyInfoPage.keyUpdateDash: updateDashboard
-                            },
-                          );
-                        },
-                      );
+              body: Center(
+                child: Text("Error: ${snapshot.error}"),
+              ),
+            );
+          } else {
+            surveys = snapshot.data!;
+            return Scaffold(
+              appBar: const OurAppBar(LocaleKeys.dashboardTitle),
+              endDrawer: DrawerMenu(
+                onLocaleChange: () => setState(() {}),
+              ),
+              floatingActionButton: FloatingActionButton.extended(
+                label: const Text("Create New Survey"),
+                icon: const Icon(FontAwesomeIcons.circlePlus),
+                onPressed: () {
+                  context.pushNamed(
+                    CreateSurveyPage.routeName,
+                    extra: {
+                      CreateSurveyPage.keySurvey: SurveyHeadersCompanion(
+                          measNum: const d.Value(-1),
+                          measDate: d.Value(DateTime.now())),
+                      CreateSurveyPage.keyUpdateDash: updateDashboard
                     },
+                  );
+                },
+              ),
+              body: Column(
+                children: [
+                  Wrap(
+                    alignment: WrapAlignment.start,
+                    spacing: kPaddingH,
+                    children: [
+                      FilterChip(
+                        backgroundColor: Colors.tealAccent[200],
+                        label: const Text("All"),
+                        selected: filters.isEmpty,
+                        onSelected: (selected) async =>
+                            filterOnSelect(selected, null),
+                        selectedColor: Colors.purpleAccent,
+                      ),
+                      FilterChip(
+                        backgroundColor: Colors.tealAccent[200],
+                        label: const Text("Completed"),
+                        selected: filters.contains(SurveyStatus.complete),
+                        onSelected: (selected) async =>
+                            filterOnSelect(selected, SurveyStatus.complete),
+                        selectedColor: Colors.purpleAccent,
+                      ),
+                      FilterChip(
+                        backgroundColor: Colors.tealAccent[200],
+                        label: const Text("In Progress"),
+                        selected: filters.contains(SurveyStatus.inProgress),
+                        onSelected: (selected) async =>
+                            filterOnSelect(selected, SurveyStatus.inProgress),
+                        selectedColor: Colors.purpleAccent,
+                      ),
+                    ],
                   ),
-          ),
-        ],
-      ),
-    );
+                  Expanded(
+                    child: surveys.isEmpty
+                        ? Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 0.0, horizontal: kPaddingH),
+                            child: Center(
+                              child: const Text(
+                                LocaleKeys.dashboardNoSurveys,
+                                style: TextStyle(fontSize: kTextHeaderSize),
+                              ).tr(),
+                            ),
+                          )
+                        : ListView.builder(
+                            itemCount: (surveys).length,
+                            itemBuilder: (BuildContext cxt, int index) {
+                              SurveyHeader survey = surveys[index];
+                              return TitleCardDashboard(
+                                surveyHeader: survey,
+                                onTap: () async {
+                                  context.pushNamed(
+                                    SurveyInfoPage.routeName,
+                                    extra: {
+                                      SurveyInfoPage.keySurvey: await db
+                                          .surveyInfoTablesDao
+                                          .getSurvey(survey.id),
+                                      SurveyInfoPage.keyCards:
+                                          await db.getCards(survey.id),
+                                      SurveyInfoPage.keyUpdateDash:
+                                          updateDashboard
+                                    },
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                  ),
+                ],
+              ),
+            );
+          }
+        });
   }
 }
