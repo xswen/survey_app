@@ -38,11 +38,7 @@ GoRouter router = GoRouter(
             name: DashboardPage.routeName,
             path: "dashboard",
             builder: (context, state) {
-              List<SurveyHeader> surveys = state.extra as List<SurveyHeader>;
-              return DashboardPage(
-                title: "Dashboard",
-                surveys: surveys,
-              );
+              return DashboardPage(title: "Dashboard");
             },
             routes: [
               GoRoute(

@@ -95,8 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: [
                     ElevatedButton(
                         onPressed: () async {
-                          context.goNamed(DashboardPage.routeName,
-                              extra: await db.surveyInfoTablesDao.allSurveys);
+                          context.goNamed(DashboardPage.routeName);
                         },
                         child: const Text(LocaleKeys.start).tr()),
                     ElevatedButton(
