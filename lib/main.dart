@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:survey_app/constants/constant_values.dart';
 import 'package:survey_app/pages/survey_info/dashboard.dart';
+import 'package:survey_app/providers/change_notifiers.dart';
 import 'package:survey_app/routes/router_routes_main.dart';
 
 import 'database/database.dart';
@@ -24,8 +25,15 @@ void main() async {
       kLocaleFr,
     ],
     path: 'assets/l10n',
-    child: Provider<Database>(
-        create: (context) => Database.instance, child: const MyApp()),
+    child: MultiProvider(
+      providers: [
+        Provider<Database>(
+          create: (context) => Database.instance,
+        ),
+        ChangeNotifierProvider(create: (_) => UpdateNotifierSurveyInfo())
+      ],
+      child: const MyApp(),
+    ),
   ));
 }
 

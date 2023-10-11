@@ -3,12 +3,27 @@ import 'package:survey_app/database/database.dart';
 import 'package:survey_app/pages/delete_page.dart';
 import 'package:survey_app/pages/survey_info/create_survey_page.dart';
 import 'package:survey_app/pages/survey_info/dashboard.dart';
+import 'package:survey_app/pages/survey_info/depsurvey_info_page.dart';
 import 'package:survey_app/pages/survey_info/survey_info_page.dart';
 import 'package:survey_app/routes/go_route_surface_substrate.dart';
 import 'package:survey_app/routes/go_route_woody_debris.dart';
 
 import '../main.dart';
-import '../wrappers/survey_card.dart';
+
+class RouteParams {
+  static const String surveyIdKey = "surveyId";
+  static Map<String, String> getSurveyInfoParams(String surveyId) =>
+      {surveyIdKey: surveyId};
+
+  //Woody Debris
+  static const String wdSummaryIdKey = "wdSummaryId";
+  static Map<String, String> getWdSummaryParams(
+          String surveyId, String wdSummaryId) =>
+      {
+        ...getSurveyInfoParams(surveyId),
+        ...{wdSummaryIdKey: wdSummaryId}
+      };
+}
 
 GoRouter router = GoRouter(
   routes: [
@@ -38,7 +53,7 @@ GoRouter router = GoRouter(
             name: DashboardPage.routeName,
             path: "dashboard",
             builder: (context, state) {
-              return DashboardPage(title: "Dashboard");
+              return const DashboardPage(title: "Dashboard");
             },
             routes: [
               GoRoute(
@@ -61,19 +76,12 @@ GoRouter router = GoRouter(
                         updateDashboard: updateDashboard);
                   }),
               GoRoute(
-                name: SurveyInfoPage.routeName,
-                path: "survey-info",
+                name: DepSurveyInfoPage.routeName,
+                path: "survey-info/:surveyId",
                 builder: (context, state) {
-                  Map<String, dynamic> data =
-                      state.extra as Map<String, dynamic>;
-                  SurveyHeader survey = data[SurveyInfoPage.keySurvey];
-                  List<SurveyCard> cards = data[SurveyInfoPage.keyCards];
-                  void Function() updateDashboard =
-                      data[SurveyInfoPage.keyUpdateDash];
                   return SurveyInfoPage(
-                      surveyHeader: survey,
-                      cards: cards,
-                      updateDashboard: updateDashboard);
+                    goRouterState: state,
+                  );
                 },
                 routes: [
                   goRouteWoodyDebris,

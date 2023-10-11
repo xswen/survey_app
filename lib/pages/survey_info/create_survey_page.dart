@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:survey_app/pages/survey_info/survey_info_page.dart';
+import 'package:survey_app/pages/survey_info/depsurvey_info_page.dart';
 import 'package:survey_app/widgets/data_input/data_input.dart';
 import 'package:survey_app/widgets/drawer_menu.dart';
 import 'package:survey_app/widgets/popups/popup_continue.dart';
@@ -252,12 +252,12 @@ class _CreateSurveyPageState extends State<CreateSurveyPage> with Global {
     _insertOrUpdateSurvey(db).then((id) async => widget.updateDashboard == null
         ? context.pop()
         : context.pushReplacementNamed(
-            SurveyInfoPage.routeName,
+            DepSurveyInfoPage.routeName,
             extra: {
-              SurveyInfoPage.keySurvey:
+              DepSurveyInfoPage.keySurvey:
                   await db.surveyInfoTablesDao.getSurvey(id),
-              SurveyInfoPage.keyCards: await db.getCards(id),
-              SurveyInfoPage.keyUpdateDash: widget.updateDashboard
+              DepSurveyInfoPage.keyCards: await db.getCards(id),
+              DepSurveyInfoPage.keyUpdateDash: widget.updateDashboard
             },
           ));
   }
