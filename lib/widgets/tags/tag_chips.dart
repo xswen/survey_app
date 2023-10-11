@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class TagChips extends StatelessWidget {
-  const TagChips(
+class TagChip extends StatelessWidget {
+  const TagChip(
       {super.key,
       required this.title,
       required this.selected,

@@ -113,21 +113,21 @@ class DashboardPageState extends ConsumerState<DashboardPage> {
                 alignment: WrapAlignment.start,
                 spacing: kPaddingH,
                 children: [
-                  TagChips(
+                  TagChip(
                     title: "All",
                     selected: filters.isEmpty,
                     onSelected: (selected) => ref
                         .read(_filterProvider.notifier)
                         .selectedAll(selected),
                   ),
-                  TagChips(
+                  TagChip(
                     title: "Completed",
                     selected: filters.contains(SurveyStatus.complete),
                     onSelected: (selected) => ref
                         .read(_filterProvider.notifier)
                         .selectedComplete(selected),
                   ),
-                  TagChips(
+                  TagChip(
                     title: "In Progress",
                     selected: filters.contains(SurveyStatus.inProgress),
                     onSelected: (selected) => ref
