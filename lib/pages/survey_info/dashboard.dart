@@ -59,7 +59,8 @@ final _filterProvider =
 final _updateSurveyHeaderListProvider =
     FutureProvider<List<SurveyHeader>>((ref) {
   final filter = ref.watch(_filterProvider);
-  final updateHeaderList = ref.watch(updateSurveyHeaderListFutureProvider);
+  final rebuild = ref.watch(rebuildDashboardProvider);
+
   return ref
       .read(databaseProvider)
       .surveyInfoTablesDao
@@ -80,7 +81,7 @@ class DashboardPageState extends ConsumerState<DashboardPage> {
   Widget build(BuildContext context) {
     AsyncValue<List<SurveyHeader>> surveys =
         ref.watch(_updateSurveyHeaderListProvider);
-    HashSet<SurveyStatus> filter = ref.watch(_filterProvider);
+    HashSet<SurveyStatus> filters = ref.watch(_filterProvider);
 
     return Scaffold(
       appBar: const OurAppBar(LocaleKeys.dashboardTitle),
@@ -114,21 +115,21 @@ class DashboardPageState extends ConsumerState<DashboardPage> {
                 children: [
                   TagChips(
                     title: "All",
-                    selected: filter.isEmpty,
+                    selected: filters.isEmpty,
                     onSelected: (selected) => ref
                         .read(_filterProvider.notifier)
                         .selectedAll(selected),
                   ),
                   TagChips(
                     title: "Completed",
-                    selected: filter.contains(SurveyStatus.complete),
+                    selected: filters.contains(SurveyStatus.complete),
                     onSelected: (selected) => ref
                         .read(_filterProvider.notifier)
                         .selectedComplete(selected),
                   ),
                   TagChips(
                     title: "In Progress",
-                    selected: filter.contains(SurveyStatus.inProgress),
+                    selected: filters.contains(SurveyStatus.inProgress),
                     onSelected: (selected) => ref
                         .read(_filterProvider.notifier)
                         .selectedInProgress(selected),

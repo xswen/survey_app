@@ -1,25 +1,25 @@
 import 'package:drift/drift.dart' as d;
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:survey_app/database/database.dart';
+import 'package:survey_app/providers/providers.dart';
 import 'package:survey_app/routes/router_routes_main.dart';
 import 'package:survey_app/wrappers/survey_card.dart';
 
-import '../../providers/change_notifiers.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
 
-class SurveyInfoPage extends StatefulWidget {
+class SurveyInfoPage extends ConsumerStatefulWidget {
   static const String routeName = "surveyInfo";
   final GoRouterState goRouterState;
   const SurveyInfoPage({super.key, required this.goRouterState});
 
   @override
-  State<SurveyInfoPage> createState() => _SurveyInfoPage();
+  SurveyInfoPageState createState() => SurveyInfoPageState();
 }
 
-class _SurveyInfoPage extends State<SurveyInfoPage> {
+class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
   final Database db = Database.instance;
   final String title = "Survey Info";
   late int surveyId;
@@ -49,10 +49,12 @@ class _SurveyInfoPage extends State<SurveyInfoPage> {
         "$title",
         backFn: () {
           (db.update(db.surveyHeaders)..where((t) => t.id.equals(surveyId)))
-              .write(SurveyHeadersCompanion(complete: d.Value(true)))
+              .write(const SurveyHeadersCompanion(complete: d.Value(true)))
               .then((value) {
-            Provider.of<UpdateNotifierSurveyInfo>(context, listen: false)
-                .triggerRebuild();
+            ref
+                .read(rebuildDashboardProvider.notifier)
+                .update((state) => !state);
+
             context.pop();
           });
         },
