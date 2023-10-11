@@ -256,7 +256,7 @@ class CreateSurveyPageState extends ConsumerState<CreateSurveyPage>
         ? context.pop()
         : context.pushReplacementNamed(
             SurveyInfoPage.routeName,
-            pathParameters: RouteParams.getSurveyInfoParams(
+            pathParameters: RouteParams.generateSurveyInfoParams(
                 (await db.surveyInfoTablesDao.getSurvey(id)).id.toString()),
           ));
   }

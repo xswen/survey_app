@@ -10,17 +10,18 @@ import 'package:survey_app/routes/go_route_woody_debris.dart';
 import '../main.dart';
 
 class RouteParams {
-  static const String surveyIdKey = "surveyId";
-  static Map<String, String> getSurveyInfoParams(String surveyId) =>
-      {surveyIdKey: surveyId};
+  static const surveyIdKey = "surveyId";
+  static const wdSummaryIdKey = "wdSummaryId";
 
-  //Woody Debris
-  static const String wdSummaryIdKey = "wdSummaryId";
-  static Map<String, String> getWdSummaryParams(
-          String surveyId, String wdSummaryId) =>
+  static Map<String, String> generateSurveyInfoParams(String surveyId) {
+    return {surveyIdKey: surveyId};
+  }
+
+  static Map<String, String> generateWdSummaryParams(
+          GoRouterState goRouterState, String wdSummaryKey) =>
       {
-        ...getSurveyInfoParams(surveyId),
-        ...{wdSummaryIdKey: wdSummaryId}
+        ...generateSurveyInfoParams(goRouterState.pathParameters[surveyIdKey]!),
+        ...{wdSummaryIdKey: wdSummaryKey}
       };
 }
 
@@ -51,9 +52,8 @@ GoRouter router = GoRouter(
           GoRoute(
             name: DashboardPage.routeName,
             path: "dashboard",
-            builder: (context, state) {
-              return const DashboardPage(title: "Dashboard");
-            },
+            builder: (context, state) =>
+                const DashboardPage(title: "Dashboard"),
             routes: [
               GoRoute(
                   name: CreateSurveyPage.routeName,
@@ -76,12 +76,9 @@ GoRouter router = GoRouter(
                   }),
               GoRoute(
                 name: SurveyInfoPage.routeName,
-                path: "survey-info/:surveyId",
-                builder: (context, state) {
-                  return SurveyInfoPage(
-                    goRouterState: state,
-                  );
-                },
+                path: "survey-info/:${RouteParams.surveyIdKey}",
+                builder: (context, state) =>
+                    SurveyInfoPage(goRouterState: state),
                 routes: [
                   goRouteWoodyDebris,
                   goRouteSurfaceSubstrate,

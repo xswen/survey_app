@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:survey_app/database/database.dart';
+import 'package:survey_app/routes/router_routes_main.dart';
 
 import '../pages/woody_debris/wood_debris_header_measurements_page.dart';
 import '../pages/woody_debris/woody_debris_header_page.dart';
@@ -11,14 +12,8 @@ import '../pages/woody_debris/woody_debris_summary_page.dart';
 
 GoRoute goRouteWoodyDebris = GoRoute(
     name: WoodyDebrisSummaryPage.routeName,
-    path: "woody-debris",
-    builder: (context, state) {
-      Map<String, dynamic> data = state.extra as Map<String, dynamic>;
-      WoodyDebrisSummaryData wd = data[WoodyDebrisSummaryPage.keyWdSummary];
-      List<WoodyDebrisHeaderData> transList =
-          data[WoodyDebrisSummaryPage.keyTransList];
-      return WoodyDebrisSummaryPage(wd: wd, transList: transList);
-    },
+    path: "woody-debris/:${RouteParams.wdSummaryIdKey}",
+    builder: (context, state) => WoodyDebrisSummaryPage(state),
     routes: [
       GoRoute(
           name: WoodyDebrisHeaderPage.routeName,

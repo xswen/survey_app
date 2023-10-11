@@ -29,3 +29,5 @@ const kLocaleEn = Locale("en", "CA");
 const kDegreeSign = "\u00B0";
 
 const kSpeciesUnknownCode = "SPP";
+
+const kParamMissing = "missing";
