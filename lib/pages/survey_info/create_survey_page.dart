@@ -254,7 +254,7 @@ class CreateSurveyPageState extends ConsumerState<CreateSurveyPage>
   Future<void> _goToSurvey(BuildContext context, Database db) async {
     _insertOrUpdateSurvey(db).then((id) async => widget.updateDashboard == null
         ? context.pop()
-        : context.pushReplacementNamed(
+        : context.goNamed(
             SurveyInfoPage.routeName,
             pathParameters: RouteParams.generateSurveyInfoParams(
                 (await db.surveyInfoTablesDao.getSurvey(id)).id.toString()),

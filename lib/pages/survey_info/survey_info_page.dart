@@ -264,10 +264,9 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
                                           .referenceTablesDao
                                           .getLastMeasNum(survey.nfiPlot))
                                     },
-                                  ).then((value) => db.surveyInfoTablesDao
-                                      .getSurvey(survey.id)
-                                      .then((newSurvey) =>
-                                          setState(() => survey = newSurvey))));
+                                  ).then((value) => ref
+                                      .read(rebuildSurveyInfoProvider.notifier)
+                                      .update((state) => !state)));
                         }
                       }),
                       child: Column(
