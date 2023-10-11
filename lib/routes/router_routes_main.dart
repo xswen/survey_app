@@ -3,7 +3,6 @@ import 'package:survey_app/database/database.dart';
 import 'package:survey_app/pages/delete_page.dart';
 import 'package:survey_app/pages/survey_info/create_survey_page.dart';
 import 'package:survey_app/pages/survey_info/dashboard.dart';
-import 'package:survey_app/pages/survey_info/depsurvey_info_page.dart';
 import 'package:survey_app/pages/survey_info/survey_info_page.dart';
 import 'package:survey_app/routes/go_route_surface_substrate.dart';
 import 'package:survey_app/routes/go_route_woody_debris.dart';
@@ -76,7 +75,7 @@ GoRouter router = GoRouter(
                         updateDashboard: updateDashboard);
                   }),
               GoRoute(
-                name: DepSurveyInfoPage.routeName,
+                name: SurveyInfoPage.routeName,
                 path: "survey-info/:surveyId",
                 builder: (context, state) {
                   return SurveyInfoPage(
