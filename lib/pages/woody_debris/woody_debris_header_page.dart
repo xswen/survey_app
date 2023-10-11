@@ -16,7 +16,7 @@ import '../../widgets/popups/popup_continue.dart';
 import '../../widgets/popups/popup_dismiss.dart';
 import '../../widgets/popups/popups.dart';
 import '../delete_page.dart';
-import 'wood_debris_header_measurements_page.dart';
+import 'woody_debris_header_measurements_page.dart';
 import 'woody_debris_piece/woody_debris_header_piece_main.dart';
 
 class WoodyDebrisHeaderPage extends StatefulWidget {

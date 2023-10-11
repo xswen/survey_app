@@ -18,7 +18,7 @@ import '../../widgets/drawer_menu.dart';
 import '../../widgets/popups/popup_dismiss.dart';
 import '../../widgets/popups/popups.dart';
 import '../../widgets/tile_cards/tile_card_selection.dart';
-import 'wood_debris_header_measurements_page.dart';
+import 'woody_debris_header_measurements_page.dart';
 
 class WoodyDebrisSummaryPage extends ConsumerStatefulWidget {
   static const String routeName = "woodyDebrisSummary";

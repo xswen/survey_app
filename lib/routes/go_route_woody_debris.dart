@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:survey_app/database/database.dart';
 
-import '../pages/woody_debris/wood_debris_header_measurements_page.dart';
+import '../pages/woody_debris/woody_debris_header_measurements_page.dart';
 import '../pages/woody_debris/woody_debris_header_page.dart';
 import '../pages/woody_debris/woody_debris_piece/woody_debris_header_piece_main.dart';
 import '../pages/woody_debris/woody_debris_piece/woody_debris_piece_accu_odd_page.dart';
