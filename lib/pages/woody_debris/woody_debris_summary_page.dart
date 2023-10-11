@@ -43,6 +43,7 @@ class WoodyDebrisSummaryPageState
         widget.goRouterState.pathParameters[RouteParams.surveyIdKey]!);
     wdId = int.parse(
         widget.goRouterState.pathParameters[RouteParams.wdSummaryIdKey]!);
+
     woodyDebrisProvider = FutureProvider<WoodyDebrisSummaryData>((ref) => ref
         .read(databaseProvider)
         .woodyDebrisTablesDao
@@ -94,6 +95,9 @@ class WoodyDebrisSummaryPageState
             error: (err, stack) => Text("Error: $err"),
             loading: () => const Center(child: CircularProgressIndicator()),
             data: (wd) {
+              final PopupDismiss surveyCompleteWarningPopup =
+                  Popups.generatePreviousMarkedCompleteErrorPopup("Survey");
+
               return Column(
                 children: [
                   CalendarSelect(
@@ -164,7 +168,8 @@ class WoodyDebrisSummaryPageState
                                 .then((value) {
                               bool surveyComplete = value.complete;
                               if (surveyComplete) {
-                                //Popups.show(context, surveyCompleteWarningPopup);
+                                Popups.show(
+                                    context, surveyCompleteWarningPopup);
                               } else if (wd.complete) {
                                 updateWdSummary(
                                     const WoodyDebrisSummaryCompanion(
