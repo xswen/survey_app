@@ -18,7 +18,7 @@ import '../../database/database.dart';
 import '../../formatters/thousands_formatter.dart';
 import '../../global.dart';
 import '../../l10n/locale_keys.g.dart';
-import '../../routes/router_routes_main.dart';
+import '../../routes/router_params.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/date_select.dart';
 import '../../widgets/dropdowns/drop_down_async_list.dart';

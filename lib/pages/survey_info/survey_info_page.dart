@@ -7,13 +7,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:survey_app/database/database.dart';
 import 'package:survey_app/providers/providers.dart';
-import 'package:survey_app/routes/router_routes_main.dart';
 import 'package:survey_app/widgets/tags/tag_chips.dart';
 
 import '../../constants/margins_padding.dart';
 import '../../enums/enums.dart';
 import '../../formatters/format_date.dart';
 import '../../formatters/format_string.dart';
+import '../../routes/router_params.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/buttons/edit_icon_button.dart';
 import '../../widgets/buttons/floating_complete_button.dart';
@@ -202,9 +202,13 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
               .id
           : data.id;
       if (context.mounted) {
-        context.pushNamed(WoodyDebrisSummaryPage.routeName,
-            pathParameters: RouteParams.generateWdSummaryParams(
-                widget.goRouterState, wdId.toString()));
+        context
+            .pushNamed(WoodyDebrisSummaryPage.routeName,
+                pathParameters: RouteParams.generateWdSummaryParams(
+                    widget.goRouterState, wdId.toString()))
+            .then((value) => ref
+                .read(rebuildSurveyCardsProvider.notifier)
+                .update((state) => !state));
       }
     }
   }

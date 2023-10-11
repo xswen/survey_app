@@ -8,22 +8,7 @@ import 'package:survey_app/routes/go_route_surface_substrate.dart';
 import 'package:survey_app/routes/go_route_woody_debris.dart';
 
 import '../main.dart';
-
-class RouteParams {
-  static const surveyIdKey = "surveyId";
-  static const wdSummaryIdKey = "wdSummaryId";
-
-  static Map<String, String> generateSurveyInfoParams(String surveyId) {
-    return {surveyIdKey: surveyId};
-  }
-
-  static Map<String, String> generateWdSummaryParams(
-          GoRouterState goRouterState, String wdSummaryKey) =>
-      {
-        ...generateSurveyInfoParams(goRouterState.pathParameters[surveyIdKey]!),
-        ...{wdSummaryIdKey: wdSummaryKey}
-      };
-}
+import 'router_params.dart';
 
 GoRouter router = GoRouter(
   routes: [

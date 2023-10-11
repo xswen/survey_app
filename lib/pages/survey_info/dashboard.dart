@@ -14,7 +14,7 @@ import '../../constants/text_designs.dart';
 import '../../database/database.dart';
 import '../../l10n/locale_keys.g.dart';
 import '../../providers/providers.dart';
-import '../../routes/router_routes_main.dart';
+import '../../routes/router_params.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/drawer_menu.dart';
 import '../../widgets/tile_cards/tile_card_dashboard.dart';
