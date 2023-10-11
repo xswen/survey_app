@@ -64,11 +64,14 @@ class WoodyDebrisSummaryPageState
     ref.refresh(woodyDebrisProvider);
   }
 
-  void goToWdhPage(int wdhId) {
-    context.pushNamed(WoodyDebrisHeaderPage.routeName,
-        pathParameters: RouteParams.generateWdHeaderParms(
-            widget.goRouterState, wdhId.toString()));
-  }
+  void goToWdhPage(int wdhId) => context
+          .pushNamed(WoodyDebrisHeaderPage.routeName,
+              pathParameters: RouteParams.generateWdHeaderParms(
+                  widget.goRouterState, wdhId.toString()))
+          .then((value) {
+        ref.refresh(transListProvider);
+        ref.refresh(woodyDebrisProvider);
+      });
 
   SurveyStatus getStatus(WoodyDebrisHeaderData wdh) {
     if (wdh.complete) return SurveyStatus.complete;
