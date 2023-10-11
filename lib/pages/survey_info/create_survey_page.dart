@@ -4,9 +4,10 @@ import 'package:drift/drift.dart' as d;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-import 'package:survey_app/pages/survey_info/depsurvey_info_page.dart';
+import 'package:survey_app/pages/survey_info/survey_info_page.dart';
+import 'package:survey_app/providers/providers.dart';
 import 'package:survey_app/widgets/data_input/data_input.dart';
 import 'package:survey_app/widgets/drawer_menu.dart';
 import 'package:survey_app/widgets/popups/popup_continue.dart';
@@ -17,12 +18,13 @@ import '../../database/database.dart';
 import '../../formatters/thousands_formatter.dart';
 import '../../global.dart';
 import '../../l10n/locale_keys.g.dart';
+import '../../routes/router_routes_main.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/date_select.dart';
 import '../../widgets/dropdowns/drop_down_async_list.dart';
 import '../../widgets/popups/popups.dart';
 
-class CreateSurveyPage extends StatefulWidget {
+class CreateSurveyPage extends ConsumerStatefulWidget {
   static const String routeName = "createSurvey";
   static const String keySurvey = "survey";
   static const String keyUpdateDash = "updateDash";
@@ -41,10 +43,11 @@ class CreateSurveyPage extends StatefulWidget {
   final void Function()? updateDashboard;
 
   @override
-  State<CreateSurveyPage> createState() => _CreateSurveyPageState();
+  CreateSurveyPageState createState() => CreateSurveyPageState();
 }
 
-class _CreateSurveyPageState extends State<CreateSurveyPage> with Global {
+class CreateSurveyPageState extends ConsumerState<CreateSurveyPage>
+    with Global {
   final _controller = TextEditingController();
   static const int _kDataMissing = -1;
   late SurveyHeadersCompanion surveyHeader;
@@ -68,7 +71,7 @@ class _CreateSurveyPageState extends State<CreateSurveyPage> with Global {
 
   @override
   Scaffold build(BuildContext context) {
-    final db = Provider.of<Database>(context);
+    final db = ref.read(databaseProvider);
 
     return Scaffold(
       appBar: OurAppBar(db.companionValueToStr(surveyHeader.province).isEmpty
@@ -252,13 +255,9 @@ class _CreateSurveyPageState extends State<CreateSurveyPage> with Global {
     _insertOrUpdateSurvey(db).then((id) async => widget.updateDashboard == null
         ? context.pop()
         : context.pushReplacementNamed(
-            DepSurveyInfoPage.routeName,
-            extra: {
-              DepSurveyInfoPage.keySurvey:
-                  await db.surveyInfoTablesDao.getSurvey(id),
-              DepSurveyInfoPage.keyCards: await db.getCards(id),
-              DepSurveyInfoPage.keyUpdateDash: widget.updateDashboard
-            },
+            SurveyInfoPage.routeName,
+            pathParameters: RouteParams.getSurveyInfoParams(
+                (await db.surveyInfoTablesDao.getSurvey(id)).id.toString()),
           ));
   }
 
