@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart' as d;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -47,9 +48,13 @@ class _SurveyInfoPage extends State<SurveyInfoPage> {
       appBar: OurAppBar(
         "$title",
         backFn: () {
-          Provider.of<UpdateNotifierSurveyInfo>(context, listen: false)
-              .triggerRebuild();
-          context.pop();
+          (db.update(db.surveyHeaders)..where((t) => t.id.equals(surveyId)))
+              .write(SurveyHeadersCompanion(complete: d.Value(true)))
+              .then((value) {
+            Provider.of<UpdateNotifierSurveyInfo>(context, listen: false)
+                .triggerRebuild();
+            context.pop();
+          });
         },
       ),
       floatingActionButton: FloatingCompleteButton(

@@ -2,15 +2,14 @@ import 'package:drift_db_viewer/drift_db_viewer.dart';
 import 'package:easy_localization/easy_localization.dart';
 //import 'package:easy_localization_loader/easy_localization_loader.dart'; // import custom loaders
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:survey_app/constants/constant_values.dart';
 import 'package:survey_app/pages/survey_info/dashboard.dart';
-import 'package:survey_app/providers/change_notifiers.dart';
+import 'package:survey_app/providers/providers.dart';
 import 'package:survey_app/routes/router_routes_main.dart';
 
-import 'database/database.dart';
 import 'l10n/locale_keys.g.dart';
 
 String _versionCode = "Version 2";
@@ -19,19 +18,13 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
 
-  runApp(EasyLocalization(
-    supportedLocales: const [
-      kLocaleEn,
-      kLocaleFr,
-    ],
-    path: 'assets/l10n',
-    child: MultiProvider(
-      providers: [
-        Provider<Database>(
-          create: (context) => Database.instance,
-        ),
-        ChangeNotifierProvider(create: (_) => UpdateNotifierSurveyInfo())
+  runApp(ProviderScope(
+    child: EasyLocalization(
+      supportedLocales: const [
+        kLocaleEn,
+        kLocaleFr,
       ],
+      path: 'assets/l10n',
       child: const MyApp(),
     ),
   ));
@@ -54,19 +47,19 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends ConsumerStatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  MyHomePageState createState() => MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class MyHomePageState extends ConsumerState<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    final db = Provider.of<Database>(context);
+    final db = ref.read(databaseProvider);
 
     return Scaffold(
       body: Center(
