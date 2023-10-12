@@ -1,24 +1,20 @@
 import 'package:drift/drift.dart' as d;
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:go_router/go_router.dart';
-import 'package:survey_app/database/database.dart';
+import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/pages/woody_debris/woody_debris_header_page.dart';
-import 'package:survey_app/providers/providers.dart';
 
-import '../../constants/margins_padding.dart';
-import '../../constants/text_designs.dart';
-import '../../enums/enums.dart';
-import '../../routes/router_params.dart';
-import '../../widgets/app_bar.dart';
-import '../../widgets/buttons/floating_complete_button.dart';
 import '../../widgets/date_select.dart';
-import '../../widgets/drawer_menu.dart';
-import '../../widgets/popups/popup_dismiss.dart';
-import '../../widgets/popups/popups.dart';
 import '../../widgets/tile_cards/tile_card_selection.dart';
 import 'woody_debris_header_measurements_page.dart';
+
+part 'woody_debris_summary_page.g.dart';
+
+@riverpod
+Future<WoodyDebrisSummaryData> wdData(WdDataRef ref, int surveyId) =>
+    ref.read(databaseProvider).woodyDebrisTablesDao.getWdSummary(surveyId);
+
+@riverpod
+Future<List<WoodyDebrisHeaderData>> transList(TransListRef ref, int wdId) =>
+    ref.read(databaseProvider).woodyDebrisTablesDao.getWdHeadersFromWdSId(wdId);
 
 class WoodyDebrisSummaryPage extends ConsumerStatefulWidget {
   static const String routeName = "woodyDebrisSummary";
@@ -34,8 +30,6 @@ class WoodyDebrisSummaryPageState
   final String title = "Woody Debris";
   late final int surveyId;
   late final int wdId;
-  late final FutureProvider<WoodyDebrisSummaryData> woodyDebrisProvider;
-  late final FutureProvider<List<WoodyDebrisHeaderData>> transListProvider;
 
   @override
   void initState() {
@@ -43,17 +37,6 @@ class WoodyDebrisSummaryPageState
         widget.goRouterState.pathParameters[RouteParams.surveyIdKey]!);
     wdId = int.parse(
         widget.goRouterState.pathParameters[RouteParams.wdSummaryIdKey]!);
-
-    woodyDebrisProvider = FutureProvider<WoodyDebrisSummaryData>((ref) => ref
-        .read(databaseProvider)
-        .woodyDebrisTablesDao
-        .getWdSummary(int.parse(
-            widget.goRouterState.pathParameters[RouteParams.surveyIdKey]!)));
-    transListProvider = FutureProvider<List<WoodyDebrisHeaderData>>((ref) => ref
-        .read(databaseProvider)
-        .woodyDebrisTablesDao
-        .getWdHeadersFromWdSId(int.parse(
-            widget.goRouterState.pathParameters[RouteParams.wdSummaryIdKey]!)));
     super.initState();
   }
 
@@ -61,7 +44,7 @@ class WoodyDebrisSummaryPageState
     final db = ref.read(databaseProvider);
     (db.update(db.woodyDebrisSummary)..where((t) => t.id.equals(wdId)))
         .write(entry);
-    ref.refresh(woodyDebrisProvider);
+    ref.refresh(wdDataProvider(surveyId));
   }
 
   void goToWdhPage(int wdhId) => context
@@ -69,8 +52,8 @@ class WoodyDebrisSummaryPageState
               pathParameters: RouteParams.generateWdHeaderParms(
                   widget.goRouterState, wdhId.toString()))
           .then((value) {
-        ref.refresh(transListProvider);
-        ref.refresh(woodyDebrisProvider);
+        ref.refresh(transListProvider(wdId));
+        ref.refresh(wdDataProvider(surveyId));
       });
 
   SurveyStatus getStatus(WoodyDebrisHeaderData wdh) {
@@ -86,9 +69,9 @@ class WoodyDebrisSummaryPageState
         Popups.generateCompleteErrorPopup(title);
 
     AsyncValue<WoodyDebrisSummaryData> wdSummary =
-        ref.watch(woodyDebrisProvider);
+        ref.watch(wdDataProvider(surveyId));
     AsyncValue<List<WoodyDebrisHeaderData>> transList =
-        ref.watch(transListProvider);
+        ref.watch(transListProvider(wdId));
 
     return Scaffold(
       appBar: OurAppBar(title),
@@ -134,8 +117,8 @@ class WoodyDebrisSummaryPageState
                                       WoodyDebrisHeaderMeasurementsPage
                                               .keyUpdateSummaryPageTransList:
                                           () => null
-                                    }).then(
-                                    (value) => ref.refresh(transListProvider)),
+                                    }).then((value) =>
+                                    ref.refresh(transListProvider(wdId))),
                             child: const Row(
                               children: [
                                 Padding(
