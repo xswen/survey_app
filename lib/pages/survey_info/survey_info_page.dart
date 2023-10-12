@@ -418,9 +418,20 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
                           complete: survey.complete,
                           onPressed: () => handleFABClick(survey, cards),
                         ),
-                        body: ListView(
-                          children: generateTileCards(survey, cards),
-                        ),
+                        body: cards.isEmpty
+                            ? const Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 0.0, horizontal: kPaddingH),
+                                child: Center(
+                                  child: Text(
+                                    "There is nothing to show. Please change filters.",
+                                    style: TextStyle(fontSize: kTextHeaderSize),
+                                  ),
+                                ),
+                              )
+                            : ListView(
+                                children: generateTileCards(survey, cards),
+                              ),
                       ),
                     ),
                   )
