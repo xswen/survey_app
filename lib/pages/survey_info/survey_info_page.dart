@@ -2,7 +2,6 @@ import 'dart:collection';
 
 import 'package:drift/drift.dart' as d;
 import 'package:easy_localization/easy_localization.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 
 import '../../formatters/format_date.dart';
@@ -198,6 +197,96 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
     }
   }
 
+  Future<void> updateSummary(SurveyHeadersCompanion entry) async {
+    final db = ref.read(databaseProvider);
+    (db.update(db.surveyHeaders)..where((t) => t.id.equals(surveyId)))
+        .write(entry);
+    ref.read(rebuildSurveyInfoProvider.notifier).update((state) => !state);
+  }
+
+  void handleFABClick(SurveyHeader survey, List<SurveyCard> cards) {
+    if (survey.complete) {
+      updateSummary(const SurveyHeadersCompanion(complete: d.Value(false)));
+    } else {
+      Map<SurveyStatus, List<String>>? result = checkAllComplete(cards);
+      //All good
+      if (result == null) {
+        updateSummary(
+            SurveyHeadersCompanion(complete: d.Value(!survey.complete)));
+      }
+      //Some are left in progress
+      else if (result.containsKey(SurveyStatus.inProgress)) {
+        Popups.show(
+            context,
+            PopupDismiss(
+              "Error: Surveys in progress",
+              contentWidget: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "There are survey cards that are still in progress.",
+                    textAlign: TextAlign.start,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 12),
+                    child: Text(
+                      FormatString.generateBulletList(
+                          result[SurveyStatus.inProgress] ??
+                              ["Error no in progress found"]),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                  const Text(
+                    "Please complete or delete to continue.",
+                    textAlign: TextAlign.start,
+                  )
+                ],
+              ),
+            ));
+      }
+      //Case where no card has been started
+      else if (result.containsKey(SurveyStatus.complete)) {
+        Popups.show(
+            context,
+            const PopupDismiss("Error: No survey cards complete",
+                contentText: "No survey cards have been marked as complete."
+                    "\nPlease complete at least one survey card to mark as completed."));
+      }
+      //Case where at least one card has been started
+      else if (result.containsKey(SurveyStatus.notStarted)) {
+        Popups.show(
+            context,
+            PopupContinue("Warning: Not all survey cards are completed",
+                contentWidget: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "The following survey cards are still not completed",
+                      textAlign: TextAlign.start,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 12),
+                      child: Text(
+                        FormatString.generateBulletList(
+                            result[SurveyStatus.notStarted] ??
+                                ["Error no notStarted found"]),
+                        textAlign: TextAlign.start,
+                      ),
+                    ),
+                    const Text(
+                      "Are you sure you want to continue?",
+                      textAlign: TextAlign.start,
+                    )
+                  ],
+                ), rightBtnOnPressed: () {
+              updateSummary(
+                  SurveyHeadersCompanion(complete: d.Value(!survey.complete)));
+              context.pop();
+            }));
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
@@ -206,22 +295,8 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
     AsyncValue<SurveyHeader> survey = ref.watch(updateSurveyProvider(surveyId));
     final filters = ref.watch(filterProvider);
 
-    Future<void> updateSummary(SurveyHeadersCompanion entry) async {
-      (db.update(db.surveyHeaders)..where((t) => t.id.equals(surveyId)))
-          .write(entry);
-      ref.read(rebuildSurveyInfoProvider.notifier).update((state) => !state);
-    }
-
     return Scaffold(
-        appBar: OurAppBar(
-          title,
-          backFn: () {
-            ref
-                .read(rebuildDashboardProvider.notifier)
-                .update((state) => !state);
-            context.pop();
-          },
-        ),
+        appBar: OurAppBar(title),
         body: survey.when(
           error: (err, stack) => Text("Error: $err"),
           loading: () => const Center(child: CircularProgressIndicator()),
@@ -341,106 +416,7 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
                         floatingActionButton: FloatingCompleteButton(
                           title: title,
                           complete: survey.complete,
-                          onPressed: () async {
-                            if (survey.complete) {
-                              updateSummary(const SurveyHeadersCompanion(
-                                  complete: d.Value(false)));
-                            } else {
-                              Map<SurveyStatus, List<String>>? result =
-                                  checkAllComplete(cards);
-                              //All good
-                              if (result == null) {
-                                updateSummary(SurveyHeadersCompanion(
-                                    complete: d.Value(!survey.complete)));
-                              }
-                              //Some are left in progress
-                              else if (result
-                                  .containsKey(SurveyStatus.inProgress)) {
-                                Popups.show(
-                                    context,
-                                    PopupDismiss(
-                                      "Error: Surveys in progress",
-                                      contentWidget: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const Text(
-                                            "There are survey cards that are still in progress.",
-                                            textAlign: TextAlign.start,
-                                          ),
-                                          Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 12),
-                                            child: Text(
-                                              FormatString.generateBulletList(
-                                                  result[SurveyStatus
-                                                          .inProgress] ??
-                                                      [
-                                                        "Error no in progress found"
-                                                      ]),
-                                              textAlign: TextAlign.start,
-                                            ),
-                                          ),
-                                          const Text(
-                                            "Please complete or delete to continue.",
-                                            textAlign: TextAlign.start,
-                                          )
-                                        ],
-                                      ),
-                                    ));
-                              }
-                              //Case where no card has been started
-                              else if (result
-                                  .containsKey(SurveyStatus.complete)) {
-                                Popups.show(
-                                    context,
-                                    const PopupDismiss(
-                                        "Error: No survey cards complete",
-                                        contentText:
-                                            "No survey cards have been marked as complete."
-                                            "\nPlease complete at least one survey card to mark as completed."));
-                              }
-                              //Case where at least one card has been started
-                              else if (result
-                                  .containsKey(SurveyStatus.notStarted)) {
-                                Popups.show(
-                                    context,
-                                    PopupContinue(
-                                        "Warning: Not all survey cards are completed",
-                                        contentWidget: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            const Text(
-                                              "The following survey cards are still not completed",
-                                              textAlign: TextAlign.start,
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 12),
-                                              child: Text(
-                                                FormatString.generateBulletList(
-                                                    result[SurveyStatus
-                                                            .notStarted] ??
-                                                        [
-                                                          "Error no notStarted found"
-                                                        ]),
-                                                textAlign: TextAlign.start,
-                                              ),
-                                            ),
-                                            const Text(
-                                              "Are you sure you want to continue?",
-                                              textAlign: TextAlign.start,
-                                            )
-                                          ],
-                                        ), rightBtnOnPressed: () {
-                                      updateSummary(SurveyHeadersCompanion(
-                                          complete: d.Value(!survey.complete)));
-                                      context.pop();
-                                    }));
-                              }
-                            }
-                          },
+                          onPressed: () => handleFABClick(survey, cards),
                         ),
                         body: ListView(
                           children: generateTileCards(survey, cards),
