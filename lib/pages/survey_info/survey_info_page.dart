@@ -2,24 +2,13 @@ import 'dart:collection';
 
 import 'package:drift/drift.dart' as d;
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:survey_app/database/database.dart';
-import 'package:survey_app/providers/providers.dart';
-import 'package:survey_app/routes/router_routes_main.dart';
-import 'package:survey_app/widgets/tags/tag_chips.dart';
+import 'package:survey_app/barrels/page_imports_barrel.dart';
+import 'package:survey_app/widgets/text/notify_no_filter_results.dart';
 
-import '../../constants/margins_padding.dart';
-import '../../enums/enums.dart';
 import '../../formatters/format_date.dart';
 import '../../formatters/format_string.dart';
-import '../../widgets/app_bar.dart';
 import '../../widgets/buttons/edit_icon_button.dart';
-import '../../widgets/buttons/floating_complete_button.dart';
-import '../../widgets/popups/popup_continue.dart';
-import '../../widgets/popups/popup_dismiss.dart';
-import '../../widgets/popups/popups.dart';
+import '../../widgets/tags/tag_chips.dart';
 import '../../widgets/text/text_line_label.dart';
 import '../../widgets/tile_cards/tile_card_selection.dart';
 import '../../widgets/titled_border.dart';
@@ -27,8 +16,14 @@ import '../../wrappers/survey_card.dart';
 import '../woody_debris/woody_debris_summary_page.dart';
 import 'create_survey_page.dart';
 
-class _FilterNotifier extends StateNotifier<HashSet<SurveyStatus>> {
-  _FilterNotifier() : super(HashSet<SurveyStatus>());
+part 'survey_info_page.g.dart';
+
+@riverpod
+class Filter extends _$Filter {
+  @override
+  HashSet<SurveyStatus> build() {
+    return HashSet<SurveyStatus>();
+  }
 
   void selectedAll(bool selected) => selected
       ? state = HashSet<SurveyStatus>()
@@ -68,9 +63,19 @@ class _FilterNotifier extends StateNotifier<HashSet<SurveyStatus>> {
         });
 }
 
-final _filterProvider =
-    StateNotifierProvider<_FilterNotifier, HashSet<SurveyStatus>>(
-        (ref) => _FilterNotifier());
+@riverpod
+Future<List<SurveyCard>> updateSurveyCard(
+    UpdateSurveyCardRef ref, int surveyId) {
+  final filter = ref.watch(filterProvider);
+  final rebuild = ref.watch(rebuildSurveyCardsProvider);
+  return ref.read(databaseProvider).getCards(surveyId, filters: filter);
+}
+
+@riverpod
+Future<SurveyHeader> updateSurvey(UpdateSurveyRef ref, int surveyId) {
+  final rebuild = ref.watch(rebuildSurveyInfoProvider);
+  return ref.watch(databaseProvider).surveyInfoTablesDao.getSurvey(surveyId);
+}
 
 class SurveyInfoPage extends ConsumerStatefulWidget {
   static const String routeName = "surveyInfo";
@@ -84,31 +89,11 @@ class SurveyInfoPage extends ConsumerStatefulWidget {
 class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
   final String title = "Survey Info";
   late final int surveyId;
-  late final FutureProvider<SurveyHeader> updateSurveyProvider;
-  late final FutureProvider<List<SurveyCard>> updateSurveyCardsProvider;
 
   @override
   void initState() {
     surveyId = int.parse(
         widget.goRouterState.pathParameters[RouteParams.surveyIdKey]!);
-
-    updateSurveyProvider = FutureProvider<SurveyHeader>((ref) {
-      final rebuild = ref.watch(rebuildSurveyInfoProvider);
-      return ref
-          .watch(databaseProvider)
-          .surveyInfoTablesDao
-          .getSurvey(surveyId);
-    });
-
-    updateSurveyCardsProvider = FutureProvider<List<SurveyCard>>((ref) {
-      final filter = ref.watch(_filterProvider);
-      final rebuild = ref.watch(rebuildSurveyCardsProvider);
-
-      return ref.read(databaseProvider).getCards(
-          int.parse(
-              widget.goRouterState.pathParameters[RouteParams.surveyIdKey]!),
-          filters: filter);
-    });
 
     super.initState();
   }
@@ -202,9 +187,103 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
               .id
           : data.id;
       if (context.mounted) {
-        context.pushNamed(WoodyDebrisSummaryPage.routeName,
-            pathParameters: RouteParams.generateWdSummaryParams(
-                widget.goRouterState, wdId.toString()));
+        context
+            .pushNamed(WoodyDebrisSummaryPage.routeName,
+                pathParameters: RouteParams.generateWdSummaryParams(
+                    widget.goRouterState, wdId.toString()))
+            .then((value) => ref
+                .read(rebuildSurveyCardsProvider.notifier)
+                .update((state) => !state));
+      }
+    }
+  }
+
+  Future<void> updateSummary(SurveyHeadersCompanion entry) async {
+    final db = ref.read(databaseProvider);
+    (db.update(db.surveyHeaders)..where((t) => t.id.equals(surveyId)))
+        .write(entry);
+    ref.read(rebuildSurveyInfoProvider.notifier).update((state) => !state);
+  }
+
+  void handleFABClick(SurveyHeader survey, List<SurveyCard> cards) {
+    if (survey.complete) {
+      updateSummary(const SurveyHeadersCompanion(complete: d.Value(false)));
+    } else {
+      Map<SurveyStatus, List<String>>? result = checkAllComplete(cards);
+      //All good
+      if (result == null) {
+        updateSummary(
+            SurveyHeadersCompanion(complete: d.Value(!survey.complete)));
+      }
+      //Some are left in progress
+      else if (result.containsKey(SurveyStatus.inProgress)) {
+        Popups.show(
+            context,
+            PopupDismiss(
+              "Error: Surveys in progress",
+              contentWidget: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "There are survey cards that are still in progress.",
+                    textAlign: TextAlign.start,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 12),
+                    child: Text(
+                      FormatString.generateBulletList(
+                          result[SurveyStatus.inProgress] ??
+                              ["Error no in progress found"]),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                  const Text(
+                    "Please complete or delete to continue.",
+                    textAlign: TextAlign.start,
+                  )
+                ],
+              ),
+            ));
+      }
+      //Case where no card has been started
+      else if (result.containsKey(SurveyStatus.complete)) {
+        Popups.show(
+            context,
+            const PopupDismiss("Error: No survey cards complete",
+                contentText: "No survey cards have been marked as complete."
+                    "\nPlease complete at least one survey card to mark as completed."));
+      }
+      //Case where at least one card has been started
+      else if (result.containsKey(SurveyStatus.notStarted)) {
+        Popups.show(
+            context,
+            PopupContinue("Warning: Not all survey cards are completed",
+                contentWidget: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "The following survey cards are still not completed",
+                      textAlign: TextAlign.start,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 12),
+                      child: Text(
+                        FormatString.generateBulletList(
+                            result[SurveyStatus.notStarted] ??
+                                ["Error no notStarted found"]),
+                        textAlign: TextAlign.start,
+                      ),
+                    ),
+                    const Text(
+                      "Are you sure you want to continue?",
+                      textAlign: TextAlign.start,
+                    )
+                  ],
+                ), rightBtnOnPressed: () {
+              updateSummary(
+                  SurveyHeadersCompanion(complete: d.Value(!survey.complete)));
+              context.pop();
+            }));
       }
     }
   }
@@ -214,14 +293,8 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
     debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
     final Database db = ref.read(databaseProvider);
 
-    AsyncValue<SurveyHeader> survey = ref.watch(updateSurveyProvider);
-    HashSet<SurveyStatus> filters = ref.watch(_filterProvider);
-
-    Future<void> updateSummary(SurveyHeadersCompanion entry) async {
-      (db.update(db.surveyHeaders)..where((t) => t.id.equals(surveyId)))
-          .write(entry);
-      ref.read(rebuildSurveyInfoProvider.notifier).update((state) => !state);
-    }
+    AsyncValue<SurveyHeader> survey = ref.watch(updateSurveyProvider(surveyId));
+    final filters = ref.watch(filterProvider);
 
     return Scaffold(
         appBar: OurAppBar(
@@ -238,7 +311,7 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
           loading: () => const Center(child: CircularProgressIndicator()),
           data: (survey) {
             AsyncValue<List<SurveyCard>> cards =
-                ref.watch(updateSurveyCardsProvider);
+                ref.watch(updateSurveyCardProvider(surveyId));
 
             return Center(
               child: Column(
@@ -317,28 +390,28 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
                         title: "All",
                         selected: filters.isEmpty,
                         onSelected: (selected) => ref
-                            .read(_filterProvider.notifier)
+                            .read(filterProvider.notifier)
                             .selectedAll(selected),
                       ),
                       TagChip(
                         title: "Completed",
                         selected: filters.contains(SurveyStatus.complete),
                         onSelected: (selected) => ref
-                            .read(_filterProvider.notifier)
+                            .read(filterProvider.notifier)
                             .selectedComplete(selected),
                       ),
                       TagChip(
                         title: "In Progress",
                         selected: filters.contains(SurveyStatus.inProgress),
                         onSelected: (selected) => ref
-                            .read(_filterProvider.notifier)
+                            .read(filterProvider.notifier)
                             .selectedInProgress(selected),
                       ),
                       TagChip(
                         title: "Not Started",
                         selected: filters.contains(SurveyStatus.notStarted),
                         onSelected: (selected) => ref
-                            .read(_filterProvider.notifier)
+                            .read(filterProvider.notifier)
                             .selectedNotStarted(selected),
                       ),
                     ],
@@ -352,110 +425,13 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
                         floatingActionButton: FloatingCompleteButton(
                           title: title,
                           complete: survey.complete,
-                          onPressed: () async {
-                            if (survey.complete) {
-                              updateSummary(const SurveyHeadersCompanion(
-                                  complete: d.Value(false)));
-                            } else {
-                              Map<SurveyStatus, List<String>>? result =
-                                  checkAllComplete(cards);
-                              //All good
-                              if (result == null) {
-                                updateSummary(SurveyHeadersCompanion(
-                                    complete: d.Value(!survey.complete)));
-                              }
-                              //Some are left in progress
-                              else if (result
-                                  .containsKey(SurveyStatus.inProgress)) {
-                                Popups.show(
-                                    context,
-                                    PopupDismiss(
-                                      "Error: Surveys in progress",
-                                      contentWidget: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const Text(
-                                            "There are survey cards that are still in progress.",
-                                            textAlign: TextAlign.start,
-                                          ),
-                                          Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 12),
-                                            child: Text(
-                                              FormatString.generateBulletList(
-                                                  result[SurveyStatus
-                                                          .inProgress] ??
-                                                      [
-                                                        "Error no in progress found"
-                                                      ]),
-                                              textAlign: TextAlign.start,
-                                            ),
-                                          ),
-                                          const Text(
-                                            "Please complete or delete to continue.",
-                                            textAlign: TextAlign.start,
-                                          )
-                                        ],
-                                      ),
-                                    ));
-                              }
-                              //Case where no card has been started
-                              else if (result
-                                  .containsKey(SurveyStatus.complete)) {
-                                Popups.show(
-                                    context,
-                                    const PopupDismiss(
-                                        "Error: No survey cards complete",
-                                        contentText:
-                                            "No survey cards have been marked as complete."
-                                            "\nPlease complete at least one survey card to mark as completed."));
-                              }
-                              //Case where at least one card has been started
-                              else if (result
-                                  .containsKey(SurveyStatus.notStarted)) {
-                                Popups.show(
-                                    context,
-                                    PopupContinue(
-                                        "Warning: Not all survey cards are completed",
-                                        contentWidget: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            const Text(
-                                              "The following survey cards are still not completed",
-                                              textAlign: TextAlign.start,
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 12),
-                                              child: Text(
-                                                FormatString.generateBulletList(
-                                                    result[SurveyStatus
-                                                            .notStarted] ??
-                                                        [
-                                                          "Error no notStarted found"
-                                                        ]),
-                                                textAlign: TextAlign.start,
-                                              ),
-                                            ),
-                                            const Text(
-                                              "Are you sure you want to continue?",
-                                              textAlign: TextAlign.start,
-                                            )
-                                          ],
-                                        ), rightBtnOnPressed: () {
-                                      updateSummary(SurveyHeadersCompanion(
-                                          complete: d.Value(!survey.complete)));
-                                      context.pop();
-                                    }));
-                              }
-                            }
-                          },
+                          onPressed: () => handleFABClick(survey, cards),
                         ),
-                        body: ListView(
-                          children: generateTileCards(survey, cards),
-                        ),
+                        body: cards.isEmpty
+                            ? const NotifyNoFilterResults()
+                            : ListView(
+                                children: generateTileCards(survey, cards),
+                              ),
                       ),
                     ),
                   )

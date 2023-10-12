@@ -2,27 +2,22 @@ import 'dart:collection';
 
 import 'package:drift/drift.dart' as d;
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:go_router/go_router.dart';
-import 'package:survey_app/enums/enums.dart';
+import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/widgets/tags/tag_chips.dart';
 
-import '../../constants/margins_padding.dart';
-import '../../constants/text_designs.dart';
-import '../../database/database.dart';
 import '../../l10n/locale_keys.g.dart';
-import '../../providers/providers.dart';
-import '../../routes/router_routes_main.dart';
-import '../../widgets/app_bar.dart';
-import '../../widgets/drawer_menu.dart';
 import '../../widgets/tile_cards/tile_card_dashboard.dart';
 import 'create_survey_page.dart';
 import 'survey_info_page.dart';
 
-class _FilterNotifier extends StateNotifier<HashSet<SurveyStatus>> {
-  _FilterNotifier() : super(HashSet<SurveyStatus>());
+part 'dashboard.g.dart';
+
+@riverpod
+class Filter extends _$Filter {
+  @override
+  HashSet<SurveyStatus> build() {
+    return HashSet<SurveyStatus>();
+  }
 
   void selectedAll(bool selected) => selected
       ? state = HashSet<SurveyStatus>()
@@ -52,20 +47,16 @@ class _FilterNotifier extends StateNotifier<HashSet<SurveyStatus>> {
         });
 }
 
-final _filterProvider =
-    StateNotifierProvider<_FilterNotifier, HashSet<SurveyStatus>>(
-        (ref) => _FilterNotifier());
-
-final _updateSurveyHeaderListProvider =
-    FutureProvider<List<SurveyHeader>>((ref) {
-  final filter = ref.watch(_filterProvider);
+@riverpod
+Future<List<SurveyHeader>> updateSurveyHeaderList(
+    UpdateSurveyHeaderListRef ref) {
+  final filter = ref.watch(filterProvider);
   final rebuild = ref.watch(rebuildDashboardProvider);
-
   return ref
       .read(databaseProvider)
       .surveyInfoTablesDao
       .getSurveysFiltered(filter);
-});
+}
 
 class DashboardPage extends ConsumerStatefulWidget {
   static const String routeName = "dashboard";
@@ -80,8 +71,8 @@ class DashboardPageState extends ConsumerState<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     AsyncValue<List<SurveyHeader>> surveys =
-        ref.watch(_updateSurveyHeaderListProvider);
-    HashSet<SurveyStatus> filters = ref.watch(_filterProvider);
+        ref.watch(updateSurveyHeaderListProvider);
+    HashSet<SurveyStatus> filters = ref.watch(filterProvider);
 
     return Scaffold(
       appBar: const OurAppBar(LocaleKeys.dashboardTitle),
@@ -116,22 +107,21 @@ class DashboardPageState extends ConsumerState<DashboardPage> {
                   TagChip(
                     title: "All",
                     selected: filters.isEmpty,
-                    onSelected: (selected) => ref
-                        .read(_filterProvider.notifier)
-                        .selectedAll(selected),
+                    onSelected: (selected) =>
+                        ref.read(filterProvider.notifier).selectedAll(selected),
                   ),
                   TagChip(
                     title: "Completed",
                     selected: filters.contains(SurveyStatus.complete),
                     onSelected: (selected) => ref
-                        .read(_filterProvider.notifier)
+                        .read(filterProvider.notifier)
                         .selectedComplete(selected),
                   ),
                   TagChip(
                     title: "In Progress",
                     selected: filters.contains(SurveyStatus.inProgress),
                     onSelected: (selected) => ref
-                        .read(_filterProvider.notifier)
+                        .read(filterProvider.notifier)
                         .selectedInProgress(selected),
                   ),
                 ],
