@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:survey_app/pages/survey_info/survey_info_page.dart';
 import 'package:survey_app/providers/providers.dart';
 import 'package:survey_app/widgets/data_input/data_input.dart';
 import 'package:survey_app/widgets/drawer_menu.dart';
@@ -23,6 +22,7 @@ import '../../widgets/app_bar.dart';
 import '../../widgets/date_select.dart';
 import '../../widgets/dropdowns/drop_down_async_list.dart';
 import '../../widgets/popups/popups.dart';
+import 'survey_info_page.dart';
 
 class CreateSurveyPage extends ConsumerStatefulWidget {
   static const String routeName = "createSurvey";
