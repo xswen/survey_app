@@ -51,6 +51,7 @@ class Filter extends _$Filter {
 Future<List<SurveyHeader>> updateSurveyHeaderList(
     UpdateSurveyHeaderListRef ref) {
   final filter = ref.watch(filterProvider);
+  final rebuild = ref.watch(rebuildDashboardProvider);
   return ref
       .read(databaseProvider)
       .surveyInfoTablesDao
@@ -144,15 +145,12 @@ class DashboardPageState extends ConsumerState<DashboardPage> {
                           return TitleCardDashboard(
                             surveyHeader: survey,
                             onTap: () async {
-                              context
-                                  .pushNamed(
-                                    SurveyInfoPage.routeName,
-                                    pathParameters:
-                                        RouteParams.generateSurveyInfoParams(
-                                            survey.id.toString()),
-                                  )
-                                  .then((value) => ref
-                                      .refresh(updateSurveyHeaderListProvider));
+                              context.pushNamed(
+                                SurveyInfoPage.routeName,
+                                pathParameters:
+                                    RouteParams.generateSurveyInfoParams(
+                                        survey.id.toString()),
+                              );
                             },
                           );
                         },

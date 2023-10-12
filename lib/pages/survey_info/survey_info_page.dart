@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:drift/drift.dart' as d;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
+import 'package:survey_app/widgets/text/notify_no_filter_results.dart';
 
 import '../../formatters/format_date.dart';
 import '../../formatters/format_string.dart';
@@ -296,7 +297,15 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
     final filters = ref.watch(filterProvider);
 
     return Scaffold(
-        appBar: OurAppBar(title),
+        appBar: OurAppBar(
+          title,
+          backFn: () {
+            ref
+                .read(rebuildDashboardProvider.notifier)
+                .update((state) => !state);
+            context.pop();
+          },
+        ),
         body: survey.when(
           error: (err, stack) => Text("Error: $err"),
           loading: () => const Center(child: CircularProgressIndicator()),
@@ -419,16 +428,7 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
                           onPressed: () => handleFABClick(survey, cards),
                         ),
                         body: cards.isEmpty
-                            ? const Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 0.0, horizontal: kPaddingH),
-                                child: Center(
-                                  child: Text(
-                                    "There is nothing to show. Please change filters.",
-                                    style: TextStyle(fontSize: kTextHeaderSize),
-                                  ),
-                                ),
-                              )
+                            ? const NotifyNoFilterResults()
                             : ListView(
                                 children: generateTileCards(survey, cards),
                               ),
