@@ -57,7 +57,7 @@ dependencies:
   excel: ^2.1.0
   flutter_riverpod: ^2.4.3
   freezed: ^2.4.5
-  riverpod_generator: ^2.3.3
+  riverpod_annotation: ^2.2.0
 
 dev_dependencies:
   flutter_test:
@@ -69,8 +69,11 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
-  build_runner: ^2.1.6
+  build_runner: ^2.4.6
   drift_dev: ^2.2.0+1
+  riverpod_generator: ^3.0.0-dev.3
+  custom_lint: ^0.5.3
+  riverpod_lint: ^2.3.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
