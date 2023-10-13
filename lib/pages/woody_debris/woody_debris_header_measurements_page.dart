@@ -5,7 +5,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:survey_app/database/database.dart';
-import 'package:survey_app/pages/woody_debris/woody_debris_header_page.dart';
 import 'package:survey_app/widgets/popups/popup_dismiss.dart';
 
 import '../../constants/constant_values.dart';
@@ -144,19 +143,19 @@ class _WoodyDebrisHeaderMeasurementsPageState
     debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
     final db = Provider.of<Database>(context);
 
-    Future<void> goToHeaderPage() => db.woodyDebrisTablesDao
-        .addOrUpdateWdHeader(wdh)
-        .then((id) async => widget.updateSummaryPageTransList == null
-            ? context.pop()
-            : context.pushReplacementNamed(WoodyDebrisHeaderPageDep.routeName,
-                extra: {
-                    WoodyDebrisHeaderPageDep.keyWdHeader:
-                        await db.woodyDebrisTablesDao.getWdHeader(id),
-                    WoodyDebrisHeaderPageDep.keySummaryComplete:
-                        wdh.complete.value,
-                    WoodyDebrisHeaderPageDep.keyUpdateSummaryPageTransList:
-                        widget.updateSummaryPageTransList
-                  }));
+    Future<void> goToHeaderPage() =>
+        db.woodyDebrisTablesDao.addOrUpdateWdHeader(wdh).then((id) async =>
+                widget.updateSummaryPageTransList == null ? context.pop() : null
+            // context.pushReplacementNamed(WoodyDebrisHeaderPageDep.routeName,
+            //             extra: {
+            //                 WoodyDebrisHeaderPageDep.keyWdHeader:
+            //                     await db.woodyDebrisTablesDao.getWdHeader(id),
+            //                 WoodyDebrisHeaderPageDep.keySummaryComplete:
+            //                     wdh.complete.value,
+            //                 WoodyDebrisHeaderPageDep.keyUpdateSummaryPageTransList:
+            //                     widget.updateSummaryPageTransList
+            //               })
+            );
 
     return Scaffold(
       appBar: OurAppBar(

@@ -17,7 +17,7 @@ GoRoute goRouteWoodyDebris = GoRoute(
     routes: [
       GoRoute(
           name: WoodyDebrisHeaderPage.routeName,
-          path: "header",
+          path: "header/:${RouteParams.wdHeaderIdKey}",
           builder: (context, state) => WoodyDebrisHeaderPage(state),
           routes: [
             GoRoute(
