@@ -86,9 +86,10 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
     final db = ref.read(databaseProvider);
 
-    final parentComplete = ref.watch(parentCompleteProvider(wdhId));
+    final parentComplete = ref.watch(parentCompleteProvider(wdId));
     final wdh = ref.watch(wdhProvider(wdhId));
 
     return wdh.when(

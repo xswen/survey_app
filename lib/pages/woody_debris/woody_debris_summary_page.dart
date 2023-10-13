@@ -69,18 +69,27 @@ class WoodyDebrisSummaryPageState
                   wdhCompanion.copyWith(transNum: d.Value(transNum)),
             ),
           ),
-          rightBtnOnPressed: () {},
+          rightBtnOnPressed: () => db.woodyDebrisTablesDao
+              .addWdHeader(wdhCompanion)
+              .then((wdhId) async {
+            context.pop();
+            goToWdhPage(wdhId);
+          }),
         ));
   }
 
-  void goToWdhPage(int wdhId) => context
-          .pushNamed(WoodyDebrisHeaderPage.routeName,
-              pathParameters: RouteParams.generateWdHeaderParms(
-                  widget.goRouterState, wdhId.toString()))
-          .then((value) {
-        ref.refresh(transListProvider(wdId));
-        ref.refresh(wdDataProvider(surveyId));
-      });
+  void goToWdhPage(int wdhId) {
+    print(RouteParams.generateWdHeaderParms(
+        widget.goRouterState, wdhId.toString()));
+    context
+        .pushNamed(WoodyDebrisHeaderPage.routeName,
+            pathParameters: RouteParams.generateWdHeaderParms(
+                widget.goRouterState, wdhId.toString()))
+        .then((value) {
+      ref.refresh(transListProvider(wdId));
+      ref.refresh(wdDataProvider(surveyId));
+    });
+  }
 
   SurveyStatus getStatus(WoodyDebrisHeaderData wdh) {
     if (wdh.complete) return SurveyStatus.complete;
@@ -90,6 +99,8 @@ class WoodyDebrisSummaryPageState
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
+
     final db = ref.read(databaseProvider);
     final PopupDismiss completeWarningPopup =
         Popups.generateCompleteErrorPopup(title);
@@ -133,21 +144,6 @@ class WoodyDebrisSummaryPageState
                         ),
                         ElevatedButton(
                             onPressed: () => createTransect(),
-                            // context.pushNamed(
-                            //     WoodyDebrisHeaderMeasurementsPage.routeName,
-                            //     PathParameters:
-                            //         RouterParams.generateWdHeaderParms(),
-                            //     extra: {
-                            //       WoodyDebrisHeaderMeasurementsPage
-                            //               .keyWdHeader:
-                            //           WoodyDebrisHeaderCompanion(
-                            //               wdId: d.Value(wd.id),
-                            //               complete: const d.Value(false)),
-                            //       WoodyDebrisHeaderMeasurementsPage
-                            //               .keyUpdateSummaryPageTransList:
-                            //           () => null
-                            //     }).then((value) =>
-                            //     ref.refresh(transListProvider(wdId))),
                             child: const Row(
                               children: [
                                 Padding(
