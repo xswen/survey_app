@@ -1,33 +1,32 @@
 import 'package:go_router/go_router.dart';
 
-const String _kSurveyIdKey = "surveyId";
-const String _kWdSummaryIdKey = "wdSummaryId";
-const String _kWdHeaderIdKey = "wdHeaderId";
-
 class RouteParams {
+  static const String surveyIdKey = "surveyId";
+  static const String wdSummaryIdKey = "wdSummaryId";
+  static const String wdHeaderIdKey = "wdHeaderId";
+
   static int getSurveyId(GoRouterState goRouterState) =>
-      int.parse(goRouterState.pathParameters[_kSurveyIdKey]!);
+      int.parse(goRouterState.pathParameters[surveyIdKey]!);
   static int getWdSummaryId(GoRouterState goRouterState) =>
-      int.parse(goRouterState.pathParameters[_kWdSummaryIdKey]!);
+      int.parse(goRouterState.pathParameters[wdSummaryIdKey]!);
   static int getWdHeaderId(GoRouterState goRouterState) =>
-      int.parse(goRouterState.pathParameters[_kWdHeaderIdKey]!);
+      int.parse(goRouterState.pathParameters[wdHeaderIdKey]!);
 
   static Map<String, String> generateSurveyInfoParams(String surveyId) {
-    return {_kSurveyIdKey: surveyId};
+    return {surveyIdKey: surveyId};
   }
 
   static Map<String, String> generateWdSummaryParams(
           GoRouterState goRouterState, String wdSummaryId) =>
       {
-        ...generateSurveyInfoParams(
-            goRouterState.pathParameters[_kSurveyIdKey]!),
-        ...{_kWdSummaryIdKey: wdSummaryId}
+        ...generateSurveyInfoParams(goRouterState.pathParameters[surveyIdKey]!),
+        ...{wdSummaryIdKey: wdSummaryId}
       };
   static Map<String, String> generateWdHeaderParms(
           GoRouterState goRouterState, String wdHeaderId) =>
       {
         ...generateWdSummaryParams(
-            goRouterState, goRouterState.pathParameters[_kWdSummaryIdKey]!),
-        ...{_kWdHeaderIdKey: wdHeaderId}
+            goRouterState, goRouterState.pathParameters[wdSummaryIdKey]!),
+        ...{wdHeaderIdKey: wdHeaderId}
       };
 }
