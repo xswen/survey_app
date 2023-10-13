@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart' as d;
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/pages/woody_debris/woody_debris_header_page.dart';
+import 'package:survey_app/widgets/builders/set_transect_num_builder.dart';
 
 import '../../widgets/date_select.dart';
 import '../../widgets/tile_cards/tile_card_selection.dart';
@@ -44,6 +45,32 @@ class WoodyDebrisSummaryPageState
     (db.update(db.woodyDebrisSummary)..where((t) => t.id.equals(wdId)))
         .write(entry);
     ref.refresh(wdDataProvider(surveyId));
+  }
+
+  void createTransect() {
+    final db = ref.read(databaseProvider);
+    WoodyDebrisHeaderCompanion wdhCompanion = WoodyDebrisHeaderCompanion(
+        wdId: d.Value(wdId), complete: const d.Value(false));
+
+    Popups.show(
+        context,
+        PopupContinue(
+          "Select Transect Number",
+          contentWidget: Card(
+            elevation: 0,
+            color: Colors.transparent,
+            child: SetTransectNumBuilder(
+              name: "",
+              getUsedTransNums: db.woodyDebrisTablesDao.getUsedTransnums(wdId),
+              startingTransNum: '',
+              selectedItem: wdhCompanion.transNum.value?.toString() ?? "",
+              transList: kTransectNumsList,
+              updateTransNum: (int transNum) => wdhCompanion =
+                  wdhCompanion.copyWith(transNum: d.Value(transNum)),
+            ),
+          ),
+          rightBtnOnPressed: () {},
+        ));
   }
 
   void goToWdhPage(int wdhId) => context
@@ -105,7 +132,7 @@ class WoodyDebrisSummaryPageState
                           style: TextStyle(fontSize: kTextHeaderSize),
                         ),
                         ElevatedButton(
-                            onPressed: () => null,
+                            onPressed: () => createTransect(),
                             // context.pushNamed(
                             //     WoodyDebrisHeaderMeasurementsPage.routeName,
                             //     PathParameters:
