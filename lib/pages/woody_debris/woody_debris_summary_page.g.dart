@@ -6,7 +6,7 @@ part of 'woody_debris_summary_page.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$wdDataHash() => r'd100202260ebe97573347b3e8bb721aa3ccb8269';
+String _$wdDataHash() => r'7f129f2bf2445d2facca30f1ad1880cbf5fd36bd';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -47,6 +47,7 @@ class WdDataFamily extends Family<AsyncValue<WoodyDebrisSummaryData>> {
     );
   }
 
+  @visibleForOverriding
   @override
   WdDataProvider getProviderOverride(
     covariant WdDataProvider provider,
@@ -175,6 +176,7 @@ class TransListFamily extends Family<AsyncValue<List<WoodyDebrisHeaderData>>> {
     );
   }
 
+  @visibleForOverriding
   @override
   TransListProvider getProviderOverride(
     covariant TransListProvider provider,
@@ -287,4 +289,4 @@ class _TransListProviderElement
   int get wdId => (origin as TransListProvider).wdId;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, inference_failure_on_uninitialized_variable, inference_failure_on_function_return_type, inference_failure_on_untyped_parameter

@@ -148,14 +148,15 @@ class _WoodyDebrisHeaderMeasurementsPageState
         .addOrUpdateWdHeader(wdh)
         .then((id) async => widget.updateSummaryPageTransList == null
             ? context.pop()
-            : context
-                .pushReplacementNamed(WoodyDebrisHeaderPage.routeName, extra: {
-                WoodyDebrisHeaderPage.keyWdHeader:
-                    await db.woodyDebrisTablesDao.getWdHeaderFromId(id),
-                WoodyDebrisHeaderPage.keySummaryComplete: wdh.complete.value,
-                WoodyDebrisHeaderPage.keyUpdateSummaryPageTransList:
-                    widget.updateSummaryPageTransList
-              }));
+            : context.pushReplacementNamed(WoodyDebrisHeaderPageDep.routeName,
+                extra: {
+                    WoodyDebrisHeaderPageDep.keyWdHeader:
+                        await db.woodyDebrisTablesDao.getWdHeader(id),
+                    WoodyDebrisHeaderPageDep.keySummaryComplete:
+                        wdh.complete.value,
+                    WoodyDebrisHeaderPageDep.keyUpdateSummaryPageTransList:
+                        widget.updateSummaryPageTransList
+                  }));
 
     return Scaffold(
       appBar: OurAppBar(

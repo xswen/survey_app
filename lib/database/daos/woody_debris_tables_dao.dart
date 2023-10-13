@@ -35,7 +35,7 @@ class WoodyDebrisTablesDao extends DatabaseAccessor<Database>
 
   //==================Deletion===============================
   Future<void> deleteWoodyDebrisSummary(int surveyId) async {
-    WoodyDebrisSummaryData wdS = await getWdSummary(surveyId);
+    WoodyDebrisSummaryData wdS = await getWdSummaryFromSurveyId(surveyId);
     List<WoodyDebrisHeaderData> wdHList = await getWdHeadersFromWdSId(wdS.id);
 
     for (WoodyDebrisHeaderData wdH in wdHList) {
@@ -72,7 +72,11 @@ class WoodyDebrisTablesDao extends DatabaseAccessor<Database>
   Future<int> addWdSummary(WoodyDebrisSummaryCompanion entry) =>
       into(woodyDebrisSummary).insert(entry);
 
-  Future<WoodyDebrisSummaryData> getWdSummary(int surveyId) =>
+  Future<WoodyDebrisSummaryData> getWdSummary(int wdId) =>
+      (select(woodyDebrisSummary)..where((tbl) => tbl.id.equals(wdId)))
+          .getSingle();
+
+  Future<WoodyDebrisSummaryData> getWdSummaryFromSurveyId(int surveyId) =>
       (select(woodyDebrisSummary)
             ..where((tbl) => tbl.surveyId.equals(surveyId)))
           .getSingle();
@@ -82,7 +86,7 @@ class WoodyDebrisTablesDao extends DatabaseAccessor<Database>
     int tmp = await addWdSummary(WoodyDebrisSummaryCompanion(
         surveyId: Value(surveyId), measDate: Value(measDate)));
 
-    return getWdSummary(surveyId);
+    return getWdSummaryFromSurveyId(surveyId);
   }
 
   Future<void> updateNumTransects(int wdSId) async {
@@ -105,12 +109,13 @@ class WoodyDebrisTablesDao extends DatabaseAccessor<Database>
           ..where((tbl) => tbl.id.equals(wdhId)))
         .write(WoodyDebrisHeaderCompanion(
             id: Value(wdhId), transNum: Value(transNum))));
-    return getWdHeaderFromId(wdhId);
+    return getWdHeader(wdhId);
   }
 
-  Future<WoodyDebrisHeaderData> getWdHeaderFromId(int id) =>
-      (select(woodyDebrisHeader)..where((tbl) => tbl.id.equals(id)))
+  Future<WoodyDebrisHeaderData> getWdHeader(int wdhId) =>
+      (select(woodyDebrisHeader)..where((tbl) => tbl.id.equals(wdhId)))
           .getSingle();
+
   Future<List<WoodyDebrisHeaderData>> getWdHeadersFromWdSId(int wdSId) =>
       (select(woodyDebrisHeader)
             ..where((tbl) => tbl.wdId.equals(wdSId))

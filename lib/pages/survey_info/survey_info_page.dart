@@ -92,8 +92,7 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
 
   @override
   void initState() {
-    surveyId = int.parse(
-        widget.goRouterState.pathParameters[RouteParams.surveyIdKey]!);
+    surveyId = RouteParams.getSurveyId(widget.goRouterState);
 
     super.initState();
   }

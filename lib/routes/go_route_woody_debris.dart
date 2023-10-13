@@ -18,22 +18,7 @@ GoRoute goRouteWoodyDebris = GoRoute(
       GoRoute(
           name: WoodyDebrisHeaderPage.routeName,
           path: "header",
-          builder: (context, state) {
-            Map<String, dynamic> data = state.extra as Map<String, dynamic>;
-            WoodyDebrisHeaderData wdh = data[WoodyDebrisHeaderPage.keyWdHeader];
-            bool summaryComplete =
-                data[WoodyDebrisHeaderPage.keySummaryComplete];
-
-            VoidCallback updateSummaryPageTransList =
-                data[WoodyDebrisHeaderPage.keyUpdateSummaryPageTransList]
-                    as VoidCallback;
-
-            return WoodyDebrisHeaderPage(
-              wdh: wdh,
-              summaryComplete: summaryComplete,
-              updateSummaryPageTransList: updateSummaryPageTransList,
-            );
-          },
+          builder: (context, state) => WoodyDebrisHeaderPage(state),
           routes: [
             GoRoute(
                 name: WoodyDebrisHeaderMeasurementsPage.routeName,

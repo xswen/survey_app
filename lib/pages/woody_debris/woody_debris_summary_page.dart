@@ -4,13 +4,14 @@ import 'package:survey_app/pages/woody_debris/woody_debris_header_page.dart';
 
 import '../../widgets/date_select.dart';
 import '../../widgets/tile_cards/tile_card_selection.dart';
-import 'woody_debris_header_measurements_page.dart';
 
 part 'woody_debris_summary_page.g.dart';
 
 @riverpod
-Future<WoodyDebrisSummaryData> wdData(WdDataRef ref, int surveyId) =>
-    ref.read(databaseProvider).woodyDebrisTablesDao.getWdSummary(surveyId);
+Future<WoodyDebrisSummaryData> wdData(WdDataRef ref, int surveyId) => ref
+    .read(databaseProvider)
+    .woodyDebrisTablesDao
+    .getWdSummaryFromSurveyId(surveyId);
 
 @riverpod
 Future<List<WoodyDebrisHeaderData>> transList(TransListRef ref, int wdId) =>
@@ -33,10 +34,8 @@ class WoodyDebrisSummaryPageState
 
   @override
   void initState() {
-    surveyId = int.parse(
-        widget.goRouterState.pathParameters[RouteParams.surveyIdKey]!);
-    wdId = int.parse(
-        widget.goRouterState.pathParameters[RouteParams.wdSummaryIdKey]!);
+    surveyId = RouteParams.getSurveyId(widget.goRouterState);
+    wdId = RouteParams.getWdSummaryId(widget.goRouterState);
     super.initState();
   }
 
@@ -106,19 +105,22 @@ class WoodyDebrisSummaryPageState
                           style: TextStyle(fontSize: kTextHeaderSize),
                         ),
                         ElevatedButton(
-                            onPressed: () => context.pushNamed(
-                                    WoodyDebrisHeaderMeasurementsPage.routeName,
-                                    extra: {
-                                      WoodyDebrisHeaderMeasurementsPage
-                                              .keyWdHeader:
-                                          WoodyDebrisHeaderCompanion(
-                                              wdId: d.Value(wd.id),
-                                              complete: const d.Value(false)),
-                                      WoodyDebrisHeaderMeasurementsPage
-                                              .keyUpdateSummaryPageTransList:
-                                          () => null
-                                    }).then((value) =>
-                                    ref.refresh(transListProvider(wdId))),
+                            onPressed: () => null,
+                            // context.pushNamed(
+                            //     WoodyDebrisHeaderMeasurementsPage.routeName,
+                            //     PathParameters:
+                            //         RouterParams.generateWdHeaderParms(),
+                            //     extra: {
+                            //       WoodyDebrisHeaderMeasurementsPage
+                            //               .keyWdHeader:
+                            //           WoodyDebrisHeaderCompanion(
+                            //               wdId: d.Value(wd.id),
+                            //               complete: const d.Value(false)),
+                            //       WoodyDebrisHeaderMeasurementsPage
+                            //               .keyUpdateSummaryPageTransList:
+                            //           () => null
+                            //     }).then((value) =>
+                            //     ref.refresh(transListProvider(wdId))),
                             child: const Row(
                               children: [
                                 Padding(
