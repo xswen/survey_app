@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../database/database.dart';
 import '../../enums/enums.dart';
 import '../../wrappers/survey_card.dart';
 import '../providers.dart';
@@ -9,7 +10,7 @@ import '../providers.dart';
 part 'survey_info_providers.g.dart';
 
 @riverpod
-class SurveyFilter extends _$SurveyFilter {
+class SurveyCardFilter extends _$SurveyCardFilter {
   @override
   HashSet<SurveyStatus> build() {
     return HashSet<SurveyStatus>();
@@ -54,16 +55,12 @@ class SurveyFilter extends _$SurveyFilter {
 }
 
 @riverpod
-class SurveyCardList extends _$SurveyCardList {
-  @override
-  Future<List<SurveyCard>> build() {
-    return Future<List<SurveyCard>>.value([]);
-  }
-
-  Future<void> updateList(int surveyId) async {
-    final filter = ref.watch(surveyFilterProvider);
-    state = const AsyncValue.loading();
-    state = AsyncValue.data(
-        await ref.read(databaseProvider).getCards(surveyId, filters: filter));
-  }
+Future<List<SurveyCard>> updateSurveyCard(
+    UpdateSurveyCardRef ref, int surveyId) {
+  final filter = ref.watch(surveyCardFilterProvider);
+  return ref.read(databaseProvider).getCards(surveyId, filters: filter);
 }
+
+@riverpod
+Future<SurveyHeader> updateSurvey(UpdateSurveyRef ref, int surveyId) =>
+    ref.watch(databaseProvider).surveyInfoTablesDao.getSurvey(surveyId);

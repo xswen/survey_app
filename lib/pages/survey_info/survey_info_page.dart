@@ -8,6 +8,7 @@ import 'package:survey_app/widgets/text/notify_no_filter_results.dart';
 
 import '../../formatters/format_date.dart';
 import '../../formatters/format_string.dart';
+import '../../providers/survey_info/survey_info_providers.dart';
 import '../../widgets/buttons/edit_icon_button.dart';
 import '../../widgets/tags/tag_chips.dart';
 import '../../widgets/text/text_line_label.dart';
@@ -63,17 +64,6 @@ class Filter extends _$Filter {
             if (status != SurveyStatus.complete) status
         });
 }
-
-@riverpod
-Future<List<SurveyCard>> updateSurveyCard(
-    UpdateSurveyCardRef ref, int surveyId) {
-  final filter = ref.watch(filterProvider);
-  return ref.read(databaseProvider).getCards(surveyId, filters: filter);
-}
-
-@riverpod
-Future<SurveyHeader> updateSurvey(UpdateSurveyRef ref, int surveyId) =>
-    ref.watch(databaseProvider).surveyInfoTablesDao.getSurvey(surveyId);
 
 class SurveyInfoPage extends ConsumerStatefulWidget {
   static const String routeName = "surveyInfo";
@@ -289,7 +279,7 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
     final Database db = ref.read(databaseProvider);
 
     AsyncValue<SurveyHeader> survey = ref.watch(updateSurveyProvider(surveyId));
-    final filters = ref.watch(filterProvider);
+    final filters = ref.watch(surveyCardFilterProvider);
 
     return Scaffold(
         appBar: OurAppBar(
@@ -382,28 +372,28 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
                         title: "All",
                         selected: filters.isEmpty,
                         onSelected: (selected) => ref
-                            .read(filterProvider.notifier)
+                            .read(surveyCardFilterProvider.notifier)
                             .selectedAll(selected),
                       ),
                       TagChip(
                         title: "Completed",
                         selected: filters.contains(SurveyStatus.complete),
                         onSelected: (selected) => ref
-                            .read(filterProvider.notifier)
+                            .read(surveyCardFilterProvider.notifier)
                             .selectedComplete(selected),
                       ),
                       TagChip(
                         title: "In Progress",
                         selected: filters.contains(SurveyStatus.inProgress),
                         onSelected: (selected) => ref
-                            .read(filterProvider.notifier)
+                            .read(surveyCardFilterProvider.notifier)
                             .selectedInProgress(selected),
                       ),
                       TagChip(
                         title: "Not Started",
                         selected: filters.contains(SurveyStatus.notStarted),
                         onSelected: (selected) => ref
-                            .read(filterProvider.notifier)
+                            .read(surveyCardFilterProvider.notifier)
                             .selectedNotStarted(selected),
                       ),
                     ],

@@ -6,36 +6,303 @@ part of 'survey_info_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$surveyFilterHash() => r'9a79a083a49c637690e520dcc1586fdc5e4f77b9';
+String _$updateSurveyCardHash() => r'd693ec2eeb5b691b52c870ad08c2fd9ba886d7ad';
 
-/// See also [SurveyFilter].
-@ProviderFor(SurveyFilter)
-final surveyFilterProvider =
-    AutoDisposeNotifierProvider<SurveyFilter, HashSet<SurveyStatus>>.internal(
-  SurveyFilter.new,
-  name: r'surveyFilterProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$surveyFilterHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+/// Copied from Dart SDK
+class _SystemHash {
+  _SystemHash._();
 
-typedef _$SurveyFilter = AutoDisposeNotifier<HashSet<SurveyStatus>>;
-String _$surveyCardListHash() => r'bbf5c9b181511915a6b46f7b67bb1be88e87f778';
+  static int combine(int hash, int value) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + value);
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
+    return hash ^ (hash >> 6);
+  }
 
-/// See also [SurveyCardList].
-@ProviderFor(SurveyCardList)
-final surveyCardListProvider =
-    AutoDisposeAsyncNotifierProvider<SurveyCardList, List<SurveyCard>>.internal(
-  SurveyCardList.new,
-  name: r'surveyCardListProvider',
+  static int finish(int hash) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
+    // ignore: parameter_assignments
+    hash = hash ^ (hash >> 11);
+    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
+  }
+}
+
+/// See also [updateSurveyCard].
+@ProviderFor(updateSurveyCard)
+const updateSurveyCardProvider = UpdateSurveyCardFamily();
+
+/// See also [updateSurveyCard].
+class UpdateSurveyCardFamily extends Family<AsyncValue<List<SurveyCard>>> {
+  /// See also [updateSurveyCard].
+  const UpdateSurveyCardFamily();
+
+  /// See also [updateSurveyCard].
+  UpdateSurveyCardProvider call(
+    int surveyId,
+  ) {
+    return UpdateSurveyCardProvider(
+      surveyId,
+    );
+  }
+
+  @visibleForOverriding
+  @override
+  UpdateSurveyCardProvider getProviderOverride(
+    covariant UpdateSurveyCardProvider provider,
+  ) {
+    return call(
+      provider.surveyId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'updateSurveyCardProvider';
+}
+
+/// See also [updateSurveyCard].
+class UpdateSurveyCardProvider
+    extends AutoDisposeFutureProvider<List<SurveyCard>> {
+  /// See also [updateSurveyCard].
+  UpdateSurveyCardProvider(
+    int surveyId,
+  ) : this._internal(
+          (ref) => updateSurveyCard(
+            ref as UpdateSurveyCardRef,
+            surveyId,
+          ),
+          from: updateSurveyCardProvider,
+          name: r'updateSurveyCardProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$updateSurveyCardHash,
+          dependencies: UpdateSurveyCardFamily._dependencies,
+          allTransitiveDependencies:
+              UpdateSurveyCardFamily._allTransitiveDependencies,
+          surveyId: surveyId,
+        );
+
+  UpdateSurveyCardProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.surveyId,
+  }) : super.internal();
+
+  final int surveyId;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<SurveyCard>> Function(UpdateSurveyCardRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: UpdateSurveyCardProvider._internal(
+        (ref) => create(ref as UpdateSurveyCardRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        surveyId: surveyId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List<SurveyCard>> createElement() {
+    return _UpdateSurveyCardProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is UpdateSurveyCardProvider && other.surveyId == surveyId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, surveyId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin UpdateSurveyCardRef on AutoDisposeFutureProviderRef<List<SurveyCard>> {
+  /// The parameter `surveyId` of this provider.
+  int get surveyId;
+}
+
+class _UpdateSurveyCardProviderElement
+    extends AutoDisposeFutureProviderElement<List<SurveyCard>>
+    with UpdateSurveyCardRef {
+  _UpdateSurveyCardProviderElement(super.provider);
+
+  @override
+  int get surveyId => (origin as UpdateSurveyCardProvider).surveyId;
+}
+
+String _$updateSurveyHash() => r'78a6395a44cc31011d39ff6c8726b6d06446d6ab';
+
+/// See also [updateSurvey].
+@ProviderFor(updateSurvey)
+const updateSurveyProvider = UpdateSurveyFamily();
+
+/// See also [updateSurvey].
+class UpdateSurveyFamily extends Family<AsyncValue<SurveyHeader>> {
+  /// See also [updateSurvey].
+  const UpdateSurveyFamily();
+
+  /// See also [updateSurvey].
+  UpdateSurveyProvider call(
+    int surveyId,
+  ) {
+    return UpdateSurveyProvider(
+      surveyId,
+    );
+  }
+
+  @visibleForOverriding
+  @override
+  UpdateSurveyProvider getProviderOverride(
+    covariant UpdateSurveyProvider provider,
+  ) {
+    return call(
+      provider.surveyId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'updateSurveyProvider';
+}
+
+/// See also [updateSurvey].
+class UpdateSurveyProvider extends AutoDisposeFutureProvider<SurveyHeader> {
+  /// See also [updateSurvey].
+  UpdateSurveyProvider(
+    int surveyId,
+  ) : this._internal(
+          (ref) => updateSurvey(
+            ref as UpdateSurveyRef,
+            surveyId,
+          ),
+          from: updateSurveyProvider,
+          name: r'updateSurveyProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$updateSurveyHash,
+          dependencies: UpdateSurveyFamily._dependencies,
+          allTransitiveDependencies:
+              UpdateSurveyFamily._allTransitiveDependencies,
+          surveyId: surveyId,
+        );
+
+  UpdateSurveyProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.surveyId,
+  }) : super.internal();
+
+  final int surveyId;
+
+  @override
+  Override overrideWith(
+    FutureOr<SurveyHeader> Function(UpdateSurveyRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: UpdateSurveyProvider._internal(
+        (ref) => create(ref as UpdateSurveyRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        surveyId: surveyId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<SurveyHeader> createElement() {
+    return _UpdateSurveyProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is UpdateSurveyProvider && other.surveyId == surveyId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, surveyId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin UpdateSurveyRef on AutoDisposeFutureProviderRef<SurveyHeader> {
+  /// The parameter `surveyId` of this provider.
+  int get surveyId;
+}
+
+class _UpdateSurveyProviderElement
+    extends AutoDisposeFutureProviderElement<SurveyHeader>
+    with UpdateSurveyRef {
+  _UpdateSurveyProviderElement(super.provider);
+
+  @override
+  int get surveyId => (origin as UpdateSurveyProvider).surveyId;
+}
+
+String _$surveyCardFilterHash() => r'2b3b89d50fc6d4769b8e6f5a71d3385dc5409cab';
+
+/// See also [SurveyCardFilter].
+@ProviderFor(SurveyCardFilter)
+final surveyCardFilterProvider = AutoDisposeNotifierProvider<SurveyCardFilter,
+    HashSet<SurveyStatus>>.internal(
+  SurveyCardFilter.new,
+  name: r'surveyCardFilterProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$surveyCardListHash,
+      : _$surveyCardFilterHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$SurveyCardList = AutoDisposeAsyncNotifier<List<SurveyCard>>;
+typedef _$SurveyCardFilter = AutoDisposeNotifier<HashSet<SurveyStatus>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, inference_failure_on_uninitialized_variable, inference_failure_on_function_return_type, inference_failure_on_untyped_parameter
