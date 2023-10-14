@@ -63,7 +63,7 @@ GoRouter router = GoRouter(
                 name: SurveyInfoPage.routeName,
                 path: "survey-info/:${RouteParams.surveyIdKey}",
                 builder: (context, state) =>
-                    SurveyInfoPage(pathParams: state.pathParameters),
+                    SurveyInfoPage(goRouterState: state),
                 routes: [
                   goRouteWoodyDebris,
                   goRouteSurfaceSubstrate,

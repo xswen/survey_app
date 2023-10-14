@@ -23,6 +23,7 @@ class DashboardPage extends ConsumerStatefulWidget {
 class DashboardPageState extends ConsumerState<DashboardPage> {
   @override
   Widget build(BuildContext context) {
+    debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
     AsyncValue<List<SurveyHeader>> surveys =
         ref.watch(updateSurveyHeaderListProvider);
     HashSet<SurveyStatus> filters = ref.watch(dashboardSurveyFilterProvider);
