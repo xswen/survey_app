@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:survey_app/database/database.dart';
 
@@ -21,23 +20,11 @@ GoRoute goRouteWoodyDebris = GoRoute(
           builder: (context, state) => WoodyDebrisHeaderPage(state),
           routes: [
             GoRoute(
-                name: WoodyDebrisHeaderMeasurementsPage.routeName,
-                path: "measurements",
-                builder: (context, state) {
-                  Map<String, dynamic> data =
-                      state.extra as Map<String, dynamic>;
-
-                  WoodyDebrisHeaderCompanion wdh =
-                      data[WoodyDebrisHeaderMeasurementsPage.keyWdHeader]
-                          as WoodyDebrisHeaderCompanion;
-                  VoidCallback? updateSummaryPageTransList = data[
-                      WoodyDebrisHeaderMeasurementsPage
-                          .keyUpdateSummaryPageTransList] as VoidCallback?;
-                  return WoodyDebrisHeaderMeasurementsPage(
-                    wdh: wdh,
-                    updateSummaryPageTransList: updateSummaryPageTransList,
-                  );
-                }),
+              name: WoodyDebrisHeaderMeasurementsPage.routeName,
+              path: "measurements",
+              builder: (context, state) =>
+                  WoodyDebrisHeaderMeasurementsPage(state),
+            ),
             GoRoute(
                 name: WoodyDebrisHeaderPieceMain.routeName,
                 path: "pieces",

@@ -1,10 +1,13 @@
 import 'package:drift/drift.dart' as d;
 import 'package:survey_app/barrels/page_imports_barrel.dart';
+import 'package:survey_app/pages/woody_debris/woody_debris_summary_page.dart';
 
 import '../../providers/woody_debris_providers.dart';
 import '../../widgets/buttons/icon_nav_button.dart';
 import '../../widgets/popups/popup_errors_found_list.dart';
 import '../../widgets/popups/popup_warning_missing_fields_list.dart';
+import '../delete_page.dart';
+import 'woody_debris_header_measurements_page.dart';
 
 class WoodyDebrisHeaderPage extends ConsumerStatefulWidget {
   static const String routeName = "woodyDebrisHeader";
@@ -74,12 +77,50 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
     return results.isEmpty ? null : results;
   }
 
+  void markComplete(bool parentComplete, WoodyDebrisHeaderData wdh) {
+    final db = ref.read(databaseProvider);
+
+    if (parentComplete) {
+      Popups.show(context, surveyCompleteWarningPopup);
+    } else if (wdh.complete) {
+      updateWdhData(const WoodyDebrisHeaderCompanion(complete: d.Value(false)));
+    } else {
+      (db.woodyDebrisTablesDao.getWdSmall(wdh.id)).then((wdSm) {
+        List<String>? errors = errorCheck(wdh, wdSm);
+
+        if (errors == null) {
+          List<String> missingData = [];
+          wdh.swdDecayClass == -1
+              ? missingData.add("Transect Header Data")
+              : null;
+          missingData.isEmpty
+              ? updateWdhData(
+                  const WoodyDebrisHeaderCompanion(complete: d.Value(true)))
+              : Popups.show(
+                  context,
+                  PopupWarningMissingFieldsList(
+                      missingFields: missingData,
+                      rightBtnOnPressed: () {
+                        updateWdhData(const WoodyDebrisHeaderCompanion(
+                            complete: d.Value(true)));
+                        context.pop();
+                      }));
+        } else {
+          Popups.show(
+            context,
+            PopupErrorsFoundList(errors: errors),
+          );
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
     final db = ref.read(databaseProvider);
 
-    final parentComplete = ref.watch(parentCompleteProvider(wdId));
+    final parentComplete = ref.watch(wdhParentCompleteProvider(wdId));
     final wdh = ref.watch(wdhProvider(wdhId));
 
     return wdh.when(
@@ -94,43 +135,7 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
                 floatingActionButton: FloatingCompleteButton(
                   title: "Woody Debris Transect ${wdh.transNum}",
                   complete: wdh.complete,
-                  onPressed: () {
-                    if (parentComplete) {
-                      Popups.show(context, surveyCompleteWarningPopup);
-                    } else if (wdh.complete) {
-                      updateWdhData(const WoodyDebrisHeaderCompanion(
-                          complete: d.Value(false)));
-                    } else {
-                      (db.woodyDebrisTablesDao.getWdSmall(wdh.id)).then((wdSm) {
-                        List<String>? errors = errorCheck(wdh, wdSm);
-
-                        if (errors == null) {
-                          List<String> missingData = [];
-                          wdh.swdDecayClass == -1
-                              ? missingData.add("Transect Header Data")
-                              : null;
-                          missingData.isEmpty
-                              ? updateWdhData(const WoodyDebrisHeaderCompanion(
-                                  complete: d.Value(true)))
-                              : Popups.show(
-                                  context,
-                                  PopupWarningMissingFieldsList(
-                                      missingFields: missingData,
-                                      rightBtnOnPressed: () {
-                                        updateWdhData(
-                                            const WoodyDebrisHeaderCompanion(
-                                                complete: d.Value(true)));
-                                        context.pop();
-                                      }));
-                        } else {
-                          Popups.show(
-                            context,
-                            PopupErrorsFoundList(errors: errors),
-                          );
-                        }
-                      });
-                    }
-                  },
+                  onPressed: () => markComplete(parentComplete, wdh),
                 ),
                 body: Center(
                   child: Column(
@@ -140,14 +145,14 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
                         space: kPaddingIcon,
                         label: "Transect Header Data",
                         onPressed: () async {
-                          // context.pushNamed(
-                          //     WoodyDebrisHeaderMeasurementsPage.routeName,
-                          //     extra: {
-                          //       WoodyDebrisHeaderMeasurementsPage.keyWdHeader:
-                          //           wdh.toCompanion(true)
-                          //     }).then((value) => db.woodyDebrisTablesDao
-                          //     .getWdHeaderFromId(wdh.id)
-                          //     .then((value) => setState(() => wdh = value)));
+                          context
+                              .pushNamed(
+                                WoodyDebrisHeaderMeasurementsPage.routeName,
+                                pathParameters:
+                                    RouteParams.generateWdHeaderParms(
+                                        widget.goRouterState, wdhId.toString()),
+                              )
+                              .then((value) => ref.refresh(wdhProvider(wdhId)));
                         },
                         padding: const EdgeInsets.symmetric(
                             vertical: kPaddingV, horizontal: kPaddingH),
@@ -196,18 +201,23 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
                                 rightBtnOnPressed: () {
                               //close popup
                               context.pop();
-                              // context.pushNamed(DeletePage.routeName, extra: {
-                              //   DeletePage.keyObjectName:
-                              //       "Woody Debris Transect ${wdh.transNum}",
-                              //   DeletePage.keyDeleteFn: () {
-                              //     db.woodyDebrisTablesDao
-                              //         .deleteWoodyDebrisTransect(wdh.id)
-                              //         .then((value) {
-                              //       widget.updateSummaryPageTransList();
-                              //       context.pop();
-                              //     });
-                              //   },
-                              // });
+                              context.pushNamed(DeletePage.routeName, extra: {
+                                DeletePage.keyObjectName:
+                                    "Woody Debris Transect ${wdh.transNum}",
+                                DeletePage.keyDeleteFn: () {
+                                  db.woodyDebrisTablesDao
+                                      .deleteWoodyDebrisTransect(wdh.id)
+                                      .then((value) {
+                                    ref.refresh(wdTransListProvider(wdId));
+                                    context.goNamed(
+                                        WoodyDebrisSummaryPage.routeName,
+                                        pathParameters:
+                                            RouteParams.generateWdSummaryParams(
+                                                widget.goRouterState,
+                                                wdId.toString()));
+                                  });
+                                },
+                              });
                             }),
                           );
                         },

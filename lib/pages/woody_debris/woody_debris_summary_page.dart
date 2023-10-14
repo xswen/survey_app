@@ -78,7 +78,7 @@ class WoodyDebrisSummaryPageState
               pathParameters: RouteParams.generateWdHeaderParms(
                   widget.goRouterState, wdhId.toString()))
           .then((value) {
-        ref.refresh(transListProvider(wdId));
+        ref.refresh(wdTransListProvider(wdId));
         ref.refresh(wdDataProvider(surveyId));
       });
 
@@ -98,8 +98,6 @@ class WoodyDebrisSummaryPageState
   void markComplete(
       WoodyDebrisSummaryData wd, List<WoodyDebrisHeaderData> transList) {
     final db = ref.read(databaseProvider);
-
-    updateWdSummary(const WoodyDebrisSummaryCompanion(complete: d.Value(true)));
 
     db.surveyInfoTablesDao.getSurvey(wd.surveyId).then((value) {
       bool surveyComplete = value.complete;
@@ -123,12 +121,10 @@ class WoodyDebrisSummaryPageState
   Widget build(BuildContext context) {
     debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
 
-    final db = ref.read(databaseProvider);
-
     AsyncValue<WoodyDebrisSummaryData> wdSummary =
         ref.watch(wdDataProvider(surveyId));
     AsyncValue<List<WoodyDebrisHeaderData>> transList =
-        ref.watch(transListProvider(wdId));
+        ref.watch(wdTransListProvider(wdId));
 
     return Scaffold(
       appBar: OurAppBar(title),
@@ -184,24 +180,28 @@ class WoodyDebrisSummaryPageState
                       complete: wd.complete,
                       onPressed: () => markComplete(wd, transList),
                     ),
-                    body: ListView.builder(
-                        itemCount: transList.length,
-                        itemBuilder: (BuildContext cxt, int index) {
-                          WoodyDebrisHeaderData wdh = transList[index];
-                          return TileCardSelection(
-                              title: "Transect ${wdh.transNum}",
-                              onPressed: () async {
-                                wd.complete
-                                    ? Popups.show(
-                                        context,
-                                        Popups.generateNoticeSurveyComplete(
-                                          "Woody Debris",
-                                          () => goToWdhPage(wdh.id),
-                                        ))
-                                    : goToWdhPage(wdh.id);
-                              },
-                              status: getStatus(wdh));
-                        }),
+                    body: transList.isEmpty
+                        ? const Center(
+                            child: Text(
+                                "No transects created. Please add transect."))
+                        : ListView.builder(
+                            itemCount: transList.length,
+                            itemBuilder: (BuildContext cxt, int index) {
+                              WoodyDebrisHeaderData wdh = transList[index];
+                              return TileCardSelection(
+                                  title: "Transect ${wdh.transNum}",
+                                  onPressed: () async {
+                                    wd.complete
+                                        ? Popups.show(
+                                            context,
+                                            Popups.generateNoticeSurveyComplete(
+                                              "Woody Debris",
+                                              () => goToWdhPage(wdh.id),
+                                            ))
+                                        : goToWdhPage(wdh.id);
+                                  },
+                                  status: getStatus(wdh));
+                            }),
                   );
                 },
                 error: (err, stack) => Text("Error: $err"),

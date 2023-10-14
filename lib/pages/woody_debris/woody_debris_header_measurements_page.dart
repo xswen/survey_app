@@ -1,58 +1,50 @@
 import 'package:drift/drift.dart' as d;
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-import 'package:survey_app/database/database.dart';
-import 'package:survey_app/widgets/popups/popup_dismiss.dart';
+import 'package:survey_app/barrels/page_imports_barrel.dart';
+import 'package:survey_app/providers/woody_debris_providers.dart';
 
-import '../../constants/constant_values.dart';
-import '../../constants/margins_padding.dart';
 import '../../formatters/format_string.dart';
 import '../../formatters/thousands_formatter.dart';
-import '../../widgets/app_bar.dart';
 import '../../widgets/builders/set_transect_num_builder.dart';
 import '../../widgets/data_input/data_input.dart';
-import '../../widgets/drawer_menu.dart';
-import '../../widgets/popups/popups.dart';
 import '../../widgets/text/text_header_separator.dart';
+import 'woody_debris_header_page.dart';
 
-class WoodyDebrisHeaderMeasurementsPage extends StatefulWidget {
+class WoodyDebrisHeaderMeasurementsPage extends ConsumerStatefulWidget {
   static const String routeName = "woodyDebrisHeaderMeasurement";
-  static const String keyWdHeader = "wdHeader";
-  static const String keyUpdateSummaryPageTransList =
-      "updateSummaryPageTransList";
+  final GoRouterState goRouterState;
 
-  const WoodyDebrisHeaderMeasurementsPage(
-      {Key? key, required this.wdh, required this.updateSummaryPageTransList})
-      : super(key: key);
-  final WoodyDebrisHeaderCompanion wdh;
-  final VoidCallback? updateSummaryPageTransList;
+  const WoodyDebrisHeaderMeasurementsPage(this.goRouterState, {super.key});
 
   @override
-  State<WoodyDebrisHeaderMeasurementsPage> createState() =>
-      _WoodyDebrisHeaderMeasurementsPageState();
+  WoodyDebrisHeaderMeasurementsPageState createState() =>
+      WoodyDebrisHeaderMeasurementsPageState();
 }
 
-class _WoodyDebrisHeaderMeasurementsPageState
-    extends State<WoodyDebrisHeaderMeasurementsPage> {
-  late WoodyDebrisHeaderCompanion wdh;
-
+class WoodyDebrisHeaderMeasurementsPageState
+    extends ConsumerState<WoodyDebrisHeaderMeasurementsPage> {
   final String title = "Woody Debris Transect";
+  late final PopupDismiss completeWarningPopup;
+  late final PopupDismiss surveyCompleteWarningPopup;
+
+  late int wdhId;
   bool changeMade = false;
 
   @override
   void initState() {
-    wdh = widget.wdh;
+    wdhId = RouteParams.getWdHeaderId(widget.goRouterState);
+    completeWarningPopup =
+        Popups.generateCompleteErrorPopup("Woody Debris Transect");
+    surveyCompleteWarningPopup =
+        Popups.generatePreviousMarkedCompleteErrorPopup("Woody Debris");
+
     super.initState();
   }
 
-  void updateWdhCompanion(WoodyDebrisHeaderCompanion newWdh) =>
-      setState(() => wdh = newWdh);
-
   //Error checks
-  List<String> checkAll(Database db) {
+  List<String> checkAll(WoodyDebrisHeaderCompanion wdh) {
+    Database db = Database.instance;
+
     List<String> result = [];
 
     checkNomTransLen(db.companionValueToStr(wdh.nomTransLen)) != null
@@ -141,205 +133,216 @@ class _WoodyDebrisHeaderMeasurementsPageState
   @override
   Widget build(BuildContext context) {
     debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
-    final db = Provider.of<Database>(context);
-
-    Future<void> goToHeaderPage() =>
-        db.woodyDebrisTablesDao.addOrUpdateWdHeader(wdh).then((id) async =>
-                widget.updateSummaryPageTransList == null ? context.pop() : null
-            // context.pushReplacementNamed(WoodyDebrisHeaderPageDep.routeName,
-            //             extra: {
-            //                 WoodyDebrisHeaderPageDep.keyWdHeader:
-            //                     await db.woodyDebrisTablesDao.getWdHeader(id),
-            //                 WoodyDebrisHeaderPageDep.keySummaryComplete:
-            //                     wdh.complete.value,
-            //                 WoodyDebrisHeaderPageDep.keyUpdateSummaryPageTransList:
-            //                     widget.updateSummaryPageTransList
-            //               })
-            );
-
-    return Scaffold(
-      appBar: OurAppBar(
-          "Woody Debris Measurement Data: Transect ${wdh.transNum.value ?? ""}",
-          backFn: () => changeMade
-              ? Popups.show(context, Popups.generateWarningUnsavedChanges(() {
-                  context.pop();
-                  context.pop();
-                }))
-              : context.pop(context.pop)),
-      endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
-      body: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: kPaddingH),
-        children: [
-          SetTransectNumBuilder(
-            getUsedTransNums:
-                db.woodyDebrisTablesDao.getUsedTransnums(wdh.wdId.value),
-            startingTransNum: db.companionValueToStr(widget.wdh.transNum),
-            selectedItem: db.companionValueToStr(wdh.transNum).isEmpty
-                ? "Please select transect number"
-                : db.companionValueToStr(wdh.transNum),
-            transList: kTransectNumsList,
-            updateTransNum: (int transNum) =>
-                updateWdhCompanion(wdh.copyWith(transNum: d.Value(transNum))),
-          ),
-          DataInput(
-            title: "Length of the sample transect",
-            boxLabel: "Report to the nearest 0.1m",
-            prefixIcon: FontAwesomeIcons.ruler,
-            suffixVal: "m",
-            startingStr: db.companionValueToStr(wdh.nomTransLen),
-            errorMsg: checkNomTransLen(db.companionValueToStr(wdh.nomTransLen)),
-            inputType: const TextInputType.numberWithOptions(decimal: true),
-            inputFormatters: [
-              LengthLimitingTextInputFormatter(5),
-              ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
-            ],
-            onSubmit: (String s) {
-              changeMade = true;
-              if (s == "") {
-                updateWdhCompanion(
-                    wdh.copyWith(nomTransLen: const d.Value.absent()));
-              } else if (double.tryParse(s) != null) {
-                updateWdhCompanion(
-                    wdh.copyWith(nomTransLen: d.Value(double.parse(s))));
-              }
-            },
-          ),
-          DataInput(
-              title: "Transect azimuth.",
-              boxLabel: "Report in degrees",
-              prefixIcon: FontAwesomeIcons.angleLeft,
-              suffixVal: "\u00B0",
-              inputType: const TextInputType.numberWithOptions(decimal: false),
-              startingStr: db.companionValueToStr(wdh.transAzimuth),
-              errorMsg:
-                  checkTransAzim(db.companionValueToStr(wdh.transAzimuth)),
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(3),
-                ThousandsFormatter(allowFraction: false),
-              ],
-              onSubmit: (String s) {
-                changeMade = true;
-                if (s == "") {
-                  updateWdhCompanion(
-                      wdh.copyWith(transAzimuth: const d.Value.absent()));
-                } else if (int.tryParse(s) != null) {
-                  updateWdhCompanion(
-                      wdh.copyWith(transAzimuth: d.Value(int.parse(s))));
-                }
-              }),
-          const SizedBox(height: kPaddingV * 2),
-          const TextHeaderSeparator(
-            title: "Total distance along the transect assessed for:",
-            fontSize: 20,
-          ),
-          DataInput(
-              title: "Small Woody Debris (1.1cm - 7.5cm)",
-              boxLabel: "Report to the nearest 0.1m",
-              prefixIcon: FontAwesomeIcons.ruler,
-              suffixVal: "m",
-              inputType: const TextInputType.numberWithOptions(decimal: true),
-              startingStr: db.companionValueToStr(wdh.swdMeasLen),
-              errorMsg: checkSwdMeasLen(db.companionValueToStr(wdh.swdMeasLen)),
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(3),
-                ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
-              ],
-              onSubmit: (String s) {
-                changeMade = true;
-                if (s == "") {
-                  updateWdhCompanion(
-                      wdh.copyWith(swdMeasLen: const d.Value.absent()));
-                } else if (double.tryParse(s) != null) {
-                  updateWdhCompanion(
-                      wdh.copyWith(swdMeasLen: d.Value(double.parse(s))));
-                }
-              }),
-          DataInput(
-              title: "Medium Woody Debris (7.6cm - 30cm)",
-              boxLabel: "Report to the nearest 0.1m",
-              prefixIcon: FontAwesomeIcons.ruler,
-              suffixVal: "m",
-              inputType: const TextInputType.numberWithOptions(decimal: true),
-              startingStr: db.companionValueToStr(wdh.mcwdMeasLen),
-              errorMsg:
-                  checkMwdMeasLen(db.companionValueToStr(wdh.mcwdMeasLen)),
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(3),
-                ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
-              ],
-              onSubmit: (String s) {
-                changeMade = true;
-                if (s == "") {
-                  updateWdhCompanion(
-                      wdh.copyWith(mcwdMeasLen: const d.Value.absent()));
-                } else if (double.tryParse(s) != null) {
-                  updateWdhCompanion(
-                      wdh.copyWith(mcwdMeasLen: d.Value(double.parse(s))));
-                }
-              }),
-          DataInput(
-              title: "Large Woody Debris (>30cm)",
-              boxLabel: "Report to the nearest 0.1m",
-              prefixIcon: FontAwesomeIcons.ruler,
-              suffixVal: "m",
-              inputType: const TextInputType.numberWithOptions(decimal: true),
-              startingStr: db.companionValueToStr(wdh.lcwdMeasLen),
-              errorMsg: checkLgMeasLen(db.companionValueToStr(wdh.lcwdMeasLen)),
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(3),
-                ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
-              ],
-              onSubmit: (String s) {
-                changeMade = true;
-                if (s == "") {
-                  updateWdhCompanion(
-                      wdh.copyWith(lcwdMeasLen: const d.Value.absent()));
-                } else if (double.tryParse(s) != null) {
-                  updateWdhCompanion(
-                      wdh.copyWith(lcwdMeasLen: d.Value(double.parse(s))));
-                }
-              }),
-          Container(
-              margin: const EdgeInsets.only(
-                  top: kPaddingV * 2, bottom: kPaddingV * 2),
-              child: ElevatedButton(
-                  onPressed: () {
-                    if (wdh.complete.value) {
-                      Popups.show(context,
-                          Popups.generateCompleteErrorPopup("Woody Debris"));
-                      return;
-                    }
-
-                    List<String> errors = checkAll(db);
-                    if (errors.isNotEmpty) {
-                      Popups.show(
-                          context,
-                          PopupDismiss(
-                            "Error: Incorrect Data",
-                            contentWidget: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  "Errors were found in the following places",
-                                  textAlign: TextAlign.start,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 12),
-                                  child: Text(
-                                    FormatString.generateBulletList(errors),
-                                    textAlign: TextAlign.start,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ));
-                    } else {
-                      goToHeaderPage();
+    final db = ref.read(databaseProvider);
+    final wdhData = ref.watch(wdhProvider(wdhId));
+    return wdhData.when(
+        error: (err, stack) => Text("Error: $err"),
+        loading: () => const Center(child: CircularProgressIndicator()),
+        data: (wdhData) {
+          print(wdhData);
+          final WoodyDebrisHeaderCompanion wdh =
+              ref.watch(wdhCompanionHandlerProvider(wdhData.toCompanion(true)));
+          return Scaffold(
+            appBar: OurAppBar(
+              "Woody Debris Measurement Data: Transect ${wdh.transNum.value}",
+            ),
+            endDrawer: DrawerMenu(onLocaleChange: () => null),
+            body: ListView(
+              padding: const EdgeInsets.symmetric(horizontal: kPaddingH),
+              children: [
+                SetTransectNumBuilder(
+                  getUsedTransNums:
+                      db.woodyDebrisTablesDao.getUsedTransnums(wdhData.wdId),
+                  startingTransNum: wdhData.transNum.toString(),
+                  selectedItem: db.companionValueToStr(wdh.transNum).isEmpty
+                      ? "Please select transect number"
+                      : db.companionValueToStr(wdh.transNum),
+                  transList: kTransectNumsList,
+                  updateTransNum: (int transNum) => ref
+                      .read(wdhCompanionHandlerProvider(
+                              wdh.copyWith(transNum: d.Value(transNum)))
+                          .notifier)
+                      .updateWdh(wdh.copyWith(transNum: d.Value(transNum))),
+                ),
+                DataInput(
+                  title: "Length of the sample transect",
+                  boxLabel: "Report to the nearest 0.1m",
+                  prefixIcon: FontAwesomeIcons.ruler,
+                  suffixVal: "m",
+                  startingStr: db.companionValueToStr(wdh.nomTransLen),
+                  errorMsg:
+                      checkNomTransLen(db.companionValueToStr(wdh.nomTransLen)),
+                  inputType:
+                      const TextInputType.numberWithOptions(decimal: true),
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(5),
+                    ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
+                  ],
+                  onSubmit: (String s) {
+                    changeMade = true;
+                    if (s == "") {
+                      // updateWdhCompanion(
+                      //     wdh.copyWith(nomTransLen: const d.Value.absent()));
+                    } else if (double.tryParse(s) != null) {
+                      // updateWdhCompanion(
+                      //     wdh.copyWith(nomTransLen: d.Value(double.parse(s))));
                     }
                   },
-                  child: const Text("Submit"))),
-        ],
-      ),
-    );
+                ),
+                DataInput(
+                    title: "Transect azimuth.",
+                    boxLabel: "Report in degrees",
+                    prefixIcon: FontAwesomeIcons.angleLeft,
+                    suffixVal: "\u00B0",
+                    inputType:
+                        const TextInputType.numberWithOptions(decimal: false),
+                    startingStr: db.companionValueToStr(wdh.transAzimuth),
+                    errorMsg: checkTransAzim(
+                        db.companionValueToStr(wdh.transAzimuth)),
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(3),
+                      ThousandsFormatter(allowFraction: false),
+                    ],
+                    onSubmit: (String s) {
+                      changeMade = true;
+                      if (s == "") {
+                        // updateWdhCompanion(
+                        //     wdh.copyWith(transAzimuth: const d.Value.absent()));
+                      } else if (int.tryParse(s) != null) {
+                        // updateWdhCompanion(
+                        //     wdh.copyWith(transAzimuth: d.Value(int.parse(s))));
+                      }
+                    }),
+                const SizedBox(height: kPaddingV * 2),
+                const TextHeaderSeparator(
+                  title: "Total distance along the transect assessed for:",
+                  fontSize: 20,
+                ),
+                DataInput(
+                    title: "Small Woody Debris (1.1cm - 7.5cm)",
+                    boxLabel: "Report to the nearest 0.1m",
+                    prefixIcon: FontAwesomeIcons.ruler,
+                    suffixVal: "m",
+                    inputType:
+                        const TextInputType.numberWithOptions(decimal: true),
+                    startingStr: db.companionValueToStr(wdh.swdMeasLen),
+                    errorMsg:
+                        checkSwdMeasLen(db.companionValueToStr(wdh.swdMeasLen)),
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(3),
+                      ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
+                    ],
+                    onSubmit: (String s) {
+                      changeMade = true;
+                      if (s == "") {
+                        // updateWdhCompanion(
+                        //     wdh.copyWith(swdMeasLen: const d.Value.absent()));
+                      } else if (double.tryParse(s) != null) {
+                        // updateWdhCompanion(
+                        //     wdh.copyWith(swdMeasLen: d.Value(double.parse(s))));
+                      }
+                    }),
+                DataInput(
+                    title: "Medium Woody Debris (7.6cm - 30cm)",
+                    boxLabel: "Report to the nearest 0.1m",
+                    prefixIcon: FontAwesomeIcons.ruler,
+                    suffixVal: "m",
+                    inputType:
+                        const TextInputType.numberWithOptions(decimal: true),
+                    startingStr: db.companionValueToStr(wdh.mcwdMeasLen),
+                    errorMsg: checkMwdMeasLen(
+                        db.companionValueToStr(wdh.mcwdMeasLen)),
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(3),
+                      ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
+                    ],
+                    onSubmit: (String s) {
+                      changeMade = true;
+                      if (s == "") {
+                        // updateWdhCompanion(
+                        //     wdh.copyWith(mcwdMeasLen: const d.Value.absent()));
+                      } else if (double.tryParse(s) != null) {
+                        // updateWdhCompanion(wdh.copyWith(
+                        //     mcwdMeasLen: d.Value(double.parse(s))));
+                      }
+                    }),
+                DataInput(
+                    title: "Large Woody Debris (>30cm)",
+                    boxLabel: "Report to the nearest 0.1m",
+                    prefixIcon: FontAwesomeIcons.ruler,
+                    suffixVal: "m",
+                    inputType:
+                        const TextInputType.numberWithOptions(decimal: true),
+                    startingStr: db.companionValueToStr(wdh.lcwdMeasLen),
+                    errorMsg:
+                        checkLgMeasLen(db.companionValueToStr(wdh.lcwdMeasLen)),
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(3),
+                      ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
+                    ],
+                    onSubmit: (String s) {
+                      changeMade = true;
+                      if (s == "") {
+                        // updateWdhCompanion(
+                        //     wdh.copyWith(lcwdMeasLen: const d.Value.absent()));
+                      } else if (double.tryParse(s) != null) {
+                        // updateWdhCompanion(wdh.copyWith(
+                        //     lcwdMeasLen: d.Value(double.parse(s))));
+                      }
+                    }),
+                Container(
+                    margin: const EdgeInsets.only(
+                        top: kPaddingV * 2, bottom: kPaddingV * 2),
+                    child: ElevatedButton(
+                        onPressed: () {
+                          if (wdh.complete.value) {
+                            Popups.show(
+                                context,
+                                Popups.generateCompleteErrorPopup(
+                                    "Woody Debris"));
+                            return;
+                          }
+
+                          List<String> errors = checkAll(wdh);
+                          if (errors.isNotEmpty) {
+                            Popups.show(
+                                context,
+                                PopupDismiss(
+                                  "Error: Incorrect Data",
+                                  contentWidget: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                        "Errors were found in the following places",
+                                        textAlign: TextAlign.start,
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 12),
+                                        child: Text(
+                                          FormatString.generateBulletList(
+                                              errors),
+                                          textAlign: TextAlign.start,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ));
+                          } else {
+                            ref.refresh(wdhProvider(wdhId));
+
+                            context.goNamed(WoodyDebrisHeaderPage.routeName,
+                                pathParameters:
+                                    RouteParams.generateWdHeaderParms(
+                                        widget.goRouterState,
+                                        wdhId.toString()));
+                          }
+                        },
+                        child: const Text("Submit"))),
+              ],
+            ),
+          );
+        });
   }
 }

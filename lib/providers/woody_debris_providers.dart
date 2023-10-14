@@ -12,14 +12,31 @@ Future<WoodyDebrisSummaryData> wdData(WdDataRef ref, int surveyId) => ref
     .getWdSummaryFromSurveyId(surveyId);
 
 @riverpod
-Future<List<WoodyDebrisHeaderData>> transList(TransListRef ref, int wdId) =>
+Future<List<WoodyDebrisHeaderData>> wdTransList(WdTransListRef ref, int wdId) =>
     ref.read(databaseProvider).woodyDebrisTablesDao.getWdHeadersFromWdSId(wdId);
 
 @riverpod
-Future<bool> parentComplete(ParentCompleteRef ref, int wdId) async =>
+Future<bool> wdhParentComplete(WdhParentCompleteRef ref, int wdId) async =>
     (await ref.read(databaseProvider).woodyDebrisTablesDao.getWdSummary(wdId))
         .complete;
 
 @riverpod
 Future<WoodyDebrisHeaderData> wdh(WdhRef ref, int wdhId) async =>
     ref.read(databaseProvider).woodyDebrisTablesDao.getWdHeader(wdhId);
+
+@riverpod
+class WdhCompanionHandler extends _$WdhCompanionHandler {
+  @override
+  WoodyDebrisHeaderCompanion build(WoodyDebrisHeaderCompanion wdh) {
+    return wdh;
+  }
+
+  void updateWdh(WoodyDebrisHeaderCompanion wdh) {
+    state = wdh;
+  }
+}
+
+@riverpod
+WoodyDebrisHeaderCompanion wdhCompanion(
+        WdhCompanionRef ref, WoodyDebrisHeaderCompanion wdhC) =>
+    wdhC;

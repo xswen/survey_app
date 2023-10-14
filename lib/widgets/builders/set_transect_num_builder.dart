@@ -44,6 +44,7 @@ class SetTransectNumBuilder extends StatelessWidget {
             selectedItem: selectedItem,
             itemsList: transList,
             disabledFn: (s) {
+              print("selected item: $selectedItem, starting transNum: $startingTransNum");
               if (selectedItem != startingTransNum && s == startingTransNum) {
                 return false;
               } else {
