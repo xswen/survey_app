@@ -6,7 +6,7 @@ part of 'survey_info_page.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$updateSurveyCardHash() => r'8dfc63f74219c2b923f632857926f17f5291a732';
+String _$updateSurveyCardHash() => r'237a9bc55b62fe7c425f6fcf2ca53f3b58e28d38';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -158,7 +158,7 @@ class _UpdateSurveyCardProviderElement
   int get surveyId => (origin as UpdateSurveyCardProvider).surveyId;
 }
 
-String _$updateSurveyHash() => r'51a936710964a6db31a12c36dc98653fbe7e1740';
+String _$updateSurveyHash() => r'78a6395a44cc31011d39ff6c8726b6d06446d6ab';
 
 /// See also [updateSurvey].
 @ProviderFor(updateSurvey)

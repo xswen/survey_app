@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:drift/drift.dart' as d;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
+import 'package:survey_app/pages/survey_info/dashboard.dart';
 import 'package:survey_app/widgets/text/notify_no_filter_results.dart';
 
 import '../../formatters/format_date.dart';
@@ -67,15 +68,12 @@ class Filter extends _$Filter {
 Future<List<SurveyCard>> updateSurveyCard(
     UpdateSurveyCardRef ref, int surveyId) {
   final filter = ref.watch(filterProvider);
-  final rebuild = ref.watch(rebuildSurveyCardsProvider);
   return ref.read(databaseProvider).getCards(surveyId, filters: filter);
 }
 
 @riverpod
-Future<SurveyHeader> updateSurvey(UpdateSurveyRef ref, int surveyId) {
-  final rebuild = ref.watch(rebuildSurveyInfoProvider);
-  return ref.watch(databaseProvider).surveyInfoTablesDao.getSurvey(surveyId);
-}
+Future<SurveyHeader> updateSurvey(UpdateSurveyRef ref, int surveyId) =>
+    ref.watch(databaseProvider).surveyInfoTablesDao.getSurvey(surveyId);
 
 class SurveyInfoPage extends ConsumerStatefulWidget {
   static const String routeName = "surveyInfo";
@@ -190,9 +188,7 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
             .pushNamed(WoodyDebrisSummaryPage.routeName,
                 pathParameters: RouteParams.generateWdSummaryParams(
                     widget.goRouterState, wdId.toString()))
-            .then((value) => ref
-                .read(rebuildSurveyCardsProvider.notifier)
-                .update((state) => !state));
+            .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
       }
     }
   }
@@ -201,7 +197,7 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
     final db = ref.read(databaseProvider);
     (db.update(db.surveyHeaders)..where((t) => t.id.equals(surveyId)))
         .write(entry);
-    ref.read(rebuildSurveyInfoProvider.notifier).update((state) => !state);
+    ref.refresh(updateSurveyProvider(surveyId));
   }
 
   void handleFABClick(SurveyHeader survey, List<SurveyCard> cards) {
@@ -299,9 +295,7 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
         appBar: OurAppBar(
           title,
           backFn: () {
-            ref
-                .read(rebuildDashboardProvider.notifier)
-                .update((state) => !state);
+            ref.refresh(updateSurveyHeaderListProvider);
             context.pop();
           },
         ),
@@ -336,9 +330,8 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
                                           .referenceTablesDao
                                           .getLastMeasNum(survey.nfiPlot))
                                     },
-                                  ).then((value) => ref
-                                      .read(rebuildSurveyInfoProvider.notifier)
-                                      .update((state) => !state)));
+                                  ).then((value) => ref.refresh(
+                                      updateSurveyProvider(surveyId))));
                         }
                       }),
                       child: Column(

@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../barrels/page_imports_barrel.dart';
 import '../database/database.dart';
 
-final databaseProvider = Provider<Database>((ref) => Database.instance);
+part 'providers.g.dart';
 
-final rebuildDashboardProvider = StateProvider<bool>((ref) => false);
-final rebuildSurveyInfoProvider = StateProvider<bool>((ref) => false);
-final rebuildSurveyCardsProvider = StateProvider<bool>((ref) => false);
+@riverpod
+Database database(DatabaseRef ref) => Database.instance;

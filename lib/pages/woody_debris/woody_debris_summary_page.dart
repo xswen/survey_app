@@ -30,6 +30,10 @@ class WoodyDebrisSummaryPage extends ConsumerStatefulWidget {
 class WoodyDebrisSummaryPageState
     extends ConsumerState<WoodyDebrisSummaryPage> {
   final String title = "Woody Debris";
+  late final PopupDismiss completeWarningPopup;
+  final PopupDismiss surveyCompleteWarningPopup =
+      Popups.generatePreviousMarkedCompleteErrorPopup("Survey");
+
   late final int surveyId;
   late final int wdId;
 
@@ -37,6 +41,8 @@ class WoodyDebrisSummaryPageState
   void initState() {
     surveyId = RouteParams.getSurveyId(widget.goRouterState);
     wdId = RouteParams.getWdSummaryId(widget.goRouterState);
+    completeWarningPopup = Popups.generateCompleteErrorPopup(title);
+
     super.initState();
   }
 
@@ -78,18 +84,14 @@ class WoodyDebrisSummaryPageState
         ));
   }
 
-  void goToWdhPage(int wdhId) {
-    print(RouteParams.generateWdHeaderParms(
-        widget.goRouterState, wdhId.toString()));
-    context
-        .pushNamed(WoodyDebrisHeaderPage.routeName,
-            pathParameters: RouteParams.generateWdHeaderParms(
-                widget.goRouterState, wdhId.toString()))
-        .then((value) {
-      ref.refresh(transListProvider(wdId));
-      ref.refresh(wdDataProvider(surveyId));
-    });
-  }
+  void goToWdhPage(int wdhId) => context
+          .pushNamed(WoodyDebrisHeaderPage.routeName,
+              pathParameters: RouteParams.generateWdHeaderParms(
+                  widget.goRouterState, wdhId.toString()))
+          .then((value) {
+        ref.refresh(transListProvider(wdId));
+        ref.refresh(wdDataProvider(surveyId));
+      });
 
   SurveyStatus getStatus(WoodyDebrisHeaderData wdh) {
     if (wdh.complete) return SurveyStatus.complete;
@@ -97,13 +99,42 @@ class WoodyDebrisSummaryPageState
     return SurveyStatus.inProgress;
   }
 
+  bool checkHeadersComplete(List<WoodyDebrisHeaderData> transList) {
+    for (int i = 0; i < transList.length; i++) {
+      if (!transList[i].complete) return false;
+    }
+    return true;
+  }
+
+  void markComplete(
+      WoodyDebrisSummaryData wd, List<WoodyDebrisHeaderData> transList) {
+    final db = ref.read(databaseProvider);
+
+    updateWdSummary(const WoodyDebrisSummaryCompanion(complete: d.Value(true)));
+
+    db.surveyInfoTablesDao.getSurvey(wd.surveyId).then((value) {
+      bool surveyComplete = value.complete;
+      if (surveyComplete) {
+        Popups.show(context, surveyCompleteWarningPopup);
+      } else if (wd.complete) {
+        updateWdSummary(
+            const WoodyDebrisSummaryCompanion(complete: d.Value(false)));
+      } else if (transList.isEmpty) {
+        Popups.showMissingTransect(context);
+      } else {
+        checkHeadersComplete(transList)
+            ? updateWdSummary(
+                const WoodyDebrisSummaryCompanion(complete: d.Value(true)))
+            : Popups.showIncompleteTransect(context);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
 
     final db = ref.read(databaseProvider);
-    final PopupDismiss completeWarningPopup =
-        Popups.generateCompleteErrorPopup(title);
 
     AsyncValue<WoodyDebrisSummaryData> wdSummary =
         ref.watch(wdDataProvider(surveyId));
@@ -115,115 +146,81 @@ class WoodyDebrisSummaryPageState
       endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
       body: Center(
         child: wdSummary.when(
-            error: (err, stack) => Text("Error: $err"),
-            loading: () => const Center(child: CircularProgressIndicator()),
-            data: (wd) {
-              final PopupDismiss surveyCompleteWarningPopup =
-                  Popups.generatePreviousMarkedCompleteErrorPopup("Survey");
-
-              return Column(
-                children: [
-                  CalendarSelect(
-                    date: wd.measDate,
-                    label: "Enter Measurement Date",
-                    readOnly: wd.complete,
-                    readOnlyPopup: completeWarningPopup,
-                    setStateFn: (DateTime date) async => updateWdSummary(
-                        WoodyDebrisSummaryCompanion(measDate: d.Value(date))),
-                  ),
-                  const SizedBox(height: kPaddingV),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                        kPaddingH, 0, kPaddingH, kPaddingV / 2),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          "Select a Transect to enter data for:",
-                          style: TextStyle(fontSize: kTextHeaderSize),
-                        ),
-                        ElevatedButton(
-                            onPressed: () => createTransect(),
-                            child: const Row(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(right: kPaddingH),
-                                  child: Icon(
-                                    FontAwesomeIcons.circlePlus,
-                                    size: 20,
-                                  ),
-                                ),
-                                Text("Add transect")
-                              ],
-                            ))
-                      ],
+          error: (err, stack) => Text("Error: $err"),
+          loading: () => const Center(child: CircularProgressIndicator()),
+          data: (wd) => Column(
+            children: [
+              CalendarSelect(
+                date: wd.measDate,
+                label: "Enter Measurement Date",
+                readOnly: wd.complete,
+                readOnlyPopup: completeWarningPopup,
+                setStateFn: (DateTime date) async => updateWdSummary(
+                    WoodyDebrisSummaryCompanion(measDate: d.Value(date))),
+              ),
+              const SizedBox(height: kPaddingV),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(
+                    kPaddingH, 0, kPaddingH, kPaddingV / 2),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Select a Transect to enter data for:",
+                      style: TextStyle(fontSize: kTextHeaderSize),
                     ),
-                  ),
-                  Expanded(
-                      child: transList.when(
-                    data: (transList) {
-                      bool checkHeadersComplete() {
-                        for (int i = 0; i < transList.length; i++) {
-                          if (!transList[i].complete) return false;
-                        }
-                        return true;
-                      }
-
-                      return Scaffold(
-                        floatingActionButton: FloatingCompleteButton(
-                          title: title,
-                          complete: wd.complete,
-                          onPressed: () {
-                            db.surveyInfoTablesDao
-                                .getSurvey(wd.surveyId)
-                                .then((value) {
-                              bool surveyComplete = value.complete;
-                              if (surveyComplete) {
-                                Popups.show(
-                                    context, surveyCompleteWarningPopup);
-                              } else if (wd.complete) {
-                                updateWdSummary(
-                                    const WoodyDebrisSummaryCompanion(
-                                        complete: d.Value(false)));
-                              } else if (transList.isEmpty) {
-                                Popups.showMissingTransect(context);
-                              } else {
-                                checkHeadersComplete()
-                                    ? updateWdSummary(
-                                        const WoodyDebrisSummaryCompanion(
-                                            complete: d.Value(true)))
-                                    : Popups.showIncompleteTransect(context);
-                              }
-                            });
-                          },
-                        ),
-                        body: ListView.builder(
-                            itemCount: transList.length,
-                            itemBuilder: (BuildContext cxt, int index) {
-                              WoodyDebrisHeaderData wdh = transList[index];
-                              return TileCardSelection(
-                                  title: "Transect ${wdh.transNum}",
-                                  onPressed: () async {
-                                    wd.complete
-                                        ? Popups.show(
-                                            context,
-                                            Popups.generateNoticeSurveyComplete(
-                                              "Woody Debris",
-                                              () => goToWdhPage(wdh.id),
-                                            ))
-                                        : goToWdhPage(wdh.id);
-                                  },
-                                  status: getStatus(wdh));
-                            }),
-                      );
-                    },
-                    error: (err, stack) => Text("Error: $err"),
-                    loading: () =>
-                        const Center(child: CircularProgressIndicator()),
-                  ))
-                ],
-              );
-            }),
+                    ElevatedButton(
+                        onPressed: () => createTransect(),
+                        child: const Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(right: kPaddingH),
+                              child: Icon(
+                                FontAwesomeIcons.circlePlus,
+                                size: 20,
+                              ),
+                            ),
+                            Text("Add transect")
+                          ],
+                        ))
+                  ],
+                ),
+              ),
+              Expanded(
+                  child: transList.when(
+                data: (transList) {
+                  return Scaffold(
+                    floatingActionButton: FloatingCompleteButton(
+                      title: title,
+                      complete: wd.complete,
+                      onPressed: () => markComplete(wd, transList),
+                    ),
+                    body: ListView.builder(
+                        itemCount: transList.length,
+                        itemBuilder: (BuildContext cxt, int index) {
+                          WoodyDebrisHeaderData wdh = transList[index];
+                          return TileCardSelection(
+                              title: "Transect ${wdh.transNum}",
+                              onPressed: () async {
+                                wd.complete
+                                    ? Popups.show(
+                                        context,
+                                        Popups.generateNoticeSurveyComplete(
+                                          "Woody Debris",
+                                          () => goToWdhPage(wdh.id),
+                                        ))
+                                    : goToWdhPage(wdh.id);
+                              },
+                              status: getStatus(wdh));
+                        }),
+                  );
+                },
+                error: (err, stack) => Text("Error: $err"),
+                loading: () => const Center(child: CircularProgressIndicator()),
+              ))
+            ],
+          ),
+        ),
       ),
     );
   }

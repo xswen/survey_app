@@ -51,7 +51,6 @@ class Filter extends _$Filter {
 Future<List<SurveyHeader>> updateSurveyHeaderList(
     UpdateSurveyHeaderListRef ref) {
   final filter = ref.watch(filterProvider);
-  final rebuild = ref.watch(rebuildDashboardProvider);
   return ref
       .read(databaseProvider)
       .surveyInfoTablesDao
