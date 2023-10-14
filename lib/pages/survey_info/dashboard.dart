@@ -6,56 +6,10 @@ import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/widgets/tags/tag_chips.dart';
 
 import '../../l10n/locale_keys.g.dart';
+import '../../providers/survey_info/dashboard_providers.dart';
 import '../../widgets/tile_cards/tile_card_dashboard.dart';
 import 'create_survey_page.dart';
 import 'survey_info_page.dart';
-
-part 'dashboard.g.dart';
-
-@riverpod
-class Filter extends _$Filter {
-  @override
-  HashSet<SurveyStatus> build() {
-    return HashSet<SurveyStatus>();
-  }
-
-  void selectedAll(bool selected) => selected
-      ? state = HashSet<SurveyStatus>()
-      : state = HashSet<SurveyStatus>.of({
-          SurveyStatus.complete,
-          SurveyStatus.inProgress,
-        });
-
-  void selectedInProgress(bool selected) => selected
-      ? state = HashSet<SurveyStatus>.of({
-          ...state,
-          SurveyStatus.inProgress,
-        })
-      : state = HashSet<SurveyStatus>.of({
-          for (final status in state)
-            if (status != SurveyStatus.inProgress) status
-        });
-
-  void selectedComplete(bool selected) => selected
-      ? state = HashSet<SurveyStatus>.of({
-          ...state,
-          SurveyStatus.complete,
-        })
-      : state = HashSet<SurveyStatus>.of({
-          for (final status in state)
-            if (status != SurveyStatus.complete) status
-        });
-}
-
-@riverpod
-Future<List<SurveyHeader>> updateSurveyHeaderList(
-    UpdateSurveyHeaderListRef ref) {
-  final filter = ref.watch(filterProvider);
-  return ref
-      .read(databaseProvider)
-      .surveyInfoTablesDao
-      .getSurveysFiltered(filter);
-}
 
 class DashboardPage extends ConsumerStatefulWidget {
   static const String routeName = "dashboard";
@@ -71,7 +25,7 @@ class DashboardPageState extends ConsumerState<DashboardPage> {
   Widget build(BuildContext context) {
     AsyncValue<List<SurveyHeader>> surveys =
         ref.watch(updateSurveyHeaderListProvider);
-    HashSet<SurveyStatus> filters = ref.watch(filterProvider);
+    HashSet<SurveyStatus> filters = ref.watch(dashboardSurveyFilterProvider);
 
     return Scaffold(
       appBar: const OurAppBar(LocaleKeys.dashboardTitle),
@@ -106,21 +60,22 @@ class DashboardPageState extends ConsumerState<DashboardPage> {
                   TagChip(
                     title: "All",
                     selected: filters.isEmpty,
-                    onSelected: (selected) =>
-                        ref.read(filterProvider.notifier).selectedAll(selected),
+                    onSelected: (selected) => ref
+                        .read(dashboardSurveyFilterProvider.notifier)
+                        .selectedAll(selected),
                   ),
                   TagChip(
                     title: "Completed",
                     selected: filters.contains(SurveyStatus.complete),
                     onSelected: (selected) => ref
-                        .read(filterProvider.notifier)
+                        .read(dashboardSurveyFilterProvider.notifier)
                         .selectedComplete(selected),
                   ),
                   TagChip(
                     title: "In Progress",
                     selected: filters.contains(SurveyStatus.inProgress),
                     onSelected: (selected) => ref
-                        .read(filterProvider.notifier)
+                        .read(dashboardSurveyFilterProvider.notifier)
                         .selectedInProgress(selected),
                   ),
                 ],

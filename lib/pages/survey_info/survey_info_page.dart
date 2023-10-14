@@ -1,13 +1,11 @@
-import 'dart:collection';
-
 import 'package:drift/drift.dart' as d;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
-import 'package:survey_app/pages/survey_info/dashboard.dart';
 import 'package:survey_app/widgets/text/notify_no_filter_results.dart';
 
 import '../../formatters/format_date.dart';
 import '../../formatters/format_string.dart';
+import '../../providers/survey_info/dashboard_providers.dart';
 import '../../providers/survey_info/survey_info_providers.dart';
 import '../../widgets/buttons/edit_icon_button.dart';
 import '../../widgets/tags/tag_chips.dart';
@@ -17,53 +15,6 @@ import '../../widgets/titled_border.dart';
 import '../../wrappers/survey_card.dart';
 import '../woody_debris/woody_debris_summary_page.dart';
 import 'create_survey_page.dart';
-
-part 'survey_info_page.g.dart';
-
-@riverpod
-class Filter extends _$Filter {
-  @override
-  HashSet<SurveyStatus> build() {
-    return HashSet<SurveyStatus>();
-  }
-
-  void selectedAll(bool selected) => selected
-      ? state = HashSet<SurveyStatus>()
-      : state = HashSet<SurveyStatus>.of({
-          SurveyStatus.complete,
-          SurveyStatus.inProgress,
-        });
-
-  void selectedNotStarted(bool selected) => selected
-      ? state = HashSet<SurveyStatus>.of({
-          ...state,
-          SurveyStatus.notStarted,
-        })
-      : state = HashSet<SurveyStatus>.of({
-          for (final status in state)
-            if (status != SurveyStatus.notStarted) status
-        });
-
-  void selectedInProgress(bool selected) => selected
-      ? state = HashSet<SurveyStatus>.of({
-          ...state,
-          SurveyStatus.inProgress,
-        })
-      : state = HashSet<SurveyStatus>.of({
-          for (final status in state)
-            if (status != SurveyStatus.inProgress) status
-        });
-
-  void selectedComplete(bool selected) => selected
-      ? state = HashSet<SurveyStatus>.of({
-          ...state,
-          SurveyStatus.complete,
-        })
-      : state = HashSet<SurveyStatus>.of({
-          for (final status in state)
-            if (status != SurveyStatus.complete) status
-        });
-}
 
 class SurveyInfoPage extends ConsumerStatefulWidget {
   static const String routeName = "surveyInfo";
