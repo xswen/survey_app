@@ -3,20 +3,9 @@ import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/pages/woody_debris/woody_debris_header_page.dart';
 import 'package:survey_app/widgets/builders/set_transect_num_builder.dart';
 
+import '../../providers/woody_debris_providers.dart';
 import '../../widgets/date_select.dart';
 import '../../widgets/tile_cards/tile_card_selection.dart';
-
-part 'woody_debris_summary_page.g.dart';
-
-@riverpod
-Future<WoodyDebrisSummaryData> wdData(WdDataRef ref, int surveyId) => ref
-    .read(databaseProvider)
-    .woodyDebrisTablesDao
-    .getWdSummaryFromSurveyId(surveyId);
-
-@riverpod
-Future<List<WoodyDebrisHeaderData>> transList(TransListRef ref, int wdId) =>
-    ref.read(databaseProvider).woodyDebrisTablesDao.getWdHeadersFromWdSId(wdId);
 
 class WoodyDebrisSummaryPage extends ConsumerStatefulWidget {
   static const String routeName = "woodyDebrisSummary";

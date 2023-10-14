@@ -6,7 +6,7 @@ import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/widgets/tags/tag_chips.dart';
 
 import '../../l10n/locale_keys.g.dart';
-import '../../providers/survey_info/dashboard_providers.dart';
+import '../../providers/survey_info_providers.dart';
 import '../../widgets/tile_cards/tile_card_dashboard.dart';
 import 'create_survey_page.dart';
 import 'survey_info_page.dart';

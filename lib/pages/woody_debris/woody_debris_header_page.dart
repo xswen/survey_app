@@ -1,20 +1,10 @@
 import 'package:drift/drift.dart' as d;
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 
+import '../../providers/woody_debris_providers.dart';
 import '../../widgets/buttons/icon_nav_button.dart';
 import '../../widgets/popups/popup_errors_found_list.dart';
 import '../../widgets/popups/popup_warning_missing_fields_list.dart';
-
-part 'woody_debris_header_page.g.dart';
-
-@riverpod
-Future<bool> parentComplete(ParentCompleteRef ref, int wdId) async =>
-    (await ref.read(databaseProvider).woodyDebrisTablesDao.getWdSummary(wdId))
-        .complete;
-
-@riverpod
-Future<WoodyDebrisHeaderData> wdh(WdhRef ref, int wdhId) async =>
-    ref.read(databaseProvider).woodyDebrisTablesDao.getWdHeader(wdhId);
 
 class WoodyDebrisHeaderPage extends ConsumerStatefulWidget {
   static const String routeName = "woodyDebrisHeader";

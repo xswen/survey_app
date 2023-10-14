@@ -5,8 +5,7 @@ import 'package:survey_app/widgets/text/notify_no_filter_results.dart';
 
 import '../../formatters/format_date.dart';
 import '../../formatters/format_string.dart';
-import '../../providers/survey_info/dashboard_providers.dart';
-import '../../providers/survey_info/survey_info_providers.dart';
+import '../../providers/survey_info_providers.dart';
 import '../../widgets/buttons/edit_icon_button.dart';
 import '../../widgets/tags/tag_chips.dart';
 import '../../widgets/text/text_line_label.dart';
