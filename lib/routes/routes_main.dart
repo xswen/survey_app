@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:survey_app/database/database.dart';
 import 'package:survey_app/pages/delete_page.dart';
@@ -9,6 +10,24 @@ import 'package:survey_app/routes/go_route_woody_debris.dart';
 
 import '../main.dart';
 import '../wrappers/survey_card.dart';
+
+class DashboardRoute extends GoRouteData {
+  const DashboardRoute();
+  static const path = '/';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const MyHomePage(
+      title: 'Test',
+    );
+  }
+}
+
+// GoRouter router = GoRouter(
+//   initialLocation: HomeRoute.path,
+//   debugLogDiagnostics: true,
+//   routes: $appRoutes,
+// );
 
 GoRouter router = GoRouter(
   routes: [

@@ -34,9 +34,10 @@ class $JurisdictionsTable extends Jurisdictions
   @override
   List<GeneratedColumn> get $columns => [code, nameEn, nameFr];
   @override
-  String get aliasedName => _alias ?? 'jurisdictions';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'jurisdictions';
+  String get actualTableName => $name;
+  static const String $name = 'jurisdictions';
   @override
   VerificationContext validateIntegrity(Insertable<Jurisdiction> instance,
       {bool isInserting = false}) {
@@ -267,9 +268,10 @@ class $PlotsTable extends Plots with TableInfo<$PlotsTable, Plot> {
   @override
   List<GeneratedColumn> get $columns => [nfiPlot, code, lastMeasNum];
   @override
-  String get aliasedName => _alias ?? 'plots';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'plots';
+  String get actualTableName => $name;
+  static const String $name = 'plots';
   @override
   VerificationContext validateIntegrity(Insertable<Plot> instance,
       {bool isInserting = false}) {
@@ -509,9 +511,10 @@ class $TreeGenusTable extends TreeGenus
         commonNameFr
       ];
   @override
-  String get aliasedName => _alias ?? 'tree_genus';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'tree_genus';
+  String get actualTableName => $name;
+  static const String $name = 'tree_genus';
   @override
   VerificationContext validateIntegrity(Insertable<TreeGenusData> instance,
       {bool isInserting = false}) {
@@ -868,9 +871,10 @@ class $EcpGenusTable extends EcpGenus
         commonNameFr
       ];
   @override
-  String get aliasedName => _alias ?? 'ecp_genus';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'ecp_genus';
+  String get actualTableName => $name;
+  static const String $name = 'ecp_genus';
   @override
   VerificationContext validateIntegrity(Insertable<EcpGenusData> instance,
       {bool isInserting = false}) {
@@ -1221,9 +1225,10 @@ class $EcpVarietyTable extends EcpVariety
   List<GeneratedColumn> get $columns =>
       [id, genusCode, speciesCode, varietyCode, varietyLatinName];
   @override
-  String get aliasedName => _alias ?? 'ecp_variety';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'ecp_variety';
+  String get actualTableName => $name;
+  static const String $name = 'ecp_variety';
   @override
   VerificationContext validateIntegrity(Insertable<EcpVarietyData> instance,
       {bool isInserting = false}) {
@@ -1537,9 +1542,10 @@ class $SurveyHeadersTable extends SurveyHeaders
   List<GeneratedColumn> get $columns =>
       [id, nfiPlot, measDate, measNum, province, complete];
   @override
-  String get aliasedName => _alias ?? 'survey_headers';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'survey_headers';
+  String get actualTableName => $name;
+  static const String $name = 'survey_headers';
   @override
   VerificationContext validateIntegrity(Insertable<SurveyHeader> instance,
       {bool isInserting = false}) {
@@ -1850,9 +1856,10 @@ class $MetaCommentTable extends MetaComment
   List<GeneratedColumn> get $columns =>
       [id, surveyId, surveyCategory, commentText];
   @override
-  String get aliasedName => _alias ?? 'meta_comment';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'meta_comment';
+  String get actualTableName => $name;
+  static const String $name = 'meta_comment';
   @override
   VerificationContext validateIntegrity(Insertable<MetaCommentData> instance,
       {bool isInserting = false}) {
@@ -2118,9 +2125,10 @@ class $WoodyDebrisSummaryTable extends WoodyDebrisSummary
   List<GeneratedColumn> get $columns =>
       [id, surveyId, measDate, numTransects, complete];
   @override
-  String get aliasedName => _alias ?? 'woody_debris_summary';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'woody_debris_summary';
+  String get actualTableName => $name;
+  static const String $name = 'woody_debris_summary';
   @override
   VerificationContext validateIntegrity(
       Insertable<WoodyDebrisSummaryData> instance,
@@ -2474,9 +2482,10 @@ class $WoodyDebrisHeaderTable extends WoodyDebrisHeader
         complete
       ];
   @override
-  String get aliasedName => _alias ?? 'woody_debris_header';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'woody_debris_header';
+  String get actualTableName => $name;
+  static const String $name = 'woody_debris_header';
   @override
   VerificationContext validateIntegrity(
       Insertable<WoodyDebrisHeaderData> instance,
@@ -2943,9 +2952,10 @@ class $WoodyDebrisSmallTable extends WoodyDebrisSmall
   List<GeneratedColumn> get $columns =>
       [id, wdHeaderId, swdTallyS, swdTallyM, swdTallyL];
   @override
-  String get aliasedName => _alias ?? 'woody_debris_small';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'woody_debris_small';
+  String get actualTableName => $name;
+  static const String $name = 'woody_debris_small';
   @override
   VerificationContext validateIntegrity(
       Insertable<WoodyDebrisSmallData> instance,
@@ -3283,9 +3293,10 @@ class $WoodyDebrisOddTable extends WoodyDebrisOdd
         decayClass
       ];
   @override
-  String get aliasedName => _alias ?? 'woody_debris_odd';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'woody_debris_odd';
+  String get actualTableName => $name;
+  static const String $name = 'woody_debris_odd';
   @override
   VerificationContext validateIntegrity(Insertable<WoodyDebrisOddData> instance,
       {bool isInserting = false}) {
@@ -3740,9 +3751,10 @@ class $WoodyDebrisRoundTable extends WoodyDebrisRound
         decayClass
       ];
   @override
-  String get aliasedName => _alias ?? 'woody_debris_round';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'woody_debris_round';
+  String get actualTableName => $name;
+  static const String $name = 'woody_debris_round';
   @override
   VerificationContext validateIntegrity(
       Insertable<WoodyDebrisRoundData> instance,
@@ -4136,9 +4148,10 @@ class $SurfaceSubstrateSummaryTable extends SurfaceSubstrateSummary
   List<GeneratedColumn> get $columns =>
       [id, surveyId, measDate, numTransects, complete];
   @override
-  String get aliasedName => _alias ?? 'surface_substrate_summary';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'surface_substrate_summary';
+  String get actualTableName => $name;
+  static const String $name = 'surface_substrate_summary';
   @override
   VerificationContext validateIntegrity(
       Insertable<SurfaceSubstrateSummaryData> instance,
@@ -4448,9 +4461,10 @@ class $SurfaceSubstrateHeaderTable extends SurfaceSubstrateHeader
   List<GeneratedColumn> get $columns =>
       [id, ssId, transNum, nomTransLen, transAzimuth, complete];
   @override
-  String get aliasedName => _alias ?? 'surface_substrate_header';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'surface_substrate_header';
+  String get actualTableName => $name;
+  static const String $name = 'surface_substrate_header';
   @override
   VerificationContext validateIntegrity(
       Insertable<SurfaceSubstrateHeaderData> instance,
@@ -4787,9 +4801,10 @@ class $SurfaceSubstrateTallyTable extends SurfaceSubstrateTally
   List<GeneratedColumn> get $columns =>
       [id, ssHeaderId, stationNum, substrateType, depth, depthLimit];
   @override
-  String get aliasedName => _alias ?? 'surface_substrate_tally';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'surface_substrate_tally';
+  String get actualTableName => $name;
+  static const String $name = 'surface_substrate_tally';
   @override
   VerificationContext validateIntegrity(
       Insertable<SurfaceSubstrateTallyData> instance,
@@ -5128,9 +5143,10 @@ class $EcpSummaryTable extends EcpSummary
   List<GeneratedColumn> get $columns =>
       [id, surveyId, measDate, numEcps, complete];
   @override
-  String get aliasedName => _alias ?? 'ecp_summary';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'ecp_summary';
+  String get actualTableName => $name;
+  static const String $name = 'ecp_summary';
   @override
   VerificationContext validateIntegrity(Insertable<EcpSummaryData> instance,
       {bool isInserting = false}) {
@@ -5434,9 +5450,10 @@ class $EcpHeaderTable extends EcpHeader
   List<GeneratedColumn> get $columns =>
       [id, ecpSummaryId, ecpNum, complete, plotType, nomPlotSize, measPlotSize];
   @override
-  String get aliasedName => _alias ?? 'ecp_header';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'ecp_header';
+  String get actualTableName => $name;
+  static const String $name = 'ecp_header';
   @override
   VerificationContext validateIntegrity(Insertable<EcpHeaderData> instance,
       {bool isInserting = false}) {
@@ -5828,9 +5845,10 @@ class $EcpSpeciesTable extends EcpSpecies
         commentId
       ];
   @override
-  String get aliasedName => _alias ?? 'ecp_species';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'ecp_species';
+  String get actualTableName => $name;
+  static const String $name = 'ecp_species';
   @override
   VerificationContext validateIntegrity(Insertable<EcpSpeciesData> instance,
       {bool isInserting = false}) {

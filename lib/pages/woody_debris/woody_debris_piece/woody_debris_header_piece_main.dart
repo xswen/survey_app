@@ -2,6 +2,7 @@ import 'package:drift/drift.dart' as d;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:survey_app/constants/constant_values.dart';
 import 'package:survey_app/constants/text_designs.dart';
 import 'package:survey_app/database/database.dart';
 import 'package:survey_app/wrappers/column_header_object.dart';
@@ -30,7 +31,7 @@ class _ColNames {
   ColumnHeaders diameter = ColumnHeaders("Diameter");
   ColumnHeaders tiltAngle = ColumnHeaders("Tilt Angle");
   ColumnHeaders decayClass = ColumnHeaders("Decay Class");
-  ColumnHeaders edit = ColumnHeaders(ColumnHeaders.headerNameId, sort: false);
+  ColumnHeaders edit = ColumnHeaders(ColumnHeaders.headerNameEdit, sort: false);
 
   String empty = "-";
 
@@ -118,8 +119,7 @@ class _WoodyDebrisHeaderPieceMainState
                   value: dataGridRow.decayClass == -1
                       ? "Missing"
                       : dataGridRow.decayClass.toString()),
-              DataGridCell<bool>(
-                  columnName: columnData.edit.name, value: false),
+              kEditColumnDataGridCell,
             ]))
         .toList();
 
@@ -154,8 +154,7 @@ class _WoodyDebrisHeaderPieceMainState
                   value: dataGridRow.decayClass == -1
                       ? "Missing"
                       : dataGridRow.decayClass.toString()),
-              DataGridCell<String?>(
-                  columnName: columnData.edit.name, value: null),
+              kEditColumnDataGridCell,
             ]))
         .toList();
 

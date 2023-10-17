@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:survey_app/constants/constant_values.dart';
 import 'package:survey_app/pages/survey_info/dashboard.dart';
-import 'package:survey_app/routes/router_routes_main.dart';
+import 'package:survey_app/routes/routes_main.dart';
 
 import 'database/database.dart';
 import 'l10n/locale_keys.g.dart';
