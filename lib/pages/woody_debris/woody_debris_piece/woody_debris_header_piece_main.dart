@@ -4,8 +4,12 @@ import 'package:survey_app/providers/woody_debris_providers.dart';
 import 'package:survey_app/wrappers/column_header_object.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import '../../../widgets/box_increment.dart';
+import '../../../widgets/builders/decay_class_select_builder.dart';
+import '../../../widgets/hide_info_checkbox.dart';
 import '../../../widgets/tables/table_creation_builder.dart';
 import '../../../widgets/tables/table_data_grid_source_builder.dart';
+import '../../../widgets/text/text_header_separator.dart';
 import 'woody_debris_piece_accu_odd_page.dart';
 import 'woody_debris_piece_round_page.dart';
 
@@ -60,10 +64,6 @@ class WoodyDebrisHeaderPieceMainPageState
   late final int wdSmId;
   late final int wdhId;
 
-  // late int? decayClass;
-  // late bool transComplete;
-  // late DataGridSourceBuilder largePieceDataSource =
-  //     DataGridSourceBuilder(dataGridRows: []);
   ColNames columnData = ColNames();
 
   @override
@@ -71,8 +71,6 @@ class WoodyDebrisHeaderPieceMainPageState
     wdSmId = RouteParams.getWdSmallId(widget.goRouterState);
     wdhId = RouteParams.getWdHeaderId(widget.goRouterState)!;
 
-    // decayClass = widget.decayClass;
-    // transComplete = widget.transComplete;
     super.initState();
   }
 
@@ -170,6 +168,7 @@ class WoodyDebrisHeaderPieceMainPageState
     final db = ref.read(databaseProvider);
 
     final AsyncValue<WoodyDebrisHeaderData> wdh = ref.watch(wdhProvider(wdhId));
+    final wdSmall = ref.watch(wdSmallProvider(wdhId));
     final pieceOdd = ref.watch(wdPieceOddProvider(wdhId));
     final pieceRound = ref.watch(wdPieceRoundProvider(wdhId));
 
@@ -189,6 +188,18 @@ class WoodyDebrisHeaderPieceMainPageState
           ref.refresh(wdPieceRoundProvider(wdhId));
         });
       });
+    }
+
+    void updateDecayClass(int? newDecayClass) {
+      (db.update(db.woodyDebrisHeader)..where((t) => t.id.equals(wdhId))).write(
+          WoodyDebrisHeaderCompanion(swdDecayClass: d.Value(newDecayClass)));
+      ref.refresh(wdhProvider(wdhId));
+    }
+
+    void updateWdSm(WoodyDebrisSmallCompanion entry) {
+      (db.update(db.woodyDebrisSmall)..where((t) => t.id.equals(wdSmId)))
+          .write(entry);
+      ref.refresh(wdSmallProvider(wdhId));
     }
 
     void addPiece() => Popups.show(
@@ -283,6 +294,140 @@ class WoodyDebrisHeaderPieceMainPageState
               body: Center(
                 child: Column(
                   children: [
+                    const SizedBox(
+                      height: kPaddingV,
+                    ),
+                    const TextHeaderSeparator(title: "Small Woody Debris"),
+                    const SizedBox(
+                      height: kPaddingV,
+                    ),
+                    Padding(
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: kPaddingH),
+                      child: HideInfoCheckbox(
+                        title:
+                            "Average decay class of small woody debris pieces along "
+                            "this transect",
+                        checkTitle:
+                            "Mark decay class as not measured or not applicable",
+                        checkValue: wdh.swdDecayClass == -1,
+                        onChange: (b) {
+                          if (wdh.complete) {
+                            Popups.show(context, completeWarningPopup);
+                          } else {
+                            b!
+                                ? Popups.show(
+                                    context,
+                                    PopupContinue(
+                                      "Warning: Setting decay class as Missing",
+                                      contentText:
+                                          "Are you sure you want to set decay class not "
+                                          "measured/not applicable?",
+                                      rightBtnOnPressed: () {
+                                        updateDecayClass(-1);
+                                        context.pop();
+                                      },
+                                    ))
+                                : updateDecayClass(null);
+                          }
+                        },
+                        child: DecayClassSelectBuilder(
+                          onBeforePopup: (s) async {
+                            if (wdh.complete) {
+                              Popups.show(
+                                  context,
+                                  Popups.generateCompleteErrorPopup(
+                                      "Woody Debris"));
+                              return false;
+                            }
+                            return true;
+                          },
+                          onChangedFn: (s) => updateDecayClass(int.parse(s!)),
+                          selectedItem: wdh.swdDecayClass == null
+                              ? "Select Decay Class"
+                              : wdh.swdDecayClass.toString(),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: kPaddingV * 2,
+                    ),
+                    wdSmall.when(
+                        data: (wdSm) => Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                BoxIncrement(
+                                  title: "Class 1",
+                                  subtitle: "1.1 - 3.0cm",
+                                  boxVal: wdSm!.swdTallyS.toString(),
+                                  minusOnPress: () {
+                                    wdh.complete
+                                        ? Popups.show(
+                                            context, completeWarningPopup)
+                                        : (wdSm.swdTallyS > 0
+                                            ? updateWdSm(
+                                                WoodyDebrisSmallCompanion(
+                                                    swdTallyS: d.Value(
+                                                        wdSm.swdTallyS - 1)))
+                                            : null);
+                                  },
+                                  addOnPress: () => wdh.complete
+                                      ? Popups.show(
+                                          context, completeWarningPopup)
+                                      : updateWdSm(WoodyDebrisSmallCompanion(
+                                          swdTallyS:
+                                              d.Value(wdSm.swdTallyS + 1))),
+                                ),
+                                BoxIncrement(
+                                  title: "Class 2",
+                                  subtitle: "3.1 - 5.0cm",
+                                  boxVal: wdSm.swdTallyM.toString(),
+                                  minusOnPress: () {
+                                    wdh.complete
+                                        ? Popups.show(
+                                            context, completeWarningPopup)
+                                        : wdSm.swdTallyM > 0
+                                            ? updateWdSm(
+                                                WoodyDebrisSmallCompanion(
+                                                    swdTallyM: d.Value(
+                                                        wdSm.swdTallyM - 1)))
+                                            : null;
+                                  },
+                                  addOnPress: () => wdh.complete
+                                      ? Popups.show(
+                                          context, completeWarningPopup)
+                                      : updateWdSm(WoodyDebrisSmallCompanion(
+                                          swdTallyM:
+                                              d.Value(wdSm.swdTallyM + 1))),
+                                ),
+                                BoxIncrement(
+                                  title: "Class 3",
+                                  subtitle: "5.1 - 7.5cm",
+                                  boxVal: wdSm.swdTallyL.toString(),
+                                  minusOnPress: () {
+                                    wdh.complete
+                                        ? Popups.show(
+                                            context, completeWarningPopup)
+                                        : (wdSm.swdTallyL > 0
+                                            ? updateWdSm(
+                                                WoodyDebrisSmallCompanion(
+                                                    swdTallyL: d.Value(
+                                                        wdSm.swdTallyL - 1)))
+                                            : null);
+                                  },
+                                  addOnPress: () => wdh.complete
+                                      ? Popups.show(
+                                          context, completeWarningPopup)
+                                      : updateWdSm(WoodyDebrisSmallCompanion(
+                                          swdTallyL:
+                                              d.Value(wdSm.swdTallyL + 1))),
+                                ),
+                              ],
+                            ),
+                        error: (err, stack) => Text("Error: $err"),
+                        loading: () =>
+                            const Center(child: CircularProgressIndicator())),
+                    //Coarse Woody debris
                     Padding(
                       padding:
                           const EdgeInsets.symmetric(horizontal: kPaddingH / 2),

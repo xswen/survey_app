@@ -184,8 +184,17 @@ class WoodyDebrisHeaderMeasurementsPageState
                       changeMade = true;
                       updateWdhC(wdhC.copyWith(transNum: d.Value(transNum)));
                     },
+                    onBeforePopup: (s) async {
+                      if (wdhC.complete.value) {
+                        Popups.show(context,
+                            Popups.generateCompleteErrorPopup("Woody Debris"));
+                        return false;
+                      }
+                      return true;
+                    },
                   ),
                   DataInput(
+                    readOnly: wdhC.complete.value,
                     title: "Length of the sample transect",
                     boxLabel: "Report to the nearest 0.1m",
                     prefixIcon: FontAwesomeIcons.ruler,
@@ -210,6 +219,7 @@ class WoodyDebrisHeaderMeasurementsPageState
                     },
                   ),
                   DataInput(
+                      readOnly: wdhC.complete.value,
                       title: "Transect azimuth.",
                       boxLabel: "Report in degrees",
                       prefixIcon: FontAwesomeIcons.angleLeft,
@@ -238,6 +248,7 @@ class WoodyDebrisHeaderMeasurementsPageState
                     fontSize: 20,
                   ),
                   DataInput(
+                      readOnly: wdhC.complete.value,
                       title: "Small Woody Debris (1.1cm - 7.5cm)",
                       boxLabel: "Report to the nearest 0.1m",
                       prefixIcon: FontAwesomeIcons.ruler,
@@ -262,6 +273,7 @@ class WoodyDebrisHeaderMeasurementsPageState
                         }
                       }),
                   DataInput(
+                      readOnly: wdhC.complete.value,
                       title: "Medium Woody Debris (7.6cm - 30cm)",
                       boxLabel: "Report to the nearest 0.1m",
                       prefixIcon: FontAwesomeIcons.ruler,
@@ -286,6 +298,7 @@ class WoodyDebrisHeaderMeasurementsPageState
                         }
                       }),
                   DataInput(
+                      readOnly: wdhC.complete.value,
                       title: "Large Woody Debris (>30cm)",
                       boxLabel: "Report to the nearest 0.1m",
                       prefixIcon: FontAwesomeIcons.ruler,

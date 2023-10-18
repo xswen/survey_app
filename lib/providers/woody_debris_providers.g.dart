@@ -942,5 +942,134 @@ class _WdPieceRoundProviderElement
   @override
   int get wdhId => (origin as WdPieceRoundProvider).wdhId;
 }
+
+String _$wdSmallHash() => r'e13eddbbd08c3a80fe66a2860593fa1266c8069e';
+
+/// See also [wdSmall].
+@ProviderFor(wdSmall)
+const wdSmallProvider = WdSmallFamily();
+
+/// See also [wdSmall].
+class WdSmallFamily extends Family<AsyncValue<WoodyDebrisSmallData?>> {
+  /// See also [wdSmall].
+  const WdSmallFamily();
+
+  /// See also [wdSmall].
+  WdSmallProvider call(
+    int wdhId,
+  ) {
+    return WdSmallProvider(
+      wdhId,
+    );
+  }
+
+  @visibleForOverriding
+  @override
+  WdSmallProvider getProviderOverride(
+    covariant WdSmallProvider provider,
+  ) {
+    return call(
+      provider.wdhId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'wdSmallProvider';
+}
+
+/// See also [wdSmall].
+class WdSmallProvider extends AutoDisposeFutureProvider<WoodyDebrisSmallData?> {
+  /// See also [wdSmall].
+  WdSmallProvider(
+    int wdhId,
+  ) : this._internal(
+          (ref) => wdSmall(
+            ref as WdSmallRef,
+            wdhId,
+          ),
+          from: wdSmallProvider,
+          name: r'wdSmallProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$wdSmallHash,
+          dependencies: WdSmallFamily._dependencies,
+          allTransitiveDependencies: WdSmallFamily._allTransitiveDependencies,
+          wdhId: wdhId,
+        );
+
+  WdSmallProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.wdhId,
+  }) : super.internal();
+
+  final int wdhId;
+
+  @override
+  Override overrideWith(
+    FutureOr<WoodyDebrisSmallData?> Function(WdSmallRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: WdSmallProvider._internal(
+        (ref) => create(ref as WdSmallRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        wdhId: wdhId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<WoodyDebrisSmallData?> createElement() {
+    return _WdSmallProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is WdSmallProvider && other.wdhId == wdhId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, wdhId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin WdSmallRef on AutoDisposeFutureProviderRef<WoodyDebrisSmallData?> {
+  /// The parameter `wdhId` of this provider.
+  int get wdhId;
+}
+
+class _WdSmallProviderElement
+    extends AutoDisposeFutureProviderElement<WoodyDebrisSmallData?>
+    with WdSmallRef {
+  _WdSmallProviderElement(super.provider);
+
+  @override
+  int get wdhId => (origin as WdSmallProvider).wdhId;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, inference_failure_on_uninitialized_variable, inference_failure_on_function_return_type, inference_failure_on_untyped_parameter

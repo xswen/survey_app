@@ -38,3 +38,7 @@ Future<List<WoodyDebrisOddData>> wdPieceOdd(WdPieceOddRef ref, int wdhId) =>
 Future<List<WoodyDebrisRoundData>> wdPieceRound(
         WdPieceRoundRef ref, int wdhId) =>
     ref.read(databaseProvider).woodyDebrisTablesDao.getWdRoundList(wdhId);
+
+@riverpod
+Future<WoodyDebrisSmallData?> wdSmall(WdSmallRef ref, int wdhId) =>
+    ref.read(databaseProvider).woodyDebrisTablesDao.getWdSmall(wdhId);
