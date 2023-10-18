@@ -1,4 +1,4 @@
-import 'dart:ui';
+import 'package:flutter/material.dart';
 
 const int kMaxTransects = 9;
 
@@ -30,4 +30,6 @@ const kDegreeSign = "\u00B0";
 
 const kSpeciesUnknownCode = "SPP";
 
-const kParamMissing = "missing";
+const kParamMissing = "uninitialized";
+
+const kLoadingWidget = Center(child: CircularProgressIndicator());

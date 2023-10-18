@@ -6,6 +6,7 @@ import 'package:survey_app/widgets/builders/set_transect_num_builder.dart';
 import '../../providers/woody_debris_providers.dart';
 import '../../widgets/date_select.dart';
 import '../../widgets/tile_cards/tile_card_selection.dart';
+import 'woody_debris_header_measurements_page.dart';
 
 class WoodyDebrisSummaryPage extends ConsumerStatefulWidget {
   static const String routeName = "woodyDebrisSummary";
@@ -28,8 +29,8 @@ class WoodyDebrisSummaryPageState
 
   @override
   void initState() {
-    surveyId = RouteParams.getSurveyId(widget.goRouterState);
-    wdId = RouteParams.getWdSummaryId(widget.goRouterState);
+    surveyId = RouteParams.getSurveyId(widget.goRouterState)!;
+    wdId = RouteParams.getWdSummaryId(widget.goRouterState)!;
     completeWarningPopup = Popups.generateCompleteErrorPopup(title);
 
     super.initState();
@@ -155,7 +156,10 @@ class WoodyDebrisSummaryPageState
                       style: TextStyle(fontSize: kTextHeaderSize),
                     ),
                     ElevatedButton(
-                        onPressed: () => createTransect(),
+                        onPressed: () => context.pushNamed(
+                            WoodyDebrisHeaderMeasurementsPage.routeName,
+                            pathParameters: RouteParams.generateWdHeaderParms(
+                                widget.goRouterState, kParamMissing)),
                         child: const Row(
                           children: [
                             Padding(

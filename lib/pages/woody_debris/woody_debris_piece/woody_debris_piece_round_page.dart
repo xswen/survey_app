@@ -18,7 +18,7 @@ import '../../../widgets/app_bar.dart';
 import '../../../widgets/builders/decay_class_select_builder.dart';
 import '../../../widgets/builders/tree_genus_select_builder.dart';
 import '../../../widgets/builders/tree_species_select_builder.dart';
-import '../../../widgets/data_input/data_input.dart';
+import '../../../widgets/data_input/dep_data_input.dart';
 import '../../../widgets/drawer_menu.dart';
 import '../../../widgets/popups/popups.dart';
 import '../../delete_page.dart';
@@ -125,7 +125,7 @@ class _WoodyDebrisPieceRoundPageState extends State<WoodyDebrisPieceRoundPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              DataInput(
+              DepDataInput(
                 title: "Piece diameter.",
                 boxLabel: "Reported to the nearest 0.1cm",
                 prefixIcon: FontAwesomeIcons.ruler,
@@ -147,7 +147,7 @@ class _WoodyDebrisPieceRoundPageState extends State<WoodyDebrisPieceRoundPage> {
                   ThousandsFormatter(allowFraction: true, decimalPlaces: 1)
                 ],
               ),
-              DataInput(
+              DepDataInput(
                 title: "Tilt angle of piece",
                 generalPadding: const EdgeInsets.only(top: 0.0),
                 textBoxPadding: const EdgeInsets.only(top: 0.0),

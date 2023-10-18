@@ -23,20 +23,3 @@ Future<bool> wdhParentComplete(WdhParentCompleteRef ref, int wdId) async =>
 @riverpod
 Future<WoodyDebrisHeaderData> wdh(WdhRef ref, int wdhId) async =>
     ref.read(databaseProvider).woodyDebrisTablesDao.getWdHeader(wdhId);
-
-@riverpod
-class WdhCompanionHandler extends _$WdhCompanionHandler {
-  @override
-  WoodyDebrisHeaderCompanion build(WoodyDebrisHeaderCompanion wdh) {
-    return wdh;
-  }
-
-  void updateWdh(WoodyDebrisHeaderCompanion wdh) {
-    state = wdh;
-  }
-}
-
-@riverpod
-WoodyDebrisHeaderCompanion wdhCompanion(
-        WdhCompanionRef ref, WoodyDebrisHeaderCompanion wdhC) =>
-    wdhC;

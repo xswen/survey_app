@@ -29,8 +29,8 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
 
   @override
   void initState() {
-    wdId = RouteParams.getWdSummaryId(widget.goRouterState);
-    wdhId = RouteParams.getWdHeaderId(widget.goRouterState);
+    wdId = RouteParams.getWdSummaryId(widget.goRouterState)!;
+    wdhId = RouteParams.getWdHeaderId(widget.goRouterState)!;
     super.initState();
   }
 
@@ -121,113 +121,118 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
     final db = ref.read(databaseProvider);
 
     final parentComplete = ref.watch(wdhParentCompleteProvider(wdId));
-    final wdh = ref.watch(wdhProvider(wdhId));
+    final AsyncValue<WoodyDebrisHeaderData> wdh = ref.watch(wdhProvider(wdhId));
 
     return wdh.when(
-      error: (err, stack) => Text("Error: $err"),
-      loading: () => const Center(child: CircularProgressIndicator()),
-      data: (wdh) => parentComplete.when(
-          error: (err, stack) => Text("Error: $err"),
-          loading: () => const Center(child: CircularProgressIndicator()),
-          data: (parentComplete) => Scaffold(
-                appBar: OurAppBar("Woody Debris: Transect ${wdh.transNum}"),
-                endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
-                floatingActionButton: FloatingCompleteButton(
-                  title: "Woody Debris Transect ${wdh.transNum}",
-                  complete: wdh.complete,
-                  onPressed: () => markComplete(parentComplete, wdh),
-                ),
-                body: Center(
-                  child: Column(
-                    children: [
-                      IconNavButton(
-                        icon: const Icon(FontAwesomeIcons.file),
-                        space: kPaddingIcon,
-                        label: "Transect Header Data",
-                        onPressed: () async {
-                          context
-                              .pushNamed(
-                                WoodyDebrisHeaderMeasurementsPage.routeName,
-                                pathParameters:
-                                    RouteParams.generateWdHeaderParms(
-                                        widget.goRouterState, wdhId.toString()),
-                              )
-                              .then((value) => ref.refresh(wdhProvider(wdhId)));
-                        },
-                        padding: const EdgeInsets.symmetric(
-                            vertical: kPaddingV, horizontal: kPaddingH),
-                      ),
-                      IconNavButton(
-                        icon: const Icon(FontAwesomeIcons.ruler),
-                        space: kPaddingIcon,
-                        label: "Piece Measurements",
-                        onPressed: () async {
-                          getOrCreateWdSmallId().then((wdSmallId) {
-                            wdSmallId == null
-                                ? debugPrint("Error, wdSmall returned null")
-                                : null;
-                            // context.pushNamed(
-                            //         WoodyDebrisHeaderPieceMain.routeName,
-                            //         extra: {
-                            //             WoodyDebrisHeaderPieceMain.keyWdSmall:
-                            //                 wdSmallId,
-                            //             WoodyDebrisHeaderPieceMain.keyTransNum:
-                            //                 wdh.transNum,
-                            //             WoodyDebrisHeaderPieceMain
-                            //                 .keyDecayClass: wdh.swdDecayClass,
-                            //             WoodyDebrisHeaderPieceMain
-                            //                 .keyTransComplete: wdh.complete,
-                            //           }).then((value) => null);
-                          });
-                        },
-                        padding: const EdgeInsets.symmetric(
-                            vertical: kPaddingV, horizontal: kPaddingH),
-                      ),
-                      IconNavButton(
-                        icon: const Icon(FontAwesomeIcons.trash),
-                        space: kPaddingIcon,
-                        label: "Delete Transect",
-                        onPressed: () {
-                          if (parentComplete || wdh.complete) {
-                            Popups.show(context, completeWarningPopup);
-                            return;
-                          }
-                          Popups.show(
-                            context,
-                            PopupContinue("Warning: Deleting Transect",
-                                contentText:
-                                    "You are about to delete this transect. "
-                                    "Are you sure you want to continue?",
-                                rightBtnOnPressed: () {
-                              //close popup
-                              context.pop();
-                              context.pushNamed(DeletePage.routeName, extra: {
-                                DeletePage.keyObjectName:
-                                    "Woody Debris Transect ${wdh.transNum}",
-                                DeletePage.keyDeleteFn: () {
-                                  db.woodyDebrisTablesDao
-                                      .deleteWoodyDebrisTransect(wdh.id)
-                                      .then((value) {
-                                    ref.refresh(wdTransListProvider(wdId));
-                                    context.goNamed(
-                                        WoodyDebrisSummaryPage.routeName,
-                                        pathParameters:
-                                            RouteParams.generateWdSummaryParams(
-                                                widget.goRouterState,
-                                                wdId.toString()));
-                                  });
-                                },
+        error: (err, stack) => Text("Error: $err"),
+        loading: () => const Center(child: CircularProgressIndicator()),
+        data: (wdh) {
+          return parentComplete.when(
+              error: (err, stack) => Text("Error: $err"),
+              loading: () => const Center(child: CircularProgressIndicator()),
+              data: (parentComplete) => Scaffold(
+                    appBar: OurAppBar("Woody Debris: Transect ${wdh.transNum}"),
+                    endDrawer:
+                        DrawerMenu(onLocaleChange: () => setState(() {})),
+                    floatingActionButton: FloatingCompleteButton(
+                      title: "Woody Debris Transect ${wdh.transNum}",
+                      complete: wdh.complete,
+                      onPressed: () => markComplete(parentComplete, wdh),
+                    ),
+                    body: Center(
+                      child: Column(
+                        children: [
+                          IconNavButton(
+                            icon: const Icon(FontAwesomeIcons.file),
+                            space: kPaddingIcon,
+                            label: "Transect Header Data",
+                            onPressed: () async {
+                              context
+                                  .pushNamed(
+                                    WoodyDebrisHeaderMeasurementsPage.routeName,
+                                    pathParameters:
+                                        RouteParams.generateWdHeaderParms(
+                                            widget.goRouterState,
+                                            wdhId.toString()),
+                                  )
+                                  .then((value) =>
+                                      ref.refresh(wdhProvider(wdhId)));
+                            },
+                            padding: const EdgeInsets.symmetric(
+                                vertical: kPaddingV, horizontal: kPaddingH),
+                          ),
+                          IconNavButton(
+                            icon: const Icon(FontAwesomeIcons.ruler),
+                            space: kPaddingIcon,
+                            label: "Piece Measurements",
+                            onPressed: () async {
+                              getOrCreateWdSmallId().then((wdSmallId) {
+                                wdSmallId == null
+                                    ? debugPrint("Error, wdSmall returned null")
+                                    : null;
+                                // context.pushNamed(
+                                //         WoodyDebrisHeaderPieceMain.routeName,
+                                //         extra: {
+                                //             WoodyDebrisHeaderPieceMain.keyWdSmall:
+                                //                 wdSmallId,
+                                //             WoodyDebrisHeaderPieceMain.keyTransNum:
+                                //                 wdh.transNum,
+                                //             WoodyDebrisHeaderPieceMain
+                                //                 .keyDecayClass: wdh.swdDecayClass,
+                                //             WoodyDebrisHeaderPieceMain
+                                //                 .keyTransComplete: wdh.complete,
+                                //           }).then((value) => null);
                               });
-                            }),
-                          );
-                        },
-                        padding: const EdgeInsets.symmetric(
-                            vertical: kPaddingV, horizontal: kPaddingH),
+                            },
+                            padding: const EdgeInsets.symmetric(
+                                vertical: kPaddingV, horizontal: kPaddingH),
+                          ),
+                          IconNavButton(
+                            icon: const Icon(FontAwesomeIcons.trash),
+                            space: kPaddingIcon,
+                            label: "Delete Transect",
+                            onPressed: () {
+                              if (parentComplete || wdh.complete) {
+                                Popups.show(context, completeWarningPopup);
+                                return;
+                              }
+                              Popups.show(
+                                context,
+                                PopupContinue("Warning: Deleting Transect",
+                                    contentText:
+                                        "You are about to delete this transect. "
+                                        "Are you sure you want to continue?",
+                                    rightBtnOnPressed: () {
+                                  //close popup
+                                  context.pop();
+                                  context
+                                      .pushNamed(DeletePage.routeName, extra: {
+                                    DeletePage.keyObjectName:
+                                        "Woody Debris Transect ${wdh.transNum}",
+                                    DeletePage.keyDeleteFn: () {
+                                      db.woodyDebrisTablesDao
+                                          .deleteWoodyDebrisTransect(wdh.id)
+                                          .then((value) {
+                                        ref.refresh(wdTransListProvider(wdId));
+                                        context.goNamed(
+                                            WoodyDebrisSummaryPage.routeName,
+                                            pathParameters: RouteParams
+                                                .generateWdSummaryParams(
+                                                    widget.goRouterState,
+                                                    wdId.toString()));
+                                      });
+                                    },
+                                  });
+                                }),
+                              );
+                            },
+                            padding: const EdgeInsets.symmetric(
+                                vertical: kPaddingV, horizontal: kPaddingH),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-              )),
-    );
+                    ),
+                  ));
+        });
   }
 }

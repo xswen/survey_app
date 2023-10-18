@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:survey_app/providers/providers.dart';
-import 'package:survey_app/widgets/data_input/data_input.dart';
+import 'package:survey_app/widgets/data_input/dep_data_input.dart';
 import 'package:survey_app/widgets/drawer_menu.dart';
 import 'package:survey_app/widgets/popups/popup_continue.dart';
 import 'package:survey_app/widgets/popups/popup_dismiss.dart';
@@ -160,7 +160,7 @@ class CreateSurveyPageState extends ConsumerState<CreateSurveyPage>
                       : db.companionValueToStr(surveyHeader.nfiPlot),
                   asyncItems: (s) => _getPlotNums(db),
                 ),
-                DataInput(
+                DepDataInput(
                   title: LocaleKeys.measurementNum.tr(),
                   controller: _controller,
                   startingStr: surveyHeader.measNum.value == _kDataMissing

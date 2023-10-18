@@ -16,7 +16,7 @@ import '../../../widgets/builders/decay_class_select_builder.dart';
 import '../../../widgets/builders/tree_genus_select_builder.dart';
 import '../../../widgets/builders/tree_species_select_builder.dart';
 import '../../../widgets/buttons/delete_button.dart';
-import '../../../widgets/data_input/data_input.dart';
+import '../../../widgets/data_input/dep_data_input.dart';
 import '../../../widgets/drawer_menu.dart';
 import '../../../widgets/hide_info_checkbox.dart';
 import '../../../widgets/popups/popup_continue.dart';
@@ -123,7 +123,7 @@ class _WoodyDebrisPieceAccuOddPageState
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              DataInput(
+              DepDataInput(
                 title: "Horizontal Piece Length",
                 boxLabel: "Reported to the nearest 0.1cm",
                 prefixIcon: FontAwesomeIcons.ruler,
@@ -145,7 +145,7 @@ class _WoodyDebrisPieceAccuOddPageState
                   ThousandsFormatter(allowFraction: true, decimalPlaces: 1)
                 ],
               ),
-              DataInput(
+              DepDataInput(
                 title: "Vertical Piece Depth",
                 generalPadding: const EdgeInsets.only(top: 0.0),
                 textBoxPadding: const EdgeInsets.only(top: 0.0),
