@@ -26,24 +26,10 @@ GoRoute goRouteWoodyDebris = GoRoute(
                   WoodyDebrisHeaderMeasurementsPage(state),
             ),
             GoRoute(
-                name: WoodyDebrisHeaderPieceMain.routeName,
-                path: "pieces",
-                builder: (context, state) {
-                  Map<String, dynamic> data =
-                      state.extra as Map<String, dynamic>;
-                  WoodyDebrisSmallData wdSm =
-                      data[WoodyDebrisHeaderPieceMain.keyWdSmall];
-                  int transNum = data[WoodyDebrisHeaderPieceMain.keyTransNum];
-                  int? decayClass =
-                      data[WoodyDebrisHeaderPieceMain.keyDecayClass];
-                  bool transComplete =
-                      data[WoodyDebrisHeaderPieceMain.keyTransComplete];
-                  return WoodyDebrisHeaderPieceMain(
-                      wdSmall: wdSm,
-                      transNum: transNum,
-                      decayClass: decayClass,
-                      transComplete: transComplete);
-                },
+                name: WoodyDebrisHeaderPieceMainPage.routeName,
+                path: "pieces/:${RouteParams.wdSmallIdKey}",
+                builder: (context, state) =>
+                    WoodyDebrisHeaderPieceMainPage(state),
                 routes: [
                   GoRoute(
                       name: WoodyDebrisPieceRoundPage.routeName,

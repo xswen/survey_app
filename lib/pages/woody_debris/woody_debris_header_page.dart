@@ -8,6 +8,7 @@ import '../../widgets/popups/popup_errors_found_list.dart';
 import '../../widgets/popups/popup_warning_missing_fields_list.dart';
 import '../delete_page.dart';
 import 'woody_debris_header_measurements_page.dart';
+import 'woody_debris_piece/woody_debris_header_piece_main.dart';
 
 class WoodyDebrisHeaderPage extends ConsumerStatefulWidget {
   static const String routeName = "woodyDebrisHeader";
@@ -66,7 +67,6 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
         wdh.lcwdMeasLen == null ||
         wdh.mcwdMeasLen == null ||
         wdh.nomTransLen == null ||
-        wdh.swdDecayClass == null ||
         wdh.swdMeasLen == null) {
       results.add("Transect Header Data");
     }
@@ -74,12 +74,16 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
       results.add("Piece Measurements");
     }
 
+    if (wdh.swdDecayClass == null) {
+      results.add("Decay class not set in Piece Measurements");
+    }
+
     return results.isEmpty ? null : results;
   }
 
   void markComplete(bool parentComplete, WoodyDebrisHeaderData wdh) {
     final db = ref.read(databaseProvider);
-
+    print(wdh);
     if (parentComplete) {
       Popups.show(context, surveyCompleteWarningPopup);
     } else if (wdh.complete) {
@@ -170,18 +174,16 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
                                 wdSmallId == null
                                     ? debugPrint("Error, wdSmall returned null")
                                     : null;
-                                // context.pushNamed(
-                                //         WoodyDebrisHeaderPieceMain.routeName,
-                                //         extra: {
-                                //             WoodyDebrisHeaderPieceMain.keyWdSmall:
-                                //                 wdSmallId,
-                                //             WoodyDebrisHeaderPieceMain.keyTransNum:
-                                //                 wdh.transNum,
-                                //             WoodyDebrisHeaderPieceMain
-                                //                 .keyDecayClass: wdh.swdDecayClass,
-                                //             WoodyDebrisHeaderPieceMain
-                                //                 .keyTransComplete: wdh.complete,
-                                //           }).then((value) => null);
+                                context
+                                    .pushNamed(
+                                        WoodyDebrisHeaderPieceMainPage
+                                            .routeName,
+                                        pathParameters:
+                                            RouteParams.generateWdSmallParms(
+                                                widget.goRouterState,
+                                                wdSmallId.toString()))
+                                    .then((value) =>
+                                        ref.refresh(wdTransListProvider(wdId)));
                               });
                             },
                             padding: const EdgeInsets.symmetric(
