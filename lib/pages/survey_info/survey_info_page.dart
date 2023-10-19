@@ -30,7 +30,7 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
 
   @override
   void initState() {
-    surveyId = RouteParams.getSurveyId(widget.goRouterState)!;
+    surveyId = PathParamValue.getSurveyId(widget.goRouterState)!;
 
     super.initState();
   }
@@ -126,7 +126,7 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
       if (context.mounted) {
         context
             .pushNamed(WoodyDebrisSummaryPage.routeName,
-                pathParameters: RouteParams.generateWdSummaryParams(
+                pathParameters: PathParamGenerator.wdSummary(
                     widget.goRouterState, wdId.toString()))
             .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
       }

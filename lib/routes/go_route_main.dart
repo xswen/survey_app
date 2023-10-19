@@ -8,7 +8,7 @@ import 'package:survey_app/routes/go_route_surface_substrate.dart';
 import 'package:survey_app/routes/go_route_woody_debris.dart';
 
 import '../main.dart';
-import 'router_params.dart';
+import 'path_parameters/path_param_keys.dart';
 
 GoRouter router = GoRouter(
   routes: [
@@ -61,7 +61,7 @@ GoRouter router = GoRouter(
                   }),
               GoRoute(
                 name: SurveyInfoPage.routeName,
-                path: "survey-info/:${RouteParams.surveyIdKey}",
+                path: "survey-info/:${PathParamsKeys.surveyId}",
                 builder: (context, state) =>
                     SurveyInfoPage(goRouterState: state),
                 routes: [

@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:survey_app/database/database.dart';
+import 'package:survey_app/routes/path_parameters/path_param_keys.dart';
 
 import '../pages/woody_debris/woody_debris_header_measurements_page.dart';
 import '../pages/woody_debris/woody_debris_header_page.dart';
@@ -7,16 +8,15 @@ import '../pages/woody_debris/woody_debris_piece/woody_debris_header_piece_main.
 import '../pages/woody_debris/woody_debris_piece/woody_debris_piece_accu_odd_page.dart';
 import '../pages/woody_debris/woody_debris_piece/woody_debris_piece_round_page.dart';
 import '../pages/woody_debris/woody_debris_summary_page.dart';
-import 'router_params.dart';
 
 GoRoute goRouteWoodyDebris = GoRoute(
     name: WoodyDebrisSummaryPage.routeName,
-    path: "woody-debris/:${RouteParams.wdSummaryIdKey}",
+    path: "woody-debris/:${PathParamsKeys.wdSummaryId}",
     builder: (context, state) => WoodyDebrisSummaryPage(state),
     routes: [
       GoRoute(
           name: WoodyDebrisHeaderPage.routeName,
-          path: "header/:${RouteParams.wdHeaderIdKey}",
+          path: "header/:${PathParamsKeys.wdHeaderId}",
           builder: (context, state) => WoodyDebrisHeaderPage(state),
           routes: [
             GoRoute(
@@ -27,7 +27,7 @@ GoRoute goRouteWoodyDebris = GoRoute(
             ),
             GoRoute(
                 name: WoodyDebrisHeaderPieceMainPage.routeName,
-                path: "pieces/:${RouteParams.wdSmallIdKey}",
+                path: "pieces/:${PathParamsKeys.wdSmallId}",
                 builder: (context, state) =>
                     WoodyDebrisHeaderPieceMainPage(state),
                 routes: [

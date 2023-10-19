@@ -1,6 +1,8 @@
 import 'package:drift/drift.dart' as d;
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/pages/woody_debris/woody_debris_header_page.dart';
+import 'package:survey_app/routes/path_parameters/path_param_generator.dart';
+import 'package:survey_app/routes/path_parameters/path_param_value.dart';
 import 'package:survey_app/widgets/builders/set_transect_num_builder.dart';
 
 import '../../providers/woody_debris_providers.dart';
@@ -29,8 +31,8 @@ class WoodyDebrisSummaryPageState
 
   @override
   void initState() {
-    surveyId = RouteParams.getSurveyId(widget.goRouterState)!;
-    wdId = RouteParams.getWdSummaryId(widget.goRouterState)!;
+    surveyId = PathParamValue.getSurveyId(widget.goRouterState)!;
+    wdId = PathParamValue.getWdSummaryId(widget.goRouterState)!;
     completeWarningPopup = Popups.generateCompleteErrorPopup(title);
 
     super.initState();
@@ -76,7 +78,7 @@ class WoodyDebrisSummaryPageState
 
   void goToWdhPage(int wdhId) => context
           .pushNamed(WoodyDebrisHeaderPage.routeName,
-              pathParameters: RouteParams.generateWdHeaderParms(
+              pathParameters: PathParamGenerator.wdHeader(
                   widget.goRouterState, wdhId.toString()))
           .then((value) {
         ref.refresh(wdTransListProvider(wdId));
@@ -158,7 +160,7 @@ class WoodyDebrisSummaryPageState
                     ElevatedButton(
                         onPressed: () => context.pushNamed(
                             WoodyDebrisHeaderMeasurementsPage.routeName,
-                            pathParameters: RouteParams.generateWdHeaderParms(
+                            pathParameters: PathParamGenerator.wdHeader(
                                 widget.goRouterState, kParamMissing)),
                         child: const Row(
                           children: [

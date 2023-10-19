@@ -102,9 +102,8 @@ class DashboardPageState extends ConsumerState<DashboardPage> {
                             onTap: () async {
                               context.pushNamed(
                                 SurveyInfoPage.routeName,
-                                pathParameters:
-                                    RouteParams.generateSurveyInfoParams(
-                                        survey.id.toString()),
+                                pathParameters: PathParamGenerator.surveyInfo(
+                                    survey.id.toString()),
                               );
                             },
                           );

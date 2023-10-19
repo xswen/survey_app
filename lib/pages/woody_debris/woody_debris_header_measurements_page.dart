@@ -36,8 +36,8 @@ class WoodyDebrisHeaderMeasurementsPageState
 
   @override
   void initState() {
-    wdId = RouteParams.getWdSummaryId(widget.goRouterState)!;
-    wdhId = RouteParams.getWdHeaderId(widget.goRouterState);
+    wdId = PathParamValue.getWdSummaryId(widget.goRouterState)!;
+    wdhId = PathParamValue.getWdHeaderId(widget.goRouterState);
     completeWarningPopup =
         Popups.generateCompleteErrorPopup("Woody Debris Transect");
     surveyCompleteWarningPopup =
@@ -369,10 +369,9 @@ class WoodyDebrisHeaderMeasurementsPageState
                                 ref.refresh(wdhProvider(wdhId));
 
                                 context.goNamed(WoodyDebrisHeaderPage.routeName,
-                                    pathParameters:
-                                        RouteParams.generateWdHeaderParms(
-                                            widget.goRouterState,
-                                            wdhId.toString()));
+                                    pathParameters: PathParamGenerator.wdHeader(
+                                        widget.goRouterState,
+                                        wdhId.toString()));
                               });
                             }
                           },

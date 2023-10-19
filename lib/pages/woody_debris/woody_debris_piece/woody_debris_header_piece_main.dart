@@ -68,8 +68,8 @@ class WoodyDebrisHeaderPieceMainPageState
 
   @override
   void initState() {
-    wdSmId = RouteParams.getWdSmallId(widget.goRouterState);
-    wdhId = RouteParams.getWdHeaderId(widget.goRouterState)!;
+    wdSmId = PathParamValue.getWdSmallId(widget.goRouterState);
+    wdhId = PathParamValue.getWdHeaderId(widget.goRouterState)!;
 
     super.initState();
   }
@@ -181,7 +181,7 @@ class WoodyDebrisHeaderPieceMainPageState
             accumOdd: d.Value(type));
         //TODO: Move this to provider
         context.pushNamed(WoodyDebrisPieceAccuOddPage.routeName,
-            pathParameters: RouteParams.generateWdSmallParms(
+            pathParameters: PathParamGenerator.wdSmall(
                 widget.goRouterState, wdSmId.toString()),
             extra: {WoodyDebrisPieceAccuOddPage.keyPiece: wdOdd}).then((value) {
           ref.refresh(wdPieceOddProvider(wdhId));
@@ -232,7 +232,7 @@ class WoodyDebrisHeaderPieceMainPageState
                   context.pop();
                   //TODO: Move to provider
                   context.pushNamed(WoodyDebrisPieceRoundPage.routeName,
-                      pathParameters: RouteParams.generateWdSmallParms(
+                      pathParameters: PathParamGenerator.wdSmall(
                           widget.goRouterState, wdSmId.toString()),
                       extra: {
                         WoodyDebrisPieceRoundPage.keyPiece: wdRound
@@ -262,7 +262,7 @@ class WoodyDebrisHeaderPieceMainPageState
         Popups.show(context, completeWarningPopup);
       } else if (odd != null) {
         context.pushNamed(WoodyDebrisPieceAccuOddPage.routeName,
-            pathParameters: RouteParams.generateWdSmallParms(
+            pathParameters: PathParamGenerator.wdSmall(
                 widget.goRouterState, wdSmId.toString()),
             extra: {
               WoodyDebrisPieceAccuOddPage.keyPiece: odd.toCompanion(true),
@@ -273,7 +273,7 @@ class WoodyDebrisHeaderPieceMainPageState
         });
       } else if (round != null) {
         context.pushNamed(WoodyDebrisPieceRoundPage.routeName,
-            pathParameters: RouteParams.generateWdSmallParms(
+            pathParameters: PathParamGenerator.wdSmall(
                 widget.goRouterState, wdSmId.toString()),
             extra: {
               WoodyDebrisPieceRoundPage.keyPiece: round.toCompanion(true),

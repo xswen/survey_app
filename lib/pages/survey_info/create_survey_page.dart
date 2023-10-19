@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:survey_app/providers/providers.dart';
+import 'package:survey_app/routes/path_parameters/path_param_generator.dart';
 import 'package:survey_app/widgets/data_input/dep_data_input.dart';
 import 'package:survey_app/widgets/drawer_menu.dart';
 import 'package:survey_app/widgets/popups/popup_continue.dart';
@@ -17,7 +18,6 @@ import '../../database/database.dart';
 import '../../formatters/thousands_formatter.dart';
 import '../../global.dart';
 import '../../l10n/locale_keys.g.dart';
-import '../../routes/router_params.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/date_select.dart';
 import '../../widgets/dropdowns/drop_down_async_list.dart';
@@ -256,7 +256,7 @@ class CreateSurveyPageState extends ConsumerState<CreateSurveyPage>
         ? context.pop()
         : context.goNamed(
             SurveyInfoPage.routeName,
-            pathParameters: RouteParams.generateSurveyInfoParams(
+            pathParameters: PathParamGenerator.surveyInfo(
                 (await db.surveyInfoTablesDao.getSurvey(id)).id.toString()),
           ));
   }

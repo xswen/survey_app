@@ -1,12 +1,23 @@
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-import 'package:survey_app/database/database.dart';
+import 'package:survey_app/barrels/page_imports_barrel.dart';
 
-import '../../constants/margins_padding.dart';
-import '../../widgets/app_bar.dart';
-import '../../widgets/drawer_menu.dart';
-import '../../widgets/popups/popups.dart';
+class SurfaceSubstrateStationInfoPage extends ConsumerStatefulWidget {
+  static const routeName = "surfaceSubstrateStation";
+
+  const SurfaceSubstrateStationInfoPage(GoRouterState state, {super.key});
+
+  @override
+  SurfaceSubstrateStationInfoPageState createState() =>
+      SurfaceSubstrateStationInfoPageState();
+}
+
+class SurfaceSubstrateStationInfoPageState
+    extends ConsumerState<SurfaceSubstrateStationInfoPage> {
+  @override
+  Widget build(BuildContext context) {
+    debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
+    return const Placeholder();
+  }
+}
 
 class SurfaceSubstrateHeaderMeasurementsPage extends StatefulWidget {
   static const String routeName = "surfaceSubstrateHeaderMeasurement";
@@ -43,7 +54,7 @@ class _SurfaceSubstrateHeaderMeasurementsPageState
   @override
   Widget build(BuildContext context) {
     debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
-    final db = Provider.of<Database>(context);
+    final db = Database.instance;
 
     return Scaffold(
       appBar: OurAppBar(

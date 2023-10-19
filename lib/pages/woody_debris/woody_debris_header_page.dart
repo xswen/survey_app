@@ -30,8 +30,8 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
 
   @override
   void initState() {
-    wdId = RouteParams.getWdSummaryId(widget.goRouterState)!;
-    wdhId = RouteParams.getWdHeaderId(widget.goRouterState)!;
+    wdId = PathParamValue.getWdSummaryId(widget.goRouterState)!;
+    wdhId = PathParamValue.getWdHeaderId(widget.goRouterState)!;
     super.initState();
   }
 
@@ -154,10 +154,8 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
                               context
                                   .pushNamed(
                                     WoodyDebrisHeaderMeasurementsPage.routeName,
-                                    pathParameters:
-                                        RouteParams.generateWdHeaderParms(
-                                            widget.goRouterState,
-                                            wdhId.toString()),
+                                    pathParameters: PathParamGenerator.wdHeader(
+                                        widget.goRouterState, wdhId.toString()),
                                   )
                                   .then((value) =>
                                       ref.refresh(wdhProvider(wdhId)));
@@ -179,7 +177,7 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
                                         WoodyDebrisHeaderPieceMainPage
                                             .routeName,
                                         pathParameters:
-                                            RouteParams.generateWdSmallParms(
+                                            PathParamGenerator.wdSmall(
                                                 widget.goRouterState,
                                                 wdSmallId.toString()))
                                     .then((value) =>
@@ -218,8 +216,8 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
                                         ref.refresh(wdTransListProvider(wdId));
                                         context.goNamed(
                                             WoodyDebrisSummaryPage.routeName,
-                                            pathParameters: RouteParams
-                                                .generateWdSummaryParams(
+                                            pathParameters:
+                                                PathParamGenerator.wdSummary(
                                                     widget.goRouterState,
                                                     wdId.toString()));
                                       });
