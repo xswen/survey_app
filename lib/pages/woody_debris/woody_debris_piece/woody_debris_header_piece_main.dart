@@ -164,7 +164,6 @@ class WoodyDebrisHeaderPieceMainPageState
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
     final db = ref.read(databaseProvider);
 
     final AsyncValue<WoodyDebrisHeaderData> wdh = ref.watch(wdhProvider(wdhId));

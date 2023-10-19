@@ -70,8 +70,6 @@ class _WoodyDebrisPieceRoundPageState extends State<WoodyDebrisPieceRoundPage> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
-
     void continueCheck() {
       List<String>? results =
           WoodyDebrisPieceErrorChecks.checkErrorRound(db, piece);

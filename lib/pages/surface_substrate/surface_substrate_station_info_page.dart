@@ -14,7 +14,6 @@ class SurfaceSubstrateStationInfoPageState
     extends ConsumerState<SurfaceSubstrateStationInfoPage> {
   @override
   Widget build(BuildContext context) {
-    debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
     return const Placeholder();
   }
 }
@@ -53,7 +52,6 @@ class _SurfaceSubstrateHeaderMeasurementsPageState
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
     final db = Database.instance;
 
     return Scaffold(

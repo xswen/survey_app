@@ -240,7 +240,6 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
     final Database db = ref.read(databaseProvider);
 
     AsyncValue<SurveyHeader> survey = ref.watch(updateSurveyProvider(surveyId));

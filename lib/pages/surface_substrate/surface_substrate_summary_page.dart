@@ -110,7 +110,6 @@ class SurfaceSubstrateSummaryPageState
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
     AsyncValue<SurfaceSubstrateSummaryData> ssSummary =
         ref.watch(ssDataProvider(surveyId));
     AsyncValue<List<SurfaceSubstrateHeaderData>> transList =

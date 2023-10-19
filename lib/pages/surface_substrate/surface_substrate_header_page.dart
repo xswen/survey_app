@@ -41,7 +41,8 @@ class SurfaceSubstrateHeaderPageState
       Popups.generatePreviousMarkedCompleteErrorPopup("Survey");
 
   late bool parentComplete = false;
-  late SurfaceSubstrateHeaderCompanion ssh;
+  late SurfaceSubstrateHeaderCompanion ssh =
+      const SurfaceSubstrateHeaderCompanion();
 
   late final int surveyId;
   late final int ssId;
@@ -122,9 +123,12 @@ class SurfaceSubstrateHeaderPageState
     } else if (ssh.complete.value) {
       newSsh = ssh.copyWith(complete: const d.Value(false));
     } else {
+      print("hiho");
       newSsh = ssh.copyWith(complete: const d.Value(true));
+      print("what");
     }
-    setState(() => ssh = newSsh);
+    if (mounted) setState(() => ssh = newSsh);
+    print("tell");
   }
 
   bool handleTransectBuilderEnabled() {
@@ -138,8 +142,6 @@ class SurfaceSubstrateHeaderPageState
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
-
     final db = ref.read(databaseProvider);
 
     return db.companionValueToStr(ssh.id).isEmpty
@@ -158,7 +160,9 @@ class SurfaceSubstrateHeaderPageState
               complete: db.companionValueToStr(ssh.complete).isEmpty
                   ? false
                   : ssh.complete.value,
-              onPressed: () => markComplete(),
+              onPressed: () => updateSshCompanion(
+                  ssh.copyWith(complete: d.Value(!ssh.complete.value))),
+              //() => markComplete(),
             ),
             endDrawer: DrawerMenu(onLocaleChange: () {}),
             body: ListView(

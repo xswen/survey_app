@@ -120,8 +120,6 @@ class WoodyDebrisSummaryPageState
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
-
     AsyncValue<WoodyDebrisSummaryData> wdSummary =
         ref.watch(wdDataProvider(surveyId));
     AsyncValue<List<WoodyDebrisHeaderData>> transList =

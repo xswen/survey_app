@@ -152,8 +152,6 @@ class WoodyDebrisHeaderMeasurementsPageState
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
-
     final db = ref.read(databaseProvider);
     void updateWdhC(WoodyDebrisHeaderCompanion newWdhC) =>
         setState(() => wdhC = newWdhC);
