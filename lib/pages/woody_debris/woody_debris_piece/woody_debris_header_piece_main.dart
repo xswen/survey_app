@@ -454,75 +454,81 @@ class WoodyDebrisHeaderPieceMainPageState
                         ],
                       ),
                     ),
-                    pieceRound.when(
-                      data: (round) => pieceOdd.when(
-                        data: (odd) {
-                          DataGridSourceBuilder largePieceDataSource =
-                              getSourceBuilder(odd, round);
-                          return Expanded(
-                            child: TableCreationBuilder(
-                              source: largePieceDataSource,
-                              columnWidthMode: ColumnWidthMode.fitByColumnName,
-                              colNames: columnData.getColHeadersList(),
-                              onCellTap:
-                                  (DataGridCellTapDetails details) async {
-                                // Assuming the "edit" column index is 2
-                                if (details.column.columnName ==
-                                        columnData.edit.name &&
-                                    details.rowColumnIndex.rowIndex != 0) {
-                                  if (wdh.complete) {
-                                    Popups.show(context, completeWarningPopup);
-                                  } else {
-                                    int pId = largePieceDataSource.dataGridRows[
-                                            details.rowColumnIndex.rowIndex - 1]
-                                        .getCells()[0]
-                                        .value;
-                                    if (largePieceDataSource.dataGridRows[
-                                                details.rowColumnIndex
-                                                        .rowIndex -
-                                                    1]
-                                            .getCells()[2]
-                                            .value ==
-                                        "R") {
-                                      db.woodyDebrisTablesDao
-                                          .getWdRound(pId)
-                                          .then((wdRound) => changeWdPieceData(
-                                              wdh.complete,
-                                              round: wdRound,
-                                              deleteFn: () => (db.delete(
-                                                      db.woodyDebrisRound)
-                                                    ..where((tbl) => tbl.id
-                                                        .equals(wdRound.id)))
-                                                  .go()
-                                                  .then((value) =>
-                                                      context.pop())));
+                    Expanded(
+                      child: pieceRound.when(
+                        data: (round) => pieceOdd.when(
+                          data: (odd) {
+                            DataGridSourceBuilder largePieceDataSource =
+                                getSourceBuilder(odd, round);
+                            return Center(
+                              child: TableCreationBuilder(
+                                source: largePieceDataSource,
+                                columnWidthMode: ColumnWidthMode.lastColumnFill,
+                                colNames: columnData.getColHeadersList(),
+                                onCellTap:
+                                    (DataGridCellTapDetails details) async {
+                                  // Assuming the "edit" column index is 2
+                                  if (details.column.columnName ==
+                                          columnData.edit.name &&
+                                      details.rowColumnIndex.rowIndex != 0) {
+                                    if (wdh.complete) {
+                                      Popups.show(
+                                          context, completeWarningPopup);
                                     } else {
-                                      db.woodyDebrisTablesDao
-                                          .getWdOddAccu(pId)
-                                          .then((wdOdd) => changeWdPieceData(
-                                              wdh.complete,
-                                              odd: wdOdd,
-                                              deleteFn: () =>
-                                                  (db.delete(db.woodyDebrisOdd)
-                                                        ..where((tbl) => tbl.id
-                                                            .equals(wdOdd.id)))
-                                                      .go()
-                                                      .then((value) =>
-                                                          context.pop())));
+                                      int pId = largePieceDataSource
+                                          .dataGridRows[
+                                              details.rowColumnIndex.rowIndex -
+                                                  1]
+                                          .getCells()[0]
+                                          .value;
+                                      if (largePieceDataSource.dataGridRows[
+                                                  details.rowColumnIndex
+                                                          .rowIndex -
+                                                      1]
+                                              .getCells()[2]
+                                              .value ==
+                                          "R") {
+                                        db.woodyDebrisTablesDao
+                                            .getWdRound(pId)
+                                            .then((wdRound) =>
+                                                changeWdPieceData(wdh.complete,
+                                                    round: wdRound,
+                                                    deleteFn: () => (db.delete(
+                                                            db.woodyDebrisRound)
+                                                          ..where((tbl) =>
+                                                              tbl.id.equals(
+                                                                  wdRound.id)))
+                                                        .go()
+                                                        .then((value) =>
+                                                            context.pop())));
+                                      } else {
+                                        db.woodyDebrisTablesDao
+                                            .getWdOddAccu(pId)
+                                            .then((wdOdd) => changeWdPieceData(
+                                                wdh.complete,
+                                                odd: wdOdd,
+                                                deleteFn: () => (db.delete(
+                                                        db.woodyDebrisOdd)
+                                                      ..where((tbl) => tbl.id
+                                                          .equals(wdOdd.id)))
+                                                    .go()
+                                                    .then((value) =>
+                                                        context.pop())));
+                                      }
                                     }
                                   }
-                                }
-                              },
-                            ),
-                          );
-                        },
+                                },
+                              ),
+                            );
+                          },
+                          error: (err, stack) => Text("Error: $err"),
+                          loading: () =>
+                              const Center(child: CircularProgressIndicator()),
+                        ),
                         error: (err, stack) => Text("Error: $err"),
                         loading: () =>
                             const Center(child: CircularProgressIndicator()),
                       ),
-                      error: (err, stack) => Text("Error: $err"),
-                      loading: () =>
-                          const Center(child: CircularProgressIndicator()),
                     ),
                   ],
                 ),
