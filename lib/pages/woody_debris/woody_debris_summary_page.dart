@@ -1,8 +1,6 @@
 import 'package:drift/drift.dart' as d;
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/pages/woody_debris/woody_debris_header_page.dart';
-import 'package:survey_app/routes/path_parameters/path_param_generator.dart';
-import 'package:survey_app/routes/path_parameters/path_param_value.dart';
 import 'package:survey_app/widgets/builders/set_transect_num_builder.dart';
 
 import '../../providers/woody_debris_providers.dart';

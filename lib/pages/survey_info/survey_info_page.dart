@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart' as d;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
+import 'package:survey_app/pages/surface_substrate/surface_substrate_summary_page.dart';
 import 'package:survey_app/widgets/text/notify_no_filter_results.dart';
 
 import '../../formatters/format_date.dart';
@@ -118,7 +119,7 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
     final Database db = Database.instance;
 
     if (category == SurveyCardCategories.woodyDebris) {
-      int wdId = data == null
+      int id = data == null
           ? (await db.woodyDebrisTablesDao
                   .addAndReturnDefaultWdSummary(survey.id, survey.measDate))
               .id
@@ -127,7 +128,21 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
         context
             .pushNamed(WoodyDebrisSummaryPage.routeName,
                 pathParameters: PathParamGenerator.wdSummary(
-                    widget.goRouterState, wdId.toString()))
+                    widget.goRouterState, id.toString()))
+            .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
+      }
+    }
+    if (category == SurveyCardCategories.surfaceSubstrate) {
+      int id = data == null
+          ? (await db.surfaceSubstrateTablesDao
+                  .addAndReturnDefaultSsSummary(survey.id, survey.measDate))
+              .id
+          : data.id;
+      if (context.mounted) {
+        context
+            .pushNamed(SurfaceSubstrateSummaryPage.routeName,
+                pathParameters: PathParamGenerator.ssSummary(
+                    widget.goRouterState, id.toString()))
             .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
       }
     }

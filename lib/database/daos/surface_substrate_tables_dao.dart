@@ -55,7 +55,7 @@ class SurfaceSubstrateTablesDao extends DatabaseAccessor<Database>
                   OrderingTerm(expression: t.transNum, mode: OrderingMode.asc)
             ]))
           .get();
-  Future<List<SurfaceSubstrateHeaderData>> getSSHeadersFromSSsId(int ssSId) =>
+  Future<List<SurfaceSubstrateHeaderData>> getSSHeadersFromSsSId(int ssSId) =>
       (select(surfaceSubstrateHeader)
             ..where((tbl) => tbl.ssId.equals(ssSId))
             ..orderBy([
@@ -71,6 +71,12 @@ class SurfaceSubstrateTablesDao extends DatabaseAccessor<Database>
             ..where((tbl) =>
                 tbl.ssId.equals(sshId) & tbl.transNum.equals(transNum)))
           .getSingleOrNull();
+
+  Future<List<int?>> getUsedTransNums(int ssSId) {
+    final query = select(surfaceSubstrateHeader)
+      ..where((tbl) => tbl.ssId.equals(ssSId));
+    return query.map((row) => row.transNum).get();
+  }
 
   //====================Surface Substrate Tally====================
   Future<int> addSsTally(SurfaceSubstrateTallyCompanion entry) =>
