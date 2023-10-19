@@ -25,7 +25,7 @@ class ColNames {
   ColumnHeaders diameter = ColumnHeaders("Diameter");
   ColumnHeaders tiltAngle = ColumnHeaders("Tilt Angle");
   ColumnHeaders decayClass = ColumnHeaders("Decay Class");
-  ColumnHeaders edit = ColumnHeaders(ColumnHeaders.headerNameId, sort: false);
+  ColumnHeaders edit = ColumnHeaders(ColumnHeaders.headerNameEdit, sort: false);
 
   String empty = "-";
 

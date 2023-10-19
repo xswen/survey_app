@@ -83,7 +83,7 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
 
   void markComplete(bool parentComplete, WoodyDebrisHeaderData wdh) {
     final db = ref.read(databaseProvider);
-    print(wdh);
+
     if (parentComplete) {
       Popups.show(context, surveyCompleteWarningPopup);
     } else if (wdh.complete) {

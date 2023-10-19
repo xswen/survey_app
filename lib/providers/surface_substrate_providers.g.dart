@@ -292,5 +292,262 @@ class _SsTransListProviderElement
   @override
   int get ssId => (origin as SsTransListProvider).ssId;
 }
+
+String _$sshHash() => r'1be5fbe3592377f1adf2a0dbbdea890d01bb3306';
+
+/// See also [ssh].
+@ProviderFor(ssh)
+const sshProvider = SshFamily();
+
+/// See also [ssh].
+class SshFamily extends Family<AsyncValue<SurfaceSubstrateHeaderData>> {
+  /// See also [ssh].
+  const SshFamily();
+
+  /// See also [ssh].
+  SshProvider call(
+    int sshId,
+  ) {
+    return SshProvider(
+      sshId,
+    );
+  }
+
+  @visibleForOverriding
+  @override
+  SshProvider getProviderOverride(
+    covariant SshProvider provider,
+  ) {
+    return call(
+      provider.sshId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'sshProvider';
+}
+
+/// See also [ssh].
+class SshProvider
+    extends AutoDisposeFutureProvider<SurfaceSubstrateHeaderData> {
+  /// See also [ssh].
+  SshProvider(
+    int sshId,
+  ) : this._internal(
+          (ref) => ssh(
+            ref as SshRef,
+            sshId,
+          ),
+          from: sshProvider,
+          name: r'sshProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product') ? null : _$sshHash,
+          dependencies: SshFamily._dependencies,
+          allTransitiveDependencies: SshFamily._allTransitiveDependencies,
+          sshId: sshId,
+        );
+
+  SshProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.sshId,
+  }) : super.internal();
+
+  final int sshId;
+
+  @override
+  Override overrideWith(
+    FutureOr<SurfaceSubstrateHeaderData> Function(SshRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: SshProvider._internal(
+        (ref) => create(ref as SshRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        sshId: sshId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<SurfaceSubstrateHeaderData> createElement() {
+    return _SshProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is SshProvider && other.sshId == sshId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, sshId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin SshRef on AutoDisposeFutureProviderRef<SurfaceSubstrateHeaderData> {
+  /// The parameter `sshId` of this provider.
+  int get sshId;
+}
+
+class _SshProviderElement
+    extends AutoDisposeFutureProviderElement<SurfaceSubstrateHeaderData>
+    with SshRef {
+  _SshProviderElement(super.provider);
+
+  @override
+  int get sshId => (origin as SshProvider).sshId;
+}
+
+String _$sshParentCompleteHash() => r'ddbecc5f028e08644d50e5e3706d80ae8ce07f70';
+
+/// See also [sshParentComplete].
+@ProviderFor(sshParentComplete)
+const sshParentCompleteProvider = SshParentCompleteFamily();
+
+/// See also [sshParentComplete].
+class SshParentCompleteFamily extends Family<AsyncValue<bool>> {
+  /// See also [sshParentComplete].
+  const SshParentCompleteFamily();
+
+  /// See also [sshParentComplete].
+  SshParentCompleteProvider call(
+    int ssId,
+  ) {
+    return SshParentCompleteProvider(
+      ssId,
+    );
+  }
+
+  @visibleForOverriding
+  @override
+  SshParentCompleteProvider getProviderOverride(
+    covariant SshParentCompleteProvider provider,
+  ) {
+    return call(
+      provider.ssId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'sshParentCompleteProvider';
+}
+
+/// See also [sshParentComplete].
+class SshParentCompleteProvider extends AutoDisposeFutureProvider<bool> {
+  /// See also [sshParentComplete].
+  SshParentCompleteProvider(
+    int ssId,
+  ) : this._internal(
+          (ref) => sshParentComplete(
+            ref as SshParentCompleteRef,
+            ssId,
+          ),
+          from: sshParentCompleteProvider,
+          name: r'sshParentCompleteProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$sshParentCompleteHash,
+          dependencies: SshParentCompleteFamily._dependencies,
+          allTransitiveDependencies:
+              SshParentCompleteFamily._allTransitiveDependencies,
+          ssId: ssId,
+        );
+
+  SshParentCompleteProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.ssId,
+  }) : super.internal();
+
+  final int ssId;
+
+  @override
+  Override overrideWith(
+    FutureOr<bool> Function(SshParentCompleteRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: SshParentCompleteProvider._internal(
+        (ref) => create(ref as SshParentCompleteRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        ssId: ssId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<bool> createElement() {
+    return _SshParentCompleteProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is SshParentCompleteProvider && other.ssId == ssId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, ssId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin SshParentCompleteRef on AutoDisposeFutureProviderRef<bool> {
+  /// The parameter `ssId` of this provider.
+  int get ssId;
+}
+
+class _SshParentCompleteProviderElement
+    extends AutoDisposeFutureProviderElement<bool> with SshParentCompleteRef {
+  _SshParentCompleteProviderElement(super.provider);
+
+  @override
+  int get ssId => (origin as SshParentCompleteProvider).ssId;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, inference_failure_on_uninitialized_variable, inference_failure_on_function_return_type, inference_failure_on_untyped_parameter

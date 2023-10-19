@@ -9,6 +9,7 @@ class DropDownAsyncList extends StatefulWidget {
   const DropDownAsyncList(
       {Key? key,
       this.searchable = false,
+      this.enabled = true,
       this.title = "",
       this.disabledFn,
       this.onBeforePopup,
@@ -21,6 +22,7 @@ class DropDownAsyncList extends StatefulWidget {
   //default false
   final String title;
   final bool searchable;
+  final bool enabled;
   final bool Function(String?)? disabledFn;
   //return false to prevent popup
   final Future<bool?> Function(String?)? onBeforePopup;
@@ -57,6 +59,7 @@ class _DropDownAsyncListState extends State<DropDownAsyncList> {
               disabledItemFn: widget.disabledFn,
               searchDelay: const Duration(microseconds: 0),
             ),
+            enabled: widget.enabled,
             onBeforePopupOpening: widget.onBeforePopup,
             onChanged: widget.onChangedFn,
             asyncItems: widget.asyncItems,

@@ -174,7 +174,7 @@ class WoodyDebrisHeaderMeasurementsPageState
               : [
                   SetTransectNumBuilder(
                     getUsedTransNums: db.woodyDebrisTablesDao
-                        .getUsedTransnums(wdhC.wdId.value),
+                        .getUsedTransNums(wdhC.wdId.value),
                     startingTransNum: initTransNum.toString(),
                     selectedItem: db.companionValueToStr(wdhC.transNum).isEmpty
                         ? "Please select transect number"

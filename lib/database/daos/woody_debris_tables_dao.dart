@@ -127,7 +127,7 @@ class WoodyDebrisTablesDao extends DatabaseAccessor<Database>
             ]))
           .get();
 
-  Future<List<int?>> getUsedTransnums(int wdsId) {
+  Future<List<int?>> getUsedTransNums(int wdsId) {
     final query = select(woodyDebrisHeader)
       ..where((tbl) => tbl.wdId.equals(wdsId));
     return query.map((row) => row.transNum).get();

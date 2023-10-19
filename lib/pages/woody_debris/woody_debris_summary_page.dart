@@ -57,7 +57,7 @@ class WoodyDebrisSummaryPageState
             color: Colors.transparent,
             child: SetTransectNumBuilder(
               name: "",
-              getUsedTransNums: db.woodyDebrisTablesDao.getUsedTransnums(wdId),
+              getUsedTransNums: db.woodyDebrisTablesDao.getUsedTransNums(wdId),
               startingTransNum: '',
               selectedItem: wdhCompanion.transNum.value?.toString() ?? "",
               transList: kTransectNumsList,

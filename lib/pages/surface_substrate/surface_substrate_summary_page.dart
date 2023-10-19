@@ -1,5 +1,6 @@
 import 'package:drift/drift.dart' as d;
 import 'package:survey_app/barrels/page_imports_barrel.dart';
+import 'package:survey_app/pages/surface_substrate/surface_substrate_header_page.dart';
 import 'package:survey_app/providers/surface_substrate_providers.dart';
 import 'package:survey_app/widgets/popups/popup_create_transect.dart';
 
@@ -55,14 +56,22 @@ class SurfaceSubstrateSummaryPageState
           transList: kTransectNumsList,
           updateTransNum: (int transNum) =>
               sshC = sshC.copyWith(transNum: d.Value(transNum)),
-          onSave: () => db.surfaceSubstrateTablesDao
-              .addSsHeader(sshC)
-              .then((sshId) => print("working'")),
+          onSave: () =>
+              db.surfaceSubstrateTablesDao.addSsHeader(sshC).then((sshId) {
+            context.pop();
+            goToSshPage(sshId);
+          }),
         ));
   }
 
-  //TODO: fill out
-  void goToSshPage(int sshId) => null;
+  void goToSshPage(int sshId) => context
+          .pushNamed(SurfaceSubstrateHeaderPage.routeName,
+              pathParameters:
+                  PathParamGenerator.ssHeader(widget.state, sshId.toString()))
+          .then((value) {
+        ref.refresh(ssTransListProvider(ssId));
+        ref.refresh(ssDataProvider(surveyId));
+      });
 
   SurveyStatus getStatus(SurfaceSubstrateHeaderData data) {
     if (data.complete) return SurveyStatus.complete;

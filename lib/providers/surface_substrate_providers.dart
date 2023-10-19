@@ -16,3 +16,17 @@ Future<List<SurfaceSubstrateHeaderData>> ssTransList(
         .read(databaseProvider)
         .surfaceSubstrateTablesDao
         .getSSHeadersFromSsSId(ssId);
+
+@riverpod
+Future<SurfaceSubstrateHeaderData> ssh(SshRef ref, int sshId) async => ref
+    .read(databaseProvider)
+    .surfaceSubstrateTablesDao
+    .getSsHeaderFromId(sshId);
+
+@riverpod
+Future<bool> sshParentComplete(SshParentCompleteRef ref, int ssId) async =>
+    (await ref
+            .read(databaseProvider)
+            .surfaceSubstrateTablesDao
+            .getSsSummary(ssId))
+        .complete;
