@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart' as d;
 import 'package:flutter/services.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
+import 'package:survey_app/widgets/popups/popup_errors_found_list.dart';
 
 import '../../formatters/thousands_formatter.dart';
 import '../../widgets/builders/set_transect_num_builder.dart';
@@ -83,16 +84,16 @@ class SurfaceSubstrateHeaderPageState
         .then((value) => setState(() => ssh = sshC));
   }
 
-  String? errorCheck() {
+  List<String>? errorCheck() {
     final db = ref.read(databaseProvider);
-    String result = "";
+    List<String> results = [];
     errorNomTransLen(db.companionValueToStr(ssh.nomTransLen)) != null
-        ? result += "Nominal Transect Length \n"
+        ? results.add("Nominal Transect Length")
         : null;
     errorTransAzim(db.companionValueToStr(ssh.transAzimuth)) != null
-        ? result += "Transect Azimuth \n"
+        ? results.add("Transect Azimuth")
         : null;
-    return result.isEmpty ? null : result;
+    return results.isEmpty ? null : results;
   }
 
   //measured length of the sample transect (m). 10.0 to 150.0
@@ -117,27 +118,17 @@ class SurfaceSubstrateHeaderPageState
 
   void markComplete() async {
     final db = Database.instance;
-    SurfaceSubstrateHeaderCompanion newSsh = ssh;
+    print(ssh);
     if (parentComplete) {
       Popups.show(context, popupSurveyComplete);
     } else if (ssh.complete.value) {
-      newSsh = ssh.copyWith(complete: const d.Value(false));
+      updateSshData(ssh.copyWith(complete: const d.Value(false)));
     } else {
-      print("hiho");
-      newSsh = ssh.copyWith(complete: const d.Value(true));
-      print("what");
+      List<String>? errors = errorCheck();
+      errors == null
+          ? updateSshData(ssh.copyWith(complete: const d.Value(true)))
+          : Popups.show(context, PopupErrorsFoundList(errors: errors));
     }
-    if (mounted) setState(() => ssh = newSsh);
-    print("tell");
-  }
-
-  bool handleTransectBuilderEnabled() {
-    if (ssh.complete.value) {
-      Popups.show(context, popupPageComplete);
-      return false;
-    }
-
-    return true;
   }
 
   @override
@@ -160,18 +151,13 @@ class SurfaceSubstrateHeaderPageState
               complete: db.companionValueToStr(ssh.complete).isEmpty
                   ? false
                   : ssh.complete.value,
-              onPressed: () => updateSshCompanion(
-                  ssh.copyWith(complete: d.Value(!ssh.complete.value))),
-              //() => markComplete(),
+              onPressed: () => markComplete(),
             ),
             endDrawer: DrawerMenu(onLocaleChange: () {}),
             body: ListView(
                 padding: const EdgeInsets.symmetric(horizontal: kPaddingH),
-                children:
-                    // db.companionValueToStr(ssh.id).isEmpty ? [kLoadingWidget] :
-                    [
+                children: [
                   SetTransectNumBuilder(
-                    enabled: handleTransectBuilderEnabled(),
                     getUsedTransNums: db.surfaceSubstrateTablesDao
                         .getUsedTransNums(ssh.ssId.value),
                     startingTransNum: db.companionValueToStr(ssh.transNum),
@@ -191,9 +177,6 @@ class SurfaceSubstrateHeaderPageState
                   ),
                   DataInput(
                     readOnly: ssh.complete.value,
-                    onTap: ssh.complete.value
-                        ? Popups.show(context, popupPageComplete)
-                        : null,
                     title: "The measured length of the sample transect.",
                     boxLabel: "Report to the nearest 0.1cm",
                     prefixIcon: FontAwesomeIcons.ruler,
@@ -214,16 +197,15 @@ class SurfaceSubstrateHeaderPageState
                       s.isEmpty
                           ? updateSshData(
                               ssh.copyWith(nomTransLen: const d.Value(null)))
-                          : errorNomTransLen(s) ??
-                              updateSshData(ssh.copyWith(
-                                  nomTransLen: d.Value(double.parse(s))));
+                          : errorNomTransLen(s) == null
+                              ? updateSshData(ssh.copyWith(
+                                  nomTransLen: d.Value(double.parse(s))))
+                              : ssh = ssh.copyWith(
+                                  nomTransLen: d.Value(double.parse(s)));
                     },
                   ),
                   DataInput(
                     readOnly: ssh.complete.value,
-                    onTap: ssh.complete.value
-                        ? Popups.show(context, popupPageComplete)
-                        : null,
                     title: "Transect azimuth.",
                     boxLabel: "Report in degrees",
                     prefixIcon: FontAwesomeIcons.angleLeft,
@@ -244,9 +226,11 @@ class SurfaceSubstrateHeaderPageState
                       s.isEmpty
                           ? updateSshData(
                               ssh.copyWith(transAzimuth: const d.Value(null)))
-                          : errorTransAzim(s) ??
-                              updateSshData(ssh.copyWith(
-                                  transAzimuth: d.Value(int.parse(s))));
+                          : errorTransAzim(s) == null
+                              ? updateSshData(ssh.copyWith(
+                                  transAzimuth: d.Value(int.parse(s))))
+                              : ssh = ssh.copyWith(
+                                  transAzimuth: d.Value(int.parse(s)));
                     },
                   ),
                   Padding(
