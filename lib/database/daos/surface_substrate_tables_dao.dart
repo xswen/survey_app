@@ -86,16 +86,16 @@ class SurfaceSubstrateTablesDao extends DatabaseAccessor<Database>
   Future<SurfaceSubstrateTallyData> getSsTallyFromId(int id) =>
       (select(surfaceSubstrateTally)..where((tbl) => tbl.id.equals(id)))
           .getSingle();
-  Future<SurfaceSubstrateTallyData?> getSsTallyFromSsDataId(
+  Future<SurfaceSubstrateTallyData?> getSsTallyFromSsSummaryId(
           int ssdId, int stationNum) =>
       (select(surfaceSubstrateTally)
             ..where((tbl) =>
                 tbl.ssHeaderId.equals(ssdId) &
                 tbl.stationNum.equals(stationNum)))
           .getSingleOrNull();
-  Future<List<SurfaceSubstrateTallyData>> getSsTallyList(int ssDataId) =>
+  Future<List<SurfaceSubstrateTallyData>> getSsTallyList(int ssHeaderId) =>
       (select(surfaceSubstrateTally)
-            ..where((tbl) => tbl.ssHeaderId.equals(ssDataId))
+            ..where((tbl) => tbl.ssHeaderId.equals(ssHeaderId))
             ..orderBy([
               (t) =>
                   OrderingTerm(expression: t.stationNum, mode: OrderingMode.asc)

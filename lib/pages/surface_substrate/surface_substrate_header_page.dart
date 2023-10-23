@@ -1,11 +1,15 @@
 import 'package:drift/drift.dart' as d;
 import 'package:flutter/services.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
+import 'package:survey_app/providers/surface_substrate_providers.dart';
 import 'package:survey_app/widgets/popups/popup_errors_found_list.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../formatters/thousands_formatter.dart';
 import '../../widgets/builders/set_transect_num_builder.dart';
 import '../../widgets/data_input/data_input.dart';
+import '../../widgets/tables/table_creation_builder.dart';
+import '../../widgets/tables/table_data_grid_source_builder.dart';
 import '../../wrappers/column_header_object.dart';
 
 class ColNames {
@@ -49,6 +53,8 @@ class SurfaceSubstrateHeaderPageState
   late final int ssId;
   late final int sshId;
 
+  final ColNames columnData = ColNames();
+
   @override
   void initState() {
     surveyId = PathParamValue.getSurveyId(widget.state)!;
@@ -72,6 +78,41 @@ class SurfaceSubstrateHeaderPageState
         ssh = value.toCompanion(true);
       });
     }
+  }
+
+  List<DataGridRow> generateDataGridRows(
+          List<SurfaceSubstrateTallyData> stations) =>
+      stations
+          .map<DataGridRow>((dataGridRow) => DataGridRow(cells: [
+                DataGridCell<int>(
+                    columnName: columnData.id.name, value: dataGridRow.id),
+                DataGridCell<int>(
+                    columnName: columnData.stationNum.name,
+                    value: dataGridRow.stationNum),
+                DataGridCell<String>(
+                    columnName: columnData.type.name,
+                    value: dataGridRow.substrateType),
+                DataGridCell<String>(
+                    columnName: columnData.depth.name,
+                    value: dataGridRow.depth?.toString() ?? ""),
+                DataGridCell<String>(
+                    columnName: columnData.depthLimit.name,
+                    value: dataGridRow.depthLimit?.toString() ?? ""),
+                DataGridCell<SurfaceSubstrateTallyData>(
+                    columnName: columnData.edit.name, value: dataGridRow),
+              ]))
+          .toList();
+
+  DataGridSourceBuilder getSourceBuilder(
+      List<SurfaceSubstrateTallyData> stations) {
+    DataGridSourceBuilder source =
+        DataGridSourceBuilder(dataGridRows: generateDataGridRows(stations));
+    source.sortedColumns.add(SortColumnDetails(
+        name: columnData.stationNum.toString(),
+        sortDirection: DataGridSortDirection.ascending));
+    source.sort();
+
+    return source;
   }
 
   void updateSshCompanion(SurfaceSubstrateHeaderCompanion newSshC) =>
@@ -134,6 +175,8 @@ class SurfaceSubstrateHeaderPageState
   @override
   Widget build(BuildContext context) {
     final db = ref.read(databaseProvider);
+    final AsyncValue<List<SurfaceSubstrateTallyData>> tallyDataList =
+        ref.watch(ssTallyDataListProvider(sshId));
 
     return db.companionValueToStr(ssh.id).isEmpty
         ? Scaffold(
@@ -154,112 +197,140 @@ class SurfaceSubstrateHeaderPageState
               onPressed: () => markComplete(),
             ),
             endDrawer: DrawerMenu(onLocaleChange: () {}),
-            body: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: kPaddingH),
-                children: [
-                  SetTransectNumBuilder(
-                    getUsedTransNums: db.surfaceSubstrateTablesDao
-                        .getUsedTransNums(ssh.ssId.value),
-                    startingTransNum: db.companionValueToStr(ssh.transNum),
-                    selectedItem: db.companionValueToStr(ssh.transNum).isEmpty
-                        ? "Please select transect number"
-                        : db.companionValueToStr(ssh.transNum),
-                    transList: kTransectNumsList,
-                    updateTransNum: (int transNum) => updateSshData(
-                        ssh.copyWith(transNum: d.Value(transNum))),
-                    onBeforePopup: (s) async {
-                      if (ssh.complete.value) {
-                        Popups.show(context, popupPageComplete);
-                        return false;
-                      }
-                      return true;
-                    },
-                  ),
-                  DataInput(
-                    readOnly: ssh.complete.value,
-                    title: "The measured length of the sample transect.",
-                    boxLabel: "Report to the nearest 0.1cm",
-                    prefixIcon: FontAwesomeIcons.ruler,
-                    suffixVal: "cm",
-                    startingStr: db.companionValueToStr(ssh.nomTransLen),
-                    //database allows marking as absent, however this should be flagged
-                    //on check for marking complete
-                    onValidate: (s) => errorNomTransLen(s) == "Can't be empty"
-                        ? null
-                        : errorNomTransLen(s),
-                    inputType:
-                        const TextInputType.numberWithOptions(decimal: true),
-                    inputFormatters: [
-                      LengthLimitingTextInputFormatter(5),
-                      ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: kPaddingH),
+              child: Column(children: [
+                SetTransectNumBuilder(
+                  getUsedTransNums: db.surfaceSubstrateTablesDao
+                      .getUsedTransNums(ssh.ssId.value),
+                  startingTransNum: db.companionValueToStr(ssh.transNum),
+                  selectedItem: db.companionValueToStr(ssh.transNum).isEmpty
+                      ? "Please select transect number"
+                      : db.companionValueToStr(ssh.transNum),
+                  transList: kTransectNumsList,
+                  updateTransNum: (int transNum) =>
+                      updateSshData(ssh.copyWith(transNum: d.Value(transNum))),
+                  onBeforePopup: (s) async {
+                    if (ssh.complete.value) {
+                      Popups.show(context, popupPageComplete);
+                      return false;
+                    }
+                    return true;
+                  },
+                ),
+                DataInput(
+                  readOnly: ssh.complete.value,
+                  title: "The measured length of the sample transect.",
+                  boxLabel: "Report to the nearest 0.1cm",
+                  prefixIcon: FontAwesomeIcons.ruler,
+                  suffixVal: "cm",
+                  startingStr: db.companionValueToStr(ssh.nomTransLen),
+                  //database allows marking as absent, however this should be flagged
+                  //on check for marking complete
+                  onValidate: (s) => errorNomTransLen(s) == "Can't be empty"
+                      ? null
+                      : errorNomTransLen(s),
+                  inputType:
+                      const TextInputType.numberWithOptions(decimal: true),
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(5),
+                    ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
+                  ],
+                  onSubmit: (String s) {
+                    s.isEmpty
+                        ? updateSshData(
+                            ssh.copyWith(nomTransLen: const d.Value(null)))
+                        : errorNomTransLen(s) == null
+                            ? updateSshData(ssh.copyWith(
+                                nomTransLen: d.Value(double.parse(s))))
+                            : ssh = ssh.copyWith(
+                                nomTransLen: d.Value(double.parse(s)));
+                  },
+                ),
+                DataInput(
+                  readOnly: ssh.complete.value,
+                  title: "Transect azimuth.",
+                  boxLabel: "Report in degrees",
+                  prefixIcon: FontAwesomeIcons.angleLeft,
+                  suffixVal: "\u00B0",
+                  startingStr: db.companionValueToStr(ssh.transAzimuth),
+                  //database allows marking as absent, however this should be flagged
+                  //on check for marking complete
+                  onValidate: (s) => errorTransAzim(s) == "Can't be empty"
+                      ? null
+                      : errorTransAzim(s),
+                  inputType:
+                      const TextInputType.numberWithOptions(decimal: false),
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(3),
+                    ThousandsFormatter(allowFraction: false),
+                  ],
+                  onSubmit: (String s) {
+                    s.isEmpty
+                        ? updateSshData(
+                            ssh.copyWith(transAzimuth: const d.Value(null)))
+                        : errorTransAzim(s) == null
+                            ? updateSshData(ssh.copyWith(
+                                transAzimuth: d.Value(int.parse(s))))
+                            : ssh = ssh.copyWith(
+                                transAzimuth: d.Value(int.parse(s)));
+                  },
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: kPaddingH / 2),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Coarse Woody Debris",
+                        style: TextStyle(fontSize: kTextTitleSize),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: kPaddingH),
+                        child: ElevatedButton(
+                            onPressed: () => ssh.complete.value
+                                ? Popups.show(context, popupPageComplete)
+                                : null,
+                            style: ButtonStyle(
+                                backgroundColor: ssh.complete.value
+                                    ? MaterialStateProperty.all<Color>(
+                                        Colors.grey)
+                                    : null),
+                            child: const Text("Add station")),
+                      ),
                     ],
-                    onSubmit: (String s) {
-                      s.isEmpty
-                          ? updateSshData(
-                              ssh.copyWith(nomTransLen: const d.Value(null)))
-                          : errorNomTransLen(s) == null
-                              ? updateSshData(ssh.copyWith(
-                                  nomTransLen: d.Value(double.parse(s))))
-                              : ssh = ssh.copyWith(
-                                  nomTransLen: d.Value(double.parse(s)));
-                    },
                   ),
-                  DataInput(
-                    readOnly: ssh.complete.value,
-                    title: "Transect azimuth.",
-                    boxLabel: "Report in degrees",
-                    prefixIcon: FontAwesomeIcons.angleLeft,
-                    suffixVal: "\u00B0",
-                    startingStr: db.companionValueToStr(ssh.transAzimuth),
-                    //database allows marking as absent, however this should be flagged
-                    //on check for marking complete
-                    onValidate: (s) => errorTransAzim(s) == "Can't be empty"
-                        ? null
-                        : errorTransAzim(s),
-                    inputType:
-                        const TextInputType.numberWithOptions(decimal: false),
-                    inputFormatters: [
-                      LengthLimitingTextInputFormatter(3),
-                      ThousandsFormatter(allowFraction: false),
-                    ],
-                    onSubmit: (String s) {
-                      s.isEmpty
-                          ? updateSshData(
-                              ssh.copyWith(transAzimuth: const d.Value(null)))
-                          : errorTransAzim(s) == null
-                              ? updateSshData(ssh.copyWith(
-                                  transAzimuth: d.Value(int.parse(s))))
-                              : ssh = ssh.copyWith(
-                                  transAzimuth: d.Value(int.parse(s)));
-                    },
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: kPaddingH / 2),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          "Coarse Woody Debris",
-                          style: TextStyle(fontSize: kTextTitleSize),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: kPaddingH),
-                          child: ElevatedButton(
-                              onPressed: () => ssh.complete.value
-                                  ? Popups.show(context, popupPageComplete)
-                                  : null,
-                              style: ButtonStyle(
-                                  backgroundColor: ssh.complete.value
-                                      ? MaterialStateProperty.all<Color>(
-                                          Colors.grey)
-                                      : null),
-                              child: const Text("Add station")),
-                        ),
-                      ],
-                    ),
-                  ),
-                ]),
+                ),
+                Expanded(
+                  child: tallyDataList.when(
+                      data: (tallyDataList) {
+                        DataGridSourceBuilder source =
+                            getSourceBuilder(tallyDataList);
+                        return Center(
+                          child: TableCreationBuilder(
+                            source: source,
+                            columnWidthMode: ColumnWidthMode.lastColumnFill,
+                            colNames: columnData.getColHeadersList(),
+                            onCellTap: (DataGridCellTapDetails details) async {
+                              // Assuming the "edit" column index is 2
+                              if (details.column.columnName ==
+                                      columnData.edit.name &&
+                                  details.rowColumnIndex.rowIndex != 0) {
+                                if (ssh.complete.value || parentComplete) {
+                                  Popups.show(context, popupPageComplete);
+                                } else {}
+                              }
+                            },
+                          ),
+                        );
+                      },
+                      error: (err, stack) => Text("Error: $err"),
+                      loading: () =>
+                          const Center(child: CircularProgressIndicator())),
+                ),
+              ]),
+            ),
           );
   }
 }
