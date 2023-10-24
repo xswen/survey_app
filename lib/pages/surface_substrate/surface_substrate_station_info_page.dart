@@ -18,12 +18,14 @@ class SurfaceSubstrateStationInfoPageState
     extends ConsumerState<SurfaceSubstrateStationInfoPage> {
   final String title = "Surface Substrate Station";
   late final int sshId;
-  late SurfaceSubstrateTallyCompanion ssTally;
+  late bool moreInfo;
+  late SurfaceSubstrateTallyCompanion station;
 
   @override
   void initState() {
     sshId = PathParamValue.getSsHeaderId(widget.state);
-    ssTally = widget.state.extra as SurfaceSubstrateTallyCompanion;
+    station = widget.state.extra as SurfaceSubstrateTallyCompanion;
+    moreInfo = false;
     super.initState();
   }
 
@@ -34,10 +36,10 @@ class SurfaceSubstrateStationInfoPageState
       .then((stationNum) => context.goNamed(
           SurfaceSubstrateStationInfoPage.routeName,
           pathParameters: PathParamGenerator.ssStationInfo(
-              widget.state, (ssTally.stationNum.value + 1).toString()),
+              widget.state, (station.stationNum.value + 1).toString()),
           extra: SurfaceSubstrateTallyCompanion(
               ssHeaderId: d.Value(sshId),
-              stationNum: d.Value(ssTally.stationNum.value + 1))));
+              stationNum: d.Value(station.stationNum.value + 1))));
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +47,7 @@ class SurfaceSubstrateStationInfoPageState
     debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
     return Scaffold(
       appBar: OurAppBar(
-        "$title: ${db.companionValueToStr(ssTally.stationNum)}",
+        "$title: ${db.companionValueToStr(station.stationNum)}",
         onLocaleChange: () {},
         backFn: () {
           ref.refresh(ssTallyDataListProvider(sshId));
@@ -57,11 +59,6 @@ class SurfaceSubstrateStationInfoPageState
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           ElevatedButton(
-              onPressed: () async {
-                createNewSsTallyCompanion();
-              },
-              child: const Text("Save and Add New Station")),
-          ElevatedButton(
               onPressed: () {
                 //TODO: Implement
                 // context.goNamed(SurfaceSubstrateHeaderPage.routeName,
@@ -69,9 +66,14 @@ class SurfaceSubstrateStationInfoPageState
                 //         PathParamGenerator.ssHeader(widget.state, sshId.toString()));
               },
               child: const Text("Save and Return")),
+          ElevatedButton(
+              onPressed: () async {
+                createNewSsTallyCompanion();
+              },
+              child: const Text("Save and Add New Station")),
         ],
       ),
     );
-    Text("$ssTally");
+    Text("$station");
   }
 }

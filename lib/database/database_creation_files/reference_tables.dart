@@ -36,6 +36,22 @@ class TreeGenus extends Table {
   Set<Column> get primaryKey => {genusCode, speciesCode};
 }
 
+class SubstrateType extends Table {
+  TextColumn get typeCode => text().withLength(min: 2, max: 2)();
+  TextColumn get nameEn => text()();
+  TextColumn get nameFr => text()();
+  BoolColumn get hasDepth => boolean()();
+
+  @override
+  Set<Column> get primaryKey => {typeCode};
+}
+
+class SsDepthLimit extends Table {
+  IntColumn get code => integer().unique()();
+  TextColumn get nameEn => text()();
+  TextColumn get nameFr => text()();
+}
+
 @DataClassName("EcpGenusData")
 class EcpGenus extends Table {
   TextColumn get genusCode => text().withLength(min: 4, max: 4)();

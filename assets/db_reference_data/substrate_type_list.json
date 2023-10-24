@@ -1,0 +1,44 @@
+[
+  {
+    "typeCode": "DW",
+    "nameEn": "Decayed wood",
+    "nameFr": "Decayed woodFr",
+    "hasDepth": false
+  },
+  {
+    "typeCode": "BR",
+    "nameEn": "Bedrock",
+    "nameFr": "BedrockFr",
+    "hasDepth": false
+  },
+  {
+    "typeCode": "RC",
+    "nameEn": "Rock or cobbles",
+    "nameFr": "Rock or cobblesFr",
+    "hasDepth": false
+  },
+  {
+    "typeCode": "MS",
+    "nameEn": "Mineral soil",
+    "nameFr": "Mineral soilFr",
+    "hasDepth": false
+  },
+  {
+    "typeCode": "OM",
+    "nameEn": "Organic matter",
+    "nameFr": "Organic matterFr",
+    "hasDepth": true
+  },
+  {
+    "typeCode": "BW",
+    "nameEn": "Buried wood",
+    "nameFr": "Buried woodFr",
+    "hasDepth": true
+  },
+  {
+    "typeCode": "WA",
+    "nameEn": "Water",
+    "nameFr": "WaterFr",
+    "hasDepth": false
+  }
+]
