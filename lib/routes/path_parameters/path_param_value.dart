@@ -25,5 +25,5 @@ class PathParamValue {
   static int getSsHeaderId(GoRouterState goRouterState) =>
       int.parse(goRouterState.pathParameters[PathParamsKeys.ssHeaderId]!);
   static int getSsTallyId(GoRouterState goRouterState) =>
-      int.parse(goRouterState.pathParameters[PathParamsKeys.ssTallyId]!);
+      int.parse(goRouterState.pathParameters[PathParamsKeys.ssStationNum]!);
 }

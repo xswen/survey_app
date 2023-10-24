@@ -44,10 +44,10 @@ class PathParamGenerator {
         ...{PathParamsKeys.ssHeaderId: ssHeaderId}
       };
   static Map<String, String> ssStationInfo(
-          GoRouterState goRouterState, String ssTallyId) =>
+          GoRouterState goRouterState, String ssStationNum) =>
       {
         ...ssHeader(goRouterState,
             goRouterState.pathParameters[PathParamsKeys.ssHeaderId]!),
-        ...{PathParamsKeys.ssTallyId: ssTallyId}
+        ...{PathParamsKeys.ssStationNum: ssStationNum}
       };
 }

@@ -101,9 +101,9 @@ class SurfaceSubstrateTablesDao extends DatabaseAccessor<Database>
                   OrderingTerm(expression: t.stationNum, mode: OrderingMode.asc)
             ]))
           .get();
-  Future<int> getNextStationNum(int ssDataId) async {
+  Future<int> getNextStationNum(int ssHeaderId) async {
     final query = select(surfaceSubstrateTally)
-      ..where((tbl) => tbl.ssHeaderId.equals(ssDataId))
+      ..where((tbl) => tbl.ssHeaderId.equals(ssHeaderId))
       ..orderBy([
         (t) => OrderingTerm(expression: t.stationNum, mode: OrderingMode.desc)
       ]);

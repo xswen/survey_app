@@ -3,6 +3,7 @@ import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/pages/woody_debris/woody_debris_header_page.dart';
 import 'package:survey_app/widgets/builders/set_transect_num_builder.dart';
 
+import '../../providers/survey_info_providers.dart';
 import '../../providers/woody_debris_providers.dart';
 import '../../widgets/date_select.dart';
 import '../../widgets/tile_cards/tile_card_selection.dart';
@@ -126,7 +127,13 @@ class WoodyDebrisSummaryPageState
         ref.watch(wdTransListProvider(wdId));
 
     return Scaffold(
-      appBar: OurAppBar(title),
+      appBar: OurAppBar(
+        title,
+        backFn: () {
+          ref.refresh(updateSurveyCardProvider(surveyId));
+          context.pop();
+        },
+      ),
       endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
       body: Center(
         child: wdSummary.when(

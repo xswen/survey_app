@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart' as d;
 import 'package:flutter/services.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
+import 'package:survey_app/pages/surface_substrate/surface_substrate_station_info_page.dart';
 import 'package:survey_app/providers/surface_substrate_providers.dart';
 import 'package:survey_app/widgets/popups/popup_errors_found_list.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
@@ -172,6 +173,17 @@ class SurfaceSubstrateHeaderPageState
     }
   }
 
+  void createNewSsTallyCompanion() => ref
+      .read(databaseProvider)
+      .surfaceSubstrateTablesDao
+      .getNextStationNum(sshId)
+      .then((stationNum) => context.pushNamed(
+          SurfaceSubstrateStationInfoPage.routeName,
+          pathParameters: PathParamGenerator.ssStationInfo(
+              widget.state, stationNum.toString()),
+          extra: SurfaceSubstrateTallyCompanion(
+              ssHeaderId: d.Value(sshId), stationNum: d.Value(stationNum))));
+
   @override
   Widget build(BuildContext context) {
     final db = ref.read(databaseProvider);
@@ -188,6 +200,10 @@ class SurfaceSubstrateHeaderPageState
             appBar: OurAppBar(
               "$title: Transect ${db.companionValueToStr(ssh.transNum)}",
               onLocaleChange: () {},
+              backFn: () {
+                ref.refresh(ssTransListProvider(ssId));
+                context.pop();
+              },
             ),
             floatingActionButton: FloatingCompleteButton(
               title: "Surface Substrate",
@@ -289,9 +305,9 @@ class SurfaceSubstrateHeaderPageState
                       Padding(
                         padding: const EdgeInsets.only(left: kPaddingH),
                         child: ElevatedButton(
-                            onPressed: () => ssh.complete.value
+                            onPressed: () async => ssh.complete.value
                                 ? Popups.show(context, popupPageComplete)
-                                : null,
+                                : createNewSsTallyCompanion(),
                             style: ButtonStyle(
                                 backgroundColor: ssh.complete.value
                                     ? MaterialStateProperty.all<Color>(
@@ -319,7 +335,12 @@ class SurfaceSubstrateHeaderPageState
                                   details.rowColumnIndex.rowIndex != 0) {
                                 if (ssh.complete.value || parentComplete) {
                                   Popups.show(context, popupPageComplete);
-                                } else {}
+                                } else {
+                                  int pId = source.dataGridRows[
+                                          details.rowColumnIndex.rowIndex - 1]
+                                      .getCells()[0]
+                                      .value;
+                                }
                               }
                             },
                           ),

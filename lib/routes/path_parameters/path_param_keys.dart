@@ -7,5 +7,5 @@ class PathParamsKeys {
 
   static const String ssSummaryId = "ssSummaryId";
   static const String ssHeaderId = "ssHeaderId";
-  static const String ssTallyId = "ssTallyId";
+  static const String ssStationNum = "ssStationNum";
 }

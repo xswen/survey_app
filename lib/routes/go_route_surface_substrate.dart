@@ -20,7 +20,7 @@ GoRoute goRouteSurfaceSubstrate = GoRoute(
         routes: [
           GoRoute(
             name: SurfaceSubstrateStationInfoPage.routeName,
-            path: "station_info/:ssTallyId",
+            path: "station_info/:${PathParamsKeys.ssStationNum}",
             builder: (context, state) => SurfaceSubstrateStationInfoPage(state),
           ),
         ]),
