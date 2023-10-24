@@ -108,6 +108,8 @@ class Database extends _$Database {
           List<PlotsCompanion> nfiPlotList = await _getNfiPlots();
           List<SubstrateTypeCompanion> substrateTypeList =
               await _getSubstrateTypes();
+          List<SsDepthLimitCompanion> ssDepthLimitList =
+              await _getSsDepthLimits();
 
           c.debugPrint("Init Values");
           await batch((b) {
@@ -115,6 +117,7 @@ class Database extends _$Database {
             b.insertAllOnConflictUpdate(treeGenus, treeList);
             b.insertAll(plots, nfiPlotList);
             b.insertAll(substrateType, substrateTypeList);
+            b.insertAll(ssDepthLimit, ssDepthLimitList);
 
             _initTest(b);
           });
@@ -178,6 +181,17 @@ class Database extends _$Database {
           nameEn: Value(item["nameEn"]),
           nameFr: Value(item["nameFr"]),
           hasDepth: Value(item["hasDepth"]));
+    }).toList();
+  }
+
+  Future<List<SsDepthLimitCompanion>> _getSsDepthLimits() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/ss_depth_limit_list.json');
+    return jsonData.map((dynamic item) {
+      return SsDepthLimitCompanion(
+          code: Value(item["code"]),
+          nameEn: Value(item["nameEn"]),
+          nameFr: Value(item["nameFr"]));
     }).toList();
   }
 
