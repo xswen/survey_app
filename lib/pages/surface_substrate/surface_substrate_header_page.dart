@@ -81,39 +81,84 @@ class SurfaceSubstrateHeaderPageState
     }
   }
 
-  String handleDepthValue(int depthValue) {
-    switch (depthValue) {
-      case kDataNotApplicable:
-        return "N/A";
-      case -1:
-        return "Missing";
-      default:
-        return depthValue.toString();
-    }
-  }
-
   List<DataGridRow> generateDataGridRows(
-          List<SurfaceSubstrateTallyData> stations) =>
-      stations
-          .map<DataGridRow>((dataGridRow) => DataGridRow(cells: [
-                DataGridCell<int>(
-                    columnName: columnData.id.name, value: dataGridRow.id),
-                DataGridCell<int>(
-                    columnName: columnData.stationNum.name,
-                    value: dataGridRow.stationNum),
-                DataGridCell<String>(
-                    columnName: columnData.type.name,
-                    value: dataGridRow.substrateType),
-                DataGridCell<String>(
-                    columnName: columnData.depth.name,
-                    value: handleDepthValue(dataGridRow.depth)),
-                DataGridCell<String>(
-                    columnName: columnData.depthLimit.name,
-                    value: handleDepthValue(dataGridRow.depthLimit)),
-                DataGridCell<SurfaceSubstrateTallyData>(
-                    columnName: columnData.edit.name, value: dataGridRow),
-              ]))
-          .toList();
+      List<SurfaceSubstrateTallyData> stations) {
+    String parseTypeValue(String type) {
+      switch (type) {
+        case "DW":
+          return "Decayed wood";
+        case "BR":
+          return "Bedrock";
+        case "RC":
+          return "Rock or cobbles";
+        case "MS":
+          return "Mineral soil";
+        case "OM":
+          return "Organic matter";
+        case "BW":
+          return "Buried wood";
+        case "WA":
+          return "Water";
+        default:
+          return "Error Unrecognized Type: $type";
+      }
+    }
+
+    String parseDepthValue(int depth) {
+      switch (depth) {
+        case kDataNotApplicable:
+          return "N/A";
+        case -1:
+          return "Missing";
+        default:
+          return depth.toString();
+      }
+    }
+
+    String parseDepthLimitValue(int depthLimit) {
+      switch (depthLimit) {
+        case kDataNotApplicable:
+          return "N/A";
+        case -1:
+          return "Missing";
+        case 1:
+          return "Mineral soil";
+        case 2:
+          return "Bedrock";
+        case 3:
+          return "Frozen Layer";
+        case 4:
+          return "Sound Wood";
+        case 5:
+          return "Other or unknown impenetrable object";
+        case 6:
+          return "Maximum depth achieved (500cm)";
+        default:
+          return "Error Unrecognized Code: ${depthLimit.toString()}";
+      }
+    }
+
+    return stations
+        .map<DataGridRow>((dataGridRow) => DataGridRow(cells: [
+              DataGridCell<int>(
+                  columnName: columnData.id.name, value: dataGridRow.id),
+              DataGridCell<int>(
+                  columnName: columnData.stationNum.name,
+                  value: dataGridRow.stationNum),
+              DataGridCell<String>(
+                  columnName: columnData.type.name,
+                  value: parseTypeValue(dataGridRow.substrateType)),
+              DataGridCell<String>(
+                  columnName: columnData.depth.name,
+                  value: parseDepthValue(dataGridRow.depth)),
+              DataGridCell<String>(
+                  columnName: columnData.depthLimit.name,
+                  value: parseDepthLimitValue(dataGridRow.depthLimit)),
+              DataGridCell<SurfaceSubstrateTallyData>(
+                  columnName: columnData.edit.name, value: dataGridRow),
+            ]))
+        .toList();
+  }
 
   DataGridSourceBuilder getSourceBuilder(
       List<SurfaceSubstrateTallyData> stations) {
@@ -354,6 +399,17 @@ class SurfaceSubstrateHeaderPageState
                                           details.rowColumnIndex.rowIndex - 1]
                                       .getCells()[0]
                                       .value;
+
+                                  db.surfaceSubstrateTablesDao
+                                      .getSsTallyFromId(pId)
+                                      .then((value) => context.pushNamed(
+                                          SurfaceSubstrateStationInfoPage
+                                              .routeName,
+                                          pathParameters:
+                                              PathParamGenerator.ssStationInfo(
+                                                  widget.state,
+                                                  value.stationNum.toString()),
+                                          extra: value.toCompanion(true)));
                                 }
                               }
                             },

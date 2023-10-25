@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:survey_app/pages/surface_substrate/surface_substrate_header_page.dart';
 import 'package:survey_app/providers/surface_substrate_providers.dart';
 import 'package:survey_app/widgets/builders/substrate_depth_select_builder.dart';
+import 'package:survey_app/widgets/buttons/delete_button.dart';
 import 'package:survey_app/widgets/data_input/data_input.dart';
 import 'package:survey_app/widgets/hide_info_checkbox.dart';
 import 'package:survey_app/widgets/popups/popup_errors_found_list.dart';
@@ -10,6 +11,7 @@ import 'package:survey_app/widgets/popups/popup_errors_found_list.dart';
 import '../../barrels/page_imports_barrel.dart';
 import '../../formatters/thousands_formatter.dart';
 import '../../widgets/builders/substrate_type_select_builder.dart';
+import '../delete_page.dart';
 
 class SurfaceSubstrateStationInfoPage extends ConsumerStatefulWidget {
   static const String routeName = "surfaceSubstrateStationInfo";
@@ -238,7 +240,32 @@ class SurfaceSubstrateStationInfoPageState
                       },
                       child: const Text("Save and Add New Station")),
                 ],
-              )
+              ),
+              station.id != d.Value.absent()
+                  ? DeleteButton(
+                      delete: () => Popups.show(
+                        context,
+                        PopupContinue("Warning: Deleting Piece",
+                            contentText: "You are about to delete this piece. "
+                                "Are you sure you want to continue?",
+                            rightBtnOnPressed: () {
+                          //close popup
+                          context.pop();
+                          context.pushNamed(DeletePage.routeName, extra: {
+                            DeletePage.keyObjectName:
+                                "Surface Substrate Station: ${station.toString()}",
+                            DeletePage.keyDeleteFn: () {
+                              (db.delete(db.surfaceSubstrateTally)
+                                    ..where((tbl) =>
+                                        tbl.id.equals(station.id.value)))
+                                  .go()
+                                  .then((value) => returnToHeader());
+                            },
+                          });
+                        }),
+                      ),
+                    )
+                  : Container()
             ],
           ),
         ),
