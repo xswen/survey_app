@@ -1,8 +1,6 @@
 import 'package:drift/drift.dart';
-import 'package:flutter/material.dart';
+import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/widgets/dropdowns/drop_down_async_list.dart';
-
-import '../../database/database.dart';
 
 class SubstrateTypeSelectBuilder extends StatelessWidget {
   const SubstrateTypeSelectBuilder(
@@ -14,7 +12,7 @@ class SubstrateTypeSelectBuilder extends StatelessWidget {
 
   final String title;
   final bool enabled;
-  final void Function(Value<String>? substrateTypeCode, Value<int?>? depth)
+  final void Function(Value<String>? substrateTypeCode, Value<int>? depth)
       updateType;
   final String substrateTypeCode;
 
@@ -41,8 +39,8 @@ class SubstrateTypeSelectBuilder extends StatelessWidget {
                   updateType(
                       Value(newSubstrateType.typeCode), const Value.absent());
                 } else {
-                  updateType(
-                      Value(newSubstrateType.typeCode), const Value(null));
+                  updateType(Value(newSubstrateType.typeCode),
+                      const Value(kDataNotApplicable));
                 }
               }
             },

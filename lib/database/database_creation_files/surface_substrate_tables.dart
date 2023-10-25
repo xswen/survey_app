@@ -29,7 +29,6 @@ class SurfaceSubstrateTally extends Table {
   IntColumn get stationNum =>
       integer().check(stationNum.isBetweenValues(1, 99))();
   TextColumn get substrateType => text()();
-  IntColumn get depth =>
-      integer().check(depth.isBetweenValues(0, 999)).nullable()();
-  TextColumn get depthLimit => text().nullable()();
+  IntColumn get depth => integer().check(depth.isBetweenValues(0, 999))();
+  IntColumn get depthLimit => integer()();
 }

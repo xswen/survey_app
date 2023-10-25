@@ -5276,16 +5276,16 @@ class $SurfaceSubstrateTallyTable extends SurfaceSubstrateTally
   static const VerificationMeta _depthMeta = const VerificationMeta('depth');
   @override
   late final GeneratedColumn<int> depth = GeneratedColumn<int>(
-      'depth', aliasedName, true,
+      'depth', aliasedName, false,
       check: () => depth.isBetweenValues(0, 999),
       type: DriftSqlType.int,
-      requiredDuringInsert: false);
+      requiredDuringInsert: true);
   static const VerificationMeta _depthLimitMeta =
       const VerificationMeta('depthLimit');
   @override
-  late final GeneratedColumn<String> depthLimit = GeneratedColumn<String>(
-      'depth_limit', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
+  late final GeneratedColumn<int> depthLimit = GeneratedColumn<int>(
+      'depth_limit', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns =>
       [id, ssHeaderId, stationNum, substrateType, depth, depthLimit];
@@ -5330,12 +5330,16 @@ class $SurfaceSubstrateTallyTable extends SurfaceSubstrateTally
     if (data.containsKey('depth')) {
       context.handle(
           _depthMeta, depth.isAcceptableOrUnknown(data['depth']!, _depthMeta));
+    } else if (isInserting) {
+      context.missing(_depthMeta);
     }
     if (data.containsKey('depth_limit')) {
       context.handle(
           _depthLimitMeta,
           depthLimit.isAcceptableOrUnknown(
               data['depth_limit']!, _depthLimitMeta));
+    } else if (isInserting) {
+      context.missing(_depthLimitMeta);
     }
     return context;
   }
@@ -5356,9 +5360,9 @@ class $SurfaceSubstrateTallyTable extends SurfaceSubstrateTally
       substrateType: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}substrate_type'])!,
       depth: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}depth']),
+          .read(DriftSqlType.int, data['${effectivePrefix}depth'])!,
       depthLimit: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}depth_limit']),
+          .read(DriftSqlType.int, data['${effectivePrefix}depth_limit'])!,
     );
   }
 
@@ -5374,15 +5378,15 @@ class SurfaceSubstrateTallyData extends DataClass
   final int ssHeaderId;
   final int stationNum;
   final String substrateType;
-  final int? depth;
-  final String? depthLimit;
+  final int depth;
+  final int depthLimit;
   const SurfaceSubstrateTallyData(
       {required this.id,
       required this.ssHeaderId,
       required this.stationNum,
       required this.substrateType,
-      this.depth,
-      this.depthLimit});
+      required this.depth,
+      required this.depthLimit});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -5390,12 +5394,8 @@ class SurfaceSubstrateTallyData extends DataClass
     map['ss_header_id'] = Variable<int>(ssHeaderId);
     map['station_num'] = Variable<int>(stationNum);
     map['substrate_type'] = Variable<String>(substrateType);
-    if (!nullToAbsent || depth != null) {
-      map['depth'] = Variable<int>(depth);
-    }
-    if (!nullToAbsent || depthLimit != null) {
-      map['depth_limit'] = Variable<String>(depthLimit);
-    }
+    map['depth'] = Variable<int>(depth);
+    map['depth_limit'] = Variable<int>(depthLimit);
     return map;
   }
 
@@ -5405,11 +5405,8 @@ class SurfaceSubstrateTallyData extends DataClass
       ssHeaderId: Value(ssHeaderId),
       stationNum: Value(stationNum),
       substrateType: Value(substrateType),
-      depth:
-          depth == null && nullToAbsent ? const Value.absent() : Value(depth),
-      depthLimit: depthLimit == null && nullToAbsent
-          ? const Value.absent()
-          : Value(depthLimit),
+      depth: Value(depth),
+      depthLimit: Value(depthLimit),
     );
   }
 
@@ -5421,8 +5418,8 @@ class SurfaceSubstrateTallyData extends DataClass
       ssHeaderId: serializer.fromJson<int>(json['ssHeaderId']),
       stationNum: serializer.fromJson<int>(json['stationNum']),
       substrateType: serializer.fromJson<String>(json['substrateType']),
-      depth: serializer.fromJson<int?>(json['depth']),
-      depthLimit: serializer.fromJson<String?>(json['depthLimit']),
+      depth: serializer.fromJson<int>(json['depth']),
+      depthLimit: serializer.fromJson<int>(json['depthLimit']),
     );
   }
   @override
@@ -5433,8 +5430,8 @@ class SurfaceSubstrateTallyData extends DataClass
       'ssHeaderId': serializer.toJson<int>(ssHeaderId),
       'stationNum': serializer.toJson<int>(stationNum),
       'substrateType': serializer.toJson<String>(substrateType),
-      'depth': serializer.toJson<int?>(depth),
-      'depthLimit': serializer.toJson<String?>(depthLimit),
+      'depth': serializer.toJson<int>(depth),
+      'depthLimit': serializer.toJson<int>(depthLimit),
     };
   }
 
@@ -5443,15 +5440,15 @@ class SurfaceSubstrateTallyData extends DataClass
           int? ssHeaderId,
           int? stationNum,
           String? substrateType,
-          Value<int?> depth = const Value.absent(),
-          Value<String?> depthLimit = const Value.absent()}) =>
+          int? depth,
+          int? depthLimit}) =>
       SurfaceSubstrateTallyData(
         id: id ?? this.id,
         ssHeaderId: ssHeaderId ?? this.ssHeaderId,
         stationNum: stationNum ?? this.stationNum,
         substrateType: substrateType ?? this.substrateType,
-        depth: depth.present ? depth.value : this.depth,
-        depthLimit: depthLimit.present ? depthLimit.value : this.depthLimit,
+        depth: depth ?? this.depth,
+        depthLimit: depthLimit ?? this.depthLimit,
       );
   @override
   String toString() {
@@ -5487,8 +5484,8 @@ class SurfaceSubstrateTallyCompanion
   final Value<int> ssHeaderId;
   final Value<int> stationNum;
   final Value<String> substrateType;
-  final Value<int?> depth;
-  final Value<String?> depthLimit;
+  final Value<int> depth;
+  final Value<int> depthLimit;
   const SurfaceSubstrateTallyCompanion({
     this.id = const Value.absent(),
     this.ssHeaderId = const Value.absent(),
@@ -5502,18 +5499,20 @@ class SurfaceSubstrateTallyCompanion
     required int ssHeaderId,
     required int stationNum,
     required String substrateType,
-    this.depth = const Value.absent(),
-    this.depthLimit = const Value.absent(),
+    required int depth,
+    required int depthLimit,
   })  : ssHeaderId = Value(ssHeaderId),
         stationNum = Value(stationNum),
-        substrateType = Value(substrateType);
+        substrateType = Value(substrateType),
+        depth = Value(depth),
+        depthLimit = Value(depthLimit);
   static Insertable<SurfaceSubstrateTallyData> custom({
     Expression<int>? id,
     Expression<int>? ssHeaderId,
     Expression<int>? stationNum,
     Expression<String>? substrateType,
     Expression<int>? depth,
-    Expression<String>? depthLimit,
+    Expression<int>? depthLimit,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -5530,8 +5529,8 @@ class SurfaceSubstrateTallyCompanion
       Value<int>? ssHeaderId,
       Value<int>? stationNum,
       Value<String>? substrateType,
-      Value<int?>? depth,
-      Value<String?>? depthLimit}) {
+      Value<int>? depth,
+      Value<int>? depthLimit}) {
     return SurfaceSubstrateTallyCompanion(
       id: id ?? this.id,
       ssHeaderId: ssHeaderId ?? this.ssHeaderId,
@@ -5561,7 +5560,7 @@ class SurfaceSubstrateTallyCompanion
       map['depth'] = Variable<int>(depth.value);
     }
     if (depthLimit.present) {
-      map['depth_limit'] = Variable<String>(depthLimit.value);
+      map['depth_limit'] = Variable<int>(depthLimit.value);
     }
     return map;
   }

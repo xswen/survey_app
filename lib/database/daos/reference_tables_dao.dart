@@ -168,6 +168,24 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
       ((select(substrateType)..where((tbl) => tbl.nameEn.equals(name)))
           .getSingle());
 
+  Future<String> getSubstrateDepthLimitNameFromCode(int code) =>
+      (select(ssDepthLimit)..where((tbl) => tbl.code.equals(code)))
+          .map((p0) => p0.nameEn)
+          .getSingle();
+  Future<List<String>> get ssDepthList {
+    final query = selectOnly(ssDepthLimit, distinct: true)
+      ..addColumns([ssDepthLimit.nameEn]);
+    return query.map((p0) => p0.read(ssDepthLimit.nameEn)!).get();
+  }
+
+  Future<int> getSubstrateDepthLimitCodeFromName(String name) async {
+    List<int> codes = await ((select(ssDepthLimit)
+          ..where((tbl) => tbl.nameEn.equals(name)))
+        .map((p0) => p0.code)
+        .get());
+    return codes[0];
+  }
+
   //====================EcpTreeGenus====================
 //--------------------get--------------------
   Future<List<String?>> get ecpGenusLatinNames {

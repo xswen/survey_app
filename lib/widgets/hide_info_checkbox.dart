@@ -5,14 +5,14 @@ import '../constants/text_designs.dart';
 
 class HideInfoCheckbox extends StatefulWidget {
   const HideInfoCheckbox({
-    Key? key,
+    super.key,
     this.title = "",
     this.checkTitle = "",
     this.onChange,
     required this.child,
     required this.checkValue,
     this.padding = const EdgeInsets.only(top: kPaddingV * 2),
-  }) : super(key: key);
+  });
 
   @override
   State<HideInfoCheckbox> createState() => _HideInfoCheckboxState();

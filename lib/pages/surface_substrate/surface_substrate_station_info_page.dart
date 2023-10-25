@@ -1,5 +1,7 @@
 import 'package:drift/drift.dart' as d;
 import 'package:survey_app/providers/surface_substrate_providers.dart';
+import 'package:survey_app/widgets/builders/substrate_depth_select_builder.dart';
+import 'package:survey_app/widgets/hide_info_checkbox.dart';
 
 import '../../barrels/page_imports_barrel.dart';
 import '../../widgets/builders/substrate_type_select_builder.dart';
@@ -45,7 +47,6 @@ class SurfaceSubstrateStationInfoPageState
   @override
   Widget build(BuildContext context) {
     final db = ref.read(databaseProvider);
-    debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
     return Scaffold(
       appBar: OurAppBar(
         "$title: ${db.companionValueToStr(station.stationNum)}",
@@ -56,37 +57,83 @@ class SurfaceSubstrateStationInfoPageState
         },
       ),
       endDrawer: DrawerMenu(onLocaleChange: () {}),
-      body: Center(
-        child: ListView(
-          children: [
-            SubstrateTypeSelectBuilder(
-              enabled: true,
-              title: 'Substrate Type',
-              updateType: (substrateTypeCode, depth) => setState(() => station =
-                  station.copyWith(
-                      substrateType: substrateTypeCode, depth: depth)),
-              substrateTypeCode: db.companionValueToStr(station.substrateType),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                    onPressed: () {
-                      print(station);
-                      //TODO: Implement
-                      // context.goNamed(SurfaceSubstrateHeaderPage.routeName,
-                      //     pathParameters:
-                      //         PathParamGenerator.ssHeader(widget.state, sshId.toString()));
-                    },
-                    child: const Text("Save and Return")),
-                ElevatedButton(
-                    onPressed: () async {
-                      createNewSsTallyCompanion();
-                    },
-                    child: const Text("Save and Add New Station")),
-              ],
-            )
-          ],
+      body: Padding(
+        padding: const EdgeInsets.all(kPaddingH),
+        child: Center(
+          child: ListView(
+            children: [
+              SubstrateTypeSelectBuilder(
+                enabled: true,
+                title: 'Substrate Type',
+                updateType: (substrateTypeCode, depth) => setState(() =>
+                    station = station.copyWith(
+                        substrateType: substrateTypeCode,
+                        depth: depth,
+                        depthLimit: depth)),
+                substrateTypeCode:
+                    db.companionValueToStr(station.substrateType),
+              ),
+              station.depth != const d.Value(kDataNotApplicable)
+                  ? Column(
+                      children: [
+                        HideInfoCheckbox(
+                          title: "Surface Substrate Depth",
+                          checkTitle: "Depth Missing",
+                          checkValue:
+                              db.companionValueToStr(station.depthLimit) ==
+                                  "-1",
+                          onChange: (b) {
+                            b!
+                                ? Popups.show(
+                                    context,
+                                    PopupContinue(
+                                      "Warning: Setting depth as missing",
+                                      contentText:
+                                          "Are you sure you want to set depth as missing? ",
+                                      rightBtnOnPressed: () {
+                                        setState(() => station =
+                                            station.copyWith(
+                                                depthLimit: const d.Value(-1)));
+                                        context.pop();
+                                      },
+                                    ))
+                                : setState(() => station = station.copyWith(
+                                    depthLimit: const d.Value.absent()));
+                          },
+                          child: SubstrateDepthSelectBuilder(
+                            updateType: (depthLimit) => setState(() => station =
+                                station.copyWith(depthLimit: depthLimit)),
+                            substrateDepthCode: db
+                                    .companionValueToStr(station.depthLimit)
+                                    .isEmpty
+                                ? -1
+                                : station.depthLimit.value,
+                          ),
+                        )
+                      ],
+                    )
+                  : Container(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                      onPressed: () {
+                        print(station);
+                        //TODO: Implement
+                        // context.goNamed(SurfaceSubstrateHeaderPage.routeName,
+                        //     pathParameters:
+                        //         PathParamGenerator.ssHeader(widget.state, sshId.toString()));
+                      },
+                      child: const Text("Save and Return")),
+                  ElevatedButton(
+                      onPressed: () async {
+                        createNewSsTallyCompanion();
+                      },
+                      child: const Text("Save and Add New Station")),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

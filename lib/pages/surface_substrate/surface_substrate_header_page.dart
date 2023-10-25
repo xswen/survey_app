@@ -160,7 +160,6 @@ class SurfaceSubstrateHeaderPageState
 
   void markComplete() async {
     final db = Database.instance;
-    print(ssh);
     if (parentComplete) {
       Popups.show(context, popupSurveyComplete);
     } else if (ssh.complete.value) {
@@ -184,8 +183,8 @@ class SurfaceSubstrateHeaderPageState
           extra: SurfaceSubstrateTallyCompanion(
               ssHeaderId: d.Value(sshId),
               stationNum: d.Value(stationNum),
-              //Assume null until stated otherwise
-              depth: const d.Value(null))));
+              //Assume not applicable until stated otherwise
+              depth: const d.Value(kDataNotApplicable))));
 
   @override
   Widget build(BuildContext context) {
