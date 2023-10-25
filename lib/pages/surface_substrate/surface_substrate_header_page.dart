@@ -81,6 +81,17 @@ class SurfaceSubstrateHeaderPageState
     }
   }
 
+  String handleDepthValue(int depthValue) {
+    switch (depthValue) {
+      case kDataNotApplicable:
+        return "N/A";
+      case -1:
+        return "Missing";
+      default:
+        return depthValue.toString();
+    }
+  }
+
   List<DataGridRow> generateDataGridRows(
           List<SurfaceSubstrateTallyData> stations) =>
       stations
@@ -95,10 +106,10 @@ class SurfaceSubstrateHeaderPageState
                     value: dataGridRow.substrateType),
                 DataGridCell<String>(
                     columnName: columnData.depth.name,
-                    value: dataGridRow.depth?.toString() ?? ""),
+                    value: handleDepthValue(dataGridRow.depth)),
                 DataGridCell<String>(
                     columnName: columnData.depthLimit.name,
-                    value: dataGridRow.depthLimit?.toString() ?? ""),
+                    value: handleDepthValue(dataGridRow.depthLimit)),
                 DataGridCell<SurfaceSubstrateTallyData>(
                     columnName: columnData.edit.name, value: dataGridRow),
               ]))
