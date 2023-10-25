@@ -8,7 +8,15 @@ import '../database_creation_files/reference_tables.dart';
 
 part 'reference_tables_dao.g.dart';
 
-@DriftAccessor(tables: [Jurisdictions, Plots, TreeGenus, EcpGenus, EcpVariety])
+@DriftAccessor(tables: [
+  Jurisdictions,
+  Plots,
+  TreeGenus,
+  SubstrateType,
+  SsDepthLimit,
+  EcpGenus,
+  EcpVariety
+])
 class ReferenceTablesDao extends DatabaseAccessor<Database>
     with _$ReferenceTablesDaoMixin {
   ReferenceTablesDao(Database db) : super(db);
@@ -121,6 +129,7 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
       (select(treeGenus)..where((tbl) => tbl.genusCode.equals(genusCode)))
           .map((p0) => p0.speciesLatinName)
           .get();
+
   Future<bool> checkGenusUnknown(String genusCode) async {
     List<String> speciesCodes = await ((select(treeGenus)
           ..where((tbl) => tbl.genusCode.equals(genusCode)))
@@ -144,6 +153,20 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
                 tbl.speciesCode.equals(speciesCode)))
           .map((p0) => p0.speciesLatinName)
           .getSingle();
+  //====================Surface Substrate====================
+  Future<String> getSubstrateTypeNameFromCode(String code) =>
+      (select(substrateType)..where((tbl) => tbl.typeCode.equals(code)))
+          .map((p0) => p0.nameEn)
+          .getSingle();
+  Future<List<String>> get substrateTypeNames {
+    final query = selectOnly(substrateType, distinct: true)
+      ..addColumns([substrateType.nameEn]);
+    return query.map((p0) => p0.read(substrateType.nameEn)!).get();
+  }
+
+  Future<SubstrateTypeData> getSubstrateTypeDataFromName(String name) =>
+      ((select(substrateType)..where((tbl) => tbl.nameEn.equals(name)))
+          .getSingle());
 
   //====================EcpTreeGenus====================
 //--------------------get--------------------

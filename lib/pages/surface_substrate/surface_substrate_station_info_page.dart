@@ -2,6 +2,7 @@ import 'package:drift/drift.dart' as d;
 import 'package:survey_app/providers/surface_substrate_providers.dart';
 
 import '../../barrels/page_imports_barrel.dart';
+import '../../widgets/builders/substrate_type_select_builder.dart';
 
 class SurfaceSubstrateStationInfoPage extends ConsumerStatefulWidget {
   static const String routeName = "surfaceSubstrateStationInfo";
@@ -55,23 +56,38 @@ class SurfaceSubstrateStationInfoPageState
         },
       ),
       endDrawer: DrawerMenu(onLocaleChange: () {}),
-      body: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          ElevatedButton(
-              onPressed: () {
-                //TODO: Implement
-                // context.goNamed(SurfaceSubstrateHeaderPage.routeName,
-                //     pathParameters:
-                //         PathParamGenerator.ssHeader(widget.state, sshId.toString()));
-              },
-              child: const Text("Save and Return")),
-          ElevatedButton(
-              onPressed: () async {
-                createNewSsTallyCompanion();
-              },
-              child: const Text("Save and Add New Station")),
-        ],
+      body: Center(
+        child: ListView(
+          children: [
+            SubstrateTypeSelectBuilder(
+              enabled: true,
+              title: 'Substrate Type',
+              updateType: (substrateTypeCode, depth) => setState(() => station =
+                  station.copyWith(
+                      substrateType: substrateTypeCode, depth: depth)),
+              substrateTypeCode: db.companionValueToStr(station.substrateType),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                    onPressed: () {
+                      print(station);
+                      //TODO: Implement
+                      // context.goNamed(SurfaceSubstrateHeaderPage.routeName,
+                      //     pathParameters:
+                      //         PathParamGenerator.ssHeader(widget.state, sshId.toString()));
+                    },
+                    child: const Text("Save and Return")),
+                ElevatedButton(
+                    onPressed: () async {
+                      createNewSsTallyCompanion();
+                    },
+                    child: const Text("Save and Add New Station")),
+              ],
+            )
+          ],
+        ),
       ),
     );
     Text("$station");

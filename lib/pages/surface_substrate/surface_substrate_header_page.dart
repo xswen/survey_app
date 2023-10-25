@@ -182,7 +182,10 @@ class SurfaceSubstrateHeaderPageState
           pathParameters: PathParamGenerator.ssStationInfo(
               widget.state, stationNum.toString()),
           extra: SurfaceSubstrateTallyCompanion(
-              ssHeaderId: d.Value(sshId), stationNum: d.Value(stationNum))));
+              ssHeaderId: d.Value(sshId),
+              stationNum: d.Value(stationNum),
+              //Assume null until stated otherwise
+              depth: const d.Value(null))));
 
   @override
   Widget build(BuildContext context) {
