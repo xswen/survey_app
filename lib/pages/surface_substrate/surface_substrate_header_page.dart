@@ -184,7 +184,8 @@ class SurfaceSubstrateHeaderPageState
               ssHeaderId: d.Value(sshId),
               stationNum: d.Value(stationNum),
               //Assume not applicable until stated otherwise
-              depth: const d.Value(kDataNotApplicable))));
+              depth: const d.Value(kDataNotApplicable),
+              depthLimit: const d.Value(kDataNotApplicable))));
 
   @override
   Widget build(BuildContext context) {

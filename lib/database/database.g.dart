@@ -5264,7 +5264,7 @@ class $SurfaceSubstrateTallyTable extends SurfaceSubstrateTally
   @override
   late final GeneratedColumn<int> stationNum = GeneratedColumn<int>(
       'station_num', aliasedName, false,
-      check: () => stationNum.isBetweenValues(1, 99),
+      check: () => stationNum.isBetweenValues(1, 25),
       type: DriftSqlType.int,
       requiredDuringInsert: true);
   static const VerificationMeta _substrateTypeMeta =
@@ -5277,7 +5277,7 @@ class $SurfaceSubstrateTallyTable extends SurfaceSubstrateTally
   @override
   late final GeneratedColumn<int> depth = GeneratedColumn<int>(
       'depth', aliasedName, false,
-      check: () => depth.isBetweenValues(0, 999),
+      check: () => depth.isBetweenValues(-9, 500),
       type: DriftSqlType.int,
       requiredDuringInsert: true);
   static const VerificationMeta _depthLimitMeta =
