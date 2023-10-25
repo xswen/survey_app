@@ -72,8 +72,6 @@ class _WoodyDebrisPieceAccuOddPageState
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
-
     void continueCheck() {
       List<String>? results =
           WoodyDebrisPieceErrorChecks.checkErrorOddAcum(db, piece);

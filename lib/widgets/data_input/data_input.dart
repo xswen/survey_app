@@ -20,7 +20,6 @@ class DataInput extends StatefulWidget {
           const EdgeInsets.only(top: kPaddingV * 2, bottom: 0),
       this.textBoxPadding = const EdgeInsets.only(top: kPaddingV),
       this.readOnly = false,
-      this.onTap,
       //Manually pass a controller if controller ever needs to be cleared
       //A controller created for this purpose will be cleared by this widget
       //AND SHOULD NOT be cleared by parent class
@@ -28,7 +27,6 @@ class DataInput extends StatefulWidget {
       required this.onValidate});
 
   final bool readOnly;
-  final void Function()? onTap;
   final void Function(String) onSubmit;
   final String? Function(String?) onValidate;
   final String title;
@@ -95,7 +93,6 @@ class _DataInputState extends State<DataInput> {
                 autovalidateMode: AutovalidateMode.always,
                 readOnly: widget.readOnly,
                 controller: controller,
-                onTap: widget.onTap,
                 validator: (String? value) {
                   return widget.onValidate(value);
                 },

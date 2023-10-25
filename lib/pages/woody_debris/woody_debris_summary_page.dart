@@ -3,6 +3,7 @@ import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/pages/woody_debris/woody_debris_header_page.dart';
 import 'package:survey_app/widgets/builders/set_transect_num_builder.dart';
 
+import '../../providers/survey_info_providers.dart';
 import '../../providers/woody_debris_providers.dart';
 import '../../widgets/date_select.dart';
 import '../../widgets/tile_cards/tile_card_selection.dart';
@@ -29,8 +30,8 @@ class WoodyDebrisSummaryPageState
 
   @override
   void initState() {
-    surveyId = RouteParams.getSurveyId(widget.goRouterState)!;
-    wdId = RouteParams.getWdSummaryId(widget.goRouterState)!;
+    surveyId = PathParamValue.getSurveyId(widget.goRouterState)!;
+    wdId = PathParamValue.getWdSummaryId(widget.goRouterState)!;
     completeWarningPopup = Popups.generateCompleteErrorPopup(title);
 
     super.initState();
@@ -57,7 +58,7 @@ class WoodyDebrisSummaryPageState
             color: Colors.transparent,
             child: SetTransectNumBuilder(
               name: "",
-              getUsedTransNums: db.woodyDebrisTablesDao.getUsedTransnums(wdId),
+              getUsedTransNums: db.woodyDebrisTablesDao.getUsedTransNums(wdId),
               startingTransNum: '',
               selectedItem: wdhCompanion.transNum.value?.toString() ?? "",
               transList: kTransectNumsList,
@@ -76,7 +77,7 @@ class WoodyDebrisSummaryPageState
 
   void goToWdhPage(int wdhId) => context
           .pushNamed(WoodyDebrisHeaderPage.routeName,
-              pathParameters: RouteParams.generateWdHeaderParms(
+              pathParameters: PathParamGenerator.wdHeader(
                   widget.goRouterState, wdhId.toString()))
           .then((value) {
         ref.refresh(wdTransListProvider(wdId));
@@ -120,15 +121,19 @@ class WoodyDebrisSummaryPageState
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
-
     AsyncValue<WoodyDebrisSummaryData> wdSummary =
         ref.watch(wdDataProvider(surveyId));
     AsyncValue<List<WoodyDebrisHeaderData>> transList =
         ref.watch(wdTransListProvider(wdId));
 
     return Scaffold(
-      appBar: OurAppBar(title),
+      appBar: OurAppBar(
+        title,
+        backFn: () {
+          ref.refresh(updateSurveyCardProvider(surveyId));
+          context.pop();
+        },
+      ),
       endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
       body: Center(
         child: wdSummary.when(
@@ -158,7 +163,7 @@ class WoodyDebrisSummaryPageState
                     ElevatedButton(
                         onPressed: () => context.pushNamed(
                             WoodyDebrisHeaderMeasurementsPage.routeName,
-                            pathParameters: RouteParams.generateWdHeaderParms(
+                            pathParameters: PathParamGenerator.wdHeader(
                                 widget.goRouterState, kParamMissing)),
                         child: const Row(
                           children: [

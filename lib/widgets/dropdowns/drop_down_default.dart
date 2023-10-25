@@ -9,8 +9,9 @@ class DropDownDefault extends StatefulWidget {
   const DropDownDefault(
       {Key? key,
       this.searchable = false,
+      this.enabled = true,
       this.title = "",
-      this.disabledFn,
+      this.disabledItemFn,
       this.onBeforePopup,
       required this.onChangedFn,
       required this.itemsList,
@@ -21,7 +22,8 @@ class DropDownDefault extends StatefulWidget {
   //default false
   final String title;
   final bool searchable;
-  final bool Function(String?)? disabledFn;
+  final bool enabled;
+  final bool Function(String?)? disabledItemFn;
   final Future<bool?> Function(String?)? onBeforePopup;
   final void Function(String?) onChangedFn;
   final List<String> itemsList;
@@ -53,9 +55,10 @@ class _DropDownDefaultState extends State<DropDownDefault> {
             popupProps: PopupProps.menu(
               showSelectedItems: true,
               showSearchBox: widget.searchable,
-              disabledItemFn: widget.disabledFn,
+              disabledItemFn: widget.disabledItemFn,
               searchDelay: const Duration(microseconds: 0),
             ),
+            enabled: widget.enabled,
             onBeforePopupOpening: widget.onBeforePopup,
             onChanged: widget.onChangedFn,
             items: widget.itemsList,

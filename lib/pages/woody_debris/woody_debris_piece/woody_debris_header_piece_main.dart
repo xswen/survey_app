@@ -25,7 +25,7 @@ class ColNames {
   ColumnHeaders diameter = ColumnHeaders("Diameter");
   ColumnHeaders tiltAngle = ColumnHeaders("Tilt Angle");
   ColumnHeaders decayClass = ColumnHeaders("Decay Class");
-  ColumnHeaders edit = ColumnHeaders(ColumnHeaders.headerNameId, sort: false);
+  ColumnHeaders edit = ColumnHeaders(ColumnHeaders.headerNameEdit, sort: false);
 
   String empty = "-";
 
@@ -68,8 +68,8 @@ class WoodyDebrisHeaderPieceMainPageState
 
   @override
   void initState() {
-    wdSmId = RouteParams.getWdSmallId(widget.goRouterState);
-    wdhId = RouteParams.getWdHeaderId(widget.goRouterState)!;
+    wdSmId = PathParamValue.getWdSmallId(widget.goRouterState);
+    wdhId = PathParamValue.getWdHeaderId(widget.goRouterState)!;
 
     super.initState();
   }
@@ -164,7 +164,6 @@ class WoodyDebrisHeaderPieceMainPageState
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
     final db = ref.read(databaseProvider);
 
     final AsyncValue<WoodyDebrisHeaderData> wdh = ref.watch(wdhProvider(wdhId));
@@ -181,7 +180,7 @@ class WoodyDebrisHeaderPieceMainPageState
             accumOdd: d.Value(type));
         //TODO: Move this to provider
         context.pushNamed(WoodyDebrisPieceAccuOddPage.routeName,
-            pathParameters: RouteParams.generateWdSmallParms(
+            pathParameters: PathParamGenerator.wdSmall(
                 widget.goRouterState, wdSmId.toString()),
             extra: {WoodyDebrisPieceAccuOddPage.keyPiece: wdOdd}).then((value) {
           ref.refresh(wdPieceOddProvider(wdhId));
@@ -232,7 +231,7 @@ class WoodyDebrisHeaderPieceMainPageState
                   context.pop();
                   //TODO: Move to provider
                   context.pushNamed(WoodyDebrisPieceRoundPage.routeName,
-                      pathParameters: RouteParams.generateWdSmallParms(
+                      pathParameters: PathParamGenerator.wdSmall(
                           widget.goRouterState, wdSmId.toString()),
                       extra: {
                         WoodyDebrisPieceRoundPage.keyPiece: wdRound
@@ -262,7 +261,7 @@ class WoodyDebrisHeaderPieceMainPageState
         Popups.show(context, completeWarningPopup);
       } else if (odd != null) {
         context.pushNamed(WoodyDebrisPieceAccuOddPage.routeName,
-            pathParameters: RouteParams.generateWdSmallParms(
+            pathParameters: PathParamGenerator.wdSmall(
                 widget.goRouterState, wdSmId.toString()),
             extra: {
               WoodyDebrisPieceAccuOddPage.keyPiece: odd.toCompanion(true),
@@ -273,7 +272,7 @@ class WoodyDebrisHeaderPieceMainPageState
         });
       } else if (round != null) {
         context.pushNamed(WoodyDebrisPieceRoundPage.routeName,
-            pathParameters: RouteParams.generateWdSmallParms(
+            pathParameters: PathParamGenerator.wdSmall(
                 widget.goRouterState, wdSmId.toString()),
             extra: {
               WoodyDebrisPieceRoundPage.keyPiece: round.toCompanion(true),
@@ -454,75 +453,81 @@ class WoodyDebrisHeaderPieceMainPageState
                         ],
                       ),
                     ),
-                    pieceRound.when(
-                      data: (round) => pieceOdd.when(
-                        data: (odd) {
-                          DataGridSourceBuilder largePieceDataSource =
-                              getSourceBuilder(odd, round);
-                          return Expanded(
-                            child: TableCreationBuilder(
-                              source: largePieceDataSource,
-                              columnWidthMode: ColumnWidthMode.fitByColumnName,
-                              colNames: columnData.getColHeadersList(),
-                              onCellTap:
-                                  (DataGridCellTapDetails details) async {
-                                // Assuming the "edit" column index is 2
-                                if (details.column.columnName ==
-                                        columnData.edit.name &&
-                                    details.rowColumnIndex.rowIndex != 0) {
-                                  if (wdh.complete) {
-                                    Popups.show(context, completeWarningPopup);
-                                  } else {
-                                    int pId = largePieceDataSource.dataGridRows[
-                                            details.rowColumnIndex.rowIndex - 1]
-                                        .getCells()[0]
-                                        .value;
-                                    if (largePieceDataSource.dataGridRows[
-                                                details.rowColumnIndex
-                                                        .rowIndex -
-                                                    1]
-                                            .getCells()[2]
-                                            .value ==
-                                        "R") {
-                                      db.woodyDebrisTablesDao
-                                          .getWdRound(pId)
-                                          .then((wdRound) => changeWdPieceData(
-                                              wdh.complete,
-                                              round: wdRound,
-                                              deleteFn: () => (db.delete(
-                                                      db.woodyDebrisRound)
-                                                    ..where((tbl) => tbl.id
-                                                        .equals(wdRound.id)))
-                                                  .go()
-                                                  .then((value) =>
-                                                      context.pop())));
+                    Expanded(
+                      child: pieceRound.when(
+                        data: (round) => pieceOdd.when(
+                          data: (odd) {
+                            DataGridSourceBuilder largePieceDataSource =
+                                getSourceBuilder(odd, round);
+                            return Center(
+                              child: TableCreationBuilder(
+                                source: largePieceDataSource,
+                                columnWidthMode: ColumnWidthMode.lastColumnFill,
+                                colNames: columnData.getColHeadersList(),
+                                onCellTap:
+                                    (DataGridCellTapDetails details) async {
+                                  // Assuming the "edit" column index is 2
+                                  if (details.column.columnName ==
+                                          columnData.edit.name &&
+                                      details.rowColumnIndex.rowIndex != 0) {
+                                    if (wdh.complete) {
+                                      Popups.show(
+                                          context, completeWarningPopup);
                                     } else {
-                                      db.woodyDebrisTablesDao
-                                          .getWdOddAccu(pId)
-                                          .then((wdOdd) => changeWdPieceData(
-                                              wdh.complete,
-                                              odd: wdOdd,
-                                              deleteFn: () =>
-                                                  (db.delete(db.woodyDebrisOdd)
-                                                        ..where((tbl) => tbl.id
-                                                            .equals(wdOdd.id)))
-                                                      .go()
-                                                      .then((value) =>
-                                                          context.pop())));
+                                      int pId = largePieceDataSource
+                                          .dataGridRows[
+                                              details.rowColumnIndex.rowIndex -
+                                                  1]
+                                          .getCells()[0]
+                                          .value;
+                                      if (largePieceDataSource.dataGridRows[
+                                                  details.rowColumnIndex
+                                                          .rowIndex -
+                                                      1]
+                                              .getCells()[2]
+                                              .value ==
+                                          "R") {
+                                        db.woodyDebrisTablesDao
+                                            .getWdRound(pId)
+                                            .then((wdRound) =>
+                                                changeWdPieceData(wdh.complete,
+                                                    round: wdRound,
+                                                    deleteFn: () => (db.delete(
+                                                            db.woodyDebrisRound)
+                                                          ..where((tbl) =>
+                                                              tbl.id.equals(
+                                                                  wdRound.id)))
+                                                        .go()
+                                                        .then((value) =>
+                                                            context.pop())));
+                                      } else {
+                                        db.woodyDebrisTablesDao
+                                            .getWdOddAccu(pId)
+                                            .then((wdOdd) => changeWdPieceData(
+                                                wdh.complete,
+                                                odd: wdOdd,
+                                                deleteFn: () => (db.delete(
+                                                        db.woodyDebrisOdd)
+                                                      ..where((tbl) => tbl.id
+                                                          .equals(wdOdd.id)))
+                                                    .go()
+                                                    .then((value) =>
+                                                        context.pop())));
+                                      }
                                     }
                                   }
-                                }
-                              },
-                            ),
-                          );
-                        },
+                                },
+                              ),
+                            );
+                          },
+                          error: (err, stack) => Text("Error: $err"),
+                          loading: () =>
+                              const Center(child: CircularProgressIndicator()),
+                        ),
                         error: (err, stack) => Text("Error: $err"),
                         loading: () =>
                             const Center(child: CircularProgressIndicator()),
                       ),
-                      error: (err, stack) => Text("Error: $err"),
-                      loading: () =>
-                          const Center(child: CircularProgressIndicator()),
                     ),
                   ],
                 ),

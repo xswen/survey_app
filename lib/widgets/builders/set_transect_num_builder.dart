@@ -6,6 +6,8 @@ class SetTransectNumBuilder extends StatelessWidget {
     super.key,
     required this.getUsedTransNums,
     this.name = "Transect",
+    this.hideTitle = false,
+    this.enabled = true,
     required this.startingTransNum,
     required this.selectedItem,
     required this.transList,
@@ -16,10 +18,12 @@ class SetTransectNumBuilder extends StatelessWidget {
 
   final Future<List<int?>> getUsedTransNums;
   final String name;
+  final bool hideTitle;
   final String startingTransNum;
   final String selectedItem;
   final List<String> transList;
   final bool searchable;
+  final bool enabled;
   final Future<bool?> Function(String?)? onBeforePopup;
   final void Function(int) updateTransNum;
 
@@ -34,16 +38,19 @@ class SetTransectNumBuilder extends StatelessWidget {
           return Text('Error: ${snapshot.error}'); // return an error widget
         } else if (snapshot.hasData) {
           return DropDownDefault(
+            enabled: enabled,
             searchable: searchable,
-            title: name.isEmpty ? "" : "$name Number",
+            title: hideTitle ? "" : "$name Number",
             onBeforePopup: onBeforePopup,
             onChangedFn: (s) {
               int transNum = int.tryParse(s ?? "-1") ?? -1;
               updateTransNum(transNum);
             },
-            selectedItem: selectedItem,
+            selectedItem: selectedItem.isNotEmpty
+                ? selectedItem
+                : "Please select a ${name.toLowerCase()} number",
             itemsList: transList,
-            disabledFn: (s) {
+            disabledItemFn: (s) {
               if (selectedItem != startingTransNum && s == startingTransNum) {
                 return false;
               } else {

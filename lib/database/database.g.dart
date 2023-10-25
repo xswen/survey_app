@@ -813,6 +813,495 @@ class TreeGenusCompanion extends UpdateCompanion<TreeGenusData> {
   }
 }
 
+class $SubstrateTypeTable extends SubstrateType
+    with TableInfo<$SubstrateTypeTable, SubstrateTypeData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SubstrateTypeTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _typeCodeMeta =
+      const VerificationMeta('typeCode');
+  @override
+  late final GeneratedColumn<String> typeCode = GeneratedColumn<String>(
+      'type_code', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 2, maxTextLength: 2),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const VerificationMeta _nameEnMeta = const VerificationMeta('nameEn');
+  @override
+  late final GeneratedColumn<String> nameEn = GeneratedColumn<String>(
+      'name_en', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _nameFrMeta = const VerificationMeta('nameFr');
+  @override
+  late final GeneratedColumn<String> nameFr = GeneratedColumn<String>(
+      'name_fr', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _hasDepthMeta =
+      const VerificationMeta('hasDepth');
+  @override
+  late final GeneratedColumn<bool> hasDepth = GeneratedColumn<bool>(
+      'has_depth', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("has_depth" IN (0, 1))'));
+  @override
+  List<GeneratedColumn> get $columns => [typeCode, nameEn, nameFr, hasDepth];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'substrate_type';
+  @override
+  VerificationContext validateIntegrity(Insertable<SubstrateTypeData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('type_code')) {
+      context.handle(_typeCodeMeta,
+          typeCode.isAcceptableOrUnknown(data['type_code']!, _typeCodeMeta));
+    } else if (isInserting) {
+      context.missing(_typeCodeMeta);
+    }
+    if (data.containsKey('name_en')) {
+      context.handle(_nameEnMeta,
+          nameEn.isAcceptableOrUnknown(data['name_en']!, _nameEnMeta));
+    } else if (isInserting) {
+      context.missing(_nameEnMeta);
+    }
+    if (data.containsKey('name_fr')) {
+      context.handle(_nameFrMeta,
+          nameFr.isAcceptableOrUnknown(data['name_fr']!, _nameFrMeta));
+    } else if (isInserting) {
+      context.missing(_nameFrMeta);
+    }
+    if (data.containsKey('has_depth')) {
+      context.handle(_hasDepthMeta,
+          hasDepth.isAcceptableOrUnknown(data['has_depth']!, _hasDepthMeta));
+    } else if (isInserting) {
+      context.missing(_hasDepthMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {typeCode};
+  @override
+  SubstrateTypeData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SubstrateTypeData(
+      typeCode: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}type_code'])!,
+      nameEn: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name_en'])!,
+      nameFr: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name_fr'])!,
+      hasDepth: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}has_depth'])!,
+    );
+  }
+
+  @override
+  $SubstrateTypeTable createAlias(String alias) {
+    return $SubstrateTypeTable(attachedDatabase, alias);
+  }
+}
+
+class SubstrateTypeData extends DataClass
+    implements Insertable<SubstrateTypeData> {
+  final String typeCode;
+  final String nameEn;
+  final String nameFr;
+  final bool hasDepth;
+  const SubstrateTypeData(
+      {required this.typeCode,
+      required this.nameEn,
+      required this.nameFr,
+      required this.hasDepth});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['type_code'] = Variable<String>(typeCode);
+    map['name_en'] = Variable<String>(nameEn);
+    map['name_fr'] = Variable<String>(nameFr);
+    map['has_depth'] = Variable<bool>(hasDepth);
+    return map;
+  }
+
+  SubstrateTypeCompanion toCompanion(bool nullToAbsent) {
+    return SubstrateTypeCompanion(
+      typeCode: Value(typeCode),
+      nameEn: Value(nameEn),
+      nameFr: Value(nameFr),
+      hasDepth: Value(hasDepth),
+    );
+  }
+
+  factory SubstrateTypeData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SubstrateTypeData(
+      typeCode: serializer.fromJson<String>(json['typeCode']),
+      nameEn: serializer.fromJson<String>(json['nameEn']),
+      nameFr: serializer.fromJson<String>(json['nameFr']),
+      hasDepth: serializer.fromJson<bool>(json['hasDepth']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'typeCode': serializer.toJson<String>(typeCode),
+      'nameEn': serializer.toJson<String>(nameEn),
+      'nameFr': serializer.toJson<String>(nameFr),
+      'hasDepth': serializer.toJson<bool>(hasDepth),
+    };
+  }
+
+  SubstrateTypeData copyWith(
+          {String? typeCode, String? nameEn, String? nameFr, bool? hasDepth}) =>
+      SubstrateTypeData(
+        typeCode: typeCode ?? this.typeCode,
+        nameEn: nameEn ?? this.nameEn,
+        nameFr: nameFr ?? this.nameFr,
+        hasDepth: hasDepth ?? this.hasDepth,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('SubstrateTypeData(')
+          ..write('typeCode: $typeCode, ')
+          ..write('nameEn: $nameEn, ')
+          ..write('nameFr: $nameFr, ')
+          ..write('hasDepth: $hasDepth')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(typeCode, nameEn, nameFr, hasDepth);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SubstrateTypeData &&
+          other.typeCode == this.typeCode &&
+          other.nameEn == this.nameEn &&
+          other.nameFr == this.nameFr &&
+          other.hasDepth == this.hasDepth);
+}
+
+class SubstrateTypeCompanion extends UpdateCompanion<SubstrateTypeData> {
+  final Value<String> typeCode;
+  final Value<String> nameEn;
+  final Value<String> nameFr;
+  final Value<bool> hasDepth;
+  final Value<int> rowid;
+  const SubstrateTypeCompanion({
+    this.typeCode = const Value.absent(),
+    this.nameEn = const Value.absent(),
+    this.nameFr = const Value.absent(),
+    this.hasDepth = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SubstrateTypeCompanion.insert({
+    required String typeCode,
+    required String nameEn,
+    required String nameFr,
+    required bool hasDepth,
+    this.rowid = const Value.absent(),
+  })  : typeCode = Value(typeCode),
+        nameEn = Value(nameEn),
+        nameFr = Value(nameFr),
+        hasDepth = Value(hasDepth);
+  static Insertable<SubstrateTypeData> custom({
+    Expression<String>? typeCode,
+    Expression<String>? nameEn,
+    Expression<String>? nameFr,
+    Expression<bool>? hasDepth,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (typeCode != null) 'type_code': typeCode,
+      if (nameEn != null) 'name_en': nameEn,
+      if (nameFr != null) 'name_fr': nameFr,
+      if (hasDepth != null) 'has_depth': hasDepth,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SubstrateTypeCompanion copyWith(
+      {Value<String>? typeCode,
+      Value<String>? nameEn,
+      Value<String>? nameFr,
+      Value<bool>? hasDepth,
+      Value<int>? rowid}) {
+    return SubstrateTypeCompanion(
+      typeCode: typeCode ?? this.typeCode,
+      nameEn: nameEn ?? this.nameEn,
+      nameFr: nameFr ?? this.nameFr,
+      hasDepth: hasDepth ?? this.hasDepth,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (typeCode.present) {
+      map['type_code'] = Variable<String>(typeCode.value);
+    }
+    if (nameEn.present) {
+      map['name_en'] = Variable<String>(nameEn.value);
+    }
+    if (nameFr.present) {
+      map['name_fr'] = Variable<String>(nameFr.value);
+    }
+    if (hasDepth.present) {
+      map['has_depth'] = Variable<bool>(hasDepth.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SubstrateTypeCompanion(')
+          ..write('typeCode: $typeCode, ')
+          ..write('nameEn: $nameEn, ')
+          ..write('nameFr: $nameFr, ')
+          ..write('hasDepth: $hasDepth, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $SsDepthLimitTable extends SsDepthLimit
+    with TableInfo<$SsDepthLimitTable, SsDepthLimitData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SsDepthLimitTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _codeMeta = const VerificationMeta('code');
+  @override
+  late final GeneratedColumn<int> code = GeneratedColumn<int>(
+      'code', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
+  static const VerificationMeta _nameEnMeta = const VerificationMeta('nameEn');
+  @override
+  late final GeneratedColumn<String> nameEn = GeneratedColumn<String>(
+      'name_en', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _nameFrMeta = const VerificationMeta('nameFr');
+  @override
+  late final GeneratedColumn<String> nameFr = GeneratedColumn<String>(
+      'name_fr', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [code, nameEn, nameFr];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'ss_depth_limit';
+  @override
+  VerificationContext validateIntegrity(Insertable<SsDepthLimitData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('code')) {
+      context.handle(
+          _codeMeta, code.isAcceptableOrUnknown(data['code']!, _codeMeta));
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('name_en')) {
+      context.handle(_nameEnMeta,
+          nameEn.isAcceptableOrUnknown(data['name_en']!, _nameEnMeta));
+    } else if (isInserting) {
+      context.missing(_nameEnMeta);
+    }
+    if (data.containsKey('name_fr')) {
+      context.handle(_nameFrMeta,
+          nameFr.isAcceptableOrUnknown(data['name_fr']!, _nameFrMeta));
+    } else if (isInserting) {
+      context.missing(_nameFrMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => const {};
+  @override
+  SsDepthLimitData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SsDepthLimitData(
+      code: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}code'])!,
+      nameEn: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name_en'])!,
+      nameFr: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name_fr'])!,
+    );
+  }
+
+  @override
+  $SsDepthLimitTable createAlias(String alias) {
+    return $SsDepthLimitTable(attachedDatabase, alias);
+  }
+}
+
+class SsDepthLimitData extends DataClass
+    implements Insertable<SsDepthLimitData> {
+  final int code;
+  final String nameEn;
+  final String nameFr;
+  const SsDepthLimitData(
+      {required this.code, required this.nameEn, required this.nameFr});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['code'] = Variable<int>(code);
+    map['name_en'] = Variable<String>(nameEn);
+    map['name_fr'] = Variable<String>(nameFr);
+    return map;
+  }
+
+  SsDepthLimitCompanion toCompanion(bool nullToAbsent) {
+    return SsDepthLimitCompanion(
+      code: Value(code),
+      nameEn: Value(nameEn),
+      nameFr: Value(nameFr),
+    );
+  }
+
+  factory SsDepthLimitData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SsDepthLimitData(
+      code: serializer.fromJson<int>(json['code']),
+      nameEn: serializer.fromJson<String>(json['nameEn']),
+      nameFr: serializer.fromJson<String>(json['nameFr']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'code': serializer.toJson<int>(code),
+      'nameEn': serializer.toJson<String>(nameEn),
+      'nameFr': serializer.toJson<String>(nameFr),
+    };
+  }
+
+  SsDepthLimitData copyWith({int? code, String? nameEn, String? nameFr}) =>
+      SsDepthLimitData(
+        code: code ?? this.code,
+        nameEn: nameEn ?? this.nameEn,
+        nameFr: nameFr ?? this.nameFr,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('SsDepthLimitData(')
+          ..write('code: $code, ')
+          ..write('nameEn: $nameEn, ')
+          ..write('nameFr: $nameFr')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(code, nameEn, nameFr);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SsDepthLimitData &&
+          other.code == this.code &&
+          other.nameEn == this.nameEn &&
+          other.nameFr == this.nameFr);
+}
+
+class SsDepthLimitCompanion extends UpdateCompanion<SsDepthLimitData> {
+  final Value<int> code;
+  final Value<String> nameEn;
+  final Value<String> nameFr;
+  final Value<int> rowid;
+  const SsDepthLimitCompanion({
+    this.code = const Value.absent(),
+    this.nameEn = const Value.absent(),
+    this.nameFr = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SsDepthLimitCompanion.insert({
+    required int code,
+    required String nameEn,
+    required String nameFr,
+    this.rowid = const Value.absent(),
+  })  : code = Value(code),
+        nameEn = Value(nameEn),
+        nameFr = Value(nameFr);
+  static Insertable<SsDepthLimitData> custom({
+    Expression<int>? code,
+    Expression<String>? nameEn,
+    Expression<String>? nameFr,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (code != null) 'code': code,
+      if (nameEn != null) 'name_en': nameEn,
+      if (nameFr != null) 'name_fr': nameFr,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SsDepthLimitCompanion copyWith(
+      {Value<int>? code,
+      Value<String>? nameEn,
+      Value<String>? nameFr,
+      Value<int>? rowid}) {
+    return SsDepthLimitCompanion(
+      code: code ?? this.code,
+      nameEn: nameEn ?? this.nameEn,
+      nameFr: nameFr ?? this.nameFr,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (code.present) {
+      map['code'] = Variable<int>(code.value);
+    }
+    if (nameEn.present) {
+      map['name_en'] = Variable<String>(nameEn.value);
+    }
+    if (nameFr.present) {
+      map['name_fr'] = Variable<String>(nameFr.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SsDepthLimitCompanion(')
+          ..write('code: $code, ')
+          ..write('nameEn: $nameEn, ')
+          ..write('nameFr: $nameFr, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $EcpGenusTable extends EcpGenus
     with TableInfo<$EcpGenusTable, EcpGenusData> {
   @override
@@ -4775,7 +5264,7 @@ class $SurfaceSubstrateTallyTable extends SurfaceSubstrateTally
   @override
   late final GeneratedColumn<int> stationNum = GeneratedColumn<int>(
       'station_num', aliasedName, false,
-      check: () => stationNum.isBetweenValues(1, 99),
+      check: () => stationNum.isBetweenValues(1, 25),
       type: DriftSqlType.int,
       requiredDuringInsert: true);
   static const VerificationMeta _substrateTypeMeta =
@@ -4787,16 +5276,16 @@ class $SurfaceSubstrateTallyTable extends SurfaceSubstrateTally
   static const VerificationMeta _depthMeta = const VerificationMeta('depth');
   @override
   late final GeneratedColumn<int> depth = GeneratedColumn<int>(
-      'depth', aliasedName, true,
-      check: () => depth.isBetweenValues(0, 999),
+      'depth', aliasedName, false,
+      check: () => depth.isBetweenValues(-9, 500),
       type: DriftSqlType.int,
-      requiredDuringInsert: false);
+      requiredDuringInsert: true);
   static const VerificationMeta _depthLimitMeta =
       const VerificationMeta('depthLimit');
   @override
-  late final GeneratedColumn<String> depthLimit = GeneratedColumn<String>(
-      'depth_limit', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
+  late final GeneratedColumn<int> depthLimit = GeneratedColumn<int>(
+      'depth_limit', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns =>
       [id, ssHeaderId, stationNum, substrateType, depth, depthLimit];
@@ -4841,12 +5330,16 @@ class $SurfaceSubstrateTallyTable extends SurfaceSubstrateTally
     if (data.containsKey('depth')) {
       context.handle(
           _depthMeta, depth.isAcceptableOrUnknown(data['depth']!, _depthMeta));
+    } else if (isInserting) {
+      context.missing(_depthMeta);
     }
     if (data.containsKey('depth_limit')) {
       context.handle(
           _depthLimitMeta,
           depthLimit.isAcceptableOrUnknown(
               data['depth_limit']!, _depthLimitMeta));
+    } else if (isInserting) {
+      context.missing(_depthLimitMeta);
     }
     return context;
   }
@@ -4867,9 +5360,9 @@ class $SurfaceSubstrateTallyTable extends SurfaceSubstrateTally
       substrateType: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}substrate_type'])!,
       depth: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}depth']),
+          .read(DriftSqlType.int, data['${effectivePrefix}depth'])!,
       depthLimit: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}depth_limit']),
+          .read(DriftSqlType.int, data['${effectivePrefix}depth_limit'])!,
     );
   }
 
@@ -4885,15 +5378,15 @@ class SurfaceSubstrateTallyData extends DataClass
   final int ssHeaderId;
   final int stationNum;
   final String substrateType;
-  final int? depth;
-  final String? depthLimit;
+  final int depth;
+  final int depthLimit;
   const SurfaceSubstrateTallyData(
       {required this.id,
       required this.ssHeaderId,
       required this.stationNum,
       required this.substrateType,
-      this.depth,
-      this.depthLimit});
+      required this.depth,
+      required this.depthLimit});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -4901,12 +5394,8 @@ class SurfaceSubstrateTallyData extends DataClass
     map['ss_header_id'] = Variable<int>(ssHeaderId);
     map['station_num'] = Variable<int>(stationNum);
     map['substrate_type'] = Variable<String>(substrateType);
-    if (!nullToAbsent || depth != null) {
-      map['depth'] = Variable<int>(depth);
-    }
-    if (!nullToAbsent || depthLimit != null) {
-      map['depth_limit'] = Variable<String>(depthLimit);
-    }
+    map['depth'] = Variable<int>(depth);
+    map['depth_limit'] = Variable<int>(depthLimit);
     return map;
   }
 
@@ -4916,11 +5405,8 @@ class SurfaceSubstrateTallyData extends DataClass
       ssHeaderId: Value(ssHeaderId),
       stationNum: Value(stationNum),
       substrateType: Value(substrateType),
-      depth:
-          depth == null && nullToAbsent ? const Value.absent() : Value(depth),
-      depthLimit: depthLimit == null && nullToAbsent
-          ? const Value.absent()
-          : Value(depthLimit),
+      depth: Value(depth),
+      depthLimit: Value(depthLimit),
     );
   }
 
@@ -4932,8 +5418,8 @@ class SurfaceSubstrateTallyData extends DataClass
       ssHeaderId: serializer.fromJson<int>(json['ssHeaderId']),
       stationNum: serializer.fromJson<int>(json['stationNum']),
       substrateType: serializer.fromJson<String>(json['substrateType']),
-      depth: serializer.fromJson<int?>(json['depth']),
-      depthLimit: serializer.fromJson<String?>(json['depthLimit']),
+      depth: serializer.fromJson<int>(json['depth']),
+      depthLimit: serializer.fromJson<int>(json['depthLimit']),
     );
   }
   @override
@@ -4944,8 +5430,8 @@ class SurfaceSubstrateTallyData extends DataClass
       'ssHeaderId': serializer.toJson<int>(ssHeaderId),
       'stationNum': serializer.toJson<int>(stationNum),
       'substrateType': serializer.toJson<String>(substrateType),
-      'depth': serializer.toJson<int?>(depth),
-      'depthLimit': serializer.toJson<String?>(depthLimit),
+      'depth': serializer.toJson<int>(depth),
+      'depthLimit': serializer.toJson<int>(depthLimit),
     };
   }
 
@@ -4954,15 +5440,15 @@ class SurfaceSubstrateTallyData extends DataClass
           int? ssHeaderId,
           int? stationNum,
           String? substrateType,
-          Value<int?> depth = const Value.absent(),
-          Value<String?> depthLimit = const Value.absent()}) =>
+          int? depth,
+          int? depthLimit}) =>
       SurfaceSubstrateTallyData(
         id: id ?? this.id,
         ssHeaderId: ssHeaderId ?? this.ssHeaderId,
         stationNum: stationNum ?? this.stationNum,
         substrateType: substrateType ?? this.substrateType,
-        depth: depth.present ? depth.value : this.depth,
-        depthLimit: depthLimit.present ? depthLimit.value : this.depthLimit,
+        depth: depth ?? this.depth,
+        depthLimit: depthLimit ?? this.depthLimit,
       );
   @override
   String toString() {
@@ -4998,8 +5484,8 @@ class SurfaceSubstrateTallyCompanion
   final Value<int> ssHeaderId;
   final Value<int> stationNum;
   final Value<String> substrateType;
-  final Value<int?> depth;
-  final Value<String?> depthLimit;
+  final Value<int> depth;
+  final Value<int> depthLimit;
   const SurfaceSubstrateTallyCompanion({
     this.id = const Value.absent(),
     this.ssHeaderId = const Value.absent(),
@@ -5013,18 +5499,20 @@ class SurfaceSubstrateTallyCompanion
     required int ssHeaderId,
     required int stationNum,
     required String substrateType,
-    this.depth = const Value.absent(),
-    this.depthLimit = const Value.absent(),
+    required int depth,
+    required int depthLimit,
   })  : ssHeaderId = Value(ssHeaderId),
         stationNum = Value(stationNum),
-        substrateType = Value(substrateType);
+        substrateType = Value(substrateType),
+        depth = Value(depth),
+        depthLimit = Value(depthLimit);
   static Insertable<SurfaceSubstrateTallyData> custom({
     Expression<int>? id,
     Expression<int>? ssHeaderId,
     Expression<int>? stationNum,
     Expression<String>? substrateType,
     Expression<int>? depth,
-    Expression<String>? depthLimit,
+    Expression<int>? depthLimit,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -5041,8 +5529,8 @@ class SurfaceSubstrateTallyCompanion
       Value<int>? ssHeaderId,
       Value<int>? stationNum,
       Value<String>? substrateType,
-      Value<int?>? depth,
-      Value<String?>? depthLimit}) {
+      Value<int>? depth,
+      Value<int>? depthLimit}) {
     return SurfaceSubstrateTallyCompanion(
       id: id ?? this.id,
       ssHeaderId: ssHeaderId ?? this.ssHeaderId,
@@ -5072,7 +5560,7 @@ class SurfaceSubstrateTallyCompanion
       map['depth'] = Variable<int>(depth.value);
     }
     if (depthLimit.present) {
-      map['depth_limit'] = Variable<String>(depthLimit.value);
+      map['depth_limit'] = Variable<int>(depthLimit.value);
     }
     return map;
   }
@@ -6225,6 +6713,8 @@ abstract class _$Database extends GeneratedDatabase {
   late final $JurisdictionsTable jurisdictions = $JurisdictionsTable(this);
   late final $PlotsTable plots = $PlotsTable(this);
   late final $TreeGenusTable treeGenus = $TreeGenusTable(this);
+  late final $SubstrateTypeTable substrateType = $SubstrateTypeTable(this);
+  late final $SsDepthLimitTable ssDepthLimit = $SsDepthLimitTable(this);
   late final $EcpGenusTable ecpGenus = $EcpGenusTable(this);
   late final $EcpVarietyTable ecpVariety = $EcpVarietyTable(this);
   late final $SurveyHeadersTable surveyHeaders = $SurveyHeadersTable(this);
@@ -6265,6 +6755,8 @@ abstract class _$Database extends GeneratedDatabase {
         jurisdictions,
         plots,
         treeGenus,
+        substrateType,
+        ssDepthLimit,
         ecpGenus,
         ecpVariety,
         surveyHeaders,

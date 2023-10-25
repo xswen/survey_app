@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -11,7 +10,8 @@ class OurAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(title).tr(),
+      title: Text(title),
+      //     title: Text(title).tr(),
       leading: BackButton(
         onPressed: backFn ?? () => context.pop(),
       ),

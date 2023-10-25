@@ -124,6 +124,11 @@ class WdDataProvider extends AutoDisposeFutureProvider<WoodyDebrisSummaryData> {
   }
 
   @override
+  (int,) get argument {
+    return (surveyId,);
+  }
+
+  @override
   AutoDisposeFutureProviderElement<WoodyDebrisSummaryData> createElement() {
     return _WdDataProviderElement(this);
   }
@@ -257,6 +262,11 @@ class WdTransListProvider
   }
 
   @override
+  (int,) get argument {
+    return (wdId,);
+  }
+
+  @override
   AutoDisposeFutureProviderElement<List<WoodyDebrisHeaderData>>
       createElement() {
     return _WdTransListProviderElement(this);
@@ -383,6 +393,11 @@ class WdhProvider extends AutoDisposeFutureProvider<WoodyDebrisHeaderData> {
         wdhId: wdhId,
       ),
     );
+  }
+
+  @override
+  (int,) get argument {
+    return (wdhId,);
   }
 
   @override
@@ -516,6 +531,11 @@ class WdhParentCompleteProvider extends AutoDisposeFutureProvider<bool> {
   }
 
   @override
+  (int,) get argument {
+    return (wdId,);
+  }
+
+  @override
   AutoDisposeFutureProviderElement<bool> createElement() {
     return _WdhParentCompleteProviderElement(this);
   }
@@ -643,6 +663,11 @@ class WdhSmallParentCompleteProvider extends AutoDisposeFutureProvider<bool> {
         wdhId: wdhId,
       ),
     );
+  }
+
+  @override
+  (int,) get argument {
+    return (wdhId,);
   }
 
   @override
@@ -774,6 +799,11 @@ class WdPieceOddProvider
         wdhId: wdhId,
       ),
     );
+  }
+
+  @override
+  (int,) get argument {
+    return (wdhId,);
   }
 
   @override
@@ -910,6 +940,11 @@ class WdPieceRoundProvider
   }
 
   @override
+  (int,) get argument {
+    return (wdhId,);
+  }
+
+  @override
   AutoDisposeFutureProviderElement<List<WoodyDebrisRoundData>> createElement() {
     return _WdPieceRoundProviderElement(this);
   }
@@ -1040,6 +1075,11 @@ class WdSmallProvider extends AutoDisposeFutureProvider<WoodyDebrisSmallData?> {
   }
 
   @override
+  (int,) get argument {
+    return (wdhId,);
+  }
+
+  @override
   AutoDisposeFutureProviderElement<WoodyDebrisSmallData?> createElement() {
     return _WdSmallProviderElement(this);
   }
@@ -1072,4 +1112,4 @@ class _WdSmallProviderElement
   int get wdhId => (origin as WdSmallProvider).wdhId;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, inference_failure_on_uninitialized_variable, inference_failure_on_function_return_type, inference_failure_on_untyped_parameter
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, inference_failure_on_uninitialized_variable, inference_failure_on_function_return_type, inference_failure_on_untyped_parameter, deprecated_member_use_from_same_package

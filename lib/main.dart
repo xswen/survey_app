@@ -2,17 +2,19 @@ import 'package:drift_db_viewer/drift_db_viewer.dart';
 import 'package:easy_localization/easy_localization.dart';
 //import 'package:easy_localization_loader/easy_localization_loader.dart'; // import custom loaders
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:survey_app/constants/constant_values.dart';
 import 'package:survey_app/pages/survey_info/dashboard.dart';
 import 'package:survey_app/providers/providers.dart';
 import 'package:survey_app/routes/go_route_main.dart';
 
 import 'l10n/locale_keys.g.dart';
+import 'routes/router_listenable.dart';
 
-String _versionCode = "Version 2";
+String _versionCode = "Version 3";
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,11 +32,23 @@ void main() async {
   ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends HookConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final notifier = ref.watch(routerListenableProvider.notifier);
+    final key = useRef(GlobalKey<NavigatorState>(debugLabel: 'routerKey'));
+    final router = useMemoized(
+      () => GoRouter(
+        refreshListenable: notifier,
+        debugLogDiagnostics: true,
+        routes: routes,
+        redirect: notifier.redirect,
+      ),
+      [notifier],
+    );
+
     return MaterialApp.router(
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,

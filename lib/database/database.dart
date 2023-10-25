@@ -28,7 +28,7 @@ part 'database.g.dart';
 
 const List<Type> _tables = [
   //Reference Tables
-  Jurisdictions, Plots, TreeGenus,
+  Jurisdictions, Plots, TreeGenus, SubstrateType, SsDepthLimit,
   EcpGenus, EcpVariety,
   //Metadata Tables
   MetaComment,
@@ -106,12 +106,18 @@ class Database extends _$Database {
           List<JurisdictionsCompanion> jurisdictionsList =
               await _getJurisdictions();
           List<PlotsCompanion> nfiPlotList = await _getNfiPlots();
+          List<SubstrateTypeCompanion> substrateTypeList =
+              await _getSubstrateTypes();
+          List<SsDepthLimitCompanion> ssDepthLimitList =
+              await _getSsDepthLimits();
 
           c.debugPrint("Init Values");
           await batch((b) {
             b.insertAll(jurisdictions, jurisdictionsList);
             b.insertAllOnConflictUpdate(treeGenus, treeList);
             b.insertAll(plots, nfiPlotList);
+            b.insertAll(substrateType, substrateTypeList);
+            b.insertAll(ssDepthLimit, ssDepthLimitList);
 
             _initTest(b);
           });
@@ -163,6 +169,29 @@ class Database extends _$Database {
           lastMeasNum: item["lastMeasNum"] == null
               ? Value(item["lastMeasNum"])
               : const Value.absent());
+    }).toList();
+  }
+
+  Future<List<SubstrateTypeCompanion>> _getSubstrateTypes() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/substrate_type_list.json');
+    return jsonData.map((dynamic item) {
+      return SubstrateTypeCompanion(
+          typeCode: Value(item["typeCode"]),
+          nameEn: Value(item["nameEn"]),
+          nameFr: Value(item["nameFr"]),
+          hasDepth: Value(item["hasDepth"]));
+    }).toList();
+  }
+
+  Future<List<SsDepthLimitCompanion>> _getSsDepthLimits() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/ss_depth_limit_list.json');
+    return jsonData.map((dynamic item) {
+      return SsDepthLimitCompanion(
+          code: Value(item["code"]),
+          nameEn: Value(item["nameEn"]),
+          nameFr: Value(item["nameFr"]));
     }).toList();
   }
 

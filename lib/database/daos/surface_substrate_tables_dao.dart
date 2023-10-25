@@ -55,7 +55,7 @@ class SurfaceSubstrateTablesDao extends DatabaseAccessor<Database>
                   OrderingTerm(expression: t.transNum, mode: OrderingMode.asc)
             ]))
           .get();
-  Future<List<SurfaceSubstrateHeaderData>> getSSHeadersFromSSsId(int ssSId) =>
+  Future<List<SurfaceSubstrateHeaderData>> getSSHeadersFromSsSId(int ssSId) =>
       (select(surfaceSubstrateHeader)
             ..where((tbl) => tbl.ssId.equals(ssSId))
             ..orderBy([
@@ -72,6 +72,12 @@ class SurfaceSubstrateTablesDao extends DatabaseAccessor<Database>
                 tbl.ssId.equals(sshId) & tbl.transNum.equals(transNum)))
           .getSingleOrNull();
 
+  Future<List<int?>> getUsedTransNums(int ssSId) {
+    final query = select(surfaceSubstrateHeader)
+      ..where((tbl) => tbl.ssId.equals(ssSId));
+    return query.map((row) => row.transNum).get();
+  }
+
   //====================Surface Substrate Tally====================
   Future<int> addSsTally(SurfaceSubstrateTallyCompanion entry) =>
       into(surfaceSubstrateTally).insert(entry);
@@ -80,31 +86,42 @@ class SurfaceSubstrateTablesDao extends DatabaseAccessor<Database>
   Future<SurfaceSubstrateTallyData> getSsTallyFromId(int id) =>
       (select(surfaceSubstrateTally)..where((tbl) => tbl.id.equals(id)))
           .getSingle();
-  Future<SurfaceSubstrateTallyData?> getSsTallyFromSsDataId(
+  Future<SurfaceSubstrateTallyData?> getSsTallyFromSsSummaryId(
           int ssdId, int stationNum) =>
       (select(surfaceSubstrateTally)
             ..where((tbl) =>
                 tbl.ssHeaderId.equals(ssdId) &
                 tbl.stationNum.equals(stationNum)))
           .getSingleOrNull();
-  Future<List<SurfaceSubstrateTallyData>> getSsTallyList(int ssDataId) =>
+  Future<List<SurfaceSubstrateTallyData>> getSsTallyList(int ssHeaderId) =>
       (select(surfaceSubstrateTally)
-            ..where((tbl) => tbl.ssHeaderId.equals(ssDataId))
+            ..where((tbl) => tbl.ssHeaderId.equals(ssHeaderId))
             ..orderBy([
               (t) =>
                   OrderingTerm(expression: t.stationNum, mode: OrderingMode.asc)
             ]))
           .get();
-  Future<int> getNextStationNum(int ssDataId) async {
+  Future<int> getNextStationNum(int ssHeaderId) async {
     final query = select(surfaceSubstrateTally)
-      ..where((tbl) => tbl.ssHeaderId.equals(ssDataId))
+      ..where((tbl) => tbl.ssHeaderId.equals(ssHeaderId))
       ..orderBy([
-        (t) => OrderingTerm(expression: t.stationNum, mode: OrderingMode.desc)
+        (t) => OrderingTerm(expression: t.stationNum, mode: OrderingMode.asc)
       ]);
 
     List<SurfaceSubstrateTallyData> stations = await query.get();
 
-    return stations.isEmpty ? 1 : stations[0].stationNum + 1;
+    if (stations.isEmpty || stations[0].stationNum != 1) {
+      return 1;
+    }
+
+    for (int i = 1; i < stations.length; i++) {
+      if (stations[i].stationNum - stations[i - 1].stationNum > 1) {
+        // Return the next integer of the previous number as it's the missing number
+        return stations[i - 1].stationNum + 1;
+      }
+    }
+
+    return stations.last.stationNum + 1;
   }
 
   List<String> getSsTallyColumnNames() {

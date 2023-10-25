@@ -9,11 +9,13 @@ class TreeGenusSelectBuilder extends StatelessWidget {
   const TreeGenusSelectBuilder(
       {super.key,
       this.title = "Tree Genus",
+      this.enabled = true,
       this.onBeforePopup,
       required this.updateGenusFn,
       required this.genusCode});
 
   final String title;
+  final bool enabled;
   final Future<bool?> Function(String?)? onBeforePopup;
   final void Function(Value<String>? genusCode, Value<String>? speciesCode)
       updateGenusFn;
@@ -31,6 +33,7 @@ class TreeGenusSelectBuilder extends StatelessWidget {
         builder: (BuildContext context, AsyncSnapshot<String> text) {
           return DropDownAsyncList(
             searchable: true,
+            enabled: enabled,
             title: title,
             onBeforePopup: onBeforePopup,
             onChangedFn: (s) async {

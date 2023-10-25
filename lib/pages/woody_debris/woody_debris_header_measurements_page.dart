@@ -36,8 +36,8 @@ class WoodyDebrisHeaderMeasurementsPageState
 
   @override
   void initState() {
-    wdId = RouteParams.getWdSummaryId(widget.goRouterState)!;
-    wdhId = RouteParams.getWdHeaderId(widget.goRouterState);
+    wdId = PathParamValue.getWdSummaryId(widget.goRouterState)!;
+    wdhId = PathParamValue.getWdHeaderId(widget.goRouterState);
     completeWarningPopup =
         Popups.generateCompleteErrorPopup("Woody Debris Transect");
     surveyCompleteWarningPopup =
@@ -152,8 +152,6 @@ class WoodyDebrisHeaderMeasurementsPageState
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
-
     final db = ref.read(databaseProvider);
     void updateWdhC(WoodyDebrisHeaderCompanion newWdhC) =>
         setState(() => wdhC = newWdhC);
@@ -174,7 +172,7 @@ class WoodyDebrisHeaderMeasurementsPageState
               : [
                   SetTransectNumBuilder(
                     getUsedTransNums: db.woodyDebrisTablesDao
-                        .getUsedTransnums(wdhC.wdId.value),
+                        .getUsedTransNums(wdhC.wdId.value),
                     startingTransNum: initTransNum.toString(),
                     selectedItem: db.companionValueToStr(wdhC.transNum).isEmpty
                         ? "Please select transect number"
@@ -369,10 +367,9 @@ class WoodyDebrisHeaderMeasurementsPageState
                                 ref.refresh(wdhProvider(wdhId));
 
                                 context.goNamed(WoodyDebrisHeaderPage.routeName,
-                                    pathParameters:
-                                        RouteParams.generateWdHeaderParms(
-                                            widget.goRouterState,
-                                            wdhId.toString()));
+                                    pathParameters: PathParamGenerator.wdHeader(
+                                        widget.goRouterState,
+                                        wdhId.toString()));
                               });
                             }
                           },
