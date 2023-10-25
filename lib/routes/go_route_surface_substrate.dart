@@ -14,7 +14,6 @@ GoRoute goRouteSurfaceSubstrate = GoRoute(
         name: SurfaceSubstrateHeaderPage.routeName,
         path: "header/:${PathParamsKeys.ssHeaderId}",
         builder: (context, state) {
-          print("but why");
           return SurfaceSubstrateHeaderPage(state);
         },
         routes: [

@@ -18,7 +18,7 @@ class ColNames {
   ColumnHeaders id = ColumnHeaders(ColumnHeaders.headerNameId, visible: false);
   ColumnHeaders stationNum = ColumnHeaders("Station Num");
   ColumnHeaders type = ColumnHeaders("Type");
-  ColumnHeaders depth = ColumnHeaders("Depth");
+  ColumnHeaders depth = ColumnHeaders("Depth (m)");
   ColumnHeaders depthLimit = ColumnHeaders("Depth Limit");
   ColumnHeaders edit = ColumnHeaders(ColumnHeaders.headerNameEdit, sort: false);
 

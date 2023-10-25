@@ -116,8 +116,6 @@ class SurfaceSubstrateSummaryPageState
     AsyncValue<List<SurfaceSubstrateHeaderData>> transList =
         ref.watch(ssTransListProvider(ssId));
 
-    print("rebuild");
-
     return Scaffold(
         appBar: OurAppBar(
           title,

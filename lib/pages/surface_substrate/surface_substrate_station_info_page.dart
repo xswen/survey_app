@@ -47,7 +47,7 @@ class SurfaceSubstrateStationInfoPageState
 
   void returnToHeader() {
     ref.refresh(ssTallyDataListProvider(sshId));
-    context.pushReplacementNamed(SurfaceSubstrateHeaderPage.routeName,
+    context.goNamed(SurfaceSubstrateHeaderPage.routeName,
         pathParameters:
             PathParamGenerator.ssHeader(widget.state, sshId.toString()));
   }
