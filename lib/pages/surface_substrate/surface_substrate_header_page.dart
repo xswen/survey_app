@@ -229,19 +229,30 @@ class SurfaceSubstrateHeaderPageState
   }
 
   void createNewSsTallyCompanion() => ref
-      .read(databaseProvider)
-      .surfaceSubstrateTablesDao
-      .getNextStationNum(sshId)
-      .then((stationNum) => context.pushNamed(
-          SurfaceSubstrateStationInfoPage.routeName,
-          pathParameters: PathParamGenerator.ssStationInfo(
-              widget.state, stationNum.toString()),
-          extra: SurfaceSubstrateTallyCompanion(
-              ssHeaderId: d.Value(sshId),
-              stationNum: d.Value(stationNum),
-              //Assume not applicable until stated otherwise
-              depth: const d.Value(kDataNotApplicable),
-              depthLimit: const d.Value(kDataNotApplicable))));
+          .read(databaseProvider)
+          .surfaceSubstrateTablesDao
+          .getNextStationNum(sshId)
+          .then((stationNum) {
+        if (stationNum > 25) {
+          Popups.show(
+              context,
+              const PopupDismiss(
+                "Max number of stations reached",
+                contentText:
+                    "You already have 25 stations. Please delete a previous station to add a new one.",
+              ));
+          return;
+        }
+        context.pushNamed(SurfaceSubstrateStationInfoPage.routeName,
+            pathParameters: PathParamGenerator.ssStationInfo(
+                widget.state, stationNum.toString()),
+            extra: SurfaceSubstrateTallyCompanion(
+                ssHeaderId: d.Value(sshId),
+                stationNum: d.Value(stationNum),
+                //Assume not applicable until stated otherwise
+                depth: const d.Value(kDataNotApplicable),
+                depthLimit: const d.Value(kDataNotApplicable)));
+      });
 
   @override
   Widget build(BuildContext context) {

@@ -47,24 +47,36 @@ class SurfaceSubstrateStationInfoPageState
 
   void returnToHeader() {
     ref.refresh(ssTallyDataListProvider(sshId));
-    context.goNamed(SurfaceSubstrateHeaderPage.routeName,
+    context.pushReplacementNamed(SurfaceSubstrateHeaderPage.routeName,
         pathParameters:
             PathParamGenerator.ssHeader(widget.state, sshId.toString()));
   }
 
   void createNewSsTallyCompanion() => ref
-      .read(databaseProvider)
-      .surfaceSubstrateTablesDao
-      .getNextStationNum(sshId)
-      .then((stationNum) => context.pushReplacementNamed(
-          SurfaceSubstrateStationInfoPage.routeName,
-          pathParameters: PathParamGenerator.ssStationInfo(
-              widget.state, stationNum.toString()),
-          extra: SurfaceSubstrateTallyCompanion(
-              ssHeaderId: d.Value(sshId),
-              stationNum: d.Value(stationNum),
-              depth: const d.Value(kDataNotApplicable),
-              depthLimit: const d.Value(kDataNotApplicable))));
+          .read(databaseProvider)
+          .surfaceSubstrateTablesDao
+          .getNextStationNum(sshId)
+          .then((stationNum) {
+        if (stationNum > 25) {
+          Popups.show(
+              context,
+              PopupContinue(
+                "Max number of stations reached",
+                contentText:
+                    "You already have 25 stations. Please delete a previous station to add a new one.",
+                rightBtnOnPressed: returnToHeader,
+              ));
+          return;
+        }
+        context.pushReplacementNamed(SurfaceSubstrateStationInfoPage.routeName,
+            pathParameters: PathParamGenerator.ssStationInfo(
+                widget.state, stationNum.toString()),
+            extra: SurfaceSubstrateTallyCompanion(
+                ssHeaderId: d.Value(sshId),
+                stationNum: d.Value(stationNum),
+                depth: const d.Value(kDataNotApplicable),
+                depthLimit: const d.Value(kDataNotApplicable)));
+      });
 
   List<String>? _errorCheck() {
     List<String> results = [];

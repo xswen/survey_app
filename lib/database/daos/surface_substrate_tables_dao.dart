@@ -105,12 +105,23 @@ class SurfaceSubstrateTablesDao extends DatabaseAccessor<Database>
     final query = select(surfaceSubstrateTally)
       ..where((tbl) => tbl.ssHeaderId.equals(ssHeaderId))
       ..orderBy([
-        (t) => OrderingTerm(expression: t.stationNum, mode: OrderingMode.desc)
+        (t) => OrderingTerm(expression: t.stationNum, mode: OrderingMode.asc)
       ]);
 
     List<SurfaceSubstrateTallyData> stations = await query.get();
 
-    return stations.isEmpty ? 1 : stations[0].stationNum + 1;
+    if (stations.isEmpty || stations[0].stationNum != 1) {
+      return 1;
+    }
+
+    for (int i = 1; i < stations.length; i++) {
+      if (stations[i].stationNum - stations[i - 1].stationNum > 1) {
+        // Return the next integer of the previous number as it's the missing number
+        return stations[i - 1].stationNum + 1;
+      }
+    }
+
+    return stations.last.stationNum + 1;
   }
 
   List<String> getSsTallyColumnNames() {
