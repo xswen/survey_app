@@ -5,11 +5,11 @@ import '../../../database/database_creation_files/survey_info_tables.dart';
 
 class SiteInfoBuilder extends StatelessWidget {
   const SiteInfoBuilder({
-    Key? key,
+    super.key,
     required this.future,
     required this.onEdit,
     required this.onDelete,
-  }) : super(key: key);
+  });
   final Future<List<SurveyHeaders>> future;
   final Function(SurveyHeaders) onEdit;
   final Function(SurveyHeaders) onDelete;

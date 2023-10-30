@@ -19,7 +19,7 @@ part 'reference_tables_dao.g.dart';
 ])
 class ReferenceTablesDao extends DatabaseAccessor<Database>
     with _$ReferenceTablesDaoMixin {
-  ReferenceTablesDao(Database db) : super(db);
+  ReferenceTablesDao(super.db);
 
   //For testing purposes only
   void clearTables() {

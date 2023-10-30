@@ -16,7 +16,7 @@ const List<Type> _tables = [
 @DriftAccessor(tables: _tables)
 class SurveyInfoTablesDao extends DatabaseAccessor<Database>
     with _$SurveyInfoTablesDaoMixin {
-  SurveyInfoTablesDao(Database db) : super(db);
+  SurveyInfoTablesDao(super.db);
 
   void deleteTables() {
     delete(surveyHeaders).go();

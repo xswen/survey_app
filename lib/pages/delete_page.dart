@@ -13,11 +13,10 @@ class DeletePage extends StatelessWidget {
   static const String keyAfterDeleteFn = "afterDeleteFn";
 
   const DeletePage(
-      {Key? key,
+      {super.key,
       required this.objectName,
       required this.deleteFn,
-      required this.afterDeleteFn})
-      : super(key: key);
+      required this.afterDeleteFn});
   final String objectName;
   final void Function() deleteFn;
   //How to handle behaviour after deletion. Default context.pop;

@@ -3,11 +3,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class FloatingCompleteButton extends StatelessWidget {
   const FloatingCompleteButton(
-      {Key? key,
+      {super.key,
       required this.title,
       required this.complete,
-      required this.onPressed})
-      : super(key: key);
+      required this.onPressed});
 
   final String title;
   final bool complete;

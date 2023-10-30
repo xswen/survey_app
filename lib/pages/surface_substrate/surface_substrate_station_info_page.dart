@@ -178,8 +178,8 @@ class SurfaceSubstrateStationInfoPageState
                                 LengthLimitingTextInputFormatter(3),
                                 ThousandsFormatter(allowFraction: false),
                               ],
-                              generalPadding: EdgeInsets.all(0),
-                              textBoxPadding: EdgeInsets.all(0),
+                              generalPadding: const EdgeInsets.all(0),
+                              textBoxPadding: const EdgeInsets.all(0),
                               onSubmit: (String s) {
                                 int? val = int.tryParse(s);
                                 val != null
@@ -253,7 +253,7 @@ class SurfaceSubstrateStationInfoPageState
                       child: const Text("Save and Add New Station")),
                 ],
               ),
-              station.id != d.Value.absent()
+              station.id != const d.Value.absent()
                   ? DeleteButton(
                       delete: () => Popups.show(
                         context,

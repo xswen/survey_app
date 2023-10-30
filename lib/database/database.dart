@@ -206,6 +206,7 @@ class Database extends _$Database {
             nfiPlot: Value(1121871), code: Value("AB"), lastMeasNum: Value(2)));
     _initSurveys(b);
     _initWoodyDebris(b);
+    _initEcp(b);
   }
 
   void _initSurveys(Batch b) {
@@ -280,6 +281,24 @@ class Database extends _$Database {
         ));
   }
 
+  void _initEcp(Batch b) {
+    b.insert(
+        ecpSummary,
+        EcpSummaryCompanion(
+          id: const d.Value(1),
+          surveyId: const d.Value(1),
+          measDate: d.Value(DateTime.now()),
+          numEcps: const d.Value(1),
+        ));
+    b.insert(
+        ecpHeader,
+        const EcpHeaderCompanion(
+          id: d.Value(1),
+          ecpSummaryId: d.Value(1),
+          ecpNum: d.Value(1),
+        ));
+  }
+
   Future<List<SurveyCard>> getCards(int surveyId,
       {HashSet<SurveyStatus>? filters}) async {
     bool checkFilter(dynamic cardData) {
@@ -290,15 +309,15 @@ class Database extends _$Database {
 
       //Check if notStarted cards are valid
       if (cardData == null) {
-        return filters!.contains(SurveyStatus.notStarted);
+        return filters.contains(SurveyStatus.notStarted);
       }
 
-      if (filters!.contains(SurveyStatus.inProgress) &&
+      if (filters.contains(SurveyStatus.inProgress) &&
           cardData!.complete == false) {
         return true;
       }
 
-      if (filters!.contains(SurveyStatus.complete) &&
+      if (filters.contains(SurveyStatus.complete) &&
           cardData!.complete == true) {
         return true;
       }

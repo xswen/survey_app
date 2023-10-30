@@ -14,7 +14,7 @@ const List<Type> _tables = [
 @DriftAccessor(tables: _tables)
 class SurfaceSubstrateTablesDao extends DatabaseAccessor<Database>
     with _$SurfaceSubstrateTablesDaoMixin {
-  SurfaceSubstrateTablesDao(Database db) : super(db);
+  SurfaceSubstrateTablesDao(super.db);
 
   void clearTables() {
     //Woody Debris

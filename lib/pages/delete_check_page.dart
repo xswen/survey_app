@@ -23,19 +23,18 @@ class DeleteCheckPage extends StatelessWidget {
         children: [
           Text(
             content,
-            style: TextStyle(fontSize: 24),
+            style: const TextStyle(fontSize: 24),
           ),
-          Container(
-            child: ButtonBar(
-              alignment: MainAxisAlignment.center,
-              buttonPadding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-              children: [
-                ElevatedButton(
-                    onPressed: () => Get.back(), child: const Text("Cancel")),
-                ElevatedButton(
-                    onPressed: contOnPress, child: const Text("Continue")),
-              ],
-            ),
+          ButtonBar(
+            alignment: MainAxisAlignment.center,
+            buttonPadding:
+                const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+            children: [
+              ElevatedButton(
+                  onPressed: () => Get.back(), child: const Text("Cancel")),
+              ElevatedButton(
+                  onPressed: contOnPress, child: const Text("Continue")),
+            ],
           )
         ],
       ),

@@ -6,4 +6,4 @@ GoRoute goRouteEcp = GoRoute(
     name: EcologicalPlotSummaryPage.routeName,
     path: "ecological_plot/:${PathParamsKeys.ecpSummaryId}",
     builder: (context, state) => EcologicalPlotSummaryPage(state),
-    routes: []);
+    routes: const []);

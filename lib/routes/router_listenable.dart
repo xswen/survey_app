@@ -23,7 +23,7 @@ part 'router_listenable.g.dart';
 @riverpod
 class RouterListenable extends _$RouterListenable implements Listenable {
   VoidCallback? _routerListener;
-  bool _isAuth = false; // Useful for our global redirect function
+  final bool _isAuth = false; // Useful for our global redirect function
 
   @override
   Future<void> build() async {

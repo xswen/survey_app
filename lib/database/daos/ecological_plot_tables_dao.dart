@@ -14,7 +14,7 @@ const List<Type> _tables = [
 @DriftAccessor(tables: _tables)
 class EcologicalPlotTablesDao extends DatabaseAccessor<Database>
     with _$EcologicalPlotTablesDaoMixin {
-  EcologicalPlotTablesDao(Database db) : super(db);
+  EcologicalPlotTablesDao(super.db);
 
   void clearTables() {
     delete(ecpSummary).go();
@@ -56,6 +56,12 @@ class EcologicalPlotTablesDao extends DatabaseAccessor<Database>
             ..where((tbl) =>
                 tbl.ecpSummaryId.equals(ecpSId) & tbl.ecpNum.equals(ecpNum)))
           .getSingleOrNull();
+
+  Future<List<int?>> getUsedTransNums(int ecpId) {
+    final query = select(ecpHeader)
+      ..where((tbl) => tbl.ecpSummaryId.equals(ecpId));
+    return query.map((row) => row.ecpNum).get();
+  }
 
 //====================ECP Species====================
   Future<int> deleteSpecies(int ecpSpeciesId) =>

@@ -31,7 +31,7 @@ class WoodyDebrisSummaryPageState
   @override
   void initState() {
     surveyId = PathParamValue.getSurveyId(widget.goRouterState)!;
-    wdId = PathParamValue.getWdSummaryId(widget.goRouterState)!;
+    wdId = PathParamValue.getWdSummaryId(widget.goRouterState);
     completeWarningPopup = Popups.generateCompleteErrorPopup(title);
 
     super.initState();

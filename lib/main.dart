@@ -62,7 +62,7 @@ class MyApp extends HookConsumerWidget {
 }
 
 class MyHomePage extends ConsumerStatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+  const MyHomePage({super.key, required this.title});
 
   final String title;
 
