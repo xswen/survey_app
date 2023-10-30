@@ -1,6 +1,6 @@
 enum DropDownType { str, int }
 
-enum SurveyCardCategories { woodyDebris, surfaceSubstrate }
+enum SurveyCardCategories { woodyDebris, surfaceSubstrate, ecologicalPlot }
 
 enum SurveyStatus { notStarted, inProgress, complete }
 

@@ -25,11 +25,18 @@ class EcologicalPlotTablesDao extends DatabaseAccessor<Database>
   //====================ECP Summary====================
   Future<int> addSummary(EcpSummaryCompanion entry) =>
       into(ecpSummary).insert(entry);
-  Future<EcpSummaryData> getSummaryFromId(int id) =>
+  Future<EcpSummaryData> getSummary(int id) =>
       (select(ecpSummary)..where((tbl) => tbl.id.equals(id))).getSingle();
   Future<EcpSummaryData?> getSummaryWithSurveyId(int surveyId) =>
       (select(ecpSummary)..where((tbl) => tbl.surveyId.equals(surveyId)))
           .getSingleOrNull();
+  Future<EcpSummaryData> addAndReturnDefaultSummary(
+      int surveyId, DateTime measDate) async {
+    int summaryId = await addSummary(EcpSummaryCompanion(
+        surveyId: Value(surveyId), measDate: Value(measDate)));
+
+    return await getSummary(summaryId);
+  }
 
 //====================ECP Header====================
   Future<int> addHeader(EcpHeaderCompanion entry) =>

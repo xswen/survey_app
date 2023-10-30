@@ -320,6 +320,13 @@ class Database extends _$Database {
         "surveyCardData": await (select(surfaceSubstrateSummary)
               ..where((tbl) => tbl.surveyId.equals(surveyId)))
             .getSingleOrNull()
+      },
+      {
+        "category": SurveyCardCategories.ecologicalPlot,
+        "name": "Ecological Plot",
+        "surveyCardData": await (select(ecpSummary)
+              ..where((tbl) => tbl.surveyId.equals(surveyId)))
+            .getSingleOrNull()
       }
     ];
 
