@@ -26,4 +26,8 @@ class PathParamValue {
       int.parse(goRouterState.pathParameters[PathParamsKeys.ssHeaderId]!);
   static int getSsTallyId(GoRouterState goRouterState) =>
       int.parse(goRouterState.pathParameters[PathParamsKeys.ssStationNum]!);
+
+  //Ecological Plot
+  static int getEcpSummaryId(GoRouterState goRouterState) =>
+      int.parse(goRouterState.pathParameters[PathParamsKeys.ecpSummaryId]!);
 }

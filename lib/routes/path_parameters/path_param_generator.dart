@@ -50,4 +50,12 @@ class PathParamGenerator {
             goRouterState.pathParameters[PathParamsKeys.ssHeaderId]!),
         ...{PathParamsKeys.ssStationNum: ssStationNum}
       };
+
+  //Ecological Plot
+  static Map<String, String> ecpSummary(
+          GoRouterState goRouterState, String ecpSummaryId) =>
+      {
+        ...surveyInfo(goRouterState.pathParameters[PathParamsKeys.surveyId]!),
+        ...{PathParamsKeys.ecpSummaryId: ecpSummaryId}
+      };
 }
