@@ -1,5 +1,6 @@
 import 'package:drift/drift.dart' as d;
 import 'package:survey_app/barrels/page_imports_barrel.dart';
+import 'package:survey_app/pages/ecological_plot/ecological_plot_header_page.dart';
 import 'package:survey_app/providers/ecological_plot_providers.dart';
 
 import '../../providers/survey_info_providers.dart';
@@ -67,23 +68,21 @@ class EcologicalPlotSummaryPageState
           ),
           rightBtnOnPressed: () => db.ecologicalPlotTablesDao
               .addHeader(ecpHCompanion)
-              .then((wdhId) async {
+              .then((headerId) async {
             context.pop();
-            //TODO: add go to page
-            //goToWdhPage(wdhId);
+            goToEcpHPage(headerId);
           }),
         ));
   }
 
-  //TODO: Implement
-  // void goToEcpHPage(int ecpHId) => context
-  //     .pushNamed(WoodyDebrisHeaderPage.routeName,
-  //     pathParameters: PathParamGenerator.wdHeader(
-  //         widget.goRouterState, wdhId.toString()))
-  //     .then((value) {
-  //   ref.refresh(wdTransListProvider(wdId));
-  //   ref.refresh(wdDataProvider(surveyId));
-  // });
+  void goToEcpHPage(int ecpHId) => context
+          .pushNamed(EcologicalPlotHeaderPage.routeName,
+              pathParameters:
+                  PathParamGenerator.ecpHeader(widget.state, ecpHId.toString()))
+          .then((value) {
+        ref.refresh(ecpTransListProvider(ecpId));
+        ref.refresh(ecpDataProvider(ecpId));
+      });
 
   SurveyStatus getStatus(EcpHeaderData ecpH) {
     if (ecpH.complete) return SurveyStatus.complete;
@@ -161,11 +160,7 @@ class EcologicalPlotSummaryPageState
                             style: TextStyle(fontSize: kTextHeaderSize),
                           ),
                           ElevatedButton(
-                              onPressed: () => null,
-                              // context.pushNamed(
-                              //     WoodyDebrisHeaderMeasurementsPage.routeName,
-                              //     pathParameters: PathParamGenerator.wdHeader(
-                              //         widget.goRouterState, kParamMissing)),
+                              onPressed: () => createTransect(),
                               child: const Row(
                                 children: [
                                   Padding(
@@ -207,10 +202,9 @@ class EcologicalPlotSummaryPageState
                                                   Popups
                                                       .generateNoticeSurveyComplete(
                                                     "Woody Debris",
-                                                    () =>
-                                                        null, //goToWdhPage(wdh.id),
+                                                    () => goToEcpHPage(ecpH.id),
                                                   ))
-                                              : null; //goToWdhPage(wdh.id);
+                                              : goToEcpHPage(ecpH.id);
                                         },
                                         status: getStatus(ecpH));
                                   }),

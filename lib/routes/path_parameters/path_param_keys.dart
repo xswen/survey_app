@@ -10,4 +10,5 @@ class PathParamsKeys {
   static const String ssStationNum = "ssStationNum";
 
   static const String ecpSummaryId = "ecpSummaryId";
+  static const String ecpHeaderId = "ecpHeaderId";
 }

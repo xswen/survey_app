@@ -30,4 +30,6 @@ class PathParamValue {
   //Ecological Plot
   static int getEcpSummaryId(GoRouterState goRouterState) =>
       int.parse(goRouterState.pathParameters[PathParamsKeys.ecpSummaryId]!);
+  static int getEcpHeaderId(GoRouterState goRouterState) =>
+      int.parse(goRouterState.pathParameters[PathParamsKeys.ecpHeaderId]!);
 }
