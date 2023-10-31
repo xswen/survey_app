@@ -7,6 +7,7 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../formatters/thousands_formatter.dart';
 import '../../widgets/builders/set_transect_num_builder.dart';
+import '../../widgets/popups/popup_errors_found_list.dart';
 import '../../widgets/tables/table_data_grid_source_builder.dart';
 import '../../wrappers/column_header_object.dart';
 
@@ -120,6 +121,20 @@ class EcologicalPlotHeaderPageState
         .then((value) => setState(() => ecpH = ecpHC));
   }
 
+  void markComplete() async {
+    final db = Database.instance;
+    if (parentComplete) {
+      Popups.show(context, popupSurveyComplete);
+    } else if (ecpH.complete.value) {
+      updateEcpHData(ecpH.copyWith(complete: const d.Value(false)));
+    } else {
+      List<String>? errors = errorCheck();
+      errors == null
+          ? updateEcpHData(ecpH.copyWith(complete: const d.Value(true)))
+          : Popups.show(context, PopupErrorsFoundList(errors: errors));
+    }
+  }
+
   //Error Checks
   List<String>? errorCheck() {
     final db = ref.read(databaseProvider);
@@ -177,7 +192,7 @@ class EcologicalPlotHeaderPageState
               complete: db.companionValueToStr(ecpH.complete).isEmpty
                   ? false
                   : ecpH.complete.value,
-              onPressed: () => null, //markComplete(),
+              onPressed: () => markComplete(),
             ),
             endDrawer: DrawerMenu(onLocaleChange: () {}),
             body: Padding(

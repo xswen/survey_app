@@ -2,6 +2,7 @@ import 'package:drift/drift.dart' as d;
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/pages/ecological_plot/ecological_plot_header_page.dart';
 import 'package:survey_app/providers/ecological_plot_providers.dart';
+import 'package:survey_app/widgets/buttons/custom_button_styles.dart';
 
 import '../../providers/survey_info_providers.dart';
 import '../../widgets/builders/set_transect_num_builder.dart';
@@ -160,7 +161,12 @@ class EcologicalPlotSummaryPageState
                             style: TextStyle(fontSize: kTextHeaderSize),
                           ),
                           ElevatedButton(
-                              onPressed: () => createTransect(),
+                              onPressed: () => ecp.complete
+                                  ? Popups.show(
+                                      context, surveyCompleteWarningPopup)
+                                  : createTransect(),
+                              style: CustomButtonStyles.inactiveButton(
+                                  isActive: !ecp.complete),
                               child: const Row(
                                 children: [
                                   Padding(
@@ -202,7 +208,10 @@ class EcologicalPlotSummaryPageState
                                                   Popups
                                                       .generateNoticeSurveyComplete(
                                                     "Woody Debris",
-                                                    () => goToEcpHPage(ecpH.id),
+                                                    () {
+                                                      context.pop();
+                                                      goToEcpHPage(ecpH.id);
+                                                    },
                                                   ))
                                               : goToEcpHPage(ecpH.id);
                                         },
