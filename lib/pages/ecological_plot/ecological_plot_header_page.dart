@@ -2,6 +2,7 @@ import 'package:drift/drift.dart' as d;
 import 'package:flutter/services.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/providers/ecological_plot_providers.dart';
+import 'package:survey_app/widgets/buttons/custom_button_styles.dart';
 import 'package:survey_app/widgets/data_input/data_input.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
@@ -270,7 +271,30 @@ class EcologicalPlotHeaderPageState
                               : ecpH = ecpH.copyWith(
                                   measPlotSize: d.Value(double.parse(s)));
                     },
-                  )
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: kPaddingH / 2),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Layers",
+                          style: TextStyle(fontSize: kTextTitleSize),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: kPaddingH),
+                          child: ElevatedButton(
+                              onPressed: () async => null, //ssh.complete.value
+                              // ? Popups.show(context, popupPageComplete)
+                              // : createNewSsTallyCompanion(),
+                              style: CustomButtonStyles.inactiveButton(
+                                  isActive: !ecpH.complete.value),
+                              child: const Text("Add layer")),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
