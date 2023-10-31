@@ -24,7 +24,7 @@ class PathParamValue {
       int.parse(goRouterState.pathParameters[PathParamsKeys.ssSummaryId]!);
   static int getSsHeaderId(GoRouterState goRouterState) =>
       int.parse(goRouterState.pathParameters[PathParamsKeys.ssHeaderId]!);
-  static int getSsTallyId(GoRouterState goRouterState) =>
+  static int getSsTallyNum(GoRouterState goRouterState) =>
       int.parse(goRouterState.pathParameters[PathParamsKeys.ssStationNum]!);
 
   //Ecological Plot
@@ -32,4 +32,6 @@ class PathParamValue {
       int.parse(goRouterState.pathParameters[PathParamsKeys.ecpSummaryId]!);
   static int getEcpHeaderId(GoRouterState goRouterState) =>
       int.parse(goRouterState.pathParameters[PathParamsKeys.ecpHeaderId]!);
+  static int getEcpSpeciesNum(GoRouterState goRouterState) =>
+      int.parse(goRouterState.pathParameters[PathParamsKeys.ecpSpeciesNum]!);
 }

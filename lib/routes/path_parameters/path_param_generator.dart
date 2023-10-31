@@ -70,4 +70,12 @@ class PathParamGenerator {
             goRouterState.pathParameters[PathParamsKeys.ecpSummaryId]!),
         ...{PathParamsKeys.ecpHeaderId: ecpHeaderId}
       };
+
+  static Map<String, String> ecpSpecies(
+          GoRouterState goRouterState, String ecpSpeciesId) =>
+      {
+        ...ecpHeader(goRouterState,
+            goRouterState.pathParameters[PathParamsKeys.ecpHeaderId]!),
+        ...{PathParamsKeys.ecpSpeciesNum: ecpSpeciesId}
+      };
 }

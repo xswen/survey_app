@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:survey_app/pages/ecological_plot/ecological_plot_header_page.dart';
+import 'package:survey_app/pages/ecological_plot/ecological_plot_species_page.dart';
 import 'package:survey_app/pages/ecological_plot/ecological_plot_summary_page.dart';
 import 'package:survey_app/routes/path_parameters/path_param_keys.dart';
 
@@ -12,5 +13,11 @@ GoRoute goRouteEcp = GoRoute(
           name: EcologicalPlotHeaderPage.routeName,
           path: "header/:${PathParamsKeys.ecpHeaderId}",
           builder: (context, state) => EcologicalPlotHeaderPage(state),
-          routes: const [])
+          routes: [
+            GoRoute(
+                name: EcologicalPlotSpeciesPage.routeName,
+                path: "species/:${PathParamsKeys.ecpSpeciesNum}",
+                builder: (context, state) => EcologicalPlotSpeciesPage(state),
+                routes: const [])
+          ])
     ]);

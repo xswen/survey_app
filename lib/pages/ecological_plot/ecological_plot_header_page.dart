@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart' as d;
 import 'package:flutter/services.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
+import 'package:survey_app/pages/ecological_plot/ecological_plot_species_page.dart';
 import 'package:survey_app/providers/ecological_plot_providers.dart';
 import 'package:survey_app/widgets/buttons/custom_button_styles.dart';
 import 'package:survey_app/widgets/data_input/data_input.dart';
@@ -16,6 +17,7 @@ import '../../wrappers/column_header_object.dart';
 class ColNames {
   ColNames();
   ColumnHeaders id = ColumnHeaders(ColumnHeaders.headerNameId, visible: false);
+  ColumnHeaders speciesNum = ColumnHeaders("Species #");
   ColumnHeaders layerId = ColumnHeaders("Layer Id");
   ColumnHeaders genus = ColumnHeaders("Genus");
   ColumnHeaders species = ColumnHeaders("Species");
@@ -26,7 +28,7 @@ class ColNames {
   static String empty = "-";
 
   List<ColumnHeaders> getColHeadersList() =>
-      [layerId, genus, species, variety, speciesPct, edit];
+      [speciesNum, layerId, genus, species, variety, speciesPct, edit];
 }
 
 class EcologicalPlotHeaderPage extends ConsumerStatefulWidget {
@@ -85,6 +87,9 @@ class EcologicalPlotHeaderPageState
         .map<DataGridRow>((dataGridRow) => DataGridRow(cells: [
               DataGridCell<int>(
                   columnName: columnData.id.name, value: dataGridRow.id),
+              DataGridCell<int>(
+                  columnName: columnData.speciesNum.name,
+                  value: dataGridRow.speciesNum),
               DataGridCell<String>(
                   columnName: columnData.layerId.name,
                   value: dataGridRow.layerId),
@@ -109,7 +114,7 @@ class EcologicalPlotHeaderPageState
     DataGridSourceBuilder source =
         DataGridSourceBuilder(dataGridRows: generateDataGridRows(speciesList));
     source.sortedColumns.add(SortColumnDetails(
-        name: columnData.id.toString(),
+        name: columnData.speciesNum.toString(),
         sortDirection: DataGridSortDirection.ascending));
     source.sort();
 
@@ -122,6 +127,20 @@ class EcologicalPlotHeaderPageState
         .write(ecpHC)
         .then((value) => setState(() => ecpH = ecpHC));
   }
+
+  void createNewSpeciesCompanion() => ref
+          .read(databaseProvider)
+          .ecologicalPlotTablesDao
+          .getNextSpeciesNum(ecpHId)
+          .then((speciesNum) {
+        context.pushNamed(EcologicalPlotSpeciesPage.routeName,
+            pathParameters: PathParamGenerator.ecpSpecies(
+                widget.state, speciesNum.toString()),
+            extra: EcpSpeciesCompanion(
+              ecpHeaderId: d.Value(ecpHId),
+              speciesNum: d.Value(speciesNum),
+            ));
+      });
 
   void markComplete() async {
     final db = Database.instance;
@@ -286,9 +305,9 @@ class EcologicalPlotHeaderPageState
                         Padding(
                           padding: const EdgeInsets.only(left: kPaddingH),
                           child: ElevatedButton(
-                              onPressed: () async => null, //ssh.complete.value
-                              // ? Popups.show(context, popupPageComplete)
-                              // : createNewSsTallyCompanion(),
+                              onPressed: () async => ecpH.complete.value
+                                  ? Popups.show(context, popupPageComplete)
+                                  : createNewSpeciesCompanion(),
                               style: CustomButtonStyles.inactiveButton(
                                   isActive: !ecpH.complete.value),
                               child: const Text("Add layer")),
@@ -320,16 +339,15 @@ class EcologicalPlotHeaderPageState
                                     .getCells()[0]
                                     .value;
 
-                                // db.surfaceSubstrateTablesDao
-                                //     .getSsTallyFromId(pId)
-                                //     .then((value) => context.pushNamed(
-                                //     SurfaceSubstrateStationInfoPage
-                                //         .routeName,
-                                //     pathParameters:
-                                //     PathParamGenerator.ssStationInfo(
-                                //         widget.state,
-                                //         value.stationNum.toString()),
-                                //     extra: value.toCompanion(true)));
+                                db.ecologicalPlotTablesDao
+                                    .getSpeciesFromId(pId)
+                                    .then((value) => context.pushNamed(
+                                        EcologicalPlotSpeciesPage.routeName,
+                                        pathParameters:
+                                            PathParamGenerator.ecpSpecies(
+                                                widget.state,
+                                                value.speciesNum.toString()),
+                                        extra: value.toCompanion(true)));
                               }
                             }
                           },
