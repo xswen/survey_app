@@ -9,6 +9,7 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import '../../formatters/thousands_formatter.dart';
 import '../../widgets/builders/set_transect_num_builder.dart';
 import '../../widgets/popups/popup_errors_found_list.dart';
+import '../../widgets/tables/table_creation_builder.dart';
 import '../../widgets/tables/table_data_grid_source_builder.dart';
 import '../../wrappers/column_header_object.dart';
 
@@ -295,6 +296,50 @@ class EcologicalPlotHeaderPageState
                       ],
                     ),
                   ),
+                  Expanded(
+                      child: speciesList.when(
+                    data: (speciesList) {
+                      DataGridSourceBuilder source =
+                          getSourceBuilder(speciesList);
+
+                      return Center(
+                        child: TableCreationBuilder(
+                          source: source,
+                          columnWidthMode: ColumnWidthMode.lastColumnFill,
+                          colNames: columnData.getColHeadersList(),
+                          onCellTap: (DataGridCellTapDetails details) async {
+                            // Assuming the "edit" column index is 2
+                            if (details.column.columnName ==
+                                    columnData.edit.name &&
+                                details.rowColumnIndex.rowIndex != 0) {
+                              if (ecpH.complete.value || parentComplete) {
+                                Popups.show(context, popupPageComplete);
+                              } else {
+                                int pId = source.dataGridRows[
+                                        details.rowColumnIndex.rowIndex - 1]
+                                    .getCells()[0]
+                                    .value;
+
+                                // db.surfaceSubstrateTablesDao
+                                //     .getSsTallyFromId(pId)
+                                //     .then((value) => context.pushNamed(
+                                //     SurfaceSubstrateStationInfoPage
+                                //         .routeName,
+                                //     pathParameters:
+                                //     PathParamGenerator.ssStationInfo(
+                                //         widget.state,
+                                //         value.stationNum.toString()),
+                                //     extra: value.toCompanion(true)));
+                              }
+                            }
+                          },
+                        ),
+                      );
+                    },
+                    error: (err, stack) => Text("Error: $err"),
+                    loading: () =>
+                        const Center(child: CircularProgressIndicator()),
+                  )),
                 ],
               ),
             ),
