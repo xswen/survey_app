@@ -121,7 +121,28 @@ class EcologicalPlotHeaderPageState
   }
 
   //Error Checks
+  List<String>? errorCheck() {
+    final db = ref.read(databaseProvider);
+    List<String> results = [];
+    errorNomPlotSize(db.companionValueToStr(ecpH.nomPlotSize)) != null
+        ? results.add("Nominal Area of Plot")
+        : null;
+    errorMeasPlotSize(db.companionValueToStr(ecpH.measPlotSize)) != null
+        ? results.add("Measured Area of Plot")
+        : null;
+    return results.isEmpty ? null : results;
+  }
+
   String? errorNomPlotSize(String? text) {
+    if (text?.isEmpty ?? true) {
+      return "Can't be empty";
+    } else if (0.000025 > double.parse(text!) || double.parse(text!) > 1.0) {
+      return "Input out of range. Must be between 0.000025 to 1.0 inclusive.";
+    }
+    return null;
+  }
+
+  String? errorMeasPlotSize(String? text) {
     if (text?.isEmpty ?? true) {
       return "Can't be empty";
     } else if (0.000025 > double.parse(text!) || double.parse(text!) > 1.0) {
@@ -206,6 +227,33 @@ class EcologicalPlotHeaderPageState
                                   nomPlotSize: d.Value(double.parse(s))))
                               : ecpH = ecpH.copyWith(
                                   nomPlotSize: d.Value(double.parse(s)));
+                    },
+                  ),
+                  DataInput(
+                    readOnly: ecpH.complete.value,
+                    title: "The measured area of the ecological sample plot",
+                    boxLabel: "Report to Dec 5.4 in hectares",
+                    prefixIcon: FontAwesomeIcons.ruler,
+                    suffixVal: "ha",
+                    startingStr: db.companionValueToStr(ecpH.measPlotSize),
+                    onValidate: (s) => errorMeasPlotSize(s) == "Can't be empty"
+                        ? null
+                        : errorMeasPlotSize(s),
+                    inputType:
+                        const TextInputType.numberWithOptions(decimal: true),
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(8),
+                      ThousandsFormatter(allowFraction: true, decimalPlaces: 6),
+                    ],
+                    onSubmit: (s) {
+                      s.isEmpty
+                          ? updateEcpHData(
+                              ecpH.copyWith(measPlotSize: const d.Value(null)))
+                          : errorMeasPlotSize(s) == null
+                              ? updateEcpHData(ecpH.copyWith(
+                                  measPlotSize: d.Value(double.parse(s))))
+                              : ecpH = ecpH.copyWith(
+                                  measPlotSize: d.Value(double.parse(s)));
                     },
                   )
                 ],
