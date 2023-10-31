@@ -1,7 +1,12 @@
+import 'package:drift/drift.dart' as d;
+import 'package:flutter/services.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/providers/ecological_plot_providers.dart';
+import 'package:survey_app/widgets/data_input/data_input.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import '../../formatters/thousands_formatter.dart';
+import '../../widgets/builders/set_transect_num_builder.dart';
 import '../../widgets/tables/table_data_grid_source_builder.dart';
 import '../../wrappers/column_header_object.dart';
 
@@ -108,6 +113,23 @@ class EcologicalPlotHeaderPageState
     return source;
   }
 
+  void updateEcpHData(EcpHeaderCompanion ecpHC) {
+    final db = ref.read(databaseProvider);
+    (db.update(db.ecpHeader)..where((tbl) => tbl.id.equals(ecpHId)))
+        .write(ecpHC)
+        .then((value) => setState(() => ecpH = ecpHC));
+  }
+
+  //Error Checks
+  String? errorNomPlotSize(String? text) {
+    if (text?.isEmpty ?? true) {
+      return "Can't be empty";
+    } else if (0.000025 > double.parse(text!) || double.parse(text!) > 1.0) {
+      return "Input out of range. Must be between 0.000025 to 1.0 inclusive.";
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     final db = ref.read(databaseProvider);
@@ -137,7 +159,58 @@ class EcologicalPlotHeaderPageState
               onPressed: () => null, //markComplete(),
             ),
             endDrawer: DrawerMenu(onLocaleChange: () {}),
-            body: Text(ecpH.toString()),
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: kPaddingH),
+              child: Column(
+                children: [
+                  SetTransectNumBuilder(
+                    getUsedTransNums:
+                        db.ecologicalPlotTablesDao.getUsedTransNums(ecpId),
+                    startingTransNum: db.companionValueToStr(ecpH.ecpNum),
+                    selectedItem: db.companionValueToStr(ecpH.ecpNum).isEmpty
+                        ? "Please select transect number"
+                        : db.companionValueToStr(ecpH.ecpNum),
+                    transList: kTransectNumsList,
+                    updateTransNum: (int ecpNum) =>
+                        updateEcpHData(ecpH.copyWith(ecpNum: d.Value(ecpNum))),
+                    onBeforePopup: (s) async {
+                      if (ecpH.complete.value) {
+                        Popups.show(context, popupPageComplete);
+                        return false;
+                      }
+                      return true;
+                    },
+                  ),
+                  DataInput(
+                    readOnly: ecpH.complete.value,
+                    title: "The nominal area of the ecological Sample Plot",
+                    boxLabel: "Report to Dec 5.4 in hectares",
+                    prefixIcon: FontAwesomeIcons.ruler,
+                    suffixVal: "ha",
+                    startingStr: db.companionValueToStr(ecpH.nomPlotSize),
+                    onValidate: (s) => errorNomPlotSize(s) == "Can't be empty"
+                        ? null
+                        : errorNomPlotSize(s),
+                    inputType:
+                        const TextInputType.numberWithOptions(decimal: true),
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(8),
+                      ThousandsFormatter(allowFraction: true, decimalPlaces: 6),
+                    ],
+                    onSubmit: (s) {
+                      s.isEmpty
+                          ? updateEcpHData(
+                              ecpH.copyWith(nomPlotSize: const d.Value(null)))
+                          : errorNomPlotSize(s) == null
+                              ? updateEcpHData(ecpH.copyWith(
+                                  nomPlotSize: d.Value(double.parse(s))))
+                              : ecpH = ecpH.copyWith(
+                                  nomPlotSize: d.Value(double.parse(s)));
+                    },
+                  )
+                ],
+              ),
+            ),
           );
   }
 }
