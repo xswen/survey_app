@@ -29,7 +29,7 @@ part 'database.g.dart';
 const List<Type> _tables = [
   //Reference Tables
   Jurisdictions, Plots, TreeGenus, SubstrateType, SsDepthLimit,
-  EcpGenus, EcpVariety,
+  EcpGenus,
   //Metadata Tables
   MetaComment,
   //Survey Tables
@@ -110,6 +110,7 @@ class Database extends _$Database {
               await _getSubstrateTypes();
           List<SsDepthLimitCompanion> ssDepthLimitList =
               await _getSsDepthLimits();
+          List<EcpGenusCompanion> ecpGenusList = await _getEcpGenuses();
 
           c.debugPrint("Init Values");
           await batch((b) {
@@ -118,6 +119,7 @@ class Database extends _$Database {
             b.insertAll(plots, nfiPlotList);
             b.insertAll(substrateType, substrateTypeList);
             b.insertAll(ssDepthLimit, ssDepthLimitList);
+            b.insertAll(ecpGenus, ecpGenusList);
 
             _initTest(b);
           });
@@ -192,6 +194,22 @@ class Database extends _$Database {
           code: Value(item["code"]),
           nameEn: Value(item["nameEn"]),
           nameFr: Value(item["nameFr"]));
+    }).toList();
+  }
+
+  Future<List<EcpGenusCompanion>> _getEcpGenuses() async {
+    List<dynamic> jsonData =
+        await _loadJsonData('assets/db_reference_data/ecp_tree_list.json');
+
+    // Map the JSON data to a list of `SpeciesDataCompanion` objects
+    return jsonData.map((dynamic item) {
+      return EcpGenusCompanion(
+          genusLatinName: Value(item["genusLatinName"]),
+          speciesLatinName: Value(item["speciesLatinName"]),
+          varietyLatinName: Value(item["varietyLatinName"]),
+          genusCode: Value(item["genusCode"]),
+          speciesCode: Value(item["speciesCode"]),
+          varietyCode: Value(item["varietyCode"]));
     }).toList();
   }
 

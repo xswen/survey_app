@@ -10,5 +10,4 @@ mixin _$ReferenceTablesDaoMixin on DatabaseAccessor<Database> {
   $SubstrateTypeTable get substrateType => attachedDatabase.substrateType;
   $SsDepthLimitTable get ssDepthLimit => attachedDatabase.ssDepthLimit;
   $EcpGenusTable get ecpGenus => attachedDatabase.ecpGenus;
-  $EcpVarietyTable get ecpVariety => attachedDatabase.ecpVariety;
 }

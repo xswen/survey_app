@@ -15,7 +15,6 @@ part 'reference_tables_dao.g.dart';
   SubstrateType,
   SsDepthLimit,
   EcpGenus,
-  EcpVariety
 ])
 class ReferenceTablesDao extends DatabaseAccessor<Database>
     with _$ReferenceTablesDaoMixin {
@@ -27,7 +26,6 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
     delete(plots).go();
     delete(treeGenus).go();
     delete(ecpGenus).go();
-    delete(ecpVariety).go();
   }
 
   //====================Jurisdictions====================

@@ -47,7 +47,6 @@ class SsDataFamily extends Family<AsyncValue<SurfaceSubstrateSummaryData>> {
     );
   }
 
-  @visibleForOverriding
   @override
   SsDataProvider getProviderOverride(
     covariant SsDataProvider provider,
@@ -125,11 +124,6 @@ class SsDataProvider
   }
 
   @override
-  (int,) get argument {
-    return (surveyId,);
-  }
-
-  @override
   AutoDisposeFutureProviderElement<SurfaceSubstrateSummaryData>
       createElement() {
     return _SsDataProviderElement(this);
@@ -184,7 +178,6 @@ class SsTransListFamily
     );
   }
 
-  @visibleForOverriding
   @override
   SsTransListProvider getProviderOverride(
     covariant SsTransListProvider provider,
@@ -264,11 +257,6 @@ class SsTransListProvider
   }
 
   @override
-  (int,) get argument {
-    return (ssId,);
-  }
-
-  @override
   AutoDisposeFutureProviderElement<List<SurfaceSubstrateHeaderData>>
       createElement() {
     return _SsTransListProviderElement(this);
@@ -324,7 +312,6 @@ class SsTallyDataListFamily
     );
   }
 
-  @visibleForOverriding
   @override
   SsTallyDataListProvider getProviderOverride(
     covariant SsTallyDataListProvider provider,
@@ -405,11 +392,6 @@ class SsTallyDataListProvider
   }
 
   @override
-  (int,) get argument {
-    return (sshId,);
-  }
-
-  @override
   AutoDisposeFutureProviderElement<List<SurfaceSubstrateTallyData>>
       createElement() {
     return _SsTallyDataListProviderElement(this);
@@ -444,4 +426,4 @@ class _SsTallyDataListProviderElement
   int get sshId => (origin as SsTallyDataListProvider).sshId;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, inference_failure_on_uninitialized_variable, inference_failure_on_function_return_type, inference_failure_on_untyped_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

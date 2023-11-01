@@ -47,7 +47,6 @@ class EcpDataFamily extends Family<AsyncValue<EcpSummaryData>> {
     );
   }
 
-  @visibleForOverriding
   @override
   EcpDataProvider getProviderOverride(
     covariant EcpDataProvider provider,
@@ -124,11 +123,6 @@ class EcpDataProvider extends AutoDisposeFutureProvider<EcpSummaryData> {
   }
 
   @override
-  (int,) get argument {
-    return (ecpId,);
-  }
-
-  @override
   AutoDisposeFutureProviderElement<EcpSummaryData> createElement() {
     return _EcpDataProviderElement(this);
   }
@@ -180,7 +174,6 @@ class EcpTransListFamily extends Family<AsyncValue<List<EcpHeaderData>>> {
     );
   }
 
-  @visibleForOverriding
   @override
   EcpTransListProvider getProviderOverride(
     covariant EcpTransListProvider provider,
@@ -259,11 +252,6 @@ class EcpTransListProvider
   }
 
   @override
-  (int,) get argument {
-    return (ecpId,);
-  }
-
-  @override
   AutoDisposeFutureProviderElement<List<EcpHeaderData>> createElement() {
     return _EcpTransListProviderElement(this);
   }
@@ -316,7 +304,6 @@ class EcpSpeciesListFamily extends Family<AsyncValue<List<EcpSpeciesData>>> {
     );
   }
 
-  @visibleForOverriding
   @override
   EcpSpeciesListProvider getProviderOverride(
     covariant EcpSpeciesListProvider provider,
@@ -395,11 +382,6 @@ class EcpSpeciesListProvider
   }
 
   @override
-  (int,) get argument {
-    return (ecpHId,);
-  }
-
-  @override
   AutoDisposeFutureProviderElement<List<EcpSpeciesData>> createElement() {
     return _EcpSpeciesListProviderElement(this);
   }
@@ -432,4 +414,4 @@ class _EcpSpeciesListProviderElement
   int get ecpHId => (origin as EcpSpeciesListProvider).ecpHId;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, inference_failure_on_uninitialized_variable, inference_failure_on_function_return_type, inference_failure_on_untyped_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

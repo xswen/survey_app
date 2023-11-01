@@ -54,26 +54,10 @@ class SsDepthLimit extends Table {
 
 @DataClassName("EcpGenusData")
 class EcpGenus extends Table {
-  TextColumn get genusCode => text().withLength(min: 4, max: 4)();
-  TextColumn get speciesCode => text().withLength(min: 3, max: 3)();
   TextColumn get genusLatinName => text()();
   TextColumn get speciesLatinName => text()();
-  TextColumn get commonNameEn => text()();
-  TextColumn get commonNameFr => text()();
-
-  @override
-  Set<Column> get primaryKey => {genusCode, speciesCode};
-}
-
-class EcpVariety extends Table {
-  IntColumn get id => integer().autoIncrement()();
+  TextColumn get varietyLatinName => text()();
   TextColumn get genusCode => text().withLength(min: 4, max: 4)();
   TextColumn get speciesCode => text().withLength(min: 3, max: 3)();
-  TextColumn get varietyCode => text().withLength(min: 3, max: 3)();
-  TextColumn get varietyLatinName => text()();
-
-  @override
-  List<String> get customConstraints => [
-        'FOREIGN KEY (genus_code, species_code) REFERENCES ecp_genus (genus_code, species_code)'
-      ];
+  TextColumn get varietyCode => text()();
 }
