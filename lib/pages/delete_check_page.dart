@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 import '../widgets/app_bar.dart';
 import '../widgets/drawer_menu.dart';
@@ -31,7 +31,8 @@ class DeleteCheckPage extends StatelessWidget {
               buttonPadding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
               children: [
                 ElevatedButton(
-                    onPressed: () => Get.back(), child: const Text("Cancel")),
+                    onPressed: () => context.pop(),
+                    child: const Text("Cancel")),
                 ElevatedButton(
                     onPressed: contOnPress, child: const Text("Continue")),
               ],
