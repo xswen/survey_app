@@ -45,8 +45,8 @@ class EcologicalPlotSpeciesPageState
                 Text(layer.toString()),
                 EcpLayerSelectBuilder(
                     title: "Layer Id",
-                    updateLayerId: (s) => setState(() =>
-                        layer = layer.copyWith(layerId: d.Value(s ?? "Error"))),
+                    updateLayerId: (s) => setState(
+                        () => layer = layer.copyWith(layerId: d.Value(s))),
                     layerCode: db.companionValueToStr(layer.layerId)),
                 EcpGenusSelectBuilder(
                     title: "Genus",

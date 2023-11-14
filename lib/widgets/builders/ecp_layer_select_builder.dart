@@ -9,7 +9,7 @@ class EcpLayerSelectBuilder extends StatelessWidget {
       required this.layerCode});
 
   final String title;
-  final void Function(String?) updateLayerId;
+  final void Function(String) updateLayerId;
   final String layerCode;
 
   @override
@@ -23,7 +23,8 @@ class EcpLayerSelectBuilder extends StatelessWidget {
           return DropDownAsyncList(
               searchable: true,
               title: title,
-              onChangedFn: updateLayerId,
+              onChangedFn: (s) async => updateLayerId(
+                  await db.referenceTablesDao.getEcpLayerCode(s!)),
               asyncItems: (s) => db.referenceTablesDao.ecpLayerNameList,
               selectedItem: text.data ?? "Please select genus");
         });
