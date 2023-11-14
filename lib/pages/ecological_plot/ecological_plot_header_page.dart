@@ -305,9 +305,10 @@ class EcologicalPlotHeaderPageState
                         Padding(
                           padding: const EdgeInsets.only(left: kPaddingH),
                           child: ElevatedButton(
-                              onPressed: () async => ecpH.complete.value
-                                  ? Popups.show(context, popupPageComplete)
-                                  : createNewSpeciesCompanion(),
+                              onPressed: () async => null,
+                              // ecpH.complete.value
+                              //     ? Popups.show(context, popupPageComplete)
+                              //     : createNewSpeciesCompanion(),
                               style: CustomButtonStyles.inactiveButton(
                                   isActive: !ecpH.complete.value),
                               child: const Text("Add layer")),

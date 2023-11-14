@@ -58,6 +58,7 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
 
   Future<List<Jurisdiction>> get allJurisdictions =>
       select(jurisdictions).get();
+
   //Full replace
   Future<void> updateJurisdiction(JurisdictionsCompanion entry) async =>
       update(jurisdictions).replace(entry);
@@ -71,20 +72,25 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
   //--------------------add--------------------
   Future<int> addJurisdiction(JurisdictionsCompanion entry) =>
       into(jurisdictions).insert(entry);
+
   Future<int> addOrUpdateJurisdiction(JurisdictionsCompanion entry) =>
       into(jurisdictions).insertOnConflictUpdate(entry);
 
 //====================Plots====================
   //--------------------get--------------------
   Future<List<Plot>> get allPlots => select(plots).get();
+
   Future<void> updatePlot(PlotsCompanion entry) async =>
       update(plots).replace(entry);
+
   Future<Plot> getPlot(int plotNum) =>
       (select(plots)..where((tbl) => tbl.nfiPlot.equals(plotNum))).getSingle();
+
   Future<List<int>> getPlotNums(String code) =>
       (select(plots)..where((tbl) => tbl.code.equals(code)))
           .map((p0) => p0.nfiPlot)
           .get();
+
   Future<int> getLastMeasNum(int plotNum) async {
     Plot plot = await (select(plots)
           ..where((tbl) => tbl.nfiPlot.equals(plotNum)))
@@ -94,8 +100,10 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
 
   //--------------------add--------------------
   Future<int> addPlot(PlotsCompanion entry) => into(plots).insert(entry);
+
   Future<int> addOrUpdatePlot(PlotsCompanion entry) =>
       into(plots).insertOnConflictUpdate(entry);
+
   Future<int> addTreeGenus(TreeGenusCompanion entry) =>
       into(treeGenus).insert(entry);
 
@@ -144,6 +152,7 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
                 tbl.speciesLatinName.equals(speciesName)))
           .map((p0) => p0.speciesCode)
           .getSingle();
+
   Future<String> getSpeciesName(String genusCode, String speciesCode) =>
       (select(treeGenus)
             ..where((tbl) =>
@@ -151,11 +160,13 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
                 tbl.speciesCode.equals(speciesCode)))
           .map((p0) => p0.speciesLatinName)
           .getSingle();
+
   //====================Surface Substrate====================
   Future<String> getSubstrateTypeNameFromCode(String code) =>
       (select(substrateType)..where((tbl) => tbl.typeCode.equals(code)))
           .map((p0) => p0.nameEn)
           .getSingle();
+
   Future<List<String>> get substrateTypeNames {
     final query = selectOnly(substrateType, distinct: true)
       ..addColumns([substrateType.nameEn]);
@@ -170,6 +181,7 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
       (select(ssDepthLimit)..where((tbl) => tbl.code.equals(code)))
           .map((p0) => p0.nameEn)
           .getSingle();
+
   Future<List<String>> get ssDepthList {
     final query = selectOnly(ssDepthLimit, distinct: true)
       ..addColumns([ssDepthLimit.nameEn]);
@@ -188,48 +200,49 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
 //--------------------get--------------------
   Future<List<String?>> get ecpGenusLatinNames {
     final query = selectOnly(ecpGenus, distinct: true)
-      ..addColumns([ecpGenus.genusLatinName]);
+      ..addColumns([ecpGenus.genus]);
 
-    return query.map((p0) => p0.read(ecpGenus.genusLatinName)).get();
+    return query.map((p0) => p0.read(ecpGenus.genus)).get();
   }
-
-  Future<String> getEcpGenusCodeFromName(String name) async {
-    List<String> codes = await ((select(ecpGenus)
-          ..where((tbl) => tbl.genusLatinName.equals(name)))
-        .map((p0) => p0.genusCode)
-        .get());
-    return codes[0];
-  }
-
-  Future<String> getEcpGenusNameFromCode(String code) async {
-    List<String> names = await ((select(ecpGenus)
-          ..where((tbl) => tbl.genusCode.equals(code)))
-        .map((p0) => p0.genusLatinName)
-        .get());
-    return names[0];
-  }
-
-  Future<List<String>> getEcpSpeciesNamesFromGenus(String genusCode) =>
-      (select(ecpGenus)..where((tbl) => tbl.genusCode.equals(genusCode)))
-          .map((p0) => p0.speciesLatinName)
-          .get();
-
-  Future<String> getEcpSpeciesCode(String genusCode, String speciesName) =>
-      (select(ecpGenus)
-            ..where((tbl) =>
-                tbl.genusCode.equals(genusCode) &
-                tbl.speciesLatinName.equals(speciesName)))
-          .map((p0) => p0.speciesCode)
-          .getSingle();
-
-  Future<String> getEcpSpeciesName(String genusCode, String speciesCode) =>
-      (select(ecpGenus)
-            ..where((tbl) =>
-                tbl.genusCode.equals(genusCode) &
-                tbl.speciesCode.equals(speciesCode)))
-          .map((p0) => p0.speciesLatinName)
-          .getSingle();
 }
+
+//   Future<String> getEcpGenusCodeFromName(String name) async {
+//     List<String> codes = await ((select(ecpGenus)
+//           ..where((tbl) => tbl.genusLatinName.equals(name)))
+//         .map((p0) => p0.genusCode)
+//         .get());
+//     return codes[0];
+//   }
+//
+//   Future<String> getEcpGenusNameFromCode(String code) async {
+//     List<String> names = await ((select(ecpGenus)
+//           ..where((tbl) => tbl.genusCode.equals(code)))
+//         .map((p0) => p0.genusLatinName)
+//         .get());
+//     return names[0];
+//   }
+//
+//   Future<List<String>> getEcpSpeciesNamesFromGenus(String genusCode) =>
+//       (select(ecpGenus)..where((tbl) => tbl.genusCode.equals(genusCode)))
+//           .map((p0) => p0.speciesLatinName)
+//           .get();
+//
+//   Future<String> getEcpSpeciesCode(String genusCode, String speciesName) =>
+//       (select(ecpGenus)
+//             ..where((tbl) =>
+//                 tbl.genusCode.equals(genusCode) &
+//                 tbl.speciesLatinName.equals(speciesName)))
+//           .map((p0) => p0.speciesCode)
+//           .getSingle();
+//
+//   Future<String> getEcpSpeciesName(String genusCode, String speciesCode) =>
+//       (select(ecpGenus)
+//             ..where((tbl) =>
+//                 tbl.genusCode.equals(genusCode) &
+//                 tbl.speciesCode.equals(speciesCode)))
+//           .map((p0) => p0.speciesLatinName)
+//           .getSingle();
+// }
 
 //====================EcpTreeVariety====================
 //--------------------get--------------------

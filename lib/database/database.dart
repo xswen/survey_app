@@ -199,17 +199,15 @@ class Database extends _$Database {
 
   Future<List<EcpGenusCompanion>> _getEcpGenuses() async {
     List<dynamic> jsonData =
-        await _loadJsonData('assets/db_reference_data/ecp_tree_list.json');
+        await _loadJsonData('assets/db_reference_data/ecp_species_list.json');
 
     // Map the JSON data to a list of `SpeciesDataCompanion` objects
     return jsonData.map((dynamic item) {
       return EcpGenusCompanion(
-          genusLatinName: Value(item["genusLatinName"]),
-          speciesLatinName: Value(item["speciesLatinName"]),
-          varietyLatinName: Value(item["varietyLatinName"]),
-          genusCode: Value(item["genusCode"]),
-          speciesCode: Value(item["speciesCode"]),
-          varietyCode: Value(item["varietyCode"]));
+        genus: Value(item["genus"]),
+        species: Value(item["species"]),
+        variety: Value(item["variety"]),
+      );
     }).toList();
   }
 
@@ -224,7 +222,7 @@ class Database extends _$Database {
             nfiPlot: Value(1121871), code: Value("AB"), lastMeasNum: Value(2)));
     _initSurveys(b);
     _initWoodyDebris(b);
-    _initEcp(b);
+    //_initEcp(b);
   }
 
   void _initSurveys(Batch b) {

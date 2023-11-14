@@ -54,10 +54,7 @@ class SsDepthLimit extends Table {
 
 @DataClassName("EcpGenusData")
 class EcpGenus extends Table {
-  TextColumn get genusLatinName => text()();
-  TextColumn get speciesLatinName => text()();
-  TextColumn get varietyLatinName => text()();
-  TextColumn get genusCode => text().withLength(min: 4, max: 4)();
-  TextColumn get speciesCode => text().withLength(min: 3, max: 3)();
-  TextColumn get varietyCode => text()();
+  TextColumn get genus => text()();
+  TextColumn get species => text()();
+  TextColumn get variety => text()();
 }
