@@ -1,5 +1,6 @@
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 
+
 class DeleteCheckPage extends StatelessWidget {
   const DeleteCheckPage(
       {super.key,
@@ -31,6 +32,7 @@ class DeleteCheckPage extends StatelessWidget {
               ElevatedButton(
                   onPressed: contOnPress, child: const Text("Continue")),
             ],
+
           )
         ],
       ),

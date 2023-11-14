@@ -19,5 +19,7 @@ Future<List<SurfaceSubstrateHeaderData>> ssTransList(
 
 @riverpod
 Future<List<SurfaceSubstrateTallyData>> ssTallyDataList(
+
         SsTallyDataListRef ref, int sshId) =>
+
     ref.read(databaseProvider).surfaceSubstrateTablesDao.getSsTallyList(sshId);

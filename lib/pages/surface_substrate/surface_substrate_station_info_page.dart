@@ -254,6 +254,7 @@ class SurfaceSubstrateStationInfoPageState
                 ],
               ),
               station.id != const d.Value.absent()
+
                   ? DeleteButton(
                       delete: () => Popups.show(
                         context,

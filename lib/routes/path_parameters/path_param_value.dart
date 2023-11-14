@@ -34,4 +34,5 @@ class PathParamValue {
       int.parse(goRouterState.pathParameters[PathParamsKeys.ecpHeaderId]!);
   static int getEcpSpeciesNum(GoRouterState goRouterState) =>
       int.parse(goRouterState.pathParameters[PathParamsKeys.ecpSpeciesNum]!);
+
 }

@@ -35,6 +35,7 @@ const List<Type> _tables = [
   SsDepthLimit,
   EcpGenus,
   EcpLayer,
+
   //Metadata Tables
   MetaComment,
   //Survey Tables
@@ -115,8 +116,10 @@ class Database extends _$Database {
               await _getSubstrateTypes();
           List<SsDepthLimitCompanion> ssDepthLimitList =
               await _getSsDepthLimits();
+
           List<EcpLayerCompanion> ecpLayerList = await _getEcpLayers();
           List<EcpGenusCompanion> ecpGenusList = await _getEcpGenuses();
+
 
           c.debugPrint("Init Values");
           await batch((b) {
@@ -125,8 +128,10 @@ class Database extends _$Database {
             b.insertAll(plots, nfiPlotList);
             b.insertAll(substrateType, substrateTypeList);
             b.insertAll(ssDepthLimit, ssDepthLimitList);
+
             b.insertAll(ecpLayer, ecpLayerList);
             b.insertAll(ecpGenus, ecpGenusList);
+
 
             _initTest(b);
           });
@@ -230,6 +235,7 @@ class Database extends _$Database {
       );
     }).toList();
   }
+
 
   void _initTest(Batch b) {
     b.replace(

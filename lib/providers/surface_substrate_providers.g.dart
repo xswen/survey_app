@@ -124,6 +124,7 @@ class SsDataProvider
   }
 
   @override
+
   AutoDisposeFutureProviderElement<SurfaceSubstrateSummaryData>
       createElement() {
     return _SsDataProviderElement(this);
@@ -177,6 +178,7 @@ class SsTransListFamily
       ssId,
     );
   }
+
 
   @override
   SsTransListProvider getProviderOverride(
@@ -257,6 +259,7 @@ class SsTransListProvider
   }
 
   @override
+
   AutoDisposeFutureProviderElement<List<SurfaceSubstrateHeaderData>>
       createElement() {
     return _SsTransListProviderElement(this);
@@ -291,7 +294,9 @@ class _SsTransListProviderElement
   int get ssId => (origin as SsTransListProvider).ssId;
 }
 
+
 String _$ssTallyDataListHash() => r'002bddec2741c1d22c675459af9baacbde494242';
+
 
 /// See also [ssTallyDataList].
 @ProviderFor(ssTallyDataList)
@@ -305,7 +310,9 @@ class SsTallyDataListFamily
 
   /// See also [ssTallyDataList].
   SsTallyDataListProvider call(
+
     int sshId,
+
   ) {
     return SsTallyDataListProvider(
       sshId,
@@ -341,7 +348,9 @@ class SsTallyDataListProvider
     extends AutoDisposeFutureProvider<List<SurfaceSubstrateTallyData>> {
   /// See also [ssTallyDataList].
   SsTallyDataListProvider(
+
     int sshId,
+
   ) : this._internal(
           (ref) => ssTallyDataList(
             ref as SsTallyDataListRef,
@@ -369,7 +378,9 @@ class SsTallyDataListProvider
     required this.sshId,
   }) : super.internal();
 
+
   final int sshId;
+
 
   @override
   Override overrideWith(
@@ -392,6 +403,7 @@ class SsTallyDataListProvider
   }
 
   @override
+
   AutoDisposeFutureProviderElement<List<SurfaceSubstrateTallyData>>
       createElement() {
     return _SsTallyDataListProviderElement(this);
@@ -414,7 +426,9 @@ class SsTallyDataListProvider
 mixin SsTallyDataListRef
     on AutoDisposeFutureProviderRef<List<SurfaceSubstrateTallyData>> {
   /// The parameter `sshId` of this provider.
+
   int get sshId;
+
 }
 
 class _SsTallyDataListProviderElement
@@ -423,7 +437,9 @@ class _SsTallyDataListProviderElement
   _SsTallyDataListProviderElement(super.provider);
 
   @override
+
   int get sshId => (origin as SsTallyDataListProvider).sshId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+

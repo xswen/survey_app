@@ -1,7 +1,9 @@
 import 'package:drift/drift.dart' as d;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
+
 import 'package:survey_app/pages/ecological_plot/ecological_plot_summary_page.dart';
+
 import 'package:survey_app/pages/surface_substrate/surface_substrate_summary_page.dart';
 import 'package:survey_app/widgets/text/notify_no_filter_results.dart';
 

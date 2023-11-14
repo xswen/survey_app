@@ -78,4 +78,5 @@ class PathParamGenerator {
             goRouterState.pathParameters[PathParamsKeys.ecpHeaderId]!),
         ...{PathParamsKeys.ecpSpeciesNum: ecpSpeciesId}
       };
+
 }

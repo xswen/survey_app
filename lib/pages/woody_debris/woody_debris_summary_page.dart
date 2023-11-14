@@ -32,7 +32,9 @@ class WoodyDebrisSummaryPageState
   @override
   void initState() {
     surveyId = PathParamValue.getSurveyId(widget.goRouterState)!;
+
     wdId = PathParamValue.getWdSummaryId(widget.goRouterState);
+
     completeWarningPopup = Popups.generateCompleteErrorPopup(title);
 
     super.initState();
@@ -162,6 +164,7 @@ class WoodyDebrisSummaryPageState
                       style: TextStyle(fontSize: kTextHeaderSize),
                     ),
                     ElevatedButton(
+
                         onPressed: () => wd.complete
                             ? Popups.show(context, completeWarningPopup)
                             : context.pushNamed(
@@ -170,6 +173,7 @@ class WoodyDebrisSummaryPageState
                                     widget.goRouterState, kParamMissing)),
                         style: CustomButtonStyles.inactiveButton(
                             isActive: !wd.complete),
+
                         child: const Row(
                           children: [
                             Padding(
