@@ -1,6 +1,9 @@
 import 'package:drift/drift.dart' as d;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
+
+import 'package:survey_app/pages/ecological_plot/ecological_plot_summary_page.dart';
+
 import 'package:survey_app/pages/surface_substrate/surface_substrate_summary_page.dart';
 import 'package:survey_app/widgets/text/notify_no_filter_results.dart';
 
@@ -142,6 +145,21 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
         context
             .pushNamed(SurfaceSubstrateSummaryPage.routeName,
                 pathParameters: PathParamGenerator.ssSummary(
+                    widget.goRouterState, id.toString()))
+            .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
+      }
+    }
+
+    if (category == SurveyCardCategories.ecologicalPlot) {
+      int id = data == null
+          ? (await db.ecologicalPlotTablesDao
+                  .addAndReturnDefaultSummary(survey.id, survey.measDate))
+              .id
+          : data.id;
+      if (context.mounted) {
+        context
+            .pushNamed(EcologicalPlotSummaryPage.routeName,
+                pathParameters: PathParamGenerator.ecpSummary(
                     widget.goRouterState, id.toString()))
             .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
       }

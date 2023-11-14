@@ -2,6 +2,7 @@ import 'package:drift/drift.dart' as d;
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/pages/woody_debris/woody_debris_header_page.dart';
 import 'package:survey_app/widgets/builders/set_transect_num_builder.dart';
+import 'package:survey_app/widgets/buttons/custom_button_styles.dart';
 
 import '../../providers/survey_info_providers.dart';
 import '../../providers/woody_debris_providers.dart';
@@ -31,7 +32,9 @@ class WoodyDebrisSummaryPageState
   @override
   void initState() {
     surveyId = PathParamValue.getSurveyId(widget.goRouterState)!;
-    wdId = PathParamValue.getWdSummaryId(widget.goRouterState)!;
+
+    wdId = PathParamValue.getWdSummaryId(widget.goRouterState);
+
     completeWarningPopup = Popups.generateCompleteErrorPopup(title);
 
     super.initState();
@@ -161,10 +164,16 @@ class WoodyDebrisSummaryPageState
                       style: TextStyle(fontSize: kTextHeaderSize),
                     ),
                     ElevatedButton(
-                        onPressed: () => context.pushNamed(
-                            WoodyDebrisHeaderMeasurementsPage.routeName,
-                            pathParameters: PathParamGenerator.wdHeader(
-                                widget.goRouterState, kParamMissing)),
+
+                        onPressed: () => wd.complete
+                            ? Popups.show(context, completeWarningPopup)
+                            : context.pushNamed(
+                                WoodyDebrisHeaderMeasurementsPage.routeName,
+                                pathParameters: PathParamGenerator.wdHeader(
+                                    widget.goRouterState, kParamMissing)),
+                        style: CustomButtonStyles.inactiveButton(
+                            isActive: !wd.complete),
+
                         child: const Row(
                           children: [
                             Padding(
@@ -205,7 +214,10 @@ class WoodyDebrisSummaryPageState
                                             context,
                                             Popups.generateNoticeSurveyComplete(
                                               "Woody Debris",
-                                              () => goToWdhPage(wdh.id),
+                                              () {
+                                                context.pop();
+                                                goToWdhPage(wdh.id);
+                                              },
                                             ))
                                         : goToWdhPage(wdh.id);
                                   },

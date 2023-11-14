@@ -7,7 +7,7 @@ import '../../constants/text_designs.dart';
 
 class DropDownDefault extends StatefulWidget {
   const DropDownDefault(
-      {Key? key,
+      {super.key,
       this.searchable = false,
       this.enabled = true,
       this.title = "",
@@ -16,8 +16,7 @@ class DropDownDefault extends StatefulWidget {
       required this.onChangedFn,
       required this.itemsList,
       required this.selectedItem,
-      this.padding = kPaddingV * 2})
-      : super(key: key);
+      this.padding = kPaddingV * 2});
 
   //default false
   final String title;

@@ -6,7 +6,9 @@ part of 'router_listenable.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$routerListenableHash() => r'87123eee865d1e07d417aaf88e2cf798a52ead6c';
+
+String _$routerListenableHash() => r'3ad425b3d071b4eb356d3851fd770d41389e9e5f';
+
 
 /// A [Listenable] implemented via an [AsyncNotifier].
 /// [GoRouter] accepts a [Listenable] to refresh its internal state, so this is kinda mandatory.
@@ -40,4 +42,6 @@ final routerListenableProvider =
 
 typedef _$RouterListenable = AutoDisposeAsyncNotifier<void>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, inference_failure_on_uninitialized_variable, inference_failure_on_function_return_type, inference_failure_on_untyped_parameter, deprecated_member_use_from_same_package
+
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+

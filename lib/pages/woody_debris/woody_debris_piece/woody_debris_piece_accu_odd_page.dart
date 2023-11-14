@@ -28,8 +28,7 @@ class WoodyDebrisPieceAccuOddPage extends StatefulWidget {
   static const String keyDeleteFn = "deleteFn";
 
   const WoodyDebrisPieceAccuOddPage(
-      {Key? key, required this.piece, this.deleteFn})
-      : super(key: key);
+      {super.key, required this.piece, this.deleteFn});
 
   final WoodyDebrisOddCompanion piece;
   final void Function()? deleteFn;

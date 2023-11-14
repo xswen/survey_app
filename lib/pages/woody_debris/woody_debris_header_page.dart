@@ -30,7 +30,9 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
 
   @override
   void initState() {
-    wdId = PathParamValue.getWdSummaryId(widget.goRouterState)!;
+
+    wdId = PathParamValue.getWdSummaryId(widget.goRouterState);
+
     wdhId = PathParamValue.getWdHeaderId(widget.goRouterState)!;
     super.initState();
   }

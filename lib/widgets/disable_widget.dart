@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 
 //TODO: Potentially deprecated
 class DisableWidget extends StatefulWidget {
-  const DisableWidget({Key? key, required this.disabled, required this.child})
-      : super(key: key);
+  const DisableWidget({super.key, required this.disabled, required this.child});
 
   final bool disabled;
   final Widget child;

@@ -8,4 +8,9 @@ class PathParamsKeys {
   static const String ssSummaryId = "ssSummaryId";
   static const String ssHeaderId = "ssHeaderId";
   static const String ssStationNum = "ssStationNum";
+
+  static const String ecpSummaryId = "ecpSummaryId";
+  static const String ecpHeaderId = "ecpHeaderId";
+  static const String ecpSpeciesNum = "ecpSpeciesNum";
+
 }

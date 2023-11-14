@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class OurAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const OurAppBar(this.title, {super.key, this.backFn, this.onLocaleChange});
+  const OurAppBar(this.title,
+      {super.key, this.backFn, this.complete = false, this.onLocaleChange});
   final VoidCallback? onLocaleChange;
   final String title;
+  final bool complete;
   final void Function()? backFn;
 
   @override
@@ -15,6 +17,7 @@ class OurAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: BackButton(
         onPressed: backFn ?? () => context.pop(),
       ),
+      backgroundColor: complete ? Colors.grey : Colors.blue,
     );
   }
 

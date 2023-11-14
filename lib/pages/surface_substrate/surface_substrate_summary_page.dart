@@ -5,6 +5,8 @@ import 'package:survey_app/providers/surface_substrate_providers.dart';
 import 'package:survey_app/widgets/popups/popup_create_transect.dart';
 
 import '../../providers/survey_info_providers.dart';
+import '../../widgets/buttons/custom_button_styles.dart';
+
 import '../../widgets/date_select.dart';
 import '../../widgets/tile_cards/tile_card_selection.dart';
 
@@ -152,7 +154,12 @@ class SurfaceSubstrateSummaryPageState
                         style: TextStyle(fontSize: kTextHeaderSize),
                       ),
                       ElevatedButton(
-                          onPressed: () => createTransect(),
+                          onPressed: () => ss.complete
+                              ? Popups.show(context, completeWarningPopup)
+                              : createTransect(),
+                          style: CustomButtonStyles.inactiveButton(
+                              isActive: !ss.complete),
+
                           child: const Row(
                             children: [
                               Padding(
@@ -195,7 +202,10 @@ class SurfaceSubstrateSummaryPageState
                                               Popups
                                                   .generateNoticeSurveyComplete(
                                                 "Woody Debris",
-                                                () => goToSshPage(header.id),
+                                                () {
+                                                  context.pop();
+                                                  goToSshPage(header.id);
+                                                },
                                               ))
                                           : goToSshPage(header.id);
                                     },

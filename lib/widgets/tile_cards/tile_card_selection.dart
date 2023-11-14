@@ -3,12 +3,11 @@ import 'package:survey_app/enums/enums.dart';
 
 class TileCardSelection extends StatelessWidget {
   const TileCardSelection(
-      {Key? key,
+      {super.key,
       required this.title,
       this.subtitle,
       required this.onPressed,
-      this.status})
-      : super(key: key);
+      this.status});
 
   final String title;
   final String? subtitle;

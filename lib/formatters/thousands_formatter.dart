@@ -23,16 +23,16 @@ class ThousandsFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
-    final String _decimalSeparator = _formatter.symbols.DECIMAL_SEP;
+    final String decimalSeparator = _formatter.symbols.DECIMAL_SEP;
     return textManipulation(
       oldValue,
       newValue,
       textInputFormatter: allowFraction
           ? (allowNegative
               ? FilteringTextInputFormatter.allow(
-                  RegExp('[0-9-]+([$_decimalSeparator])?'))
+                  RegExp('[0-9-]+([$decimalSeparator])?'))
               : FilteringTextInputFormatter.allow(
-                  RegExp('[0-9]+([$_decimalSeparator])?')))
+                  RegExp('[0-9]+([$decimalSeparator])?')))
           : (allowNegative
               ? FilteringTextInputFormatter.allow(RegExp('[0-9-]+'))
               : FilteringTextInputFormatter.digitsOnly),
@@ -52,17 +52,17 @@ class ThousandsFormatter extends TextInputFormatter {
         num number;
         if (allowFraction) {
           String decimalDigits = filteredString;
-          if (_decimalSeparator != '.') {
+          if (decimalSeparator != '.') {
             decimalDigits =
-                filteredString.replaceFirst(RegExp(_decimalSeparator), '.');
+                filteredString.replaceFirst(RegExp(decimalSeparator), '.');
           }
           number = double.tryParse(decimalDigits) ?? 0.0;
         } else {
           number = int.tryParse(filteredString) ?? 0;
         }
         final result = _formatter.format(number);
-        if (allowFraction && filteredString.endsWith(_decimalSeparator)) {
-          return '$result$_decimalSeparator';
+        if (allowFraction && filteredString.endsWith(decimalSeparator)) {
+          return '$result$decimalSeparator';
         }
 
         // Fix the -0. and similar issues
@@ -87,7 +87,7 @@ class ThousandsFormatter extends TextInputFormatter {
               decimalOnly.substring(0, min(decimalPlaces, decimalOnly.length));
           double digitsOnly = double.tryParse(decimalPlacesValue[0]) ?? 0.0;
           String result = _formatter.format(digitsOnly);
-          result = result + '.' + '$decimalTruncated';
+          result = '$result.$decimalTruncated';
           return result;
         }
 

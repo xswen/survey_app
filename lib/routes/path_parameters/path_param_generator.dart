@@ -14,6 +14,7 @@ class PathParamGenerator {
         ...surveyInfo(goRouterState.pathParameters[PathParamsKeys.surveyId]!),
         ...{PathParamsKeys.wdSummaryId: wdSummaryId}
       };
+
   static Map<String, String> wdHeader(
           GoRouterState goRouterState, String wdHeaderId) =>
       {
@@ -21,6 +22,7 @@ class PathParamGenerator {
             goRouterState.pathParameters[PathParamsKeys.wdSummaryId]!),
         ...{PathParamsKeys.wdHeaderId: wdHeaderId}
       };
+
   static Map<String, String> wdSmall(
           GoRouterState goRouterState, String wdSmallId) =>
       {
@@ -36,6 +38,7 @@ class PathParamGenerator {
         ...surveyInfo(goRouterState.pathParameters[PathParamsKeys.surveyId]!),
         ...{PathParamsKeys.ssSummaryId: ssSummaryId}
       };
+
   static Map<String, String> ssHeader(
           GoRouterState goRouterState, String ssHeaderId) =>
       {
@@ -43,6 +46,7 @@ class PathParamGenerator {
             goRouterState.pathParameters[PathParamsKeys.ssSummaryId]!),
         ...{PathParamsKeys.ssHeaderId: ssHeaderId}
       };
+
   static Map<String, String> ssStationInfo(
           GoRouterState goRouterState, String ssStationNum) =>
       {
@@ -50,4 +54,29 @@ class PathParamGenerator {
             goRouterState.pathParameters[PathParamsKeys.ssHeaderId]!),
         ...{PathParamsKeys.ssStationNum: ssStationNum}
       };
+
+  //Ecological Plot
+  static Map<String, String> ecpSummary(
+          GoRouterState goRouterState, String ecpSummaryId) =>
+      {
+        ...surveyInfo(goRouterState.pathParameters[PathParamsKeys.surveyId]!),
+        ...{PathParamsKeys.ecpSummaryId: ecpSummaryId}
+      };
+
+  static Map<String, String> ecpHeader(
+          GoRouterState goRouterState, String ecpHeaderId) =>
+      {
+        ...ecpSummary(goRouterState,
+            goRouterState.pathParameters[PathParamsKeys.ecpSummaryId]!),
+        ...{PathParamsKeys.ecpHeaderId: ecpHeaderId}
+      };
+
+  static Map<String, String> ecpSpecies(
+          GoRouterState goRouterState, String ecpSpeciesId) =>
+      {
+        ...ecpHeader(goRouterState,
+            goRouterState.pathParameters[PathParamsKeys.ecpHeaderId]!),
+        ...{PathParamsKeys.ecpSpeciesNum: ecpSpeciesId}
+      };
+
 }

@@ -7,7 +7,7 @@ import '../../constants/text_designs.dart';
 
 class DropDownAsyncList extends StatefulWidget {
   const DropDownAsyncList(
-      {Key? key,
+      {super.key,
       this.searchable = false,
       this.enabled = true,
       this.title = "",
@@ -16,8 +16,7 @@ class DropDownAsyncList extends StatefulWidget {
       required this.onChangedFn,
       this.asyncItems,
       required this.selectedItem,
-      this.padding = kPaddingV * 2})
-      : super(key: key);
+      this.padding = kPaddingV * 2});
 
   //default false
   final String title;

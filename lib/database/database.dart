@@ -28,8 +28,14 @@ part 'database.g.dart';
 
 const List<Type> _tables = [
   //Reference Tables
-  Jurisdictions, Plots, TreeGenus, SubstrateType, SsDepthLimit,
-  EcpGenus, EcpVariety,
+  Jurisdictions,
+  Plots,
+  TreeGenus,
+  SubstrateType,
+  SsDepthLimit,
+  EcpGenus,
+  EcpLayer,
+
   //Metadata Tables
   MetaComment,
   //Survey Tables
@@ -111,6 +117,10 @@ class Database extends _$Database {
           List<SsDepthLimitCompanion> ssDepthLimitList =
               await _getSsDepthLimits();
 
+          List<EcpLayerCompanion> ecpLayerList = await _getEcpLayers();
+          List<EcpGenusCompanion> ecpGenusList = await _getEcpGenuses();
+
+
           c.debugPrint("Init Values");
           await batch((b) {
             b.insertAll(jurisdictions, jurisdictionsList);
@@ -118,6 +128,10 @@ class Database extends _$Database {
             b.insertAll(plots, nfiPlotList);
             b.insertAll(substrateType, substrateTypeList);
             b.insertAll(ssDepthLimit, ssDepthLimitList);
+
+            b.insertAll(ecpLayer, ecpLayerList);
+            b.insertAll(ecpGenus, ecpGenusList);
+
 
             _initTest(b);
           });
@@ -195,6 +209,34 @@ class Database extends _$Database {
     }).toList();
   }
 
+  Future<List<EcpLayerCompanion>> _getEcpLayers() async {
+    List<dynamic> jsonData =
+        await _loadJsonData('assets/db_reference_data/ecp_layer_list.json');
+
+    // Map the JSON data to a list of `SpeciesDataCompanion` objects
+    return jsonData.map((dynamic item) {
+      return EcpLayerCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<EcpGenusCompanion>> _getEcpGenuses() async {
+    List<dynamic> jsonData =
+        await _loadJsonData('assets/db_reference_data/ecp_species_list.json');
+
+    // Map the JSON data to a list of `SpeciesDataCompanion` objects
+    return jsonData.map((dynamic item) {
+      return EcpGenusCompanion(
+        genus: Value(item["genus"]),
+        species: Value(item["species"]),
+        variety: Value(item["variety"]),
+      );
+    }).toList();
+  }
+
+
   void _initTest(Batch b) {
     b.replace(
         plots,
@@ -206,6 +248,7 @@ class Database extends _$Database {
             nfiPlot: Value(1121871), code: Value("AB"), lastMeasNum: Value(2)));
     _initSurveys(b);
     _initWoodyDebris(b);
+    //_initEcp(b);
   }
 
   void _initSurveys(Batch b) {
@@ -280,6 +323,24 @@ class Database extends _$Database {
         ));
   }
 
+  void _initEcp(Batch b) {
+    b.insert(
+        ecpSummary,
+        EcpSummaryCompanion(
+          id: const d.Value(1),
+          surveyId: const d.Value(1),
+          measDate: d.Value(DateTime.now()),
+          numEcps: const d.Value(1),
+        ));
+    b.insert(
+        ecpHeader,
+        const EcpHeaderCompanion(
+          id: d.Value(1),
+          ecpSummaryId: d.Value(1),
+          ecpNum: d.Value(1),
+        ));
+  }
+
   Future<List<SurveyCard>> getCards(int surveyId,
       {HashSet<SurveyStatus>? filters}) async {
     bool checkFilter(dynamic cardData) {
@@ -290,15 +351,15 @@ class Database extends _$Database {
 
       //Check if notStarted cards are valid
       if (cardData == null) {
-        return filters!.contains(SurveyStatus.notStarted);
+        return filters.contains(SurveyStatus.notStarted);
       }
 
-      if (filters!.contains(SurveyStatus.inProgress) &&
+      if (filters.contains(SurveyStatus.inProgress) &&
           cardData!.complete == false) {
         return true;
       }
 
-      if (filters!.contains(SurveyStatus.complete) &&
+      if (filters.contains(SurveyStatus.complete) &&
           cardData!.complete == true) {
         return true;
       }
@@ -318,6 +379,13 @@ class Database extends _$Database {
         "category": SurveyCardCategories.surfaceSubstrate,
         "name": "Surface Substrate",
         "surveyCardData": await (select(surfaceSubstrateSummary)
+              ..where((tbl) => tbl.surveyId.equals(surveyId)))
+            .getSingleOrNull()
+      },
+      {
+        "category": SurveyCardCategories.ecologicalPlot,
+        "name": "Ecological Plot",
+        "surveyCardData": await (select(ecpSummary)
               ..where((tbl) => tbl.surveyId.equals(surveyId)))
             .getSingleOrNull()
       }

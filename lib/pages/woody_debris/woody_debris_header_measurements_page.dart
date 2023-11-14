@@ -36,7 +36,9 @@ class WoodyDebrisHeaderMeasurementsPageState
 
   @override
   void initState() {
-    wdId = PathParamValue.getWdSummaryId(widget.goRouterState)!;
+
+    wdId = PathParamValue.getWdSummaryId(widget.goRouterState);
+
     wdhId = PathParamValue.getWdHeaderId(widget.goRouterState);
     completeWarningPopup =
         Popups.generateCompleteErrorPopup("Woody Debris Transect");

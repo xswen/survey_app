@@ -1308,57 +1308,25 @@ class $EcpGenusTable extends EcpGenus
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $EcpGenusTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _genusCodeMeta =
-      const VerificationMeta('genusCode');
+  static const VerificationMeta _genusMeta = const VerificationMeta('genus');
   @override
-  late final GeneratedColumn<String> genusCode = GeneratedColumn<String>(
-      'genus_code', aliasedName, false,
-      additionalChecks:
-          GeneratedColumn.checkTextLength(minTextLength: 4, maxTextLength: 4),
-      type: DriftSqlType.string,
-      requiredDuringInsert: true);
-  static const VerificationMeta _speciesCodeMeta =
-      const VerificationMeta('speciesCode');
-  @override
-  late final GeneratedColumn<String> speciesCode = GeneratedColumn<String>(
-      'species_code', aliasedName, false,
-      additionalChecks:
-          GeneratedColumn.checkTextLength(minTextLength: 3, maxTextLength: 3),
-      type: DriftSqlType.string,
-      requiredDuringInsert: true);
-  static const VerificationMeta _genusLatinNameMeta =
-      const VerificationMeta('genusLatinName');
-  @override
-  late final GeneratedColumn<String> genusLatinName = GeneratedColumn<String>(
-      'genus_latin_name', aliasedName, false,
+  late final GeneratedColumn<String> genus = GeneratedColumn<String>(
+      'genus', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _speciesLatinNameMeta =
-      const VerificationMeta('speciesLatinName');
+  static const VerificationMeta _speciesMeta =
+      const VerificationMeta('species');
   @override
-  late final GeneratedColumn<String> speciesLatinName = GeneratedColumn<String>(
-      'species_latin_name', aliasedName, false,
+  late final GeneratedColumn<String> species = GeneratedColumn<String>(
+      'species', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _commonNameEnMeta =
-      const VerificationMeta('commonNameEn');
+  static const VerificationMeta _varietyMeta =
+      const VerificationMeta('variety');
   @override
-  late final GeneratedColumn<String> commonNameEn = GeneratedColumn<String>(
-      'common_name_en', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _commonNameFrMeta =
-      const VerificationMeta('commonNameFr');
-  @override
-  late final GeneratedColumn<String> commonNameFr = GeneratedColumn<String>(
-      'common_name_fr', aliasedName, false,
+  late final GeneratedColumn<String> variety = GeneratedColumn<String>(
+      'variety', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
   @override
-  List<GeneratedColumn> get $columns => [
-        genusCode,
-        speciesCode,
-        genusLatinName,
-        speciesLatinName,
-        commonNameEn,
-        commonNameFr
-      ];
+  List<GeneratedColumn> get $columns => [genus, species, variety];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -1369,73 +1337,39 @@ class $EcpGenusTable extends EcpGenus
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('genus_code')) {
-      context.handle(_genusCodeMeta,
-          genusCode.isAcceptableOrUnknown(data['genus_code']!, _genusCodeMeta));
-    } else if (isInserting) {
-      context.missing(_genusCodeMeta);
-    }
-    if (data.containsKey('species_code')) {
+    if (data.containsKey('genus')) {
       context.handle(
-          _speciesCodeMeta,
-          speciesCode.isAcceptableOrUnknown(
-              data['species_code']!, _speciesCodeMeta));
+          _genusMeta, genus.isAcceptableOrUnknown(data['genus']!, _genusMeta));
     } else if (isInserting) {
-      context.missing(_speciesCodeMeta);
+      context.missing(_genusMeta);
     }
-    if (data.containsKey('genus_latin_name')) {
-      context.handle(
-          _genusLatinNameMeta,
-          genusLatinName.isAcceptableOrUnknown(
-              data['genus_latin_name']!, _genusLatinNameMeta));
+    if (data.containsKey('species')) {
+      context.handle(_speciesMeta,
+          species.isAcceptableOrUnknown(data['species']!, _speciesMeta));
     } else if (isInserting) {
-      context.missing(_genusLatinNameMeta);
+      context.missing(_speciesMeta);
     }
-    if (data.containsKey('species_latin_name')) {
-      context.handle(
-          _speciesLatinNameMeta,
-          speciesLatinName.isAcceptableOrUnknown(
-              data['species_latin_name']!, _speciesLatinNameMeta));
+    if (data.containsKey('variety')) {
+      context.handle(_varietyMeta,
+          variety.isAcceptableOrUnknown(data['variety']!, _varietyMeta));
     } else if (isInserting) {
-      context.missing(_speciesLatinNameMeta);
-    }
-    if (data.containsKey('common_name_en')) {
-      context.handle(
-          _commonNameEnMeta,
-          commonNameEn.isAcceptableOrUnknown(
-              data['common_name_en']!, _commonNameEnMeta));
-    } else if (isInserting) {
-      context.missing(_commonNameEnMeta);
-    }
-    if (data.containsKey('common_name_fr')) {
-      context.handle(
-          _commonNameFrMeta,
-          commonNameFr.isAcceptableOrUnknown(
-              data['common_name_fr']!, _commonNameFrMeta));
-    } else if (isInserting) {
-      context.missing(_commonNameFrMeta);
+      context.missing(_varietyMeta);
     }
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {genusCode, speciesCode};
+  Set<GeneratedColumn> get $primaryKey => const {};
   @override
   EcpGenusData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return EcpGenusData(
-      genusCode: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}genus_code'])!,
-      speciesCode: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}species_code'])!,
-      genusLatinName: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}genus_latin_name'])!,
-      speciesLatinName: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}species_latin_name'])!,
-      commonNameEn: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}common_name_en'])!,
-      commonNameFr: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}common_name_fr'])!,
+      genus: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}genus'])!,
+      species: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}species'])!,
+      variety: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}variety'])!,
     );
   }
 
@@ -1446,39 +1380,25 @@ class $EcpGenusTable extends EcpGenus
 }
 
 class EcpGenusData extends DataClass implements Insertable<EcpGenusData> {
-  final String genusCode;
-  final String speciesCode;
-  final String genusLatinName;
-  final String speciesLatinName;
-  final String commonNameEn;
-  final String commonNameFr;
+  final String genus;
+  final String species;
+  final String variety;
   const EcpGenusData(
-      {required this.genusCode,
-      required this.speciesCode,
-      required this.genusLatinName,
-      required this.speciesLatinName,
-      required this.commonNameEn,
-      required this.commonNameFr});
+      {required this.genus, required this.species, required this.variety});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['genus_code'] = Variable<String>(genusCode);
-    map['species_code'] = Variable<String>(speciesCode);
-    map['genus_latin_name'] = Variable<String>(genusLatinName);
-    map['species_latin_name'] = Variable<String>(speciesLatinName);
-    map['common_name_en'] = Variable<String>(commonNameEn);
-    map['common_name_fr'] = Variable<String>(commonNameFr);
+    map['genus'] = Variable<String>(genus);
+    map['species'] = Variable<String>(species);
+    map['variety'] = Variable<String>(variety);
     return map;
   }
 
   EcpGenusCompanion toCompanion(bool nullToAbsent) {
     return EcpGenusCompanion(
-      genusCode: Value(genusCode),
-      speciesCode: Value(speciesCode),
-      genusLatinName: Value(genusLatinName),
-      speciesLatinName: Value(speciesLatinName),
-      commonNameEn: Value(commonNameEn),
-      commonNameFr: Value(commonNameFr),
+      genus: Value(genus),
+      species: Value(species),
+      variety: Value(variety),
     );
   }
 
@@ -1486,136 +1406,90 @@ class EcpGenusData extends DataClass implements Insertable<EcpGenusData> {
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return EcpGenusData(
-      genusCode: serializer.fromJson<String>(json['genusCode']),
-      speciesCode: serializer.fromJson<String>(json['speciesCode']),
-      genusLatinName: serializer.fromJson<String>(json['genusLatinName']),
-      speciesLatinName: serializer.fromJson<String>(json['speciesLatinName']),
-      commonNameEn: serializer.fromJson<String>(json['commonNameEn']),
-      commonNameFr: serializer.fromJson<String>(json['commonNameFr']),
+      genus: serializer.fromJson<String>(json['genus']),
+      species: serializer.fromJson<String>(json['species']),
+      variety: serializer.fromJson<String>(json['variety']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'genusCode': serializer.toJson<String>(genusCode),
-      'speciesCode': serializer.toJson<String>(speciesCode),
-      'genusLatinName': serializer.toJson<String>(genusLatinName),
-      'speciesLatinName': serializer.toJson<String>(speciesLatinName),
-      'commonNameEn': serializer.toJson<String>(commonNameEn),
-      'commonNameFr': serializer.toJson<String>(commonNameFr),
+      'genus': serializer.toJson<String>(genus),
+      'species': serializer.toJson<String>(species),
+      'variety': serializer.toJson<String>(variety),
     };
   }
 
-  EcpGenusData copyWith(
-          {String? genusCode,
-          String? speciesCode,
-          String? genusLatinName,
-          String? speciesLatinName,
-          String? commonNameEn,
-          String? commonNameFr}) =>
+  EcpGenusData copyWith({String? genus, String? species, String? variety}) =>
       EcpGenusData(
-        genusCode: genusCode ?? this.genusCode,
-        speciesCode: speciesCode ?? this.speciesCode,
-        genusLatinName: genusLatinName ?? this.genusLatinName,
-        speciesLatinName: speciesLatinName ?? this.speciesLatinName,
-        commonNameEn: commonNameEn ?? this.commonNameEn,
-        commonNameFr: commonNameFr ?? this.commonNameFr,
+        genus: genus ?? this.genus,
+        species: species ?? this.species,
+        variety: variety ?? this.variety,
       );
   @override
   String toString() {
     return (StringBuffer('EcpGenusData(')
-          ..write('genusCode: $genusCode, ')
-          ..write('speciesCode: $speciesCode, ')
-          ..write('genusLatinName: $genusLatinName, ')
-          ..write('speciesLatinName: $speciesLatinName, ')
-          ..write('commonNameEn: $commonNameEn, ')
-          ..write('commonNameFr: $commonNameFr')
+          ..write('genus: $genus, ')
+          ..write('species: $species, ')
+          ..write('variety: $variety')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(genusCode, speciesCode, genusLatinName,
-      speciesLatinName, commonNameEn, commonNameFr);
+  int get hashCode => Object.hash(genus, species, variety);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is EcpGenusData &&
-          other.genusCode == this.genusCode &&
-          other.speciesCode == this.speciesCode &&
-          other.genusLatinName == this.genusLatinName &&
-          other.speciesLatinName == this.speciesLatinName &&
-          other.commonNameEn == this.commonNameEn &&
-          other.commonNameFr == this.commonNameFr);
+          other.genus == this.genus &&
+          other.species == this.species &&
+          other.variety == this.variety);
 }
 
 class EcpGenusCompanion extends UpdateCompanion<EcpGenusData> {
-  final Value<String> genusCode;
-  final Value<String> speciesCode;
-  final Value<String> genusLatinName;
-  final Value<String> speciesLatinName;
-  final Value<String> commonNameEn;
-  final Value<String> commonNameFr;
+  final Value<String> genus;
+  final Value<String> species;
+  final Value<String> variety;
   final Value<int> rowid;
   const EcpGenusCompanion({
-    this.genusCode = const Value.absent(),
-    this.speciesCode = const Value.absent(),
-    this.genusLatinName = const Value.absent(),
-    this.speciesLatinName = const Value.absent(),
-    this.commonNameEn = const Value.absent(),
-    this.commonNameFr = const Value.absent(),
+    this.genus = const Value.absent(),
+    this.species = const Value.absent(),
+    this.variety = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   EcpGenusCompanion.insert({
-    required String genusCode,
-    required String speciesCode,
-    required String genusLatinName,
-    required String speciesLatinName,
-    required String commonNameEn,
-    required String commonNameFr,
+    required String genus,
+    required String species,
+    required String variety,
     this.rowid = const Value.absent(),
-  })  : genusCode = Value(genusCode),
-        speciesCode = Value(speciesCode),
-        genusLatinName = Value(genusLatinName),
-        speciesLatinName = Value(speciesLatinName),
-        commonNameEn = Value(commonNameEn),
-        commonNameFr = Value(commonNameFr);
+  })  : genus = Value(genus),
+        species = Value(species),
+        variety = Value(variety);
   static Insertable<EcpGenusData> custom({
-    Expression<String>? genusCode,
-    Expression<String>? speciesCode,
-    Expression<String>? genusLatinName,
-    Expression<String>? speciesLatinName,
-    Expression<String>? commonNameEn,
-    Expression<String>? commonNameFr,
+    Expression<String>? genus,
+    Expression<String>? species,
+    Expression<String>? variety,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
-      if (genusCode != null) 'genus_code': genusCode,
-      if (speciesCode != null) 'species_code': speciesCode,
-      if (genusLatinName != null) 'genus_latin_name': genusLatinName,
-      if (speciesLatinName != null) 'species_latin_name': speciesLatinName,
-      if (commonNameEn != null) 'common_name_en': commonNameEn,
-      if (commonNameFr != null) 'common_name_fr': commonNameFr,
+      if (genus != null) 'genus': genus,
+      if (species != null) 'species': species,
+      if (variety != null) 'variety': variety,
       if (rowid != null) 'rowid': rowid,
     });
   }
 
   EcpGenusCompanion copyWith(
-      {Value<String>? genusCode,
-      Value<String>? speciesCode,
-      Value<String>? genusLatinName,
-      Value<String>? speciesLatinName,
-      Value<String>? commonNameEn,
-      Value<String>? commonNameFr,
+      {Value<String>? genus,
+      Value<String>? species,
+      Value<String>? variety,
       Value<int>? rowid}) {
     return EcpGenusCompanion(
-      genusCode: genusCode ?? this.genusCode,
-      speciesCode: speciesCode ?? this.speciesCode,
-      genusLatinName: genusLatinName ?? this.genusLatinName,
-      speciesLatinName: speciesLatinName ?? this.speciesLatinName,
-      commonNameEn: commonNameEn ?? this.commonNameEn,
-      commonNameFr: commonNameFr ?? this.commonNameFr,
+      genus: genus ?? this.genus,
+      species: species ?? this.species,
+      variety: variety ?? this.variety,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -1623,23 +1497,14 @@ class EcpGenusCompanion extends UpdateCompanion<EcpGenusData> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (genusCode.present) {
-      map['genus_code'] = Variable<String>(genusCode.value);
+    if (genus.present) {
+      map['genus'] = Variable<String>(genus.value);
     }
-    if (speciesCode.present) {
-      map['species_code'] = Variable<String>(speciesCode.value);
+    if (species.present) {
+      map['species'] = Variable<String>(species.value);
     }
-    if (genusLatinName.present) {
-      map['genus_latin_name'] = Variable<String>(genusLatinName.value);
-    }
-    if (speciesLatinName.present) {
-      map['species_latin_name'] = Variable<String>(speciesLatinName.value);
-    }
-    if (commonNameEn.present) {
-      map['common_name_en'] = Variable<String>(commonNameEn.value);
-    }
-    if (commonNameFr.present) {
-      map['common_name_fr'] = Variable<String>(commonNameFr.value);
+    if (variety.present) {
+      map['variety'] = Variable<String>(variety.value);
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -1650,318 +1515,193 @@ class EcpGenusCompanion extends UpdateCompanion<EcpGenusData> {
   @override
   String toString() {
     return (StringBuffer('EcpGenusCompanion(')
-          ..write('genusCode: $genusCode, ')
-          ..write('speciesCode: $speciesCode, ')
-          ..write('genusLatinName: $genusLatinName, ')
-          ..write('speciesLatinName: $speciesLatinName, ')
-          ..write('commonNameEn: $commonNameEn, ')
-          ..write('commonNameFr: $commonNameFr, ')
+          ..write('genus: $genus, ')
+          ..write('species: $species, ')
+          ..write('variety: $variety, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
 }
 
-class $EcpVarietyTable extends EcpVariety
-    with TableInfo<$EcpVarietyTable, EcpVarietyData> {
+class $EcpLayerTable extends EcpLayer
+    with TableInfo<$EcpLayerTable, EcpLayerData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $EcpVarietyTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  $EcpLayerTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _codeMeta = const VerificationMeta('code');
   @override
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _genusCodeMeta =
-      const VerificationMeta('genusCode');
+  late final GeneratedColumn<String> code = GeneratedColumn<String>(
+      'code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
-  late final GeneratedColumn<String> genusCode = GeneratedColumn<String>(
-      'genus_code', aliasedName, false,
-      additionalChecks:
-          GeneratedColumn.checkTextLength(minTextLength: 4, maxTextLength: 4),
-      type: DriftSqlType.string,
-      requiredDuringInsert: true);
-  static const VerificationMeta _speciesCodeMeta =
-      const VerificationMeta('speciesCode');
-  @override
-  late final GeneratedColumn<String> speciesCode = GeneratedColumn<String>(
-      'species_code', aliasedName, false,
-      additionalChecks:
-          GeneratedColumn.checkTextLength(minTextLength: 3, maxTextLength: 3),
-      type: DriftSqlType.string,
-      requiredDuringInsert: true);
-  static const VerificationMeta _varietyCodeMeta =
-      const VerificationMeta('varietyCode');
-  @override
-  late final GeneratedColumn<String> varietyCode = GeneratedColumn<String>(
-      'variety_code', aliasedName, false,
-      additionalChecks:
-          GeneratedColumn.checkTextLength(minTextLength: 3, maxTextLength: 3),
-      type: DriftSqlType.string,
-      requiredDuringInsert: true);
-  static const VerificationMeta _varietyLatinNameMeta =
-      const VerificationMeta('varietyLatinName');
-  @override
-  late final GeneratedColumn<String> varietyLatinName = GeneratedColumn<String>(
-      'variety_latin_name', aliasedName, false,
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, genusCode, speciesCode, varietyCode, varietyLatinName];
+  List<GeneratedColumn> get $columns => [code, name];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'ecp_variety';
+  static const String $name = 'ecp_layer';
   @override
-  VerificationContext validateIntegrity(Insertable<EcpVarietyData> instance,
+  VerificationContext validateIntegrity(Insertable<EcpLayerData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('genus_code')) {
-      context.handle(_genusCodeMeta,
-          genusCode.isAcceptableOrUnknown(data['genus_code']!, _genusCodeMeta));
-    } else if (isInserting) {
-      context.missing(_genusCodeMeta);
-    }
-    if (data.containsKey('species_code')) {
+    if (data.containsKey('code')) {
       context.handle(
-          _speciesCodeMeta,
-          speciesCode.isAcceptableOrUnknown(
-              data['species_code']!, _speciesCodeMeta));
+          _codeMeta, code.isAcceptableOrUnknown(data['code']!, _codeMeta));
     } else if (isInserting) {
-      context.missing(_speciesCodeMeta);
+      context.missing(_codeMeta);
     }
-    if (data.containsKey('variety_code')) {
+    if (data.containsKey('name')) {
       context.handle(
-          _varietyCodeMeta,
-          varietyCode.isAcceptableOrUnknown(
-              data['variety_code']!, _varietyCodeMeta));
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
     } else if (isInserting) {
-      context.missing(_varietyCodeMeta);
-    }
-    if (data.containsKey('variety_latin_name')) {
-      context.handle(
-          _varietyLatinNameMeta,
-          varietyLatinName.isAcceptableOrUnknown(
-              data['variety_latin_name']!, _varietyLatinNameMeta));
-    } else if (isInserting) {
-      context.missing(_varietyLatinNameMeta);
+      context.missing(_nameMeta);
     }
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id};
+  Set<GeneratedColumn> get $primaryKey => const {};
   @override
-  EcpVarietyData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  EcpLayerData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return EcpVarietyData(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      genusCode: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}genus_code'])!,
-      speciesCode: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}species_code'])!,
-      varietyCode: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}variety_code'])!,
-      varietyLatinName: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}variety_latin_name'])!,
+    return EcpLayerData(
+      code: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}code'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
     );
   }
 
   @override
-  $EcpVarietyTable createAlias(String alias) {
-    return $EcpVarietyTable(attachedDatabase, alias);
+  $EcpLayerTable createAlias(String alias) {
+    return $EcpLayerTable(attachedDatabase, alias);
   }
 }
 
-class EcpVarietyData extends DataClass implements Insertable<EcpVarietyData> {
-  final int id;
-  final String genusCode;
-  final String speciesCode;
-  final String varietyCode;
-  final String varietyLatinName;
-  const EcpVarietyData(
-      {required this.id,
-      required this.genusCode,
-      required this.speciesCode,
-      required this.varietyCode,
-      required this.varietyLatinName});
+class EcpLayerData extends DataClass implements Insertable<EcpLayerData> {
+  final String code;
+  final String name;
+  const EcpLayerData({required this.code, required this.name});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
-    map['genus_code'] = Variable<String>(genusCode);
-    map['species_code'] = Variable<String>(speciesCode);
-    map['variety_code'] = Variable<String>(varietyCode);
-    map['variety_latin_name'] = Variable<String>(varietyLatinName);
+    map['code'] = Variable<String>(code);
+    map['name'] = Variable<String>(name);
     return map;
   }
 
-  EcpVarietyCompanion toCompanion(bool nullToAbsent) {
-    return EcpVarietyCompanion(
-      id: Value(id),
-      genusCode: Value(genusCode),
-      speciesCode: Value(speciesCode),
-      varietyCode: Value(varietyCode),
-      varietyLatinName: Value(varietyLatinName),
+  EcpLayerCompanion toCompanion(bool nullToAbsent) {
+    return EcpLayerCompanion(
+      code: Value(code),
+      name: Value(name),
     );
   }
 
-  factory EcpVarietyData.fromJson(Map<String, dynamic> json,
+  factory EcpLayerData.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return EcpVarietyData(
-      id: serializer.fromJson<int>(json['id']),
-      genusCode: serializer.fromJson<String>(json['genusCode']),
-      speciesCode: serializer.fromJson<String>(json['speciesCode']),
-      varietyCode: serializer.fromJson<String>(json['varietyCode']),
-      varietyLatinName: serializer.fromJson<String>(json['varietyLatinName']),
+    return EcpLayerData(
+      code: serializer.fromJson<String>(json['code']),
+      name: serializer.fromJson<String>(json['name']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
-      'genusCode': serializer.toJson<String>(genusCode),
-      'speciesCode': serializer.toJson<String>(speciesCode),
-      'varietyCode': serializer.toJson<String>(varietyCode),
-      'varietyLatinName': serializer.toJson<String>(varietyLatinName),
+      'code': serializer.toJson<String>(code),
+      'name': serializer.toJson<String>(name),
     };
   }
 
-  EcpVarietyData copyWith(
-          {int? id,
-          String? genusCode,
-          String? speciesCode,
-          String? varietyCode,
-          String? varietyLatinName}) =>
-      EcpVarietyData(
-        id: id ?? this.id,
-        genusCode: genusCode ?? this.genusCode,
-        speciesCode: speciesCode ?? this.speciesCode,
-        varietyCode: varietyCode ?? this.varietyCode,
-        varietyLatinName: varietyLatinName ?? this.varietyLatinName,
+  EcpLayerData copyWith({String? code, String? name}) => EcpLayerData(
+        code: code ?? this.code,
+        name: name ?? this.name,
       );
   @override
   String toString() {
-    return (StringBuffer('EcpVarietyData(')
-          ..write('id: $id, ')
-          ..write('genusCode: $genusCode, ')
-          ..write('speciesCode: $speciesCode, ')
-          ..write('varietyCode: $varietyCode, ')
-          ..write('varietyLatinName: $varietyLatinName')
+    return (StringBuffer('EcpLayerData(')
+          ..write('code: $code, ')
+          ..write('name: $name')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, genusCode, speciesCode, varietyCode, varietyLatinName);
+  int get hashCode => Object.hash(code, name);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is EcpVarietyData &&
-          other.id == this.id &&
-          other.genusCode == this.genusCode &&
-          other.speciesCode == this.speciesCode &&
-          other.varietyCode == this.varietyCode &&
-          other.varietyLatinName == this.varietyLatinName);
+      (other is EcpLayerData &&
+          other.code == this.code &&
+          other.name == this.name);
 }
 
-class EcpVarietyCompanion extends UpdateCompanion<EcpVarietyData> {
-  final Value<int> id;
-  final Value<String> genusCode;
-  final Value<String> speciesCode;
-  final Value<String> varietyCode;
-  final Value<String> varietyLatinName;
-  const EcpVarietyCompanion({
-    this.id = const Value.absent(),
-    this.genusCode = const Value.absent(),
-    this.speciesCode = const Value.absent(),
-    this.varietyCode = const Value.absent(),
-    this.varietyLatinName = const Value.absent(),
+class EcpLayerCompanion extends UpdateCompanion<EcpLayerData> {
+  final Value<String> code;
+  final Value<String> name;
+  final Value<int> rowid;
+  const EcpLayerCompanion({
+    this.code = const Value.absent(),
+    this.name = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
-  EcpVarietyCompanion.insert({
-    this.id = const Value.absent(),
-    required String genusCode,
-    required String speciesCode,
-    required String varietyCode,
-    required String varietyLatinName,
-  })  : genusCode = Value(genusCode),
-        speciesCode = Value(speciesCode),
-        varietyCode = Value(varietyCode),
-        varietyLatinName = Value(varietyLatinName);
-  static Insertable<EcpVarietyData> custom({
-    Expression<int>? id,
-    Expression<String>? genusCode,
-    Expression<String>? speciesCode,
-    Expression<String>? varietyCode,
-    Expression<String>? varietyLatinName,
+  EcpLayerCompanion.insert({
+    required String code,
+    required String name,
+    this.rowid = const Value.absent(),
+  })  : code = Value(code),
+        name = Value(name);
+  static Insertable<EcpLayerData> custom({
+    Expression<String>? code,
+    Expression<String>? name,
+    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (genusCode != null) 'genus_code': genusCode,
-      if (speciesCode != null) 'species_code': speciesCode,
-      if (varietyCode != null) 'variety_code': varietyCode,
-      if (varietyLatinName != null) 'variety_latin_name': varietyLatinName,
+      if (code != null) 'code': code,
+      if (name != null) 'name': name,
+      if (rowid != null) 'rowid': rowid,
     });
   }
 
-  EcpVarietyCompanion copyWith(
-      {Value<int>? id,
-      Value<String>? genusCode,
-      Value<String>? speciesCode,
-      Value<String>? varietyCode,
-      Value<String>? varietyLatinName}) {
-    return EcpVarietyCompanion(
-      id: id ?? this.id,
-      genusCode: genusCode ?? this.genusCode,
-      speciesCode: speciesCode ?? this.speciesCode,
-      varietyCode: varietyCode ?? this.varietyCode,
-      varietyLatinName: varietyLatinName ?? this.varietyLatinName,
+  EcpLayerCompanion copyWith(
+      {Value<String>? code, Value<String>? name, Value<int>? rowid}) {
+    return EcpLayerCompanion(
+      code: code ?? this.code,
+      name: name ?? this.name,
+      rowid: rowid ?? this.rowid,
     );
   }
 
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int>(id.value);
+    if (code.present) {
+      map['code'] = Variable<String>(code.value);
     }
-    if (genusCode.present) {
-      map['genus_code'] = Variable<String>(genusCode.value);
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
     }
-    if (speciesCode.present) {
-      map['species_code'] = Variable<String>(speciesCode.value);
-    }
-    if (varietyCode.present) {
-      map['variety_code'] = Variable<String>(varietyCode.value);
-    }
-    if (varietyLatinName.present) {
-      map['variety_latin_name'] = Variable<String>(varietyLatinName.value);
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
     }
     return map;
   }
 
   @override
   String toString() {
-    return (StringBuffer('EcpVarietyCompanion(')
-          ..write('id: $id, ')
-          ..write('genusCode: $genusCode, ')
-          ..write('speciesCode: $speciesCode, ')
-          ..write('varietyCode: $varietyCode, ')
-          ..write('varietyLatinName: $varietyLatinName')
+    return (StringBuffer('EcpLayerCompanion(')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
@@ -6716,7 +6456,7 @@ abstract class _$Database extends GeneratedDatabase {
   late final $SubstrateTypeTable substrateType = $SubstrateTypeTable(this);
   late final $SsDepthLimitTable ssDepthLimit = $SsDepthLimitTable(this);
   late final $EcpGenusTable ecpGenus = $EcpGenusTable(this);
-  late final $EcpVarietyTable ecpVariety = $EcpVarietyTable(this);
+  late final $EcpLayerTable ecpLayer = $EcpLayerTable(this);
   late final $SurveyHeadersTable surveyHeaders = $SurveyHeadersTable(this);
   late final $MetaCommentTable metaComment = $MetaCommentTable(this);
   late final $WoodyDebrisSummaryTable woodyDebrisSummary =
@@ -6758,7 +6498,7 @@ abstract class _$Database extends GeneratedDatabase {
         substrateType,
         ssDepthLimit,
         ecpGenus,
-        ecpVariety,
+        ecpLayer,
         surveyHeaders,
         metaComment,
         woodyDebrisSummary,

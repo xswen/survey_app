@@ -5,12 +5,12 @@ import '../dropdowns/drop_down_default.dart';
 
 class DecayClassSelectBuilder extends StatelessWidget {
   const DecayClassSelectBuilder({
-    Key? key,
+    super.key,
     this.title = "",
     required this.onChangedFn,
     required this.selectedItem,
     this.onBeforePopup,
-  }) : super(key: key);
+  });
 
   final String title;
   final Future<bool?> Function(String?)? onBeforePopup;

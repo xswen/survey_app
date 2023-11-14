@@ -47,7 +47,6 @@ class SsDataFamily extends Family<AsyncValue<SurfaceSubstrateSummaryData>> {
     );
   }
 
-  @visibleForOverriding
   @override
   SsDataProvider getProviderOverride(
     covariant SsDataProvider provider,
@@ -125,11 +124,7 @@ class SsDataProvider
   }
 
   @override
-  (int,) get argument {
-    return (surveyId,);
-  }
 
-  @override
   AutoDisposeFutureProviderElement<SurfaceSubstrateSummaryData>
       createElement() {
     return _SsDataProviderElement(this);
@@ -184,7 +179,7 @@ class SsTransListFamily
     );
   }
 
-  @visibleForOverriding
+
   @override
   SsTransListProvider getProviderOverride(
     covariant SsTransListProvider provider,
@@ -264,11 +259,7 @@ class SsTransListProvider
   }
 
   @override
-  (int,) get argument {
-    return (ssId,);
-  }
 
-  @override
   AutoDisposeFutureProviderElement<List<SurfaceSubstrateHeaderData>>
       createElement() {
     return _SsTransListProviderElement(this);
@@ -303,7 +294,9 @@ class _SsTransListProviderElement
   int get ssId => (origin as SsTransListProvider).ssId;
 }
 
-String _$ssTallyDataListHash() => r'1331cf58cb132b3ef4d5add43e3a2f90f9dc5d80';
+
+String _$ssTallyDataListHash() => r'002bddec2741c1d22c675459af9baacbde494242';
+
 
 /// See also [ssTallyDataList].
 @ProviderFor(ssTallyDataList)
@@ -317,14 +310,15 @@ class SsTallyDataListFamily
 
   /// See also [ssTallyDataList].
   SsTallyDataListProvider call(
-    sshId,
+
+    int sshId,
+
   ) {
     return SsTallyDataListProvider(
       sshId,
     );
   }
 
-  @visibleForOverriding
   @override
   SsTallyDataListProvider getProviderOverride(
     covariant SsTallyDataListProvider provider,
@@ -354,7 +348,9 @@ class SsTallyDataListProvider
     extends AutoDisposeFutureProvider<List<SurfaceSubstrateTallyData>> {
   /// See also [ssTallyDataList].
   SsTallyDataListProvider(
-    sshId,
+
+    int sshId,
+
   ) : this._internal(
           (ref) => ssTallyDataList(
             ref as SsTallyDataListRef,
@@ -382,7 +378,9 @@ class SsTallyDataListProvider
     required this.sshId,
   }) : super.internal();
 
-  final sshId;
+
+  final int sshId;
+
 
   @override
   Override overrideWith(
@@ -405,11 +403,7 @@ class SsTallyDataListProvider
   }
 
   @override
-  (dynamic,) get argument {
-    return (sshId,);
-  }
 
-  @override
   AutoDisposeFutureProviderElement<List<SurfaceSubstrateTallyData>>
       createElement() {
     return _SsTallyDataListProviderElement(this);
@@ -432,7 +426,9 @@ class SsTallyDataListProvider
 mixin SsTallyDataListRef
     on AutoDisposeFutureProviderRef<List<SurfaceSubstrateTallyData>> {
   /// The parameter `sshId` of this provider.
-  get sshId;
+
+  int get sshId;
+
 }
 
 class _SsTallyDataListProviderElement
@@ -441,7 +437,9 @@ class _SsTallyDataListProviderElement
   _SsTallyDataListProviderElement(super.provider);
 
   @override
-  get sshId => (origin as SsTallyDataListProvider).sshId;
+
+  int get sshId => (origin as SsTallyDataListProvider).sshId;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, inference_failure_on_uninitialized_variable, inference_failure_on_function_return_type, inference_failure_on_untyped_parameter, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+

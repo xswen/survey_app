@@ -3,13 +3,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class BoxIncrement extends StatelessWidget {
   const BoxIncrement(
-      {Key? key,
+      {super.key,
       required this.title,
       this.subtitle = "",
       required this.boxVal,
       required this.minusOnPress,
-      required this.addOnPress})
-      : super(key: key);
+      required this.addOnPress});
 
   final String title;
   final String subtitle;

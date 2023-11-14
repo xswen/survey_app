@@ -18,7 +18,7 @@ const List<Type> _tables = [
 @DriftAccessor(tables: _tables)
 class WoodyDebrisTablesDao extends DatabaseAccessor<Database>
     with _$WoodyDebrisTablesDaoMixin {
-  WoodyDebrisTablesDao(Database db) : super(db);
+  WoodyDebrisTablesDao(super.db);
 
   String accumulation = "AC";
   String odd = "OD";
