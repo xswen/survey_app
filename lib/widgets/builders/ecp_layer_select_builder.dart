@@ -26,7 +26,7 @@ class EcpLayerSelectBuilder extends StatelessWidget {
               onChangedFn: (s) async => updateLayerId(
                   await db.referenceTablesDao.getEcpLayerCode(s!)),
               asyncItems: (s) => db.referenceTablesDao.ecpLayerNameList,
-              selectedItem: text.data ?? "Please select genus");
+              selectedItem: text.data ?? "Please select layer");
         });
   }
 }
