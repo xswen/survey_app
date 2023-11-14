@@ -5,12 +5,10 @@ class EcpLayerSelectBuilder extends StatelessWidget {
   const EcpLayerSelectBuilder(
       {super.key,
       required this.title,
-      this.onBeforePopup,
       required this.updateLayerId,
       required this.layerCode});
 
   final String title;
-  final Future<bool?> Function(String?)? onBeforePopup;
   final void Function(String?) updateLayerId;
   final String layerCode;
 
@@ -25,7 +23,6 @@ class EcpLayerSelectBuilder extends StatelessWidget {
           return DropDownAsyncList(
               searchable: true,
               title: title,
-              onBeforePopup: onBeforePopup,
               onChangedFn: updateLayerId,
               asyncItems: (s) => db.referenceTablesDao.ecpLayerNameList,
               selectedItem: text.data ?? "Please select genus");
