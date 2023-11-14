@@ -213,11 +213,15 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
 
   //====================EcpTreeGenus====================
 //--------------------get--------------------
-  Future<List<String?>> get ecpGenusLatinNames {
+  Future<List<String>> get ecpGenusList {
     final query = selectOnly(ecpGenus, distinct: true)
-      ..addColumns([ecpGenus.genus]);
+      ..addColumns([ecpGenus.genus])
+      ..where(ecpGenus.genus.isNotNull());
 
-    return query.map((p0) => p0.read(ecpGenus.genus)).get();
+    return query
+        .map((p0) =>
+            p0.read(ecpGenus.genus) ?? "error on loading ecp genus list")
+        .get();
   }
 }
 
