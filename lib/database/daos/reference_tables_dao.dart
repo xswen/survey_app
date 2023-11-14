@@ -231,7 +231,20 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
 
     return query
         .map((p0) =>
-            p0.read(ecpGenus.species) ?? "error on loading ecp genus list")
+            p0.read(ecpGenus.species) ?? "error on loading ecp species list")
+        .get();
+  }
+
+  Future<List<String>> getEcpVarietyList(String genus, String species) {
+    final query = selectOnly(ecpGenus, distinct: true)
+      ..addColumns([ecpGenus.variety])
+      ..where(ecpGenus.variety.isNotNull() &
+          ecpGenus.genus.equals(genus) &
+          ecpGenus.species.equals(species));
+
+    return query
+        .map((p0) =>
+            p0.read(ecpGenus.variety) ?? "error on loading ecp variety list")
         .get();
   }
 }

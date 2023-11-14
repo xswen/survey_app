@@ -38,10 +38,10 @@ class EcpSpeciesSelectBuilder extends StatelessWidget {
         enabled: genus.isNotEmpty,
         title: title,
         onChangedFn: (s) {
-          //Check that the same genus wasn't double selected so
+          //Check that the same variety wasn't double selected so
           //you don't overwrite the species
-          if (genus.isEmpty || s != genus) {
-            species == "unknown"
+          if (species.isEmpty || s != species) {
+            s == "unknown"
                 ? updateSpecies(
                     Value(s ?? "Error setting species"), const Value("N/A"))
                 : updateSpecies(

@@ -2,7 +2,8 @@ import 'package:drift/drift.dart' as d;
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/widgets/builders/ecp_genus_select_builder.dart';
 import 'package:survey_app/widgets/builders/ecp_layer_select_builder.dart';
-import 'package:survey_app/widgets/builders/ecp_species_builder.dart';
+import 'package:survey_app/widgets/builders/ecp_species_select_builder.dart';
+import 'package:survey_app/widgets/builders/ecp_variety_select_builder.dart';
 
 class EcologicalPlotSpeciesPage extends ConsumerStatefulWidget {
   static const String routeName = "ecologicalPlotSpecies";
@@ -60,7 +61,17 @@ class EcologicalPlotSpeciesPageState
                     updateSpecies: (species, variety) => setState(() => layer =
                         layer.copyWith(species: species, variety: variety)),
                     genus: db.companionValueToStr(layer.genus),
-                    species: db.companionValueToStr(layer.species))
+                    species: db.companionValueToStr(layer.species)),
+                db.companionValueToStr(layer.species).isNotEmpty &&
+                        db.companionValueToStr(layer.species) != "unknown"
+                    ? EcpVarietySelectBuilder(
+                        title: "Variety",
+                        updateVariety: (variety) => setState(
+                            () => layer = layer.copyWith(variety: variety)),
+                        genus: db.companionValueToStr(layer.genus),
+                        species: db.companionValueToStr(layer.species),
+                        variety: db.companionValueToStr(layer.variety))
+                    : Container(),
               ],
             ),
           ),
