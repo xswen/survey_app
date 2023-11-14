@@ -52,6 +52,12 @@ class SsDepthLimit extends Table {
   TextColumn get nameFr => text()();
 }
 
+@DataClassName("EcpLayerData")
+class EcpLayer extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
 @DataClassName("EcpGenusData")
 class EcpGenus extends Table {
   TextColumn get genus => text()();

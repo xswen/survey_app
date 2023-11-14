@@ -1524,6 +1524,189 @@ class EcpGenusCompanion extends UpdateCompanion<EcpGenusData> {
   }
 }
 
+class $EcpLayerTable extends EcpLayer
+    with TableInfo<$EcpLayerTable, EcpLayerData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $EcpLayerTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _codeMeta = const VerificationMeta('code');
+  @override
+  late final GeneratedColumn<String> code = GeneratedColumn<String>(
+      'code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [code, name];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'ecp_layer';
+  @override
+  VerificationContext validateIntegrity(Insertable<EcpLayerData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('code')) {
+      context.handle(
+          _codeMeta, code.isAcceptableOrUnknown(data['code']!, _codeMeta));
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => const {};
+  @override
+  EcpLayerData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return EcpLayerData(
+      code: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}code'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+    );
+  }
+
+  @override
+  $EcpLayerTable createAlias(String alias) {
+    return $EcpLayerTable(attachedDatabase, alias);
+  }
+}
+
+class EcpLayerData extends DataClass implements Insertable<EcpLayerData> {
+  final String code;
+  final String name;
+  const EcpLayerData({required this.code, required this.name});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['code'] = Variable<String>(code);
+    map['name'] = Variable<String>(name);
+    return map;
+  }
+
+  EcpLayerCompanion toCompanion(bool nullToAbsent) {
+    return EcpLayerCompanion(
+      code: Value(code),
+      name: Value(name),
+    );
+  }
+
+  factory EcpLayerData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return EcpLayerData(
+      code: serializer.fromJson<String>(json['code']),
+      name: serializer.fromJson<String>(json['name']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'code': serializer.toJson<String>(code),
+      'name': serializer.toJson<String>(name),
+    };
+  }
+
+  EcpLayerData copyWith({String? code, String? name}) => EcpLayerData(
+        code: code ?? this.code,
+        name: name ?? this.name,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('EcpLayerData(')
+          ..write('code: $code, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(code, name);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is EcpLayerData &&
+          other.code == this.code &&
+          other.name == this.name);
+}
+
+class EcpLayerCompanion extends UpdateCompanion<EcpLayerData> {
+  final Value<String> code;
+  final Value<String> name;
+  final Value<int> rowid;
+  const EcpLayerCompanion({
+    this.code = const Value.absent(),
+    this.name = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  EcpLayerCompanion.insert({
+    required String code,
+    required String name,
+    this.rowid = const Value.absent(),
+  })  : code = Value(code),
+        name = Value(name);
+  static Insertable<EcpLayerData> custom({
+    Expression<String>? code,
+    Expression<String>? name,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (code != null) 'code': code,
+      if (name != null) 'name': name,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  EcpLayerCompanion copyWith(
+      {Value<String>? code, Value<String>? name, Value<int>? rowid}) {
+    return EcpLayerCompanion(
+      code: code ?? this.code,
+      name: name ?? this.name,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (code.present) {
+      map['code'] = Variable<String>(code.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('EcpLayerCompanion(')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $SurveyHeadersTable extends SurveyHeaders
     with TableInfo<$SurveyHeadersTable, SurveyHeader> {
   @override
@@ -6273,6 +6456,7 @@ abstract class _$Database extends GeneratedDatabase {
   late final $SubstrateTypeTable substrateType = $SubstrateTypeTable(this);
   late final $SsDepthLimitTable ssDepthLimit = $SsDepthLimitTable(this);
   late final $EcpGenusTable ecpGenus = $EcpGenusTable(this);
+  late final $EcpLayerTable ecpLayer = $EcpLayerTable(this);
   late final $SurveyHeadersTable surveyHeaders = $SurveyHeadersTable(this);
   late final $MetaCommentTable metaComment = $MetaCommentTable(this);
   late final $WoodyDebrisSummaryTable woodyDebrisSummary =
@@ -6314,6 +6498,7 @@ abstract class _$Database extends GeneratedDatabase {
         substrateType,
         ssDepthLimit,
         ecpGenus,
+        ecpLayer,
         surveyHeaders,
         metaComment,
         woodyDebrisSummary,

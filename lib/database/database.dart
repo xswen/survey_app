@@ -28,8 +28,13 @@ part 'database.g.dart';
 
 const List<Type> _tables = [
   //Reference Tables
-  Jurisdictions, Plots, TreeGenus, SubstrateType, SsDepthLimit,
+  Jurisdictions,
+  Plots,
+  TreeGenus,
+  SubstrateType,
+  SsDepthLimit,
   EcpGenus,
+  EcpLayer,
   //Metadata Tables
   MetaComment,
   //Survey Tables
@@ -110,6 +115,7 @@ class Database extends _$Database {
               await _getSubstrateTypes();
           List<SsDepthLimitCompanion> ssDepthLimitList =
               await _getSsDepthLimits();
+          List<EcpLayerCompanion> ecpLayerList = await _getEcpLayers();
           List<EcpGenusCompanion> ecpGenusList = await _getEcpGenuses();
 
           c.debugPrint("Init Values");
@@ -119,6 +125,7 @@ class Database extends _$Database {
             b.insertAll(plots, nfiPlotList);
             b.insertAll(substrateType, substrateTypeList);
             b.insertAll(ssDepthLimit, ssDepthLimitList);
+            b.insertAll(ecpLayer, ecpLayerList);
             b.insertAll(ecpGenus, ecpGenusList);
 
             _initTest(b);
@@ -194,6 +201,19 @@ class Database extends _$Database {
           code: Value(item["code"]),
           nameEn: Value(item["nameEn"]),
           nameFr: Value(item["nameFr"]));
+    }).toList();
+  }
+
+  Future<List<EcpLayerCompanion>> _getEcpLayers() async {
+    List<dynamic> jsonData =
+        await _loadJsonData('assets/db_reference_data/ecp_layer_list.json');
+
+    // Map the JSON data to a list of `SpeciesDataCompanion` objects
+    return jsonData.map((dynamic item) {
+      return EcpLayerCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
     }).toList();
   }
 

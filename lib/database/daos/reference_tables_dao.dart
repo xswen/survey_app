@@ -15,6 +15,7 @@ part 'reference_tables_dao.g.dart';
   SubstrateType,
   SsDepthLimit,
   EcpGenus,
+  EcpLayer,
 ])
 class ReferenceTablesDao extends DatabaseAccessor<Database>
     with _$ReferenceTablesDaoMixin {
@@ -195,6 +196,20 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
         .get());
     return codes[0];
   }
+
+  //====================EcpLayers====================
+  Future<String> getEcpLayerName(String code) =>
+      ((select(ecpLayer)..where((tbl) => tbl.code.equals(code)))
+          .map((p0) => p0.name)
+          .getSingle());
+
+  Future<String> getEcpLayerCode(String name) =>
+      ((select(ecpLayer)..where((tbl) => tbl.name.equals(name)))
+          .map((p0) => p0.code)
+          .getSingle());
+
+  Future<List<String>> get ecpLayerNameList =>
+      (select(ecpLayer).map((p0) => p0.name)).get();
 
   //====================EcpTreeGenus====================
 //--------------------get--------------------
