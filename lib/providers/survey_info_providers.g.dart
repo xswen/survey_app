@@ -125,11 +125,6 @@ class UpdateSurveyCardProvider
   }
 
   @override
-  (int,) get argument {
-    return (surveyId,);
-  }
-
-  @override
   AutoDisposeFutureProviderElement<List<SurveyCard>> createElement() {
     return _UpdateSurveyCardProviderElement(this);
   }
@@ -259,11 +254,6 @@ class UpdateSurveyProvider extends AutoDisposeFutureProvider<SurveyHeader> {
   }
 
   @override
-  (int,) get argument {
-    return (surveyId,);
-  }
-
-  @override
   AutoDisposeFutureProviderElement<SurveyHeader> createElement() {
     return _UpdateSurveyProviderElement(this);
   }
@@ -348,6 +338,4 @@ final dashboardSurveyFilterProvider = AutoDisposeNotifierProvider<
 
 typedef _$DashboardSurveyFilter = AutoDisposeNotifier<HashSet<SurveyStatus>>;
 // ignore_for_file: type=lint
-
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
-
