@@ -13,3 +13,39 @@ class SoilSiteInfo extends Table {
   TextColumn get deposition => text().withLength(max: 2)();
   TextColumn get humusForm => text().withLength(max: 2)();
 }
+
+class SoilPitDepth extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get soilSiteId =>
+      integer().unique().references(SoilSiteInfo, #id)();
+  TextColumn get soilPitCodeComplete => text().withLength(max: 3)();
+  RealColumn get depthMin =>
+      real().check(depthMin.isBetweenValues(0.0, 999.9))();
+  RealColumn get depthOrg =>
+      real().check(depthMin.isBetweenValues(0.0, 999.9))();
+}
+
+class SoilPitFeatures extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get soilSiteId =>
+      integer().unique().references(SoilSiteInfo, #id)();
+  TextColumn get soilPitCodeField => text().withLength(max: 3)();
+  IntColumn get depthFeature =>
+      integer().check(depthFeature.isBetweenValues(-9, 200))();
+}
+
+class SoilPitHorizonDescription extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get soilSiteId =>
+      integer().unique().references(SoilSiteInfo, #id)();
+  TextColumn get soilPitCodeComplete => text().withLength(max: 3)();
+  IntColumn get horizonNum =>
+      integer().check(horizonNum.isBetweenValues(1, 99))();
+  TextColumn get horizon => text().withLength(max: 6)();
+  RealColumn get horizonUpper =>
+      real().check(horizonUpper.isBetweenValues(-1, 200.0))();
+  RealColumn get thickness =>
+      real().check(thickness.isBetweenValues(-1, 300.0))();
+  TextColumn get color => text().withLength(max: 1)();
+  TextColumn get texture => text().withLength(max: 5)();
+}

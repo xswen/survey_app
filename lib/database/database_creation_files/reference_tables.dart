@@ -68,6 +68,13 @@ class EcpGenus extends Table {
 }
 
 //Soil Pit
+class SoilPitClassification extends Table {
+  TextColumn get code => text()();
+  TextColumn get order => text()();
+  TextColumn get greatGroup => text()();
+  TextColumn get subGroup => text().nullable()();
+}
+
 @DataClassName("SoilDrainageClassData")
 class SoilDrainageClass extends Table {
   IntColumn get code => integer()();
@@ -86,6 +93,36 @@ class SoilDeposition extends Table {
 }
 
 class SoilHumusForm extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class SoilPitCodeCompleted extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class SoilPitCodeField extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class SoilPitFeature extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class SoilHorizonDesignation extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class SoilColor extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class SoilTexture extends Table {
   TextColumn get code => text()();
   TextColumn get name => text()();
 }
