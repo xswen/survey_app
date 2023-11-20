@@ -124,6 +124,15 @@ class Database extends _$Database {
           List<EcpLayerCompanion> ecpLayerList = await _getEcpLayers();
           List<EcpGenusCompanion> ecpGenusList = await _getEcpGenuses();
 
+          List<SoilDrainageClassCompanion> soilDrainageList =
+              await _getSoilDrainageClass();
+          List<SoilMoistureClassCompanion> soilMoistureList =
+              await _getSoilMoistureClass();
+          List<SoilDepositionCompanion> soilDepositionList =
+              await _getSoilDeposition();
+          List<SoilHumusFormCompanion> soilHumusFormList =
+              await _getSoilHumusForm();
+
           c.debugPrint("Init Values");
           await batch((b) {
             b.insertAll(jurisdictions, jurisdictionsList);
@@ -134,6 +143,11 @@ class Database extends _$Database {
 
             b.insertAll(ecpLayer, ecpLayerList);
             b.insertAll(ecpGenus, ecpGenusList);
+
+            b.insertAll(soilDrainageClass, soilDrainageList);
+            b.insertAll(soilMoistureClass, soilMoistureList);
+            b.insertAll(soilDeposition, soilDepositionList);
+            b.insertAll(soilHumusForm, soilHumusFormList);
 
             _initTest(b);
           });
@@ -275,8 +289,8 @@ class Database extends _$Database {
   }
 
   Future<List<SoilHumusFormCompanion>> _getSoilHumusForm() async {
-    List<dynamic> jsonData =
-        await _loadJsonData('assets/db_reference_data/sp_humus_form_list.json');
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/sp_soil_humus_form_list.json');
 
     return jsonData.map((dynamic item) {
       return SoilHumusFormCompanion(

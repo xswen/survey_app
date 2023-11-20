@@ -1,11 +1,11 @@
 [
-  {"code": "1", "name": "Very Rapidly"},
-  {"code": "2", "name": "Rapidly"},
-  {"code": "3", "name": "Well"},
-  {"code": "4", "name": "Moderately Well"},
-  {"code": "5", "name": "Imperfectly"},
-  {"code": "6", "name": "Poorly"},
-  {"code": "7", "name": "Very Poorly"},
-  {"code": "-1", "name": "Missing"},
-  {"code": "-9", "name": "Non-applicable"}
+  {"code": 1, "name": "Very Rapidly"},
+  {"code": 2, "name": "Rapidly"},
+  {"code": 3, "name": "Well"},
+  {"code": 4, "name": "Moderately Well"},
+  {"code": 5, "name": "Imperfectly"},
+  {"code": 6, "name": "Poorly"},
+  {"code": 7, "name": "Very Poorly"},
+  {"code": -1, "name": "Missing"},
+  {"code": -9, "name": "Non-applicable"}
 ]
