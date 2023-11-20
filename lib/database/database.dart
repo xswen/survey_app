@@ -35,6 +35,10 @@ const List<Type> _tables = [
   SsDepthLimit,
   EcpGenus,
   EcpLayer,
+  SoilDrainageClass,
+  SoilMoistureClass,
+  SoilDeposition,
+  SoilHumusForm,
 
   //Metadata Tables
   MetaComment,
@@ -120,7 +124,6 @@ class Database extends _$Database {
           List<EcpLayerCompanion> ecpLayerList = await _getEcpLayers();
           List<EcpGenusCompanion> ecpGenusList = await _getEcpGenuses();
 
-
           c.debugPrint("Init Values");
           await batch((b) {
             b.insertAll(jurisdictions, jurisdictionsList);
@@ -131,7 +134,6 @@ class Database extends _$Database {
 
             b.insertAll(ecpLayer, ecpLayerList);
             b.insertAll(ecpGenus, ecpGenusList);
-
 
             _initTest(b);
           });
@@ -236,6 +238,53 @@ class Database extends _$Database {
     }).toList();
   }
 
+  Future<List<SoilDrainageClassCompanion>> _getSoilDrainageClass() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/sp_drainage_class_list.json');
+
+    return jsonData.map((dynamic item) {
+      return SoilDrainageClassCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<SoilMoistureClassCompanion>> _getSoilMoistureClass() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/sp_moisture_class_list.json');
+
+    return jsonData.map((dynamic item) {
+      return SoilMoistureClassCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<SoilDepositionCompanion>> _getSoilDeposition() async {
+    List<dynamic> jsonData =
+        await _loadJsonData('assets/db_reference_data/sp_deposition_list.json');
+
+    return jsonData.map((dynamic item) {
+      return SoilDepositionCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<SoilHumusFormCompanion>> _getSoilHumusForm() async {
+    List<dynamic> jsonData =
+        await _loadJsonData('assets/db_reference_data/sp_humus_form_list.json');
+
+    return jsonData.map((dynamic item) {
+      return SoilHumusFormCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
 
   void _initTest(Batch b) {
     b.replace(
@@ -388,7 +437,14 @@ class Database extends _$Database {
         "surveyCardData": await (select(ecpSummary)
               ..where((tbl) => tbl.surveyId.equals(surveyId)))
             .getSingleOrNull()
-      }
+      },
+      {
+        "category": SurveyCardCategories.soilPit,
+        "name": "Soil Pit",
+        "surveyCardData": await (select(ecpSummary)
+              ..where((tbl) => tbl.surveyId.equals(surveyId)))
+            .getSingleOrNull()
+      },
     ];
 
     List<SurveyCard> cards = [];

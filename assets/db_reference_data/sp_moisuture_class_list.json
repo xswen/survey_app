@@ -1,0 +1,7 @@
+[
+  {"code": "1", "name": "Xeric"},
+  {"code": "2", "name": "Mesic"},
+  {"code": "3", "name": "Hygric"},
+  {"code": "-1", "name": "Missing"},
+  {"code": "-9", "name": "Non-applicable"}
+]

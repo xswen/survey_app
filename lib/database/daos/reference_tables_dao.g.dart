@@ -11,4 +11,10 @@ mixin _$ReferenceTablesDaoMixin on DatabaseAccessor<Database> {
   $SsDepthLimitTable get ssDepthLimit => attachedDatabase.ssDepthLimit;
   $EcpGenusTable get ecpGenus => attachedDatabase.ecpGenus;
   $EcpLayerTable get ecpLayer => attachedDatabase.ecpLayer;
+  $SoilDrainageClassTable get soilDrainageClass =>
+      attachedDatabase.soilDrainageClass;
+  $SoilMoistureClassTable get soilMoistureClass =>
+      attachedDatabase.soilMoistureClass;
+  $SoilDepositionTable get soilDeposition => attachedDatabase.soilDeposition;
+  $SoilHumusFormTable get soilHumusForm => attachedDatabase.soilHumusForm;
 }

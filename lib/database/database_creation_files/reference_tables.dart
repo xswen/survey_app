@@ -36,6 +36,7 @@ class TreeGenus extends Table {
   Set<Column> get primaryKey => {genusCode, speciesCode};
 }
 
+//Surface Substrate
 class SubstrateType extends Table {
   TextColumn get typeCode => text().withLength(min: 2, max: 2)();
   TextColumn get nameEn => text()();
@@ -52,6 +53,7 @@ class SsDepthLimit extends Table {
   TextColumn get nameFr => text()();
 }
 
+//ECP
 @DataClassName("EcpLayerData")
 class EcpLayer extends Table {
   TextColumn get code => text()();
@@ -63,4 +65,27 @@ class EcpGenus extends Table {
   TextColumn get genus => text()();
   TextColumn get species => text()();
   TextColumn get variety => text()();
+}
+
+//Soil Pit
+@DataClassName("SoilDrainageClassData")
+class SoilDrainageClass extends Table {
+  IntColumn get code => integer()();
+  TextColumn get name => text()();
+}
+
+@DataClassName("SoilMositureClassData")
+class SoilMoistureClass extends Table {
+  IntColumn get code => integer()();
+  TextColumn get name => text()();
+}
+
+class SoilDeposition extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class SoilHumusForm extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
 }

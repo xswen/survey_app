@@ -16,6 +16,10 @@ part 'reference_tables_dao.g.dart';
   SsDepthLimit,
   EcpGenus,
   EcpLayer,
+  SoilDrainageClass,
+  SoilMoistureClass,
+  SoilDeposition,
+  SoilHumusForm,
 ])
 class ReferenceTablesDao extends DatabaseAccessor<Database>
     with _$ReferenceTablesDaoMixin {
