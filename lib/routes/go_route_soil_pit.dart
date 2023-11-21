@@ -5,6 +5,6 @@ import '../pages/soil_pit/soil_pit_summary_table.dart';
 
 GoRoute goRouteSoilPit = GoRoute(
     name: SoilPitSummaryPage.routeName,
-    path: "ecological_plot/:${PathParamsKeys.ecpSummaryId}",
+    path: "soil_pit/:${PathParamsKeys.soilPitSummaryId}",
     builder: (context, state) => SoilPitSummaryPage(state),
     routes: []);

@@ -24,7 +24,19 @@ class SoilPitTablesDao extends DatabaseAccessor<Database>
     delete(soilPitHorizonDescription).go();
   }
 
-  Future<SoilPitSummaryData> getSoilPitSummary(int surveyId) =>
+  //====================Soil Summary====================
+  Future<int> addSummary(SoilPitSummaryCompanion entry) =>
+      into(soilPitSummary).insert(entry);
+  Future<SoilPitSummaryData> getSummary(int id) =>
+      (select(soilPitSummary)..where((tbl) => tbl.id.equals(id))).getSingle();
+  Future<SoilPitSummaryData> getSummaryWithSurveyId(int surveyId) =>
       (select(soilPitSummary)..where((tbl) => tbl.surveyId.equals(surveyId)))
           .getSingle();
+  Future<SoilPitSummaryData> addAndReturnDefaultSummary(
+      int surveyId, DateTime measDate) async {
+    int summaryId = await addSummary(SoilPitSummaryCompanion(
+        surveyId: Value(surveyId), measDate: Value(measDate)));
+
+    return await getSummaryWithSurveyId(summaryId);
+  }
 }
