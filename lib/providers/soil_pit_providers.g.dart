@@ -6,7 +6,7 @@ part of 'soil_pit_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$soilSiteInfoDataHash() => r'f544e40886905174ae0adf82480517439f8829f0';
+String _$soilSiteInfoDataHash() => r'60b93012bf32d2b80bc1ade496f21202f3076dce';
 
 /// Copied from Dart SDK
 class _SystemHash {

@@ -578,7 +578,7 @@ class Database extends _$Database {
       {
         "category": SurveyCardCategories.soilPit,
         "name": "Soil Pit",
-        "surveyCardData": await (select(ecpSummary)
+        "surveyCardData": await (select(soilPitSummary)
               ..where((tbl) => tbl.surveyId.equals(surveyId)))
             .getSingleOrNull()
       },

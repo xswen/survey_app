@@ -8605,8 +8605,18 @@ class $SoilPitSummaryTable extends SoilPitSummary
   late final GeneratedColumn<DateTime> measDate = GeneratedColumn<DateTime>(
       'meas_date', aliasedName, false,
       type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _completeMeta =
+      const VerificationMeta('complete');
   @override
-  List<GeneratedColumn> get $columns => [id, surveyId, measDate];
+  late final GeneratedColumn<bool> complete = GeneratedColumn<bool>(
+      'complete', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("complete" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  @override
+  List<GeneratedColumn> get $columns => [id, surveyId, measDate, complete];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -8632,6 +8642,10 @@ class $SoilPitSummaryTable extends SoilPitSummary
     } else if (isInserting) {
       context.missing(_measDateMeta);
     }
+    if (data.containsKey('complete')) {
+      context.handle(_completeMeta,
+          complete.isAcceptableOrUnknown(data['complete']!, _completeMeta));
+    }
     return context;
   }
 
@@ -8647,6 +8661,8 @@ class $SoilPitSummaryTable extends SoilPitSummary
           .read(DriftSqlType.int, data['${effectivePrefix}survey_id'])!,
       measDate: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}meas_date'])!,
+      complete: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}complete'])!,
     );
   }
 
@@ -8661,14 +8677,19 @@ class SoilPitSummaryData extends DataClass
   final int id;
   final int surveyId;
   final DateTime measDate;
+  final bool complete;
   const SoilPitSummaryData(
-      {required this.id, required this.surveyId, required this.measDate});
+      {required this.id,
+      required this.surveyId,
+      required this.measDate,
+      required this.complete});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['survey_id'] = Variable<int>(surveyId);
     map['meas_date'] = Variable<DateTime>(measDate);
+    map['complete'] = Variable<bool>(complete);
     return map;
   }
 
@@ -8677,6 +8698,7 @@ class SoilPitSummaryData extends DataClass
       id: Value(id),
       surveyId: Value(surveyId),
       measDate: Value(measDate),
+      complete: Value(complete),
     );
   }
 
@@ -8687,6 +8709,7 @@ class SoilPitSummaryData extends DataClass
       id: serializer.fromJson<int>(json['id']),
       surveyId: serializer.fromJson<int>(json['surveyId']),
       measDate: serializer.fromJson<DateTime>(json['measDate']),
+      complete: serializer.fromJson<bool>(json['complete']),
     );
   }
   @override
@@ -8696,69 +8719,83 @@ class SoilPitSummaryData extends DataClass
       'id': serializer.toJson<int>(id),
       'surveyId': serializer.toJson<int>(surveyId),
       'measDate': serializer.toJson<DateTime>(measDate),
+      'complete': serializer.toJson<bool>(complete),
     };
   }
 
-  SoilPitSummaryData copyWith({int? id, int? surveyId, DateTime? measDate}) =>
+  SoilPitSummaryData copyWith(
+          {int? id, int? surveyId, DateTime? measDate, bool? complete}) =>
       SoilPitSummaryData(
         id: id ?? this.id,
         surveyId: surveyId ?? this.surveyId,
         measDate: measDate ?? this.measDate,
+        complete: complete ?? this.complete,
       );
   @override
   String toString() {
     return (StringBuffer('SoilPitSummaryData(')
           ..write('id: $id, ')
           ..write('surveyId: $surveyId, ')
-          ..write('measDate: $measDate')
+          ..write('measDate: $measDate, ')
+          ..write('complete: $complete')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, surveyId, measDate);
+  int get hashCode => Object.hash(id, surveyId, measDate, complete);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is SoilPitSummaryData &&
           other.id == this.id &&
           other.surveyId == this.surveyId &&
-          other.measDate == this.measDate);
+          other.measDate == this.measDate &&
+          other.complete == this.complete);
 }
 
 class SoilPitSummaryCompanion extends UpdateCompanion<SoilPitSummaryData> {
   final Value<int> id;
   final Value<int> surveyId;
   final Value<DateTime> measDate;
+  final Value<bool> complete;
   const SoilPitSummaryCompanion({
     this.id = const Value.absent(),
     this.surveyId = const Value.absent(),
     this.measDate = const Value.absent(),
+    this.complete = const Value.absent(),
   });
   SoilPitSummaryCompanion.insert({
     this.id = const Value.absent(),
     required int surveyId,
     required DateTime measDate,
+    this.complete = const Value.absent(),
   })  : surveyId = Value(surveyId),
         measDate = Value(measDate);
   static Insertable<SoilPitSummaryData> custom({
     Expression<int>? id,
     Expression<int>? surveyId,
     Expression<DateTime>? measDate,
+    Expression<bool>? complete,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (surveyId != null) 'survey_id': surveyId,
       if (measDate != null) 'meas_date': measDate,
+      if (complete != null) 'complete': complete,
     });
   }
 
   SoilPitSummaryCompanion copyWith(
-      {Value<int>? id, Value<int>? surveyId, Value<DateTime>? measDate}) {
+      {Value<int>? id,
+      Value<int>? surveyId,
+      Value<DateTime>? measDate,
+      Value<bool>? complete}) {
     return SoilPitSummaryCompanion(
       id: id ?? this.id,
       surveyId: surveyId ?? this.surveyId,
       measDate: measDate ?? this.measDate,
+      complete: complete ?? this.complete,
     );
   }
 
@@ -8774,6 +8811,9 @@ class SoilPitSummaryCompanion extends UpdateCompanion<SoilPitSummaryData> {
     if (measDate.present) {
       map['meas_date'] = Variable<DateTime>(measDate.value);
     }
+    if (complete.present) {
+      map['complete'] = Variable<bool>(complete.value);
+    }
     return map;
   }
 
@@ -8782,7 +8822,8 @@ class SoilPitSummaryCompanion extends UpdateCompanion<SoilPitSummaryData> {
     return (StringBuffer('SoilPitSummaryCompanion(')
           ..write('id: $id, ')
           ..write('surveyId: $surveyId, ')
-          ..write('measDate: $measDate')
+          ..write('measDate: $measDate, ')
+          ..write('complete: $complete')
           ..write(')'))
         .toString();
   }

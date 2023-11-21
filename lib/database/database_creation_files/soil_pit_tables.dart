@@ -5,6 +5,7 @@ class SoilPitSummary extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get surveyId => integer().unique().references(SurveyHeaders, #id)();
   DateTimeColumn get measDate => dateTime()();
+  BoolColumn get complete => boolean().withDefault(const Constant(false))();
 }
 
 class SoilSiteInfo extends Table {
