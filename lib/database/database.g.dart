@@ -10153,6 +10153,8 @@ abstract class _$Database extends GeneratedDatabase {
       SurfaceSubstrateTablesDao(this as Database);
   late final EcologicalPlotTablesDao ecologicalPlotTablesDao =
       EcologicalPlotTablesDao(this as Database);
+  late final SoilPitTablesDao soilPitTablesDao =
+      SoilPitTablesDao(this as Database);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();

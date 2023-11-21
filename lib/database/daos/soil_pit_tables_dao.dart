@@ -11,9 +11,9 @@ part 'soil_pit_tables_dao.g.dart';
   SoilPitFeature,
   SoilPitHorizonDescription,
 ])
-class ReferenceTablesDao extends DatabaseAccessor<Database>
-    with _$ReferenceTablesDaoMixin {
-  ReferenceTablesDao(super.db);
+class SoilPitTablesDao extends DatabaseAccessor<Database>
+    with _$SoilPitTablesDaoMixin {
+  SoilPitTablesDao(super.db);
 
   //For testing purposes only
   void clearTables() {
@@ -22,4 +22,8 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
     delete(soilPitFeature).go();
     delete(soilPitHorizonDescription).go();
   }
+
+  Future<SoilSiteInfoData> getSoilSiteInfo(int surveyId) =>
+      (select(soilSiteInfo)..where((tbl) => tbl.surveyId.equals(surveyId)))
+          .getSingle();
 }

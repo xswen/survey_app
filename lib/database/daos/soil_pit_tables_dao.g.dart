@@ -3,7 +3,7 @@
 part of 'soil_pit_tables_dao.dart';
 
 // ignore_for_file: type=lint
-mixin _$ReferenceTablesDaoMixin on DatabaseAccessor<Database> {
+mixin _$SoilPitTablesDaoMixin on DatabaseAccessor<Database> {
   $JurisdictionsTable get jurisdictions => attachedDatabase.jurisdictions;
   $PlotsTable get plots => attachedDatabase.plots;
   $SurveyHeadersTable get surveyHeaders => attachedDatabase.surveyHeaders;
