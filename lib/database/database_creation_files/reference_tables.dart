@@ -107,7 +107,8 @@ class SoilPitCodeField extends Table {
   TextColumn get name => text()();
 }
 
-class SoilPitFeature extends Table {
+@DataClassName("SoilFeatureClassData")
+class SoilPitFeatureClass extends Table {
   TextColumn get code => text()();
   TextColumn get name => text()();
 }

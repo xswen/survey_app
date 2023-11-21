@@ -17,4 +17,14 @@ mixin _$ReferenceTablesDaoMixin on DatabaseAccessor<Database> {
       attachedDatabase.soilMoistureClass;
   $SoilDepositionTable get soilDeposition => attachedDatabase.soilDeposition;
   $SoilHumusFormTable get soilHumusForm => attachedDatabase.soilHumusForm;
+  $SoilPitCodeCompletedTable get soilPitCodeCompleted =>
+      attachedDatabase.soilPitCodeCompleted;
+  $SoilPitCodeFieldTable get soilPitCodeField =>
+      attachedDatabase.soilPitCodeField;
+  $SoilPitFeatureClassTable get soilPitFeatureClass =>
+      attachedDatabase.soilPitFeatureClass;
+  $SoilHorizonDesignationTable get soilHorizonDesignation =>
+      attachedDatabase.soilHorizonDesignation;
+  $SoilColorTable get soilColor => attachedDatabase.soilColor;
+  $SoilTextureTable get soilTexture => attachedDatabase.soilTexture;
 }

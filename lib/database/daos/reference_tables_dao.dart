@@ -20,6 +20,12 @@ part 'reference_tables_dao.g.dart';
   SoilMoistureClass,
   SoilDeposition,
   SoilHumusForm,
+  SoilPitCodeCompleted,
+  SoilPitCodeField,
+  SoilPitFeatureClass,
+  SoilHorizonDesignation,
+  SoilColor,
+  SoilTexture,
 ])
 class ReferenceTablesDao extends DatabaseAccessor<Database>
     with _$ReferenceTablesDaoMixin {

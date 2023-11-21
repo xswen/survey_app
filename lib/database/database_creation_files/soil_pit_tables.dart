@@ -25,7 +25,7 @@ class SoilPitDepth extends Table {
       real().check(depthMin.isBetweenValues(0.0, 999.9))();
 }
 
-class SoilPitFeatures extends Table {
+class SoilPitFeature extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get soilSiteId =>
       integer().unique().references(SoilSiteInfo, #id)();

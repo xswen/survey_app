@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart' as c;
 import 'package:flutter/services.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:survey_app/database/database_creation_files/soil_pit_tables.dart';
 import 'package:survey_app/enums/enums.dart';
 import 'package:survey_app/wrappers/survey_card.dart';
 
@@ -42,7 +43,7 @@ const List<Type> _tables = [
   SoilHumusForm,
   SoilPitCodeCompleted,
   SoilPitCodeField,
-  SoilPitFeature,
+  SoilPitFeatureClass,
   SoilHorizonDesignation,
   SoilColor,
   SoilTexture,
@@ -64,7 +65,12 @@ const List<Type> _tables = [
   //ECP Tables
   EcpSummary,
   EcpHeader,
-  EcpSpecies
+  EcpSpecies,
+  //Soil Tables
+  SoilSiteInfo,
+  SoilPitDepth,
+  SoilPitFeature,
+  SoilPitHorizonDescription,
 ];
 
 const List<Type> _daos = [
@@ -145,7 +151,7 @@ class Database extends _$Database {
               await _getSoilPitCodeComplete();
           List<SoilPitCodeFieldCompanion> soilPitCodeFieldList =
               await _getSoilPitCodeFields();
-          List<SoilPitFeatureCompanion> soilPitFeatureList =
+          List<SoilPitFeatureClassCompanion> soilPitFeatureList =
               await _getSoilPitFeatures();
           List<SoilHorizonDesignationCompanion> soilHorizonDesignationList =
               await _getSoilHorizonDesignations();
@@ -170,7 +176,7 @@ class Database extends _$Database {
             b.insertAll(soilHumusForm, soilHumusFormList);
             b.insertAll(soilPitCodeCompleted, soilPitCodeList);
             b.insertAll(soilPitCodeField, soilPitCodeFieldList);
-            b.insertAll(soilPitFeature, soilPitFeatureList);
+            b.insertAll(soilPitFeatureClass, soilPitFeatureList);
             b.insertAll(soilHorizonDesignation, soilHorizonDesignationList);
             b.insertAll(soilColor, soilColorList);
             b.insertAll(soilTexture, soilTextureList);
@@ -365,12 +371,12 @@ class Database extends _$Database {
     }).toList();
   }
 
-  Future<List<SoilPitFeatureCompanion>> _getSoilPitFeatures() async {
+  Future<List<SoilPitFeatureClassCompanion>> _getSoilPitFeatures() async {
     List<dynamic> jsonData =
         await _loadJsonData('assets/db_reference_data/sp_feature.json');
 
     return jsonData.map((dynamic item) {
-      return SoilPitFeatureCompanion(
+      return SoilPitFeatureClassCompanion(
         code: Value(item["code"]),
         name: Value(item["name"]),
       );
