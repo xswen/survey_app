@@ -8575,12 +8575,12 @@ class EcpSpeciesCompanion extends UpdateCompanion<EcpSpeciesData> {
   }
 }
 
-class $SoilSiteInfoTable extends SoilSiteInfo
-    with TableInfo<$SoilSiteInfoTable, SoilSiteInfoData> {
+class $SoilPitSummaryTable extends SoilPitSummary
+    with TableInfo<$SoilPitSummaryTable, SoilPitSummaryData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $SoilSiteInfoTable(this.attachedDatabase, [this._alias]);
+  $SoilPitSummaryTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -8605,6 +8605,213 @@ class $SoilSiteInfoTable extends SoilSiteInfo
   late final GeneratedColumn<DateTime> measDate = GeneratedColumn<DateTime>(
       'meas_date', aliasedName, false,
       type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [id, surveyId, measDate];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'soil_pit_summary';
+  @override
+  VerificationContext validateIntegrity(Insertable<SoilPitSummaryData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('survey_id')) {
+      context.handle(_surveyIdMeta,
+          surveyId.isAcceptableOrUnknown(data['survey_id']!, _surveyIdMeta));
+    } else if (isInserting) {
+      context.missing(_surveyIdMeta);
+    }
+    if (data.containsKey('meas_date')) {
+      context.handle(_measDateMeta,
+          measDate.isAcceptableOrUnknown(data['meas_date']!, _measDateMeta));
+    } else if (isInserting) {
+      context.missing(_measDateMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  SoilPitSummaryData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SoilPitSummaryData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      surveyId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}survey_id'])!,
+      measDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}meas_date'])!,
+    );
+  }
+
+  @override
+  $SoilPitSummaryTable createAlias(String alias) {
+    return $SoilPitSummaryTable(attachedDatabase, alias);
+  }
+}
+
+class SoilPitSummaryData extends DataClass
+    implements Insertable<SoilPitSummaryData> {
+  final int id;
+  final int surveyId;
+  final DateTime measDate;
+  const SoilPitSummaryData(
+      {required this.id, required this.surveyId, required this.measDate});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['survey_id'] = Variable<int>(surveyId);
+    map['meas_date'] = Variable<DateTime>(measDate);
+    return map;
+  }
+
+  SoilPitSummaryCompanion toCompanion(bool nullToAbsent) {
+    return SoilPitSummaryCompanion(
+      id: Value(id),
+      surveyId: Value(surveyId),
+      measDate: Value(measDate),
+    );
+  }
+
+  factory SoilPitSummaryData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SoilPitSummaryData(
+      id: serializer.fromJson<int>(json['id']),
+      surveyId: serializer.fromJson<int>(json['surveyId']),
+      measDate: serializer.fromJson<DateTime>(json['measDate']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'surveyId': serializer.toJson<int>(surveyId),
+      'measDate': serializer.toJson<DateTime>(measDate),
+    };
+  }
+
+  SoilPitSummaryData copyWith({int? id, int? surveyId, DateTime? measDate}) =>
+      SoilPitSummaryData(
+        id: id ?? this.id,
+        surveyId: surveyId ?? this.surveyId,
+        measDate: measDate ?? this.measDate,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('SoilPitSummaryData(')
+          ..write('id: $id, ')
+          ..write('surveyId: $surveyId, ')
+          ..write('measDate: $measDate')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, surveyId, measDate);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SoilPitSummaryData &&
+          other.id == this.id &&
+          other.surveyId == this.surveyId &&
+          other.measDate == this.measDate);
+}
+
+class SoilPitSummaryCompanion extends UpdateCompanion<SoilPitSummaryData> {
+  final Value<int> id;
+  final Value<int> surveyId;
+  final Value<DateTime> measDate;
+  const SoilPitSummaryCompanion({
+    this.id = const Value.absent(),
+    this.surveyId = const Value.absent(),
+    this.measDate = const Value.absent(),
+  });
+  SoilPitSummaryCompanion.insert({
+    this.id = const Value.absent(),
+    required int surveyId,
+    required DateTime measDate,
+  })  : surveyId = Value(surveyId),
+        measDate = Value(measDate);
+  static Insertable<SoilPitSummaryData> custom({
+    Expression<int>? id,
+    Expression<int>? surveyId,
+    Expression<DateTime>? measDate,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (surveyId != null) 'survey_id': surveyId,
+      if (measDate != null) 'meas_date': measDate,
+    });
+  }
+
+  SoilPitSummaryCompanion copyWith(
+      {Value<int>? id, Value<int>? surveyId, Value<DateTime>? measDate}) {
+    return SoilPitSummaryCompanion(
+      id: id ?? this.id,
+      surveyId: surveyId ?? this.surveyId,
+      measDate: measDate ?? this.measDate,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (surveyId.present) {
+      map['survey_id'] = Variable<int>(surveyId.value);
+    }
+    if (measDate.present) {
+      map['meas_date'] = Variable<DateTime>(measDate.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SoilPitSummaryCompanion(')
+          ..write('id: $id, ')
+          ..write('surveyId: $surveyId, ')
+          ..write('measDate: $measDate')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $SoilSiteInfoTable extends SoilSiteInfo
+    with TableInfo<$SoilSiteInfoTable, SoilSiteInfoData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SoilSiteInfoTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _soilPitSummaryIdMeta =
+      const VerificationMeta('soilPitSummaryId');
+  @override
+  late final GeneratedColumn<int> soilPitSummaryId = GeneratedColumn<int>(
+      'soil_pit_summary_id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'UNIQUE REFERENCES soil_pit_summary (id)'));
   static const VerificationMeta _soilClassMeta =
       const VerificationMeta('soilClass');
   @override
@@ -8656,8 +8863,7 @@ class $SoilSiteInfoTable extends SoilSiteInfo
   @override
   List<GeneratedColumn> get $columns => [
         id,
-        surveyId,
-        measDate,
+        soilPitSummaryId,
         soilClass,
         profileDepth,
         drainage,
@@ -8678,17 +8884,13 @@ class $SoilSiteInfoTable extends SoilSiteInfo
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    if (data.containsKey('survey_id')) {
-      context.handle(_surveyIdMeta,
-          surveyId.isAcceptableOrUnknown(data['survey_id']!, _surveyIdMeta));
+    if (data.containsKey('soil_pit_summary_id')) {
+      context.handle(
+          _soilPitSummaryIdMeta,
+          soilPitSummaryId.isAcceptableOrUnknown(
+              data['soil_pit_summary_id']!, _soilPitSummaryIdMeta));
     } else if (isInserting) {
-      context.missing(_surveyIdMeta);
-    }
-    if (data.containsKey('meas_date')) {
-      context.handle(_measDateMeta,
-          measDate.isAcceptableOrUnknown(data['meas_date']!, _measDateMeta));
-    } else if (isInserting) {
-      context.missing(_measDateMeta);
+      context.missing(_soilPitSummaryIdMeta);
     }
     if (data.containsKey('soil_class')) {
       context.handle(_soilClassMeta,
@@ -8741,10 +8943,8 @@ class $SoilSiteInfoTable extends SoilSiteInfo
     return SoilSiteInfoData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      surveyId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}survey_id'])!,
-      measDate: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}meas_date'])!,
+      soilPitSummaryId: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}soil_pit_summary_id'])!,
       soilClass: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}soil_class'])!,
       profileDepth: attachedDatabase.typeMapping
@@ -8769,8 +8969,7 @@ class $SoilSiteInfoTable extends SoilSiteInfo
 class SoilSiteInfoData extends DataClass
     implements Insertable<SoilSiteInfoData> {
   final int id;
-  final int surveyId;
-  final DateTime measDate;
+  final int soilPitSummaryId;
   final String soilClass;
   final int profileDepth;
   final int drainage;
@@ -8779,8 +8978,7 @@ class SoilSiteInfoData extends DataClass
   final String humusForm;
   const SoilSiteInfoData(
       {required this.id,
-      required this.surveyId,
-      required this.measDate,
+      required this.soilPitSummaryId,
       required this.soilClass,
       required this.profileDepth,
       required this.drainage,
@@ -8791,8 +8989,7 @@ class SoilSiteInfoData extends DataClass
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
-    map['survey_id'] = Variable<int>(surveyId);
-    map['meas_date'] = Variable<DateTime>(measDate);
+    map['soil_pit_summary_id'] = Variable<int>(soilPitSummaryId);
     map['soil_class'] = Variable<String>(soilClass);
     map['profile_depth'] = Variable<int>(profileDepth);
     map['drainage'] = Variable<int>(drainage);
@@ -8805,8 +9002,7 @@ class SoilSiteInfoData extends DataClass
   SoilSiteInfoCompanion toCompanion(bool nullToAbsent) {
     return SoilSiteInfoCompanion(
       id: Value(id),
-      surveyId: Value(surveyId),
-      measDate: Value(measDate),
+      soilPitSummaryId: Value(soilPitSummaryId),
       soilClass: Value(soilClass),
       profileDepth: Value(profileDepth),
       drainage: Value(drainage),
@@ -8821,8 +9017,7 @@ class SoilSiteInfoData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return SoilSiteInfoData(
       id: serializer.fromJson<int>(json['id']),
-      surveyId: serializer.fromJson<int>(json['surveyId']),
-      measDate: serializer.fromJson<DateTime>(json['measDate']),
+      soilPitSummaryId: serializer.fromJson<int>(json['soilPitSummaryId']),
       soilClass: serializer.fromJson<String>(json['soilClass']),
       profileDepth: serializer.fromJson<int>(json['profileDepth']),
       drainage: serializer.fromJson<int>(json['drainage']),
@@ -8836,8 +9031,7 @@ class SoilSiteInfoData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'surveyId': serializer.toJson<int>(surveyId),
-      'measDate': serializer.toJson<DateTime>(measDate),
+      'soilPitSummaryId': serializer.toJson<int>(soilPitSummaryId),
       'soilClass': serializer.toJson<String>(soilClass),
       'profileDepth': serializer.toJson<int>(profileDepth),
       'drainage': serializer.toJson<int>(drainage),
@@ -8849,8 +9043,7 @@ class SoilSiteInfoData extends DataClass
 
   SoilSiteInfoData copyWith(
           {int? id,
-          int? surveyId,
-          DateTime? measDate,
+          int? soilPitSummaryId,
           String? soilClass,
           int? profileDepth,
           int? drainage,
@@ -8859,8 +9052,7 @@ class SoilSiteInfoData extends DataClass
           String? humusForm}) =>
       SoilSiteInfoData(
         id: id ?? this.id,
-        surveyId: surveyId ?? this.surveyId,
-        measDate: measDate ?? this.measDate,
+        soilPitSummaryId: soilPitSummaryId ?? this.soilPitSummaryId,
         soilClass: soilClass ?? this.soilClass,
         profileDepth: profileDepth ?? this.profileDepth,
         drainage: drainage ?? this.drainage,
@@ -8872,8 +9064,7 @@ class SoilSiteInfoData extends DataClass
   String toString() {
     return (StringBuffer('SoilSiteInfoData(')
           ..write('id: $id, ')
-          ..write('surveyId: $surveyId, ')
-          ..write('measDate: $measDate, ')
+          ..write('soilPitSummaryId: $soilPitSummaryId, ')
           ..write('soilClass: $soilClass, ')
           ..write('profileDepth: $profileDepth, ')
           ..write('drainage: $drainage, ')
@@ -8885,15 +9076,14 @@ class SoilSiteInfoData extends DataClass
   }
 
   @override
-  int get hashCode => Object.hash(id, surveyId, measDate, soilClass,
-      profileDepth, drainage, moisture, deposition, humusForm);
+  int get hashCode => Object.hash(id, soilPitSummaryId, soilClass, profileDepth,
+      drainage, moisture, deposition, humusForm);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is SoilSiteInfoData &&
           other.id == this.id &&
-          other.surveyId == this.surveyId &&
-          other.measDate == this.measDate &&
+          other.soilPitSummaryId == this.soilPitSummaryId &&
           other.soilClass == this.soilClass &&
           other.profileDepth == this.profileDepth &&
           other.drainage == this.drainage &&
@@ -8904,8 +9094,7 @@ class SoilSiteInfoData extends DataClass
 
 class SoilSiteInfoCompanion extends UpdateCompanion<SoilSiteInfoData> {
   final Value<int> id;
-  final Value<int> surveyId;
-  final Value<DateTime> measDate;
+  final Value<int> soilPitSummaryId;
   final Value<String> soilClass;
   final Value<int> profileDepth;
   final Value<int> drainage;
@@ -8914,8 +9103,7 @@ class SoilSiteInfoCompanion extends UpdateCompanion<SoilSiteInfoData> {
   final Value<String> humusForm;
   const SoilSiteInfoCompanion({
     this.id = const Value.absent(),
-    this.surveyId = const Value.absent(),
-    this.measDate = const Value.absent(),
+    this.soilPitSummaryId = const Value.absent(),
     this.soilClass = const Value.absent(),
     this.profileDepth = const Value.absent(),
     this.drainage = const Value.absent(),
@@ -8925,16 +9113,14 @@ class SoilSiteInfoCompanion extends UpdateCompanion<SoilSiteInfoData> {
   });
   SoilSiteInfoCompanion.insert({
     this.id = const Value.absent(),
-    required int surveyId,
-    required DateTime measDate,
+    required int soilPitSummaryId,
     required String soilClass,
     required int profileDepth,
     required int drainage,
     required int moisture,
     required String deposition,
     required String humusForm,
-  })  : surveyId = Value(surveyId),
-        measDate = Value(measDate),
+  })  : soilPitSummaryId = Value(soilPitSummaryId),
         soilClass = Value(soilClass),
         profileDepth = Value(profileDepth),
         drainage = Value(drainage),
@@ -8943,8 +9129,7 @@ class SoilSiteInfoCompanion extends UpdateCompanion<SoilSiteInfoData> {
         humusForm = Value(humusForm);
   static Insertable<SoilSiteInfoData> custom({
     Expression<int>? id,
-    Expression<int>? surveyId,
-    Expression<DateTime>? measDate,
+    Expression<int>? soilPitSummaryId,
     Expression<String>? soilClass,
     Expression<int>? profileDepth,
     Expression<int>? drainage,
@@ -8954,8 +9139,7 @@ class SoilSiteInfoCompanion extends UpdateCompanion<SoilSiteInfoData> {
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (surveyId != null) 'survey_id': surveyId,
-      if (measDate != null) 'meas_date': measDate,
+      if (soilPitSummaryId != null) 'soil_pit_summary_id': soilPitSummaryId,
       if (soilClass != null) 'soil_class': soilClass,
       if (profileDepth != null) 'profile_depth': profileDepth,
       if (drainage != null) 'drainage': drainage,
@@ -8967,8 +9151,7 @@ class SoilSiteInfoCompanion extends UpdateCompanion<SoilSiteInfoData> {
 
   SoilSiteInfoCompanion copyWith(
       {Value<int>? id,
-      Value<int>? surveyId,
-      Value<DateTime>? measDate,
+      Value<int>? soilPitSummaryId,
       Value<String>? soilClass,
       Value<int>? profileDepth,
       Value<int>? drainage,
@@ -8977,8 +9160,7 @@ class SoilSiteInfoCompanion extends UpdateCompanion<SoilSiteInfoData> {
       Value<String>? humusForm}) {
     return SoilSiteInfoCompanion(
       id: id ?? this.id,
-      surveyId: surveyId ?? this.surveyId,
-      measDate: measDate ?? this.measDate,
+      soilPitSummaryId: soilPitSummaryId ?? this.soilPitSummaryId,
       soilClass: soilClass ?? this.soilClass,
       profileDepth: profileDepth ?? this.profileDepth,
       drainage: drainage ?? this.drainage,
@@ -8994,11 +9176,8 @@ class SoilSiteInfoCompanion extends UpdateCompanion<SoilSiteInfoData> {
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
-    if (surveyId.present) {
-      map['survey_id'] = Variable<int>(surveyId.value);
-    }
-    if (measDate.present) {
-      map['meas_date'] = Variable<DateTime>(measDate.value);
+    if (soilPitSummaryId.present) {
+      map['soil_pit_summary_id'] = Variable<int>(soilPitSummaryId.value);
     }
     if (soilClass.present) {
       map['soil_class'] = Variable<String>(soilClass.value);
@@ -9025,8 +9204,7 @@ class SoilSiteInfoCompanion extends UpdateCompanion<SoilSiteInfoData> {
   String toString() {
     return (StringBuffer('SoilSiteInfoCompanion(')
           ..write('id: $id, ')
-          ..write('surveyId: $surveyId, ')
-          ..write('measDate: $measDate, ')
+          ..write('soilPitSummaryId: $soilPitSummaryId, ')
           ..write('soilClass: $soilClass, ')
           ..write('profileDepth: $profileDepth, ')
           ..write('drainage: $drainage, ')
@@ -9053,15 +9231,15 @@ class $SoilPitDepthTable extends SoilPitDepth
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _soilSiteIdMeta =
-      const VerificationMeta('soilSiteId');
+  static const VerificationMeta _soilPitSummaryIdMeta =
+      const VerificationMeta('soilPitSummaryId');
   @override
-  late final GeneratedColumn<int> soilSiteId = GeneratedColumn<int>(
-      'soil_site_id', aliasedName, false,
+  late final GeneratedColumn<int> soilPitSummaryId = GeneratedColumn<int>(
+      'soil_pit_summary_id', aliasedName, false,
       type: DriftSqlType.int,
       requiredDuringInsert: true,
       defaultConstraints: GeneratedColumn.constraintIsAlways(
-          'UNIQUE REFERENCES soil_site_info (id)'));
+          'UNIQUE REFERENCES soil_pit_summary (id)'));
   static const VerificationMeta _soilPitCodeCompleteMeta =
       const VerificationMeta('soilPitCodeComplete');
   @override
@@ -9088,7 +9266,7 @@ class $SoilPitDepthTable extends SoilPitDepth
       requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns =>
-      [id, soilSiteId, soilPitCodeComplete, depthMin, depthOrg];
+      [id, soilPitSummaryId, soilPitCodeComplete, depthMin, depthOrg];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -9102,13 +9280,13 @@ class $SoilPitDepthTable extends SoilPitDepth
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    if (data.containsKey('soil_site_id')) {
+    if (data.containsKey('soil_pit_summary_id')) {
       context.handle(
-          _soilSiteIdMeta,
-          soilSiteId.isAcceptableOrUnknown(
-              data['soil_site_id']!, _soilSiteIdMeta));
+          _soilPitSummaryIdMeta,
+          soilPitSummaryId.isAcceptableOrUnknown(
+              data['soil_pit_summary_id']!, _soilPitSummaryIdMeta));
     } else if (isInserting) {
-      context.missing(_soilSiteIdMeta);
+      context.missing(_soilPitSummaryIdMeta);
     }
     if (data.containsKey('soil_pit_code_complete')) {
       context.handle(
@@ -9141,8 +9319,8 @@ class $SoilPitDepthTable extends SoilPitDepth
     return SoilPitDepthData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      soilSiteId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}soil_site_id'])!,
+      soilPitSummaryId: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}soil_pit_summary_id'])!,
       soilPitCodeComplete: attachedDatabase.typeMapping.read(
           DriftSqlType.string,
           data['${effectivePrefix}soil_pit_code_complete'])!,
@@ -9162,13 +9340,13 @@ class $SoilPitDepthTable extends SoilPitDepth
 class SoilPitDepthData extends DataClass
     implements Insertable<SoilPitDepthData> {
   final int id;
-  final int soilSiteId;
+  final int soilPitSummaryId;
   final String soilPitCodeComplete;
   final double depthMin;
   final double depthOrg;
   const SoilPitDepthData(
       {required this.id,
-      required this.soilSiteId,
+      required this.soilPitSummaryId,
       required this.soilPitCodeComplete,
       required this.depthMin,
       required this.depthOrg});
@@ -9176,7 +9354,7 @@ class SoilPitDepthData extends DataClass
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
-    map['soil_site_id'] = Variable<int>(soilSiteId);
+    map['soil_pit_summary_id'] = Variable<int>(soilPitSummaryId);
     map['soil_pit_code_complete'] = Variable<String>(soilPitCodeComplete);
     map['depth_min'] = Variable<double>(depthMin);
     map['depth_org'] = Variable<double>(depthOrg);
@@ -9186,7 +9364,7 @@ class SoilPitDepthData extends DataClass
   SoilPitDepthCompanion toCompanion(bool nullToAbsent) {
     return SoilPitDepthCompanion(
       id: Value(id),
-      soilSiteId: Value(soilSiteId),
+      soilPitSummaryId: Value(soilPitSummaryId),
       soilPitCodeComplete: Value(soilPitCodeComplete),
       depthMin: Value(depthMin),
       depthOrg: Value(depthOrg),
@@ -9198,7 +9376,7 @@ class SoilPitDepthData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return SoilPitDepthData(
       id: serializer.fromJson<int>(json['id']),
-      soilSiteId: serializer.fromJson<int>(json['soilSiteId']),
+      soilPitSummaryId: serializer.fromJson<int>(json['soilPitSummaryId']),
       soilPitCodeComplete:
           serializer.fromJson<String>(json['soilPitCodeComplete']),
       depthMin: serializer.fromJson<double>(json['depthMin']),
@@ -9210,7 +9388,7 @@ class SoilPitDepthData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'soilSiteId': serializer.toJson<int>(soilSiteId),
+      'soilPitSummaryId': serializer.toJson<int>(soilPitSummaryId),
       'soilPitCodeComplete': serializer.toJson<String>(soilPitCodeComplete),
       'depthMin': serializer.toJson<double>(depthMin),
       'depthOrg': serializer.toJson<double>(depthOrg),
@@ -9219,13 +9397,13 @@ class SoilPitDepthData extends DataClass
 
   SoilPitDepthData copyWith(
           {int? id,
-          int? soilSiteId,
+          int? soilPitSummaryId,
           String? soilPitCodeComplete,
           double? depthMin,
           double? depthOrg}) =>
       SoilPitDepthData(
         id: id ?? this.id,
-        soilSiteId: soilSiteId ?? this.soilSiteId,
+        soilPitSummaryId: soilPitSummaryId ?? this.soilPitSummaryId,
         soilPitCodeComplete: soilPitCodeComplete ?? this.soilPitCodeComplete,
         depthMin: depthMin ?? this.depthMin,
         depthOrg: depthOrg ?? this.depthOrg,
@@ -9234,7 +9412,7 @@ class SoilPitDepthData extends DataClass
   String toString() {
     return (StringBuffer('SoilPitDepthData(')
           ..write('id: $id, ')
-          ..write('soilSiteId: $soilSiteId, ')
+          ..write('soilPitSummaryId: $soilPitSummaryId, ')
           ..write('soilPitCodeComplete: $soilPitCodeComplete, ')
           ..write('depthMin: $depthMin, ')
           ..write('depthOrg: $depthOrg')
@@ -9243,14 +9421,14 @@ class SoilPitDepthData extends DataClass
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, soilSiteId, soilPitCodeComplete, depthMin, depthOrg);
+  int get hashCode => Object.hash(
+      id, soilPitSummaryId, soilPitCodeComplete, depthMin, depthOrg);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is SoilPitDepthData &&
           other.id == this.id &&
-          other.soilSiteId == this.soilSiteId &&
+          other.soilPitSummaryId == this.soilPitSummaryId &&
           other.soilPitCodeComplete == this.soilPitCodeComplete &&
           other.depthMin == this.depthMin &&
           other.depthOrg == this.depthOrg);
@@ -9258,37 +9436,37 @@ class SoilPitDepthData extends DataClass
 
 class SoilPitDepthCompanion extends UpdateCompanion<SoilPitDepthData> {
   final Value<int> id;
-  final Value<int> soilSiteId;
+  final Value<int> soilPitSummaryId;
   final Value<String> soilPitCodeComplete;
   final Value<double> depthMin;
   final Value<double> depthOrg;
   const SoilPitDepthCompanion({
     this.id = const Value.absent(),
-    this.soilSiteId = const Value.absent(),
+    this.soilPitSummaryId = const Value.absent(),
     this.soilPitCodeComplete = const Value.absent(),
     this.depthMin = const Value.absent(),
     this.depthOrg = const Value.absent(),
   });
   SoilPitDepthCompanion.insert({
     this.id = const Value.absent(),
-    required int soilSiteId,
+    required int soilPitSummaryId,
     required String soilPitCodeComplete,
     required double depthMin,
     required double depthOrg,
-  })  : soilSiteId = Value(soilSiteId),
+  })  : soilPitSummaryId = Value(soilPitSummaryId),
         soilPitCodeComplete = Value(soilPitCodeComplete),
         depthMin = Value(depthMin),
         depthOrg = Value(depthOrg);
   static Insertable<SoilPitDepthData> custom({
     Expression<int>? id,
-    Expression<int>? soilSiteId,
+    Expression<int>? soilPitSummaryId,
     Expression<String>? soilPitCodeComplete,
     Expression<double>? depthMin,
     Expression<double>? depthOrg,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (soilSiteId != null) 'soil_site_id': soilSiteId,
+      if (soilPitSummaryId != null) 'soil_pit_summary_id': soilPitSummaryId,
       if (soilPitCodeComplete != null)
         'soil_pit_code_complete': soilPitCodeComplete,
       if (depthMin != null) 'depth_min': depthMin,
@@ -9298,13 +9476,13 @@ class SoilPitDepthCompanion extends UpdateCompanion<SoilPitDepthData> {
 
   SoilPitDepthCompanion copyWith(
       {Value<int>? id,
-      Value<int>? soilSiteId,
+      Value<int>? soilPitSummaryId,
       Value<String>? soilPitCodeComplete,
       Value<double>? depthMin,
       Value<double>? depthOrg}) {
     return SoilPitDepthCompanion(
       id: id ?? this.id,
-      soilSiteId: soilSiteId ?? this.soilSiteId,
+      soilPitSummaryId: soilPitSummaryId ?? this.soilPitSummaryId,
       soilPitCodeComplete: soilPitCodeComplete ?? this.soilPitCodeComplete,
       depthMin: depthMin ?? this.depthMin,
       depthOrg: depthOrg ?? this.depthOrg,
@@ -9317,8 +9495,8 @@ class SoilPitDepthCompanion extends UpdateCompanion<SoilPitDepthData> {
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
-    if (soilSiteId.present) {
-      map['soil_site_id'] = Variable<int>(soilSiteId.value);
+    if (soilPitSummaryId.present) {
+      map['soil_pit_summary_id'] = Variable<int>(soilPitSummaryId.value);
     }
     if (soilPitCodeComplete.present) {
       map['soil_pit_code_complete'] =
@@ -9337,7 +9515,7 @@ class SoilPitDepthCompanion extends UpdateCompanion<SoilPitDepthData> {
   String toString() {
     return (StringBuffer('SoilPitDepthCompanion(')
           ..write('id: $id, ')
-          ..write('soilSiteId: $soilSiteId, ')
+          ..write('soilPitSummaryId: $soilPitSummaryId, ')
           ..write('soilPitCodeComplete: $soilPitCodeComplete, ')
           ..write('depthMin: $depthMin, ')
           ..write('depthOrg: $depthOrg')
@@ -9361,15 +9539,15 @@ class $SoilPitFeatureTable extends SoilPitFeature
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _soilSiteIdMeta =
-      const VerificationMeta('soilSiteId');
+  static const VerificationMeta _soilPitSummaryIdMeta =
+      const VerificationMeta('soilPitSummaryId');
   @override
-  late final GeneratedColumn<int> soilSiteId = GeneratedColumn<int>(
-      'soil_site_id', aliasedName, false,
+  late final GeneratedColumn<int> soilPitSummaryId = GeneratedColumn<int>(
+      'soil_pit_summary_id', aliasedName, false,
       type: DriftSqlType.int,
       requiredDuringInsert: true,
       defaultConstraints: GeneratedColumn.constraintIsAlways(
-          'UNIQUE REFERENCES soil_site_info (id)'));
+          'UNIQUE REFERENCES soil_pit_summary (id)'));
   static const VerificationMeta _soilPitCodeFieldMeta =
       const VerificationMeta('soilPitCodeField');
   @override
@@ -9388,7 +9566,7 @@ class $SoilPitFeatureTable extends SoilPitFeature
       requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns =>
-      [id, soilSiteId, soilPitCodeField, depthFeature];
+      [id, soilPitSummaryId, soilPitCodeField, depthFeature];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -9402,13 +9580,13 @@ class $SoilPitFeatureTable extends SoilPitFeature
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    if (data.containsKey('soil_site_id')) {
+    if (data.containsKey('soil_pit_summary_id')) {
       context.handle(
-          _soilSiteIdMeta,
-          soilSiteId.isAcceptableOrUnknown(
-              data['soil_site_id']!, _soilSiteIdMeta));
+          _soilPitSummaryIdMeta,
+          soilPitSummaryId.isAcceptableOrUnknown(
+              data['soil_pit_summary_id']!, _soilPitSummaryIdMeta));
     } else if (isInserting) {
-      context.missing(_soilSiteIdMeta);
+      context.missing(_soilPitSummaryIdMeta);
     }
     if (data.containsKey('soil_pit_code_field')) {
       context.handle(
@@ -9437,8 +9615,8 @@ class $SoilPitFeatureTable extends SoilPitFeature
     return SoilPitFeatureData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      soilSiteId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}soil_site_id'])!,
+      soilPitSummaryId: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}soil_pit_summary_id'])!,
       soilPitCodeField: attachedDatabase.typeMapping.read(
           DriftSqlType.string, data['${effectivePrefix}soil_pit_code_field'])!,
       depthFeature: attachedDatabase.typeMapping
@@ -9455,19 +9633,19 @@ class $SoilPitFeatureTable extends SoilPitFeature
 class SoilPitFeatureData extends DataClass
     implements Insertable<SoilPitFeatureData> {
   final int id;
-  final int soilSiteId;
+  final int soilPitSummaryId;
   final String soilPitCodeField;
   final int depthFeature;
   const SoilPitFeatureData(
       {required this.id,
-      required this.soilSiteId,
+      required this.soilPitSummaryId,
       required this.soilPitCodeField,
       required this.depthFeature});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
-    map['soil_site_id'] = Variable<int>(soilSiteId);
+    map['soil_pit_summary_id'] = Variable<int>(soilPitSummaryId);
     map['soil_pit_code_field'] = Variable<String>(soilPitCodeField);
     map['depth_feature'] = Variable<int>(depthFeature);
     return map;
@@ -9476,7 +9654,7 @@ class SoilPitFeatureData extends DataClass
   SoilPitFeatureCompanion toCompanion(bool nullToAbsent) {
     return SoilPitFeatureCompanion(
       id: Value(id),
-      soilSiteId: Value(soilSiteId),
+      soilPitSummaryId: Value(soilPitSummaryId),
       soilPitCodeField: Value(soilPitCodeField),
       depthFeature: Value(depthFeature),
     );
@@ -9487,7 +9665,7 @@ class SoilPitFeatureData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return SoilPitFeatureData(
       id: serializer.fromJson<int>(json['id']),
-      soilSiteId: serializer.fromJson<int>(json['soilSiteId']),
+      soilPitSummaryId: serializer.fromJson<int>(json['soilPitSummaryId']),
       soilPitCodeField: serializer.fromJson<String>(json['soilPitCodeField']),
       depthFeature: serializer.fromJson<int>(json['depthFeature']),
     );
@@ -9497,7 +9675,7 @@ class SoilPitFeatureData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'soilSiteId': serializer.toJson<int>(soilSiteId),
+      'soilPitSummaryId': serializer.toJson<int>(soilPitSummaryId),
       'soilPitCodeField': serializer.toJson<String>(soilPitCodeField),
       'depthFeature': serializer.toJson<int>(depthFeature),
     };
@@ -9505,12 +9683,12 @@ class SoilPitFeatureData extends DataClass
 
   SoilPitFeatureData copyWith(
           {int? id,
-          int? soilSiteId,
+          int? soilPitSummaryId,
           String? soilPitCodeField,
           int? depthFeature}) =>
       SoilPitFeatureData(
         id: id ?? this.id,
-        soilSiteId: soilSiteId ?? this.soilSiteId,
+        soilPitSummaryId: soilPitSummaryId ?? this.soilPitSummaryId,
         soilPitCodeField: soilPitCodeField ?? this.soilPitCodeField,
         depthFeature: depthFeature ?? this.depthFeature,
       );
@@ -9518,7 +9696,7 @@ class SoilPitFeatureData extends DataClass
   String toString() {
     return (StringBuffer('SoilPitFeatureData(')
           ..write('id: $id, ')
-          ..write('soilSiteId: $soilSiteId, ')
+          ..write('soilPitSummaryId: $soilPitSummaryId, ')
           ..write('soilPitCodeField: $soilPitCodeField, ')
           ..write('depthFeature: $depthFeature')
           ..write(')'))
@@ -9527,45 +9705,45 @@ class SoilPitFeatureData extends DataClass
 
   @override
   int get hashCode =>
-      Object.hash(id, soilSiteId, soilPitCodeField, depthFeature);
+      Object.hash(id, soilPitSummaryId, soilPitCodeField, depthFeature);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is SoilPitFeatureData &&
           other.id == this.id &&
-          other.soilSiteId == this.soilSiteId &&
+          other.soilPitSummaryId == this.soilPitSummaryId &&
           other.soilPitCodeField == this.soilPitCodeField &&
           other.depthFeature == this.depthFeature);
 }
 
 class SoilPitFeatureCompanion extends UpdateCompanion<SoilPitFeatureData> {
   final Value<int> id;
-  final Value<int> soilSiteId;
+  final Value<int> soilPitSummaryId;
   final Value<String> soilPitCodeField;
   final Value<int> depthFeature;
   const SoilPitFeatureCompanion({
     this.id = const Value.absent(),
-    this.soilSiteId = const Value.absent(),
+    this.soilPitSummaryId = const Value.absent(),
     this.soilPitCodeField = const Value.absent(),
     this.depthFeature = const Value.absent(),
   });
   SoilPitFeatureCompanion.insert({
     this.id = const Value.absent(),
-    required int soilSiteId,
+    required int soilPitSummaryId,
     required String soilPitCodeField,
     required int depthFeature,
-  })  : soilSiteId = Value(soilSiteId),
+  })  : soilPitSummaryId = Value(soilPitSummaryId),
         soilPitCodeField = Value(soilPitCodeField),
         depthFeature = Value(depthFeature);
   static Insertable<SoilPitFeatureData> custom({
     Expression<int>? id,
-    Expression<int>? soilSiteId,
+    Expression<int>? soilPitSummaryId,
     Expression<String>? soilPitCodeField,
     Expression<int>? depthFeature,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (soilSiteId != null) 'soil_site_id': soilSiteId,
+      if (soilPitSummaryId != null) 'soil_pit_summary_id': soilPitSummaryId,
       if (soilPitCodeField != null) 'soil_pit_code_field': soilPitCodeField,
       if (depthFeature != null) 'depth_feature': depthFeature,
     });
@@ -9573,12 +9751,12 @@ class SoilPitFeatureCompanion extends UpdateCompanion<SoilPitFeatureData> {
 
   SoilPitFeatureCompanion copyWith(
       {Value<int>? id,
-      Value<int>? soilSiteId,
+      Value<int>? soilPitSummaryId,
       Value<String>? soilPitCodeField,
       Value<int>? depthFeature}) {
     return SoilPitFeatureCompanion(
       id: id ?? this.id,
-      soilSiteId: soilSiteId ?? this.soilSiteId,
+      soilPitSummaryId: soilPitSummaryId ?? this.soilPitSummaryId,
       soilPitCodeField: soilPitCodeField ?? this.soilPitCodeField,
       depthFeature: depthFeature ?? this.depthFeature,
     );
@@ -9590,8 +9768,8 @@ class SoilPitFeatureCompanion extends UpdateCompanion<SoilPitFeatureData> {
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
-    if (soilSiteId.present) {
-      map['soil_site_id'] = Variable<int>(soilSiteId.value);
+    if (soilPitSummaryId.present) {
+      map['soil_pit_summary_id'] = Variable<int>(soilPitSummaryId.value);
     }
     if (soilPitCodeField.present) {
       map['soil_pit_code_field'] = Variable<String>(soilPitCodeField.value);
@@ -9606,7 +9784,7 @@ class SoilPitFeatureCompanion extends UpdateCompanion<SoilPitFeatureData> {
   String toString() {
     return (StringBuffer('SoilPitFeatureCompanion(')
           ..write('id: $id, ')
-          ..write('soilSiteId: $soilSiteId, ')
+          ..write('soilPitSummaryId: $soilPitSummaryId, ')
           ..write('soilPitCodeField: $soilPitCodeField, ')
           ..write('depthFeature: $depthFeature')
           ..write(')'))
@@ -9631,15 +9809,15 @@ class $SoilPitHorizonDescriptionTable extends SoilPitHorizonDescription
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _soilSiteIdMeta =
-      const VerificationMeta('soilSiteId');
+  static const VerificationMeta _soilPitSummaryIdMeta =
+      const VerificationMeta('soilPitSummaryId');
   @override
-  late final GeneratedColumn<int> soilSiteId = GeneratedColumn<int>(
-      'soil_site_id', aliasedName, false,
+  late final GeneratedColumn<int> soilPitSummaryId = GeneratedColumn<int>(
+      'soil_pit_summary_id', aliasedName, false,
       type: DriftSqlType.int,
       requiredDuringInsert: true,
       defaultConstraints: GeneratedColumn.constraintIsAlways(
-          'UNIQUE REFERENCES soil_site_info (id)'));
+          'UNIQUE REFERENCES soil_pit_summary (id)'));
   static const VerificationMeta _soilPitCodeCompleteMeta =
       const VerificationMeta('soilPitCodeComplete');
   @override
@@ -9698,7 +9876,7 @@ class $SoilPitHorizonDescriptionTable extends SoilPitHorizonDescription
   @override
   List<GeneratedColumn> get $columns => [
         id,
-        soilSiteId,
+        soilPitSummaryId,
         soilPitCodeComplete,
         horizonNum,
         horizon,
@@ -9721,13 +9899,13 @@ class $SoilPitHorizonDescriptionTable extends SoilPitHorizonDescription
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    if (data.containsKey('soil_site_id')) {
+    if (data.containsKey('soil_pit_summary_id')) {
       context.handle(
-          _soilSiteIdMeta,
-          soilSiteId.isAcceptableOrUnknown(
-              data['soil_site_id']!, _soilSiteIdMeta));
+          _soilPitSummaryIdMeta,
+          soilPitSummaryId.isAcceptableOrUnknown(
+              data['soil_pit_summary_id']!, _soilPitSummaryIdMeta));
     } else if (isInserting) {
-      context.missing(_soilSiteIdMeta);
+      context.missing(_soilPitSummaryIdMeta);
     }
     if (data.containsKey('soil_pit_code_complete')) {
       context.handle(
@@ -9789,8 +9967,8 @@ class $SoilPitHorizonDescriptionTable extends SoilPitHorizonDescription
     return SoilPitHorizonDescriptionData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      soilSiteId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}soil_site_id'])!,
+      soilPitSummaryId: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}soil_pit_summary_id'])!,
       soilPitCodeComplete: attachedDatabase.typeMapping.read(
           DriftSqlType.string,
           data['${effectivePrefix}soil_pit_code_complete'])!,
@@ -9818,7 +9996,7 @@ class $SoilPitHorizonDescriptionTable extends SoilPitHorizonDescription
 class SoilPitHorizonDescriptionData extends DataClass
     implements Insertable<SoilPitHorizonDescriptionData> {
   final int id;
-  final int soilSiteId;
+  final int soilPitSummaryId;
   final String soilPitCodeComplete;
   final int horizonNum;
   final String horizon;
@@ -9828,7 +10006,7 @@ class SoilPitHorizonDescriptionData extends DataClass
   final String texture;
   const SoilPitHorizonDescriptionData(
       {required this.id,
-      required this.soilSiteId,
+      required this.soilPitSummaryId,
       required this.soilPitCodeComplete,
       required this.horizonNum,
       required this.horizon,
@@ -9840,7 +10018,7 @@ class SoilPitHorizonDescriptionData extends DataClass
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
-    map['soil_site_id'] = Variable<int>(soilSiteId);
+    map['soil_pit_summary_id'] = Variable<int>(soilPitSummaryId);
     map['soil_pit_code_complete'] = Variable<String>(soilPitCodeComplete);
     map['horizon_num'] = Variable<int>(horizonNum);
     map['horizon'] = Variable<String>(horizon);
@@ -9854,7 +10032,7 @@ class SoilPitHorizonDescriptionData extends DataClass
   SoilPitHorizonDescriptionCompanion toCompanion(bool nullToAbsent) {
     return SoilPitHorizonDescriptionCompanion(
       id: Value(id),
-      soilSiteId: Value(soilSiteId),
+      soilPitSummaryId: Value(soilPitSummaryId),
       soilPitCodeComplete: Value(soilPitCodeComplete),
       horizonNum: Value(horizonNum),
       horizon: Value(horizon),
@@ -9870,7 +10048,7 @@ class SoilPitHorizonDescriptionData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return SoilPitHorizonDescriptionData(
       id: serializer.fromJson<int>(json['id']),
-      soilSiteId: serializer.fromJson<int>(json['soilSiteId']),
+      soilPitSummaryId: serializer.fromJson<int>(json['soilPitSummaryId']),
       soilPitCodeComplete:
           serializer.fromJson<String>(json['soilPitCodeComplete']),
       horizonNum: serializer.fromJson<int>(json['horizonNum']),
@@ -9886,7 +10064,7 @@ class SoilPitHorizonDescriptionData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'soilSiteId': serializer.toJson<int>(soilSiteId),
+      'soilPitSummaryId': serializer.toJson<int>(soilPitSummaryId),
       'soilPitCodeComplete': serializer.toJson<String>(soilPitCodeComplete),
       'horizonNum': serializer.toJson<int>(horizonNum),
       'horizon': serializer.toJson<String>(horizon),
@@ -9899,7 +10077,7 @@ class SoilPitHorizonDescriptionData extends DataClass
 
   SoilPitHorizonDescriptionData copyWith(
           {int? id,
-          int? soilSiteId,
+          int? soilPitSummaryId,
           String? soilPitCodeComplete,
           int? horizonNum,
           String? horizon,
@@ -9909,7 +10087,7 @@ class SoilPitHorizonDescriptionData extends DataClass
           String? texture}) =>
       SoilPitHorizonDescriptionData(
         id: id ?? this.id,
-        soilSiteId: soilSiteId ?? this.soilSiteId,
+        soilPitSummaryId: soilPitSummaryId ?? this.soilPitSummaryId,
         soilPitCodeComplete: soilPitCodeComplete ?? this.soilPitCodeComplete,
         horizonNum: horizonNum ?? this.horizonNum,
         horizon: horizon ?? this.horizon,
@@ -9922,7 +10100,7 @@ class SoilPitHorizonDescriptionData extends DataClass
   String toString() {
     return (StringBuffer('SoilPitHorizonDescriptionData(')
           ..write('id: $id, ')
-          ..write('soilSiteId: $soilSiteId, ')
+          ..write('soilPitSummaryId: $soilPitSummaryId, ')
           ..write('soilPitCodeComplete: $soilPitCodeComplete, ')
           ..write('horizonNum: $horizonNum, ')
           ..write('horizon: $horizon, ')
@@ -9935,14 +10113,14 @@ class SoilPitHorizonDescriptionData extends DataClass
   }
 
   @override
-  int get hashCode => Object.hash(id, soilSiteId, soilPitCodeComplete,
+  int get hashCode => Object.hash(id, soilPitSummaryId, soilPitCodeComplete,
       horizonNum, horizon, horizonUpper, thickness, color, texture);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is SoilPitHorizonDescriptionData &&
           other.id == this.id &&
-          other.soilSiteId == this.soilSiteId &&
+          other.soilPitSummaryId == this.soilPitSummaryId &&
           other.soilPitCodeComplete == this.soilPitCodeComplete &&
           other.horizonNum == this.horizonNum &&
           other.horizon == this.horizon &&
@@ -9955,7 +10133,7 @@ class SoilPitHorizonDescriptionData extends DataClass
 class SoilPitHorizonDescriptionCompanion
     extends UpdateCompanion<SoilPitHorizonDescriptionData> {
   final Value<int> id;
-  final Value<int> soilSiteId;
+  final Value<int> soilPitSummaryId;
   final Value<String> soilPitCodeComplete;
   final Value<int> horizonNum;
   final Value<String> horizon;
@@ -9965,7 +10143,7 @@ class SoilPitHorizonDescriptionCompanion
   final Value<String> texture;
   const SoilPitHorizonDescriptionCompanion({
     this.id = const Value.absent(),
-    this.soilSiteId = const Value.absent(),
+    this.soilPitSummaryId = const Value.absent(),
     this.soilPitCodeComplete = const Value.absent(),
     this.horizonNum = const Value.absent(),
     this.horizon = const Value.absent(),
@@ -9976,7 +10154,7 @@ class SoilPitHorizonDescriptionCompanion
   });
   SoilPitHorizonDescriptionCompanion.insert({
     this.id = const Value.absent(),
-    required int soilSiteId,
+    required int soilPitSummaryId,
     required String soilPitCodeComplete,
     required int horizonNum,
     required String horizon,
@@ -9984,7 +10162,7 @@ class SoilPitHorizonDescriptionCompanion
     required double thickness,
     required String color,
     required String texture,
-  })  : soilSiteId = Value(soilSiteId),
+  })  : soilPitSummaryId = Value(soilPitSummaryId),
         soilPitCodeComplete = Value(soilPitCodeComplete),
         horizonNum = Value(horizonNum),
         horizon = Value(horizon),
@@ -9994,7 +10172,7 @@ class SoilPitHorizonDescriptionCompanion
         texture = Value(texture);
   static Insertable<SoilPitHorizonDescriptionData> custom({
     Expression<int>? id,
-    Expression<int>? soilSiteId,
+    Expression<int>? soilPitSummaryId,
     Expression<String>? soilPitCodeComplete,
     Expression<int>? horizonNum,
     Expression<String>? horizon,
@@ -10005,7 +10183,7 @@ class SoilPitHorizonDescriptionCompanion
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (soilSiteId != null) 'soil_site_id': soilSiteId,
+      if (soilPitSummaryId != null) 'soil_pit_summary_id': soilPitSummaryId,
       if (soilPitCodeComplete != null)
         'soil_pit_code_complete': soilPitCodeComplete,
       if (horizonNum != null) 'horizon_num': horizonNum,
@@ -10019,7 +10197,7 @@ class SoilPitHorizonDescriptionCompanion
 
   SoilPitHorizonDescriptionCompanion copyWith(
       {Value<int>? id,
-      Value<int>? soilSiteId,
+      Value<int>? soilPitSummaryId,
       Value<String>? soilPitCodeComplete,
       Value<int>? horizonNum,
       Value<String>? horizon,
@@ -10029,7 +10207,7 @@ class SoilPitHorizonDescriptionCompanion
       Value<String>? texture}) {
     return SoilPitHorizonDescriptionCompanion(
       id: id ?? this.id,
-      soilSiteId: soilSiteId ?? this.soilSiteId,
+      soilPitSummaryId: soilPitSummaryId ?? this.soilPitSummaryId,
       soilPitCodeComplete: soilPitCodeComplete ?? this.soilPitCodeComplete,
       horizonNum: horizonNum ?? this.horizonNum,
       horizon: horizon ?? this.horizon,
@@ -10046,8 +10224,8 @@ class SoilPitHorizonDescriptionCompanion
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
-    if (soilSiteId.present) {
-      map['soil_site_id'] = Variable<int>(soilSiteId.value);
+    if (soilPitSummaryId.present) {
+      map['soil_pit_summary_id'] = Variable<int>(soilPitSummaryId.value);
     }
     if (soilPitCodeComplete.present) {
       map['soil_pit_code_complete'] =
@@ -10078,7 +10256,7 @@ class SoilPitHorizonDescriptionCompanion
   String toString() {
     return (StringBuffer('SoilPitHorizonDescriptionCompanion(')
           ..write('id: $id, ')
-          ..write('soilSiteId: $soilSiteId, ')
+          ..write('soilPitSummaryId: $soilPitSummaryId, ')
           ..write('soilPitCodeComplete: $soilPitCodeComplete, ')
           ..write('horizonNum: $horizonNum, ')
           ..write('horizon: $horizon, ')
@@ -10138,6 +10316,7 @@ abstract class _$Database extends GeneratedDatabase {
   late final $EcpSummaryTable ecpSummary = $EcpSummaryTable(this);
   late final $EcpHeaderTable ecpHeader = $EcpHeaderTable(this);
   late final $EcpSpeciesTable ecpSpecies = $EcpSpeciesTable(this);
+  late final $SoilPitSummaryTable soilPitSummary = $SoilPitSummaryTable(this);
   late final $SoilSiteInfoTable soilSiteInfo = $SoilSiteInfoTable(this);
   late final $SoilPitDepthTable soilPitDepth = $SoilPitDepthTable(this);
   late final $SoilPitFeatureTable soilPitFeature = $SoilPitFeatureTable(this);
@@ -10191,6 +10370,7 @@ abstract class _$Database extends GeneratedDatabase {
         ecpSummary,
         ecpHeader,
         ecpSpecies,
+        soilPitSummary,
         soilSiteInfo,
         soilPitDepth,
         soilPitFeature,

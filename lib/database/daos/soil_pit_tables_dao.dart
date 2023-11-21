@@ -6,6 +6,7 @@ import '../database_creation_files/soil_pit_tables.dart';
 part 'soil_pit_tables_dao.g.dart';
 
 @DriftAccessor(tables: [
+  SoilPitSummary,
   SoilSiteInfo,
   SoilPitDepth,
   SoilPitFeature,
@@ -23,7 +24,7 @@ class SoilPitTablesDao extends DatabaseAccessor<Database>
     delete(soilPitHorizonDescription).go();
   }
 
-  Future<SoilSiteInfoData> getSoilSiteInfo(int surveyId) =>
-      (select(soilSiteInfo)..where((tbl) => tbl.surveyId.equals(surveyId)))
+  Future<SoilPitSummaryData> getSoilPitSummary(int surveyId) =>
+      (select(soilPitSummary)..where((tbl) => tbl.surveyId.equals(surveyId)))
           .getSingle();
 }

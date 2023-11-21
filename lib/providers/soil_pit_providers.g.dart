@@ -6,7 +6,7 @@ part of 'soil_pit_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$soilSiteInfoDataHash() => r'856622894ffa7cb4e6f8ff8b203afb5022d95b26';
+String _$soilSiteInfoDataHash() => r'f544e40886905174ae0adf82480517439f8829f0';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -34,7 +34,7 @@ class _SystemHash {
 const soilSiteInfoDataProvider = SoilSiteInfoDataFamily();
 
 /// See also [soilSiteInfoData].
-class SoilSiteInfoDataFamily extends Family<AsyncValue<SoilSiteInfoData>> {
+class SoilSiteInfoDataFamily extends Family<AsyncValue<SoilPitSummaryData>> {
   /// See also [soilSiteInfoData].
   const SoilSiteInfoDataFamily();
 
@@ -73,7 +73,7 @@ class SoilSiteInfoDataFamily extends Family<AsyncValue<SoilSiteInfoData>> {
 
 /// See also [soilSiteInfoData].
 class SoilSiteInfoDataProvider
-    extends AutoDisposeFutureProvider<SoilSiteInfoData> {
+    extends AutoDisposeFutureProvider<SoilPitSummaryData> {
   /// See also [soilSiteInfoData].
   SoilSiteInfoDataProvider(
     int surveyId,
@@ -108,7 +108,7 @@ class SoilSiteInfoDataProvider
 
   @override
   Override overrideWith(
-    FutureOr<SoilSiteInfoData> Function(SoilSiteInfoDataRef provider) create,
+    FutureOr<SoilPitSummaryData> Function(SoilSiteInfoDataRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -125,7 +125,7 @@ class SoilSiteInfoDataProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<SoilSiteInfoData> createElement() {
+  AutoDisposeFutureProviderElement<SoilPitSummaryData> createElement() {
     return _SoilSiteInfoDataProviderElement(this);
   }
 
@@ -143,13 +143,13 @@ class SoilSiteInfoDataProvider
   }
 }
 
-mixin SoilSiteInfoDataRef on AutoDisposeFutureProviderRef<SoilSiteInfoData> {
+mixin SoilSiteInfoDataRef on AutoDisposeFutureProviderRef<SoilPitSummaryData> {
   /// The parameter `surveyId` of this provider.
   int get surveyId;
 }
 
 class _SoilSiteInfoDataProviderElement
-    extends AutoDisposeFutureProviderElement<SoilSiteInfoData>
+    extends AutoDisposeFutureProviderElement<SoilPitSummaryData>
     with SoilSiteInfoDataRef {
   _SoilSiteInfoDataProviderElement(super.provider);
 

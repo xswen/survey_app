@@ -68,6 +68,7 @@ const List<Type> _tables = [
   EcpHeader,
   EcpSpecies,
   //Soil Tables
+  SoilPitSummary,
   SoilSiteInfo,
   SoilPitDepth,
   SoilPitFeature,

@@ -79,4 +79,11 @@ class PathParamGenerator {
         ...{PathParamsKeys.ecpSpeciesNum: ecpSpeciesId}
       };
 
+  //Soil Pit
+  static Map<String, String> soilPitSummary(
+          GoRouterState goRouterState, String soilPitSummaryId) =>
+      {
+        ...surveyInfo(goRouterState.pathParameters[PathParamsKeys.surveyId]!),
+        ...{PathParamsKeys.soilPitSummaryId: soilPitSummaryId}
+      };
 }

@@ -1,10 +1,16 @@
 import 'package:drift/drift.dart';
 import 'package:survey_app/database/database_creation_files/survey_info_tables.dart';
 
-class SoilSiteInfo extends Table {
+class SoilPitSummary extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get surveyId => integer().unique().references(SurveyHeaders, #id)();
   DateTimeColumn get measDate => dateTime()();
+}
+
+class SoilSiteInfo extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get soilPitSummaryId =>
+      integer().unique().references(SoilPitSummary, #id)();
   TextColumn get soilClass => text().withLength(max: 9)();
   IntColumn get profileDepth =>
       integer().check(profileDepth.isBetweenValues(-1, 250))();
@@ -16,8 +22,8 @@ class SoilSiteInfo extends Table {
 
 class SoilPitDepth extends Table {
   IntColumn get id => integer().autoIncrement()();
-  IntColumn get soilSiteId =>
-      integer().unique().references(SoilSiteInfo, #id)();
+  IntColumn get soilPitSummaryId =>
+      integer().unique().references(SoilPitSummary, #id)();
   TextColumn get soilPitCodeComplete => text().withLength(max: 3)();
   RealColumn get depthMin =>
       real().check(depthMin.isBetweenValues(0.0, 999.9))();
@@ -27,8 +33,8 @@ class SoilPitDepth extends Table {
 
 class SoilPitFeature extends Table {
   IntColumn get id => integer().autoIncrement()();
-  IntColumn get soilSiteId =>
-      integer().unique().references(SoilSiteInfo, #id)();
+  IntColumn get soilPitSummaryId =>
+      integer().unique().references(SoilPitSummary, #id)();
   TextColumn get soilPitCodeField => text().withLength(max: 3)();
   IntColumn get depthFeature =>
       integer().check(depthFeature.isBetweenValues(-9, 200))();
@@ -36,8 +42,8 @@ class SoilPitFeature extends Table {
 
 class SoilPitHorizonDescription extends Table {
   IntColumn get id => integer().autoIncrement()();
-  IntColumn get soilSiteId =>
-      integer().unique().references(SoilSiteInfo, #id)();
+  IntColumn get soilPitSummaryId =>
+      integer().unique().references(SoilPitSummary, #id)();
   TextColumn get soilPitCodeComplete => text().withLength(max: 3)();
   IntColumn get horizonNum =>
       integer().check(horizonNum.isBetweenValues(1, 99))();

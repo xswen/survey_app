@@ -7,6 +7,7 @@ mixin _$SoilPitTablesDaoMixin on DatabaseAccessor<Database> {
   $JurisdictionsTable get jurisdictions => attachedDatabase.jurisdictions;
   $PlotsTable get plots => attachedDatabase.plots;
   $SurveyHeadersTable get surveyHeaders => attachedDatabase.surveyHeaders;
+  $SoilPitSummaryTable get soilPitSummary => attachedDatabase.soilPitSummary;
   $SoilSiteInfoTable get soilSiteInfo => attachedDatabase.soilSiteInfo;
   $SoilPitDepthTable get soilPitDepth => attachedDatabase.soilPitDepth;
   $SoilPitFeatureTable get soilPitFeature => attachedDatabase.soilPitFeature;
