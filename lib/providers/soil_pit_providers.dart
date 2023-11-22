@@ -19,3 +19,8 @@ Future<List<SoilPitDepthData>> soilDepthList(
 Future<List<SoilPitFeatureData>> soilFeatureList(
         SoilFeatureListRef ref, int soilSummaryId) =>
     ref.read(databaseProvider).soilPitTablesDao.getFeatureList(soilSummaryId);
+
+@riverpod
+Future<List<SoilPitHorizonDescriptionData>> soilHorizonList(
+        SoilHorizonListRef ref, int soilSummaryId) =>
+    ref.read(databaseProvider).soilPitTablesDao.getHorizonList(soilSummaryId);

@@ -115,4 +115,49 @@ class SoilPitTablesDao extends DatabaseAccessor<Database>
 
     return results;
   }
+
+  //====================Soil Horizon====================
+  Future<int> addOrUpdateHorizon(SoilPitHorizonDescriptionCompanion entry) =>
+      into(soilPitHorizonDescription).insertOnConflictUpdate(entry);
+
+  Future<List<SoilPitHorizonDescriptionData>> getHorizonList(int summaryId) =>
+      (select(soilPitHorizonDescription)
+            ..where((tbl) => tbl.soilPitSummaryId.equals(summaryId)))
+          .get();
+
+  Future<SoilPitHorizonDescriptionData> getHorizon(int horizonId) =>
+      (select(soilPitHorizonDescription)
+            ..where((tbl) => tbl.id.equals(horizonId)))
+          .getSingle();
+
+  // Future<List<String>> getHorizonUsedPlotCodeNameList(int summaryId) async {
+  //   List<String> codes = await (select(soilPitHorizonDescription)
+  //         ..where((tbl) => tbl.soilPitSummaryId.equals(summaryId)))
+  //       .map((p0) => p0.soilPitCodeField)
+  //       .get();
+  //
+  //   List<String> results = [];
+  //   for (String code in codes) {
+  //     String codeName = await (select(soilPitCodeField, distinct: true)
+  //           ..where((tbl) => tbl.code.equals(code)))
+  //         .map((row) => row.name)
+  //         .getSingle();
+  //     results.add(codeName);
+  //   }
+  //
+  //   return results;
+  // }
+
+  Future<bool> checkHorizonNumAvailable(
+      int summaryId, String pitCode, int horNum) async {
+    SoilPitHorizonDescriptionData? exists =
+        await (select(soilPitHorizonDescription)
+              ..where((tbl) =>
+                  tbl.soilPitSummaryId.equals(summaryId) &
+                  tbl.soilPitCodeField.equals(pitCode) &
+                  tbl.horizonNum.equals(horNum)))
+            .getSingleOrNull();
+
+    return exists == null;
+  }
 }

@@ -2,6 +2,7 @@ import 'package:drift/drift.dart' as d;
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/pages/soil_pit/soil_pit_depth_page.dart';
 import 'package:survey_app/pages/soil_pit/soil_pit_feature_page.dart';
+import 'package:survey_app/pages/soil_pit/soil_pit_horizon_description_page.dart';
 import 'package:survey_app/pages/soil_pit/soil_pit_site_info_page.dart';
 import 'package:survey_app/providers/soil_pit_providers.dart';
 import 'package:survey_app/widgets/buttons/icon_nav_button.dart';
@@ -59,6 +60,11 @@ class SoilPitSummaryPageState extends ConsumerState<SoilPitSummaryPage> {
   void navToFeature() => context.pushNamed(SoilPitFeaturePage.routeName,
       pathParameters:
           PathParamGenerator.soilPitSummary(widget.state, spId.toString()));
+
+  void navToHorizon() =>
+      context.pushNamed(SoilPitHorizonDescriptionPage.routeName,
+          pathParameters:
+              PathParamGenerator.soilPitSummary(widget.state, spId.toString()));
 
   Future<void> updateSpSummary(SoilPitSummaryCompanion entry) async {
     final db = ref.read(databaseProvider);
@@ -131,7 +137,9 @@ class SoilPitSummaryPageState extends ConsumerState<SoilPitSummaryPage> {
               icon: const Icon(FontAwesomeIcons.mountain),
               space: kPaddingIcon,
               label: "Pit Horizon Description",
-              onPressed: () async {},
+              onPressed: () async {
+                navToHorizon();
+              },
               padding: const EdgeInsets.symmetric(
                   vertical: kPaddingV, horizontal: kPaddingH),
             ),

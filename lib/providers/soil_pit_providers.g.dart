@@ -422,5 +422,140 @@ class _SoilFeatureListProviderElement
   @override
   int get soilSummaryId => (origin as SoilFeatureListProvider).soilSummaryId;
 }
+
+String _$soilHorizonListHash() => r'ce9602b6fb7439ea57ccfc9be0cdfa689b5e8d8c';
+
+/// See also [soilHorizonList].
+@ProviderFor(soilHorizonList)
+const soilHorizonListProvider = SoilHorizonListFamily();
+
+/// See also [soilHorizonList].
+class SoilHorizonListFamily
+    extends Family<AsyncValue<List<SoilPitHorizonDescriptionData>>> {
+  /// See also [soilHorizonList].
+  const SoilHorizonListFamily();
+
+  /// See also [soilHorizonList].
+  SoilHorizonListProvider call(
+    int soilSummaryId,
+  ) {
+    return SoilHorizonListProvider(
+      soilSummaryId,
+    );
+  }
+
+  @override
+  SoilHorizonListProvider getProviderOverride(
+    covariant SoilHorizonListProvider provider,
+  ) {
+    return call(
+      provider.soilSummaryId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'soilHorizonListProvider';
+}
+
+/// See also [soilHorizonList].
+class SoilHorizonListProvider
+    extends AutoDisposeFutureProvider<List<SoilPitHorizonDescriptionData>> {
+  /// See also [soilHorizonList].
+  SoilHorizonListProvider(
+    int soilSummaryId,
+  ) : this._internal(
+          (ref) => soilHorizonList(
+            ref as SoilHorizonListRef,
+            soilSummaryId,
+          ),
+          from: soilHorizonListProvider,
+          name: r'soilHorizonListProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$soilHorizonListHash,
+          dependencies: SoilHorizonListFamily._dependencies,
+          allTransitiveDependencies:
+              SoilHorizonListFamily._allTransitiveDependencies,
+          soilSummaryId: soilSummaryId,
+        );
+
+  SoilHorizonListProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.soilSummaryId,
+  }) : super.internal();
+
+  final int soilSummaryId;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<SoilPitHorizonDescriptionData>> Function(
+            SoilHorizonListRef provider)
+        create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: SoilHorizonListProvider._internal(
+        (ref) => create(ref as SoilHorizonListRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        soilSummaryId: soilSummaryId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List<SoilPitHorizonDescriptionData>>
+      createElement() {
+    return _SoilHorizonListProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is SoilHorizonListProvider &&
+        other.soilSummaryId == soilSummaryId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, soilSummaryId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin SoilHorizonListRef
+    on AutoDisposeFutureProviderRef<List<SoilPitHorizonDescriptionData>> {
+  /// The parameter `soilSummaryId` of this provider.
+  int get soilSummaryId;
+}
+
+class _SoilHorizonListProviderElement extends AutoDisposeFutureProviderElement<
+    List<SoilPitHorizonDescriptionData>> with SoilHorizonListRef {
+  _SoilHorizonListProviderElement(super.provider);
+
+  @override
+  int get soilSummaryId => (origin as SoilHorizonListProvider).soilSummaryId;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
