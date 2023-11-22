@@ -12,6 +12,9 @@ class SoilSiteInfo extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get soilPitSummaryId =>
       integer().unique().references(SoilPitSummary, #id)();
+  TextColumn get soilClassOrder => text()();
+  TextColumn get soilClassGreatGroup => text()();
+  TextColumn get soilClassSubGroup => text()();
   TextColumn get soilClass => text().withLength(max: 9)();
   IntColumn get profileDepth =>
       integer().check(profileDepth.isBetweenValues(-1, 250))();

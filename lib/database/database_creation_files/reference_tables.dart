@@ -72,7 +72,7 @@ class SoilPitClassification extends Table {
   TextColumn get code => text()();
   TextColumn get order => text()();
   TextColumn get greatGroup => text()();
-  TextColumn get subGroup => text().nullable()();
+  TextColumn get subGroup => text()();
 }
 
 @DataClassName("SoilDrainageClassData")

@@ -173,6 +173,7 @@ class Database extends _$Database {
             b.insertAll(ecpGenus, ecpGenusList);
 
             //  b.insertAll(soilPitClassification, soilPitClassificationList);
+            b.insertAll(soilPitClassification, soilPitClassificationList);
             b.insertAll(soilDrainageClass, soilDrainageList);
             b.insertAll(soilMoistureClass, soilMoistureList);
             b.insertAll(soilDeposition, soilDepositionList);
@@ -369,7 +370,7 @@ class Database extends _$Database {
         code: Value(item["code"]),
         order: Value(item["order"]),
         greatGroup: Value(item["greatGroup"]),
-        subGroup: Value(item["code"]),
+        subGroup: Value(item["subGroup"]),
       );
     }).toList();
   }

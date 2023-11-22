@@ -16,6 +16,7 @@ part 'reference_tables_dao.g.dart';
   SsDepthLimit,
   EcpGenus,
   EcpLayer,
+  SoilPitClassification,
   SoilDrainageClass,
   SoilMoistureClass,
   SoilDeposition,
@@ -253,6 +254,19 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
     return query
         .map((p0) =>
             p0.read(ecpGenus.variety) ?? "error on loading ecp variety list")
+        .get();
+  }
+
+//====================Soil====================
+  Future<List<String>> getSoilClassNameList() {
+    final query = selectOnly(soilPitClassification, distinct: true)
+      ..addColumns([soilPitClassification.order])
+      ..where(soilPitClassification.order.isNotNull());
+
+    return query
+        .map((p0) =>
+            p0.read(soilPitClassification.order) ??
+            "error on loading soil order")
         .get();
   }
 }

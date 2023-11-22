@@ -1733,8 +1733,8 @@ class $SoilPitClassificationTable extends SoilPitClassification
       const VerificationMeta('subGroup');
   @override
   late final GeneratedColumn<String> subGroup = GeneratedColumn<String>(
-      'sub_group', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
+      'sub_group', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [code, order, greatGroup, subGroup];
   @override
@@ -1771,6 +1771,8 @@ class $SoilPitClassificationTable extends SoilPitClassification
     if (data.containsKey('sub_group')) {
       context.handle(_subGroupMeta,
           subGroup.isAcceptableOrUnknown(data['sub_group']!, _subGroupMeta));
+    } else if (isInserting) {
+      context.missing(_subGroupMeta);
     }
     return context;
   }
@@ -1789,7 +1791,7 @@ class $SoilPitClassificationTable extends SoilPitClassification
       greatGroup: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}great_group'])!,
       subGroup: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}sub_group']),
+          .read(DriftSqlType.string, data['${effectivePrefix}sub_group'])!,
     );
   }
 
@@ -1804,21 +1806,19 @@ class SoilPitClassificationData extends DataClass
   final String code;
   final String order;
   final String greatGroup;
-  final String? subGroup;
+  final String subGroup;
   const SoilPitClassificationData(
       {required this.code,
       required this.order,
       required this.greatGroup,
-      this.subGroup});
+      required this.subGroup});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['code'] = Variable<String>(code);
     map['order'] = Variable<String>(order);
     map['great_group'] = Variable<String>(greatGroup);
-    if (!nullToAbsent || subGroup != null) {
-      map['sub_group'] = Variable<String>(subGroup);
-    }
+    map['sub_group'] = Variable<String>(subGroup);
     return map;
   }
 
@@ -1827,9 +1827,7 @@ class SoilPitClassificationData extends DataClass
       code: Value(code),
       order: Value(order),
       greatGroup: Value(greatGroup),
-      subGroup: subGroup == null && nullToAbsent
-          ? const Value.absent()
-          : Value(subGroup),
+      subGroup: Value(subGroup),
     );
   }
 
@@ -1840,7 +1838,7 @@ class SoilPitClassificationData extends DataClass
       code: serializer.fromJson<String>(json['code']),
       order: serializer.fromJson<String>(json['order']),
       greatGroup: serializer.fromJson<String>(json['greatGroup']),
-      subGroup: serializer.fromJson<String?>(json['subGroup']),
+      subGroup: serializer.fromJson<String>(json['subGroup']),
     );
   }
   @override
@@ -1850,7 +1848,7 @@ class SoilPitClassificationData extends DataClass
       'code': serializer.toJson<String>(code),
       'order': serializer.toJson<String>(order),
       'greatGroup': serializer.toJson<String>(greatGroup),
-      'subGroup': serializer.toJson<String?>(subGroup),
+      'subGroup': serializer.toJson<String>(subGroup),
     };
   }
 
@@ -1858,12 +1856,12 @@ class SoilPitClassificationData extends DataClass
           {String? code,
           String? order,
           String? greatGroup,
-          Value<String?> subGroup = const Value.absent()}) =>
+          String? subGroup}) =>
       SoilPitClassificationData(
         code: code ?? this.code,
         order: order ?? this.order,
         greatGroup: greatGroup ?? this.greatGroup,
-        subGroup: subGroup.present ? subGroup.value : this.subGroup,
+        subGroup: subGroup ?? this.subGroup,
       );
   @override
   String toString() {
@@ -1893,7 +1891,7 @@ class SoilPitClassificationCompanion
   final Value<String> code;
   final Value<String> order;
   final Value<String> greatGroup;
-  final Value<String?> subGroup;
+  final Value<String> subGroup;
   final Value<int> rowid;
   const SoilPitClassificationCompanion({
     this.code = const Value.absent(),
@@ -1906,11 +1904,12 @@ class SoilPitClassificationCompanion
     required String code,
     required String order,
     required String greatGroup,
-    this.subGroup = const Value.absent(),
+    required String subGroup,
     this.rowid = const Value.absent(),
   })  : code = Value(code),
         order = Value(order),
-        greatGroup = Value(greatGroup);
+        greatGroup = Value(greatGroup),
+        subGroup = Value(subGroup);
   static Insertable<SoilPitClassificationData> custom({
     Expression<String>? code,
     Expression<String>? order,
@@ -1931,7 +1930,7 @@ class SoilPitClassificationCompanion
       {Value<String>? code,
       Value<String>? order,
       Value<String>? greatGroup,
-      Value<String?>? subGroup,
+      Value<String>? subGroup,
       Value<int>? rowid}) {
     return SoilPitClassificationCompanion(
       code: code ?? this.code,
@@ -8853,6 +8852,24 @@ class $SoilSiteInfoTable extends SoilSiteInfo
       requiredDuringInsert: true,
       defaultConstraints: GeneratedColumn.constraintIsAlways(
           'UNIQUE REFERENCES soil_pit_summary (id)'));
+  static const VerificationMeta _soilClassOrderMeta =
+      const VerificationMeta('soilClassOrder');
+  @override
+  late final GeneratedColumn<String> soilClassOrder = GeneratedColumn<String>(
+      'soil_class_order', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _soilClassGreatGroupMeta =
+      const VerificationMeta('soilClassGreatGroup');
+  @override
+  late final GeneratedColumn<String> soilClassGreatGroup =
+      GeneratedColumn<String>('soil_class_great_group', aliasedName, false,
+          type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _soilClassSubGroupMeta =
+      const VerificationMeta('soilClassSubGroup');
+  @override
+  late final GeneratedColumn<String> soilClassSubGroup =
+      GeneratedColumn<String>('soil_class_sub_group', aliasedName, false,
+          type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _soilClassMeta =
       const VerificationMeta('soilClass');
   @override
@@ -8905,6 +8922,9 @@ class $SoilSiteInfoTable extends SoilSiteInfo
   List<GeneratedColumn> get $columns => [
         id,
         soilPitSummaryId,
+        soilClassOrder,
+        soilClassGreatGroup,
+        soilClassSubGroup,
         soilClass,
         profileDepth,
         drainage,
@@ -8932,6 +8952,30 @@ class $SoilSiteInfoTable extends SoilSiteInfo
               data['soil_pit_summary_id']!, _soilPitSummaryIdMeta));
     } else if (isInserting) {
       context.missing(_soilPitSummaryIdMeta);
+    }
+    if (data.containsKey('soil_class_order')) {
+      context.handle(
+          _soilClassOrderMeta,
+          soilClassOrder.isAcceptableOrUnknown(
+              data['soil_class_order']!, _soilClassOrderMeta));
+    } else if (isInserting) {
+      context.missing(_soilClassOrderMeta);
+    }
+    if (data.containsKey('soil_class_great_group')) {
+      context.handle(
+          _soilClassGreatGroupMeta,
+          soilClassGreatGroup.isAcceptableOrUnknown(
+              data['soil_class_great_group']!, _soilClassGreatGroupMeta));
+    } else if (isInserting) {
+      context.missing(_soilClassGreatGroupMeta);
+    }
+    if (data.containsKey('soil_class_sub_group')) {
+      context.handle(
+          _soilClassSubGroupMeta,
+          soilClassSubGroup.isAcceptableOrUnknown(
+              data['soil_class_sub_group']!, _soilClassSubGroupMeta));
+    } else if (isInserting) {
+      context.missing(_soilClassSubGroupMeta);
     }
     if (data.containsKey('soil_class')) {
       context.handle(_soilClassMeta,
@@ -8986,6 +9030,13 @@ class $SoilSiteInfoTable extends SoilSiteInfo
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       soilPitSummaryId: attachedDatabase.typeMapping.read(
           DriftSqlType.int, data['${effectivePrefix}soil_pit_summary_id'])!,
+      soilClassOrder: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}soil_class_order'])!,
+      soilClassGreatGroup: attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}soil_class_great_group'])!,
+      soilClassSubGroup: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}soil_class_sub_group'])!,
       soilClass: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}soil_class'])!,
       profileDepth: attachedDatabase.typeMapping
@@ -9011,6 +9062,9 @@ class SoilSiteInfoData extends DataClass
     implements Insertable<SoilSiteInfoData> {
   final int id;
   final int soilPitSummaryId;
+  final String soilClassOrder;
+  final String soilClassGreatGroup;
+  final String soilClassSubGroup;
   final String soilClass;
   final int profileDepth;
   final int drainage;
@@ -9020,6 +9074,9 @@ class SoilSiteInfoData extends DataClass
   const SoilSiteInfoData(
       {required this.id,
       required this.soilPitSummaryId,
+      required this.soilClassOrder,
+      required this.soilClassGreatGroup,
+      required this.soilClassSubGroup,
       required this.soilClass,
       required this.profileDepth,
       required this.drainage,
@@ -9031,6 +9088,9 @@ class SoilSiteInfoData extends DataClass
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['soil_pit_summary_id'] = Variable<int>(soilPitSummaryId);
+    map['soil_class_order'] = Variable<String>(soilClassOrder);
+    map['soil_class_great_group'] = Variable<String>(soilClassGreatGroup);
+    map['soil_class_sub_group'] = Variable<String>(soilClassSubGroup);
     map['soil_class'] = Variable<String>(soilClass);
     map['profile_depth'] = Variable<int>(profileDepth);
     map['drainage'] = Variable<int>(drainage);
@@ -9044,6 +9104,9 @@ class SoilSiteInfoData extends DataClass
     return SoilSiteInfoCompanion(
       id: Value(id),
       soilPitSummaryId: Value(soilPitSummaryId),
+      soilClassOrder: Value(soilClassOrder),
+      soilClassGreatGroup: Value(soilClassGreatGroup),
+      soilClassSubGroup: Value(soilClassSubGroup),
       soilClass: Value(soilClass),
       profileDepth: Value(profileDepth),
       drainage: Value(drainage),
@@ -9059,6 +9122,10 @@ class SoilSiteInfoData extends DataClass
     return SoilSiteInfoData(
       id: serializer.fromJson<int>(json['id']),
       soilPitSummaryId: serializer.fromJson<int>(json['soilPitSummaryId']),
+      soilClassOrder: serializer.fromJson<String>(json['soilClassOrder']),
+      soilClassGreatGroup:
+          serializer.fromJson<String>(json['soilClassGreatGroup']),
+      soilClassSubGroup: serializer.fromJson<String>(json['soilClassSubGroup']),
       soilClass: serializer.fromJson<String>(json['soilClass']),
       profileDepth: serializer.fromJson<int>(json['profileDepth']),
       drainage: serializer.fromJson<int>(json['drainage']),
@@ -9073,6 +9140,9 @@ class SoilSiteInfoData extends DataClass
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'soilPitSummaryId': serializer.toJson<int>(soilPitSummaryId),
+      'soilClassOrder': serializer.toJson<String>(soilClassOrder),
+      'soilClassGreatGroup': serializer.toJson<String>(soilClassGreatGroup),
+      'soilClassSubGroup': serializer.toJson<String>(soilClassSubGroup),
       'soilClass': serializer.toJson<String>(soilClass),
       'profileDepth': serializer.toJson<int>(profileDepth),
       'drainage': serializer.toJson<int>(drainage),
@@ -9085,6 +9155,9 @@ class SoilSiteInfoData extends DataClass
   SoilSiteInfoData copyWith(
           {int? id,
           int? soilPitSummaryId,
+          String? soilClassOrder,
+          String? soilClassGreatGroup,
+          String? soilClassSubGroup,
           String? soilClass,
           int? profileDepth,
           int? drainage,
@@ -9094,6 +9167,9 @@ class SoilSiteInfoData extends DataClass
       SoilSiteInfoData(
         id: id ?? this.id,
         soilPitSummaryId: soilPitSummaryId ?? this.soilPitSummaryId,
+        soilClassOrder: soilClassOrder ?? this.soilClassOrder,
+        soilClassGreatGroup: soilClassGreatGroup ?? this.soilClassGreatGroup,
+        soilClassSubGroup: soilClassSubGroup ?? this.soilClassSubGroup,
         soilClass: soilClass ?? this.soilClass,
         profileDepth: profileDepth ?? this.profileDepth,
         drainage: drainage ?? this.drainage,
@@ -9106,6 +9182,9 @@ class SoilSiteInfoData extends DataClass
     return (StringBuffer('SoilSiteInfoData(')
           ..write('id: $id, ')
           ..write('soilPitSummaryId: $soilPitSummaryId, ')
+          ..write('soilClassOrder: $soilClassOrder, ')
+          ..write('soilClassGreatGroup: $soilClassGreatGroup, ')
+          ..write('soilClassSubGroup: $soilClassSubGroup, ')
           ..write('soilClass: $soilClass, ')
           ..write('profileDepth: $profileDepth, ')
           ..write('drainage: $drainage, ')
@@ -9117,14 +9196,27 @@ class SoilSiteInfoData extends DataClass
   }
 
   @override
-  int get hashCode => Object.hash(id, soilPitSummaryId, soilClass, profileDepth,
-      drainage, moisture, deposition, humusForm);
+  int get hashCode => Object.hash(
+      id,
+      soilPitSummaryId,
+      soilClassOrder,
+      soilClassGreatGroup,
+      soilClassSubGroup,
+      soilClass,
+      profileDepth,
+      drainage,
+      moisture,
+      deposition,
+      humusForm);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is SoilSiteInfoData &&
           other.id == this.id &&
           other.soilPitSummaryId == this.soilPitSummaryId &&
+          other.soilClassOrder == this.soilClassOrder &&
+          other.soilClassGreatGroup == this.soilClassGreatGroup &&
+          other.soilClassSubGroup == this.soilClassSubGroup &&
           other.soilClass == this.soilClass &&
           other.profileDepth == this.profileDepth &&
           other.drainage == this.drainage &&
@@ -9136,6 +9228,9 @@ class SoilSiteInfoData extends DataClass
 class SoilSiteInfoCompanion extends UpdateCompanion<SoilSiteInfoData> {
   final Value<int> id;
   final Value<int> soilPitSummaryId;
+  final Value<String> soilClassOrder;
+  final Value<String> soilClassGreatGroup;
+  final Value<String> soilClassSubGroup;
   final Value<String> soilClass;
   final Value<int> profileDepth;
   final Value<int> drainage;
@@ -9145,6 +9240,9 @@ class SoilSiteInfoCompanion extends UpdateCompanion<SoilSiteInfoData> {
   const SoilSiteInfoCompanion({
     this.id = const Value.absent(),
     this.soilPitSummaryId = const Value.absent(),
+    this.soilClassOrder = const Value.absent(),
+    this.soilClassGreatGroup = const Value.absent(),
+    this.soilClassSubGroup = const Value.absent(),
     this.soilClass = const Value.absent(),
     this.profileDepth = const Value.absent(),
     this.drainage = const Value.absent(),
@@ -9155,6 +9253,9 @@ class SoilSiteInfoCompanion extends UpdateCompanion<SoilSiteInfoData> {
   SoilSiteInfoCompanion.insert({
     this.id = const Value.absent(),
     required int soilPitSummaryId,
+    required String soilClassOrder,
+    required String soilClassGreatGroup,
+    required String soilClassSubGroup,
     required String soilClass,
     required int profileDepth,
     required int drainage,
@@ -9162,6 +9263,9 @@ class SoilSiteInfoCompanion extends UpdateCompanion<SoilSiteInfoData> {
     required String deposition,
     required String humusForm,
   })  : soilPitSummaryId = Value(soilPitSummaryId),
+        soilClassOrder = Value(soilClassOrder),
+        soilClassGreatGroup = Value(soilClassGreatGroup),
+        soilClassSubGroup = Value(soilClassSubGroup),
         soilClass = Value(soilClass),
         profileDepth = Value(profileDepth),
         drainage = Value(drainage),
@@ -9171,6 +9275,9 @@ class SoilSiteInfoCompanion extends UpdateCompanion<SoilSiteInfoData> {
   static Insertable<SoilSiteInfoData> custom({
     Expression<int>? id,
     Expression<int>? soilPitSummaryId,
+    Expression<String>? soilClassOrder,
+    Expression<String>? soilClassGreatGroup,
+    Expression<String>? soilClassSubGroup,
     Expression<String>? soilClass,
     Expression<int>? profileDepth,
     Expression<int>? drainage,
@@ -9181,6 +9288,10 @@ class SoilSiteInfoCompanion extends UpdateCompanion<SoilSiteInfoData> {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (soilPitSummaryId != null) 'soil_pit_summary_id': soilPitSummaryId,
+      if (soilClassOrder != null) 'soil_class_order': soilClassOrder,
+      if (soilClassGreatGroup != null)
+        'soil_class_great_group': soilClassGreatGroup,
+      if (soilClassSubGroup != null) 'soil_class_sub_group': soilClassSubGroup,
       if (soilClass != null) 'soil_class': soilClass,
       if (profileDepth != null) 'profile_depth': profileDepth,
       if (drainage != null) 'drainage': drainage,
@@ -9193,6 +9304,9 @@ class SoilSiteInfoCompanion extends UpdateCompanion<SoilSiteInfoData> {
   SoilSiteInfoCompanion copyWith(
       {Value<int>? id,
       Value<int>? soilPitSummaryId,
+      Value<String>? soilClassOrder,
+      Value<String>? soilClassGreatGroup,
+      Value<String>? soilClassSubGroup,
       Value<String>? soilClass,
       Value<int>? profileDepth,
       Value<int>? drainage,
@@ -9202,6 +9316,9 @@ class SoilSiteInfoCompanion extends UpdateCompanion<SoilSiteInfoData> {
     return SoilSiteInfoCompanion(
       id: id ?? this.id,
       soilPitSummaryId: soilPitSummaryId ?? this.soilPitSummaryId,
+      soilClassOrder: soilClassOrder ?? this.soilClassOrder,
+      soilClassGreatGroup: soilClassGreatGroup ?? this.soilClassGreatGroup,
+      soilClassSubGroup: soilClassSubGroup ?? this.soilClassSubGroup,
       soilClass: soilClass ?? this.soilClass,
       profileDepth: profileDepth ?? this.profileDepth,
       drainage: drainage ?? this.drainage,
@@ -9219,6 +9336,16 @@ class SoilSiteInfoCompanion extends UpdateCompanion<SoilSiteInfoData> {
     }
     if (soilPitSummaryId.present) {
       map['soil_pit_summary_id'] = Variable<int>(soilPitSummaryId.value);
+    }
+    if (soilClassOrder.present) {
+      map['soil_class_order'] = Variable<String>(soilClassOrder.value);
+    }
+    if (soilClassGreatGroup.present) {
+      map['soil_class_great_group'] =
+          Variable<String>(soilClassGreatGroup.value);
+    }
+    if (soilClassSubGroup.present) {
+      map['soil_class_sub_group'] = Variable<String>(soilClassSubGroup.value);
     }
     if (soilClass.present) {
       map['soil_class'] = Variable<String>(soilClass.value);
@@ -9246,6 +9373,9 @@ class SoilSiteInfoCompanion extends UpdateCompanion<SoilSiteInfoData> {
     return (StringBuffer('SoilSiteInfoCompanion(')
           ..write('id: $id, ')
           ..write('soilPitSummaryId: $soilPitSummaryId, ')
+          ..write('soilClassOrder: $soilClassOrder, ')
+          ..write('soilClassGreatGroup: $soilClassGreatGroup, ')
+          ..write('soilClassSubGroup: $soilClassSubGroup, ')
           ..write('soilClass: $soilClass, ')
           ..write('profileDepth: $profileDepth, ')
           ..write('drainage: $drainage, ')

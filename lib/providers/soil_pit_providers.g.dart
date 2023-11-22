@@ -6,7 +6,7 @@ part of 'soil_pit_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$soilSiteInfoDataHash() => r'60b93012bf32d2b80bc1ade496f21202f3076dce';
+String _$soilSummaryDataHash() => r'76d63d729d7abe64b85f95a85d1d232515886894';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,30 +29,30 @@ class _SystemHash {
   }
 }
 
-/// See also [soilSiteInfoData].
-@ProviderFor(soilSiteInfoData)
-const soilSiteInfoDataProvider = SoilSiteInfoDataFamily();
+/// See also [soilSummaryData].
+@ProviderFor(soilSummaryData)
+const soilSummaryDataProvider = SoilSummaryDataFamily();
 
-/// See also [soilSiteInfoData].
-class SoilSiteInfoDataFamily extends Family<AsyncValue<SoilPitSummaryData>> {
-  /// See also [soilSiteInfoData].
-  const SoilSiteInfoDataFamily();
+/// See also [soilSummaryData].
+class SoilSummaryDataFamily extends Family<AsyncValue<SoilPitSummaryData>> {
+  /// See also [soilSummaryData].
+  const SoilSummaryDataFamily();
 
-  /// See also [soilSiteInfoData].
-  SoilSiteInfoDataProvider call(
-    int surveyId,
+  /// See also [soilSummaryData].
+  SoilSummaryDataProvider call(
+    int soilSummaryId,
   ) {
-    return SoilSiteInfoDataProvider(
-      surveyId,
+    return SoilSummaryDataProvider(
+      soilSummaryId,
     );
   }
 
   @override
-  SoilSiteInfoDataProvider getProviderOverride(
-    covariant SoilSiteInfoDataProvider provider,
+  SoilSummaryDataProvider getProviderOverride(
+    covariant SoilSummaryDataProvider provider,
   ) {
     return call(
-      provider.surveyId,
+      provider.soilSummaryId,
     );
   }
 
@@ -68,93 +68,94 @@ class SoilSiteInfoDataFamily extends Family<AsyncValue<SoilPitSummaryData>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'soilSiteInfoDataProvider';
+  String? get name => r'soilSummaryDataProvider';
 }
 
-/// See also [soilSiteInfoData].
-class SoilSiteInfoDataProvider
+/// See also [soilSummaryData].
+class SoilSummaryDataProvider
     extends AutoDisposeFutureProvider<SoilPitSummaryData> {
-  /// See also [soilSiteInfoData].
-  SoilSiteInfoDataProvider(
-    int surveyId,
+  /// See also [soilSummaryData].
+  SoilSummaryDataProvider(
+    int soilSummaryId,
   ) : this._internal(
-          (ref) => soilSiteInfoData(
-            ref as SoilSiteInfoDataRef,
-            surveyId,
+          (ref) => soilSummaryData(
+            ref as SoilSummaryDataRef,
+            soilSummaryId,
           ),
-          from: soilSiteInfoDataProvider,
-          name: r'soilSiteInfoDataProvider',
+          from: soilSummaryDataProvider,
+          name: r'soilSummaryDataProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$soilSiteInfoDataHash,
-          dependencies: SoilSiteInfoDataFamily._dependencies,
+                  : _$soilSummaryDataHash,
+          dependencies: SoilSummaryDataFamily._dependencies,
           allTransitiveDependencies:
-              SoilSiteInfoDataFamily._allTransitiveDependencies,
-          surveyId: surveyId,
+              SoilSummaryDataFamily._allTransitiveDependencies,
+          soilSummaryId: soilSummaryId,
         );
 
-  SoilSiteInfoDataProvider._internal(
+  SoilSummaryDataProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.surveyId,
+    required this.soilSummaryId,
   }) : super.internal();
 
-  final int surveyId;
+  final int soilSummaryId;
 
   @override
   Override overrideWith(
-    FutureOr<SoilPitSummaryData> Function(SoilSiteInfoDataRef provider) create,
+    FutureOr<SoilPitSummaryData> Function(SoilSummaryDataRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: SoilSiteInfoDataProvider._internal(
-        (ref) => create(ref as SoilSiteInfoDataRef),
+      override: SoilSummaryDataProvider._internal(
+        (ref) => create(ref as SoilSummaryDataRef),
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        surveyId: surveyId,
+        soilSummaryId: soilSummaryId,
       ),
     );
   }
 
   @override
   AutoDisposeFutureProviderElement<SoilPitSummaryData> createElement() {
-    return _SoilSiteInfoDataProviderElement(this);
+    return _SoilSummaryDataProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is SoilSiteInfoDataProvider && other.surveyId == surveyId;
+    return other is SoilSummaryDataProvider &&
+        other.soilSummaryId == soilSummaryId;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, surveyId.hashCode);
+    hash = _SystemHash.combine(hash, soilSummaryId.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
-mixin SoilSiteInfoDataRef on AutoDisposeFutureProviderRef<SoilPitSummaryData> {
-  /// The parameter `surveyId` of this provider.
-  int get surveyId;
+mixin SoilSummaryDataRef on AutoDisposeFutureProviderRef<SoilPitSummaryData> {
+  /// The parameter `soilSummaryId` of this provider.
+  int get soilSummaryId;
 }
 
-class _SoilSiteInfoDataProviderElement
+class _SoilSummaryDataProviderElement
     extends AutoDisposeFutureProviderElement<SoilPitSummaryData>
-    with SoilSiteInfoDataRef {
-  _SoilSiteInfoDataProviderElement(super.provider);
+    with SoilSummaryDataRef {
+  _SoilSummaryDataProviderElement(super.provider);
 
   @override
-  int get surveyId => (origin as SoilSiteInfoDataProvider).surveyId;
+  int get soilSummaryId => (origin as SoilSummaryDataProvider).soilSummaryId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -102,7 +102,7 @@ class SoilPitSummaryPageState extends ConsumerState<SoilPitSummaryPage> {
     final db = ref.read(databaseProvider);
     (db.update(db.soilPitSummary)..where((t) => t.id.equals(spId)))
         .write(entry);
-    ref.refresh(soilSiteInfoDataProvider(surveyId));
+    ref.refresh(soilSummaryDataProvider(spId));
   }
 
   @override
@@ -110,7 +110,7 @@ class SoilPitSummaryPageState extends ConsumerState<SoilPitSummaryPage> {
     final db = ref.read(databaseProvider);
 
     AsyncValue<SoilPitSummaryData> spSummary =
-        ref.watch(soilSiteInfoDataProvider(surveyId));
+        ref.watch(soilSummaryDataProvider(spId));
 
     return Scaffold(
       appBar: OurAppBar(
