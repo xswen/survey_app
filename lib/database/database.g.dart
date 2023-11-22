@@ -9914,6 +9914,28 @@ class $SoilPitHorizonDescriptionTable extends SoilPitHorizonDescription
       additionalChecks: GeneratedColumn.checkTextLength(maxTextLength: 5),
       type: DriftSqlType.string,
       requiredDuringInsert: true);
+  static const VerificationMeta _cfGravMeta = const VerificationMeta('cfGrav');
+  @override
+  late final GeneratedColumn<int> cfGrav = GeneratedColumn<int>(
+      'cf_grav', aliasedName, false,
+      check: () => cfGrav.isBetweenValues(-9, 100),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
+  static const VerificationMeta _cfCobbMeta = const VerificationMeta('cfCobb');
+  @override
+  late final GeneratedColumn<int> cfCobb = GeneratedColumn<int>(
+      'cf_cobb', aliasedName, false,
+      check: () => cfCobb.isBetweenValues(-9, 100),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
+  static const VerificationMeta _cfStoneMeta =
+      const VerificationMeta('cfStone');
+  @override
+  late final GeneratedColumn<int> cfStone = GeneratedColumn<int>(
+      'cf_stone', aliasedName, false,
+      check: () => cfStone.isBetweenValues(-9, 100),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -9924,7 +9946,10 @@ class $SoilPitHorizonDescriptionTable extends SoilPitHorizonDescription
         horizonUpper,
         thickness,
         color,
-        texture
+        texture,
+        cfGrav,
+        cfCobb,
+        cfStone
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -9996,6 +10021,24 @@ class $SoilPitHorizonDescriptionTable extends SoilPitHorizonDescription
     } else if (isInserting) {
       context.missing(_textureMeta);
     }
+    if (data.containsKey('cf_grav')) {
+      context.handle(_cfGravMeta,
+          cfGrav.isAcceptableOrUnknown(data['cf_grav']!, _cfGravMeta));
+    } else if (isInserting) {
+      context.missing(_cfGravMeta);
+    }
+    if (data.containsKey('cf_cobb')) {
+      context.handle(_cfCobbMeta,
+          cfCobb.isAcceptableOrUnknown(data['cf_cobb']!, _cfCobbMeta));
+    } else if (isInserting) {
+      context.missing(_cfCobbMeta);
+    }
+    if (data.containsKey('cf_stone')) {
+      context.handle(_cfStoneMeta,
+          cfStone.isAcceptableOrUnknown(data['cf_stone']!, _cfStoneMeta));
+    } else if (isInserting) {
+      context.missing(_cfStoneMeta);
+    }
     return context;
   }
 
@@ -10025,6 +10068,12 @@ class $SoilPitHorizonDescriptionTable extends SoilPitHorizonDescription
           .read(DriftSqlType.string, data['${effectivePrefix}color'])!,
       texture: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}texture'])!,
+      cfGrav: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}cf_grav'])!,
+      cfCobb: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}cf_cobb'])!,
+      cfStone: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}cf_stone'])!,
     );
   }
 
@@ -10045,6 +10094,9 @@ class SoilPitHorizonDescriptionData extends DataClass
   final double thickness;
   final String color;
   final String texture;
+  final int cfGrav;
+  final int cfCobb;
+  final int cfStone;
   const SoilPitHorizonDescriptionData(
       {required this.id,
       required this.soilPitSummaryId,
@@ -10054,7 +10106,10 @@ class SoilPitHorizonDescriptionData extends DataClass
       required this.horizonUpper,
       required this.thickness,
       required this.color,
-      required this.texture});
+      required this.texture,
+      required this.cfGrav,
+      required this.cfCobb,
+      required this.cfStone});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -10067,6 +10122,9 @@ class SoilPitHorizonDescriptionData extends DataClass
     map['thickness'] = Variable<double>(thickness);
     map['color'] = Variable<String>(color);
     map['texture'] = Variable<String>(texture);
+    map['cf_grav'] = Variable<int>(cfGrav);
+    map['cf_cobb'] = Variable<int>(cfCobb);
+    map['cf_stone'] = Variable<int>(cfStone);
     return map;
   }
 
@@ -10081,6 +10139,9 @@ class SoilPitHorizonDescriptionData extends DataClass
       thickness: Value(thickness),
       color: Value(color),
       texture: Value(texture),
+      cfGrav: Value(cfGrav),
+      cfCobb: Value(cfCobb),
+      cfStone: Value(cfStone),
     );
   }
 
@@ -10098,6 +10159,9 @@ class SoilPitHorizonDescriptionData extends DataClass
       thickness: serializer.fromJson<double>(json['thickness']),
       color: serializer.fromJson<String>(json['color']),
       texture: serializer.fromJson<String>(json['texture']),
+      cfGrav: serializer.fromJson<int>(json['cfGrav']),
+      cfCobb: serializer.fromJson<int>(json['cfCobb']),
+      cfStone: serializer.fromJson<int>(json['cfStone']),
     );
   }
   @override
@@ -10113,6 +10177,9 @@ class SoilPitHorizonDescriptionData extends DataClass
       'thickness': serializer.toJson<double>(thickness),
       'color': serializer.toJson<String>(color),
       'texture': serializer.toJson<String>(texture),
+      'cfGrav': serializer.toJson<int>(cfGrav),
+      'cfCobb': serializer.toJson<int>(cfCobb),
+      'cfStone': serializer.toJson<int>(cfStone),
     };
   }
 
@@ -10125,7 +10192,10 @@ class SoilPitHorizonDescriptionData extends DataClass
           double? horizonUpper,
           double? thickness,
           String? color,
-          String? texture}) =>
+          String? texture,
+          int? cfGrav,
+          int? cfCobb,
+          int? cfStone}) =>
       SoilPitHorizonDescriptionData(
         id: id ?? this.id,
         soilPitSummaryId: soilPitSummaryId ?? this.soilPitSummaryId,
@@ -10136,6 +10206,9 @@ class SoilPitHorizonDescriptionData extends DataClass
         thickness: thickness ?? this.thickness,
         color: color ?? this.color,
         texture: texture ?? this.texture,
+        cfGrav: cfGrav ?? this.cfGrav,
+        cfCobb: cfCobb ?? this.cfCobb,
+        cfStone: cfStone ?? this.cfStone,
       );
   @override
   String toString() {
@@ -10148,14 +10221,28 @@ class SoilPitHorizonDescriptionData extends DataClass
           ..write('horizonUpper: $horizonUpper, ')
           ..write('thickness: $thickness, ')
           ..write('color: $color, ')
-          ..write('texture: $texture')
+          ..write('texture: $texture, ')
+          ..write('cfGrav: $cfGrav, ')
+          ..write('cfCobb: $cfCobb, ')
+          ..write('cfStone: $cfStone')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, soilPitSummaryId, soilPitCodeComplete,
-      horizonNum, horizon, horizonUpper, thickness, color, texture);
+  int get hashCode => Object.hash(
+      id,
+      soilPitSummaryId,
+      soilPitCodeComplete,
+      horizonNum,
+      horizon,
+      horizonUpper,
+      thickness,
+      color,
+      texture,
+      cfGrav,
+      cfCobb,
+      cfStone);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -10168,7 +10255,10 @@ class SoilPitHorizonDescriptionData extends DataClass
           other.horizonUpper == this.horizonUpper &&
           other.thickness == this.thickness &&
           other.color == this.color &&
-          other.texture == this.texture);
+          other.texture == this.texture &&
+          other.cfGrav == this.cfGrav &&
+          other.cfCobb == this.cfCobb &&
+          other.cfStone == this.cfStone);
 }
 
 class SoilPitHorizonDescriptionCompanion
@@ -10182,6 +10272,9 @@ class SoilPitHorizonDescriptionCompanion
   final Value<double> thickness;
   final Value<String> color;
   final Value<String> texture;
+  final Value<int> cfGrav;
+  final Value<int> cfCobb;
+  final Value<int> cfStone;
   const SoilPitHorizonDescriptionCompanion({
     this.id = const Value.absent(),
     this.soilPitSummaryId = const Value.absent(),
@@ -10192,6 +10285,9 @@ class SoilPitHorizonDescriptionCompanion
     this.thickness = const Value.absent(),
     this.color = const Value.absent(),
     this.texture = const Value.absent(),
+    this.cfGrav = const Value.absent(),
+    this.cfCobb = const Value.absent(),
+    this.cfStone = const Value.absent(),
   });
   SoilPitHorizonDescriptionCompanion.insert({
     this.id = const Value.absent(),
@@ -10203,6 +10299,9 @@ class SoilPitHorizonDescriptionCompanion
     required double thickness,
     required String color,
     required String texture,
+    required int cfGrav,
+    required int cfCobb,
+    required int cfStone,
   })  : soilPitSummaryId = Value(soilPitSummaryId),
         soilPitCodeComplete = Value(soilPitCodeComplete),
         horizonNum = Value(horizonNum),
@@ -10210,7 +10309,10 @@ class SoilPitHorizonDescriptionCompanion
         horizonUpper = Value(horizonUpper),
         thickness = Value(thickness),
         color = Value(color),
-        texture = Value(texture);
+        texture = Value(texture),
+        cfGrav = Value(cfGrav),
+        cfCobb = Value(cfCobb),
+        cfStone = Value(cfStone);
   static Insertable<SoilPitHorizonDescriptionData> custom({
     Expression<int>? id,
     Expression<int>? soilPitSummaryId,
@@ -10221,6 +10323,9 @@ class SoilPitHorizonDescriptionCompanion
     Expression<double>? thickness,
     Expression<String>? color,
     Expression<String>? texture,
+    Expression<int>? cfGrav,
+    Expression<int>? cfCobb,
+    Expression<int>? cfStone,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -10233,6 +10338,9 @@ class SoilPitHorizonDescriptionCompanion
       if (thickness != null) 'thickness': thickness,
       if (color != null) 'color': color,
       if (texture != null) 'texture': texture,
+      if (cfGrav != null) 'cf_grav': cfGrav,
+      if (cfCobb != null) 'cf_cobb': cfCobb,
+      if (cfStone != null) 'cf_stone': cfStone,
     });
   }
 
@@ -10245,7 +10353,10 @@ class SoilPitHorizonDescriptionCompanion
       Value<double>? horizonUpper,
       Value<double>? thickness,
       Value<String>? color,
-      Value<String>? texture}) {
+      Value<String>? texture,
+      Value<int>? cfGrav,
+      Value<int>? cfCobb,
+      Value<int>? cfStone}) {
     return SoilPitHorizonDescriptionCompanion(
       id: id ?? this.id,
       soilPitSummaryId: soilPitSummaryId ?? this.soilPitSummaryId,
@@ -10256,6 +10367,9 @@ class SoilPitHorizonDescriptionCompanion
       thickness: thickness ?? this.thickness,
       color: color ?? this.color,
       texture: texture ?? this.texture,
+      cfGrav: cfGrav ?? this.cfGrav,
+      cfCobb: cfCobb ?? this.cfCobb,
+      cfStone: cfStone ?? this.cfStone,
     );
   }
 
@@ -10290,6 +10404,15 @@ class SoilPitHorizonDescriptionCompanion
     if (texture.present) {
       map['texture'] = Variable<String>(texture.value);
     }
+    if (cfGrav.present) {
+      map['cf_grav'] = Variable<int>(cfGrav.value);
+    }
+    if (cfCobb.present) {
+      map['cf_cobb'] = Variable<int>(cfCobb.value);
+    }
+    if (cfStone.present) {
+      map['cf_stone'] = Variable<int>(cfStone.value);
+    }
     return map;
   }
 
@@ -10304,7 +10427,10 @@ class SoilPitHorizonDescriptionCompanion
           ..write('horizonUpper: $horizonUpper, ')
           ..write('thickness: $thickness, ')
           ..write('color: $color, ')
-          ..write('texture: $texture')
+          ..write('texture: $texture, ')
+          ..write('cfGrav: $cfGrav, ')
+          ..write('cfCobb: $cfCobb, ')
+          ..write('cfStone: $cfStone')
           ..write(')'))
         .toString();
   }

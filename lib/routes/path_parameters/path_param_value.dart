@@ -38,4 +38,6 @@ class PathParamValue {
   //Soil Pit
   static int getSoilPitSummary(GoRouterState goRouterState) =>
       int.parse(goRouterState.pathParameters[PathParamsKeys.soilPitSummaryId]!);
+  static int getSoilSiteInfo(GoRouterState goRouterState) =>
+      int.parse(goRouterState.pathParameters[PathParamsKeys.soilSiteInfoId]!);
 }

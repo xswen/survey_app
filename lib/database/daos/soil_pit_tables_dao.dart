@@ -39,4 +39,12 @@ class SoilPitTablesDao extends DatabaseAccessor<Database>
 
     return await getSummaryWithSurveyId(summaryId);
   }
+
+//====================Soil Site Summary====================
+  Future<SoilSiteInfoData?> getSiteInfoFromSummaryId(int summaryId) async {
+    SoilSiteInfoData? data = await (select(soilSiteInfo)
+          ..where((tbl) => tbl.soilPitSummaryId.equals(summaryId)))
+        .getSingleOrNull();
+    return data;
+  }
 }
