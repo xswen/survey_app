@@ -47,4 +47,7 @@ class SoilPitTablesDao extends DatabaseAccessor<Database>
         .getSingleOrNull();
     return data;
   }
+
+  Future<int> addOrUpdateSiteInfo(SoilSiteInfoCompanion entry) =>
+      into(soilSiteInfo).insertOnConflictUpdate(entry);
 }

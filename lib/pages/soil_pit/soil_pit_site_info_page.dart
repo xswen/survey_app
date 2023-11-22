@@ -1,9 +1,12 @@
 import 'package:drift/drift.dart' as d;
 import 'package:flutter/services.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
+import 'package:survey_app/pages/soil_pit/soil_pit_summary_table.dart';
+import 'package:survey_app/providers/soil_pit_providers.dart';
 import 'package:survey_app/widgets/dropdowns/drop_down_async_list.dart';
 import 'package:survey_app/widgets/hide_info_checkbox.dart';
 
+import '../../formatters/format_string.dart';
 import '../../formatters/thousands_formatter.dart';
 import '../../widgets/data_input/data_input.dart';
 import '../../widgets/text/text_header_separator.dart';
@@ -49,7 +52,7 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
     }
   }
 
-  Future<String> getSoilDrainageName(String code) async {
+  Future<String> getDrainageName(String code) async {
     if (code.isEmpty) {
       return "Please select drainage class";
     }
@@ -60,7 +63,7 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
         .getSoilDrainageName(int.parse(code));
   }
 
-  Future<String> getSoilMoistureName(String code) async {
+  Future<String> getMoistureName(String code) async {
     if (code.isEmpty) {
       return "Please select moisture class";
     }
@@ -69,6 +72,69 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
         .read(databaseProvider)
         .referenceTablesDao
         .getSoilMoistureName(int.parse(code));
+  }
+
+  Future<String> getDepositionName(String code) async {
+    if (code.isEmpty) {
+      return "Please select moisture class";
+    }
+
+    return ref
+        .read(databaseProvider)
+        .referenceTablesDao
+        .getSoilDepositionName(code);
+  }
+
+  Future<String> getHumusFormName(String code) async {
+    if (code.isEmpty) {
+      return "Please select humus class";
+    }
+
+    return ref
+        .read(databaseProvider)
+        .referenceTablesDao
+        .getSoilHumusFormName(code);
+  }
+
+  List<String>? errorCheck() {
+    List<String> results = [];
+
+    if (siteInfo.soilClassOrder == const d.Value.absent()) {
+      results.add("Missing soil class order");
+    }
+    if (siteInfo.soilClassGreatGroup == const d.Value.absent()) {
+      results.add("Missing soil class great group");
+    }
+    if (siteInfo.soilClassSubGroup == const d.Value.absent()) {
+      results.add("Missing soil class sub group");
+    } else {
+      if (siteInfo.soilClass == const d.Value.absent()) {
+        results.add("Error: soil Class is missing. Please contact support");
+      }
+    }
+    if (errorProfileDepth(ref
+            .read(databaseProvider)
+            .companionValueToStr(siteInfo.profileDepth)) !=
+        null) {
+      results.add("Missing profile depth");
+    }
+    if (siteInfo.profileDepth == const d.Value.absent()) {
+      results.add("Missing profile depth");
+    }
+    if (siteInfo.drainage == const d.Value.absent()) {
+      results.add("Missing drainage");
+    }
+    if (siteInfo.moisture == const d.Value.absent()) {
+      results.add("Missing moisture");
+    }
+    if (siteInfo.deposition == const d.Value.absent()) {
+      results.add("Missing deposition");
+    }
+    if (siteInfo.humusForm == const d.Value.absent()) {
+      results.add("Missing humus form");
+    }
+
+    return results.isEmpty ? null : results;
   }
 
   String? errorProfileDepth(String? text) {
@@ -103,8 +169,9 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
                     context.pop();
                   },
                 ));
+          } else {
+            context.pop();
           }
-          context.pop();
         },
       ),
       endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
@@ -203,6 +270,7 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
                   db.companionValueToStr(siteInfo.profileDepth) == "-1.0",
               onChange: (b) {
                 if (parentComplete) return;
+                changeMade = true;
                 b!
                     ? setState(() => siteInfo =
                         siteInfo.copyWith(profileDepth: const d.Value(-1)))
@@ -223,6 +291,7 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
                   ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
                 ],
                 onSubmit: (s) {
+                  changeMade = true;
                   s.isEmpty
                       ? setState(() => siteInfo = siteInfo.copyWith(
                           profileDepth: const d.Value.absent()))
@@ -237,6 +306,7 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
                 checkValue: db.companionValueToStr(siteInfo.drainage) == "-1",
                 onChange: (b) {
                   if (parentComplete) return;
+                  changeMade = true;
                   b!
                       ? setState(() => siteInfo =
                           siteInfo.copyWith(drainage: const d.Value(-1)))
@@ -244,7 +314,7 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
                           siteInfo.copyWith(drainage: const d.Value.absent()));
                 },
                 child: FutureBuilder(
-                    future: getSoilDrainageName(
+                    future: getDrainageName(
                         db.companionValueToStr(siteInfo.drainage)),
                     initialData: "Please select drainage",
                     builder:
@@ -254,6 +324,7 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
                         enabled: !parentComplete,
                         padding: 0,
                         onChangedFn: (s) {
+                          changeMade = true;
                           db.referenceTablesDao
                               .getSoilDrainageCode(s!)
                               .then((code) => setState(() {
@@ -273,6 +344,7 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
                 checkValue: db.companionValueToStr(siteInfo.moisture) == "-1",
                 onChange: (b) {
                   if (parentComplete) return;
+                  changeMade = true;
                   b!
                       ? setState(() => siteInfo =
                           siteInfo.copyWith(moisture: const d.Value(-1)))
@@ -280,7 +352,7 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
                           siteInfo.copyWith(moisture: const d.Value.absent()));
                 },
                 child: FutureBuilder(
-                    future: getSoilMoistureName(
+                    future: getMoistureName(
                         db.companionValueToStr(siteInfo.moisture)),
                     initialData: "Please select moisture",
                     builder:
@@ -290,6 +362,7 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
                         enabled: !parentComplete,
                         padding: 0,
                         onChangedFn: (s) {
+                          changeMade = true;
                           db.referenceTablesDao
                               .getSoilMoistureCode(s!)
                               .then((code) => setState(() {
@@ -300,9 +373,104 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
                         asyncItems: (s) =>
                             db.referenceTablesDao.getSoilMoistureNameList(),
                         selectedItem:
-                            text.data ?? "Error loading drainage class name",
+                            text.data ?? "Error loading moisture class name",
                       );
                     })),
+            const SizedBox(height: kPaddingV),
+            FutureBuilder(
+                future: getDepositionName(
+                    db.companionValueToStr(siteInfo.deposition)),
+                initialData: "Please select deposition",
+                builder: (BuildContext context, AsyncSnapshot<String> text) {
+                  return DropDownAsyncList(
+                    title: "Mode of deposition of soil parent material",
+                    searchable: true,
+                    enabled: !parentComplete,
+                    onChangedFn: (s) {
+                      changeMade = true;
+                      db.referenceTablesDao
+                          .getSoilDepositionCode(s!)
+                          .then((code) => setState(() {
+                                siteInfo = siteInfo.copyWith(
+                                    deposition: d.Value(code));
+                              }));
+                    },
+                    asyncItems: (s) =>
+                        db.referenceTablesDao.getSoilDepositionNameList(),
+                    selectedItem:
+                        text.data ?? "Error loading drainage class name",
+                  );
+                }),
+            FutureBuilder(
+                future: getHumusFormName(
+                    db.companionValueToStr(siteInfo.humusForm)),
+                initialData: "Please select humus form",
+                builder: (BuildContext context, AsyncSnapshot<String> text) {
+                  return DropDownAsyncList(
+                    title:
+                        "Form of the organic and organic-enriched mineral horizons at the soil surface",
+                    searchable: true,
+                    enabled: !parentComplete,
+                    onChangedFn: (s) {
+                      changeMade = true;
+                      db.referenceTablesDao
+                          .getSoilHumusFormCode(s!)
+                          .then((code) => setState(() {
+                                siteInfo =
+                                    siteInfo.copyWith(humusForm: d.Value(code));
+                              }));
+                    },
+                    asyncItems: (s) =>
+                        db.referenceTablesDao.getSoilHumusFormNameList(),
+                    selectedItem: text.data ?? "Error loading humus class name",
+                  );
+                }),
+            Container(
+                margin: const EdgeInsets.only(
+                    top: kPaddingV * 2, bottom: kPaddingV * 2),
+                child: ElevatedButton(
+                    onPressed: () {
+                      if (parentComplete) {
+                        Popups.show(context,
+                            Popups.generateCompleteErrorPopup("Woody Debris"));
+                        return;
+                      }
+
+                      List<String>? errors = errorCheck();
+                      if (errors != null) {
+                        Popups.show(
+                            context,
+                            PopupDismiss(
+                              "Error: Incorrect Data",
+                              contentWidget: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    "Errors were found in the following places",
+                                    textAlign: TextAlign.start,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 12),
+                                    child: Text(
+                                      FormatString.generateBulletList(errors),
+                                      textAlign: TextAlign.start,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ));
+                      } else {
+                        db.soilPitTablesDao
+                            .addOrUpdateSiteInfo(siteInfo)
+                            .then((siteId) {
+                          ref.refresh(soilSummaryDataProvider(spId));
+                          context.goNamed(SoilPitSummaryPage.routeName,
+                              pathParameters: PathParamGenerator.soilPitSummary(
+                                  widget.state, spId.toString()));
+                        });
+                      }
+                    },
+                    child: const Text("Submit"))),
           ],
         )),
       ),

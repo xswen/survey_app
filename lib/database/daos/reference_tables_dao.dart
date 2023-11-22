@@ -358,4 +358,182 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
             ..where((tbl) => tbl.name.equals(name)))
           .map((p0) => p0.code)
           .getSingle();
+
+  Future<List<String>> getSoilDepositionNameList() {
+    final query = selectOnly(soilDeposition, distinct: true)
+      ..addColumns([soilDeposition.name])
+      ..where(soilDeposition.name.isNotNull());
+
+    return query
+        .map((row) => row.read(soilDeposition.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getSoilDepositionName(String code) =>
+      (select(soilDeposition, distinct: true)
+            ..where((tbl) => tbl.code.equals(code)))
+          .map((row) => row.name)
+          .getSingle();
+
+  Future<String> getSoilDepositionCode(String name) =>
+      (select(soilDeposition, distinct: true)
+            ..where((tbl) => tbl.name.equals(name)))
+          .map((row) => row.code)
+          .getSingle();
+
+  Future<List<String>> getSoilHumusFormNameList() {
+    final query = selectOnly(soilHumusForm, distinct: true)
+      ..addColumns([soilHumusForm.name])
+      ..where(soilHumusForm.name.isNotNull());
+
+    return query
+        .map((row) => row.read(soilHumusForm.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getSoilHumusFormName(String code) =>
+      (select(soilHumusForm, distinct: true)
+            ..where((tbl) => tbl.code.equals(code)))
+          .map((row) => row.name)
+          .getSingle();
+
+  Future<String> getSoilHumusFormCode(String name) =>
+      (select(soilHumusForm, distinct: true)
+            ..where((tbl) => tbl.name.equals(name)))
+          .map((row) => row.code)
+          .getSingle();
+
+  Future<List<String>> getSoilPitCodeCompletedNameList() {
+    final query = selectOnly(soilPitCodeCompleted, distinct: true)
+      ..addColumns([soilPitCodeCompleted.name])
+      ..where(soilPitCodeCompleted.name.isNotNull());
+
+    return query
+        .map((row) =>
+            row.read(soilPitCodeCompleted.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getSoilPitCodeCompletedName(String code) =>
+      (select(soilPitCodeCompleted, distinct: true)
+            ..where((tbl) => tbl.code.equals(code)))
+          .map((row) => row.name)
+          .getSingle();
+
+  Future<String> getSoilPitCodeCompletedCode(String name) =>
+      (select(soilPitCodeCompleted, distinct: true)
+            ..where((tbl) => tbl.name.equals(name)))
+          .map((row) => row.code)
+          .getSingle();
+
+  Future<List<String>> getSoilPitCodeFieldNameList() {
+    final query = selectOnly(soilPitCodeField, distinct: true)
+      ..addColumns([soilPitCodeField.name])
+      ..where(soilPitCodeField.name.isNotNull());
+
+    return query
+        .map(
+            (row) => row.read(soilPitCodeField.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getSoilPitCodeFieldName(String code) =>
+      (select(soilPitCodeField, distinct: true)
+            ..where((tbl) => tbl.code.equals(code)))
+          .map((row) => row.name)
+          .getSingle();
+
+  Future<String> getSoilPitCodeFieldCode(String name) =>
+      (select(soilPitCodeField, distinct: true)
+            ..where((tbl) => tbl.name.equals(name)))
+          .map((row) => row.code)
+          .getSingle();
+
+  Future<List<String>> getSoilPitFeatureClassNameList() {
+    final query = selectOnly(soilPitFeatureClass, distinct: true)
+      ..addColumns([soilPitFeatureClass.name])
+      ..where(soilPitFeatureClass.name.isNotNull());
+
+    return query
+        .map((row) =>
+            row.read(soilPitFeatureClass.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getSoilPitFeatureClassName(String code) =>
+      (select(soilPitFeatureClass, distinct: true)
+            ..where((tbl) => tbl.code.equals(code)))
+          .map((row) => row.name)
+          .getSingle();
+
+  Future<String> getSoilPitFeatureClassCode(String name) =>
+      (select(soilPitFeatureClass, distinct: true)
+            ..where((tbl) => tbl.name.equals(name)))
+          .map((row) => row.code)
+          .getSingle();
+
+  Future<List<String>> getSoilHorizonDesignationNameList() {
+    final query = selectOnly(soilHorizonDesignation, distinct: true)
+      ..addColumns([soilHorizonDesignation.name])
+      ..where(soilHorizonDesignation.name.isNotNull());
+
+    return query
+        .map((row) =>
+            row.read(soilHorizonDesignation.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getSoilHorizonDesignationName(String code) =>
+      (select(soilHorizonDesignation, distinct: true)
+            ..where((tbl) => tbl.code.equals(code)))
+          .map((row) => row.name)
+          .getSingle();
+
+  Future<String> getSoilHorizonDesignationCode(String name) =>
+      (select(soilHorizonDesignation, distinct: true)
+            ..where((tbl) => tbl.name.equals(name)))
+          .map((row) => row.code)
+          .getSingle();
+
+  Future<List<String>> getSoilColorNameList() {
+    final query = selectOnly(soilColor, distinct: true)
+      ..addColumns([soilColor.name])
+      ..where(soilColor.name.isNotNull());
+
+    return query
+        .map((row) => row.read(soilColor.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getSoilColorName(String code) =>
+      (select(soilColor, distinct: true)..where((tbl) => tbl.code.equals(code)))
+          .map((row) => row.name)
+          .getSingle();
+
+  Future<String> getSoilColorCode(String name) =>
+      (select(soilColor, distinct: true)..where((tbl) => tbl.name.equals(name)))
+          .map((row) => row.code)
+          .getSingle();
+
+  Future<List<String>> getSoilTextureNameList() {
+    final query = selectOnly(soilTexture, distinct: true)
+      ..addColumns([soilTexture.name])
+      ..where(soilTexture.name.isNotNull());
+
+    return query
+        .map((row) => row.read(soilTexture.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getSoilTextureName(String code) =>
+      (select(soilTexture, distinct: true)
+            ..where((tbl) => tbl.code.equals(code)))
+          .map((row) => row.name)
+          .getSingle();
+
+  Future<String> getSoilTextureCode(String name) =>
+      (select(soilTexture, distinct: true)
+            ..where((tbl) => tbl.name.equals(name)))
+          .map((row) => row.code)
+          .getSingle();
 }
