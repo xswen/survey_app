@@ -7,27 +7,35 @@ class SoilPitCodeSelectBuilder extends StatelessWidget {
       {super.key,
       required this.code,
       required this.initPlotCodeName,
+      required this.plotCodeNames,
       required this.usedPlotCodes,
       required this.onChange});
 
   final String code;
   final String initPlotCodeName;
+  final Future<List<String>> plotCodeNames;
   final Future<List<String>> usedPlotCodes;
   final void Function(String) onChange;
 
   Future<List<String>> getPitCodeNames(String code, String initCode) async {
     Database db = Database.instance;
     String codeName = "";
+    String initCodeName = "";
+
     if (code.isEmpty) {
       codeName = "Please select soil pit code";
     } else {
       codeName = await db.referenceTablesDao.getSoilPitCodeCompiledName(code);
     }
 
-    return [
-      codeName,
-      await db.referenceTablesDao.getSoilPitCodeCompiledName(initCode)
-    ];
+    if (initCode.isEmpty) {
+      initCodeName = "no initCode";
+    } else {
+      initCodeName =
+          await db.referenceTablesDao.getSoilPitCodeCompiledName(code);
+    }
+
+    return [codeName, initCodeName];
   }
 
   @override
@@ -56,8 +64,7 @@ class SoilPitCodeSelectBuilder extends StatelessWidget {
                       return usedCodes.data!.contains(s!);
                     }
                   },
-                  asyncItems: (s) =>
-                      db.referenceTablesDao.getSoilPitCodeCompiledNameList(),
+                  asyncItems: (s) => plotCodeNames,
                   selectedItem: name,
                 );
               });

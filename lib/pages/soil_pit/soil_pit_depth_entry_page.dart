@@ -101,6 +101,8 @@ class SoilPitDepthEntryPageState extends ConsumerState<SoilPitDepthEntryPage> {
             SoilPitCodeSelectBuilder(
                 code: db.companionValueToStr(depth.soilPitCodeCompiled),
                 initPlotCodeName: initSoilPit,
+                plotCodeNames:
+                    db.referenceTablesDao.getSoilPitCodeCompiledNameList(),
                 usedPlotCodes:
                     db.soilPitTablesDao.getDepthUsedPlotCodeNameList(spId),
                 onChange: (s) {

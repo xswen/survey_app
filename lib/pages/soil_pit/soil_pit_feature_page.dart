@@ -73,9 +73,11 @@ class SoilPitFeaturePageState extends ConsumerState<SoilPitFeaturePage> {
             DataGridCell<String>(
                 columnName: columnData.feature.name,
                 value: dataGridRow.soilPitSoilFeature),
-            DataGridCell<int>(
+            DataGridCell<String>(
                 columnName: columnData.depthFeature.name,
-                value: dataGridRow.depthFeature),
+                value: dataGridRow.depthFeature == -9
+                    ? "N/A"
+                    : dataGridRow.depthFeature.toString()),
             DataGridCell<String>(
                 columnName: columnData.comments.name,
                 value: "functionality to be added"),
@@ -84,14 +86,14 @@ class SoilPitFeaturePageState extends ConsumerState<SoilPitFeaturePage> {
       .toList();
 
   DataGridSourceBuilder getSourceBuilder(List<SoilPitFeatureData> data) {
-    DataGridSourceBuilder soilDepthDataSource =
+    DataGridSourceBuilder soilFeatureDataSource =
         DataGridSourceBuilder(dataGridRows: generateDataGridRows(data));
-    soilDepthDataSource.sortedColumns.add(SortColumnDetails(
+    soilFeatureDataSource.sortedColumns.add(SortColumnDetails(
         name: columnData.id.name,
         sortDirection: DataGridSortDirection.ascending));
-    soilDepthDataSource.sort();
+    soilFeatureDataSource.sort();
 
-    return soilDepthDataSource;
+    return soilFeatureDataSource;
   }
 
   @override
@@ -116,7 +118,7 @@ class SoilPitFeaturePageState extends ConsumerState<SoilPitFeaturePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    "Depths",
+                    "Features",
                     style: TextStyle(fontSize: kTextTitleSize),
                   ),
                   Padding(
@@ -133,7 +135,7 @@ class SoilPitFeaturePageState extends ConsumerState<SoilPitFeaturePage> {
                                     soilPitSummaryId: d.Value(spId))),
                         style: CustomButtonStyles.inactiveButton(
                             isActive: !parentComplete),
-                        child: const Text("Add depth")),
+                        child: const Text("Add feature")),
                   ),
                 ],
               ),
