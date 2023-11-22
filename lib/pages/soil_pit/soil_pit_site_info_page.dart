@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart' as d;
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/widgets/dropdowns/drop_down_async_list.dart';
 
@@ -72,7 +73,13 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
               searchable: true,
               enabled: true,
               title: "Order",
-              onChangedFn: (s) {},
+              onChangedFn: (s) {
+                siteInfo = siteInfo.copyWith(
+                    soilClassOrder: d.Value(s!),
+                    soilClassGreatGroup: const d.Value.absent(),
+                    soilClassSubGroup: const d.Value.absent(),
+                    soilClass: const d.Value.absent());
+              },
               selectedItem: db.companionValueToStr(siteInfo.soilClass).isEmpty
                   ? "Please select soil classification"
                   : db.companionValueToStr(siteInfo.soilClass),
