@@ -8881,10 +8881,10 @@ class $SoilSiteInfoTable extends SoilSiteInfo
   static const VerificationMeta _profileDepthMeta =
       const VerificationMeta('profileDepth');
   @override
-  late final GeneratedColumn<int> profileDepth = GeneratedColumn<int>(
+  late final GeneratedColumn<double> profileDepth = GeneratedColumn<double>(
       'profile_depth', aliasedName, false,
       check: () => profileDepth.isBetweenValues(-1, 250),
-      type: DriftSqlType.int,
+      type: DriftSqlType.double,
       requiredDuringInsert: true);
   static const VerificationMeta _drainageMeta =
       const VerificationMeta('drainage');
@@ -9040,7 +9040,7 @@ class $SoilSiteInfoTable extends SoilSiteInfo
       soilClass: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}soil_class'])!,
       profileDepth: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}profile_depth'])!,
+          .read(DriftSqlType.double, data['${effectivePrefix}profile_depth'])!,
       drainage: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}drainage'])!,
       moisture: attachedDatabase.typeMapping
@@ -9066,7 +9066,7 @@ class SoilSiteInfoData extends DataClass
   final String soilClassGreatGroup;
   final String soilClassSubGroup;
   final String soilClass;
-  final int profileDepth;
+  final double profileDepth;
   final int drainage;
   final int moisture;
   final String deposition;
@@ -9092,7 +9092,7 @@ class SoilSiteInfoData extends DataClass
     map['soil_class_great_group'] = Variable<String>(soilClassGreatGroup);
     map['soil_class_sub_group'] = Variable<String>(soilClassSubGroup);
     map['soil_class'] = Variable<String>(soilClass);
-    map['profile_depth'] = Variable<int>(profileDepth);
+    map['profile_depth'] = Variable<double>(profileDepth);
     map['drainage'] = Variable<int>(drainage);
     map['moisture'] = Variable<int>(moisture);
     map['deposition'] = Variable<String>(deposition);
@@ -9127,7 +9127,7 @@ class SoilSiteInfoData extends DataClass
           serializer.fromJson<String>(json['soilClassGreatGroup']),
       soilClassSubGroup: serializer.fromJson<String>(json['soilClassSubGroup']),
       soilClass: serializer.fromJson<String>(json['soilClass']),
-      profileDepth: serializer.fromJson<int>(json['profileDepth']),
+      profileDepth: serializer.fromJson<double>(json['profileDepth']),
       drainage: serializer.fromJson<int>(json['drainage']),
       moisture: serializer.fromJson<int>(json['moisture']),
       deposition: serializer.fromJson<String>(json['deposition']),
@@ -9144,7 +9144,7 @@ class SoilSiteInfoData extends DataClass
       'soilClassGreatGroup': serializer.toJson<String>(soilClassGreatGroup),
       'soilClassSubGroup': serializer.toJson<String>(soilClassSubGroup),
       'soilClass': serializer.toJson<String>(soilClass),
-      'profileDepth': serializer.toJson<int>(profileDepth),
+      'profileDepth': serializer.toJson<double>(profileDepth),
       'drainage': serializer.toJson<int>(drainage),
       'moisture': serializer.toJson<int>(moisture),
       'deposition': serializer.toJson<String>(deposition),
@@ -9159,7 +9159,7 @@ class SoilSiteInfoData extends DataClass
           String? soilClassGreatGroup,
           String? soilClassSubGroup,
           String? soilClass,
-          int? profileDepth,
+          double? profileDepth,
           int? drainage,
           int? moisture,
           String? deposition,
@@ -9232,7 +9232,7 @@ class SoilSiteInfoCompanion extends UpdateCompanion<SoilSiteInfoData> {
   final Value<String> soilClassGreatGroup;
   final Value<String> soilClassSubGroup;
   final Value<String> soilClass;
-  final Value<int> profileDepth;
+  final Value<double> profileDepth;
   final Value<int> drainage;
   final Value<int> moisture;
   final Value<String> deposition;
@@ -9257,7 +9257,7 @@ class SoilSiteInfoCompanion extends UpdateCompanion<SoilSiteInfoData> {
     required String soilClassGreatGroup,
     required String soilClassSubGroup,
     required String soilClass,
-    required int profileDepth,
+    required double profileDepth,
     required int drainage,
     required int moisture,
     required String deposition,
@@ -9279,7 +9279,7 @@ class SoilSiteInfoCompanion extends UpdateCompanion<SoilSiteInfoData> {
     Expression<String>? soilClassGreatGroup,
     Expression<String>? soilClassSubGroup,
     Expression<String>? soilClass,
-    Expression<int>? profileDepth,
+    Expression<double>? profileDepth,
     Expression<int>? drainage,
     Expression<int>? moisture,
     Expression<String>? deposition,
@@ -9308,7 +9308,7 @@ class SoilSiteInfoCompanion extends UpdateCompanion<SoilSiteInfoData> {
       Value<String>? soilClassGreatGroup,
       Value<String>? soilClassSubGroup,
       Value<String>? soilClass,
-      Value<int>? profileDepth,
+      Value<double>? profileDepth,
       Value<int>? drainage,
       Value<int>? moisture,
       Value<String>? deposition,
@@ -9351,7 +9351,7 @@ class SoilSiteInfoCompanion extends UpdateCompanion<SoilSiteInfoData> {
       map['soil_class'] = Variable<String>(soilClass.value);
     }
     if (profileDepth.present) {
-      map['profile_depth'] = Variable<int>(profileDepth.value);
+      map['profile_depth'] = Variable<double>(profileDepth.value);
     }
     if (drainage.present) {
       map['drainage'] = Variable<int>(drainage.value);

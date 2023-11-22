@@ -1,7 +1,11 @@
 import 'package:drift/drift.dart' as d;
+import 'package:flutter/services.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/widgets/dropdowns/drop_down_async_list.dart';
+import 'package:survey_app/widgets/hide_info_checkbox.dart';
 
+import '../../formatters/thousands_formatter.dart';
+import '../../widgets/data_input/data_input.dart';
 import '../../widgets/text/text_header_separator.dart';
 
 class SoilPitSiteInfoPage extends ConsumerStatefulWidget {
@@ -16,6 +20,7 @@ class SoilPitSiteInfoPage extends ConsumerStatefulWidget {
 class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
   final String title = "Site Info";
   bool changeMade = false;
+  late bool parentComplete = false;
 
   late final PopupDismiss completeWarningPopup;
   final PopupDismiss surveyCompleteWarningPopup =
@@ -30,7 +35,29 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
     siteInfo = widget.state.extra as SoilSiteInfoCompanion;
     completeWarningPopup = Popups.generateCompleteErrorPopup(title);
 
+    _loadData();
     super.initState();
+  }
+
+  void _loadData() async {
+    final parent = await Database.instance.soilPitTablesDao.getSummary(spId);
+
+    if (mounted) {
+      setState(() {
+        parentComplete = parent.complete;
+      });
+    }
+  }
+
+  String? errorProfileDepth(String? text) {
+    if (text?.isEmpty ?? true) {
+      return "Can't be empty";
+    } else if (double.parse(text!) == -1.0) {
+      return null;
+    } else if (0.0 > double.parse(text!) || double.parse(text!) > 250) {
+      return "Input out of range. Must be between 0.0 to 250.0 inclusive.";
+    }
+    return null;
   }
 
   @override
@@ -63,7 +90,7 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
         padding: const EdgeInsets.symmetric(
             vertical: kPaddingV * 2, horizontal: kPaddingH),
         child: Center(
-            child: Column(
+            child: ListView(
           children: [
             const TextHeaderSeparator(
               title: "CSC Soil Classification Field",
@@ -71,10 +98,11 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
             ),
             DropDownAsyncList(
               searchable: true,
-              enabled: true,
+              enabled: !parentComplete,
               title: "Order",
               onChangedFn: (s) {
                 if (db.companionValueToStr(siteInfo.soilClassOrder) != s) {
+                  changeMade = true;
                   setState(() {
                     siteInfo = siteInfo.copyWith(
                         soilClassOrder: d.Value(s!),
@@ -92,10 +120,11 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
             ),
             DropDownAsyncList(
               searchable: true,
-              enabled: true,
+              enabled: !parentComplete,
               title: "Great Group",
               onChangedFn: (s) {
                 if (db.companionValueToStr(siteInfo.soilClassGreatGroup) != s) {
+                  changeMade = true;
                   setState(() {
                     siteInfo = siteInfo.copyWith(
                         soilClassGreatGroup: d.Value(s!),
@@ -114,10 +143,11 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
             ),
             DropDownAsyncList(
               searchable: true,
-              enabled: true,
+              enabled: !parentComplete,
               title: "Sub Group",
               onChangedFn: (s) {
                 if (db.companionValueToStr(siteInfo.soilClassSubGroup) != s) {
+                  changeMade = true;
                   db.referenceTablesDao
                       .getSoilClassCode(
                           db.companionValueToStr(siteInfo.soilClassOrder),
@@ -137,6 +167,47 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
               asyncItems: (s) => db.referenceTablesDao.getSoilClassSubGroupList(
                   db.companionValueToStr(siteInfo.soilClassOrder),
                   db.companionValueToStr(siteInfo.soilClassGreatGroup)),
+            ),
+            const SizedBox(height: kPaddingV * 2),
+            const TextHeaderSeparator(
+              title: "Measurements",
+              fontSize: 20,
+            ),
+            HideInfoCheckbox(
+              title:
+                  "The depth of the soil pit from which soil characteristics were described",
+              checkTitle: "Unreported",
+              checkValue:
+                  db.companionValueToStr(siteInfo.profileDepth) == "-1.0",
+              onChange: (b) {
+                if (parentComplete) return;
+                b!
+                    ? setState(() => siteInfo =
+                        siteInfo.copyWith(profileDepth: const d.Value(-1)))
+                    : setState(() => siteInfo = siteInfo.copyWith(
+                        profileDepth: const d.Value.absent()));
+              },
+              child: DataInput(
+                readOnly: parentComplete,
+                boxLabel: "Measure to the nearest 0.1",
+                prefixIcon: FontAwesomeIcons.ruler,
+                suffixVal: "cm",
+                startingStr: db.companionValueToStr(siteInfo.profileDepth),
+                generalPadding: const EdgeInsets.all(0),
+                onValidate: (s) => errorProfileDepth(s),
+                inputType: const TextInputType.numberWithOptions(decimal: true),
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(5),
+                  ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
+                ],
+                onSubmit: (s) {
+                  s.isEmpty
+                      ? setState(() => siteInfo = siteInfo.copyWith(
+                          profileDepth: const d.Value.absent()))
+                      : setState(() => siteInfo = siteInfo.copyWith(
+                          profileDepth: d.Value(double.parse(s))));
+                },
+              ),
             ),
           ],
         )),

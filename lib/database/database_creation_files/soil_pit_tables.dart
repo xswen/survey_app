@@ -16,8 +16,8 @@ class SoilSiteInfo extends Table {
   TextColumn get soilClassGreatGroup => text()();
   TextColumn get soilClassSubGroup => text()();
   TextColumn get soilClass => text().withLength(max: 9)();
-  IntColumn get profileDepth =>
-      integer().check(profileDepth.isBetweenValues(-1, 250))();
+  RealColumn get profileDepth =>
+      real().check(profileDepth.isBetweenValues(-1, 250))();
   IntColumn get drainage => integer().check(drainage.isBetweenValues(-9, 7))();
   IntColumn get moisture => integer().check(moisture.isBetweenValues(-9, 3))();
   TextColumn get deposition => text().withLength(max: 2)();
