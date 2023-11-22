@@ -97,7 +97,7 @@ class SoilHumusForm extends Table {
   TextColumn get name => text()();
 }
 
-class SoilPitCodeCompleted extends Table {
+class SoilPitCodeCompiled extends Table {
   TextColumn get code => text()();
   TextColumn get name => text()();
 }

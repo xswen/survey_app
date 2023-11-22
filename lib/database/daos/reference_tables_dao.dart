@@ -21,7 +21,7 @@ part 'reference_tables_dao.g.dart';
   SoilMoistureClass,
   SoilDeposition,
   SoilHumusForm,
-  SoilPitCodeCompleted,
+  SoilPitCodeCompiled,
   SoilPitCodeField,
   SoilPitFeatureClass,
   SoilHorizonDesignation,
@@ -403,25 +403,25 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
           .map((row) => row.code)
           .getSingle();
 
-  Future<List<String>> getSoilPitCodeCompletedNameList() {
-    final query = selectOnly(soilPitCodeCompleted, distinct: true)
-      ..addColumns([soilPitCodeCompleted.name])
-      ..where(soilPitCodeCompleted.name.isNotNull());
+  Future<List<String>> getSoilPitCodeCompiledNameList() {
+    final query = selectOnly(soilPitCodeCompiled, distinct: true)
+      ..addColumns([soilPitCodeCompiled.name])
+      ..where(soilPitCodeCompiled.name.isNotNull());
 
     return query
         .map((row) =>
-            row.read(soilPitCodeCompleted.name) ?? "error on loading name")
+            row.read(soilPitCodeCompiled.name) ?? "error on loading name")
         .get();
   }
 
-  Future<String> getSoilPitCodeCompletedName(String code) =>
-      (select(soilPitCodeCompleted, distinct: true)
+  Future<String> getSoilPitCodeCompiledName(String code) =>
+      (select(soilPitCodeCompiled, distinct: true)
             ..where((tbl) => tbl.code.equals(code)))
           .map((row) => row.name)
           .getSingle();
 
-  Future<String> getSoilPitCodeCompletedCode(String name) =>
-      (select(soilPitCodeCompleted, distinct: true)
+  Future<String> getSoilPitCodeCompiledCode(String name) =>
+      (select(soilPitCodeCompiled, distinct: true)
             ..where((tbl) => tbl.name.equals(name)))
           .map((row) => row.code)
           .getSingle();

@@ -49,7 +49,6 @@ class SoilPitDepthPageState extends ConsumerState<SoilPitDepthPage> {
   void initState() {
     spId = PathParamValue.getSoilPitSummary(widget.state);
     completeWarningPopup = Popups.generateCompleteErrorPopup(title);
-    d.Value(1);
     _loadData();
     super.initState();
   }
@@ -70,7 +69,7 @@ class SoilPitDepthPageState extends ConsumerState<SoilPitDepthPage> {
                 columnName: columnData.id.name, value: dataGridRow.id),
             DataGridCell<String>(
                 columnName: columnData.pitCode.name,
-                value: dataGridRow.soilPitCodeComplete),
+                value: dataGridRow.soilPitCodeCompiled),
             DataGridCell<double>(
                 columnName: columnData.depthMin.name,
                 value: dataGridRow.depthMin),

@@ -112,14 +112,14 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
         results.add("Error: soil Class is missing. Please contact support");
       }
     }
-    if (errorProfileDepth(ref
+
+    if (siteInfo.profileDepth == const d.Value.absent()) {
+      results.add("Missing profile depth");
+    } else if (errorProfileDepth(ref
             .read(databaseProvider)
             .companionValueToStr(siteInfo.profileDepth)) !=
         null) {
-      results.add("Missing profile depth");
-    }
-    if (siteInfo.profileDepth == const d.Value.absent()) {
-      results.add("Missing profile depth");
+      results.add("Error for profile depth");
     }
     if (siteInfo.drainage == const d.Value.absent()) {
       results.add("Missing drainage");

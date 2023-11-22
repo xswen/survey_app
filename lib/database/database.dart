@@ -42,7 +42,7 @@ const List<Type> _tables = [
   SoilMoistureClass,
   SoilDeposition,
   SoilHumusForm,
-  SoilPitCodeCompleted,
+  SoilPitCodeCompiled,
   SoilPitCodeField,
   SoilPitFeatureClass,
   SoilHorizonDesignation,
@@ -150,8 +150,8 @@ class Database extends _$Database {
               await _getSoilDeposition();
           List<SoilHumusFormCompanion> soilHumusFormList =
               await _getSoilHumusForm();
-          List<SoilPitCodeCompletedCompanion> soilPitCodeList =
-              await _getSoilPitCodeComplete();
+          List<SoilPitCodeCompiledCompanion> soilPitCodeList =
+              await _getSoilPitCodeCompiled();
           List<SoilPitCodeFieldCompanion> soilPitCodeFieldList =
               await _getSoilPitCodeFields();
           List<SoilPitFeatureClassCompanion> soilPitFeatureList =
@@ -178,7 +178,7 @@ class Database extends _$Database {
             b.insertAll(soilMoistureClass, soilMoistureList);
             b.insertAll(soilDeposition, soilDepositionList);
             b.insertAll(soilHumusForm, soilHumusFormList);
-            b.insertAll(soilPitCodeCompleted, soilPitCodeList);
+            b.insertAll(soilPitCodeCompiled, soilPitCodeList);
             b.insertAll(soilPitCodeField, soilPitCodeFieldList);
             b.insertAll(soilPitFeatureClass, soilPitFeatureList);
             b.insertAll(soilHorizonDesignation, soilHorizonDesignationList);
@@ -336,12 +336,12 @@ class Database extends _$Database {
     }).toList();
   }
 
-  Future<List<SoilPitCodeCompletedCompanion>> _getSoilPitCodeComplete() async {
+  Future<List<SoilPitCodeCompiledCompanion>> _getSoilPitCodeCompiled() async {
     List<dynamic> jsonData = await _loadJsonData(
         'assets/db_reference_data/sp_pit_code_completed.json');
 
     return jsonData.map((dynamic item) {
-      return SoilPitCodeCompletedCompanion(
+      return SoilPitCodeCompiledCompanion(
         code: Value(item["code"]),
         name: Value(item["name"]),
       );
