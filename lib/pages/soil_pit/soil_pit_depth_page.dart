@@ -116,7 +116,7 @@ class SoilPitDepthPageState extends ConsumerState<SoilPitDepthPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    "Layers",
+                    "Depths",
                     style: TextStyle(fontSize: kTextTitleSize),
                   ),
                   Padding(
@@ -132,7 +132,7 @@ class SoilPitDepthPageState extends ConsumerState<SoilPitDepthPage> {
                                     soilPitSummaryId: d.Value(spId))),
                         style: CustomButtonStyles.inactiveButton(
                             isActive: !parentComplete),
-                        child: const Text("Add layer")),
+                        child: const Text("Add depth")),
                   ),
                 ],
               ),
