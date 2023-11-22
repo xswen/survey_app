@@ -311,4 +311,28 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
                 tbl.subGroup.equals(subGroup)))
           .map((p0) => p0.code)
           .getSingle();
+
+  Future<List<String>> getSoilDrainageNameList() {
+    final query = selectOnly(soilDrainageClass, distinct: true)
+      ..addColumns([soilDrainageClass.name])
+      ..where(soilDrainageClass.name.isNotNull());
+
+    return query
+        .map((p0) =>
+            p0.read(soilDrainageClass.name) ?? "error on loading drainage name")
+        .get();
+  }
+
+  Future<String> getSoilDrainageName(int code) {
+    return (select(soilDrainageClass, distinct: true)
+          ..where((tbl) => tbl.code.equals(code)))
+        .map((p0) => p0.name)
+        .getSingle();
+  }
+
+  Future<int> getSoilDrainageCode(String name) =>
+      (select(soilDrainageClass, distinct: true)
+            ..where((tbl) => tbl.name.equals(name)))
+          .map((p0) => p0.code)
+          .getSingle();
 }

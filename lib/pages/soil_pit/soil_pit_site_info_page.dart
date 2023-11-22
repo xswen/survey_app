@@ -49,6 +49,17 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
     }
   }
 
+  Future<String> getSoilDrainageName(String code) async {
+    if (code.isEmpty) {
+      return "Please select drainage class";
+    }
+
+    return ref
+        .read(databaseProvider)
+        .referenceTablesDao
+        .getSoilDrainageName(int.parse(code));
+  }
+
   String? errorProfileDepth(String? text) {
     if (text?.isEmpty ?? true) {
       return "Can't be empty";
@@ -209,6 +220,42 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
                 },
               ),
             ),
+            HideInfoCheckbox(
+                title: "Drainage class",
+                checkTitle: "Missing",
+                checkValue: db.companionValueToStr(siteInfo.drainage) == "-1",
+                onChange: (b) {
+                  if (parentComplete) return;
+                  b!
+                      ? setState(() => siteInfo =
+                          siteInfo.copyWith(drainage: const d.Value(-1)))
+                      : setState(() => siteInfo =
+                          siteInfo.copyWith(drainage: const d.Value.absent()));
+                },
+                child: FutureBuilder(
+                    future: getSoilDrainageName(
+                        db.companionValueToStr(siteInfo.drainage)),
+                    initialData: "Please select genus",
+                    builder:
+                        (BuildContext context, AsyncSnapshot<String> text) {
+                      return DropDownAsyncList(
+                        searchable: true,
+                        enabled: !parentComplete,
+                        padding: 0,
+                        onChangedFn: (s) {
+                          db.referenceTablesDao
+                              .getSoilDrainageCode(s!)
+                              .then((code) => setState(() {
+                                    siteInfo = siteInfo.copyWith(
+                                        drainage: d.Value(code));
+                                  }));
+                        },
+                        asyncItems: (s) =>
+                            db.referenceTablesDao.getSoilDrainageNameList(),
+                        selectedItem:
+                            text.data ?? "Error loading drainage class name",
+                      );
+                    })),
           ],
         )),
       ),
