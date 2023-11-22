@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:survey_app/pages/soil_pit/soil_pit_depth_page.dart';
+import 'package:survey_app/pages/soil_pit/soil_pit_feature_page.dart';
 import 'package:survey_app/routes/path_parameters/path_param_keys.dart';
 
 import '../pages/soil_pit/soil_pit_depth_entry_page.dart';
@@ -26,5 +27,16 @@ GoRoute goRouteSoilPit = GoRoute(
                 path: "pit_depth",
                 builder: (context, state) => SoilPitDepthEntryPage(state),
                 routes: [])
-          ])
+          ]),
+      GoRoute(
+          name: SoilPitFeaturePage.routeName,
+          path: "pit_feature_list",
+          builder: (context, state) => SoilPitFeaturePage(state),
+          routes: [
+            // GoRoute(
+            //     name: SoilPitDepthEntryPage.routeName,
+            //     path: "pit_depth",
+            //     builder: (context, state) => SoilPitDepthEntryPage(state),
+            //     routes: [])
+          ]),
     ]);

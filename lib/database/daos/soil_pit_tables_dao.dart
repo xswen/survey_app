@@ -84,4 +84,35 @@ class SoilPitTablesDao extends DatabaseAccessor<Database>
 
     return results;
   }
+
+//====================Soil Feature====================
+  Future<int> addOrUpdateFeature(SoilPitFeatureCompanion entry) =>
+      into(soilPitFeature).insertOnConflictUpdate(entry);
+
+  Future<List<SoilPitFeatureData>> getFeatureList(int summaryId) =>
+      (select(soilPitFeature)
+            ..where((tbl) => tbl.soilPitSummaryId.equals(summaryId)))
+          .get();
+
+  Future<SoilPitFeatureData> getFeature(int featureId) =>
+      (select(soilPitFeature)..where((tbl) => tbl.id.equals(featureId)))
+          .getSingle();
+
+  Future<List<String>> getFeatureUsedPlotCodeNameList(int summaryId) async {
+    List<String> codes = await (select(soilPitFeature)
+          ..where((tbl) => tbl.soilPitSummaryId.equals(summaryId)))
+        .map((p0) => p0.soilPitCodeField)
+        .get();
+
+    List<String> results = [];
+    for (String code in codes) {
+      String codeName = await (select(soilPitCodeField, distinct: true)
+            ..where((tbl) => tbl.code.equals(code)))
+          .map((row) => row.name)
+          .getSingle();
+      results.add(codeName);
+    }
+
+    return results;
+  }
 }
