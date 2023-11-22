@@ -76,7 +76,7 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
 
   Future<String> getDepositionName(String code) async {
     if (code.isEmpty) {
-      return "Please select moisture class";
+      return "Please select deposition";
     }
 
     return ref

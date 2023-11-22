@@ -139,7 +139,7 @@ class SoilPitFeatureEntryPageState
                 child: FutureBuilder(
                     future: getFeatureName(
                         db.companionValueToStr(feature.soilPitSoilFeature)),
-                    initialData: "Please select drainage",
+                    initialData: "Please select feature",
                     builder:
                         (BuildContext context, AsyncSnapshot<String> text) {
                       return DropDownAsyncList(
@@ -163,7 +163,7 @@ class SoilPitFeatureEntryPageState
                         asyncItems: (s) => db.referenceTablesDao
                             .getSoilPitFeatureClassNameList(),
                         selectedItem:
-                            text.data ?? "Error loading drainage class name",
+                            text.data ?? "Error loading feature class name",
                       );
                     })),
             db.companionValueToStr(feature.depthFeature) != "-9"
