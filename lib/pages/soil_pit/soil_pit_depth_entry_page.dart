@@ -3,11 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/pages/soil_pit/soil_pit_depth_page.dart';
 import 'package:survey_app/providers/soil_pit_providers.dart';
+import 'package:survey_app/widgets/builders/soil_pit_code_select_builder.dart';
 
 import '../../formatters/format_string.dart';
 import '../../formatters/thousands_formatter.dart';
 import '../../widgets/data_input/data_input.dart';
-import '../../widgets/dropdowns/drop_down_async_list.dart';
 
 class SoilPitDepthEntryPage extends ConsumerStatefulWidget {
   static const String routeName = "soilPitDepthEntry";
@@ -98,40 +98,19 @@ class SoilPitDepthEntryPageState extends ConsumerState<SoilPitDepthEntryPage> {
         padding: const EdgeInsets.all(kPaddingH),
         child: Center(
           child: Column(children: [
-            FutureBuilder(
-                future: getPitCodeName(
-                    db.companionValueToStr(depth.soilPitCodeCompiled)),
-                builder: (BuildContext context, AsyncSnapshot<String> text) {
-                  String name = text.data ?? "Error loading codename";
-                  return FutureBuilder(
-                      future: db.soilPitTablesDao
-                          .getUsedPlotCodeCompiledNameList(spId),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<List<String>> usedCodes) {
-                        return DropDownAsyncList(
-                          title: "Soil pit coder",
-                          searchable: true,
-                          onChangedFn: (s) {
-                            changeMade = true;
-                            db.referenceTablesDao
-                                .getSoilPitCodeCompiledCode(s!)
-                                .then((code) => setState(() {
-                                      depth = depth.copyWith(
-                                          soilPitCodeCompiled: d.Value(code));
-                                    }));
-                          },
-                          disabledFn: (s) {
-                            if (name != initSoilPit && s == initSoilPit) {
-                              return false;
-                            } else {
-                              return usedCodes.data!.contains(s!);
-                            }
-                          },
-                          asyncItems: (s) => db.referenceTablesDao
-                              .getSoilPitCodeCompiledNameList(),
-                          selectedItem: name,
-                        );
-                      });
+            SoilPitCodeSelectBuilder(
+                code: db.companionValueToStr(depth.soilPitCodeCompiled),
+                initPlotCodeName: initSoilPit,
+                usedPlotCodes:
+                    db.soilPitTablesDao.getUsedPlotCodeCompiledNameList(spId),
+                onChange: (s) {
+                  changeMade = true;
+                  db.referenceTablesDao
+                      .getSoilPitCodeCompiledCode(s!)
+                      .then((code) => setState(() {
+                            depth = depth.copyWith(
+                                soilPitCodeCompiled: d.Value(code));
+                          }));
                 }),
             DataInput(
               title:
