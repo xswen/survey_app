@@ -67,7 +67,7 @@ class SoilPitTablesDao extends DatabaseAccessor<Database>
       (select(soilPitDepth)..where((tbl) => tbl.id.equals(depthId)))
           .getSingle();
 
-  Future<List<String>> getUsedPlotCodeCompiledNameList(int summaryId) async {
+  Future<List<String>> getDepthUsedPlotCodeNameList(int summaryId) async {
     List<String> codes = await (select(soilPitDepth)
           ..where((tbl) => tbl.soilPitSummaryId.equals(summaryId)))
         .map((p0) => p0.soilPitCodeCompiled)
