@@ -74,16 +74,69 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
               enabled: true,
               title: "Order",
               onChangedFn: (s) {
-                siteInfo = siteInfo.copyWith(
-                    soilClassOrder: d.Value(s!),
-                    soilClassGreatGroup: const d.Value.absent(),
-                    soilClassSubGroup: const d.Value.absent(),
-                    soilClass: const d.Value.absent());
+                if (db.companionValueToStr(siteInfo.soilClassOrder) != s) {
+                  setState(() {
+                    siteInfo = siteInfo.copyWith(
+                        soilClassOrder: d.Value(s!),
+                        soilClassGreatGroup: const d.Value.absent(),
+                        soilClassSubGroup: const d.Value.absent(),
+                        soilClass: const d.Value.absent());
+                  });
+                }
               },
-              selectedItem: db.companionValueToStr(siteInfo.soilClass).isEmpty
-                  ? "Please select soil classification"
-                  : db.companionValueToStr(siteInfo.soilClass),
-              asyncItems: (s) => db.referenceTablesDao.getSoilClassNameList(),
+              selectedItem:
+                  db.companionValueToStr(siteInfo.soilClassOrder).isEmpty
+                      ? "Please select classification order"
+                      : db.companionValueToStr(siteInfo.soilClassOrder),
+              asyncItems: (s) => db.referenceTablesDao.getSoilClassOrderList(),
+            ),
+            DropDownAsyncList(
+              searchable: true,
+              enabled: true,
+              title: "Great Group",
+              onChangedFn: (s) {
+                if (db.companionValueToStr(siteInfo.soilClassGreatGroup) != s) {
+                  setState(() {
+                    siteInfo = siteInfo.copyWith(
+                        soilClassGreatGroup: d.Value(s!),
+                        soilClassSubGroup: const d.Value.absent(),
+                        soilClass: const d.Value.absent());
+                  });
+                }
+              },
+              selectedItem:
+                  db.companionValueToStr(siteInfo.soilClassGreatGroup).isEmpty
+                      ? "Please select great group"
+                      : db.companionValueToStr(siteInfo.soilClassGreatGroup),
+              asyncItems: (s) => db.referenceTablesDao
+                  .getSoilClassGreatGroupList(
+                      db.companionValueToStr(siteInfo.soilClassOrder)),
+            ),
+            DropDownAsyncList(
+              searchable: true,
+              enabled: true,
+              title: "Sub Group",
+              onChangedFn: (s) {
+                if (db.companionValueToStr(siteInfo.soilClassSubGroup) != s) {
+                  db.referenceTablesDao
+                      .getSoilClassCode(
+                          db.companionValueToStr(siteInfo.soilClassOrder),
+                          db.companionValueToStr(siteInfo.soilClassGreatGroup),
+                          s!)
+                      .then((code) => setState(() {
+                            siteInfo = siteInfo.copyWith(
+                                soilClassSubGroup: d.Value(s!),
+                                soilClass: d.Value(code));
+                          }));
+                }
+              },
+              selectedItem:
+                  db.companionValueToStr(siteInfo.soilClassSubGroup).isEmpty
+                      ? "Please select sub group"
+                      : db.companionValueToStr(siteInfo.soilClassSubGroup),
+              asyncItems: (s) => db.referenceTablesDao.getSoilClassSubGroupList(
+                  db.companionValueToStr(siteInfo.soilClassOrder),
+                  db.companionValueToStr(siteInfo.soilClassGreatGroup)),
             ),
           ],
         )),

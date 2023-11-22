@@ -258,7 +258,7 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
   }
 
 //====================Soil====================
-  Future<List<String>> getSoilClassNameList() {
+  Future<List<String>> getSoilClassOrderList() {
     final query = selectOnly(soilPitClassification, distinct: true)
       ..addColumns([soilPitClassification.order])
       ..where(soilPitClassification.order.isNotNull());
@@ -269,4 +269,46 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
             "error on loading soil order")
         .get();
   }
+
+  Future<List<String>> getSoilClassGreatGroupList(String order) async {
+    if (order.isEmpty) return [];
+
+    final query = selectOnly(soilPitClassification, distinct: true)
+      ..addColumns([soilPitClassification.greatGroup])
+      ..where(soilPitClassification.greatGroup.isNotNull() &
+          soilPitClassification.order.equals(order));
+
+    return query
+        .map((p0) =>
+            p0.read(soilPitClassification.greatGroup) ??
+            "error on loading soil great group")
+        .get();
+  }
+
+  Future<List<String>> getSoilClassSubGroupList(
+      String order, String greatGroup) async {
+    if (order.isEmpty || greatGroup.isEmpty) return [];
+
+    final query = selectOnly(soilPitClassification, distinct: true)
+      ..addColumns([soilPitClassification.subGroup])
+      ..where(soilPitClassification.subGroup.isNotNull() &
+          soilPitClassification.order.equals(order) &
+          soilPitClassification.greatGroup.equals(greatGroup));
+
+    return query
+        .map((p0) =>
+            p0.read(soilPitClassification.subGroup) ??
+            "error on loading soil subgroup")
+        .get();
+  }
+
+  Future<String> getSoilClassCode(
+          String order, String greatGroup, String subGroup) =>
+      (select(soilPitClassification)
+            ..where((tbl) =>
+                tbl.order.equals(order) &
+                tbl.greatGroup.equals(greatGroup) &
+                tbl.subGroup.equals(subGroup)))
+          .map((p0) => p0.code)
+          .getSingle();
 }
