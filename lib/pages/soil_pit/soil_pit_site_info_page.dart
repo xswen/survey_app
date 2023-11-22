@@ -60,6 +60,17 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
         .getSoilDrainageName(int.parse(code));
   }
 
+  Future<String> getSoilMoistureName(String code) async {
+    if (code.isEmpty) {
+      return "Please select moisture class";
+    }
+
+    return ref
+        .read(databaseProvider)
+        .referenceTablesDao
+        .getSoilMoistureName(int.parse(code));
+  }
+
   String? errorProfileDepth(String? text) {
     if (text?.isEmpty ?? true) {
       return "Can't be empty";
@@ -235,7 +246,7 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
                 child: FutureBuilder(
                     future: getSoilDrainageName(
                         db.companionValueToStr(siteInfo.drainage)),
-                    initialData: "Please select genus",
+                    initialData: "Please select drainage",
                     builder:
                         (BuildContext context, AsyncSnapshot<String> text) {
                       return DropDownAsyncList(
@@ -252,6 +263,42 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
                         },
                         asyncItems: (s) =>
                             db.referenceTablesDao.getSoilDrainageNameList(),
+                        selectedItem:
+                            text.data ?? "Error loading drainage class name",
+                      );
+                    })),
+            HideInfoCheckbox(
+                title: "Moisture class",
+                checkTitle: "Unreported",
+                checkValue: db.companionValueToStr(siteInfo.moisture) == "-1",
+                onChange: (b) {
+                  if (parentComplete) return;
+                  b!
+                      ? setState(() => siteInfo =
+                          siteInfo.copyWith(moisture: const d.Value(-1)))
+                      : setState(() => siteInfo =
+                          siteInfo.copyWith(moisture: const d.Value.absent()));
+                },
+                child: FutureBuilder(
+                    future: getSoilMoistureName(
+                        db.companionValueToStr(siteInfo.moisture)),
+                    initialData: "Please select moisture",
+                    builder:
+                        (BuildContext context, AsyncSnapshot<String> text) {
+                      return DropDownAsyncList(
+                        searchable: true,
+                        enabled: !parentComplete,
+                        padding: 0,
+                        onChangedFn: (s) {
+                          db.referenceTablesDao
+                              .getSoilMoistureCode(s!)
+                              .then((code) => setState(() {
+                                    siteInfo = siteInfo.copyWith(
+                                        moisture: d.Value(code));
+                                  }));
+                        },
+                        asyncItems: (s) =>
+                            db.referenceTablesDao.getSoilMoistureNameList(),
                         selectedItem:
                             text.data ?? "Error loading drainage class name",
                       );

@@ -335,4 +335,27 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
             ..where((tbl) => tbl.name.equals(name)))
           .map((p0) => p0.code)
           .getSingle();
+
+  Future<List<String>> getSoilMoistureNameList() {
+    final query = selectOnly(soilMoistureClass, distinct: true)
+      ..addColumns([soilMoistureClass.name])
+      ..where(soilMoistureClass.name.isNotNull());
+
+    return query
+        .map((p0) =>
+            p0.read(soilMoistureClass.name) ?? "error on loading moisture name")
+        .get();
+  }
+
+  Future<String> getSoilMoistureName(int code) =>
+      (select(soilMoistureClass, distinct: true)
+            ..where((tbl) => tbl.code.equals(code)))
+          .map((p0) => p0.name)
+          .getSingle();
+
+  Future<int> getSoilMoistureCode(String name) =>
+      (select(soilMoistureClass, distinct: true)
+            ..where((tbl) => tbl.name.equals(name)))
+          .map((p0) => p0.code)
+          .getSingle();
 }
