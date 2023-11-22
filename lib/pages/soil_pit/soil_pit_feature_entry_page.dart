@@ -22,7 +22,7 @@ class SoilPitFeatureEntryPage extends ConsumerStatefulWidget {
 
 class SoilPitFeatureEntryPageState
     extends ConsumerState<SoilPitFeatureEntryPage> {
-  final String title = "Soil Pit Depth";
+  final String title = "Soil Pit Feature";
   bool changeMade = false;
 
   late final int spId;
@@ -96,11 +96,9 @@ class SoilPitFeatureEntryPageState
   @override
   Widget build(BuildContext context) {
     final db = ref.read(databaseProvider);
-    debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
-    d.Value.absent();
     return Scaffold(
       appBar: OurAppBar(
-        "$title: Soil Pit Depth ${db.companionValueToStr(feature.soilPitCodeField)}",
+        "$title: ${db.companionValueToStr(feature.soilPitCodeField)}",
       ),
       endDrawer: DrawerMenu(onLocaleChange: () {}),
       body: Padding(
