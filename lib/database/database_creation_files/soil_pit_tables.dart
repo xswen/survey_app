@@ -28,7 +28,7 @@ class SoilPitDepth extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get soilPitSummaryId =>
       integer().unique().references(SoilPitSummary, #id)();
-  TextColumn get soilPitCodeComplete => text().withLength(max: 3)();
+  TextColumn get soilPitCodeCompiled => text().withLength(max: 3)();
   RealColumn get depthMin =>
       real().check(depthMin.isBetweenValues(0.0, 999.9))();
   RealColumn get depthOrg =>
