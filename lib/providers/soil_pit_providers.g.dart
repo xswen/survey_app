@@ -157,5 +157,136 @@ class _SoilSummaryDataProviderElement
   @override
   int get soilSummaryId => (origin as SoilSummaryDataProvider).soilSummaryId;
 }
+
+String _$soilDepthListHash() => r'853fcb832ea613e02a83c4ace9d040d5f9c60100';
+
+/// See also [soilDepthList].
+@ProviderFor(soilDepthList)
+const soilDepthListProvider = SoilDepthListFamily();
+
+/// See also [soilDepthList].
+class SoilDepthListFamily extends Family<AsyncValue<List<SoilPitDepthData>>> {
+  /// See also [soilDepthList].
+  const SoilDepthListFamily();
+
+  /// See also [soilDepthList].
+  SoilDepthListProvider call(
+    int soilSummaryId,
+  ) {
+    return SoilDepthListProvider(
+      soilSummaryId,
+    );
+  }
+
+  @override
+  SoilDepthListProvider getProviderOverride(
+    covariant SoilDepthListProvider provider,
+  ) {
+    return call(
+      provider.soilSummaryId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'soilDepthListProvider';
+}
+
+/// See also [soilDepthList].
+class SoilDepthListProvider
+    extends AutoDisposeFutureProvider<List<SoilPitDepthData>> {
+  /// See also [soilDepthList].
+  SoilDepthListProvider(
+    int soilSummaryId,
+  ) : this._internal(
+          (ref) => soilDepthList(
+            ref as SoilDepthListRef,
+            soilSummaryId,
+          ),
+          from: soilDepthListProvider,
+          name: r'soilDepthListProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$soilDepthListHash,
+          dependencies: SoilDepthListFamily._dependencies,
+          allTransitiveDependencies:
+              SoilDepthListFamily._allTransitiveDependencies,
+          soilSummaryId: soilSummaryId,
+        );
+
+  SoilDepthListProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.soilSummaryId,
+  }) : super.internal();
+
+  final int soilSummaryId;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<SoilPitDepthData>> Function(SoilDepthListRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: SoilDepthListProvider._internal(
+        (ref) => create(ref as SoilDepthListRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        soilSummaryId: soilSummaryId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List<SoilPitDepthData>> createElement() {
+    return _SoilDepthListProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is SoilDepthListProvider &&
+        other.soilSummaryId == soilSummaryId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, soilSummaryId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin SoilDepthListRef on AutoDisposeFutureProviderRef<List<SoilPitDepthData>> {
+  /// The parameter `soilSummaryId` of this provider.
+  int get soilSummaryId;
+}
+
+class _SoilDepthListProviderElement
+    extends AutoDisposeFutureProviderElement<List<SoilPitDepthData>>
+    with SoilDepthListRef {
+  _SoilDepthListProviderElement(super.provider);
+
+  @override
+  int get soilSummaryId => (origin as SoilDepthListProvider).soilSummaryId;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

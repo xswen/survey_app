@@ -9,3 +9,8 @@ part 'soil_pit_providers.g.dart';
 Future<SoilPitSummaryData> soilSummaryData(
         SoilSummaryDataRef ref, int soilSummaryId) =>
     ref.read(databaseProvider).soilPitTablesDao.getSummary(soilSummaryId);
+
+@riverpod
+Future<List<SoilPitDepthData>> soilDepthList(
+        SoilDepthListRef ref, int soilSummaryId) =>
+    ref.read(databaseProvider).soilPitTablesDao.getDepthList(soilSummaryId);

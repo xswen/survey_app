@@ -50,4 +50,14 @@ class SoilPitTablesDao extends DatabaseAccessor<Database>
 
   Future<int> addOrUpdateSiteInfo(SoilSiteInfoCompanion entry) =>
       into(soilSiteInfo).insertOnConflictUpdate(entry);
+
+//====================Soil Site Summary====================
+  Future<List<SoilPitDepthData>> getDepthList(int summaryId) =>
+      (select(soilPitDepth)
+            ..where((tbl) => tbl.soilPitSummaryId.equals(summaryId)))
+          .get();
+
+  Future<SoilPitDepthData> getDepth(int depthId) =>
+      (select(soilPitDepth)..where((tbl) => tbl.id.equals(depthId)))
+          .getSingle();
 }
