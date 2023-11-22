@@ -1,7 +1,11 @@
 import 'package:drift/drift.dart' as d;
 import 'package:survey_app/barrels/page_imports_barrel.dart';
+import 'package:survey_app/pages/soil_pit/soil_pit_feature_entry_page.dart';
+import 'package:survey_app/providers/soil_pit_providers.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import '../../widgets/buttons/custom_button_styles.dart';
+import '../../widgets/tables/table_creation_builder.dart';
 import '../../widgets/tables/table_data_grid_source_builder.dart';
 import '../../wrappers/column_header_object.dart';
 
@@ -93,8 +97,87 @@ class SoilPitFeaturePageState extends ConsumerState<SoilPitFeaturePage> {
   @override
   Widget build(BuildContext context) {
     final db = ref.read(databaseProvider);
-    debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
-    d.Value.absent();
-    return const Placeholder();
+    final AsyncValue<List<SoilPitFeatureData>> featureList =
+        ref.watch(soilFeatureListProvider(spId));
+
+    return Scaffold(
+      appBar: OurAppBar(
+        title,
+        onLocaleChange: () {},
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: kPaddingH),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                  vertical: kPaddingV * 2, horizontal: kPaddingH / 2),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "Depths",
+                    style: TextStyle(fontSize: kTextTitleSize),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: kPaddingH),
+                    child: ElevatedButton(
+                        onPressed: () async => parentComplete
+                            ? Popups.show(context, completeWarningPopup)
+                            : context.pushNamed(
+                                SoilPitFeatureEntryPage.routeName,
+                                pathParameters:
+                                    PathParamGenerator.soilPitSummary(
+                                        widget.state, spId.toString()),
+                                extra: SoilPitFeatureCompanion(
+                                    soilPitSummaryId: d.Value(spId))),
+                        style: CustomButtonStyles.inactiveButton(
+                            isActive: !parentComplete),
+                        child: const Text("Add depth")),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+                child: featureList.when(
+              data: (dataList) {
+                DataGridSourceBuilder source = getSourceBuilder(dataList);
+
+                return Center(
+                  child: TableCreationBuilder(
+                    source: source,
+                    columnWidthMode: ColumnWidthMode.lastColumnFill,
+                    colNames: columnData.getColHeadersList(),
+                    onCellTap: (DataGridCellTapDetails details) async {
+                      // Assuming the "edit" column index is 2
+                      if (details.column.columnName == columnData.edit.name &&
+                          details.rowColumnIndex.rowIndex != 0) {
+                        if (parentComplete) {
+                          Popups.show(context, surveyCompleteWarningPopup);
+                        } else {
+                          int id = source
+                              .dataGridRows[details.rowColumnIndex.rowIndex - 1]
+                              .getCells()[0]
+                              .value;
+                          db.soilPitTablesDao.getFeature(id).then((value) =>
+                              context.pushNamed(
+                                  SoilPitFeatureEntryPage.routeName,
+                                  pathParameters:
+                                      PathParamGenerator.soilPitSummary(
+                                          widget.state, spId.toString()),
+                                  extra: value.toCompanion(true)));
+                        }
+                      }
+                    },
+                  ),
+                );
+              },
+              error: (err, stack) => Text("Error: $err"),
+              loading: () => const Center(child: CircularProgressIndicator()),
+            )),
+          ],
+        ),
+      ),
+    );
   }
 }

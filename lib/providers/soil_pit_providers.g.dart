@@ -288,5 +288,139 @@ class _SoilDepthListProviderElement
   @override
   int get soilSummaryId => (origin as SoilDepthListProvider).soilSummaryId;
 }
+
+String _$soilFeatureListHash() => r'257d63549afed8cb89665e7de73a6f511d560b14';
+
+/// See also [soilFeatureList].
+@ProviderFor(soilFeatureList)
+const soilFeatureListProvider = SoilFeatureListFamily();
+
+/// See also [soilFeatureList].
+class SoilFeatureListFamily
+    extends Family<AsyncValue<List<SoilPitFeatureData>>> {
+  /// See also [soilFeatureList].
+  const SoilFeatureListFamily();
+
+  /// See also [soilFeatureList].
+  SoilFeatureListProvider call(
+    int soilSummaryId,
+  ) {
+    return SoilFeatureListProvider(
+      soilSummaryId,
+    );
+  }
+
+  @override
+  SoilFeatureListProvider getProviderOverride(
+    covariant SoilFeatureListProvider provider,
+  ) {
+    return call(
+      provider.soilSummaryId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'soilFeatureListProvider';
+}
+
+/// See also [soilFeatureList].
+class SoilFeatureListProvider
+    extends AutoDisposeFutureProvider<List<SoilPitFeatureData>> {
+  /// See also [soilFeatureList].
+  SoilFeatureListProvider(
+    int soilSummaryId,
+  ) : this._internal(
+          (ref) => soilFeatureList(
+            ref as SoilFeatureListRef,
+            soilSummaryId,
+          ),
+          from: soilFeatureListProvider,
+          name: r'soilFeatureListProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$soilFeatureListHash,
+          dependencies: SoilFeatureListFamily._dependencies,
+          allTransitiveDependencies:
+              SoilFeatureListFamily._allTransitiveDependencies,
+          soilSummaryId: soilSummaryId,
+        );
+
+  SoilFeatureListProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.soilSummaryId,
+  }) : super.internal();
+
+  final int soilSummaryId;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<SoilPitFeatureData>> Function(SoilFeatureListRef provider)
+        create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: SoilFeatureListProvider._internal(
+        (ref) => create(ref as SoilFeatureListRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        soilSummaryId: soilSummaryId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List<SoilPitFeatureData>> createElement() {
+    return _SoilFeatureListProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is SoilFeatureListProvider &&
+        other.soilSummaryId == soilSummaryId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, soilSummaryId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin SoilFeatureListRef
+    on AutoDisposeFutureProviderRef<List<SoilPitFeatureData>> {
+  /// The parameter `soilSummaryId` of this provider.
+  int get soilSummaryId;
+}
+
+class _SoilFeatureListProviderElement
+    extends AutoDisposeFutureProviderElement<List<SoilPitFeatureData>>
+    with SoilFeatureListRef {
+  _SoilFeatureListProviderElement(super.provider);
+
+  @override
+  int get soilSummaryId => (origin as SoilFeatureListProvider).soilSummaryId;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
