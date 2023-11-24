@@ -36,6 +36,7 @@ class TreeGenus extends Table {
   Set<Column> get primaryKey => {genusCode, speciesCode};
 }
 
+//Surface Substrate
 class SubstrateType extends Table {
   TextColumn get typeCode => text().withLength(min: 2, max: 2)();
   TextColumn get nameEn => text()();
@@ -52,6 +53,7 @@ class SsDepthLimit extends Table {
   TextColumn get nameFr => text()();
 }
 
+//ECP
 @DataClassName("EcpLayerData")
 class EcpLayer extends Table {
   TextColumn get code => text()();
@@ -63,4 +65,65 @@ class EcpGenus extends Table {
   TextColumn get genus => text()();
   TextColumn get species => text()();
   TextColumn get variety => text()();
+}
+
+//Soil Pit
+class SoilPitClassification extends Table {
+  TextColumn get code => text()();
+  TextColumn get order => text()();
+  TextColumn get greatGroup => text()();
+  TextColumn get subGroup => text()();
+}
+
+@DataClassName("SoilDrainageClassData")
+class SoilDrainageClass extends Table {
+  IntColumn get code => integer()();
+  TextColumn get name => text()();
+}
+
+@DataClassName("SoilMositureClassData")
+class SoilMoistureClass extends Table {
+  IntColumn get code => integer()();
+  TextColumn get name => text()();
+}
+
+class SoilDeposition extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class SoilHumusForm extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class SoilPitCodeCompiled extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class SoilPitCodeField extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+@DataClassName("SoilFeatureClassData")
+class SoilPitFeatureClass extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class SoilHorizonDesignation extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class SoilColor extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class SoilTexture extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
 }

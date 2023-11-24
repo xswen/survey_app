@@ -35,4 +35,9 @@ class PathParamValue {
   static int getEcpSpeciesNum(GoRouterState goRouterState) =>
       int.parse(goRouterState.pathParameters[PathParamsKeys.ecpSpeciesNum]!);
 
+  //Soil Pit
+  static int getSoilPitSummary(GoRouterState goRouterState) =>
+      int.parse(goRouterState.pathParameters[PathParamsKeys.soilPitSummaryId]!);
+  static int getSoilSiteInfo(GoRouterState goRouterState) =>
+      int.parse(goRouterState.pathParameters[PathParamsKeys.soilSiteInfoId]!);
 }

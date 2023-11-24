@@ -13,4 +13,6 @@ class PathParamsKeys {
   static const String ecpHeaderId = "ecpHeaderId";
   static const String ecpSpeciesNum = "ecpSpeciesNum";
 
+  static const String soilPitSummaryId = "soilPitSummaryId";
+  static const String soilSiteInfoId = "soilSiteInfoId";
 }

@@ -9,6 +9,8 @@ import 'package:flutter/cupertino.dart' as c;
 import 'package:flutter/services.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:survey_app/database/daos/soil_pit_tables_dao.dart';
+import 'package:survey_app/database/database_creation_files/soil_pit_tables.dart';
 import 'package:survey_app/enums/enums.dart';
 import 'package:survey_app/wrappers/survey_card.dart';
 
@@ -35,6 +37,17 @@ const List<Type> _tables = [
   SsDepthLimit,
   EcpGenus,
   EcpLayer,
+  SoilPitClassification,
+  SoilDrainageClass,
+  SoilMoistureClass,
+  SoilDeposition,
+  SoilHumusForm,
+  SoilPitCodeCompiled,
+  SoilPitCodeField,
+  SoilPitFeatureClass,
+  SoilHorizonDesignation,
+  SoilColor,
+  SoilTexture,
 
   //Metadata Tables
   MetaComment,
@@ -53,7 +66,13 @@ const List<Type> _tables = [
   //ECP Tables
   EcpSummary,
   EcpHeader,
-  EcpSpecies
+  EcpSpecies,
+  //Soil Tables
+  SoilPitSummary,
+  SoilSiteInfo,
+  SoilPitDepth,
+  SoilPitFeature,
+  SoilPitHorizonDescription,
 ];
 
 const List<Type> _daos = [
@@ -62,6 +81,7 @@ const List<Type> _daos = [
   WoodyDebrisTablesDao,
   SurfaceSubstrateTablesDao,
   EcologicalPlotTablesDao,
+  SoilPitTablesDao,
 ];
 
 const String woodyDebrisPieceViewQuery =
@@ -120,6 +140,26 @@ class Database extends _$Database {
           List<EcpLayerCompanion> ecpLayerList = await _getEcpLayers();
           List<EcpGenusCompanion> ecpGenusList = await _getEcpGenuses();
 
+          List<SoilPitClassificationCompanion> soilPitClassificationList =
+              await _getSoilPitClassifications();
+          List<SoilDrainageClassCompanion> soilDrainageList =
+              await _getSoilDrainageClass();
+          List<SoilMoistureClassCompanion> soilMoistureList =
+              await _getSoilMoistureClass();
+          List<SoilDepositionCompanion> soilDepositionList =
+              await _getSoilDeposition();
+          List<SoilHumusFormCompanion> soilHumusFormList =
+              await _getSoilHumusForm();
+          List<SoilPitCodeCompiledCompanion> soilPitCodeList =
+              await _getSoilPitCodeCompiled();
+          List<SoilPitCodeFieldCompanion> soilPitCodeFieldList =
+              await _getSoilPitCodeFields();
+          List<SoilPitFeatureClassCompanion> soilPitFeatureList =
+              await _getSoilPitFeatures();
+          List<SoilHorizonDesignationCompanion> soilHorizonDesignationList =
+              await _getSoilHorizonDesignations();
+          List<SoilColorCompanion> soilColorList = await _getSoilColors();
+          List<SoilTextureCompanion> soilTextureList = await _getSoilTextures();
 
           c.debugPrint("Init Values");
           await batch((b) {
@@ -132,6 +172,18 @@ class Database extends _$Database {
             b.insertAll(ecpLayer, ecpLayerList);
             b.insertAll(ecpGenus, ecpGenusList);
 
+            //  b.insertAll(soilPitClassification, soilPitClassificationList);
+            b.insertAll(soilPitClassification, soilPitClassificationList);
+            b.insertAll(soilDrainageClass, soilDrainageList);
+            b.insertAll(soilMoistureClass, soilMoistureList);
+            b.insertAll(soilDeposition, soilDepositionList);
+            b.insertAll(soilHumusForm, soilHumusFormList);
+            b.insertAll(soilPitCodeCompiled, soilPitCodeList);
+            b.insertAll(soilPitCodeField, soilPitCodeFieldList);
+            b.insertAll(soilPitFeatureClass, soilPitFeatureList);
+            b.insertAll(soilHorizonDesignation, soilHorizonDesignationList);
+            b.insertAll(soilColor, soilColorList);
+            b.insertAll(soilTexture, soilTextureList);
 
             _initTest(b);
           });
@@ -236,6 +288,141 @@ class Database extends _$Database {
     }).toList();
   }
 
+  Future<List<SoilDrainageClassCompanion>> _getSoilDrainageClass() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/sp_drainage_class_list.json');
+
+    return jsonData.map((dynamic item) {
+      return SoilDrainageClassCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<SoilMoistureClassCompanion>> _getSoilMoistureClass() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/sp_moisture_class_list.json');
+
+    return jsonData.map((dynamic item) {
+      return SoilMoistureClassCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<SoilDepositionCompanion>> _getSoilDeposition() async {
+    List<dynamic> jsonData =
+        await _loadJsonData('assets/db_reference_data/sp_deposition_list.json');
+
+    return jsonData.map((dynamic item) {
+      return SoilDepositionCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<SoilHumusFormCompanion>> _getSoilHumusForm() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/sp_soil_humus_form_list.json');
+
+    return jsonData.map((dynamic item) {
+      return SoilHumusFormCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<SoilPitCodeCompiledCompanion>> _getSoilPitCodeCompiled() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/sp_pit_code_completed.json');
+
+    return jsonData.map((dynamic item) {
+      return SoilPitCodeCompiledCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<SoilPitCodeFieldCompanion>> _getSoilPitCodeFields() async {
+    List<dynamic> jsonData =
+        await _loadJsonData('assets/db_reference_data/sp_pit_code_field.json');
+
+    return jsonData.map((dynamic item) {
+      return SoilPitCodeFieldCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<SoilPitClassificationCompanion>>
+      _getSoilPitClassifications() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/sp_classification_codes.json');
+
+    return jsonData.map((dynamic item) {
+      return SoilPitClassificationCompanion(
+        code: Value(item["code"]),
+        order: Value(item["order"]),
+        greatGroup: Value(item["greatGroup"]),
+        subGroup: Value(item["subGroup"]),
+      );
+    }).toList();
+  }
+
+  Future<List<SoilPitFeatureClassCompanion>> _getSoilPitFeatures() async {
+    List<dynamic> jsonData =
+        await _loadJsonData('assets/db_reference_data/sp_feature.json');
+
+    return jsonData.map((dynamic item) {
+      return SoilPitFeatureClassCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<SoilHorizonDesignationCompanion>>
+      _getSoilHorizonDesignations() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/sp_horizon_designation.json');
+
+    return jsonData.map((dynamic item) {
+      return SoilHorizonDesignationCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<SoilColorCompanion>> _getSoilColors() async {
+    List<dynamic> jsonData =
+        await _loadJsonData('assets/db_reference_data/sp_color_list.json');
+
+    return jsonData.map((dynamic item) {
+      return SoilColorCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<SoilTextureCompanion>> _getSoilTextures() async {
+    List<dynamic> jsonData =
+        await _loadJsonData('assets/db_reference_data/sp_texture_list.json');
+
+    return jsonData.map((dynamic item) {
+      return SoilTextureCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
 
   void _initTest(Batch b) {
     b.replace(
@@ -388,7 +575,14 @@ class Database extends _$Database {
         "surveyCardData": await (select(ecpSummary)
               ..where((tbl) => tbl.surveyId.equals(surveyId)))
             .getSingleOrNull()
-      }
+      },
+      {
+        "category": SurveyCardCategories.soilPit,
+        "name": "Soil Pit",
+        "surveyCardData": await (select(soilPitSummary)
+              ..where((tbl) => tbl.surveyId.equals(surveyId)))
+            .getSingleOrNull()
+      },
     ];
 
     List<SurveyCard> cards = [];
