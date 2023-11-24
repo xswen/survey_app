@@ -146,10 +146,34 @@ class SoilPitHorizonDescriptionEntryPageState
                     }
                   });
                 }),
-            //TODO: HorNum
+            const SizedBox(
+              height: kPaddingV * 2,
+            ),
+            DataInput(
+              title: "Horizon number",
+              boxLabel: "Horizons must be numbered consecutively",
+              prefixIcon: FontAwesomeIcons.list,
+              suffixVal: "",
+              startingStr: db.companionValueToStr(horizon.horizonUpper),
+              generalPadding: const EdgeInsets.all(0),
+              onValidate: (s) => null,
+              inputType: const TextInputType.numberWithOptions(decimal: true),
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(5),
+                ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
+              ],
+              onSubmit: (s) {
+                changeMade = true;
+                s.isEmpty
+                    ? setState(() => horizon =
+                        horizon.copyWith(thickness: const d.Value.absent()))
+                    : setState(() => horizon =
+                        horizon.copyWith(thickness: d.Value(double.parse(s))));
+              },
+            ),
             FutureBuilder(
                 future: getHorizonName(db.companionValueToStr(horizon.horizon)),
-                initialData: "Please select drainage",
+                initialData: "Please select horizon",
                 builder: (BuildContext context, AsyncSnapshot<String> text) {
                   return DropDownAsyncList(
                     title: "Horizon",
