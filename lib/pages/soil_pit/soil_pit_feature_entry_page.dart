@@ -33,7 +33,7 @@ class SoilPitFeatureEntryPageState
     spId = PathParamValue.getSoilPitSummary(widget.state);
     feature = widget.state.extra as SoilPitFeatureCompanion;
     initSoilPit = ref.read(databaseProvider).companionValueToStr(
-        (widget.state.extra as SoilPitFeatureCompanion).soilPitSoilFeature);
+        (widget.state.extra as SoilPitFeatureCompanion).soilFeature);
 
     super.initState();
   }
@@ -57,11 +57,11 @@ class SoilPitFeatureEntryPageState
   List<String>? errorCheck() {
     List<String> results = [];
 
-    if (feature.soilPitCodeField == const d.Value.absent()) {
+    if (feature.soilPitCode == const d.Value.absent()) {
       results.add("Missing Soil Pit Code");
     }
 
-    if (feature.soilPitSoilFeature == const d.Value.absent()) {
+    if (feature.soilFeature == const d.Value.absent()) {
       results.add("Missing Soil Feature");
     }
 
@@ -91,7 +91,7 @@ class SoilPitFeatureEntryPageState
     final db = ref.read(databaseProvider);
     return Scaffold(
       appBar: OurAppBar(
-        "$title: ${db.companionValueToStr(feature.soilPitCodeField)}",
+        "$title: ${db.companionValueToStr(feature.soilPitCode)}",
       ),
       endDrawer: DrawerMenu(onLocaleChange: () {}),
       body: Padding(
@@ -99,16 +99,16 @@ class SoilPitFeatureEntryPageState
         child: Center(
           child: Column(children: [
             SoilPitCodeSelectBuilder(
-                code: db.companionValueToStr(feature.soilPitCodeField),
+                code: db.companionValueToStr(feature.soilPitCode),
                 initPlotCodeName: initSoilPit,
                 plotCodeNames: db.referenceTablesDao.getSoilPitCodeNameList(),
                 usedPlotCodes:
                     db.soilPitTablesDao.getFeatureUsedPlotCodeNameList(spId),
                 onChange: (code) => updateFeature(
-                    feature.copyWith(soilPitCodeField: d.Value(code)))),
+                    feature.copyWith(soilPitCode: d.Value(code)))),
             FutureBuilder(
-                future: getFeatureName(
-                    db.companionValueToStr(feature.soilPitSoilFeature)),
+                future:
+                    getFeatureName(db.companionValueToStr(feature.soilFeature)),
                 initialData: "Please select feature",
                 builder: (BuildContext context, AsyncSnapshot<String> text) {
                   return DropDownAsyncList(
@@ -120,19 +120,18 @@ class SoilPitFeatureEntryPageState
                           .then((code) => setState(() {
                                 if (code == "N") {
                                   updateFeature(feature.copyWith(
-                                      soilPitSoilFeature: d.Value(code),
+                                      soilFeature: d.Value(code),
                                       depthFeature: const d.Value(-9)));
                                 } else {
                                   //Override the previous state depth feature state
                                   //if was previous marked as not applicable
-                                  db.companionValueToStr(
-                                              feature.soilPitSoilFeature) ==
+                                  db.companionValueToStr(feature.soilFeature) ==
                                           "N"
                                       ? updateFeature(feature.copyWith(
-                                          soilPitSoilFeature: d.Value(code),
+                                          soilFeature: d.Value(code),
                                           depthFeature: const d.Value.absent()))
                                       : updateFeature(feature.copyWith(
-                                          soilPitSoilFeature: d.Value(code)));
+                                          soilFeature: d.Value(code)));
                                 }
                               }));
                     },
@@ -142,7 +141,7 @@ class SoilPitFeatureEntryPageState
                         text.data ?? "Error loading feature class name",
                   );
                 }),
-            db.companionValueToStr(feature.soilPitSoilFeature) != "N"
+            db.companionValueToStr(feature.soilFeature) != "N"
                 ? DataInput(
                     title: "Depth to soil feature",
                     boxLabel: "Measured from “zero depth” to soil feature. "
@@ -158,13 +157,11 @@ class SoilPitFeatureEntryPageState
                       LengthLimitingTextInputFormatter(3),
                       ThousandsFormatter(allowFraction: false),
                     ],
-                    onSubmit: (s) =>
-                      s.isEmpty
-                          ? updateFeature(feature.copyWith(
-                              depthFeature: const d.Value.absent()))
-                          : updateFeature(feature.copyWith(
-                              depthFeature: d.Value(int.parse(s))))
-                    ,
+                    onSubmit: (s) => s.isEmpty
+                        ? updateFeature(feature.copyWith(
+                            depthFeature: const d.Value.absent()))
+                        : updateFeature(feature.copyWith(
+                            depthFeature: d.Value(int.parse(s)))),
                   )
                 : Container(),
             Container(
@@ -197,12 +194,25 @@ class SoilPitFeatureEntryPageState
                             ));
                       } else {
                         db.soilPitTablesDao
-                            .addOrUpdateFeature(feature)
-                            .then((featureId) {
-                          ref.refresh(soilFeatureListProvider(spId));
-                          context.goNamed(SoilPitFeaturePage.routeName,
-                              pathParameters: PathParamGenerator.soilPitSummary(
-                                  widget.state, spId.toString()));
+                            .addOrUpdateFeatureIfUnique(feature)
+                            .then((int? featureId) {
+                          if (featureId == null) {
+                            Popups.show(
+                                context,
+                                const PopupDismiss(
+                                  "Error: Values not unique.",
+                                  contentText:
+                                      "The combination of 'Soil pit code',"
+                                      "'Soil feature', and 'Depth to soil feature'"
+                                      "must be unique. Please enter different value",
+                                ));
+                          } else {
+                            ref.refresh(soilFeatureListProvider(spId));
+                            context.goNamed(SoilPitFeaturePage.routeName,
+                                pathParameters:
+                                    PathParamGenerator.soilPitSummary(
+                                        widget.state, spId.toString()));
+                          }
                         });
                       }
                     },

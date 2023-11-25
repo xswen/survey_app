@@ -37,8 +37,8 @@ class SoilPitDepth extends Table {
 class SoilPitFeature extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get soilPitSummaryId => integer().references(SoilPitSummary, #id)();
-  TextColumn get soilPitCodeField => text().withLength(max: 3)();
-  TextColumn get soilPitSoilFeature => text().withLength(max: 1)();
+  TextColumn get soilPitCode => text().withLength(max: 3)();
+  TextColumn get soilFeature => text().withLength(max: 1)();
   IntColumn get depthFeature =>
       integer().check(depthFeature.isBetweenValues(-9, 200))();
 }

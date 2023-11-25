@@ -66,10 +66,28 @@ class SoilPitTablesDao extends DatabaseAccessor<Database>
       (select(soilPitFeature)..where((tbl) => tbl.id.equals(featureId)))
           .getSingle();
 
+  //Return featureId if valid, null otherwise
+  Future<int?> addOrUpdateFeatureIfUnique(
+      SoilPitFeatureCompanion feature) async {
+    SoilPitFeatureData? entry = await (select(soilPitFeature)
+          ..where((tbl) =>
+              tbl.soilPitSummaryId.equals(feature.soilPitSummaryId.value) &
+              tbl.soilPitCode.equals(feature.soilPitCode.value) &
+              tbl.soilFeature.equals(feature.soilFeature.value) &
+              tbl.depthFeature.equals(feature.depthFeature.value)))
+        .getSingleOrNull();
+
+    if (feature.id != const Value.absent() && feature.id.value == entry?.id) {
+      entry = null;
+    }
+
+    return entry == null ? addOrUpdateFeature(feature) : null;
+  }
+
   Future<List<String>> getFeatureUsedPlotCodeNameList(int summaryId) async {
     List<String> codes = await (select(soilPitFeature)
           ..where((tbl) => tbl.soilPitSummaryId.equals(summaryId)))
-        .map((p0) => p0.soilPitCodeField)
+        .map((p0) => p0.soilPitCode)
         .get();
 
     List<String> results = [];

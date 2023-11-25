@@ -28,7 +28,7 @@ class SoilPitCodeSelectBuilder extends StatelessWidget {
         builder: (BuildContext context, AsyncSnapshot<String> text) {
           String name = text.data ?? "Error loading codename";
           return DropDownAsyncList(
-            title: "Soil pit coder",
+            title: "Soil pit code",
             searchable: true,
             onChangedFn: (s) {
               Database.instance.referenceTablesDao

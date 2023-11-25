@@ -9528,22 +9528,22 @@ class $SoilPitFeatureTable extends SoilPitFeature
       requiredDuringInsert: true,
       defaultConstraints: GeneratedColumn.constraintIsAlways(
           'REFERENCES soil_pit_summary (id)'));
-  static const VerificationMeta _soilPitCodeFieldMeta =
-      const VerificationMeta('soilPitCodeField');
+  static const VerificationMeta _soilPitCodeMeta =
+      const VerificationMeta('soilPitCode');
   @override
-  late final GeneratedColumn<String> soilPitCodeField = GeneratedColumn<String>(
-      'soil_pit_code_field', aliasedName, false,
+  late final GeneratedColumn<String> soilPitCode = GeneratedColumn<String>(
+      'soil_pit_code', aliasedName, false,
       additionalChecks: GeneratedColumn.checkTextLength(maxTextLength: 3),
       type: DriftSqlType.string,
       requiredDuringInsert: true);
-  static const VerificationMeta _soilPitSoilFeatureMeta =
-      const VerificationMeta('soilPitSoilFeature');
+  static const VerificationMeta _soilFeatureMeta =
+      const VerificationMeta('soilFeature');
   @override
-  late final GeneratedColumn<String> soilPitSoilFeature =
-      GeneratedColumn<String>('soil_pit_soil_feature', aliasedName, false,
-          additionalChecks: GeneratedColumn.checkTextLength(maxTextLength: 1),
-          type: DriftSqlType.string,
-          requiredDuringInsert: true);
+  late final GeneratedColumn<String> soilFeature = GeneratedColumn<String>(
+      'soil_feature', aliasedName, false,
+      additionalChecks: GeneratedColumn.checkTextLength(maxTextLength: 1),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
   static const VerificationMeta _depthFeatureMeta =
       const VerificationMeta('depthFeature');
   @override
@@ -9553,13 +9553,8 @@ class $SoilPitFeatureTable extends SoilPitFeature
       type: DriftSqlType.int,
       requiredDuringInsert: true);
   @override
-  List<GeneratedColumn> get $columns => [
-        id,
-        soilPitSummaryId,
-        soilPitCodeField,
-        soilPitSoilFeature,
-        depthFeature
-      ];
+  List<GeneratedColumn> get $columns =>
+      [id, soilPitSummaryId, soilPitCode, soilFeature, depthFeature];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -9581,21 +9576,21 @@ class $SoilPitFeatureTable extends SoilPitFeature
     } else if (isInserting) {
       context.missing(_soilPitSummaryIdMeta);
     }
-    if (data.containsKey('soil_pit_code_field')) {
+    if (data.containsKey('soil_pit_code')) {
       context.handle(
-          _soilPitCodeFieldMeta,
-          soilPitCodeField.isAcceptableOrUnknown(
-              data['soil_pit_code_field']!, _soilPitCodeFieldMeta));
+          _soilPitCodeMeta,
+          soilPitCode.isAcceptableOrUnknown(
+              data['soil_pit_code']!, _soilPitCodeMeta));
     } else if (isInserting) {
-      context.missing(_soilPitCodeFieldMeta);
+      context.missing(_soilPitCodeMeta);
     }
-    if (data.containsKey('soil_pit_soil_feature')) {
+    if (data.containsKey('soil_feature')) {
       context.handle(
-          _soilPitSoilFeatureMeta,
-          soilPitSoilFeature.isAcceptableOrUnknown(
-              data['soil_pit_soil_feature']!, _soilPitSoilFeatureMeta));
+          _soilFeatureMeta,
+          soilFeature.isAcceptableOrUnknown(
+              data['soil_feature']!, _soilFeatureMeta));
     } else if (isInserting) {
-      context.missing(_soilPitSoilFeatureMeta);
+      context.missing(_soilFeatureMeta);
     }
     if (data.containsKey('depth_feature')) {
       context.handle(
@@ -9618,10 +9613,10 @@ class $SoilPitFeatureTable extends SoilPitFeature
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       soilPitSummaryId: attachedDatabase.typeMapping.read(
           DriftSqlType.int, data['${effectivePrefix}soil_pit_summary_id'])!,
-      soilPitCodeField: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}soil_pit_code_field'])!,
-      soilPitSoilFeature: attachedDatabase.typeMapping.read(DriftSqlType.string,
-          data['${effectivePrefix}soil_pit_soil_feature'])!,
+      soilPitCode: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}soil_pit_code'])!,
+      soilFeature: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}soil_feature'])!,
       depthFeature: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}depth_feature'])!,
     );
@@ -9637,22 +9632,22 @@ class SoilPitFeatureData extends DataClass
     implements Insertable<SoilPitFeatureData> {
   final int id;
   final int soilPitSummaryId;
-  final String soilPitCodeField;
-  final String soilPitSoilFeature;
+  final String soilPitCode;
+  final String soilFeature;
   final int depthFeature;
   const SoilPitFeatureData(
       {required this.id,
       required this.soilPitSummaryId,
-      required this.soilPitCodeField,
-      required this.soilPitSoilFeature,
+      required this.soilPitCode,
+      required this.soilFeature,
       required this.depthFeature});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['soil_pit_summary_id'] = Variable<int>(soilPitSummaryId);
-    map['soil_pit_code_field'] = Variable<String>(soilPitCodeField);
-    map['soil_pit_soil_feature'] = Variable<String>(soilPitSoilFeature);
+    map['soil_pit_code'] = Variable<String>(soilPitCode);
+    map['soil_feature'] = Variable<String>(soilFeature);
     map['depth_feature'] = Variable<int>(depthFeature);
     return map;
   }
@@ -9661,8 +9656,8 @@ class SoilPitFeatureData extends DataClass
     return SoilPitFeatureCompanion(
       id: Value(id),
       soilPitSummaryId: Value(soilPitSummaryId),
-      soilPitCodeField: Value(soilPitCodeField),
-      soilPitSoilFeature: Value(soilPitSoilFeature),
+      soilPitCode: Value(soilPitCode),
+      soilFeature: Value(soilFeature),
       depthFeature: Value(depthFeature),
     );
   }
@@ -9673,9 +9668,8 @@ class SoilPitFeatureData extends DataClass
     return SoilPitFeatureData(
       id: serializer.fromJson<int>(json['id']),
       soilPitSummaryId: serializer.fromJson<int>(json['soilPitSummaryId']),
-      soilPitCodeField: serializer.fromJson<String>(json['soilPitCodeField']),
-      soilPitSoilFeature:
-          serializer.fromJson<String>(json['soilPitSoilFeature']),
+      soilPitCode: serializer.fromJson<String>(json['soilPitCode']),
+      soilFeature: serializer.fromJson<String>(json['soilFeature']),
       depthFeature: serializer.fromJson<int>(json['depthFeature']),
     );
   }
@@ -9685,8 +9679,8 @@ class SoilPitFeatureData extends DataClass
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'soilPitSummaryId': serializer.toJson<int>(soilPitSummaryId),
-      'soilPitCodeField': serializer.toJson<String>(soilPitCodeField),
-      'soilPitSoilFeature': serializer.toJson<String>(soilPitSoilFeature),
+      'soilPitCode': serializer.toJson<String>(soilPitCode),
+      'soilFeature': serializer.toJson<String>(soilFeature),
       'depthFeature': serializer.toJson<int>(depthFeature),
     };
   }
@@ -9694,14 +9688,14 @@ class SoilPitFeatureData extends DataClass
   SoilPitFeatureData copyWith(
           {int? id,
           int? soilPitSummaryId,
-          String? soilPitCodeField,
-          String? soilPitSoilFeature,
+          String? soilPitCode,
+          String? soilFeature,
           int? depthFeature}) =>
       SoilPitFeatureData(
         id: id ?? this.id,
         soilPitSummaryId: soilPitSummaryId ?? this.soilPitSummaryId,
-        soilPitCodeField: soilPitCodeField ?? this.soilPitCodeField,
-        soilPitSoilFeature: soilPitSoilFeature ?? this.soilPitSoilFeature,
+        soilPitCode: soilPitCode ?? this.soilPitCode,
+        soilFeature: soilFeature ?? this.soilFeature,
         depthFeature: depthFeature ?? this.depthFeature,
       );
   @override
@@ -9709,63 +9703,62 @@ class SoilPitFeatureData extends DataClass
     return (StringBuffer('SoilPitFeatureData(')
           ..write('id: $id, ')
           ..write('soilPitSummaryId: $soilPitSummaryId, ')
-          ..write('soilPitCodeField: $soilPitCodeField, ')
-          ..write('soilPitSoilFeature: $soilPitSoilFeature, ')
+          ..write('soilPitCode: $soilPitCode, ')
+          ..write('soilFeature: $soilFeature, ')
           ..write('depthFeature: $depthFeature')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-      id, soilPitSummaryId, soilPitCodeField, soilPitSoilFeature, depthFeature);
+  int get hashCode =>
+      Object.hash(id, soilPitSummaryId, soilPitCode, soilFeature, depthFeature);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is SoilPitFeatureData &&
           other.id == this.id &&
           other.soilPitSummaryId == this.soilPitSummaryId &&
-          other.soilPitCodeField == this.soilPitCodeField &&
-          other.soilPitSoilFeature == this.soilPitSoilFeature &&
+          other.soilPitCode == this.soilPitCode &&
+          other.soilFeature == this.soilFeature &&
           other.depthFeature == this.depthFeature);
 }
 
 class SoilPitFeatureCompanion extends UpdateCompanion<SoilPitFeatureData> {
   final Value<int> id;
   final Value<int> soilPitSummaryId;
-  final Value<String> soilPitCodeField;
-  final Value<String> soilPitSoilFeature;
+  final Value<String> soilPitCode;
+  final Value<String> soilFeature;
   final Value<int> depthFeature;
   const SoilPitFeatureCompanion({
     this.id = const Value.absent(),
     this.soilPitSummaryId = const Value.absent(),
-    this.soilPitCodeField = const Value.absent(),
-    this.soilPitSoilFeature = const Value.absent(),
+    this.soilPitCode = const Value.absent(),
+    this.soilFeature = const Value.absent(),
     this.depthFeature = const Value.absent(),
   });
   SoilPitFeatureCompanion.insert({
     this.id = const Value.absent(),
     required int soilPitSummaryId,
-    required String soilPitCodeField,
-    required String soilPitSoilFeature,
+    required String soilPitCode,
+    required String soilFeature,
     required int depthFeature,
   })  : soilPitSummaryId = Value(soilPitSummaryId),
-        soilPitCodeField = Value(soilPitCodeField),
-        soilPitSoilFeature = Value(soilPitSoilFeature),
+        soilPitCode = Value(soilPitCode),
+        soilFeature = Value(soilFeature),
         depthFeature = Value(depthFeature);
   static Insertable<SoilPitFeatureData> custom({
     Expression<int>? id,
     Expression<int>? soilPitSummaryId,
-    Expression<String>? soilPitCodeField,
-    Expression<String>? soilPitSoilFeature,
+    Expression<String>? soilPitCode,
+    Expression<String>? soilFeature,
     Expression<int>? depthFeature,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (soilPitSummaryId != null) 'soil_pit_summary_id': soilPitSummaryId,
-      if (soilPitCodeField != null) 'soil_pit_code_field': soilPitCodeField,
-      if (soilPitSoilFeature != null)
-        'soil_pit_soil_feature': soilPitSoilFeature,
+      if (soilPitCode != null) 'soil_pit_code': soilPitCode,
+      if (soilFeature != null) 'soil_feature': soilFeature,
       if (depthFeature != null) 'depth_feature': depthFeature,
     });
   }
@@ -9773,14 +9766,14 @@ class SoilPitFeatureCompanion extends UpdateCompanion<SoilPitFeatureData> {
   SoilPitFeatureCompanion copyWith(
       {Value<int>? id,
       Value<int>? soilPitSummaryId,
-      Value<String>? soilPitCodeField,
-      Value<String>? soilPitSoilFeature,
+      Value<String>? soilPitCode,
+      Value<String>? soilFeature,
       Value<int>? depthFeature}) {
     return SoilPitFeatureCompanion(
       id: id ?? this.id,
       soilPitSummaryId: soilPitSummaryId ?? this.soilPitSummaryId,
-      soilPitCodeField: soilPitCodeField ?? this.soilPitCodeField,
-      soilPitSoilFeature: soilPitSoilFeature ?? this.soilPitSoilFeature,
+      soilPitCode: soilPitCode ?? this.soilPitCode,
+      soilFeature: soilFeature ?? this.soilFeature,
       depthFeature: depthFeature ?? this.depthFeature,
     );
   }
@@ -9794,11 +9787,11 @@ class SoilPitFeatureCompanion extends UpdateCompanion<SoilPitFeatureData> {
     if (soilPitSummaryId.present) {
       map['soil_pit_summary_id'] = Variable<int>(soilPitSummaryId.value);
     }
-    if (soilPitCodeField.present) {
-      map['soil_pit_code_field'] = Variable<String>(soilPitCodeField.value);
+    if (soilPitCode.present) {
+      map['soil_pit_code'] = Variable<String>(soilPitCode.value);
     }
-    if (soilPitSoilFeature.present) {
-      map['soil_pit_soil_feature'] = Variable<String>(soilPitSoilFeature.value);
+    if (soilFeature.present) {
+      map['soil_feature'] = Variable<String>(soilFeature.value);
     }
     if (depthFeature.present) {
       map['depth_feature'] = Variable<int>(depthFeature.value);
@@ -9811,8 +9804,8 @@ class SoilPitFeatureCompanion extends UpdateCompanion<SoilPitFeatureData> {
     return (StringBuffer('SoilPitFeatureCompanion(')
           ..write('id: $id, ')
           ..write('soilPitSummaryId: $soilPitSummaryId, ')
-          ..write('soilPitCodeField: $soilPitCodeField, ')
-          ..write('soilPitSoilFeature: $soilPitSoilFeature, ')
+          ..write('soilPitCode: $soilPitCode, ')
+          ..write('soilFeature: $soilFeature, ')
           ..write('depthFeature: $depthFeature')
           ..write(')'))
         .toString();
