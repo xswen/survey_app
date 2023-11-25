@@ -7,8 +7,7 @@ import '../database_creation_files/soil_pit_tables.dart';
 part 'soil_pit_tables_dao.g.dart';
 
 @DriftAccessor(tables: [
-  SoilPitCodeCompiled,
-  SoilPitCodeField,
+  SoilPitCode,
   SoilPitSummary,
   SoilSiteInfo,
   SoilPitDepth,
@@ -54,37 +53,6 @@ class SoilPitTablesDao extends DatabaseAccessor<Database>
   Future<int> addOrUpdateSiteInfo(SoilSiteInfoCompanion entry) =>
       into(soilSiteInfo).insertOnConflictUpdate(entry);
 
-//====================Soil Depth====================
-  Future<int> addOrUpdateDepth(SoilPitDepthCompanion entry) =>
-      into(soilPitDepth).insertOnConflictUpdate(entry);
-
-  Future<List<SoilPitDepthData>> getDepthList(int summaryId) =>
-      (select(soilPitDepth)
-            ..where((tbl) => tbl.soilPitSummaryId.equals(summaryId)))
-          .get();
-
-  Future<SoilPitDepthData> getDepth(int depthId) =>
-      (select(soilPitDepth)..where((tbl) => tbl.id.equals(depthId)))
-          .getSingle();
-
-  Future<List<String>> getDepthUsedPlotCodeNameList(int summaryId) async {
-    List<String> codes = await (select(soilPitDepth)
-          ..where((tbl) => tbl.soilPitSummaryId.equals(summaryId)))
-        .map((p0) => p0.soilPitCodeCompiled)
-        .get();
-
-    List<String> results = [];
-    for (String code in codes) {
-      String codeName = await (select(soilPitCodeCompiled, distinct: true)
-            ..where((tbl) => tbl.code.equals(code)))
-          .map((row) => row.name)
-          .getSingle();
-      results.add(codeName);
-    }
-
-    return results;
-  }
-
 //====================Soil Feature====================
   Future<int> addOrUpdateFeature(SoilPitFeatureCompanion entry) =>
       into(soilPitFeature).insertOnConflictUpdate(entry);
@@ -106,7 +74,7 @@ class SoilPitTablesDao extends DatabaseAccessor<Database>
 
     List<String> results = [];
     for (String code in codes) {
-      String codeName = await (select(soilPitCodeField, distinct: true)
+      String codeName = await (select(soilPitCode, distinct: true)
             ..where((tbl) => tbl.code.equals(code)))
           .map((row) => row.name)
           .getSingle();

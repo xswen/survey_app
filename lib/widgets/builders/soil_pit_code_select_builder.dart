@@ -25,14 +25,13 @@ class SoilPitCodeSelectBuilder extends StatelessWidget {
     if (code.isEmpty) {
       codeName = "Please select soil pit code";
     } else {
-      codeName = await db.referenceTablesDao.getSoilPitCodeCompiledName(code);
+      codeName = await db.referenceTablesDao.getSoilPitCodeCode(code);
     }
 
     if (initCode.isEmpty) {
       initCodeName = "no initCode";
     } else {
-      initCodeName =
-          await db.referenceTablesDao.getSoilPitCodeCompiledName(code);
+      initCodeName = await db.referenceTablesDao.getSoilPitCodeName(code);
     }
 
     return [codeName, initCodeName];

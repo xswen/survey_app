@@ -4,10 +4,7 @@ part of 'soil_pit_tables_dao.dart';
 
 // ignore_for_file: type=lint
 mixin _$SoilPitTablesDaoMixin on DatabaseAccessor<Database> {
-  $SoilPitCodeCompiledTable get soilPitCodeCompiled =>
-      attachedDatabase.soilPitCodeCompiled;
-  $SoilPitCodeFieldTable get soilPitCodeField =>
-      attachedDatabase.soilPitCodeField;
+  $SoilPitCodeTable get soilPitCode => attachedDatabase.soilPitCode;
   $JurisdictionsTable get jurisdictions => attachedDatabase.jurisdictions;
   $PlotsTable get plots => attachedDatabase.plots;
   $SurveyHeadersTable get surveyHeaders => attachedDatabase.surveyHeaders;

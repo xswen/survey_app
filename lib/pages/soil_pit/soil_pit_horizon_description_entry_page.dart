@@ -46,7 +46,7 @@ class SoilPitHorizonDescriptionEntryPageState
     return ref
         .read(databaseProvider)
         .referenceTablesDao
-        .getSoilPitCodeFieldName(code);
+        .getSoilPitCodeName(code);
   }
 
   Future<String> getHorizonName(String code) async {
@@ -129,13 +129,10 @@ class SoilPitHorizonDescriptionEntryPageState
             SoilPitCodeSelectBuilder(
                 code: db.companionValueToStr(horizon.soilPitCodeField),
                 initPlotCodeName: "",
-                plotCodeNames:
-                    db.referenceTablesDao.getSoilPitCodeFieldNameList(),
+                plotCodeNames: db.referenceTablesDao.getSoilPitCodeNameList(),
                 usedPlotCodes: Future.value([]),
                 onChange: (s) {
-                  db.referenceTablesDao
-                      .getSoilPitCodeCompiledCode(s!)
-                      .then((code) {
+                  db.referenceTablesDao.getSoilPitCodeCode(s!).then((code) {
                     if (code !=
                         db.companionValueToStr(horizon.soilPitCodeField)) {
                       setState(() {

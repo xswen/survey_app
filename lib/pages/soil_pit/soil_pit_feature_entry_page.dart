@@ -47,7 +47,7 @@ class SoilPitFeatureEntryPageState
     return ref
         .read(databaseProvider)
         .referenceTablesDao
-        .getSoilPitCodeFieldName(code);
+        .getSoilPitCodeName(code);
   }
 
   Future<String> getFeatureName(String code) async {
@@ -108,14 +108,13 @@ class SoilPitFeatureEntryPageState
             SoilPitCodeSelectBuilder(
                 code: db.companionValueToStr(feature.soilPitCodeField),
                 initPlotCodeName: initSoilPit,
-                plotCodeNames:
-                    db.referenceTablesDao.getSoilPitCodeFieldNameList(),
+                plotCodeNames: db.referenceTablesDao.getSoilPitCodeNameList(),
                 usedPlotCodes:
                     db.soilPitTablesDao.getFeatureUsedPlotCodeNameList(spId),
                 onChange: (s) {
                   changeMade = true;
                   db.referenceTablesDao
-                      .getSoilPitCodeCompiledCode(s!)
+                      .getSoilPitCodeCode(s!)
                       .then((code) => setState(() {
                             feature = feature.copyWith(
                                 soilPitCodeField: d.Value(code));
