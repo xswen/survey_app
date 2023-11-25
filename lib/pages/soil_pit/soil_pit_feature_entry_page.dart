@@ -38,15 +38,9 @@ class SoilPitFeatureEntryPageState
     super.initState();
   }
 
-  Future<String> getPitCodeName(String code) async {
-    if (code.isEmpty) {
-      return "Please select soil pit code";
-    }
-
-    return ref
-        .read(databaseProvider)
-        .referenceTablesDao
-        .getSoilPitCodeName(code);
+  void updateFeature(SoilPitFeatureCompanion newFeature) {
+    changeMade = true;
+    setState(() => feature = newFeature);
   }
 
   Future<String> getFeatureName(String code) async {
@@ -110,15 +104,8 @@ class SoilPitFeatureEntryPageState
                 plotCodeNames: db.referenceTablesDao.getSoilPitCodeNameList(),
                 usedPlotCodes:
                     db.soilPitTablesDao.getFeatureUsedPlotCodeNameList(spId),
-                onChange: (s) {
-                  changeMade = true;
-                  db.referenceTablesDao
-                      .getSoilPitCodeCode(s!)
-                      .then((code) => setState(() {
-                            feature = feature.copyWith(
-                                soilPitCodeField: d.Value(code));
-                          }));
-                }),
+                onChange: (code) => updateFeature(
+                    feature.copyWith(soilPitCodeField: d.Value(code)))),
             FutureBuilder(
                 future: getFeatureName(
                     db.companionValueToStr(feature.soilPitSoilFeature)),
@@ -128,18 +115,24 @@ class SoilPitFeatureEntryPageState
                     title: "Soil feature noted from soil pit",
                     searchable: true,
                     onChangedFn: (s) {
-                      changeMade = true;
                       db.referenceTablesDao
                           .getSoilPitFeatureClassCode(s!)
                           .then((code) => setState(() {
                                 if (code == "N") {
-                                  feature = feature.copyWith(
+                                  updateFeature(feature.copyWith(
                                       soilPitSoilFeature: d.Value(code),
-                                      depthFeature: const d.Value(-9));
+                                      depthFeature: const d.Value(-9)));
                                 } else {
-                                  feature = feature.copyWith(
-                                      soilPitSoilFeature: d.Value(code),
-                                      depthFeature: const d.Value.absent());
+                                  //Override the previous state depth feature state
+                                  //if was previous marked as not applicable
+                                  db.companionValueToStr(
+                                              feature.soilPitSoilFeature) ==
+                                          "N"
+                                      ? updateFeature(feature.copyWith(
+                                          soilPitSoilFeature: d.Value(code),
+                                          depthFeature: const d.Value.absent()))
+                                      : updateFeature(feature.copyWith(
+                                          soilPitSoilFeature: d.Value(code)));
                                 }
                               }));
                     },
@@ -149,7 +142,7 @@ class SoilPitFeatureEntryPageState
                         text.data ?? "Error loading feature class name",
                   );
                 }),
-            db.companionValueToStr(feature.depthFeature) != "-9"
+            db.companionValueToStr(feature.soilPitSoilFeature) != "N"
                 ? DataInput(
                     title: "Depth to soil feature",
                     boxLabel: "Measured from “zero depth” to soil feature. "
@@ -165,14 +158,13 @@ class SoilPitFeatureEntryPageState
                       LengthLimitingTextInputFormatter(3),
                       ThousandsFormatter(allowFraction: false),
                     ],
-                    onSubmit: (s) {
-                      changeMade = true;
+                    onSubmit: (s) =>
                       s.isEmpty
-                          ? setState(() => feature = feature.copyWith(
+                          ? updateFeature(feature.copyWith(
                               depthFeature: const d.Value.absent()))
-                          : setState(() => feature = feature.copyWith(
-                              depthFeature: d.Value(int.parse(s))));
-                    },
+                          : updateFeature(feature.copyWith(
+                              depthFeature: d.Value(int.parse(s))))
+                    ,
                   )
                 : Container(),
             Container(
