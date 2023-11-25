@@ -3,8 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/pages/soil_pit/soil_pit_feature_page.dart';
 import 'package:survey_app/providers/soil_pit_providers.dart';
+import 'package:survey_app/widgets/popups/popup_errors_found_list.dart';
+import 'package:survey_app/widgets/popups/popup_warning_change_made.dart';
 
-import '../../formatters/format_string.dart';
 import '../../formatters/thousands_formatter.dart';
 import '../../widgets/builders/soil_pit_code_select_builder.dart';
 import '../../widgets/data_input/data_input.dart';
@@ -54,6 +55,45 @@ class SoilPitFeatureEntryPageState
         .getSoilPitFeatureClassName(code);
   }
 
+  void goToFeaturePage() {
+    ref.refresh(soilFeatureListProvider(spId));
+    context.goNamed(SoilPitFeaturePage.routeName,
+        pathParameters:
+            PathParamGenerator.soilPitSummary(widget.state, spId.toString()));
+  }
+
+  void goToNewFeatureEntry() =>
+      context.pushReplacementNamed(SoilPitFeatureEntryPage.routeName,
+          pathParameters:
+              PathParamGenerator.soilPitSummary(widget.state, spId.toString()),
+          extra: SoilPitFeatureCompanion(
+              soilPitSummaryId: feature.soilPitSummaryId,
+              soilPitCode: feature.soilPitCode));
+
+  void handleSubmit(void Function() fn) {
+    List<String>? errors = errorCheck();
+    if (errors != null) {
+      Popups.show(context, PopupErrorsFoundList(errors: errors));
+    } else {
+      ref
+          .read(databaseProvider)
+          .soilPitTablesDao
+          .addOrUpdateFeatureIfUnique(feature)
+          .then((int? featureId) {
+        featureId == null
+            ? Popups.show(
+                context,
+                const PopupDismiss(
+                  "Error: Values not unique.",
+                  contentText: "The combination of 'Soil pit code',"
+                      "'Soil feature', and 'Depth to soil feature'"
+                      "must be unique. Please enter different value",
+                ))
+            : fn();
+      });
+    }
+  }
+
   List<String>? errorCheck() {
     List<String> results = [];
 
@@ -91,7 +131,23 @@ class SoilPitFeatureEntryPageState
     final db = ref.read(databaseProvider);
     return Scaffold(
       appBar: OurAppBar(
-        "$title: ${db.companionValueToStr(feature.soilPitCode)}",
+        "$title: ${db.companionValueToStr(feature.id) == "" ? "New Feature" : "${db.companionValueToStr(feature.soilPitCode)}, "
+            "${db.companionValueToStr(feature.soilFeature)}, "
+            "${db.companionValueToStr(feature.depthFeature)}"}",
+        backFn: () {
+          if (changeMade) {
+            Popups.show(context, PopupWarningChangesUnsaved(
+              rightBtnOnPressed: () {
+                ref.refresh(soilFeatureListProvider(spId));
+                context.pop();
+                context.pop();
+              },
+            ));
+          } else {
+            ref.refresh(soilFeatureListProvider(spId));
+            context.pop();
+          }
+        },
       ),
       endDrawer: DrawerMenu(onLocaleChange: () {}),
       body: Padding(
@@ -164,59 +220,20 @@ class SoilPitFeatureEntryPageState
                             depthFeature: d.Value(int.parse(s)))),
                   )
                 : Container(),
-            Container(
-                margin: const EdgeInsets.only(
-                    top: kPaddingV * 2, bottom: kPaddingV * 2),
-                child: ElevatedButton(
-                    onPressed: () {
-                      List<String>? errors = errorCheck();
-                      if (errors != null) {
-                        Popups.show(
-                            context,
-                            PopupDismiss(
-                              "Error: Incorrect Data",
-                              contentWidget: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    "Errors were found in the following places",
-                                    textAlign: TextAlign.start,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 12),
-                                    child: Text(
-                                      FormatString.generateBulletList(errors),
-                                      textAlign: TextAlign.start,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ));
-                      } else {
-                        db.soilPitTablesDao
-                            .addOrUpdateFeatureIfUnique(feature)
-                            .then((int? featureId) {
-                          if (featureId == null) {
-                            Popups.show(
-                                context,
-                                const PopupDismiss(
-                                  "Error: Values not unique.",
-                                  contentText:
-                                      "The combination of 'Soil pit code',"
-                                      "'Soil feature', and 'Depth to soil feature'"
-                                      "must be unique. Please enter different value",
-                                ));
-                          } else {
-                            ref.refresh(soilFeatureListProvider(spId));
-                            context.goNamed(SoilPitFeaturePage.routeName,
-                                pathParameters:
-                                    PathParamGenerator.soilPitSummary(
-                                        widget.state, spId.toString()));
-                          }
-                        });
-                      }
-                    },
-                    child: const Text("Submit"))),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: kPaddingV * 2),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                      onPressed: () => handleSubmit(goToFeaturePage),
+                      child: const Text("Save and return")),
+                  ElevatedButton(
+                      onPressed: () => handleSubmit(goToNewFeatureEntry),
+                      child: const Text("Save and Add New Feature")),
+                ],
+              ),
+            ),
           ]),
         ),
       ),
