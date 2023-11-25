@@ -1,6 +1,5 @@
 import 'package:drift/drift.dart' as d;
 import 'package:survey_app/barrels/page_imports_barrel.dart';
-import 'package:survey_app/pages/soil_pit/soil_pit_depth_page.dart';
 import 'package:survey_app/pages/soil_pit/soil_pit_feature_page.dart';
 import 'package:survey_app/pages/soil_pit/soil_pit_horizon_description_page.dart';
 import 'package:survey_app/pages/soil_pit/soil_pit_site_info_page.dart';
@@ -52,10 +51,6 @@ class SoilPitSummaryPageState extends ConsumerState<SoilPitSummaryPage> {
                 widget.state, spId.toString()),
             extra: data);
       });
-
-  void navToDepth() => context.pushNamed(SoilPitDepthPage.routeName,
-      pathParameters:
-          PathParamGenerator.soilPitSummary(widget.state, spId.toString()));
 
   void navToFeature() => context.pushNamed(SoilPitFeaturePage.routeName,
       pathParameters:
@@ -109,16 +104,6 @@ class SoilPitSummaryPageState extends ConsumerState<SoilPitSummaryPage> {
               label: "Site Info",
               onPressed: () {
                 navToSiteInfo();
-              },
-              padding: const EdgeInsets.symmetric(
-                  vertical: kPaddingV, horizontal: kPaddingH),
-            ),
-            IconNavButton(
-              icon: const Icon(FontAwesomeIcons.ruler),
-              space: kPaddingIcon,
-              label: "Pit Depth",
-              onPressed: () async {
-                navToDepth();
               },
               padding: const EdgeInsets.symmetric(
                   vertical: kPaddingV, horizontal: kPaddingH),
