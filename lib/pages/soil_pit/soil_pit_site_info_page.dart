@@ -4,7 +4,6 @@ import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/pages/soil_pit/soil_pit_summary_table.dart';
 import 'package:survey_app/providers/soil_pit_providers.dart';
 import 'package:survey_app/widgets/dropdowns/drop_down_async_list.dart';
-import 'package:survey_app/widgets/hide_info_checkbox.dart';
 
 import '../../formatters/format_string.dart';
 import '../../formatters/thousands_formatter.dart';
@@ -262,120 +261,79 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
               title: "Measurements",
               fontSize: 20,
             ),
-            HideInfoCheckbox(
+            const SizedBox(height: kPaddingV),
+            DataInput(
               title:
                   "The depth of the soil pit from which soil characteristics were described",
-              checkTitle: "Unreported",
-              checkValue:
-                  db.companionValueToStr(siteInfo.profileDepth) == "-1.0",
-              onChange: (b) {
-                if (parentComplete) return;
+              readOnly: parentComplete,
+              boxLabel: "Measure to the nearest 0.1",
+              prefixIcon: FontAwesomeIcons.ruler,
+              suffixVal: "cm",
+              startingStr: db.companionValueToStr(siteInfo.profileDepth),
+              generalPadding: const EdgeInsets.all(0),
+              onValidate: (s) => errorProfileDepth(s),
+              inputType: const TextInputType.numberWithOptions(decimal: true),
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(5),
+                ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
+              ],
+              onSubmit: (s) {
                 changeMade = true;
-                b!
+                s.isEmpty
                     ? setState(() => siteInfo =
-                        siteInfo.copyWith(profileDepth: const d.Value(-1)))
+                        siteInfo.copyWith(profileDepth: const d.Value.absent()))
                     : setState(() => siteInfo = siteInfo.copyWith(
-                        profileDepth: const d.Value.absent()));
+                        profileDepth: d.Value(double.parse(s))));
               },
-              child: DataInput(
-                readOnly: parentComplete,
-                boxLabel: "Measure to the nearest 0.1",
-                prefixIcon: FontAwesomeIcons.ruler,
-                suffixVal: "cm",
-                startingStr: db.companionValueToStr(siteInfo.profileDepth),
-                generalPadding: const EdgeInsets.all(0),
-                onValidate: (s) => errorProfileDepth(s),
-                inputType: const TextInputType.numberWithOptions(decimal: true),
-                inputFormatters: [
-                  LengthLimitingTextInputFormatter(5),
-                  ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
-                ],
-                onSubmit: (s) {
-                  changeMade = true;
-                  s.isEmpty
-                      ? setState(() => siteInfo = siteInfo.copyWith(
-                          profileDepth: const d.Value.absent()))
-                      : setState(() => siteInfo = siteInfo.copyWith(
-                          profileDepth: d.Value(double.parse(s))));
-                },
-              ),
             ),
-            HideInfoCheckbox(
-                title: "Drainage class",
-                checkTitle: "Missing",
-                checkValue: db.companionValueToStr(siteInfo.drainage) == "-1",
-                onChange: (b) {
-                  if (parentComplete) return;
-                  changeMade = true;
-                  b!
-                      ? setState(() => siteInfo =
-                          siteInfo.copyWith(drainage: const d.Value(-1)))
-                      : setState(() => siteInfo =
-                          siteInfo.copyWith(drainage: const d.Value.absent()));
-                },
-                child: FutureBuilder(
-                    future: getDrainageName(
-                        db.companionValueToStr(siteInfo.drainage)),
-                    initialData: "Please select drainage",
-                    builder:
-                        (BuildContext context, AsyncSnapshot<String> text) {
-                      return DropDownAsyncList(
-                        searchable: true,
-                        enabled: !parentComplete,
-                        padding: 0,
-                        onChangedFn: (s) {
-                          changeMade = true;
-                          db.referenceTablesDao
-                              .getSoilDrainageCode(s!)
-                              .then((code) => setState(() {
-                                    siteInfo = siteInfo.copyWith(
-                                        drainage: d.Value(code));
-                                  }));
-                        },
-                        asyncItems: (s) =>
-                            db.referenceTablesDao.getSoilDrainageNameList(),
-                        selectedItem:
-                            text.data ?? "Error loading drainage class name",
-                      );
-                    })),
-            HideInfoCheckbox(
-                title: "Moisture class",
-                checkTitle: "Unreported",
-                checkValue: db.companionValueToStr(siteInfo.moisture) == "-1",
-                onChange: (b) {
-                  if (parentComplete) return;
-                  changeMade = true;
-                  b!
-                      ? setState(() => siteInfo =
-                          siteInfo.copyWith(moisture: const d.Value(-1)))
-                      : setState(() => siteInfo =
-                          siteInfo.copyWith(moisture: const d.Value.absent()));
-                },
-                child: FutureBuilder(
-                    future: getMoistureName(
-                        db.companionValueToStr(siteInfo.moisture)),
-                    initialData: "Please select moisture",
-                    builder:
-                        (BuildContext context, AsyncSnapshot<String> text) {
-                      return DropDownAsyncList(
-                        searchable: true,
-                        enabled: !parentComplete,
-                        padding: 0,
-                        onChangedFn: (s) {
-                          changeMade = true;
-                          db.referenceTablesDao
-                              .getSoilMoistureCode(s!)
-                              .then((code) => setState(() {
-                                    siteInfo = siteInfo.copyWith(
-                                        moisture: d.Value(code));
-                                  }));
-                        },
-                        asyncItems: (s) =>
-                            db.referenceTablesDao.getSoilMoistureNameList(),
-                        selectedItem:
-                            text.data ?? "Error loading moisture class name",
-                      );
-                    })),
+            FutureBuilder(
+                future:
+                    getDrainageName(db.companionValueToStr(siteInfo.drainage)),
+                initialData: "Please select drainage",
+                builder: (BuildContext context, AsyncSnapshot<String> text) {
+                  return DropDownAsyncList(
+                    title: "Drainage class",
+                    searchable: true,
+                    enabled: !parentComplete,
+                    onChangedFn: (s) {
+                      changeMade = true;
+                      db.referenceTablesDao
+                          .getSoilDrainageCode(s!)
+                          .then((code) => setState(() {
+                                siteInfo =
+                                    siteInfo.copyWith(drainage: d.Value(code));
+                              }));
+                    },
+                    asyncItems: (s) =>
+                        db.referenceTablesDao.getSoilDrainageNameList(),
+                    selectedItem:
+                        text.data ?? "Error loading drainage class name",
+                  );
+                }),
+            FutureBuilder(
+                future:
+                    getMoistureName(db.companionValueToStr(siteInfo.moisture)),
+                initialData: "Please select moisture",
+                builder: (BuildContext context, AsyncSnapshot<String> text) {
+                  return DropDownAsyncList(
+                    title: "Moisture class",
+                    searchable: true,
+                    enabled: !parentComplete,
+                    onChangedFn: (s) {
+                      changeMade = true;
+                      db.referenceTablesDao
+                          .getSoilMoistureCode(s!)
+                          .then((code) => setState(() {
+                                siteInfo =
+                                    siteInfo.copyWith(moisture: d.Value(code));
+                              }));
+                    },
+                    asyncItems: (s) =>
+                        db.referenceTablesDao.getSoilMoistureNameList(),
+                    selectedItem:
+                        text.data ?? "Error loading moisture class name",
+                  );
+                }),
             const SizedBox(height: kPaddingV),
             FutureBuilder(
                 future: getDepositionName(
