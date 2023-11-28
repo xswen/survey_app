@@ -20,7 +20,7 @@ class SoilPitSiteInfoPage extends ConsumerStatefulWidget {
 }
 
 class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
-  final String title = "Site Info";
+  final String title = "Soil Pit Site Info";
   bool changeMade = false;
   late bool parentComplete = false;
 

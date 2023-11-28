@@ -102,7 +102,7 @@ class SoilPitSummaryPageState extends ConsumerState<SoilPitSummaryPage> {
                       Popups.show(
                           context,
                           const PopupDismiss(
-                            "Error: Soil Site Info",
+                            "Error: Soil Pit Site Info",
                             contentText:
                                 "Soil site info needs to be filled out before soil pit can be marked complete.",
                           ));
@@ -125,7 +125,7 @@ class SoilPitSummaryPageState extends ConsumerState<SoilPitSummaryPage> {
               IconNavButton(
                 icon: const Icon(FontAwesomeIcons.file),
                 space: kPaddingIcon,
-                label: "Site Info",
+                label: "Soil Pit Site Info",
                 onPressed: () {
                   navToSiteInfo();
                 },
