@@ -260,76 +260,48 @@ class SoilPitHorizonDescriptionEntryPageState
                 },
               ),
             ),
-            HideInfoCheckbox(
-                title: "Soil colour",
-                checkTitle: "Missing",
-                checkValue: db.companionValueToStr(horizon.color) == "S",
-                onChange: (b) {
-                  changeMade = true;
-                  b!
-                      ? setState(() =>
-                          horizon = horizon.copyWith(color: const d.Value("S")))
-                      : setState(() => horizon =
-                          horizon.copyWith(color: const d.Value.absent()));
-                },
-                child: FutureBuilder(
-                    future:
-                        getSoilColorName(db.companionValueToStr(horizon.color)),
-                    initialData: "Please select color",
-                    builder:
-                        (BuildContext context, AsyncSnapshot<String> text) {
-                      return DropDownAsyncList(
-                        searchable: true,
-                        padding: 0,
-                        onChangedFn: (s) {
-                          changeMade = true;
-                          db.referenceTablesDao
-                              .getSoilColorCode(s!)
-                              .then((code) => setState(() {
-                                    horizon =
-                                        horizon.copyWith(color: d.Value(code));
-                                  }));
-                        },
-                        asyncItems: (s) =>
-                            db.referenceTablesDao.getSoilColorNameList(),
-                        selectedItem: text.data ?? "Error loading color name",
-                      );
-                    })),
-            HideInfoCheckbox(
-                title: "Soil texture",
-                checkTitle: "Missing",
-                checkValue: db.companionValueToStr(horizon.texture) == "S",
-                onChange: (b) {
-                  changeMade = true;
-                  b!
-                      ? setState(() => horizon =
-                          horizon.copyWith(texture: const d.Value("S")))
-                      : setState(() => horizon =
-                          horizon.copyWith(texture: const d.Value.absent()));
-                },
-                child: FutureBuilder(
-                    future:
-                        getSoilColorName(db.companionValueToStr(horizon.color)),
-                    initialData: "Please select texture",
-                    builder:
-                        (BuildContext context, AsyncSnapshot<String> text) {
-                      return DropDownAsyncList(
-                        searchable: true,
-                        padding: 0,
-                        onChangedFn: (s) {
-                          changeMade = true;
-                          db.referenceTablesDao
-                              .getSoilTextureCode(s!)
-                              .then((code) => setState(() {
-                                    horizon = horizon.copyWith(
-                                        texture: d.Value(code));
-                                  }));
-                        },
-                        asyncItems: (s) =>
-                            db.referenceTablesDao.getSoilTextureNameList(),
-                        selectedItem: text.data ?? "Error loading texture name",
-                      );
-                    })),
+            FutureBuilder(
+                future: getSoilColorName(db.companionValueToStr(horizon.color)),
+                initialData: "Please select color",
+                builder: (BuildContext context, AsyncSnapshot<String> text) {
+                  return DropDownAsyncList(
+                    title: "Soil colour",
+                    searchable: true,
+                    onChangedFn: (s) {
+                      changeMade = true;
+                      db.referenceTablesDao
+                          .getSoilColorCode(s!)
+                          .then((code) => setState(() {
+                                horizon =
+                                    horizon.copyWith(color: d.Value(code));
+                              }));
+                    },
+                    asyncItems: (s) =>
+                        db.referenceTablesDao.getSoilColorNameList(),
+                    selectedItem: text.data ?? "Error loading color name",
+                  );
+                }),
+            FutureBuilder(
+                future: getSoilColorName(db.companionValueToStr(horizon.color)),
+                initialData: "Please select texture",
+                builder: (BuildContext context, AsyncSnapshot<String> text) {
+                  return DropDownAsyncList(
+                    title: "Soil texture",
+                    searchable: true,
+                    onChangedFn: (s) {
+                      changeMade = true;
+                      db.referenceTablesDao
+                          .getSoilTextureCode(s!)
+                          .then((code) => setState(() {
+                                horizon =
+                                    horizon.copyWith(texture: d.Value(code));
+                              }));
+                    },
+                    asyncItems: (s) =>
+                        db.referenceTablesDao.getSoilTextureNameList(),
+                    selectedItem: text.data ?? "Error loading texture name",
+                  );
+                }),
             const Padding(
               padding: EdgeInsets.symmetric(vertical: kPaddingV * 2),
               child: TextHeaderSeparator(
