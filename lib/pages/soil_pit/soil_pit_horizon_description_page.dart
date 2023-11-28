@@ -188,7 +188,7 @@ class SoilPitHorizonDescriptionPageState
                   Padding(
                     padding: const EdgeInsets.only(left: kPaddingH),
                     child: ElevatedButton(
-                        onPressed: () async => parentComplete
+                        onPressed: () => parentComplete
                             ? Popups.show(context, completeWarningPopup)
                             : context.pushNamed(
                                 SoilPitHorizonDescriptionEntryPage.routeName,
@@ -216,24 +216,28 @@ class SoilPitHorizonDescriptionPageState
                     colNames: columnData.getColHeadersList(),
                     onCellTap: (DataGridCellTapDetails details) async {
                       // Assuming the "edit" column index is 2
-                      // if (details.column.columnName == columnData.edit.name &&
-                      //     details.rowColumnIndex.rowIndex != 0) {
-                      //   if (parentComplete) {
-                      //     Popups.show(context, surveyCompleteWarningPopup);
-                      //   } else {
-                      //     int id = source
-                      //         .dataGridRows[details.rowColumnIndex.rowIndex - 1]
-                      //         .getCells()[0]
-                      //         .value;
-                      //     db.soilPitTablesDao.getFeature(id).then((value) =>
-                      //         context.pushNamed(
-                      //             SoilPitHorizonDescriptionEntryPage.routeName,
-                      //             pathParameters:
-                      //                 PathParamGenerator.soilPitSummary(
-                      //                     widget.state, spId.toString()),
-                      //             extra: value.toCompanion(true)));
-                      //   }
-                      // }
+                      if (details.column.columnName == columnData.edit.name &&
+                          details.rowColumnIndex.rowIndex != 0) {
+                        if (parentComplete) {
+                          Popups.show(context, surveyCompleteWarningPopup);
+                        } else {
+                          int id = source
+                              .dataGridRows[details.rowColumnIndex.rowIndex - 1]
+                              .getCells()[0]
+                              .value;
+                          db.soilPitTablesDao.getHorizon(id).then(
+                                (value) => parentComplete
+                                    ? Popups.show(context, completeWarningPopup)
+                                    : context.pushNamed(
+                                        SoilPitHorizonDescriptionEntryPage
+                                            .routeName,
+                                        pathParameters:
+                                            PathParamGenerator.soilPitSummary(
+                                                widget.state, spId.toString()),
+                                        extra: value.toCompanion(true)),
+                              );
+                        }
+                      }
                     },
                   ),
                 );
