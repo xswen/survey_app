@@ -45,8 +45,7 @@ class SoilPitFeature extends Table {
 
 class SoilPitHorizonDescription extends Table {
   IntColumn get id => integer().autoIncrement()();
-  IntColumn get soilPitSummaryId =>
-      integer().unique().references(SoilPitSummary, #id)();
+  IntColumn get soilPitSummaryId => integer().references(SoilPitSummary, #id)();
   TextColumn get soilPitCodeField => text().withLength(max: 3)();
   IntColumn get horizonNum =>
       integer().check(horizonNum.isBetweenValues(1, 99))();

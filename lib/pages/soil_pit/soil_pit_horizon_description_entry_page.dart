@@ -10,6 +10,7 @@ import '../../widgets/data_input/data_input.dart';
 import '../../widgets/dropdowns/drop_down_async_list.dart';
 import '../../widgets/hide_info_checkbox.dart';
 import '../../widgets/popups/popup_errors_found_list.dart';
+import '../../widgets/popups/popup_warning_change_made.dart';
 import '../../widgets/text/text_header_separator.dart';
 
 class SoilPitHorizonDescriptionEntryPage extends ConsumerStatefulWidget {
@@ -203,6 +204,20 @@ class SoilPitHorizonDescriptionEntryPageState
     return Scaffold(
       appBar: OurAppBar(
         "$title: ${db.companionValueToStr(horizon.soilPitCodeField)}",
+        backFn: () {
+          if (changeMade) {
+            Popups.show(context, PopupWarningChangesUnsaved(
+              rightBtnOnPressed: () {
+                ref.refresh(soilHorizonListProvider(spId));
+                context.pop();
+                context.pop();
+              },
+            ));
+          } else {
+            ref.refresh(soilHorizonListProvider(spId));
+            context.pop();
+          }
+        },
       ),
       endDrawer: DrawerMenu(onLocaleChange: () {}),
       body: Padding(
@@ -230,7 +245,10 @@ class SoilPitHorizonDescriptionEntryPageState
               generalPadding: const EdgeInsets.all(0),
               onValidate: (s) => null,
               inputType: const TextInputType.numberWithOptions(decimal: false),
-              inputFormatters: [LengthLimitingTextInputFormatter(2)],
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(2),
+                ThousandsFormatter(allowFraction: false),
+              ],
               onSubmit: (s) => s.isEmpty
                   ? updateHorizon(
                       horizon.copyWith(horizonNum: const d.Value.absent()))

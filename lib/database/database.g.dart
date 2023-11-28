@@ -9837,7 +9837,7 @@ class $SoilPitHorizonDescriptionTable extends SoilPitHorizonDescription
       type: DriftSqlType.int,
       requiredDuringInsert: true,
       defaultConstraints: GeneratedColumn.constraintIsAlways(
-          'UNIQUE REFERENCES soil_pit_summary (id)'));
+          'REFERENCES soil_pit_summary (id)'));
   static const VerificationMeta _soilPitCodeFieldMeta =
       const VerificationMeta('soilPitCodeField');
   @override
