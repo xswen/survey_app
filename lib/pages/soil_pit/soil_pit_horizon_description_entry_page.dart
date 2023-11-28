@@ -91,6 +91,7 @@ class SoilPitHorizonDescriptionEntryPageState
   }
 
   String? errorCf(String? text) {
+    print("value: $text");
     if (text?.isEmpty ?? true) {
       return "Can't be empty";
     } else if (-1 == int.parse(text!) || -9 == int.parse(text!)) {
@@ -265,7 +266,7 @@ class SoilPitHorizonDescriptionEntryPageState
                   "horizon. (Diameter < 7.5 cm or length < 15 cm.)",
               prefixIcon: FontAwesomeIcons.percent,
               suffixVal: "%",
-              startingStr: db.companionValueToStr(horizon.horizonUpper),
+              startingStr: db.companionValueToStr(horizon.cfGrav),
               generalPadding: const EdgeInsets.all(0),
               onValidate: (s) => errorCf(s),
               inputType: const TextInputType.numberWithOptions(decimal: true),
@@ -286,7 +287,7 @@ class SoilPitHorizonDescriptionEntryPageState
                   "length = 15 to 38 cm) content by volume of the mineral horizon.",
               prefixIcon: FontAwesomeIcons.percent,
               suffixVal: "%",
-              startingStr: db.companionValueToStr(horizon.horizonUpper),
+              startingStr: db.companionValueToStr(horizon.cfCobb),
               generalPadding: const EdgeInsets.all(0),
               onValidate: (s) => errorCf(s),
               inputType: const TextInputType.numberWithOptions(decimal: true),
@@ -307,7 +308,7 @@ class SoilPitHorizonDescriptionEntryPageState
                   "cm) content by volume of the mineral horizon.",
               prefixIcon: FontAwesomeIcons.percent,
               suffixVal: "%",
-              startingStr: db.companionValueToStr(horizon.horizonUpper),
+              startingStr: db.companionValueToStr(horizon.cfStone),
               generalPadding: const EdgeInsets.all(0),
               onValidate: (s) => errorCf(s),
               inputType: const TextInputType.numberWithOptions(decimal: true),
