@@ -6,12 +6,14 @@ import 'package:survey_app/providers/soil_pit_providers.dart';
 
 import '../../formatters/thousands_formatter.dart';
 import '../../widgets/builders/soil_pit_code_select_builder.dart';
+import '../../widgets/buttons/delete_button.dart';
 import '../../widgets/data_input/data_input.dart';
 import '../../widgets/dropdowns/drop_down_async_list.dart';
 import '../../widgets/hide_info_checkbox.dart';
 import '../../widgets/popups/popup_errors_found_list.dart';
 import '../../widgets/popups/popup_warning_change_made.dart';
 import '../../widgets/text/text_header_separator.dart';
+import '../delete_page.dart';
 
 class SoilPitHorizonDescriptionEntryPage extends ConsumerStatefulWidget {
   static const String routeName = "soilPitHorizonDescriptionEntry";
@@ -506,6 +508,31 @@ class SoilPitHorizonDescriptionEntryPageState
                 ],
               ),
             ),
+            horizon.id != const d.Value.absent()
+                ? DeleteButton(
+                    delete: () => Popups.show(
+                      context,
+                      PopupContinue("Warning: Deleting Soil Pit Feature",
+                          contentText: "You are about to delete this feature. "
+                              "Are you sure you want to continue?",
+                          rightBtnOnPressed: () {
+                        //close popup
+                        context.pop();
+                        context.pushNamed(DeletePage.routeName, extra: {
+                          DeletePage.keyObjectName:
+                              "Soil Pit Feature: ${horizon.toString()}",
+                          DeletePage.keyDeleteFn: () {
+                            (db.delete(db.soilPitHorizonDescription)
+                                  ..where(
+                                      (tbl) => tbl.id.equals(horizon.id.value)))
+                                .go()
+                                .then((value) => goToHorizonPage());
+                          },
+                        });
+                      }),
+                    ),
+                  )
+                : Container()
           ]),
         ),
       ),
