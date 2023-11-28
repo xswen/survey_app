@@ -229,9 +229,8 @@ class SoilPitHorizonDescriptionEntryPageState
               initPlotCodeName: initSoilPit,
               usedPlotCodes:
                   db.soilPitTablesDao.getHorizonUsedPlotCodeNameList(spId),
-              onChange: (code) => updateHorizon(horizon.copyWith(
-                  soilPitCodeField: d.Value(code),
-                  horizonNum: const d.Value.absent())),
+              onChange: (code) => updateHorizon(
+                  horizon.copyWith(soilPitCodeField: d.Value(code))),
             ),
             const SizedBox(
               height: kPaddingV * 2,
