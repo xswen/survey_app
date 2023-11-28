@@ -7,8 +7,7 @@ import '../database_creation_files/soil_pit_tables.dart';
 part 'soil_pit_tables_dao.g.dart';
 
 @DriftAccessor(tables: [
-  SoilPitCodeCompiled,
-  SoilPitCodeField,
+  SoilPitCode,
   SoilPitSummary,
   SoilSiteInfo,
   SoilPitDepth,
@@ -54,37 +53,6 @@ class SoilPitTablesDao extends DatabaseAccessor<Database>
   Future<int> addOrUpdateSiteInfo(SoilSiteInfoCompanion entry) =>
       into(soilSiteInfo).insertOnConflictUpdate(entry);
 
-//====================Soil Depth====================
-  Future<int> addOrUpdateDepth(SoilPitDepthCompanion entry) =>
-      into(soilPitDepth).insertOnConflictUpdate(entry);
-
-  Future<List<SoilPitDepthData>> getDepthList(int summaryId) =>
-      (select(soilPitDepth)
-            ..where((tbl) => tbl.soilPitSummaryId.equals(summaryId)))
-          .get();
-
-  Future<SoilPitDepthData> getDepth(int depthId) =>
-      (select(soilPitDepth)..where((tbl) => tbl.id.equals(depthId)))
-          .getSingle();
-
-  Future<List<String>> getDepthUsedPlotCodeNameList(int summaryId) async {
-    List<String> codes = await (select(soilPitDepth)
-          ..where((tbl) => tbl.soilPitSummaryId.equals(summaryId)))
-        .map((p0) => p0.soilPitCodeCompiled)
-        .get();
-
-    List<String> results = [];
-    for (String code in codes) {
-      String codeName = await (select(soilPitCodeCompiled, distinct: true)
-            ..where((tbl) => tbl.code.equals(code)))
-          .map((row) => row.name)
-          .getSingle();
-      results.add(codeName);
-    }
-
-    return results;
-  }
-
 //====================Soil Feature====================
   Future<int> addOrUpdateFeature(SoilPitFeatureCompanion entry) =>
       into(soilPitFeature).insertOnConflictUpdate(entry);
@@ -98,15 +66,33 @@ class SoilPitTablesDao extends DatabaseAccessor<Database>
       (select(soilPitFeature)..where((tbl) => tbl.id.equals(featureId)))
           .getSingle();
 
+  //Return featureId if valid, null otherwise
+  Future<int?> addOrUpdateFeatureIfUnique(
+      SoilPitFeatureCompanion feature) async {
+    SoilPitFeatureData? entry = await (select(soilPitFeature)
+          ..where((tbl) =>
+              tbl.soilPitSummaryId.equals(feature.soilPitSummaryId.value) &
+              tbl.soilPitCode.equals(feature.soilPitCode.value) &
+              tbl.soilFeature.equals(feature.soilFeature.value) &
+              tbl.depthFeature.equals(feature.depthFeature.value)))
+        .getSingleOrNull();
+
+    if (feature.id != const Value.absent() && feature.id.value == entry?.id) {
+      entry = null;
+    }
+
+    return entry == null ? addOrUpdateFeature(feature) : null;
+  }
+
   Future<List<String>> getFeatureUsedPlotCodeNameList(int summaryId) async {
     List<String> codes = await (select(soilPitFeature)
           ..where((tbl) => tbl.soilPitSummaryId.equals(summaryId)))
-        .map((p0) => p0.soilPitCodeField)
+        .map((p0) => p0.soilPitCode)
         .get();
 
     List<String> results = [];
     for (String code in codes) {
-      String codeName = await (select(soilPitCodeField, distinct: true)
+      String codeName = await (select(soilPitCode, distinct: true)
             ..where((tbl) => tbl.code.equals(code)))
           .map((row) => row.name)
           .getSingle();
@@ -120,6 +106,22 @@ class SoilPitTablesDao extends DatabaseAccessor<Database>
   Future<int> addOrUpdateHorizon(SoilPitHorizonDescriptionCompanion entry) =>
       into(soilPitHorizonDescription).insertOnConflictUpdate(entry);
 
+  Future<int?> addOrUpdateHorizonIfUnique(
+      SoilPitHorizonDescriptionCompanion horizon) async {
+    SoilPitHorizonDescriptionData? entry =
+        await (select(soilPitHorizonDescription)
+              ..where((tbl) =>
+                  tbl.soilPitSummaryId.equals(horizon.soilPitSummaryId.value) &
+                  tbl.soilPitCodeField.equals(horizon.soilPitCodeField.value) &
+                  tbl.horizonNum.equals(horizon.horizonNum.value)))
+            .getSingleOrNull();
+
+    if (horizon.id != const Value.absent() && horizon.id.value == entry?.id) {
+      entry = null;
+    }
+    return entry == null ? addOrUpdateHorizon(horizon) : null;
+  }
+
   Future<List<SoilPitHorizonDescriptionData>> getHorizonList(int summaryId) =>
       (select(soilPitHorizonDescription)
             ..where((tbl) => tbl.soilPitSummaryId.equals(summaryId)))
@@ -130,23 +132,23 @@ class SoilPitTablesDao extends DatabaseAccessor<Database>
             ..where((tbl) => tbl.id.equals(horizonId)))
           .getSingle();
 
-  // Future<List<String>> getHorizonUsedPlotCodeNameList(int summaryId) async {
-  //   List<String> codes = await (select(soilPitHorizonDescription)
-  //         ..where((tbl) => tbl.soilPitSummaryId.equals(summaryId)))
-  //       .map((p0) => p0.soilPitCodeField)
-  //       .get();
-  //
-  //   List<String> results = [];
-  //   for (String code in codes) {
-  //     String codeName = await (select(soilPitCodeField, distinct: true)
-  //           ..where((tbl) => tbl.code.equals(code)))
-  //         .map((row) => row.name)
-  //         .getSingle();
-  //     results.add(codeName);
-  //   }
-  //
-  //   return results;
-  // }
+  Future<List<String>> getHorizonUsedPlotCodeNameList(int summaryId) async {
+    List<String> codes = await (select(soilPitHorizonDescription)
+          ..where((tbl) => tbl.soilPitSummaryId.equals(summaryId)))
+        .map((p0) => p0.soilPitCodeField)
+        .get();
+
+    List<String> results = [];
+    for (String code in codes) {
+      String codeName = await (select(soilPitCode, distinct: true)
+            ..where((tbl) => tbl.code.equals(code)))
+          .map((row) => row.name)
+          .getSingle();
+      results.add(codeName);
+    }
+
+    return results;
+  }
 
   Future<bool> checkHorizonNumAvailable(
       int summaryId, String pitCode, int horNum) async {

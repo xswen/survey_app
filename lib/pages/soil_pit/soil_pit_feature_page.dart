@@ -69,10 +69,10 @@ class SoilPitFeaturePageState extends ConsumerState<SoilPitFeaturePage> {
                 columnName: columnData.id.name, value: dataGridRow.id),
             DataGridCell<String>(
                 columnName: columnData.pitCode.name,
-                value: dataGridRow.soilPitCodeField),
+                value: dataGridRow.soilPitCode),
             DataGridCell<String>(
                 columnName: columnData.feature.name,
-                value: dataGridRow.soilPitSoilFeature),
+                value: dataGridRow.soilFeature),
             DataGridCell<String>(
                 columnName: columnData.depthFeature.name,
                 value: dataGridRow.depthFeature == -9

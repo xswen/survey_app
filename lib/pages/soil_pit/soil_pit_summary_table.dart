@@ -1,6 +1,5 @@
 import 'package:drift/drift.dart' as d;
 import 'package:survey_app/barrels/page_imports_barrel.dart';
-import 'package:survey_app/pages/soil_pit/soil_pit_depth_page.dart';
 import 'package:survey_app/pages/soil_pit/soil_pit_feature_page.dart';
 import 'package:survey_app/pages/soil_pit/soil_pit_horizon_description_page.dart';
 import 'package:survey_app/pages/soil_pit/soil_pit_site_info_page.dart';
@@ -53,10 +52,6 @@ class SoilPitSummaryPageState extends ConsumerState<SoilPitSummaryPage> {
             extra: data);
       });
 
-  void navToDepth() => context.pushNamed(SoilPitDepthPage.routeName,
-      pathParameters:
-          PathParamGenerator.soilPitSummary(widget.state, spId.toString()));
-
   void navToFeature() => context.pushNamed(SoilPitFeaturePage.routeName,
       pathParameters:
           PathParamGenerator.soilPitSummary(widget.state, spId.toString()));
@@ -93,57 +88,72 @@ class SoilPitSummaryPageState extends ConsumerState<SoilPitSummaryPage> {
           child: spSummary.when(
         error: (err, stack) => Text("Error: $err"),
         loading: () => const Center(child: CircularProgressIndicator()),
-        data: (spSummary) => Column(
-          children: [
-            CalendarSelect(
-              date: spSummary.measDate,
-              label: "Enter Measurement Date",
-              readOnly: spSummary.complete,
-              readOnlyPopup: completeWarningPopup,
-              setStateFn: (DateTime date) async => updateSpSummary(
-                  SoilPitSummaryCompanion(measDate: d.Value(date))),
-            ),
-            IconNavButton(
-              icon: const Icon(FontAwesomeIcons.file),
-              space: kPaddingIcon,
-              label: "Site Info",
-              onPressed: () {
-                navToSiteInfo();
-              },
-              padding: const EdgeInsets.symmetric(
-                  vertical: kPaddingV, horizontal: kPaddingH),
-            ),
-            IconNavButton(
-              icon: const Icon(FontAwesomeIcons.ruler),
-              space: kPaddingIcon,
-              label: "Pit Depth",
-              onPressed: () async {
-                navToDepth();
-              },
-              padding: const EdgeInsets.symmetric(
-                  vertical: kPaddingV, horizontal: kPaddingH),
-            ),
-            IconNavButton(
-              icon: const Icon(FontAwesomeIcons.objectGroup),
-              space: kPaddingIcon,
-              label: "Pit Feature",
-              onPressed: () async {
-                navToFeature();
-              },
-              padding: const EdgeInsets.symmetric(
-                  vertical: kPaddingV, horizontal: kPaddingH),
-            ),
-            IconNavButton(
-              icon: const Icon(FontAwesomeIcons.mountain),
-              space: kPaddingIcon,
-              label: "Pit Horizon Description",
-              onPressed: () async {
-                navToHorizon();
-              },
-              padding: const EdgeInsets.symmetric(
-                  vertical: kPaddingV, horizontal: kPaddingH),
-            ),
-          ],
+        data: (spSummary) => Scaffold(
+          floatingActionButton: FloatingCompleteButton(
+            title: title,
+            complete: spSummary.complete,
+            onPressed: () => spSummary.complete
+                ? updateSpSummary(
+                    const SoilPitSummaryCompanion(complete: d.Value(false)))
+                : db.soilPitTablesDao
+                    .getSiteInfoFromSummaryId(spId)
+                    .then((value) {
+                    if (value == null) {
+                      Popups.show(
+                          context,
+                          const PopupDismiss(
+                            "Error: Soil Pit Site Info",
+                            contentText:
+                                "Soil site info needs to be filled out before soil pit can be marked complete.",
+                          ));
+                    } else {
+                      updateSpSummary(SoilPitSummaryCompanion(
+                          complete: d.Value(!spSummary.complete)));
+                    }
+                  }),
+          ),
+          body: Column(
+            children: [
+              CalendarSelect(
+                date: spSummary.measDate,
+                label: "Enter Measurement Date",
+                readOnly: spSummary.complete,
+                readOnlyPopup: completeWarningPopup,
+                setStateFn: (DateTime date) async => updateSpSummary(
+                    SoilPitSummaryCompanion(measDate: d.Value(date))),
+              ),
+              IconNavButton(
+                icon: const Icon(FontAwesomeIcons.file),
+                space: kPaddingIcon,
+                label: "Soil Pit Site Info",
+                onPressed: () {
+                  navToSiteInfo();
+                },
+                padding: const EdgeInsets.symmetric(
+                    vertical: kPaddingV, horizontal: kPaddingH),
+              ),
+              IconNavButton(
+                icon: const Icon(FontAwesomeIcons.objectGroup),
+                space: kPaddingIcon,
+                label: "Pit Feature",
+                onPressed: () async {
+                  navToFeature();
+                },
+                padding: const EdgeInsets.symmetric(
+                    vertical: kPaddingV, horizontal: kPaddingH),
+              ),
+              IconNavButton(
+                icon: const Icon(FontAwesomeIcons.mountain),
+                space: kPaddingIcon,
+                label: "Pit Horizon Description",
+                onPressed: () async {
+                  navToHorizon();
+                },
+                padding: const EdgeInsets.symmetric(
+                    vertical: kPaddingV, horizontal: kPaddingH),
+              ),
+            ],
+          ),
         ),
       )),
     );

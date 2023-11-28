@@ -12,16 +12,17 @@ import '../../wrappers/column_header_object.dart';
 class ColNames {
   ColNames();
   ColumnHeaders id = ColumnHeaders(ColumnHeaders.headerNameId, visible: false);
-  ColumnHeaders pitCode = ColumnHeaders("Pit Code");
+  ColumnHeaders pitCode = ColumnHeaders("Soil Pit Code");
   ColumnHeaders horNum = ColumnHeaders("Horizon Number");
   ColumnHeaders horizon = ColumnHeaders("Horizon");
-  ColumnHeaders horFeature = ColumnHeaders("Horizon Upper Depth Field");
+  ColumnHeaders horUpper = ColumnHeaders("Horizon Upper Depth Field");
   ColumnHeaders horThickness = ColumnHeaders("Horizon Thickness");
   ColumnHeaders colour = ColumnHeaders("Colour");
   ColumnHeaders texture = ColumnHeaders("Texture");
   ColumnHeaders gravel = ColumnHeaders("% Gravel");
   ColumnHeaders cobble = ColumnHeaders("% Cobbles");
   ColumnHeaders stone = ColumnHeaders("% Stone");
+
   ColumnHeaders comments = ColumnHeaders("Comment - to be added");
   ColumnHeaders edit = ColumnHeaders(ColumnHeaders.headerNameEdit, sort: false);
 
@@ -31,7 +32,7 @@ class ColNames {
         pitCode,
         horNum,
         horizon,
-        horFeature,
+        horUpper,
         horThickness,
         colour,
         texture,
@@ -86,32 +87,59 @@ class SoilPitHorizonDescriptionPageState
 
   List<DataGridRow> generateDataGridRows(
       List<SoilPitHorizonDescriptionData> data) {
+    String handleAltDoubleValue(double value) {
+      if (value == -1.0) {
+        return "Missing";
+      }
+      if (value == -9.0) {
+        return "N/A";
+      }
+      return value.toString();
+    }
+
+    String handleAltIntValue(int value) {
+      if (value == -1) {
+        return "Missing";
+      }
+      if (value == -9) {
+        return "N/A";
+      }
+      return value.toString();
+    }
+
     return data
-        .map<DataGridRow>((dataRow) => DataGridRow(cells: [
+        .map<DataGridRow>((dataGridRow) => DataGridRow(cells: [
+              DataGridCell<int>(
+                  columnName: columnData.id.name, value: dataGridRow.id),
               DataGridCell<String>(
                   columnName: columnData.pitCode.name,
-                  value: dataRow.soilPitCodeField),
+                  value: dataGridRow.soilPitCodeField),
               DataGridCell<int>(
                   columnName: columnData.horNum.name,
-                  value: dataRow.horizonNum),
+                  value: dataGridRow.horizonNum),
               DataGridCell<String>(
-                  columnName: columnData.horizon.name, value: dataRow.horizon),
-              DataGridCell<double>(
-                  columnName: columnData.horFeature.name,
-                  value: dataRow.horizonUpper),
-              DataGridCell<double>(
+                  columnName: columnData.horizon.name,
+                  value: dataGridRow.horizon),
+              DataGridCell<String>(
+                  columnName: columnData.horUpper.name,
+                  value: handleAltDoubleValue(dataGridRow.horizonUpper)),
+              DataGridCell<String>(
                   columnName: columnData.horThickness.name,
-                  value: dataRow.thickness),
+                  value: handleAltDoubleValue(dataGridRow.thickness)),
               DataGridCell<String>(
-                  columnName: columnData.colour.name, value: dataRow.color),
+                  columnName: columnData.colour.name, value: dataGridRow.color),
               DataGridCell<String>(
-                  columnName: columnData.texture.name, value: dataRow.texture),
-              DataGridCell<int>(
-                  columnName: columnData.gravel.name, value: dataRow.cfGrav),
-              DataGridCell<int>(
-                  columnName: columnData.cobble.name, value: dataRow.cfCobb),
-              DataGridCell<int>(
-                  columnName: columnData.stone.name, value: dataRow.cfStone),
+                  columnName: columnData.texture.name,
+                  value: dataGridRow.texture),
+              DataGridCell<String>(
+                  columnName: columnData.gravel.name,
+                  value: handleAltIntValue(dataGridRow.cfGrav)),
+              DataGridCell<String>(
+                  columnName: columnData.cobble.name,
+                  value: handleAltIntValue(dataGridRow.cfCobb)),
+              DataGridCell<String>(
+                  columnName: columnData.stone.name,
+                  value: handleAltIntValue(dataGridRow.cfStone)),
               DataGridCell<String>(
                   columnName: columnData.comments.name,
                   value: "functionality to be added"),
@@ -122,14 +150,14 @@ class SoilPitHorizonDescriptionPageState
 
   DataGridSourceBuilder getSourceBuilder(
       List<SoilPitHorizonDescriptionData> data) {
-    DataGridSourceBuilder dataSource =
+    DataGridSourceBuilder soilFeatureDataSource =
         DataGridSourceBuilder(dataGridRows: generateDataGridRows(data));
-    dataSource.sortedColumns.add(SortColumnDetails(
+    soilFeatureDataSource.sortedColumns.add(SortColumnDetails(
         name: columnData.id.name,
         sortDirection: DataGridSortDirection.ascending));
-    dataSource.sort();
+    soilFeatureDataSource.sort();
 
-    return dataSource;
+    return soilFeatureDataSource;
   }
 
   @override
@@ -137,7 +165,7 @@ class SoilPitHorizonDescriptionPageState
     final db = ref.read(databaseProvider);
     final AsyncValue<List<SoilPitHorizonDescriptionData>> horizonList =
         ref.watch(soilHorizonListProvider(spId));
-    d.Value.absent();
+
     return Scaffold(
       appBar: OurAppBar(
         title,
@@ -160,7 +188,7 @@ class SoilPitHorizonDescriptionPageState
                   Padding(
                     padding: const EdgeInsets.only(left: kPaddingH),
                     child: ElevatedButton(
-                        onPressed: () async => parentComplete
+                        onPressed: () => parentComplete
                             ? Popups.show(context, completeWarningPopup)
                             : context.pushNamed(
                                 SoilPitHorizonDescriptionEntryPage.routeName,
@@ -197,13 +225,17 @@ class SoilPitHorizonDescriptionPageState
                               .dataGridRows[details.rowColumnIndex.rowIndex - 1]
                               .getCells()[0]
                               .value;
-                          db.soilPitTablesDao.getFeature(id).then((value) =>
-                              context.pushNamed(
-                                  SoilPitHorizonDescriptionEntryPage.routeName,
-                                  pathParameters:
-                                      PathParamGenerator.soilPitSummary(
-                                          widget.state, spId.toString()),
-                                  extra: value.toCompanion(true)));
+                          db.soilPitTablesDao.getHorizon(id).then(
+                                (value) => parentComplete
+                                    ? Popups.show(context, completeWarningPopup)
+                                    : context.pushNamed(
+                                        SoilPitHorizonDescriptionEntryPage
+                                            .routeName,
+                                        pathParameters:
+                                            PathParamGenerator.soilPitSummary(
+                                                widget.state, spId.toString()),
+                                        extra: value.toCompanion(true)),
+                              );
                         }
                       }
                     },

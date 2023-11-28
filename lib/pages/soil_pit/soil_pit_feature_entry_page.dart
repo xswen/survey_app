@@ -3,13 +3,15 @@ import 'package:flutter/services.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/pages/soil_pit/soil_pit_feature_page.dart';
 import 'package:survey_app/providers/soil_pit_providers.dart';
-import 'package:survey_app/widgets/hide_info_checkbox.dart';
+import 'package:survey_app/widgets/popups/popup_errors_found_list.dart';
+import 'package:survey_app/widgets/popups/popup_warning_change_made.dart';
 
-import '../../formatters/format_string.dart';
 import '../../formatters/thousands_formatter.dart';
 import '../../widgets/builders/soil_pit_code_select_builder.dart';
+import '../../widgets/buttons/delete_button.dart';
 import '../../widgets/data_input/data_input.dart';
 import '../../widgets/dropdowns/drop_down_async_list.dart';
+import '../delete_page.dart';
 
 class SoilPitFeatureEntryPage extends ConsumerStatefulWidget {
   static const String routeName = "soilPitFeatureEntry";
@@ -34,20 +36,14 @@ class SoilPitFeatureEntryPageState
     spId = PathParamValue.getSoilPitSummary(widget.state);
     feature = widget.state.extra as SoilPitFeatureCompanion;
     initSoilPit = ref.read(databaseProvider).companionValueToStr(
-        (widget.state.extra as SoilPitFeatureCompanion).soilPitSoilFeature);
+        (widget.state.extra as SoilPitFeatureCompanion).soilFeature);
 
     super.initState();
   }
 
-  Future<String> getPitCodeName(String code) async {
-    if (code.isEmpty) {
-      return "Please select soil pit code";
-    }
-
-    return ref
-        .read(databaseProvider)
-        .referenceTablesDao
-        .getSoilPitCodeFieldName(code);
+  void updateFeature(SoilPitFeatureCompanion newFeature) {
+    changeMade = true;
+    setState(() => feature = newFeature);
   }
 
   Future<String> getFeatureName(String code) async {
@@ -61,14 +57,53 @@ class SoilPitFeatureEntryPageState
         .getSoilPitFeatureClassName(code);
   }
 
+  void goToFeaturePage() {
+    ref.refresh(soilFeatureListProvider(spId));
+    context.goNamed(SoilPitFeaturePage.routeName,
+        pathParameters:
+            PathParamGenerator.soilPitSummary(widget.state, spId.toString()));
+  }
+
+  void goToNewFeatureEntry() =>
+      context.pushReplacementNamed(SoilPitFeatureEntryPage.routeName,
+          pathParameters:
+              PathParamGenerator.soilPitSummary(widget.state, spId.toString()),
+          extra: SoilPitFeatureCompanion(
+              soilPitSummaryId: feature.soilPitSummaryId,
+              soilPitCode: feature.soilPitCode));
+
+  void handleSubmit(void Function() fn) {
+    List<String>? errors = errorCheck();
+    if (errors != null) {
+      Popups.show(context, PopupErrorsFoundList(errors: errors));
+    } else {
+      ref
+          .read(databaseProvider)
+          .soilPitTablesDao
+          .addOrUpdateFeatureIfUnique(feature)
+          .then((int? featureId) {
+        featureId == null
+            ? Popups.show(
+                context,
+                const PopupDismiss(
+                  "Error: Values not unique.",
+                  contentText: "The combination of 'Soil pit code',"
+                      "'Soil feature', and 'Depth to soil feature'"
+                      "must be unique. Please enter different value",
+                ))
+            : fn();
+      });
+    }
+  }
+
   List<String>? errorCheck() {
     List<String> results = [];
 
-    if (feature.soilPitCodeField == const d.Value.absent()) {
+    if (feature.soilPitCode == const d.Value.absent()) {
       results.add("Missing Soil Pit Code");
     }
 
-    if (feature.soilPitSoilFeature == const d.Value.absent()) {
+    if (feature.soilFeature == const d.Value.absent()) {
       results.add("Missing Soil Feature");
     }
 
@@ -98,7 +133,23 @@ class SoilPitFeatureEntryPageState
     final db = ref.read(databaseProvider);
     return Scaffold(
       appBar: OurAppBar(
-        "$title: ${db.companionValueToStr(feature.soilPitCodeField)}",
+        "$title: ${db.companionValueToStr(feature.id) == "" ? "New Feature" : "${db.companionValueToStr(feature.soilPitCode)}, "
+            "${db.companionValueToStr(feature.soilFeature)}, "
+            "${db.companionValueToStr(feature.depthFeature)}"}",
+        backFn: () {
+          if (changeMade) {
+            Popups.show(context, PopupWarningChangesUnsaved(
+              rightBtnOnPressed: () {
+                ref.refresh(soilFeatureListProvider(spId));
+                context.pop();
+                context.pop();
+              },
+            ));
+          } else {
+            ref.refresh(soilFeatureListProvider(spId));
+            context.pop();
+          }
+        },
       ),
       endDrawer: DrawerMenu(onLocaleChange: () {}),
       body: Padding(
@@ -106,67 +157,48 @@ class SoilPitFeatureEntryPageState
         child: Center(
           child: Column(children: [
             SoilPitCodeSelectBuilder(
-                code: db.companionValueToStr(feature.soilPitCodeField),
+                code: db.companionValueToStr(feature.soilPitCode),
                 initPlotCodeName: initSoilPit,
-                plotCodeNames:
-                    db.referenceTablesDao.getSoilPitCodeFieldNameList(),
                 usedPlotCodes:
                     db.soilPitTablesDao.getFeatureUsedPlotCodeNameList(spId),
-                onChange: (s) {
-                  changeMade = true;
-                  db.referenceTablesDao
-                      .getSoilPitCodeCompiledCode(s!)
-                      .then((code) => setState(() {
-                            feature = feature.copyWith(
-                                soilPitCodeField: d.Value(code));
-                          }));
+                onChange: (code) => updateFeature(
+                    feature.copyWith(soilPitCode: d.Value(code)))),
+            FutureBuilder(
+                future:
+                    getFeatureName(db.companionValueToStr(feature.soilFeature)),
+                initialData: "Please select feature",
+                builder: (BuildContext context, AsyncSnapshot<String> text) {
+                  return DropDownAsyncList(
+                    title: "Soil feature noted from soil pit",
+                    searchable: true,
+                    onChangedFn: (s) {
+                      db.referenceTablesDao
+                          .getSoilPitFeatureClassCode(s!)
+                          .then((code) => setState(() {
+                                if (code == "N") {
+                                  updateFeature(feature.copyWith(
+                                      soilFeature: d.Value(code),
+                                      depthFeature: const d.Value(-9)));
+                                } else {
+                                  //Override the previous state depth feature state
+                                  //if was previous marked as not applicable
+                                  db.companionValueToStr(feature.soilFeature) ==
+                                          "N"
+                                      ? updateFeature(feature.copyWith(
+                                          soilFeature: d.Value(code),
+                                          depthFeature: const d.Value.absent()))
+                                      : updateFeature(feature.copyWith(
+                                          soilFeature: d.Value(code)));
+                                }
+                              }));
+                    },
+                    asyncItems: (s) =>
+                        db.referenceTablesDao.getSoilPitFeatureClassNameList(),
+                    selectedItem:
+                        text.data ?? "Error loading feature class name",
+                  );
                 }),
-            HideInfoCheckbox(
-                title: "Soil feature noted from soil pit",
-                checkTitle: "Unreported",
-                checkValue:
-                    db.companionValueToStr(feature.soilPitSoilFeature) == "S",
-                onChange: (b) {
-                  changeMade = true;
-                  b!
-                      ? setState(() => feature = feature.copyWith(
-                          soilPitSoilFeature: const d.Value("S"),
-                          depthFeature: const d.Value(-9)))
-                      : setState(() => feature = feature.copyWith(
-                          soilPitSoilFeature: const d.Value.absent(),
-                          depthFeature: const d.Value.absent()));
-                },
-                child: FutureBuilder(
-                    future: getFeatureName(
-                        db.companionValueToStr(feature.soilPitSoilFeature)),
-                    initialData: "Please select feature",
-                    builder:
-                        (BuildContext context, AsyncSnapshot<String> text) {
-                      return DropDownAsyncList(
-                        searchable: true,
-                        padding: 0,
-                        onChangedFn: (s) {
-                          changeMade = true;
-                          db.referenceTablesDao
-                              .getSoilPitFeatureClassCode(s!)
-                              .then((code) => setState(() {
-                                    if (code == "N" || code == "S") {
-                                      feature = feature.copyWith(
-                                          soilPitSoilFeature: d.Value(code),
-                                          depthFeature: const d.Value(-9));
-                                    } else {
-                                      feature = feature.copyWith(
-                                          soilPitSoilFeature: d.Value(code));
-                                    }
-                                  }));
-                        },
-                        asyncItems: (s) => db.referenceTablesDao
-                            .getSoilPitFeatureClassNameList(),
-                        selectedItem:
-                            text.data ?? "Error loading feature class name",
-                      );
-                    })),
-            db.companionValueToStr(feature.depthFeature) != "-9"
+            db.companionValueToStr(feature.soilFeature) != "N"
                 ? DataInput(
                     title: "Depth to soil feature",
                     boxLabel: "Measured from “zero depth” to soil feature. "
@@ -182,56 +214,52 @@ class SoilPitFeatureEntryPageState
                       LengthLimitingTextInputFormatter(3),
                       ThousandsFormatter(allowFraction: false),
                     ],
-                    onSubmit: (s) {
-                      changeMade = true;
-                      s.isEmpty
-                          ? setState(() => feature = feature.copyWith(
-                              depthFeature: const d.Value.absent()))
-                          : setState(() => feature = feature.copyWith(
-                              depthFeature: d.Value(int.parse(s))));
-                    },
+                    onSubmit: (s) => s.isEmpty
+                        ? updateFeature(feature.copyWith(
+                            depthFeature: const d.Value.absent()))
+                        : updateFeature(feature.copyWith(
+                            depthFeature: d.Value(int.parse(s)))),
                   )
                 : Container(),
-            Container(
-                margin: const EdgeInsets.only(
-                    top: kPaddingV * 2, bottom: kPaddingV * 2),
-                child: ElevatedButton(
-                    onPressed: () {
-                      List<String>? errors = errorCheck();
-                      if (errors != null) {
-                        Popups.show(
-                            context,
-                            PopupDismiss(
-                              "Error: Incorrect Data",
-                              contentWidget: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    "Errors were found in the following places",
-                                    textAlign: TextAlign.start,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 12),
-                                    child: Text(
-                                      FormatString.generateBulletList(errors),
-                                      textAlign: TextAlign.start,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ));
-                      } else {
-                        db.soilPitTablesDao
-                            .addOrUpdateFeature(feature)
-                            .then((featureId) {
-                          ref.refresh(soilFeatureListProvider(spId));
-                          context.goNamed(SoilPitFeaturePage.routeName,
-                              pathParameters: PathParamGenerator.soilPitSummary(
-                                  widget.state, spId.toString()));
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: kPaddingV * 2),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                      onPressed: () => handleSubmit(goToFeaturePage),
+                      child: const Text("Save and return")),
+                  ElevatedButton(
+                      onPressed: () => handleSubmit(goToNewFeatureEntry),
+                      child: const Text("Save and Add New Feature")),
+                ],
+              ),
+            ),
+            feature.id != const d.Value.absent()
+                ? DeleteButton(
+                    delete: () => Popups.show(
+                      context,
+                      PopupContinue("Warning: Deleting Soil Pit Feature",
+                          contentText: "You are about to delete this feature. "
+                              "Are you sure you want to continue?",
+                          rightBtnOnPressed: () {
+                        //close popup
+                        context.pop();
+                        context.pushNamed(DeletePage.routeName, extra: {
+                          DeletePage.keyObjectName:
+                              "Soil Pit Feature: ${feature.toString()}",
+                          DeletePage.keyDeleteFn: () {
+                            (db.delete(db.soilPitFeature)
+                                  ..where(
+                                      (tbl) => tbl.id.equals(feature.id.value)))
+                                .go()
+                                .then((value) => goToFeaturePage());
+                          },
                         });
-                      }
-                    },
-                    child: const Text("Submit"))),
+                      }),
+                    ),
+                  )
+                : Container()
           ]),
         ),
       ),
