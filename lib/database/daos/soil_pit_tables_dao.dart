@@ -106,6 +106,22 @@ class SoilPitTablesDao extends DatabaseAccessor<Database>
   Future<int> addOrUpdateHorizon(SoilPitHorizonDescriptionCompanion entry) =>
       into(soilPitHorizonDescription).insertOnConflictUpdate(entry);
 
+  Future<int?> addOrUpdateHorizonIfUnique(
+      SoilPitHorizonDescriptionCompanion horizon) async {
+    SoilPitHorizonDescriptionData? entry =
+        await (select(soilPitHorizonDescription)
+              ..where((tbl) =>
+                  tbl.soilPitSummaryId.equals(horizon.soilPitSummaryId.value) &
+                  tbl.soilPitCodeField.equals(horizon.soilPitCodeField.value) &
+                  tbl.horizonNum.equals(horizon.horizonNum.value)))
+            .getSingleOrNull();
+
+    if (horizon.id != const Value.absent() && horizon.id.value == entry?.id) {
+      entry = null;
+    }
+    return entry == null ? addOrUpdateHorizon(horizon) : null;
+  }
+
   Future<List<SoilPitHorizonDescriptionData>> getHorizonList(int summaryId) =>
       (select(soilPitHorizonDescription)
             ..where((tbl) => tbl.soilPitSummaryId.equals(summaryId)))

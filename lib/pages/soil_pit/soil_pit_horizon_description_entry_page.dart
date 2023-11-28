@@ -1,13 +1,15 @@
 import 'package:drift/drift.dart' as d;
 import 'package:flutter/services.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
+import 'package:survey_app/pages/soil_pit/soil_pit_horizon_description_page.dart';
+import 'package:survey_app/providers/soil_pit_providers.dart';
 
-import '../../formatters/format_string.dart';
 import '../../formatters/thousands_formatter.dart';
 import '../../widgets/builders/soil_pit_code_select_builder.dart';
 import '../../widgets/data_input/data_input.dart';
 import '../../widgets/dropdowns/drop_down_async_list.dart';
 import '../../widgets/hide_info_checkbox.dart';
+import '../../widgets/popups/popup_errors_found_list.dart';
 import '../../widgets/text/text_header_separator.dart';
 
 class SoilPitHorizonDescriptionEntryPage extends ConsumerStatefulWidget {
@@ -66,7 +68,101 @@ class SoilPitHorizonDescriptionEntryPageState
         .getSoilTextureName(code);
   }
 
-  List<String>? errorCheck() {}
+  void goToHorizonPage() {
+    ref.refresh(soilHorizonListProvider(spId));
+    context.goNamed(SoilPitHorizonDescriptionPage.routeName,
+        pathParameters:
+            PathParamGenerator.soilPitSummary(widget.state, spId.toString()));
+  }
+
+  void goToNewHorizonEntry() {
+    context.pushReplacementNamed(SoilPitHorizonDescriptionEntryPage.routeName,
+        pathParameters:
+            PathParamGenerator.soilPitSummary(widget.state, spId.toString()),
+        extra: SoilPitHorizonDescriptionCompanion(
+            soilPitSummaryId: horizon.soilPitSummaryId,
+            soilPitCodeField: horizon.soilPitCodeField));
+  }
+
+  void handleSubmit(void Function() fn) {
+    List<String>? errors = errorCheck();
+    if (errors != null) {
+      Popups.show(context, PopupErrorsFoundList(errors: errors));
+    } else {
+      ref
+          .read(databaseProvider)
+          .soilPitTablesDao
+          .addOrUpdateHorizonIfUnique(horizon)
+          .then((int? horizonId) {
+        horizonId == null
+            ? Popups.show(
+                context,
+                const PopupDismiss(
+                  "Error: Values not unique.",
+                  contentText: "The combination of 'Soil pit code',"
+                      "and 'Horizon Number' must be unique. "
+                      "Please enter different value",
+                ))
+            : fn();
+      });
+    }
+  }
+
+  int checkCfValue(d.Value cfValue) {
+    String cfStr = Database.instance.companionValueToStr(cfValue);
+    return int.parse(cfStr.isEmpty ? "0" : cfStr);
+  }
+
+  List<String>? errorCheck() {
+    Database db = Database.instance;
+    List<String> results = [];
+
+    if (horizon.soilPitCodeField == const d.Value.absent()) {
+      results.add("Missing Soil Pit Code");
+    }
+    if (horizon.horizonNum == const d.Value.absent()) {
+      results.add("Missing horizon number");
+    }
+    if (horizon.horizon == const d.Value.absent()) {
+      results.add("Missing horizons");
+    }
+
+    if (errorHorUpperDepth(db.companionValueToStr(horizon.horizonUpper)) !=
+        null) {
+      results.add("Error found for horizon upper depth");
+    }
+
+    if (errorHorThickness(db.companionValueToStr(horizon.thickness)) != null) {
+      results.add("Error found for horizon thickness");
+    }
+
+    if (horizon.color == const d.Value.absent()) {
+      results.add("Missing soil color");
+    }
+    if (horizon.texture == const d.Value.absent()) {
+      results.add("Missing texture");
+    }
+
+    if (errorCf(db.companionValueToStr(horizon.cfGrav)) != null) {
+      results.add("Error found for volumetric percent gravel");
+    }
+    if (errorCf(db.companionValueToStr(horizon.cfCobb)) != null) {
+      results.add("Error found for volumetric percent cobble");
+    }
+    if (errorCf(db.companionValueToStr(horizon.cfStone)) != null) {
+      results.add("Error found for volumetric percent stone");
+    }
+
+    if (checkCfValue(horizon.cfGrav) +
+            checkCfValue(horizon.cfCobb) +
+            checkCfValue(horizon.cfStone) >
+        100) {
+      results
+          .add("Error sum of gravel, cobble, and stone must be less than 100");
+    }
+
+    return results.isEmpty ? null : results;
+  }
 
   String? errorHorUpperDepth(String? text) {
     if (text?.isEmpty ?? true) {
@@ -91,7 +187,6 @@ class SoilPitHorizonDescriptionEntryPageState
   }
 
   String? errorCf(String? text) {
-    print("value: $text");
     if (text?.isEmpty ?? true) {
       return "Can't be empty";
     } else if (-1 == int.parse(text!) || -9 == int.parse(text!)) {
@@ -131,19 +226,16 @@ class SoilPitHorizonDescriptionEntryPageState
               boxLabel: "Horizons must be numbered consecutively",
               prefixIcon: FontAwesomeIcons.list,
               suffixVal: "",
-              startingStr: db.companionValueToStr(horizon.horizonUpper),
+              startingStr: db.companionValueToStr(horizon.horizonNum),
               generalPadding: const EdgeInsets.all(0),
               onValidate: (s) => null,
-              inputType: const TextInputType.numberWithOptions(decimal: true),
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(5),
-                ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
-              ],
+              inputType: const TextInputType.numberWithOptions(decimal: false),
+              inputFormatters: [LengthLimitingTextInputFormatter(2)],
               onSubmit: (s) => s.isEmpty
                   ? updateHorizon(
-                      horizon.copyWith(thickness: const d.Value.absent()))
+                      horizon.copyWith(horizonNum: const d.Value.absent()))
                   : updateHorizon(
-                      horizon.copyWith(thickness: d.Value(double.parse(s)))),
+                      horizon.copyWith(horizonNum: d.Value(int.parse(s)))),
             ),
             DataInput(
               title: "Horizon",
@@ -192,8 +284,7 @@ class SoilPitHorizonDescriptionEntryPageState
             HideInfoCheckbox(
               title: "Horizon thickness",
               checkTitle: "Missing",
-              checkValue:
-                  db.companionValueToStr(horizon.horizonUpper) == "-1.0",
+              checkValue: db.companionValueToStr(horizon.thickness) == "-1.0",
               onChange: (b) => b!
                   ? updateHorizon(
                       horizon.copyWith(thickness: const d.Value(-1)))
@@ -203,7 +294,7 @@ class SoilPitHorizonDescriptionEntryPageState
                 boxLabel: "Measure to the nearest 0.1",
                 prefixIcon: FontAwesomeIcons.ruler,
                 suffixVal: "cm",
-                startingStr: db.companionValueToStr(horizon.horizonUpper),
+                startingStr: db.companionValueToStr(horizon.thickness),
                 generalPadding: const EdgeInsets.all(0),
                 onValidate: (s) => errorHorThickness(s),
                 inputType: const TextInputType.numberWithOptions(decimal: true),
@@ -236,7 +327,8 @@ class SoilPitHorizonDescriptionEntryPageState
                   );
                 }),
             FutureBuilder(
-                future: getSoilColorName(db.companionValueToStr(horizon.color)),
+                future:
+                    getSoilTextureName(db.companionValueToStr(horizon.texture)),
                 initialData: "Please select texture",
                 builder: (BuildContext context, AsyncSnapshot<String> text) {
                   return DropDownAsyncList(
@@ -255,113 +347,148 @@ class SoilPitHorizonDescriptionEntryPageState
             const Padding(
               padding: EdgeInsets.symmetric(vertical: kPaddingV * 2),
               child: TextHeaderSeparator(
-                title: "Coarse Fragement Content",
+                title: "Coarse Fragment Content",
                 fontSize: 20,
               ),
             ),
-            DataInput(
+            HideInfoCheckbox(
               title: "Volumetric percent gravel",
-              boxLabel:
-                  "The percent coarse fragment content by volume of the mineral "
-                  "horizon. (Diameter < 7.5 cm or length < 15 cm.)",
-              prefixIcon: FontAwesomeIcons.percent,
-              suffixVal: "%",
-              startingStr: db.companionValueToStr(horizon.cfGrav),
-              generalPadding: const EdgeInsets.all(0),
-              onValidate: (s) => errorCf(s),
-              inputType: const TextInputType.numberWithOptions(decimal: true),
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(5),
-                ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
-              ],
-              onSubmit: (s) => s.isEmpty
-                  ? updateHorizon(
-                      horizon.copyWith(cfGrav: const d.Value.absent()))
+              padding: const EdgeInsets.only(
+                  left: kPaddingH, right: kPaddingH, top: kPaddingV, bottom: 0),
+              checkTitle: "Missing",
+              checkValue: db.companionValueToStr(horizon.cfGrav) == "-1",
+              onChange: (b) => b!
+                  ? updateHorizon(horizon.copyWith(cfGrav: const d.Value(-1)))
                   : updateHorizon(
-                      horizon.copyWith(cfGrav: d.Value(int.parse(s)))),
+                      horizon.copyWith(cfGrav: const d.Value.absent())),
+              child: HideInfoCheckbox(
+                checkTitle: "Not applicable",
+                padding: const EdgeInsets.all(0),
+                checkValue: db.companionValueToStr(horizon.cfGrav) == "-9",
+                onChange: (b) => b!
+                    ? updateHorizon(horizon.copyWith(cfGrav: const d.Value(-9)))
+                    : updateHorizon(
+                        horizon.copyWith(cfGrav: const d.Value.absent())),
+                child: DataInput(
+                  boxLabel:
+                      "The percent coarse fragment content by volume of the mineral "
+                      "horizon. (Diameter < 7.5 cm or length < 15 cm.)",
+                  prefixIcon: FontAwesomeIcons.percent,
+                  suffixVal: "%",
+                  startingStr: db.companionValueToStr(horizon.cfGrav),
+                  generalPadding: const EdgeInsets.all(0),
+                  onValidate: (s) => errorCf(s),
+                  inputType:
+                      const TextInputType.numberWithOptions(decimal: true),
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(5),
+                    ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
+                  ],
+                  onSubmit: (s) => s.isEmpty
+                      ? updateHorizon(
+                          horizon.copyWith(cfGrav: const d.Value.absent()))
+                      : updateHorizon(
+                          horizon.copyWith(cfGrav: d.Value(int.parse(s)))),
+                ),
+              ),
             ),
-            DataInput(
+            HideInfoCheckbox(
               title: "Volumetric percent cobbles",
-              boxLabel:
-                  "The percent coarse fragment (diameter = 7.5 to 25 cm or "
-                  "length = 15 to 38 cm) content by volume of the mineral horizon.",
-              prefixIcon: FontAwesomeIcons.percent,
-              suffixVal: "%",
-              startingStr: db.companionValueToStr(horizon.cfCobb),
-              generalPadding: const EdgeInsets.all(0),
-              onValidate: (s) => errorCf(s),
-              inputType: const TextInputType.numberWithOptions(decimal: true),
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(5),
-                ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
-              ],
-              onSubmit: (s) => s.isEmpty
-                  ? updateHorizon(
-                      horizon.copyWith(cfCobb: const d.Value.absent()))
+              padding: const EdgeInsets.only(
+                  left: kPaddingH, right: kPaddingH, top: kPaddingV, bottom: 0),
+              checkTitle: "Missing",
+              checkValue: db.companionValueToStr(horizon.cfCobb) == "-1",
+              onChange: (b) => b!
+                  ? updateHorizon(horizon.copyWith(cfCobb: const d.Value(-1)))
                   : updateHorizon(
-                      horizon.copyWith(cfCobb: d.Value(int.parse(s)))),
+                      horizon.copyWith(cfCobb: const d.Value.absent())),
+              child: HideInfoCheckbox(
+                checkTitle: "Not applicable",
+                padding: const EdgeInsets.all(0),
+                checkValue: db.companionValueToStr(horizon.cfCobb) == "-9",
+                onChange: (b) => b!
+                    ? updateHorizon(horizon.copyWith(cfCobb: const d.Value(-9)))
+                    : updateHorizon(
+                        horizon.copyWith(cfCobb: const d.Value.absent())),
+                child: DataInput(
+                  boxLabel:
+                      "The percent coarse fragment (diameter = 7.5 to 25 cm or "
+                      "length = 15 to 38 cm) content by volume of the mineral horizon.",
+                  prefixIcon: FontAwesomeIcons.percent,
+                  suffixVal: "%",
+                  startingStr: db.companionValueToStr(horizon.cfCobb),
+                  generalPadding: const EdgeInsets.all(0),
+                  onValidate: (s) => errorCf(s),
+                  inputType:
+                      const TextInputType.numberWithOptions(decimal: true),
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(5),
+                    ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
+                  ],
+                  onSubmit: (s) => s.isEmpty
+                      ? updateHorizon(
+                          horizon.copyWith(cfCobb: const d.Value.absent()))
+                      : updateHorizon(
+                          horizon.copyWith(cfCobb: d.Value(int.parse(s)))),
+                ),
+              ),
             ),
-            DataInput(
+            HideInfoCheckbox(
               title: "Volumetric percent stone",
-              boxLabel:
-                  "The percent coarse fragment (diameter > 25 cm or length > 38 "
-                  "cm) content by volume of the mineral horizon.",
-              prefixIcon: FontAwesomeIcons.percent,
-              suffixVal: "%",
-              startingStr: db.companionValueToStr(horizon.cfStone),
-              generalPadding: const EdgeInsets.all(0),
-              onValidate: (s) => errorCf(s),
-              inputType: const TextInputType.numberWithOptions(decimal: true),
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(5),
-                ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
-              ],
-              onSubmit: (s) => s.isEmpty
-                  ? updateHorizon(
-                      horizon.copyWith(cfStone: const d.Value.absent()))
+              padding: const EdgeInsets.only(
+                  left: kPaddingH, right: kPaddingH, top: kPaddingV, bottom: 0),
+              checkTitle: "Missing",
+              checkValue: db.companionValueToStr(horizon.cfStone) == "-1",
+              onChange: (b) => b!
+                  ? updateHorizon(horizon.copyWith(cfStone: const d.Value(-1)))
                   : updateHorizon(
-                      horizon.copyWith(cfStone: d.Value(int.parse(s)))),
+                      horizon.copyWith(cfStone: const d.Value.absent())),
+              child: HideInfoCheckbox(
+                checkTitle: "Not applicable",
+                padding: const EdgeInsets.all(0),
+                checkValue: db.companionValueToStr(horizon.cfStone) == "-9",
+                onChange: (b) => b!
+                    ? updateHorizon(
+                        horizon.copyWith(cfStone: const d.Value(-9)))
+                    : updateHorizon(
+                        horizon.copyWith(cfStone: const d.Value.absent())),
+                child: DataInput(
+                  boxLabel:
+                      "The percent coarse fragment (diameter > 25 cm or length > 38 "
+                      "cm) content by volume of the mineral horizon.",
+                  prefixIcon: FontAwesomeIcons.percent,
+                  suffixVal: "%",
+                  startingStr: db.companionValueToStr(horizon.cfStone),
+                  generalPadding: const EdgeInsets.all(0),
+                  onValidate: (s) => errorCf(s),
+                  inputType:
+                      const TextInputType.numberWithOptions(decimal: true),
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(5),
+                    ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
+                  ],
+                  onSubmit: (s) => s.isEmpty
+                      ? updateHorizon(
+                          horizon.copyWith(cfStone: const d.Value.absent()))
+                      : updateHorizon(
+                          horizon.copyWith(cfStone: d.Value(int.parse(s)))),
+                ),
+              ),
             ),
-            Container(
-                margin: const EdgeInsets.only(
-                    top: kPaddingV * 2, bottom: kPaddingV * 2),
-                child: ElevatedButton(
-                    onPressed: () {
-                      List<String>? errors = errorCheck();
-                      if (errors != null) {
-                        Popups.show(
-                            context,
-                            PopupDismiss(
-                              "Error: Incorrect Data",
-                              contentWidget: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    "Errors were found in the following places",
-                                    textAlign: TextAlign.start,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 12),
-                                    child: Text(
-                                      FormatString.generateBulletList(errors),
-                                      textAlign: TextAlign.start,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ));
-                      } else {
-                        // db.soilPitTablesDao
-                        //     .addOrUpdateFeature(feature)
-                        //     .then((featureId) {
-                        //   ref.refresh(soilFeatureListProvider(spId));
-                        //   context.goNamed(SoilPitFeaturePage.routeName,
-                        //       pathParameters: PathParamGenerator.soilPitSummary(
-                        //           widget.state, spId.toString()));
-                        // });
-                      }
-                    },
-                    child: const Text("Submit"))),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: kPaddingV * 2),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                      onPressed: () => handleSubmit(goToHorizonPage),
+                      child: const Text("Save and return")),
+                  ElevatedButton(
+                      onPressed: () => handleSubmit(goToNewHorizonEntry),
+                      child: const Text("Save and Add New Horizon")),
+                ],
+              ),
+            ),
           ]),
         ),
       ),
