@@ -28,36 +28,23 @@ class SoilPitHorizonDescriptionEntryPageState
   late final int spId;
   late SoilPitHorizonDescriptionCompanion horizon;
   late SoilPitHorizonDescriptionCompanion originalHorizon;
+  late String initSoilPit = "NA";
 
   @override
   void initState() {
     spId = PathParamValue.getSoilPitSummary(widget.state);
     horizon = widget.state.extra as SoilPitHorizonDescriptionCompanion;
     originalHorizon = widget.state.extra as SoilPitHorizonDescriptionCompanion;
+    initSoilPit = ref.read(databaseProvider).companionValueToStr(
+        (widget.state.extra as SoilPitHorizonDescriptionCompanion)
+            .soilPitCodeField);
 
     super.initState();
   }
 
-  Future<String> getPitCodeName(String code) async {
-    if (code.isEmpty) {
-      return "Please select soil pit code";
-    }
-
-    return ref
-        .read(databaseProvider)
-        .referenceTablesDao
-        .getSoilPitCodeName(code);
-  }
-
-  Future<String> getHorizonName(String code) async {
-    if (code.isEmpty) {
-      return "Please select horizon";
-    }
-
-    return ref
-        .read(databaseProvider)
-        .referenceTablesDao
-        .getSoilHorizonDesignationName(code);
+  void updateHorizon(SoilPitHorizonDescriptionCompanion newHorizon) {
+    changeMade = true;
+    setState(() => horizon = newHorizon);
   }
 
   Future<String> getSoilColorName(String code) async {
@@ -127,22 +114,14 @@ class SoilPitHorizonDescriptionEntryPageState
         child: Center(
           child: ListView(children: [
             SoilPitCodeSelectBuilder(
-                code: db.companionValueToStr(horizon.soilPitCodeField),
-                initPlotCodeName: "",
-                plotCodeNames: db.referenceTablesDao.getSoilPitCodeNameList(),
-                usedPlotCodes: Future.value([]),
-                onChange: (s) {
-                  db.referenceTablesDao.getSoilPitCodeCode(s!).then((code) {
-                    if (code !=
-                        db.companionValueToStr(horizon.soilPitCodeField)) {
-                      setState(() {
-                        horizon = horizon.copyWith(
-                            soilPitCodeField: d.Value(code),
-                            horizonNum: const d.Value.absent());
-                      });
-                    }
-                  });
-                }),
+              code: db.companionValueToStr(horizon.soilPitCodeField),
+              initPlotCodeName: initSoilPit,
+              usedPlotCodes:
+                  db.soilPitTablesDao.getHorizonUsedPlotCodeNameList(spId),
+              onChange: (code) => updateHorizon(horizon.copyWith(
+                  soilPitCodeField: d.Value(code),
+                  horizonNum: const d.Value.absent())),
+            ),
             const SizedBox(
               height: kPaddingV * 2,
             ),
@@ -159,50 +138,37 @@ class SoilPitHorizonDescriptionEntryPageState
                 LengthLimitingTextInputFormatter(5),
                 ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
               ],
-              onSubmit: (s) {
-                changeMade = true;
-                s.isEmpty
-                    ? setState(() => horizon =
-                        horizon.copyWith(thickness: const d.Value.absent()))
-                    : setState(() => horizon =
-                        horizon.copyWith(thickness: d.Value(double.parse(s))));
-              },
+              onSubmit: (s) => s.isEmpty
+                  ? updateHorizon(
+                      horizon.copyWith(thickness: const d.Value.absent()))
+                  : updateHorizon(
+                      horizon.copyWith(thickness: d.Value(double.parse(s)))),
             ),
-            FutureBuilder(
-                future: getHorizonName(db.companionValueToStr(horizon.horizon)),
-                initialData: "Please select horizon",
-                builder: (BuildContext context, AsyncSnapshot<String> text) {
-                  return DropDownAsyncList(
-                    title: "Horizon",
-                    searchable: true,
-                    onChangedFn: (s) {
-                      changeMade = true;
-                      db.referenceTablesDao
-                          .getSoilPitFeatureClassCode(s!)
-                          .then((code) => setState(() {
-                                horizon =
-                                    horizon.copyWith(horizon: d.Value(code));
-                              }));
-                    },
-                    asyncItems: (s) => db.referenceTablesDao
-                        .getSoilHorizonDesignationNameList(),
-                    selectedItem:
-                        text.data ?? "Error loading drainage class name",
-                  );
-                }),
+            DataInput(
+              title: "Horizon",
+              boxLabel: "The horizon designations must conform to CSSC codes",
+              prefixIcon: FontAwesomeIcons.list,
+              suffixVal: "",
+              startingStr: db.companionValueToStr(horizon.horizon),
+              onValidate: (s) => null,
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(6),
+              ],
+              onSubmit: (s) => s.isEmpty
+                  ? updateHorizon(
+                      horizon.copyWith(horizon: const d.Value.absent()))
+                  : updateHorizon(horizon.copyWith(horizon: d.Value(s))),
+            ),
             HideInfoCheckbox(
               title: "Horizon upper depth",
               checkTitle: "Missing",
               checkValue:
                   db.companionValueToStr(horizon.horizonUpper) == "-1.0",
-              onChange: (b) {
-                changeMade = true;
-                b!
-                    ? setState(() => horizon =
-                        horizon.copyWith(horizonUpper: const d.Value(-1)))
-                    : setState(() => horizon =
-                        horizon.copyWith(horizonUpper: const d.Value.absent()));
-              },
+              onChange: (b) => b!
+                  ? updateHorizon(
+                      horizon.copyWith(horizonUpper: const d.Value(-1)))
+                  : updateHorizon(
+                      horizon.copyWith(horizonUpper: const d.Value.absent())),
               child: DataInput(
                 boxLabel: "Measure to the nearest 0.1",
                 prefixIcon: FontAwesomeIcons.ruler,
@@ -215,14 +181,11 @@ class SoilPitHorizonDescriptionEntryPageState
                   LengthLimitingTextInputFormatter(5),
                   ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
                 ],
-                onSubmit: (s) {
-                  changeMade = true;
-                  s.isEmpty
-                      ? setState(() => horizon = horizon.copyWith(
-                          horizonUpper: const d.Value.absent()))
-                      : setState(() => horizon = horizon.copyWith(
-                          horizonUpper: d.Value(double.parse(s))));
-                },
+                onSubmit: (s) => s.isEmpty
+                    ? updateHorizon(
+                        horizon.copyWith(horizonUpper: const d.Value.absent()))
+                    : updateHorizon(horizon.copyWith(
+                        horizonUpper: d.Value(double.parse(s)))),
               ),
             ),
             HideInfoCheckbox(
@@ -230,14 +193,11 @@ class SoilPitHorizonDescriptionEntryPageState
               checkTitle: "Missing",
               checkValue:
                   db.companionValueToStr(horizon.horizonUpper) == "-1.0",
-              onChange: (b) {
-                changeMade = true;
-                b!
-                    ? setState(() => horizon =
-                        horizon.copyWith(thickness: const d.Value(-1)))
-                    : setState(() => horizon =
-                        horizon.copyWith(thickness: const d.Value.absent()));
-              },
+              onChange: (b) => b!
+                  ? updateHorizon(
+                      horizon.copyWith(thickness: const d.Value(-1)))
+                  : updateHorizon(
+                      horizon.copyWith(thickness: const d.Value.absent())),
               child: DataInput(
                 boxLabel: "Measure to the nearest 0.1",
                 prefixIcon: FontAwesomeIcons.ruler,
@@ -250,14 +210,11 @@ class SoilPitHorizonDescriptionEntryPageState
                   LengthLimitingTextInputFormatter(5),
                   ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
                 ],
-                onSubmit: (s) {
-                  changeMade = true;
-                  s.isEmpty
-                      ? setState(() => horizon =
-                          horizon.copyWith(thickness: const d.Value.absent()))
-                      : setState(() => horizon = horizon.copyWith(
-                          thickness: d.Value(double.parse(s))));
-                },
+                onSubmit: (s) => s.isEmpty
+                    ? updateHorizon(
+                        horizon.copyWith(thickness: const d.Value.absent()))
+                    : updateHorizon(
+                        horizon.copyWith(thickness: d.Value(double.parse(s)))),
               ),
             ),
             FutureBuilder(
@@ -267,15 +224,11 @@ class SoilPitHorizonDescriptionEntryPageState
                   return DropDownAsyncList(
                     title: "Soil colour",
                     searchable: true,
-                    onChangedFn: (s) {
-                      changeMade = true;
-                      db.referenceTablesDao
-                          .getSoilColorCode(s!)
-                          .then((code) => setState(() {
-                                horizon =
-                                    horizon.copyWith(color: d.Value(code));
-                              }));
-                    },
+                    onChangedFn: (s) => db.referenceTablesDao
+                        .getSoilColorCode(s!)
+                        .then((code) => updateHorizon(
+                              horizon.copyWith(color: d.Value(code)),
+                            )),
                     asyncItems: (s) =>
                         db.referenceTablesDao.getSoilColorNameList(),
                     selectedItem: text.data ?? "Error loading color name",
@@ -288,15 +241,11 @@ class SoilPitHorizonDescriptionEntryPageState
                   return DropDownAsyncList(
                     title: "Soil texture",
                     searchable: true,
-                    onChangedFn: (s) {
-                      changeMade = true;
-                      db.referenceTablesDao
-                          .getSoilTextureCode(s!)
-                          .then((code) => setState(() {
-                                horizon =
-                                    horizon.copyWith(texture: d.Value(code));
-                              }));
-                    },
+                    onChangedFn: (s) =>
+                        db.referenceTablesDao.getSoilTextureCode(s!).then(
+                              (code) => updateHorizon(
+                                  horizon.copyWith(texture: d.Value(code))),
+                            ),
                     asyncItems: (s) =>
                         db.referenceTablesDao.getSoilTextureNameList(),
                     selectedItem: text.data ?? "Error loading texture name",
@@ -324,14 +273,11 @@ class SoilPitHorizonDescriptionEntryPageState
                 LengthLimitingTextInputFormatter(5),
                 ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
               ],
-              onSubmit: (s) {
-                changeMade = true;
-                s.isEmpty
-                    ? setState(() => horizon =
-                        horizon.copyWith(cfGrav: const d.Value.absent()))
-                    : setState(() => horizon =
-                        horizon.copyWith(cfGrav: d.Value(int.parse(s))));
-              },
+              onSubmit: (s) => s.isEmpty
+                  ? updateHorizon(
+                      horizon.copyWith(cfGrav: const d.Value.absent()))
+                  : updateHorizon(
+                      horizon.copyWith(cfGrav: d.Value(int.parse(s)))),
             ),
             DataInput(
               title: "Volumetric percent cobbles",
@@ -348,14 +294,11 @@ class SoilPitHorizonDescriptionEntryPageState
                 LengthLimitingTextInputFormatter(5),
                 ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
               ],
-              onSubmit: (s) {
-                changeMade = true;
-                s.isEmpty
-                    ? setState(() => horizon =
-                        horizon.copyWith(cfCobb: const d.Value.absent()))
-                    : setState(() => horizon =
-                        horizon.copyWith(cfCobb: d.Value(int.parse(s))));
-              },
+              onSubmit: (s) => s.isEmpty
+                  ? updateHorizon(
+                      horizon.copyWith(cfCobb: const d.Value.absent()))
+                  : updateHorizon(
+                      horizon.copyWith(cfCobb: d.Value(int.parse(s)))),
             ),
             DataInput(
               title: "Volumetric percent stone",
@@ -372,14 +315,11 @@ class SoilPitHorizonDescriptionEntryPageState
                 LengthLimitingTextInputFormatter(5),
                 ThousandsFormatter(allowFraction: true, decimalPlaces: 1),
               ],
-              onSubmit: (s) {
-                changeMade = true;
-                s.isEmpty
-                    ? setState(() => horizon =
-                        horizon.copyWith(cfStone: const d.Value.absent()))
-                    : setState(() => horizon =
-                        horizon.copyWith(cfStone: d.Value(int.parse(s))));
-              },
+              onSubmit: (s) => s.isEmpty
+                  ? updateHorizon(
+                      horizon.copyWith(cfStone: const d.Value.absent()))
+                  : updateHorizon(
+                      horizon.copyWith(cfStone: d.Value(int.parse(s)))),
             ),
             Container(
                 margin: const EdgeInsets.only(

@@ -159,7 +159,6 @@ class SoilPitFeatureEntryPageState
             SoilPitCodeSelectBuilder(
                 code: db.companionValueToStr(feature.soilPitCode),
                 initPlotCodeName: initSoilPit,
-                plotCodeNames: db.referenceTablesDao.getSoilPitCodeNameList(),
                 usedPlotCodes:
                     db.soilPitTablesDao.getFeatureUsedPlotCodeNameList(spId),
                 onChange: (code) => updateFeature(
