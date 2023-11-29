@@ -1707,6 +1707,189 @@ class EcpLayerCompanion extends UpdateCompanion<EcpLayerData> {
   }
 }
 
+class $EcpPlotTypeTable extends EcpPlotType
+    with TableInfo<$EcpPlotTypeTable, EcpPlotTypeData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $EcpPlotTypeTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _codeMeta = const VerificationMeta('code');
+  @override
+  late final GeneratedColumn<String> code = GeneratedColumn<String>(
+      'code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [code, name];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'ecp_plot_type';
+  @override
+  VerificationContext validateIntegrity(Insertable<EcpPlotTypeData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('code')) {
+      context.handle(
+          _codeMeta, code.isAcceptableOrUnknown(data['code']!, _codeMeta));
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => const {};
+  @override
+  EcpPlotTypeData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return EcpPlotTypeData(
+      code: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}code'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+    );
+  }
+
+  @override
+  $EcpPlotTypeTable createAlias(String alias) {
+    return $EcpPlotTypeTable(attachedDatabase, alias);
+  }
+}
+
+class EcpPlotTypeData extends DataClass implements Insertable<EcpPlotTypeData> {
+  final String code;
+  final String name;
+  const EcpPlotTypeData({required this.code, required this.name});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['code'] = Variable<String>(code);
+    map['name'] = Variable<String>(name);
+    return map;
+  }
+
+  EcpPlotTypeCompanion toCompanion(bool nullToAbsent) {
+    return EcpPlotTypeCompanion(
+      code: Value(code),
+      name: Value(name),
+    );
+  }
+
+  factory EcpPlotTypeData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return EcpPlotTypeData(
+      code: serializer.fromJson<String>(json['code']),
+      name: serializer.fromJson<String>(json['name']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'code': serializer.toJson<String>(code),
+      'name': serializer.toJson<String>(name),
+    };
+  }
+
+  EcpPlotTypeData copyWith({String? code, String? name}) => EcpPlotTypeData(
+        code: code ?? this.code,
+        name: name ?? this.name,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('EcpPlotTypeData(')
+          ..write('code: $code, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(code, name);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is EcpPlotTypeData &&
+          other.code == this.code &&
+          other.name == this.name);
+}
+
+class EcpPlotTypeCompanion extends UpdateCompanion<EcpPlotTypeData> {
+  final Value<String> code;
+  final Value<String> name;
+  final Value<int> rowid;
+  const EcpPlotTypeCompanion({
+    this.code = const Value.absent(),
+    this.name = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  EcpPlotTypeCompanion.insert({
+    required String code,
+    required String name,
+    this.rowid = const Value.absent(),
+  })  : code = Value(code),
+        name = Value(name);
+  static Insertable<EcpPlotTypeData> custom({
+    Expression<String>? code,
+    Expression<String>? name,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (code != null) 'code': code,
+      if (name != null) 'name': name,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  EcpPlotTypeCompanion copyWith(
+      {Value<String>? code, Value<String>? name, Value<int>? rowid}) {
+    return EcpPlotTypeCompanion(
+      code: code ?? this.code,
+      name: name ?? this.name,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (code.present) {
+      map['code'] = Variable<String>(code.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('EcpPlotTypeCompanion(')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $SoilPitClassificationTable extends SoilPitClassification
     with TableInfo<$SoilPitClassificationTable, SoilPitClassificationData> {
   @override
@@ -10420,6 +10603,7 @@ abstract class _$Database extends GeneratedDatabase {
   late final $SsDepthLimitTable ssDepthLimit = $SsDepthLimitTable(this);
   late final $EcpGenusTable ecpGenus = $EcpGenusTable(this);
   late final $EcpLayerTable ecpLayer = $EcpLayerTable(this);
+  late final $EcpPlotTypeTable ecpPlotType = $EcpPlotTypeTable(this);
   late final $SoilPitClassificationTable soilPitClassification =
       $SoilPitClassificationTable(this);
   late final $SoilDrainageClassTable soilDrainageClass =
@@ -10485,6 +10669,7 @@ abstract class _$Database extends GeneratedDatabase {
         ssDepthLimit,
         ecpGenus,
         ecpLayer,
+        ecpPlotType,
         soilPitClassification,
         soilDrainageClass,
         soilMoistureClass,

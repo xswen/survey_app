@@ -16,6 +16,7 @@ part 'reference_tables_dao.g.dart';
   SsDepthLimit,
   EcpGenus,
   EcpLayer,
+  EcpPlotType,
   SoilPitClassification,
   SoilDrainageClass,
   SoilMoistureClass,
@@ -218,6 +219,28 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
 
   Future<List<String>> get ecpLayerNameList =>
       (select(ecpLayer).map((p0) => p0.name)).get();
+
+  Future<List<String>> getEcpPlotType() {
+    final query = selectOnly(ecpPlotType, distinct: true)
+      ..addColumns([ecpPlotType.name])
+      ..where(ecpPlotType.name.isNotNull());
+
+    return query
+        .map((row) => row.read(ecpPlotType.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getEcpPlotName(String code) =>
+      (select(ecpPlotType, distinct: true)
+            ..where((tbl) => tbl.code.equals(code)))
+          .map((row) => row.name)
+          .getSingle();
+
+  Future<String> getEcpPlotCode(String name) =>
+      (select(ecpPlotType, distinct: true)
+            ..where((tbl) => tbl.name.equals(name)))
+          .map((row) => row.code)
+          .getSingle();
 
   //====================EcpTreeGenus====================
 //--------------------get--------------------

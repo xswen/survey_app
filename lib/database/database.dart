@@ -37,6 +37,7 @@ const List<Type> _tables = [
   SsDepthLimit,
   EcpGenus,
   EcpLayer,
+  EcpPlotType,
   SoilPitClassification,
   SoilDrainageClass,
   SoilMoistureClass,
@@ -138,6 +139,7 @@ class Database extends _$Database {
 
           List<EcpLayerCompanion> ecpLayerList = await _getEcpLayers();
           List<EcpGenusCompanion> ecpGenusList = await _getEcpGenuses();
+          List<EcpPlotTypeCompanion> ecpPlotTypeList = await _getEcpPlotTypes();
 
           List<SoilPitClassificationCompanion> soilPitClassificationList =
               await _getSoilPitClassifications();
@@ -168,6 +170,7 @@ class Database extends _$Database {
 
             b.insertAll(ecpLayer, ecpLayerList);
             b.insertAll(ecpGenus, ecpGenusList);
+            b.insertAll(ecpPlotType, ecpPlotTypeList);
 
             b.insertAll(soilPitClassification, soilPitClassificationList);
             b.insertAll(soilDrainageClass, soilDrainageList);
@@ -279,6 +282,18 @@ class Database extends _$Database {
         genus: Value(item["genus"]),
         species: Value(item["species"]),
         variety: Value(item["variety"]),
+      );
+    }).toList();
+  }
+
+  Future<List<EcpPlotTypeCompanion>> _getEcpPlotTypes() async {
+    List<dynamic> jsonData =
+        await _loadJsonData('assets/db_reference_data/ecp_plot_type.json');
+
+    return jsonData.map((dynamic item) {
+      return EcpPlotTypeCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
       );
     }).toList();
   }

@@ -67,6 +67,11 @@ class EcpGenus extends Table {
   TextColumn get variety => text()();
 }
 
+class EcpPlotType extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
 //Soil Pit
 class SoilPitClassification extends Table {
   TextColumn get code => text()();

@@ -52,7 +52,7 @@ class EcologicalPlotSummaryPageState
     Popups.show(
         context,
         PopupContinue(
-          "Select Transect Number",
+          "Select pot number",
           contentWidget: Card(
             elevation: 0,
             color: Colors.transparent,
