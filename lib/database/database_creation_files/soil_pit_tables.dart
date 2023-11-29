@@ -55,6 +55,7 @@ class SoilPitHorizonDescription extends Table {
   RealColumn get thickness =>
       real().check(thickness.isBetweenValues(-1, 300.0))();
   TextColumn get color => text().withLength(max: 1)();
+  TextColumn get mineralType => text()();
   TextColumn get texture => text().withLength(max: 5)();
   IntColumn get cfGrav => integer().check(cfGrav.isBetweenValues(-9, 100))();
   IntColumn get cfCobb => integer().check(cfCobb.isBetweenValues(-9, 100))();

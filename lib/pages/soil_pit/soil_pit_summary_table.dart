@@ -135,7 +135,7 @@ class SoilPitSummaryPageState extends ConsumerState<SoilPitSummaryPage> {
               IconNavButton(
                 icon: const Icon(FontAwesomeIcons.objectGroup),
                 space: kPaddingIcon,
-                label: "Pit Feature",
+                label: "Soil Pit Feature",
                 onPressed: () async {
                   navToFeature();
                 },

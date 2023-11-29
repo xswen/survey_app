@@ -6,7 +6,6 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../widgets/box_increment.dart';
 import '../../../widgets/builders/decay_class_select_builder.dart';
-import '../../../widgets/hide_info_checkbox.dart';
 import '../../../widgets/tables/table_creation_builder.dart';
 import '../../../widgets/tables/table_data_grid_source_builder.dart';
 import '../../../widgets/text/text_header_separator.dart';
@@ -303,49 +302,25 @@ class WoodyDebrisHeaderPieceMainPageState
                     Padding(
                       padding:
                           const EdgeInsets.symmetric(horizontal: kPaddingH),
-                      child: HideInfoCheckbox(
-                        title:
-                            "Average decay class of small woody debris pieces along "
-                            "this transect",
-                        checkTitle:
-                            "Mark decay class as not measured or not applicable",
-                        checkValue: wdh.swdDecayClass == -1,
-                        onChange: (b) {
+                      child: DecayClassSelectBuilder(
+                        onBeforePopup: (s) async {
                           if (wdh.complete) {
-                            Popups.show(context, completeWarningPopup);
-                          } else {
-                            b!
-                                ? Popups.show(
-                                    context,
-                                    PopupContinue(
-                                      "Warning: Setting decay class as Missing",
-                                      contentText:
-                                          "Are you sure you want to set decay class not "
-                                          "measured/not applicable?",
-                                      rightBtnOnPressed: () {
-                                        updateDecayClass(-1);
-                                        context.pop();
-                                      },
-                                    ))
-                                : updateDecayClass(null);
+                            Popups.show(
+                                context,
+                                Popups.generateCompleteErrorPopup(
+                                    "Woody Debris"));
+                            return false;
                           }
+                          return true;
                         },
-                        child: DecayClassSelectBuilder(
-                          onBeforePopup: (s) async {
-                            if (wdh.complete) {
-                              Popups.show(
-                                  context,
-                                  Popups.generateCompleteErrorPopup(
-                                      "Woody Debris"));
-                              return false;
-                            }
-                            return true;
-                          },
-                          onChangedFn: (s) => updateDecayClass(int.parse(s!)),
-                          selectedItem: wdh.swdDecayClass == null
-                              ? "Select Decay Class"
-                              : wdh.swdDecayClass.toString(),
-                        ),
+                        onChangedFn: (s) => s == "Unreported"
+                            ? updateDecayClass(-1)
+                            : updateDecayClass(int.parse(s!)),
+                        selectedItem: wdh.swdDecayClass == null
+                            ? "Select Decay Class"
+                            : wdh.swdDecayClass.toString() == "-1"
+                                ? "Unreported"
+                                : wdh.swdDecayClass.toString(),
                       ),
                     ),
                     const SizedBox(

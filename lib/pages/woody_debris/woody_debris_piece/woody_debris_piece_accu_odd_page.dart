@@ -18,7 +18,6 @@ import '../../../widgets/builders/tree_species_select_builder.dart';
 import '../../../widgets/buttons/delete_button.dart';
 import '../../../widgets/data_input/dep_data_input.dart';
 import '../../../widgets/drawer_menu.dart';
-import '../../../widgets/hide_info_checkbox.dart';
 import '../../../widgets/popups/popup_continue.dart';
 import '../../delete_page.dart';
 
@@ -183,29 +182,15 @@ class _WoodyDebrisPieceAccuOddPageState
               const SizedBox(
                 height: kPaddingV * 2,
               ),
-              HideInfoCheckbox(
-                title:
-                    "Average decay class is assigned to all pieces of small woody debris along each transect.",
-                checkTitle: "Mark decay class as missing",
-                checkValue: piece.decayClass == kDataMissing,
-                onChange: (b) {
-                  //Don't need to check if wdh is complete bc you'd never get here
-                  //if it was
-                  b!
-                      ? Popups.show(context,
-                          Popups.generateWarningMarkingAsMissing(() {
-                          updatePiece(
-                              piece.copyWith(decayClass: const d.Value(-1)));
-                          context.pop();
-                        }))
-                      : updatePiece(
-                          piece.copyWith(decayClass: const d.Value.absent()));
-                },
-                child: DecayClassSelectBuilder(
-                  onChangedFn: (s) => updatePiece(
-                      piece.copyWith(decayClass: d.Value(int.parse(s!)))),
-                  selectedItem: db.companionValueToStr(piece.decayClass),
-                ),
+              DecayClassSelectBuilder(
+                title: "Average decay class of piece.",
+                onChangedFn: (s) => s == "Unreported"
+                    ? updatePiece(piece.copyWith(decayClass: const d.Value(-1)))
+                    : updatePiece(
+                        piece.copyWith(decayClass: d.Value(int.parse(s!)))),
+                selectedItem: db.companionValueToStr(piece.decayClass) == "-1"
+                    ? "Unreported"
+                    : db.companionValueToStr(piece.decayClass),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: kPaddingV * 2),
