@@ -44,7 +44,7 @@ class EcologicalPlotSummaryPageState
     ref.refresh(ecpDataProvider(surveyId));
   }
 
-  void createTransect() {
+  void createPlot() {
     final db = ref.read(databaseProvider);
     EcpHeaderCompanion ecpHCompanion = EcpHeaderCompanion(
         ecpSummaryId: d.Value(ecpId), complete: const d.Value(false));
@@ -157,14 +157,14 @@ class EcologicalPlotSummaryPageState
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text(
-                            "Select a Transect to enter data for:",
+                            "Select a plot to enter data for:",
                             style: TextStyle(fontSize: kTextHeaderSize),
                           ),
                           ElevatedButton(
                               onPressed: () => ecp.complete
                                   ? Popups.show(
                                       context, surveyCompleteWarningPopup)
-                                  : createTransect(),
+                                  : createPlot(),
                               style: CustomButtonStyles.inactiveButton(
                                   isActive: !ecp.complete),
                               child: const Row(
@@ -176,7 +176,7 @@ class EcologicalPlotSummaryPageState
                                       size: 20,
                                     ),
                                   ),
-                                  Text("Add transect")
+                                  Text("Add plot")
                                 ],
                               ))
                         ],
@@ -194,13 +194,13 @@ class EcologicalPlotSummaryPageState
                           body: transList.isEmpty
                               ? const Center(
                                   child: Text(
-                                      "No transects created. Please add transect."))
+                                      "No plots created. Please add plot."))
                               : ListView.builder(
                                   itemCount: transList.length,
                                   itemBuilder: (BuildContext cxt, int index) {
                                     EcpHeaderData ecpH = transList[index];
                                     return TileCardSelection(
-                                        title: "Transect ${ecpH.ecpNum}",
+                                        title: "Plot ${ecpH.ecpNum}",
                                         onPressed: () async {
                                           ecp.complete
                                               ? Popups.show(

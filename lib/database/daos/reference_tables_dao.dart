@@ -220,7 +220,7 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
   Future<List<String>> get ecpLayerNameList =>
       (select(ecpLayer).map((p0) => p0.name)).get();
 
-  Future<List<String>> getEcpPlotType() {
+  Future<List<String>> getEcpPlotTypeNameList() {
     final query = selectOnly(ecpPlotType, distinct: true)
       ..addColumns([ecpPlotType.name])
       ..where(ecpPlotType.name.isNotNull());
@@ -230,13 +230,13 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
         .get();
   }
 
-  Future<String> getEcpPlotName(String code) =>
+  Future<String> getEcpPlotTypeName(String code) =>
       (select(ecpPlotType, distinct: true)
             ..where((tbl) => tbl.code.equals(code)))
           .map((row) => row.name)
           .getSingle();
 
-  Future<String> getEcpPlotCode(String name) =>
+  Future<String> getEcpPlotTypeCode(String name) =>
       (select(ecpPlotType, distinct: true)
             ..where((tbl) => tbl.name.equals(name)))
           .map((row) => row.code)
