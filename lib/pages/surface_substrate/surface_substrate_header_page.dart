@@ -223,7 +223,17 @@ class SurfaceSubstrateHeaderPageState
     } else {
       List<String>? errors = errorCheck();
       errors == null
-          ? updateSshData(ssh.copyWith(complete: const d.Value(true)))
+          ? db.surfaceSubstrateTablesDao
+              .getSsTallyList(sshId)
+              .then((value) => value.isEmpty
+                  ? Popups.show(
+                      context,
+                      PopupDismiss(
+                        "Error: No stations",
+                        contentText:
+                            "Please add at least one station before marking as complete",
+                      ))
+                  : updateSshData(ssh.copyWith(complete: const d.Value(true))))
           : Popups.show(context, PopupErrorsFoundList(errors: errors));
     }
   }
@@ -369,7 +379,7 @@ class SurfaceSubstrateHeaderPageState
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
-                        "Coarse Woody Debris",
+                        "Stations",
                         style: TextStyle(fontSize: kTextTitleSize),
                       ),
                       Padding(

@@ -209,7 +209,7 @@ class EcologicalPlotHeaderPageState
               },
             ),
             floatingActionButton: FloatingCompleteButton(
-              title: "Surface Substrate",
+              title: "Ecological Plot",
               complete: db.companionValueToStr(ecpH.complete).isEmpty
                   ? false
                   : ecpH.complete.value,
@@ -240,7 +240,7 @@ class EcologicalPlotHeaderPageState
                   ),
                   DataInput(
                     readOnly: ecpH.complete.value,
-                    title: "The nominal area of the ecological Sample Plot",
+                    title: "The total area of ecological plot",
                     boxLabel: "Report to Dec 5.4 in hectares",
                     prefixIcon: FontAwesomeIcons.ruler,
                     suffixVal: "ha",
@@ -265,6 +265,7 @@ class EcologicalPlotHeaderPageState
                                   nomPlotSize: d.Value(double.parse(s)));
                     },
                   ),
+                  //TODO: Check that measured area is larger than total area
                   DataInput(
                     readOnly: ecpH.complete.value,
                     title: "The measured area of the ecological sample plot",
@@ -299,7 +300,7 @@ class EcologicalPlotHeaderPageState
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text(
-                          "Layers",
+                          "Species",
                           style: TextStyle(fontSize: kTextTitleSize),
                         ),
                         Padding(
@@ -310,7 +311,7 @@ class EcologicalPlotHeaderPageState
                                   : createNewSpeciesCompanion(),
                               style: CustomButtonStyles.inactiveButton(
                                   isActive: !ecpH.complete.value),
-                              child: const Text("Add layer")),
+                              child: const Text("Add species")),
                         ),
                       ],
                     ),

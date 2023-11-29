@@ -17,7 +17,7 @@ const List<String> kTransectNumsList = [
   "9"
 ];
 
-const List<String> kDecayClassList = ["1", "2", "3", "4", "5"];
+const List<String> kDecayClassList = ["1", "2", "3", "4", "5", "Unreported"];
 
 const String kDecayClassMissingStr = "kDecayClassMissingStr";
 

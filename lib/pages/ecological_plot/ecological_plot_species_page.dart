@@ -7,12 +7,71 @@ import 'package:survey_app/widgets/builders/ecp_genus_select_builder.dart';
 import 'package:survey_app/widgets/builders/ecp_layer_select_builder.dart';
 import 'package:survey_app/widgets/builders/ecp_species_select_builder.dart';
 import 'package:survey_app/widgets/builders/ecp_variety_select_builder.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../formatters/thousands_formatter.dart';
 import '../../widgets/buttons/delete_button.dart';
 import '../../widgets/data_input/data_input.dart';
 import '../../widgets/popups/popup_errors_found_list.dart';
 import '../delete_page.dart';
+
+class PlotInfo {
+  final String plot;
+  final String tenMeterPlot;
+  final String fiveMeterPlot;
+
+  PlotInfo(this.plot, this.tenMeterPlot, this.fiveMeterPlot);
+}
+
+class PlotDataSource extends DataGridSource {
+  final List<DataGridRow> _plotRows = [
+    const DataGridRow(cells: [
+      DataGridCell<String>(columnName: 'plot', value: 'Plot area'),
+      DataGridCell<String>(
+          columnName: 'tenMeterPlot', value: '314 m² (0.0314 ha)'),
+      DataGridCell<String>(
+          columnName: 'fiveMeterPlot', value: '100 m² (0.01 ha)'),
+    ]),
+    const DataGridRow(cells: [
+      DataGridCell<String>(columnName: 'plot', value: '25% coverage'),
+      DataGridCell<String>(columnName: 'tenMeterPlot', value: '¼ of the plot'),
+      DataGridCell<String>(columnName: 'fiveMeterPlot', value: '¼ of the plot'),
+    ]),
+    const DataGridRow(cells: [
+      DataGridCell<String>(columnName: 'plot', value: '1% coverage'),
+      DataGridCell<String>(columnName: 'tenMeterPlot', value: '∼1.8 x 1.8 m'),
+      DataGridCell<String>(columnName: 'fiveMeterPlot', value: '1 x 1 m'),
+    ]),
+    const DataGridRow(cells: [
+      DataGridCell<String>(columnName: 'plot', value: '0.1%'),
+      DataGridCell<String>(columnName: 'tenMeterPlot', value: '∼55 x 55 cm'),
+      DataGridCell<String>(columnName: 'fiveMeterPlot', value: '∼33 x 33 cm'),
+    ]),
+    const DataGridRow(cells: [
+      DataGridCell<String>(columnName: 'plot', value: '0.01%'),
+      DataGridCell<String>(columnName: 'tenMeterPlot', value: '∼18 x 18 cm'),
+      DataGridCell<String>(columnName: 'fiveMeterPlot', value: '∼10 x 10 cm'),
+    ]),
+    const DataGridRow(cells: [
+      DataGridCell<String>(columnName: 'plot', value: '0.001%'),
+      DataGridCell<String>(columnName: 'tenMeterPlot', value: '∼6 x 6 cm'),
+      DataGridCell<String>(columnName: 'fiveMeterPlot', value: '∼3 x 3 cm'),
+    ]),
+    // ... Add the rest of the rows in a similar fashion
+  ];
+
+  @override
+  List<DataGridRow> get rows => _plotRows;
+
+  @override
+  DataGridRowAdapter? buildRow(DataGridRow row) {
+    return DataGridRowAdapter(cells: [
+      Text(row.getCells()[0].value.toString()),
+      Text(row.getCells()[1].value.toString()),
+      Text(row.getCells()[2].value.toString()),
+    ]);
+  }
+}
 
 class EcologicalPlotSpeciesPage extends ConsumerStatefulWidget {
   static const String routeName = "ecologicalPlotSpecies";
@@ -30,6 +89,8 @@ class EcologicalPlotSpeciesPageState
   late final int ecpHId;
   late bool moreInfo;
   late EcpSpeciesCompanion layer;
+
+  ColNames colNames = ColNames();
 
   @override
   void initState() {
@@ -140,11 +201,10 @@ class EcologicalPlotSpeciesPageState
                         variety: db.companionValueToStr(layer.variety))
                     : Container(),
                 DataInput(
-                    title:
-                        "Percent Coverage for each ecological species in the plot",
-                    boxLabel: "Report to the nearest 0.001\u00B0",
+                    title: "Percent cover of this species in this layer",
+                    boxLabel: "Report to the nearest 0.001%",
                     prefixIcon: FontAwesomeIcons.angleLeft,
-                    suffixVal: "\u00B0",
+                    suffixVal: "%",
                     inputType:
                         const TextInputType.numberWithOptions(decimal: false),
                     startingStr: db.companionValueToStr(layer.speciesPct),
@@ -160,6 +220,19 @@ class EcologicalPlotSpeciesPageState
                           : null;
                     },
                     onValidate: _errorSpeciesPct),
+                SfDataGrid(
+                  source: PlotDataSource(),
+                  columns: <GridColumn>[
+                    GridColumn(columnName: 'plot', label: const Text('')),
+                    GridColumn(
+                        columnName: 'tenMeterPlot',
+                        label: const Text('10-m radius plot')),
+                    GridColumn(
+                        columnName: 'fiveMeterPlot',
+                        label: const Text('5.64-m radius plot')),
+                  ],
+                  columnWidthMode: ColumnWidthMode.fill,
+                ),
                 const Padding(
                     padding: EdgeInsets.symmetric(vertical: kPaddingV)),
                 Row(
@@ -186,7 +259,7 @@ class EcologicalPlotSpeciesPageState
                             addOrUpdateEcpSpecies(createNewEcpSpeciesCompanion);
                           }
                         },
-                        child: const Text("Save and Add New Layer")),
+                        child: const Text("Save and Add New Species")),
                   ],
                 ),
                 layer.id != const d.Value.absent()

@@ -10068,6 +10068,12 @@ class $SoilPitHorizonDescriptionTable extends SoilPitHorizonDescription
       additionalChecks: GeneratedColumn.checkTextLength(maxTextLength: 1),
       type: DriftSqlType.string,
       requiredDuringInsert: true);
+  static const VerificationMeta _mineralTypeMeta =
+      const VerificationMeta('mineralType');
+  @override
+  late final GeneratedColumn<String> mineralType = GeneratedColumn<String>(
+      'mineral_type', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _textureMeta =
       const VerificationMeta('texture');
   @override
@@ -10108,6 +10114,7 @@ class $SoilPitHorizonDescriptionTable extends SoilPitHorizonDescription
         horizonUpper,
         thickness,
         color,
+        mineralType,
         texture,
         cfGrav,
         cfCobb,
@@ -10177,6 +10184,14 @@ class $SoilPitHorizonDescriptionTable extends SoilPitHorizonDescription
     } else if (isInserting) {
       context.missing(_colorMeta);
     }
+    if (data.containsKey('mineral_type')) {
+      context.handle(
+          _mineralTypeMeta,
+          mineralType.isAcceptableOrUnknown(
+              data['mineral_type']!, _mineralTypeMeta));
+    } else if (isInserting) {
+      context.missing(_mineralTypeMeta);
+    }
     if (data.containsKey('texture')) {
       context.handle(_textureMeta,
           texture.isAcceptableOrUnknown(data['texture']!, _textureMeta));
@@ -10227,6 +10242,8 @@ class $SoilPitHorizonDescriptionTable extends SoilPitHorizonDescription
           .read(DriftSqlType.double, data['${effectivePrefix}thickness'])!,
       color: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}color'])!,
+      mineralType: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}mineral_type'])!,
       texture: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}texture'])!,
       cfGrav: attachedDatabase.typeMapping
@@ -10254,6 +10271,7 @@ class SoilPitHorizonDescriptionData extends DataClass
   final double horizonUpper;
   final double thickness;
   final String color;
+  final String mineralType;
   final String texture;
   final int cfGrav;
   final int cfCobb;
@@ -10267,6 +10285,7 @@ class SoilPitHorizonDescriptionData extends DataClass
       required this.horizonUpper,
       required this.thickness,
       required this.color,
+      required this.mineralType,
       required this.texture,
       required this.cfGrav,
       required this.cfCobb,
@@ -10282,6 +10301,7 @@ class SoilPitHorizonDescriptionData extends DataClass
     map['horizon_upper'] = Variable<double>(horizonUpper);
     map['thickness'] = Variable<double>(thickness);
     map['color'] = Variable<String>(color);
+    map['mineral_type'] = Variable<String>(mineralType);
     map['texture'] = Variable<String>(texture);
     map['cf_grav'] = Variable<int>(cfGrav);
     map['cf_cobb'] = Variable<int>(cfCobb);
@@ -10299,6 +10319,7 @@ class SoilPitHorizonDescriptionData extends DataClass
       horizonUpper: Value(horizonUpper),
       thickness: Value(thickness),
       color: Value(color),
+      mineralType: Value(mineralType),
       texture: Value(texture),
       cfGrav: Value(cfGrav),
       cfCobb: Value(cfCobb),
@@ -10318,6 +10339,7 @@ class SoilPitHorizonDescriptionData extends DataClass
       horizonUpper: serializer.fromJson<double>(json['horizonUpper']),
       thickness: serializer.fromJson<double>(json['thickness']),
       color: serializer.fromJson<String>(json['color']),
+      mineralType: serializer.fromJson<String>(json['mineralType']),
       texture: serializer.fromJson<String>(json['texture']),
       cfGrav: serializer.fromJson<int>(json['cfGrav']),
       cfCobb: serializer.fromJson<int>(json['cfCobb']),
@@ -10336,6 +10358,7 @@ class SoilPitHorizonDescriptionData extends DataClass
       'horizonUpper': serializer.toJson<double>(horizonUpper),
       'thickness': serializer.toJson<double>(thickness),
       'color': serializer.toJson<String>(color),
+      'mineralType': serializer.toJson<String>(mineralType),
       'texture': serializer.toJson<String>(texture),
       'cfGrav': serializer.toJson<int>(cfGrav),
       'cfCobb': serializer.toJson<int>(cfCobb),
@@ -10352,6 +10375,7 @@ class SoilPitHorizonDescriptionData extends DataClass
           double? horizonUpper,
           double? thickness,
           String? color,
+          String? mineralType,
           String? texture,
           int? cfGrav,
           int? cfCobb,
@@ -10365,6 +10389,7 @@ class SoilPitHorizonDescriptionData extends DataClass
         horizonUpper: horizonUpper ?? this.horizonUpper,
         thickness: thickness ?? this.thickness,
         color: color ?? this.color,
+        mineralType: mineralType ?? this.mineralType,
         texture: texture ?? this.texture,
         cfGrav: cfGrav ?? this.cfGrav,
         cfCobb: cfCobb ?? this.cfCobb,
@@ -10381,6 +10406,7 @@ class SoilPitHorizonDescriptionData extends DataClass
           ..write('horizonUpper: $horizonUpper, ')
           ..write('thickness: $thickness, ')
           ..write('color: $color, ')
+          ..write('mineralType: $mineralType, ')
           ..write('texture: $texture, ')
           ..write('cfGrav: $cfGrav, ')
           ..write('cfCobb: $cfCobb, ')
@@ -10399,6 +10425,7 @@ class SoilPitHorizonDescriptionData extends DataClass
       horizonUpper,
       thickness,
       color,
+      mineralType,
       texture,
       cfGrav,
       cfCobb,
@@ -10415,6 +10442,7 @@ class SoilPitHorizonDescriptionData extends DataClass
           other.horizonUpper == this.horizonUpper &&
           other.thickness == this.thickness &&
           other.color == this.color &&
+          other.mineralType == this.mineralType &&
           other.texture == this.texture &&
           other.cfGrav == this.cfGrav &&
           other.cfCobb == this.cfCobb &&
@@ -10431,6 +10459,7 @@ class SoilPitHorizonDescriptionCompanion
   final Value<double> horizonUpper;
   final Value<double> thickness;
   final Value<String> color;
+  final Value<String> mineralType;
   final Value<String> texture;
   final Value<int> cfGrav;
   final Value<int> cfCobb;
@@ -10444,6 +10473,7 @@ class SoilPitHorizonDescriptionCompanion
     this.horizonUpper = const Value.absent(),
     this.thickness = const Value.absent(),
     this.color = const Value.absent(),
+    this.mineralType = const Value.absent(),
     this.texture = const Value.absent(),
     this.cfGrav = const Value.absent(),
     this.cfCobb = const Value.absent(),
@@ -10458,6 +10488,7 @@ class SoilPitHorizonDescriptionCompanion
     required double horizonUpper,
     required double thickness,
     required String color,
+    required String mineralType,
     required String texture,
     required int cfGrav,
     required int cfCobb,
@@ -10469,6 +10500,7 @@ class SoilPitHorizonDescriptionCompanion
         horizonUpper = Value(horizonUpper),
         thickness = Value(thickness),
         color = Value(color),
+        mineralType = Value(mineralType),
         texture = Value(texture),
         cfGrav = Value(cfGrav),
         cfCobb = Value(cfCobb),
@@ -10482,6 +10514,7 @@ class SoilPitHorizonDescriptionCompanion
     Expression<double>? horizonUpper,
     Expression<double>? thickness,
     Expression<String>? color,
+    Expression<String>? mineralType,
     Expression<String>? texture,
     Expression<int>? cfGrav,
     Expression<int>? cfCobb,
@@ -10496,6 +10529,7 @@ class SoilPitHorizonDescriptionCompanion
       if (horizonUpper != null) 'horizon_upper': horizonUpper,
       if (thickness != null) 'thickness': thickness,
       if (color != null) 'color': color,
+      if (mineralType != null) 'mineral_type': mineralType,
       if (texture != null) 'texture': texture,
       if (cfGrav != null) 'cf_grav': cfGrav,
       if (cfCobb != null) 'cf_cobb': cfCobb,
@@ -10512,6 +10546,7 @@ class SoilPitHorizonDescriptionCompanion
       Value<double>? horizonUpper,
       Value<double>? thickness,
       Value<String>? color,
+      Value<String>? mineralType,
       Value<String>? texture,
       Value<int>? cfGrav,
       Value<int>? cfCobb,
@@ -10525,6 +10560,7 @@ class SoilPitHorizonDescriptionCompanion
       horizonUpper: horizonUpper ?? this.horizonUpper,
       thickness: thickness ?? this.thickness,
       color: color ?? this.color,
+      mineralType: mineralType ?? this.mineralType,
       texture: texture ?? this.texture,
       cfGrav: cfGrav ?? this.cfGrav,
       cfCobb: cfCobb ?? this.cfCobb,
@@ -10559,6 +10595,9 @@ class SoilPitHorizonDescriptionCompanion
     if (color.present) {
       map['color'] = Variable<String>(color.value);
     }
+    if (mineralType.present) {
+      map['mineral_type'] = Variable<String>(mineralType.value);
+    }
     if (texture.present) {
       map['texture'] = Variable<String>(texture.value);
     }
@@ -10585,6 +10624,7 @@ class SoilPitHorizonDescriptionCompanion
           ..write('horizonUpper: $horizonUpper, ')
           ..write('thickness: $thickness, ')
           ..write('color: $color, ')
+          ..write('mineralType: $mineralType, ')
           ..write('texture: $texture, ')
           ..write('cfGrav: $cfGrav, ')
           ..write('cfCobb: $cfCobb, ')

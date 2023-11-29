@@ -57,6 +57,17 @@ class EcologicalPlotTablesDao extends DatabaseAccessor<Database>
                 tbl.ecpSummaryId.equals(ecpSId) & tbl.ecpNum.equals(ecpNum)))
           .getSingleOrNull();
 
+  Future<List<int>> getUsedPlotNums(int ecpSId, String plotType) async {
+    if (plotType.isEmpty) {
+      return [];
+    }
+    final query = select(ecpHeader)
+      ..where((tbl) =>
+          tbl.ecpSummaryId.equals(ecpSId) & tbl.plotType.equals(plotType));
+
+    return query.map((row) => row.ecpNum ?? -1).get();
+  }
+
   Future<List<int?>> getUsedTransNums(int ecpId) {
     final query = select(ecpHeader)
       ..where((tbl) => tbl.ecpSummaryId.equals(ecpId));

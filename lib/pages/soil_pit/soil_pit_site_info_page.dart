@@ -181,7 +181,7 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
             child: ListView(
           children: [
             const TextHeaderSeparator(
-              title: "CSC Soil Classification Field",
+              title: "CSSC Soil Classification Field",
               fontSize: 20,
             ),
             DropDownAsyncList(
