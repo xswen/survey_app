@@ -41,7 +41,7 @@ class EcologicalPlotSummaryPageState
   Future<void> updateEcpSummary(EcpSummaryCompanion entry) async {
     final db = ref.read(databaseProvider);
     (db.update(db.ecpSummary)..where((t) => t.id.equals(ecpId))).write(entry);
-    ref.refresh(ecpDataProvider(surveyId));
+    ref.refresh(ecpDataProvider(ecpId));
   }
 
   void createPlot() {
