@@ -7,6 +7,6 @@ enum SurveyCardCategories {
   soilPit,
 }
 
-enum SurveyStatus { notStarted, inProgress, complete }
+enum SurveyStatus { notStarted, inProgress, notAssessed, complete }
 
 enum WdPieceType { round, odd, accu, unknown }
