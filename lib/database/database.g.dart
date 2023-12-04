@@ -4462,7 +4462,7 @@ class $WoodyDebrisSummaryTable extends WoodyDebrisSummary
       const VerificationMeta('complete');
   @override
   late final GeneratedColumn<bool> complete = GeneratedColumn<bool>(
-      'complete', aliasedName, false,
+      'complete', aliasedName, true,
       type: DriftSqlType.bool,
       requiredDuringInsert: false,
       defaultConstraints:
@@ -4525,7 +4525,7 @@ class $WoodyDebrisSummaryTable extends WoodyDebrisSummary
       numTransects: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}num_transects']),
       complete: attachedDatabase.typeMapping
-          .read(DriftSqlType.bool, data['${effectivePrefix}complete'])!,
+          .read(DriftSqlType.bool, data['${effectivePrefix}complete']),
     );
   }
 
@@ -4541,13 +4541,13 @@ class WoodyDebrisSummaryData extends DataClass
   final int surveyId;
   final DateTime measDate;
   final int? numTransects;
-  final bool complete;
+  final bool? complete;
   const WoodyDebrisSummaryData(
       {required this.id,
       required this.surveyId,
       required this.measDate,
       this.numTransects,
-      required this.complete});
+      this.complete});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -4557,7 +4557,9 @@ class WoodyDebrisSummaryData extends DataClass
     if (!nullToAbsent || numTransects != null) {
       map['num_transects'] = Variable<int>(numTransects);
     }
-    map['complete'] = Variable<bool>(complete);
+    if (!nullToAbsent || complete != null) {
+      map['complete'] = Variable<bool>(complete);
+    }
     return map;
   }
 
@@ -4569,7 +4571,9 @@ class WoodyDebrisSummaryData extends DataClass
       numTransects: numTransects == null && nullToAbsent
           ? const Value.absent()
           : Value(numTransects),
-      complete: Value(complete),
+      complete: complete == null && nullToAbsent
+          ? const Value.absent()
+          : Value(complete),
     );
   }
 
@@ -4581,7 +4585,7 @@ class WoodyDebrisSummaryData extends DataClass
       surveyId: serializer.fromJson<int>(json['surveyId']),
       measDate: serializer.fromJson<DateTime>(json['measDate']),
       numTransects: serializer.fromJson<int?>(json['numTransects']),
-      complete: serializer.fromJson<bool>(json['complete']),
+      complete: serializer.fromJson<bool?>(json['complete']),
     );
   }
   @override
@@ -4592,7 +4596,7 @@ class WoodyDebrisSummaryData extends DataClass
       'surveyId': serializer.toJson<int>(surveyId),
       'measDate': serializer.toJson<DateTime>(measDate),
       'numTransects': serializer.toJson<int?>(numTransects),
-      'complete': serializer.toJson<bool>(complete),
+      'complete': serializer.toJson<bool?>(complete),
     };
   }
 
@@ -4601,14 +4605,14 @@ class WoodyDebrisSummaryData extends DataClass
           int? surveyId,
           DateTime? measDate,
           Value<int?> numTransects = const Value.absent(),
-          bool? complete}) =>
+          Value<bool?> complete = const Value.absent()}) =>
       WoodyDebrisSummaryData(
         id: id ?? this.id,
         surveyId: surveyId ?? this.surveyId,
         measDate: measDate ?? this.measDate,
         numTransects:
             numTransects.present ? numTransects.value : this.numTransects,
-        complete: complete ?? this.complete,
+        complete: complete.present ? complete.value : this.complete,
       );
   @override
   String toString() {
@@ -4642,7 +4646,7 @@ class WoodyDebrisSummaryCompanion
   final Value<int> surveyId;
   final Value<DateTime> measDate;
   final Value<int?> numTransects;
-  final Value<bool> complete;
+  final Value<bool?> complete;
   const WoodyDebrisSummaryCompanion({
     this.id = const Value.absent(),
     this.surveyId = const Value.absent(),
@@ -4679,7 +4683,7 @@ class WoodyDebrisSummaryCompanion
       Value<int>? surveyId,
       Value<DateTime>? measDate,
       Value<int?>? numTransects,
-      Value<bool>? complete}) {
+      Value<bool?>? complete}) {
     return WoodyDebrisSummaryCompanion(
       id: id ?? this.id,
       surveyId: surveyId ?? this.surveyId,

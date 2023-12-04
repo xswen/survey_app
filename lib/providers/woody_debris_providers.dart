@@ -22,7 +22,7 @@ Future<WoodyDebrisHeaderData> wdh(WdhRef ref, int wdhId) async =>
 @riverpod
 Future<bool> wdhParentComplete(WdhParentCompleteRef ref, int wdId) async =>
     (await ref.read(databaseProvider).woodyDebrisTablesDao.getWdSummary(wdId))
-        .complete;
+        .complete!;
 
 @riverpod
 Future<bool> wdhSmallParentComplete(

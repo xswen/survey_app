@@ -9,7 +9,8 @@ class WoodyDebrisSummary extends Table {
   DateTimeColumn get measDate => dateTime()();
   IntColumn get numTransects =>
       integer().check(numTransects.isBetweenValues(1, 9)).nullable()();
-  BoolColumn get complete => boolean().withDefault(const Constant(false))();
+  BoolColumn get complete =>
+      boolean().nullable().withDefault(const Constant(false))();
 }
 
 class WoodyDebrisHeader extends Table {

@@ -76,6 +76,8 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
   SurveyStatus getStatus(dynamic data) {
     if (data == null) {
       return SurveyStatus.notStarted;
+    } else if (data?.complete == null) {
+      return SurveyStatus.notAssessed;
     } else if (data?.complete) {
       return SurveyStatus.complete;
     } else {
