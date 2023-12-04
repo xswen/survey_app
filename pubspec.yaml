@@ -60,6 +60,7 @@ dependencies:
 
   flutter_hooks: ^0.20.3
   hooks_riverpod: ^2.4.4
+  flutter_slidable: ^3.0.1
 
 dev_dependencies:
   flutter_test:
