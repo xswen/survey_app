@@ -1,8 +1,9 @@
 import 'package:drift/drift.dart' as d;
 import 'package:survey_app/barrels/page_imports_barrel.dart';
+import 'package:survey_app/widgets/builders/ecp_plot_num_select_builder.dart';
+import 'package:survey_app/widgets/builders/ecp_plot_type_select_builder.dart';
+import 'package:survey_app/widgets/dropdowns/drop_down_default.dart';
 
-import '../../providers/ecological_plot_providers.dart';
-import '../../widgets/dropdowns/drop_down_async_list.dart';
 import 'ecological_plot_header_page.dart';
 
 class EcologicalPlotCreatePlotPage extends ConsumerStatefulWidget {
@@ -24,6 +25,7 @@ class EcologicalPlotCreatePlotPageState
   @override
   void initState() {
     ecpSId = PathParamValue.getEcpSummaryId(widget.state);
+    ecpHCompanion = ecpHCompanion.copyWith(ecpSummaryId: d.Value(ecpSId));
     super.initState();
   }
 
@@ -38,32 +40,40 @@ class EcologicalPlotCreatePlotPageState
       ),
       body: Column(
         children: [
-          DropDownAsyncList(
-            title: "Plot type",
-            searchable: true,
-            onChangedFn: (s) => db.referenceTablesDao
-                .getEcpPlotTypeCode(s!)
-                .then((code) => setState(() => ecpHCompanion =
-                    ecpHCompanion.copyWith(plotType: d.Value(code)))),
-            asyncItems: (s) => db.referenceTablesDao.getEcpPlotTypeNameList(),
-            selectedItem: "Please select plot type",
-          ),
+          EcpPlotTypeSelectBuilder(
+              selectedItem: db.companionValueToStr(ecpHCompanion.plotType),
+              updatePlotType: (code) => setState(() => ecpHCompanion =
+                  ecpHCompanion.copyWith(
+                      plotType: d.Value(code),
+                      ecpNum: const d.Value.absent()))),
+          EcpPlotNumSelectBuilder(ecpSId: ecpSId,
+              plotType: db.companionValueToStr(ecpHCompanion.plotType),
+              selectedEcpNum: db.companionValueToStr(ecpHCompanion.ecpNum),
+              updateEcpNum: (ecpNum) => setState(() => ecpHCompanion =
+                  ecpHCompanion.copyWith(ecpNum: d.Value(ecpNum)))),
           Padding(
             padding: const EdgeInsets.only(top: kPaddingV * 2),
             child: ElevatedButton(
               onPressed: () async {
-                db.ecologicalPlotTablesDao
-                    .addHeader(ecpHCompanion)
-                    .then((headerId) async {
-                  context
-                      .pushNamed(EcologicalPlotHeaderPage.routeName,
-                          pathParameters: PathParamGenerator.ecpHeader(
-                              widget.state, headerId.toString()))
-                      .then((value) {
-                    ref.refresh(ecpTransListProvider(headerId));
-                    ref.refresh(ecpDataProvider(headerId));
+                if (ecpHCompanion.plotType == const d.Value.absent() ||
+                    ecpHCompanion.ecpNum == const d.Value.absent()) {
+                  Popups.show(
+                      context,
+                      const PopupDismiss(
+                        "Error: Missing plot type",
+                        contentText:
+                            "Please enter both plot type and plot number to continue",
+                      ));
+                } else {
+                  db.ecologicalPlotTablesDao
+                      .addHeader(ecpHCompanion)
+                      .then((headerId) async {
+                    context.pushReplacementNamed(
+                        EcologicalPlotHeaderPage.routeName,
+                        pathParameters: PathParamGenerator.ecpHeader(
+                            widget.state, headerId.toString()));
                   });
-                });
+                }
               },
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size.fromHeight(50), // NEW

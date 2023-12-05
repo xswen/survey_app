@@ -41,21 +41,28 @@ class EcologicalPlotTablesDao extends DatabaseAccessor<Database>
 //====================ECP Header====================
   Future<int> addHeader(EcpHeaderCompanion entry) =>
       into(ecpHeader).insert(entry);
+
   Future<EcpHeaderData> getHeaderFromId(int id) =>
       (select(ecpHeader)..where((tbl) => tbl.id.equals(id))).getSingle();
-  Future<List<EcpHeaderData>> getHeaderWithEcpSummryId(int ecpSId) async =>
+
+  Future<bool> ecpPlotAvailable(int ecpSummaryId) async {
+    List<EcpHeaderData> headers = await (select(ecpHeader)
+          ..where((tbl) => tbl.ecpSummaryId.equals(ecpSummaryId)))
+        .get();
+
+    //3 plot types, allowed 16 plots per plot type
+    return headers.length < 48;
+  }
+
+  Future<List<EcpHeaderData>> getHeaderWithEcpSummaryId(int ecpSId) async =>
       (select(ecpHeader)
             ..where((tbl) => tbl.ecpSummaryId.equals(ecpSId))
             ..orderBy([
-              (t) => OrderingTerm(expression: t.ecpNum, mode: OrderingMode.asc)
+              (t) =>
+                  OrderingTerm(expression: t.plotType, mode: OrderingMode.asc),
+              (t) => OrderingTerm(expression: t.ecpNum, mode: OrderingMode.asc),
             ]))
           .get();
-
-  Future<EcpHeaderData?> getEcpHeaderFromEcpNum(int ecpSId, int ecpNum) =>
-      (select(ecpHeader)
-            ..where((tbl) =>
-                tbl.ecpSummaryId.equals(ecpSId) & tbl.ecpNum.equals(ecpNum)))
-          .getSingleOrNull();
 
   Future<List<int>> getUsedPlotNums(int ecpSId, String plotType) async {
     if (plotType.isEmpty) {

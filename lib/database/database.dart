@@ -433,7 +433,7 @@ class Database extends _$Database {
             nfiPlot: Value(1121871), code: Value("AB"), lastMeasNum: Value(2)));
     _initSurveys(b);
     _initWoodyDebris(b);
-    //_initEcp(b);
+    _initEcp(b);
   }
 
   void _initSurveys(Batch b) {
@@ -522,6 +522,7 @@ class Database extends _$Database {
         const EcpHeaderCompanion(
           id: d.Value(1),
           ecpSummaryId: d.Value(1),
+          plotType: d.Value("ES"),
           ecpNum: d.Value(1),
         ));
   }

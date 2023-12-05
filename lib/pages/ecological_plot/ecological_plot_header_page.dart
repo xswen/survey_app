@@ -8,7 +8,8 @@ import 'package:survey_app/widgets/data_input/data_input.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../formatters/thousands_formatter.dart';
-import '../../widgets/builders/set_transect_num_builder.dart';
+import '../../widgets/builders/ecp_plot_num_select_builder.dart';
+import '../../widgets/builders/ecp_plot_type_select_builder.dart';
 import '../../widgets/popups/popup_errors_found_list.dart';
 import '../../widgets/tables/table_creation_builder.dart';
 import '../../widgets/tables/table_data_grid_source_builder.dart';
@@ -51,6 +52,7 @@ class EcologicalPlotHeaderPageState
 
   late bool parentComplete = false;
   late EcpHeaderCompanion ecpH = const EcpHeaderCompanion();
+  late EcpHeaderData startingEcpH;
 
   late final int surveyId;
   late final int ecpId;
@@ -77,6 +79,7 @@ class EcologicalPlotHeaderPageState
     if (mounted) {
       setState(() {
         parentComplete = ecp.complete;
+        startingEcpH = value;
         ecpH = value.toCompanion(true);
       });
     }
@@ -160,6 +163,9 @@ class EcologicalPlotHeaderPageState
   List<String>? errorCheck() {
     final db = ref.read(databaseProvider);
     List<String> results = [];
+
+    ecpH.ecpNum == const d.Value.absent() ? results.add("Plot number") : null;
+
     errorNomPlotSize(db.companionValueToStr(ecpH.nomPlotSize)) != null
         ? results.add("Nominal Area of Plot")
         : null;
@@ -179,12 +185,33 @@ class EcologicalPlotHeaderPageState
   }
 
   String? errorMeasPlotSize(String? text) {
+    double nomPlotSize = ecpH.nomPlotSize == const d.Value.absent()
+        ? -1
+        : ecpH.nomPlotSize.value ?? -1;
+
     if (text?.isEmpty ?? true) {
       return "Can't be empty";
-    } else if (0.000025 > double.parse(text!) || double.parse(text!) > 1.0) {
+    } else if (0.000025 > double.parse(text!) || double.parse(text) > 1.0) {
       return "Input out of range. Must be between 0.000025 to 1.0 inclusive.";
+    } else if (nomPlotSize < double.parse(text)) {
+      return "Sample plot size cannot be larger than total ecp area size";
     }
     return null;
+  }
+
+  bool checkPlotNumExists() {
+    if (ecpH.ecpNum == const d.Value.absent()) {
+      Popups.show(
+          context,
+          const PopupDismiss(
+            "Error: Missing Plot Number",
+            contentText: "A plot number is required to change pages."
+                "Please enter a plot number to move forward.",
+          ));
+      return false;
+    }
+
+    return true;
   }
 
   @override
@@ -204,8 +231,10 @@ class EcologicalPlotHeaderPageState
               "$title: Transect ${db.companionValueToStr(ecpH.ecpNum)}",
               onLocaleChange: () {},
               backFn: () {
-                ref.refresh(ecpTransListProvider(ecpId));
-                context.pop();
+                if (checkPlotNumExists()) {
+                  ref.refresh(ecpTransListProvider(ecpId));
+                  context.pop();
+                }
               },
             ),
             floatingActionButton: FloatingCompleteButton(
@@ -220,24 +249,22 @@ class EcologicalPlotHeaderPageState
               padding: const EdgeInsets.symmetric(horizontal: kPaddingH),
               child: Column(
                 children: [
-                  SetTransectNumBuilder(
-                    getUsedTransNums:
-                        db.ecologicalPlotTablesDao.getUsedTransNums(ecpId),
-                    startingTransNum: db.companionValueToStr(ecpH.ecpNum),
-                    selectedItem: db.companionValueToStr(ecpH.ecpNum).isEmpty
-                        ? "Please select transect number"
-                        : db.companionValueToStr(ecpH.ecpNum),
-                    transList: kTransectNumsList,
-                    updateTransNum: (int ecpNum) =>
-                        updateEcpHData(ecpH.copyWith(ecpNum: d.Value(ecpNum))),
-                    onBeforePopup: (s) async {
-                      if (ecpH.complete.value) {
-                        Popups.show(context, popupPageComplete);
-                        return false;
-                      }
-                      return true;
-                    },
-                  ),
+                  EcpPlotTypeSelectBuilder(
+                      enabled: !ecpH.complete.value,
+                      selectedItem: db.companionValueToStr(ecpH.plotType),
+                      updatePlotType: (code) => setState(() => ecpH =
+                          ecpH.copyWith(
+                              plotType: d.Value(code),
+                              ecpNum: const d.Value.absent()))),
+                  EcpPlotNumSelectBuilder(
+                      enabled: !ecpH.complete.value,
+                      ecpSId: ecpH.ecpSummaryId.value,
+                      startingPlotType: startingEcpH.plotType.toString(),
+                      plotType: db.companionValueToStr(ecpH.plotType),
+                      startingEcpNum: startingEcpH.ecpNum.toString(),
+                      selectedEcpNum: db.companionValueToStr(ecpH.ecpNum),
+                      updateEcpNum: (ecpNum) => updateEcpHData(
+                          ecpH.copyWith(ecpNum: d.Value(ecpNum)))),
                   DataInput(
                     readOnly: ecpH.complete.value,
                     title: "The total area of ecological plot",
@@ -265,7 +292,6 @@ class EcologicalPlotHeaderPageState
                                   nomPlotSize: d.Value(double.parse(s)));
                     },
                   ),
-                  //TODO: Check that measured area is larger than total area
                   DataInput(
                     readOnly: ecpH.complete.value,
                     title: "The measured area of the ecological sample plot",
@@ -306,9 +332,13 @@ class EcologicalPlotHeaderPageState
                         Padding(
                           padding: const EdgeInsets.only(left: kPaddingH),
                           child: ElevatedButton(
-                              onPressed: () async => ecpH.complete.value
-                                  ? Popups.show(context, popupPageComplete)
-                                  : createNewSpeciesCompanion(),
+                              onPressed: () async {
+                                if (checkPlotNumExists()) {
+                                  ecpH.complete.value
+                                      ? Popups.show(context, popupPageComplete)
+                                      : createNewSpeciesCompanion();
+                                }
+                              },
                               style: CustomButtonStyles.inactiveButton(
                                   isActive: !ecpH.complete.value),
                               child: const Text("Add species")),
@@ -334,7 +364,7 @@ class EcologicalPlotHeaderPageState
                                 details.rowColumnIndex.rowIndex != 0) {
                               if (ecpH.complete.value || parentComplete) {
                                 Popups.show(context, popupPageComplete);
-                              } else {
+                              } else if (checkPlotNumExists()) {
                                 int pId = source.dataGridRows[
                                         details.rowColumnIndex.rowIndex - 1]
                                     .getCells()[0]
