@@ -185,10 +185,16 @@ class EcologicalPlotHeaderPageState
   }
 
   String? errorMeasPlotSize(String? text) {
+    double nomPlotSize = ecpH.nomPlotSize == const d.Value.absent()
+        ? -1
+        : ecpH.nomPlotSize.value ?? -1;
+
     if (text?.isEmpty ?? true) {
       return "Can't be empty";
-    } else if (0.000025 > double.parse(text!) || double.parse(text!) > 1.0) {
+    } else if (0.000025 > double.parse(text!) || double.parse(text) > 1.0) {
       return "Input out of range. Must be between 0.000025 to 1.0 inclusive.";
+    } else if (nomPlotSize < double.parse(text)) {
+      return "Sample plot size cannot be larger than total ecp area size";
     }
     return null;
   }
@@ -286,7 +292,6 @@ class EcologicalPlotHeaderPageState
                                   nomPlotSize: d.Value(double.parse(s)));
                     },
                   ),
-                  //TODO: Check that measured area is larger than total area
                   DataInput(
                     readOnly: ecpH.complete.value,
                     title: "The measured area of the ecological sample plot",
