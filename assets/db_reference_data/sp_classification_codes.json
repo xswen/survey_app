@@ -1,266 +1,1646 @@
 [
-  {"order": "Brunisolic", "greatGroup": "Melanic Brunisol", "subGroup": "N/A", "code": "MB"},
-  {"order": "Brunisolic", "greatGroup": "Melanic Brunisol", "subGroup": "Orthic Melanic Brunisol", "code": "O.MB"},
-  {"order": "Brunisolic", "greatGroup": "Melanic Brunisol", "subGroup": "Eluviated Melanic Brunisol", "code": "E.MB"},
-  {"order": "Brunisolic", "greatGroup": "Melanic Brunisol", "subGroup": "Gleyed Melanic Brunisol", "code": "GL.MB"},
-  {"order": "Brunisolic", "greatGroup": "Melanic Brunisol", "subGroup": "Gleyed Eluviated Melanic Brunisol", "code": "GLE.MB"},
-  {"order": "Brunisolic", "greatGroup": "Eutric Brunisol", "subGroup": "N/A", "code": "EB"},
-  {"order": "Brunisolic", "greatGroup": "Eutric Brunisol", "subGroup": "Orthic Eutric Brunisol", "code": "O.EB"},
-  {"order": "Brunisolic", "greatGroup": "Eutric Brunisol", "subGroup": "Eluviated Eutric Brunisol", "code": "E.EB"},
-  {"order": "Brunisolic", "greatGroup": "Eutric Brunisol", "subGroup": "Gleyed Eutric Brunisol", "code": "GL.EB"},
-  {"order": "Brunisolic", "greatGroup": "Eutric Brunisol", "subGroup": "Gleyed Eluviated Eutric Brunisol", "code": "GLE.EB"},
-  {"order": "Brunisolic", "greatGroup": "Sombric Brunisol", "subGroup": "N/A", "code": "SB"},
-  {"order": "Brunisolic", "greatGroup": "Sombric Brunisol", "subGroup": "Orthic Sombric Brunisol", "code": "O.SB"},
-  {"order": "Brunisolic", "greatGroup": "Sombric Brunisol", "subGroup": "Eluviated Sombric Brunisol", "code": "E.SB"},
-  {"order": "Brunisolic", "greatGroup": "Sombric Brunisol", "subGroup": "Durit Sombric Brunisol", "code": "DU.SB"},
-  {"order": "Brunisolic", "greatGroup": "Sombric Brunisol", "subGroup": "Gleyed Sombric Brunisol", "code": "GL.SB"},
-  {"order": "Brunisolic", "greatGroup": "Sombric Brunisol", "subGroup": "Gleyed Eluviated Sombric Brunisol", "code": "GLE.SB"},
-  {"order": "Brunisolic", "greatGroup": "Dystric Brunisol", "subGroup": "N/A", "code": "DYB"},
-  {"order": "Brunisolic", "greatGroup": "Dystric Brunisol", "subGroup": "Orthic Dystric Brunisol", "code": "O.DYB"},
-  {"order": "Brunisolic", "greatGroup": "Dystric Brunisol", "subGroup": "Eluviated Dystric Brunisol", "code": "E.DYB"},
-  {"order": "Brunisolic", "greatGroup": "Dystric Brunisol", "subGroup": "Durit Dystric Brunisol", "code": "DU.DYB"},
-  {"order": "Brunisolic", "greatGroup": "Dystric Brunisol", "subGroup": "Gleyed Dystric Brunisol", "code": "GL.DYB"},
-  {"order": "Brunisolic", "greatGroup": "Dystric Brunisol", "subGroup": "Gleyed Eluviated Dystric Brunisol", "code": "GLE.DYB"},
-  {"order": "Chernozemic", "greatGroup": "Brown Chernozem", "subGroup": "N/A", "code": "BC"},
-  {"order": "Chernozemic", "greatGroup": "Brown Chernozem", "subGroup": "Orthic Brown Chernozem", "code": "O.BC"},
-  {"order": "Chernozemic", "greatGroup": "Brown Chernozem", "subGroup": "Rego Brown Chernozem", "code": "R.BC"},
-  {"order": "Chernozemic", "greatGroup": "Brown Chernozem", "subGroup": "Calcareous Brown Chernozem", "code": "CA.BC"},
-  {"order": "Chernozemic", "greatGroup": "Brown Chernozem", "subGroup": "Eluviated Brown Chernozem", "code": "E.BC"},
-  {"order": "Chernozemic", "greatGroup": "Brown Chernozem", "subGroup": "Solonetzic Brown Chernozem", "code": "SZ.BC"},
-  {"order": "Chernozemic", "greatGroup": "Brown Chernozem", "subGroup": "Vertic Brown Chernozem", "code": "V.BC"},
-  {"order": "Chernozemic", "greatGroup": "Brown Chernozem", "subGroup": "Gleyed Brown Chernozem", "code": "GL.BC"},
-  {"order": "Chernozemic", "greatGroup": "Brown Chernozem", "subGroup": "Gleyed Rego Brown Chernozem", "code": "GLR.BC"},
-  {"order": "Chernozemic", "greatGroup": "Brown Chernozem", "subGroup": "Gleyed Calcareous Brown Chernozem", "code": "GLCA.BC"},
-  {"order": "Chernozemic", "greatGroup": "Brown Chernozem", "subGroup": "Gleyed Eluviated Brown Chernozem", "code": "GLE.BC"},
-  {"order": "Chernozemic", "greatGroup": "Brown Chernozem", "subGroup": "Gleyed Solonetzic Brown Chernozem", "code": "GLSZ.BC"},
-  {"order": "Chernozemic", "greatGroup": "Brown Chernozem", "subGroup": "Gleyed Vertic Brown Chernozem", "code": "GLV.BC"},
-  {"order": "Chernozemic", "greatGroup": "Dark Brown Chernozem", "subGroup": "N/A", "code": "DBC"},
-  {"order": "Chernozemic", "greatGroup": "Dark Brown Chernozem", "subGroup": "Orthic Dark Brown Chernozem", "code": "O.DBC"},
-  {"order": "Chernozemic", "greatGroup": "Dark Brown Chernozem", "subGroup": "Rego Dark Brown Chernozem", "code": "R.DBC"},
-  {"order": "Chernozemic", "greatGroup": "Dark Brown Chernozem", "subGroup": "Calcareous Dark Brown Chernozem", "code": "CA.DBC"},
-  {"order": "Chernozemic", "greatGroup": "Dark Brown Chernozem", "subGroup": "Eluviated Dark Brown Chernozem", "code": "E.DBC"},
-  {"order": "Chernozemic", "greatGroup": "Dark Brown Chernozem", "subGroup": "Solonetzic Dark Brown Chernozem", "code": "SZ.DBC"},
-  {"order": "Chernozemic", "greatGroup": "Dark Brown Chernozem", "subGroup": "Vertic Dark Brown Chernozem", "code": "V.DBC"},
-  {"order": "Chernozemic", "greatGroup": "Dark Brown Chernozem", "subGroup": "Gleyed Dark Brown Chernozem", "code": "GL.DBC"},
-  {"order": "Chernozemic", "greatGroup": "Dark Brown Chernozem", "subGroup": "Gleyed Rego Dark Brown Chernozem", "code": "GLR.DBC"},
-  {"order": "Chernozemic", "greatGroup": "Dark Brown Chernozem", "subGroup": "Gleyed Calcareous Dark Brown Chernozem", "code": "GLCA.DBC"},
-  {"order": "Chernozemic", "greatGroup": "Dark Brown Chernozem", "subGroup": "Gleyed Eluviated Dark Brown Chernozem", "code": "GLE.DBC"},
-  {"order": "Chernozemic", "greatGroup": "Dark Brown Chernozem", "subGroup": "Gleyed Solonetzic Dark Brown Chernozem", "code": "GLSZ.DBC"},
-  {"order": "Chernozemic", "greatGroup": "Dark Brown Chernozem", "subGroup": "Gleyed Vertic Dark Brown Chernozem", "code": "GLV.DBC"},
-  {"order": "Chernozemic", "greatGroup": "Black Chernozem", "subGroup": "N/A", "code": "BLC"},
-  {"order": "Chernozemic", "greatGroup": "Black Chernozem", "subGroup": "Orthic Black Chernozem", "code": "O.BLC"},
-  {"order": "Chernozemic", "greatGroup": "Black Chernozem", "subGroup": "Rego Black Chernozem", "code": "R.BLC"},
-  {"order": "Chernozemic", "greatGroup": "Black Chernozem", "subGroup": "Calcareous Black Chernozem", "code": "CA.BLC"},
-  {"order": "Chernozemic", "greatGroup": "Black Chernozem", "subGroup": "Eluviated Black Chernozem", "code": "E.BLC"},
-  {"order": "Chernozemic", "greatGroup": "Black Chernozem", "subGroup": "Solonetzic Black Chernozem", "code": "SZ.BLC"},
-  {"order": "Chernozemic", "greatGroup": "Black Chernozem", "subGroup": "Vertic Black Chernozem", "code": "V.BLC"},
-  {"order": "Chernozemic", "greatGroup": "Black Chernozem", "subGroup": "Gleyed Black Chernozem", "code": "GL.BLC"},
-  {"order": "Chernozemic", "greatGroup": "Black Chernozem", "subGroup": "Gleyed Rego Black Chernozem", "code": "GLR.BLC"},
-  {"order": "Chernozemic", "greatGroup": "Black Chernozem", "subGroup": "Gleyed Calcareous Black Chernozem", "code": "GLCA.BLC"},
-  {"order": "Chernozemic", "greatGroup": "Black Chernozem", "subGroup": "Gleyed Eluviated Black Chernozem", "code": "GLE.BLC"},
-  {"order": "Chernozemic", "greatGroup": "Black Chernozem", "subGroup": "Gleyed Solonetzic Black Chernozem", "code": "GLSZ.BLC"},
-  {"order": "Chernozemic", "greatGroup": "Black Chernozem", "subGroup": "Gleyed Vertic Black Chernozem", "code": "GLV.BLC"},
-  {"order": "Chernozemic", "greatGroup": "Dark Gray Chernozem", "subGroup": "N/A", "code": "DGC"},
-  {"order": "Chernozemic", "greatGroup": "Dark Gray Chernozem", "subGroup": "Orthic Dark Gray Chernozem", "code": "O.DGC"},
-  {"order": "Chernozemic", "greatGroup": "Dark Gray Chernozem", "subGroup": "Rego Dark Gray Chernozem", "code": "R.DGC"},
-  {"order": "Chernozemic", "greatGroup": "Dark Gray Chernozem", "subGroup": "Calcareous Dark Gray Chernozem", "code": "CA.DGC"},
-  {"order": "Chernozemic", "greatGroup": "Dark Gray Chernozem", "subGroup": "Solonetzic Dark Gray Chernozem ", "code": "SZ.DGC"},
-  {"order": "Chernozemic", "greatGroup": "Dark Gray Chernozem", "subGroup": "Vertic Dark Gray Chernozem ", "code": "V.DGC"},
-  {"order": "Chernozemic", "greatGroup": "Dark Gray Chernozem", "subGroup": "Gleyed Dark Gray Chernozem", "code": "GL.DGC"},
-  {"order": "Chernozemic", "greatGroup": "Dark Gray Chernozem", "subGroup": "Gleyed Rego Dark Gray Chernozem", "code": "GLR.DGC"},
-  {"order": "Chernozemic", "greatGroup": "Dark Gray Chernozem", "subGroup": "Gleyed Calcareous Dark Gray Chernozem", "code": "GLCA.DGC"},
-  {"order": "Chernozemic", "greatGroup": "Dark Gray Chernozem", "subGroup": "Gleyed Solonetzic Dark Gray Chernozem", "code": "GLSZ.DGC"},
-  {"order": "Chernozemic", "greatGroup": "Dark Gray Chernozem", "subGroup": "Gleyed Vertic Dark Gray Chernozem", "code": "GLV.DGC"},
-  {"order": "Cryosolic", "greatGroup": "Turbic Cryosol", "subGroup": "N/A", "code": "TC"},
-  {"order": "Cryosolic", "greatGroup": "Turbic Cryosol", "subGroup": "Orthic Eutric Turbic Cryosol", "code": "OE.TC"},
-  {"order": "Cryosolic", "greatGroup": "Turbic Cryosol", "subGroup": "Orthic Dystric Turbic Cryosol", "code": "OD.TC"},
-  {"order": "Cryosolic", "greatGroup": "Turbic Cryosol", "subGroup": "Brunisolic Eutric Turbic Cryosol", "code": "BRE.TC"},
-  {"order": "Cryosolic", "greatGroup": "Turbic Cryosol", "subGroup": "Brunisolic Dystric Turbic Cryosol", "code": "BRD.TC"},
-  {"order": "Cryosolic", "greatGroup": "Turbic Cryosol", "subGroup": "Gleysolic Turbic Cryosol", "code": "GL.TC"},
-  {"order": "Cryosolic", "greatGroup": "Turbic Cryosol", "subGroup": "Regosolic Turbic Cryosol", "code": "R.TC"},
-  {"order": "Cryosolic", "greatGroup": "Turbic Cryosol", "subGroup": "Histic Eutric Turbic Cryosol", "code": "HE.TC"},
-  {"order": "Cryosolic", "greatGroup": "Turbic Cryosol", "subGroup": "Histic Dystric Turbic Cryosol", "code": "HD.TC"},
-  {"order": "Cryosolic", "greatGroup": "Turbic Cryosol", "subGroup": "Histic Regosolic Turbic Cryosol", "code": "HR.TC"},
-  {"order": "Cryosolic", "greatGroup": "Static Cryosol", "subGroup": "N/A", "code": "SC"},
-  {"order": "Cryosolic", "greatGroup": "Static Cryosol", "subGroup": "Orthic Eutric Static Cryosol", "code": "OE.SC"},
-  {"order": "Cryosolic", "greatGroup": "Static Cryosol", "subGroup": "Orthic Dystric Static Cryosol", "code": "OD.SC"},
-  {"order": "Cryosolic", "greatGroup": "Static Cryosol", "subGroup": "Brunisolic Eutric Static Cryosol", "code": "BRE.SC"},
-  {"order": "Cryosolic", "greatGroup": "Static Cryosol", "subGroup": "Brunisolic Dystric Static Cryosol", "code": "BRD.SC"},
-  {"order": "Cryosolic", "greatGroup": "Static Cryosol", "subGroup": "Luvisolic Static Cryosol", "code": "L.SC"},
-  {"order": "Cryosolic", "greatGroup": "Static Cryosol", "subGroup": "Gleysolic Static Cryosol", "code": "GL.SC"},
-  {"order": "Cryosolic", "greatGroup": "Static Cryosol", "subGroup": "Regosolic Static Cryosol", "code": "R.SC"},
-  {"order": "Cryosolic", "greatGroup": "Static Cryosol", "subGroup": "Histic Eutric Static Cryosol", "code": "HE.SC"},
-  {"order": "Cryosolic", "greatGroup": "Static Cryosol", "subGroup": "Histic Dystric Static Cryosol", "code": "HD.SC"},
-  {"order": "Cryosolic", "greatGroup": "Static Cryosol", "subGroup": "Histic Regosolic Static Cryosol", "code": "HR.SC"},
-  {"order": "Cryosolic", "greatGroup": "Organic Cryosol", "subGroup": "N/A", "code": "OC"},
-  {"order": "Cryosolic", "greatGroup": "Organic Cryosol", "subGroup": "Fibric Organic Cryosol", "code": "FI.OC"},
-  {"order": "Cryosolic", "greatGroup": "Organic Cryosol", "subGroup": "Mesic Organic Cryosol", "code": "ME.OC"},
-  {"order": "Cryosolic", "greatGroup": "Organic Cryosol", "subGroup": "Humic Organic Cryosol", "code": "HU.OC"},
-  {"order": "Cryosolic", "greatGroup": "Organic Cryosol", "subGroup": "Terric Fibric Organic Cryosol", "code": "TFI.OC"},
-  {"order": "Cryosolic", "greatGroup": "Organic Cryosol", "subGroup": "Terric Mesic Organic Cryosol", "code": "TME.OC"},
-  {"order": "Cryosolic", "greatGroup": "Organic Cryosol", "subGroup": "Terric Humic Organic Cryosol", "code": "THU.OC"},
-  {"order": "Cryosolic", "greatGroup": "Organic Cryosol", "subGroup": "Glacic Organic Cryosol", "code": "GC.OC"},
-  {"order": "Gleysolic", "greatGroup": "Luvic Gleysol", "subGroup": "N/A", "code": "LG"},
-  {"order": "Gleysolic", "greatGroup": "Luvic Gleysol", "subGroup": "Solonetzic Luvic Gleysol", "code": "SZ.LG"},
-  {"order": "Gleysolic", "greatGroup": "Luvic Gleysol", "subGroup": "Fragic Luvic Gleysol", "code": "FR.LG"},
-  {"order": "Gleysolic", "greatGroup": "Luvic Gleysol", "subGroup": "Humic Luvic Gleysol", "code": "HU.LG"},
-  {"order": "Gleysolic", "greatGroup": "Luvic Gleysol", "subGroup": "Fera Luvic Gleysol", "code": "FE.LG"},
-  {"order": "Gleysolic", "greatGroup": "Luvic Gleysol", "subGroup": "Orthic Luvic Gleysol", "code": "O.LG"},
-  {"order": "Gleysolic", "greatGroup": "Luvic Gleysol", "subGroup": "Vertic Luvic Gleysol", "code": "V.LG"},
-  {"order": "Gleysolic", "greatGroup": "Humic Gleysol", "subGroup": "N/A", "code": "HG"},
-  {"order": "Gleysolic", "greatGroup": "Humic Gleysol", "subGroup": "Solonetzic Humic Gleysol", "code": "SZ.HG"},
-  {"order": "Gleysolic", "greatGroup": "Humic Gleysol", "subGroup": "Fera Humic Gleysol", "code": "FE.HG"},
-  {"order": "Gleysolic", "greatGroup": "Humic Gleysol", "subGroup": "Orthic Humic Gleysol", "code": "O.HG"},
-  {"order": "Gleysolic", "greatGroup": "Humic Gleysol", "subGroup": "Rego Humic Gleysol", "code": "R.HG"},
-  {"order": "Gleysolic", "greatGroup": "Humic Gleysol", "subGroup": "Vertic Humic Gleysol", "code": "V.HG"},
-  {"order": "Gleysolic", "greatGroup": "Gleysol", "subGroup": "N/A", "code": "G"},
-  {"order": "Gleysolic", "greatGroup": "Gleysol", "subGroup": "Solonetzic Gleysol", "code": "SZ.G"},
-  {"order": "Gleysolic", "greatGroup": "Gleysol", "subGroup": "Fera Gleysol", "code": "FE.G"},
-  {"order": "Gleysolic", "greatGroup": "Gleysol", "subGroup": "Orthic Gleysol", "code": "O.G"},
-  {"order": "Gleysolic", "greatGroup": "Gleysol", "subGroup": "Rego Gleysol", "code": "R.G"},
-  {"order": "Gleysolic", "greatGroup": "Gleysol", "subGroup": "Vertic Gleysol", "code": "V.G"},
-  {"order": "Luvisolic", "greatGroup": "Gray Brown Luvisol", "subGroup": "N/A", "code": "GBL"},
-  {"order": "Luvisolic", "greatGroup": "Gray Brown Luvisol", "subGroup": "Orthic Gray Brown Luvisol", "code": "O.GBL"},
-  {"order": "Luvisolic", "greatGroup": "Gray Brown Luvisol", "subGroup": "Brunisolic Gray Brown Luvisol", "code": "BR.GBL"},
-  {"order": "Luvisolic", "greatGroup": "Gray Brown Luvisol", "subGroup": "Podzolic Gray Brown Luvisol", "code": "PZ.GBL"},
-  {"order": "Luvisolic", "greatGroup": "Gray Brown Luvisol", "subGroup": "Vertic Gray Brown Luvisol", "code": "V.GBL"},
-  {"order": "Luvisolic", "greatGroup": "Gray Brown Luvisol", "subGroup": "Gleyed Gray Brown Luvisol", "code": "GL.GBL"},
-  {"order": "Luvisolic", "greatGroup": "Gray Brown Luvisol", "subGroup": "Gleyed Brunisolic Gray Brown Luvisol", "code": "GLBR.GBL"},
-  {"order": "Luvisolic", "greatGroup": "Gray Brown Luvisol", "subGroup": "Gleyed Podzolic Gray Brown Luvisol", "code": "GLPZ.GBL"},
-  {"order": "Luvisolic", "greatGroup": "Gray Brown Luvisol", "subGroup": "Gleyed Vertic Gray Brown Luvisol", "code": "GLV.GBL"},
-  {"order": "Luvisolic", "greatGroup": "Gray Luvisol", "subGroup": "N/A", "code": "GL"},
-  {"order": "Luvisolic", "greatGroup": "Gray Luvisol", "subGroup": "Orthic Gray Luvisol", "code": "O.GL"},
-  {"order": "Luvisolic", "greatGroup": "Gray Luvisol", "subGroup": "Dark Gray Luvisol", "code": "D.GL"},
-  {"order": "Luvisolic", "greatGroup": "Gray Luvisol", "subGroup": "Brunisolic Gray Luvisol", "code": "BR.GL"},
-  {"order": "Luvisolic", "greatGroup": "Gray Luvisol", "subGroup": "Podzolic Gray Luvisol", "code": "PZ.GL"},
-  {"order": "Luvisolic", "greatGroup": "Gray Luvisol", "subGroup": "Solonetzic Gray Luvisol", "code": "SZ.GL"},
-  {"order": "Luvisolic", "greatGroup": "Gray Luvisol", "subGroup": "Fragic Gray Luvisol", "code": "FR.GL"},
-  {"order": "Luvisolic", "greatGroup": "Gray Luvisol", "subGroup": "Vertic Gray Luvisol", "code": "V.GL"},
-  {"order": "Luvisolic", "greatGroup": "Gray Luvisol", "subGroup": "Gleyed Gray Luvisol", "code": "GL.GL"},
-  {"order": "Luvisolic", "greatGroup": "Gray Luvisol", "subGroup": "Gleyed Dark Gray Luvisol", "code": "GLD.GL"},
-  {"order": "Luvisolic", "greatGroup": "Gray Luvisol", "subGroup": "Gleyed Brunisolic Gray Luvisol", "code": "GLBR.GL"},
-  {"order": "Luvisolic", "greatGroup": "Gray Luvisol", "subGroup": "Gleyed Podzolic Gray Luvisol", "code": "GLPZ.GL"},
-  {"order": "Luvisolic", "greatGroup": "Gray Luvisol", "subGroup": "Gleyed Solonetzic Gray Luvisol", "code": "GLSZ.GL"},
-  {"order": "Luvisolic", "greatGroup": "Gray Luvisol", "subGroup": "Gleyed Fragic Gray Luvisol", "code": "GLFR.GL"},
-  {"order": "Luvisolic", "greatGroup": "Gray Luvisol", "subGroup": "Gleyed Vertic Gray Luvisol", "code": "GLV.GL"},
-  {"order": "Organic", "greatGroup": "Fibrisol", "subGroup": "N/A", "code": "F"},
-  {"order": "Organic", "greatGroup": "Fibrisol", "subGroup": "Typic Fibrisol", "code": "TY.F"},
-  {"order": "Organic", "greatGroup": "Fibrisol", "subGroup": "Mesic Fibrisol", "code": "ME.F"},
-  {"order": "Organic", "greatGroup": "Fibrisol", "subGroup": "Humic Fibrisol", "code": "HU.F"},
-  {"order": "Organic", "greatGroup": "Fibrisol", "subGroup": "Limnic Fibrisol ", "code": "LM.F"},
-  {"order": "Organic", "greatGroup": "Fibrisol", "subGroup": "Cumulic Fibrisol", "code": "CU.F"},
-  {"order": "Organic", "greatGroup": "Fibrisol", "subGroup": "Terric Fibrisol", "code": "T.F"},
-  {"order": "Organic", "greatGroup": "Fibrisol", "subGroup": "Terric Mesic Fibrisol", "code": "TME.F"},
-  {"order": "Organic", "greatGroup": "Fibrisol", "subGroup": "Terric Humic Fibrisol", "code": "THU.F"},
-  {"order": "Organic", "greatGroup": "Fibrisol", "subGroup": "Hydric Fibrisol", "code": "HY.F"},
-  {"order": "Organic", "greatGroup": "Mesisol", "subGroup": "N/A", "code": "M"},
-  {"order": "Organic", "greatGroup": "Mesisol", "subGroup": "Typic Mesisol", "code": "TY.M"},
-  {"order": "Organic", "greatGroup": "Mesisol", "subGroup": "Fibric Mesisol", "code": "FI.M"},
-  {"order": "Organic", "greatGroup": "Mesisol", "subGroup": "Humic Mesisol", "code": "HU.M"},
-  {"order": "Organic", "greatGroup": "Mesisol", "subGroup": "Limnic Mesisol", "code": "LM.M"},
-  {"order": "Organic", "greatGroup": "Mesisol", "subGroup": "Cumulic Mesisol", "code": "CU.M"},
-  {"order": "Organic", "greatGroup": "Mesisol", "subGroup": "Terric Mesisol", "code": "T.M"},
-  {"order": "Organic", "greatGroup": "Mesisol", "subGroup": "Terric Fibric Mesisol", "code": "TFI.M"},
-  {"order": "Organic", "greatGroup": "Mesisol", "subGroup": "Terric Humic Mesisol", "code": "THU.M"},
-  {"order": "Organic", "greatGroup": "Mesisol", "subGroup": "Hydric Mesisol", "code": "HY.M"},
-  {"order": "Organic", "greatGroup": "Humisol", "subGroup": "N/A", "code": "H"},
-  {"order": "Organic", "greatGroup": "Humisol", "subGroup": "Typic Humisol", "code": "TY.H"},
-  {"order": "Organic", "greatGroup": "Humisol", "subGroup": "Fibric Humisol", "code": "FI.H"},
-  {"order": "Organic", "greatGroup": "Humisol", "subGroup": "Mesic Humisol", "code": "ME.H"},
-  {"order": "Organic", "greatGroup": "Humisol", "subGroup": "Limnic Humisol", "code": "LM.H"},
-  {"order": "Organic", "greatGroup": "Humisol", "subGroup": "Cumulic Humisol", "code": "CU.H"},
-  {"order": "Organic", "greatGroup": "Humisol", "subGroup": "Terric Humisol", "code": "T.H"},
-  {"order": "Organic", "greatGroup": "Humisol", "subGroup": "Terric Fibric Humisol", "code": "TFI.H"},
-  {"order": "Organic", "greatGroup": "Humisol", "subGroup": "Terric Mesic Humisol", "code": "TME.H"},
-  {"order": "Organic", "greatGroup": "Humisol", "subGroup": "Hydric Humisol", "code": "HY.H"},
-  {"order": "Organic", "greatGroup": "Folisol", "subGroup": "N/A", "code": "FO"},
-  {"order": "Organic", "greatGroup": "Folisol", "subGroup": "Hemic Folisol", "code": "HE.FO"},
-  {"order": "Organic", "greatGroup": "Folisol", "subGroup": "Humic Folisol", "code": "HU.FO"},
-  {"order": "Organic", "greatGroup": "Folisol", "subGroup": "Lignic Folisol", "code": "LI.FO"},
-  {"order": "Organic", "greatGroup": "Folisol", "subGroup": "Histic Folisol", "code": "HI.FO"},
-  {"order": "Podzolic", "greatGroup": "Humic Podzol", "subGroup": "N/A", "code": "HP"},
-  {"order": "Podzolic", "greatGroup": "Humic Podzol", "subGroup": "Orthic Humic Podzol", "code": "O.HP"},
-  {"order": "Podzolic", "greatGroup": "Humic Podzol", "subGroup": "Ortstein Humic Podzol", "code": "OT.HP"},
-  {"order": "Podzolic", "greatGroup": "Humic Podzol", "subGroup": "Placic Humic Podzol", "code": "P.HP"},
-  {"order": "Podzolic", "greatGroup": "Humic Podzol", "subGroup": "Durit Humic Podzol", "code": "DU.HP"},
-  {"order": "Podzolic", "greatGroup": "Humic Podzol", "subGroup": "Fragic Humic Podzol", "code": "FR.HP"},
-  {"order": "Podzolic", "greatGroup": "Ferro-Humic Podzol", "subGroup": "N/A", "code": "FHP"},
-  {"order": "Podzolic", "greatGroup": "Ferro-Humic Podzol", "subGroup": "Orthic Ferro-Humic Podzol", "code": "O.FHP"},
-  {"order": "Podzolic", "greatGroup": "Ferro-Humic Podzol", "subGroup": "Ortstein Ferro-Humic Podzol", "code": "OT.FHP"},
-  {"order": "Podzolic", "greatGroup": "Ferro-Humic Podzol", "subGroup": "Placic Ferro-Humic Podzol", "code": "P.FHP"},
-  {"order": "Podzolic", "greatGroup": "Ferro-Humic Podzol", "subGroup": "Durit Ferro-Humic Podzol", "code": "DU.FHP"},
-  {"order": "Podzolic", "greatGroup": "Ferro-Humic Podzol", "subGroup": "Fragic Ferro-Humic Podzol", "code": "FR.FHP"},
-  {"order": "Podzolic", "greatGroup": "Ferro-Humic Podzol", "subGroup": "Luvisolic Ferro-Humic Podzol", "code": "LU.FHP"},
-  {"order": "Podzolic", "greatGroup": "Ferro-Humic Podzol", "subGroup": "Sombric Ferro-Humic Podzol", "code": "SM.FHP"},
-  {"order": "Podzolic", "greatGroup": "Ferro-Humic Podzol", "subGroup": "Gleyed Ferro-Humic Podzol", "code": "GL.FHP"},
-  {"order": "Podzolic", "greatGroup": "Ferro-Humic Podzol", "subGroup": "Gleyed Ortstein Ferro-Humic Podzol", "code": "GLOT.FHP"},
-  {"order": "Podzolic", "greatGroup": "Ferro-Humic Podzol", "subGroup": "Gleyed Sombric Ferro-Humic Podzol", "code": "GLSM.FHP"},
-  {"order": "Podzolic", "greatGroup": "Humo-Ferric Podzol", "subGroup": "N/A", "code": "HFP"},
-  {"order": "Podzolic", "greatGroup": "Humo-Ferric Podzol", "subGroup": "Orthic Humo-Ferric Podzol", "code": "O.HFP"},
-  {"order": "Podzolic", "greatGroup": "Humo-Ferric Podzol", "subGroup": "Ortstein Humo-Ferric Podzol ", "code": "OT.HFP"},
-  {"order": "Podzolic", "greatGroup": "Humo-Ferric Podzol", "subGroup": "Placic Humo-Ferric Podzol", "code": "P.HFP"},
-  {"order": "Podzolic", "greatGroup": "Humo-Ferric Podzol", "subGroup": "Durit Humo-Ferric Podzol", "code": "DU.HFP"},
-  {"order": "Podzolic", "greatGroup": "Humo-Ferric Podzol", "subGroup": "Fragic Humo-Ferric Podzol", "code": "FR.HFP"},
-  {"order": "Podzolic", "greatGroup": "Humo-Ferric Podzol", "subGroup": "Luvisolic Humo-Ferric Podzol", "code": "LU.HFP"},
-  {"order": "Podzolic", "greatGroup": "Humo-Ferric Podzol", "subGroup": "Sombric Humo-Ferric Podzol", "code": "SM.HFP"},
-  {"order": "Podzolic", "greatGroup": "Humo-Ferric Podzol", "subGroup": "Gleyed Humo-Ferric Podzol", "code": "GL.HFP"},
-  {"order": "Podzolic", "greatGroup": "Humo-Ferric Podzol", "subGroup": "Gleyed Ortstein Humo-Ferric Podzol", "code": "GLOT.HFP"},
-  {"order": "Podzolic", "greatGroup": "Humo-Ferric Podzol", "subGroup": "Gleyed Sombric Humo-Ferric Podzol", "code": "GLSM.HFP"},
-  {"order": "Regosolic", "greatGroup": "Regosol", "subGroup": "N/A", "code": "R"},
-  {"order": "Regosolic", "greatGroup": "Regosol", "subGroup": "Orthic Regosol", "code": "O.R"},
-  {"order": "Regosolic", "greatGroup": "Regosol", "subGroup": "Cumulic Regosol", "code": "CU.R"},
-  {"order": "Regosolic", "greatGroup": "Regosol", "subGroup": "Gleyed Regosol", "code": "GL.R"},
-  {"order": "Regosolic", "greatGroup": "Regosol", "subGroup": "Gleyed Cumulic Regosol", "code": "GLCU.R"},
-  {"order": "Regosolic", "greatGroup": "Humic Regosol", "subGroup": "N/A", "code": "HR"},
-  {"order": "Regosolic", "greatGroup": "Humic Regosol", "subGroup": "Orthic Humic Regosol", "code": "O.HR"},
-  {"order": "Regosolic", "greatGroup": "Humic Regosol", "subGroup": "Cumulic Humic Regosol", "code": "CU.HR"},
-  {"order": "Regosolic", "greatGroup": "Humic Regosol", "subGroup": "Gleyed Humic Regosol", "code": "GL.HR"},
-  {"order": "Regosolic", "greatGroup": "Humic Regosol", "subGroup": "Gleyed Cumulic Humic Regosol", "code": "GLCU.HR"},
-  {"order": "Solonetzic", "greatGroup": "Solonetz", "subGroup": "N/A", "code": "SZ"},
-  {"order": "Solonetzic", "greatGroup": "Solonetz", "subGroup": "Brown Solonetz", "code": "B.SZ"},
-  {"order": "Solonetzic", "greatGroup": "Solonetz", "subGroup": "Dark Brown Solonetz", "code": "DB.SZ"},
-  {"order": "Solonetzic", "greatGroup": "Solonetz", "subGroup": "Black Solonetz", "code": "BL.SZ"},
-  {"order": "Solonetzic", "greatGroup": "Solonetz", "subGroup": "Alkaline Solonetz", "code": "A.SZ"},
-  {"order": "Solonetzic", "greatGroup": "Solonetz", "subGroup": "Gleyed Brown Solonetz", "code": "GLB.SZ"},
-  {"order": "Solonetzic", "greatGroup": "Solonetz", "subGroup": "Gleyed Dark Brown Solonetz", "code": "GLDB.SZ"},
-  {"order": "Solonetzic", "greatGroup": "Solonetz", "subGroup": "Gleyed Black Solonetz", "code": "GLBL.SZ"},
-  {"order": "Solonetzic", "greatGroup": "Solodized Solonetz", "subGroup": "N/A", "code": "SS"},
-  {"order": "Solonetzic", "greatGroup": "Solodized Solonetz", "subGroup": "Brown Solodized Solonetz", "code": "B.SS"},
-  {"order": "Solonetzic", "greatGroup": "Solodized Solonetz", "subGroup": "Dark Brown Solodized Solonetz", "code": "DB.SS"},
-  {"order": "Solonetzic", "greatGroup": "Solodized Solonetz", "subGroup": "Black Solodized Solonetz", "code": "BL.SS"},
-  {"order": "Solonetzic", "greatGroup": "Solodized Solonetz", "subGroup": "Dark Gray Solodized Solonetz", "code": "DG.SS"},
-  {"order": "Solonetzic", "greatGroup": "Solodized Solonetz", "subGroup": "Gray Solodized Solonetz", "code": "G.SS"},
-  {"order": "Solonetzic", "greatGroup": "Solodized Solonetz", "subGroup": "Gleyed Brown Solodized Solonetz", "code": "GLB.SS"},
-  {"order": "Solonetzic", "greatGroup": "Solodized Solonetz", "subGroup": "Gleyed Dark Brown Solodized Solonetz", "code": "GLDB.SS"},
-  {"order": "Solonetzic", "greatGroup": "Solodized Solonetz", "subGroup": "Gleyed Black Solodized Solonetz", "code": "GLBL.SS"},
-  {"order": "Solonetzic", "greatGroup": "Solodized Solonetz", "subGroup": "Gleyed Dark Gray Solodized Solonetz", "code": "GLDG.SS"},
-  {"order": "Solonetzic", "greatGroup": "Solodized Solonetz", "subGroup": "Gleyed Gray Solodized Solonetz", "code": "GLG.SS"},
-  {"order": "Solonetzic", "greatGroup": "Solod", "subGroup": "N/A", "code": "SO"},
-  {"order": "Solonetzic", "greatGroup": "Solod", "subGroup": "Brown Solod", "code": "B.SO"},
-  {"order": "Solonetzic", "greatGroup": "Solod", "subGroup": "Dark Brown Solod", "code": "DB.SO"},
-  {"order": "Solonetzic", "greatGroup": "Solod", "subGroup": "Black Solod", "code": "BL.SO"},
-  {"order": "Solonetzic", "greatGroup": "Solod", "subGroup": "Dark Gray Solod", "code": "DG.SO"},
-  {"order": "Solonetzic", "greatGroup": "Solod", "subGroup": "Gray Solod", "code": "G.SO"},
-  {"order": "Solonetzic", "greatGroup": "Solod", "subGroup": "Gleyed Brown Solod", "code": "GLB.SO"},
-  {"order": "Solonetzic", "greatGroup": "Solod", "subGroup": "Gleyed Dark Brown Solod", "code": "GLDB.SO"},
-  {"order": "Solonetzic", "greatGroup": "Solod", "subGroup": "Gleyed Black Solod", "code": "GLBL.SO"},
-  {"order": "Solonetzic", "greatGroup": "Solod", "subGroup": "Gleyed Dark Gray Solod", "code": "GLDG.SO"},
-  {"order": "Solonetzic", "greatGroup": "Solod", "subGroup": "Gleyed Gray Solod", "code": "GLG.SO"},
-  {"order": "Solonetzic", "greatGroup": "Vertic Solonetz", "subGroup": "N/A", "code": "V.SZ"},
-  {"order": "Solonetzic", "greatGroup": "Vertic Solonetz", "subGroup": "Brown Vertic Solonetz", "code": "BV.SZ"},
-  {"order": "Solonetzic", "greatGroup": "Vertic Solonetz", "subGroup": "Dark Brown Vertic Solonetz", "code": "DBV.SZ"},
-  {"order": "Solonetzic", "greatGroup": "Vertic Solonetz", "subGroup": "Black Vertic Solonetz", "code": "BLV.SZ"},
-  {"order": "Solonetzic", "greatGroup": "Vertic Solonetz", "subGroup": "Gleyed Brown Vertic Solonetz", "code": "GLBV.SZ"},
-  {"order": "Solonetzic", "greatGroup": "Vertic Solonetz", "subGroup": "Gleyed Dark Brown Vertic Solonetz", "code": "GLDBV.SZ"},
-  {"order": "Solonetzic", "greatGroup": "Vertic Solonetz", "subGroup": "Gleyed Black Vertic Solonetz", "code": "GLBLV.SZ"},
-  {"order": "Vertisolic", "greatGroup": "Vertisol", "subGroup": "N/A", "code": "V"},
-  {"order": "Vertisolic", "greatGroup": "Vertisol", "subGroup": "Orthic Vertisol", "code": "O.V"},
-  {"order": "Vertisolic", "greatGroup": "Vertisol", "subGroup": "Gleyed Vertisol", "code": "GL.V"},
-  {"order": "Vertisolic", "greatGroup": "Vertisol", "subGroup": "Gleysolic Vertisol", "code": "GLC.V"},
-  {"order": "Vertisolic", "greatGroup": "Humic Vertisol", "subGroup": "N/A", "code": "HV"},
-  {"order": "Vertisolic", "greatGroup": "Humic Vertisol", "subGroup": "Orthic Humic Vertisol", "code": "O.HV"},
-  {"order": "Vertisolic", "greatGroup": "Humic Vertisol", "subGroup": "Gleyed Humic Vertisol", "code": "GL.HV"},
-  {"order": "Vertisolic", "greatGroup": "Humic Vertisol", "subGroup": "Gleysolic Humic Vertisol", "code": "GLC.HV"},
-  {"order": "Unknown or not reported", "greatGroup": "Unknown or not reported", "subGroup": "Unknown or not reported", "code": "UNKN"},
-  {"order": "Not applicable", "greatGroup": "Not applicable", "subGroup": "Not applicable", "code": "N/A"}
+  {
+    "order": "Brunisolic",
+    "greatGroup": "N/A",
+    "subGroup": "N/A",
+    "code": "BRUNISOLIC"
+  },
+  {
+    "order": "Brunisolic",
+    "greatGroup": "Melanic Brunisol",
+    "subGroup": "N/A",
+    "code": "MB"
+  },
+  {
+    "order": "Brunisolic",
+    "greatGroup": "Melanic Brunisol",
+    "subGroup": "Orthic Melanic Brunisol",
+    "code": "O.MB"
+  },
+  {
+    "order": "Brunisolic",
+    "greatGroup": "Melanic Brunisol",
+    "subGroup": "Eluviated Melanic Brunisol",
+    "code": "E.MB"
+  },
+  {
+    "order": "Brunisolic",
+    "greatGroup": "Melanic Brunisol",
+    "subGroup": "Gleyed Melanic Brunisol",
+    "code": "GL.MB"
+  },
+  {
+    "order": "Brunisolic",
+    "greatGroup": "Melanic Brunisol",
+    "subGroup": "Gleyed Eluviated Melanic Brunisol",
+    "code": "GLE.MB"
+  },
+  {
+    "order": "Brunisolic",
+    "greatGroup": "Eutric Brunisol",
+    "subGroup": "N/A",
+    "code": "EB"
+  },
+  {
+    "order": "Brunisolic",
+    "greatGroup": "Eutric Brunisol",
+    "subGroup": "Orthic Eutric Brunisol",
+    "code": "O.EB"
+  },
+  {
+    "order": "Brunisolic",
+    "greatGroup": "Eutric Brunisol",
+    "subGroup": "Eluviated Eutric Brunisol",
+    "code": "E.EB"
+  },
+  {
+    "order": "Brunisolic",
+    "greatGroup": "Eutric Brunisol",
+    "subGroup": "Gleyed Eutric Brunisol",
+    "code": "GL.EB"
+  },
+  {
+    "order": "Brunisolic",
+    "greatGroup": "Eutric Brunisol",
+    "subGroup": "Gleyed Eluviated Eutric Brunisol",
+    "code": "GLE.EB"
+  },
+  {
+    "order": "Brunisolic",
+    "greatGroup": "Sombric Brunisol",
+    "subGroup": "N/A",
+    "code": "SB"
+  },
+  {
+    "order": "Brunisolic",
+    "greatGroup": "Sombric Brunisol",
+    "subGroup": "Orthic Sombric Brunisol",
+    "code": "O.SB"
+  },
+  {
+    "order": "Brunisolic",
+    "greatGroup": "Sombric Brunisol",
+    "subGroup": "Eluviated Sombric Brunisol",
+    "code": "E.SB"
+  },
+  {
+    "order": "Brunisolic",
+    "greatGroup": "Sombric Brunisol",
+    "subGroup": "Durit Sombric Brunisol",
+    "code": "DU.SB"
+  },
+  {
+    "order": "Brunisolic",
+    "greatGroup": "Sombric Brunisol",
+    "subGroup": "Gleyed Sombric Brunisol",
+    "code": "GL.SB"
+  },
+  {
+    "order": "Brunisolic",
+    "greatGroup": "Sombric Brunisol",
+    "subGroup": "Gleyed Eluviated Sombric Brunisol",
+    "code": "GLE.SB"
+  },
+  {
+    "order": "Brunisolic",
+    "greatGroup": "Dystric Brunisol",
+    "subGroup": "N/A",
+    "code": "DYB"
+  },
+  {
+    "order": "Brunisolic",
+    "greatGroup": "Dystric Brunisol",
+    "subGroup": "Orthic Dystric Brunisol",
+    "code": "O.DYB"
+  },
+  {
+    "order": "Brunisolic",
+    "greatGroup": "Dystric Brunisol",
+    "subGroup": "Eluviated Dystric Brunisol",
+    "code": "E.DYB"
+  },
+  {
+    "order": "Brunisolic",
+    "greatGroup": "Dystric Brunisol",
+    "subGroup": "Durit Dystric Brunisol",
+    "code": "DU.DYB"
+  },
+  {
+    "order": "Brunisolic",
+    "greatGroup": "Dystric Brunisol",
+    "subGroup": "Gleyed Dystric Brunisol",
+    "code": "GL.DYB"
+  },
+  {
+    "order": "Brunisolic",
+    "greatGroup": "Dystric Brunisol",
+    "subGroup": "Gleyed Eluviated Dystric Brunisol",
+    "code": "GLE.DYB"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "N/A",
+    "subGroup": "N/A",
+    "code": "CHERNOZEMIC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Brown Chernozem",
+    "subGroup": "N/A",
+    "code": "BC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Brown Chernozem",
+    "subGroup": "Orthic Brown Chernozem",
+    "code": "O.BC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Brown Chernozem",
+    "subGroup": "Rego Brown Chernozem",
+    "code": "R.BC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Brown Chernozem",
+    "subGroup": "Calcareous Brown Chernozem",
+    "code": "CA.BC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Brown Chernozem",
+    "subGroup": "Eluviated Brown Chernozem",
+    "code": "E.BC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Brown Chernozem",
+    "subGroup": "Solonetzic Brown Chernozem",
+    "code": "SZ.BC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Brown Chernozem",
+    "subGroup": "Vertic Brown Chernozem",
+    "code": "V.BC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Brown Chernozem",
+    "subGroup": "Gleyed Brown Chernozem",
+    "code": "GL.BC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Brown Chernozem",
+    "subGroup": "Gleyed Rego Brown Chernozem",
+    "code": "GLR.BC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Brown Chernozem",
+    "subGroup": "Gleyed Calcareous Brown Chernozem",
+    "code": "GLCA.BC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Brown Chernozem",
+    "subGroup": "Gleyed Eluviated Brown Chernozem",
+    "code": "GLE.BC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Brown Chernozem",
+    "subGroup": "Gleyed Solonetzic Brown Chernozem",
+    "code": "GLSZ.BC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Brown Chernozem",
+    "subGroup": "Gleyed Vertic Brown Chernozem",
+    "code": "GLV.BC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Dark Brown Chernozem",
+    "subGroup": "N/A",
+    "code": "DBC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Dark Brown Chernozem",
+    "subGroup": "Orthic Dark Brown Chernozem",
+    "code": "O.DBC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Dark Brown Chernozem",
+    "subGroup": "Rego Dark Brown Chernozem",
+    "code": "R.DBC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Dark Brown Chernozem",
+    "subGroup": "Calcareous Dark Brown Chernozem",
+    "code": "CA.DBC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Dark Brown Chernozem",
+    "subGroup": "Eluviated Dark Brown Chernozem",
+    "code": "E.DBC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Dark Brown Chernozem",
+    "subGroup": "Solonetzic Dark Brown Chernozem",
+    "code": "SZ.DBC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Dark Brown Chernozem",
+    "subGroup": "Vertic Dark Brown Chernozem",
+    "code": "V.DBC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Dark Brown Chernozem",
+    "subGroup": "Gleyed Dark Brown Chernozem",
+    "code": "GL.DBC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Dark Brown Chernozem",
+    "subGroup": "Gleyed Rego Dark Brown Chernozem",
+    "code": "GLR.DBC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Dark Brown Chernozem",
+    "subGroup": "Gleyed Calcareous Dark Brown Chernozem",
+    "code": "GLCA.DBC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Dark Brown Chernozem",
+    "subGroup": "Gleyed Eluviated Dark Brown Chernozem",
+    "code": "GLE.DBC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Dark Brown Chernozem",
+    "subGroup": "Gleyed Solonetzic Dark Brown Chernozem",
+    "code": "GLSZ.DBC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Dark Brown Chernozem",
+    "subGroup": "Gleyed Vertic Dark Brown Chernozem",
+    "code": "GLV.DBC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Black Chernozem",
+    "subGroup": "N/A",
+    "code": "BLC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Black Chernozem",
+    "subGroup": "Orthic Black Chernozem",
+    "code": "O.BLC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Black Chernozem",
+    "subGroup": "Rego Black Chernozem",
+    "code": "R.BLC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Black Chernozem",
+    "subGroup": "Calcareous Black Chernozem",
+    "code": "CA.BLC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Black Chernozem",
+    "subGroup": "Eluviated Black Chernozem",
+    "code": "E.BLC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Black Chernozem",
+    "subGroup": "Solonetzic Black Chernozem",
+    "code": "SZ.BLC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Black Chernozem",
+    "subGroup": "Vertic Black Chernozem",
+    "code": "V.BLC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Black Chernozem",
+    "subGroup": "Gleyed Black Chernozem",
+    "code": "GL.BLC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Black Chernozem",
+    "subGroup": "Gleyed Rego Black Chernozem",
+    "code": "GLR.BLC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Black Chernozem",
+    "subGroup": "Gleyed Calcareous Black Chernozem",
+    "code": "GLCA.BLC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Black Chernozem",
+    "subGroup": "Gleyed Eluviated Black Chernozem",
+    "code": "GLE.BLC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Black Chernozem",
+    "subGroup": "Gleyed Solonetzic Black Chernozem",
+    "code": "GLSZ.BLC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Black Chernozem",
+    "subGroup": "Gleyed Vertic Black Chernozem",
+    "code": "GLV.BLC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Dark Gray Chernozem",
+    "subGroup": "N/A",
+    "code": "DGC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Dark Gray Chernozem",
+    "subGroup": "Orthic Dark Gray Chernozem",
+    "code": "O.DGC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Dark Gray Chernozem",
+    "subGroup": "Rego Dark Gray Chernozem",
+    "code": "R.DGC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Dark Gray Chernozem",
+    "subGroup": "Calcareous Dark Gray Chernozem",
+    "code": "CA.DGC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Dark Gray Chernozem",
+    "subGroup": "Solonetzic Dark Gray Chernozem ",
+    "code": "SZ.DGC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Dark Gray Chernozem",
+    "subGroup": "Vertic Dark Gray Chernozem ",
+    "code": "V.DGC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Dark Gray Chernozem",
+    "subGroup": "Gleyed Dark Gray Chernozem",
+    "code": "GL.DGC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Dark Gray Chernozem",
+    "subGroup": "Gleyed Rego Dark Gray Chernozem",
+    "code": "GLR.DGC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Dark Gray Chernozem",
+    "subGroup": "Gleyed Calcareous Dark Gray Chernozem",
+    "code": "GLCA.DGC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Dark Gray Chernozem",
+    "subGroup": "Gleyed Solonetzic Dark Gray Chernozem",
+    "code": "GLSZ.DGC"
+  },
+  {
+    "order": "Chernozemic",
+    "greatGroup": "Dark Gray Chernozem",
+    "subGroup": "Gleyed Vertic Dark Gray Chernozem",
+    "code": "GLV.DGC"
+  },
+  {
+    "order": "Cryosolic",
+    "greatGroup": "N/A",
+    "subGroup": "N/A",
+    "code": "CRYOSOLIC"
+  },
+  {
+    "order": "Cryosolic",
+    "greatGroup": "Turbic Cryosol",
+    "subGroup": "N/A",
+    "code": "TC"
+  },
+  {
+    "order": "Cryosolic",
+    "greatGroup": "Turbic Cryosol",
+    "subGroup": "Orthic Eutric Turbic Cryosol",
+    "code": "OE.TC"
+  },
+  {
+    "order": "Cryosolic",
+    "greatGroup": "Turbic Cryosol",
+    "subGroup": "Orthic Dystric Turbic Cryosol",
+    "code": "OD.TC"
+  },
+  {
+    "order": "Cryosolic",
+    "greatGroup": "Turbic Cryosol",
+    "subGroup": "Brunisolic Eutric Turbic Cryosol",
+    "code": "BRE.TC"
+  },
+  {
+    "order": "Cryosolic",
+    "greatGroup": "Turbic Cryosol",
+    "subGroup": "Brunisolic Dystric Turbic Cryosol",
+    "code": "BRD.TC"
+  },
+  {
+    "order": "Cryosolic",
+    "greatGroup": "Turbic Cryosol",
+    "subGroup": "Gleysolic Turbic Cryosol",
+    "code": "GL.TC"
+  },
+  {
+    "order": "Cryosolic",
+    "greatGroup": "Turbic Cryosol",
+    "subGroup": "Regosolic Turbic Cryosol",
+    "code": "R.TC"
+  },
+  {
+    "order": "Cryosolic",
+    "greatGroup": "Turbic Cryosol",
+    "subGroup": "Histic Eutric Turbic Cryosol",
+    "code": "HE.TC"
+  },
+  {
+    "order": "Cryosolic",
+    "greatGroup": "Turbic Cryosol",
+    "subGroup": "Histic Dystric Turbic Cryosol",
+    "code": "HD.TC"
+  },
+  {
+    "order": "Cryosolic",
+    "greatGroup": "Turbic Cryosol",
+    "subGroup": "Histic Regosolic Turbic Cryosol",
+    "code": "HR.TC"
+  },
+  {
+    "order": "Cryosolic",
+    "greatGroup": "Static Cryosol",
+    "subGroup": "N/A",
+    "code": "SC"
+  },
+  {
+    "order": "Cryosolic",
+    "greatGroup": "Static Cryosol",
+    "subGroup": "Orthic Eutric Static Cryosol",
+    "code": "OE.SC"
+  },
+  {
+    "order": "Cryosolic",
+    "greatGroup": "Static Cryosol",
+    "subGroup": "Orthic Dystric Static Cryosol",
+    "code": "OD.SC"
+  },
+  {
+    "order": "Cryosolic",
+    "greatGroup": "Static Cryosol",
+    "subGroup": "Brunisolic Eutric Static Cryosol",
+    "code": "BRE.SC"
+  },
+  {
+    "order": "Cryosolic",
+    "greatGroup": "Static Cryosol",
+    "subGroup": "Brunisolic Dystric Static Cryosol",
+    "code": "BRD.SC"
+  },
+  {
+    "order": "Cryosolic",
+    "greatGroup": "Static Cryosol",
+    "subGroup": "Luvisolic Static Cryosol",
+    "code": "L.SC"
+  },
+  {
+    "order": "Cryosolic",
+    "greatGroup": "Static Cryosol",
+    "subGroup": "Gleysolic Static Cryosol",
+    "code": "GL.SC"
+  },
+  {
+    "order": "Cryosolic",
+    "greatGroup": "Static Cryosol",
+    "subGroup": "Regosolic Static Cryosol",
+    "code": "R.SC"
+  },
+  {
+    "order": "Cryosolic",
+    "greatGroup": "Static Cryosol",
+    "subGroup": "Histic Eutric Static Cryosol",
+    "code": "HE.SC"
+  },
+  {
+    "order": "Cryosolic",
+    "greatGroup": "Static Cryosol",
+    "subGroup": "Histic Dystric Static Cryosol",
+    "code": "HD.SC"
+  },
+  {
+    "order": "Cryosolic",
+    "greatGroup": "Static Cryosol",
+    "subGroup": "Histic Regosolic Static Cryosol",
+    "code": "HR.SC"
+  },
+  {
+    "order": "Cryosolic",
+    "greatGroup": "Organic Cryosol",
+    "subGroup": "N/A",
+    "code": "OC"
+  },
+  {
+    "order": "Cryosolic",
+    "greatGroup": "Organic Cryosol",
+    "subGroup": "Fibric Organic Cryosol",
+    "code": "FI.OC"
+  },
+  {
+    "order": "Cryosolic",
+    "greatGroup": "Organic Cryosol",
+    "subGroup": "Mesic Organic Cryosol",
+    "code": "ME.OC"
+  },
+  {
+    "order": "Cryosolic",
+    "greatGroup": "Organic Cryosol",
+    "subGroup": "Humic Organic Cryosol",
+    "code": "HU.OC"
+  },
+  {
+    "order": "Cryosolic",
+    "greatGroup": "Organic Cryosol",
+    "subGroup": "Terric Fibric Organic Cryosol",
+    "code": "TFI.OC"
+  },
+  {
+    "order": "Cryosolic",
+    "greatGroup": "Organic Cryosol",
+    "subGroup": "Terric Mesic Organic Cryosol",
+    "code": "TME.OC"
+  },
+  {
+    "order": "Cryosolic",
+    "greatGroup": "Organic Cryosol",
+    "subGroup": "Terric Humic Organic Cryosol",
+    "code": "THU.OC"
+  },
+  {
+    "order": "Cryosolic",
+    "greatGroup": "Organic Cryosol",
+    "subGroup": "Glacic Organic Cryosol",
+    "code": "GC.OC"
+  },
+  {
+    "order": "Gleysolic",
+    "greatGroup": "N/A",
+    "subGroup": "N/A",
+    "code": "GLEYSOLIC"
+  },
+  {
+    "order": "Gleysolic",
+    "greatGroup": "Luvic Gleysol",
+    "subGroup": "N/A",
+    "code": "LG"
+  },
+  {
+    "order": "Gleysolic",
+    "greatGroup": "Luvic Gleysol",
+    "subGroup": "Solonetzic Luvic Gleysol",
+    "code": "SZ.LG"
+  },
+  {
+    "order": "Gleysolic",
+    "greatGroup": "Luvic Gleysol",
+    "subGroup": "Fragic Luvic Gleysol",
+    "code": "FR.LG"
+  },
+  {
+    "order": "Gleysolic",
+    "greatGroup": "Luvic Gleysol",
+    "subGroup": "Humic Luvic Gleysol",
+    "code": "HU.LG"
+  },
+  {
+    "order": "Gleysolic",
+    "greatGroup": "Luvic Gleysol",
+    "subGroup": "Fera Luvic Gleysol",
+    "code": "FE.LG"
+  },
+  {
+    "order": "Gleysolic",
+    "greatGroup": "Luvic Gleysol",
+    "subGroup": "Orthic Luvic Gleysol",
+    "code": "O.LG"
+  },
+  {
+    "order": "Gleysolic",
+    "greatGroup": "Luvic Gleysol",
+    "subGroup": "Vertic Luvic Gleysol",
+    "code": "V.LG"
+  },
+  {
+    "order": "Gleysolic",
+    "greatGroup": "Humic Gleysol",
+    "subGroup": "N/A",
+    "code": "HG"
+  },
+  {
+    "order": "Gleysolic",
+    "greatGroup": "Humic Gleysol",
+    "subGroup": "Solonetzic Humic Gleysol",
+    "code": "SZ.HG"
+  },
+  {
+    "order": "Gleysolic",
+    "greatGroup": "Humic Gleysol",
+    "subGroup": "Fera Humic Gleysol",
+    "code": "FE.HG"
+  },
+  {
+    "order": "Gleysolic",
+    "greatGroup": "Humic Gleysol",
+    "subGroup": "Orthic Humic Gleysol",
+    "code": "O.HG"
+  },
+  {
+    "order": "Gleysolic",
+    "greatGroup": "Humic Gleysol",
+    "subGroup": "Rego Humic Gleysol",
+    "code": "R.HG"
+  },
+  {
+    "order": "Gleysolic",
+    "greatGroup": "Humic Gleysol",
+    "subGroup": "Vertic Humic Gleysol",
+    "code": "V.HG"
+  },
+  {
+    "order": "Gleysolic",
+    "greatGroup": "Gleysol",
+    "subGroup": "N/A",
+    "code": "G"
+  },
+  {
+    "order": "Gleysolic",
+    "greatGroup": "Gleysol",
+    "subGroup": "Solonetzic Gleysol",
+    "code": "SZ.G"
+  },
+  {
+    "order": "Gleysolic",
+    "greatGroup": "Gleysol",
+    "subGroup": "Fera Gleysol",
+    "code": "FE.G"
+  },
+  {
+    "order": "Gleysolic",
+    "greatGroup": "Gleysol",
+    "subGroup": "Orthic Gleysol",
+    "code": "O.G"
+  },
+  {
+    "order": "Gleysolic",
+    "greatGroup": "Gleysol",
+    "subGroup": "Rego Gleysol",
+    "code": "R.G"
+  },
+  {
+    "order": "Gleysolic",
+    "greatGroup": "Gleysol",
+    "subGroup": "Vertic Gleysol",
+    "code": "V.G"
+  },
+  {
+    "order": "Luvisolic",
+    "greatGroup": "N/A",
+    "subGroup": "N/A",
+    "code": "LUVISOLIC"
+  },
+  {
+    "order": "Luvisolic",
+    "greatGroup": "Gray Brown Luvisol",
+    "subGroup": "N/A",
+    "code": "GBL"
+  },
+  {
+    "order": "Luvisolic",
+    "greatGroup": "Gray Brown Luvisol",
+    "subGroup": "Orthic Gray Brown Luvisol",
+    "code": "O.GBL"
+  },
+  {
+    "order": "Luvisolic",
+    "greatGroup": "Gray Brown Luvisol",
+    "subGroup": "Brunisolic Gray Brown Luvisol",
+    "code": "BR.GBL"
+  },
+  {
+    "order": "Luvisolic",
+    "greatGroup": "Gray Brown Luvisol",
+    "subGroup": "Podzolic Gray Brown Luvisol",
+    "code": "PZ.GBL"
+  },
+  {
+    "order": "Luvisolic",
+    "greatGroup": "Gray Brown Luvisol",
+    "subGroup": "Vertic Gray Brown Luvisol",
+    "code": "V.GBL"
+  },
+  {
+    "order": "Luvisolic",
+    "greatGroup": "Gray Brown Luvisol",
+    "subGroup": "Gleyed Gray Brown Luvisol",
+    "code": "GL.GBL"
+  },
+  {
+    "order": "Luvisolic",
+    "greatGroup": "Gray Brown Luvisol",
+    "subGroup": "Gleyed Brunisolic Gray Brown Luvisol",
+    "code": "GLBR.GBL"
+  },
+  {
+    "order": "Luvisolic",
+    "greatGroup": "Gray Brown Luvisol",
+    "subGroup": "Gleyed Podzolic Gray Brown Luvisol",
+    "code": "GLPZ.GBL"
+  },
+  {
+    "order": "Luvisolic",
+    "greatGroup": "Gray Brown Luvisol",
+    "subGroup": "Gleyed Vertic Gray Brown Luvisol",
+    "code": "GLV.GBL"
+  },
+  {
+    "order": "Luvisolic",
+    "greatGroup": "Gray Luvisol",
+    "subGroup": "N/A",
+    "code": "GL"
+  },
+  {
+    "order": "Luvisolic",
+    "greatGroup": "Gray Luvisol",
+    "subGroup": "Orthic Gray Luvisol",
+    "code": "O.GL"
+  },
+  {
+    "order": "Luvisolic",
+    "greatGroup": "Gray Luvisol",
+    "subGroup": "Dark Gray Luvisol",
+    "code": "D.GL"
+  },
+  {
+    "order": "Luvisolic",
+    "greatGroup": "Gray Luvisol",
+    "subGroup": "Brunisolic Gray Luvisol",
+    "code": "BR.GL"
+  },
+  {
+    "order": "Luvisolic",
+    "greatGroup": "Gray Luvisol",
+    "subGroup": "Podzolic Gray Luvisol",
+    "code": "PZ.GL"
+  },
+  {
+    "order": "Luvisolic",
+    "greatGroup": "Gray Luvisol",
+    "subGroup": "Solonetzic Gray Luvisol",
+    "code": "SZ.GL"
+  },
+  {
+    "order": "Luvisolic",
+    "greatGroup": "Gray Luvisol",
+    "subGroup": "Fragic Gray Luvisol",
+    "code": "FR.GL"
+  },
+  {
+    "order": "Luvisolic",
+    "greatGroup": "Gray Luvisol",
+    "subGroup": "Vertic Gray Luvisol",
+    "code": "V.GL"
+  },
+  {
+    "order": "Luvisolic",
+    "greatGroup": "Gray Luvisol",
+    "subGroup": "Gleyed Gray Luvisol",
+    "code": "GL.GL"
+  },
+  {
+    "order": "Luvisolic",
+    "greatGroup": "Gray Luvisol",
+    "subGroup": "Gleyed Dark Gray Luvisol",
+    "code": "GLD.GL"
+  },
+  {
+    "order": "Luvisolic",
+    "greatGroup": "Gray Luvisol",
+    "subGroup": "Gleyed Brunisolic Gray Luvisol",
+    "code": "GLBR.GL"
+  },
+  {
+    "order": "Luvisolic",
+    "greatGroup": "Gray Luvisol",
+    "subGroup": "Gleyed Podzolic Gray Luvisol",
+    "code": "GLPZ.GL"
+  },
+  {
+    "order": "Luvisolic",
+    "greatGroup": "Gray Luvisol",
+    "subGroup": "Gleyed Solonetzic Gray Luvisol",
+    "code": "GLSZ.GL"
+  },
+  {
+    "order": "Luvisolic",
+    "greatGroup": "Gray Luvisol",
+    "subGroup": "Gleyed Fragic Gray Luvisol",
+    "code": "GLFR.GL"
+  },
+  {
+    "order": "Luvisolic",
+    "greatGroup": "Gray Luvisol",
+    "subGroup": "Gleyed Vertic Gray Luvisol",
+    "code": "GLV.GL"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "N/A",
+    "subGroup": "N/A",
+    "code": "ORGANIC"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "Fibrisol",
+    "subGroup": "N/A",
+    "code": "F"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "Fibrisol",
+    "subGroup": "Typic Fibrisol",
+    "code": "TY.F"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "Fibrisol",
+    "subGroup": "Mesic Fibrisol",
+    "code": "ME.F"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "Fibrisol",
+    "subGroup": "Humic Fibrisol",
+    "code": "HU.F"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "Fibrisol",
+    "subGroup": "Limnic Fibrisol ",
+    "code": "LM.F"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "Fibrisol",
+    "subGroup": "Cumulic Fibrisol",
+    "code": "CU.F"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "Fibrisol",
+    "subGroup": "Terric Fibrisol",
+    "code": "T.F"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "Fibrisol",
+    "subGroup": "Terric Mesic Fibrisol",
+    "code": "TME.F"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "Fibrisol",
+    "subGroup": "Terric Humic Fibrisol",
+    "code": "THU.F"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "Fibrisol",
+    "subGroup": "Hydric Fibrisol",
+    "code": "HY.F"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "Mesisol",
+    "subGroup": "N/A",
+    "code": "M"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "Mesisol",
+    "subGroup": "Typic Mesisol",
+    "code": "TY.M"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "Mesisol",
+    "subGroup": "Fibric Mesisol",
+    "code": "FI.M"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "Mesisol",
+    "subGroup": "Humic Mesisol",
+    "code": "HU.M"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "Mesisol",
+    "subGroup": "Limnic Mesisol",
+    "code": "LM.M"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "Mesisol",
+    "subGroup": "Cumulic Mesisol",
+    "code": "CU.M"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "Mesisol",
+    "subGroup": "Terric Mesisol",
+    "code": "T.M"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "Mesisol",
+    "subGroup": "Terric Fibric Mesisol",
+    "code": "TFI.M"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "Mesisol",
+    "subGroup": "Terric Humic Mesisol",
+    "code": "THU.M"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "Mesisol",
+    "subGroup": "Hydric Mesisol",
+    "code": "HY.M"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "Humisol",
+    "subGroup": "N/A",
+    "code": "H"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "Humisol",
+    "subGroup": "Typic Humisol",
+    "code": "TY.H"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "Humisol",
+    "subGroup": "Fibric Humisol",
+    "code": "FI.H"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "Humisol",
+    "subGroup": "Mesic Humisol",
+    "code": "ME.H"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "Humisol",
+    "subGroup": "Limnic Humisol",
+    "code": "LM.H"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "Humisol",
+    "subGroup": "Cumulic Humisol",
+    "code": "CU.H"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "Humisol",
+    "subGroup": "Terric Humisol",
+    "code": "T.H"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "Humisol",
+    "subGroup": "Terric Fibric Humisol",
+    "code": "TFI.H"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "Humisol",
+    "subGroup": "Terric Mesic Humisol",
+    "code": "TME.H"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "Humisol",
+    "subGroup": "Hydric Humisol",
+    "code": "HY.H"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "Folisol",
+    "subGroup": "N/A",
+    "code": "FO"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "Folisol",
+    "subGroup": "Hemic Folisol",
+    "code": "HE.FO"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "Folisol",
+    "subGroup": "Humic Folisol",
+    "code": "HU.FO"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "Folisol",
+    "subGroup": "Lignic Folisol",
+    "code": "LI.FO"
+  },
+  {
+    "order": "Organic",
+    "greatGroup": "Folisol",
+    "subGroup": "Histic Folisol",
+    "code": "HI.FO"
+  },
+  {
+    "order": "Podzolic",
+    "greatGroup": "N/A",
+    "subGroup": "N/A",
+    "code": "PODZOLIC"
+  },
+  {
+    "order": "Podzolic",
+    "greatGroup": "Humic Podzol",
+    "subGroup": "N/A",
+    "code": "HP"
+  },
+  {
+    "order": "Podzolic",
+    "greatGroup": "Humic Podzol",
+    "subGroup": "Orthic Humic Podzol",
+    "code": "O.HP"
+  },
+  {
+    "order": "Podzolic",
+    "greatGroup": "Humic Podzol",
+    "subGroup": "Ortstein Humic Podzol",
+    "code": "OT.HP"
+  },
+  {
+    "order": "Podzolic",
+    "greatGroup": "Humic Podzol",
+    "subGroup": "Placic Humic Podzol",
+    "code": "P.HP"
+  },
+  {
+    "order": "Podzolic",
+    "greatGroup": "Humic Podzol",
+    "subGroup": "Durit Humic Podzol",
+    "code": "DU.HP"
+  },
+  {
+    "order": "Podzolic",
+    "greatGroup": "Humic Podzol",
+    "subGroup": "Fragic Humic Podzol",
+    "code": "FR.HP"
+  },
+  {
+    "order": "Podzolic",
+    "greatGroup": "Ferro-Humic Podzol",
+    "subGroup": "N/A",
+    "code": "FHP"
+  },
+  {
+    "order": "Podzolic",
+    "greatGroup": "Ferro-Humic Podzol",
+    "subGroup": "Orthic Ferro-Humic Podzol",
+    "code": "O.FHP"
+  },
+  {
+    "order": "Podzolic",
+    "greatGroup": "Ferro-Humic Podzol",
+    "subGroup": "Ortstein Ferro-Humic Podzol",
+    "code": "OT.FHP"
+  },
+  {
+    "order": "Podzolic",
+    "greatGroup": "Ferro-Humic Podzol",
+    "subGroup": "Placic Ferro-Humic Podzol",
+    "code": "P.FHP"
+  },
+  {
+    "order": "Podzolic",
+    "greatGroup": "Ferro-Humic Podzol",
+    "subGroup": "Durit Ferro-Humic Podzol",
+    "code": "DU.FHP"
+  },
+  {
+    "order": "Podzolic",
+    "greatGroup": "Ferro-Humic Podzol",
+    "subGroup": "Fragic Ferro-Humic Podzol",
+    "code": "FR.FHP"
+  },
+  {
+    "order": "Podzolic",
+    "greatGroup": "Ferro-Humic Podzol",
+    "subGroup": "Luvisolic Ferro-Humic Podzol",
+    "code": "LU.FHP"
+  },
+  {
+    "order": "Podzolic",
+    "greatGroup": "Ferro-Humic Podzol",
+    "subGroup": "Sombric Ferro-Humic Podzol",
+    "code": "SM.FHP"
+  },
+  {
+    "order": "Podzolic",
+    "greatGroup": "Ferro-Humic Podzol",
+    "subGroup": "Gleyed Ferro-Humic Podzol",
+    "code": "GL.FHP"
+  },
+  {
+    "order": "Podzolic",
+    "greatGroup": "Ferro-Humic Podzol",
+    "subGroup": "Gleyed Ortstein Ferro-Humic Podzol",
+    "code": "GLOT.FHP"
+  },
+  {
+    "order": "Podzolic",
+    "greatGroup": "Ferro-Humic Podzol",
+    "subGroup": "Gleyed Sombric Ferro-Humic Podzol",
+    "code": "GLSM.FHP"
+  },
+  {
+    "order": "Podzolic",
+    "greatGroup": "Humo-Ferric Podzol",
+    "subGroup": "N/A",
+    "code": "HFP"
+  },
+  {
+    "order": "Podzolic",
+    "greatGroup": "Humo-Ferric Podzol",
+    "subGroup": "Orthic Humo-Ferric Podzol",
+    "code": "O.HFP"
+  },
+  {
+    "order": "Podzolic",
+    "greatGroup": "Humo-Ferric Podzol",
+    "subGroup": "Ortstein Humo-Ferric Podzol ",
+    "code": "OT.HFP"
+  },
+  {
+    "order": "Podzolic",
+    "greatGroup": "Humo-Ferric Podzol",
+    "subGroup": "Placic Humo-Ferric Podzol",
+    "code": "P.HFP"
+  },
+  {
+    "order": "Podzolic",
+    "greatGroup": "Humo-Ferric Podzol",
+    "subGroup": "Durit Humo-Ferric Podzol",
+    "code": "DU.HFP"
+  },
+  {
+    "order": "Podzolic",
+    "greatGroup": "Humo-Ferric Podzol",
+    "subGroup": "Fragic Humo-Ferric Podzol",
+    "code": "FR.HFP"
+  },
+  {
+    "order": "Podzolic",
+    "greatGroup": "Humo-Ferric Podzol",
+    "subGroup": "Luvisolic Humo-Ferric Podzol",
+    "code": "LU.HFP"
+  },
+  {
+    "order": "Podzolic",
+    "greatGroup": "Humo-Ferric Podzol",
+    "subGroup": "Sombric Humo-Ferric Podzol",
+    "code": "SM.HFP"
+  },
+  {
+    "order": "Podzolic",
+    "greatGroup": "Humo-Ferric Podzol",
+    "subGroup": "Gleyed Humo-Ferric Podzol",
+    "code": "GL.HFP"
+  },
+  {
+    "order": "Podzolic",
+    "greatGroup": "Humo-Ferric Podzol",
+    "subGroup": "Gleyed Ortstein Humo-Ferric Podzol",
+    "code": "GLOT.HFP"
+  },
+  {
+    "order": "Podzolic",
+    "greatGroup": "Humo-Ferric Podzol",
+    "subGroup": "Gleyed Sombric Humo-Ferric Podzol",
+    "code": "GLSM.HFP"
+  },
+  {
+    "order": "Regosolic",
+    "greatGroup": "N/A",
+    "subGroup": "N/A",
+    "code": "REGOSOLIC"
+  },
+  {
+    "order": "Regosolic",
+    "greatGroup": "Regosol",
+    "subGroup": "N/A",
+    "code": "R"
+  },
+  {
+    "order": "Regosolic",
+    "greatGroup": "Regosol",
+    "subGroup": "Orthic Regosol",
+    "code": "O.R"
+  },
+  {
+    "order": "Regosolic",
+    "greatGroup": "Regosol",
+    "subGroup": "Cumulic Regosol",
+    "code": "CU.R"
+  },
+  {
+    "order": "Regosolic",
+    "greatGroup": "Regosol",
+    "subGroup": "Gleyed Regosol",
+    "code": "GL.R"
+  },
+  {
+    "order": "Regosolic",
+    "greatGroup": "Regosol",
+    "subGroup": "Gleyed Cumulic Regosol",
+    "code": "GLCU.R"
+  },
+  {
+    "order": "Regosolic",
+    "greatGroup": "Humic Regosol",
+    "subGroup": "N/A",
+    "code": "HR"
+  },
+  {
+    "order": "Regosolic",
+    "greatGroup": "Humic Regosol",
+    "subGroup": "Orthic Humic Regosol",
+    "code": "O.HR"
+  },
+  {
+    "order": "Regosolic",
+    "greatGroup": "Humic Regosol",
+    "subGroup": "Cumulic Humic Regosol",
+    "code": "CU.HR"
+  },
+  {
+    "order": "Regosolic",
+    "greatGroup": "Humic Regosol",
+    "subGroup": "Gleyed Humic Regosol",
+    "code": "GL.HR"
+  },
+  {
+    "order": "Regosolic",
+    "greatGroup": "Humic Regosol",
+    "subGroup": "Gleyed Cumulic Humic Regosol",
+    "code": "GLCU.HR"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "N/A",
+    "subGroup": "N/A",
+    "code": "SOLONETZIC"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Solonetz",
+    "subGroup": "N/A",
+    "code": "SZ"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Solonetz",
+    "subGroup": "Brown Solonetz",
+    "code": "B.SZ"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Solonetz",
+    "subGroup": "Dark Brown Solonetz",
+    "code": "DB.SZ"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Solonetz",
+    "subGroup": "Black Solonetz",
+    "code": "BL.SZ"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Solonetz",
+    "subGroup": "Alkaline Solonetz",
+    "code": "A.SZ"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Solonetz",
+    "subGroup": "Gleyed Brown Solonetz",
+    "code": "GLB.SZ"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Solonetz",
+    "subGroup": "Gleyed Dark Brown Solonetz",
+    "code": "GLDB.SZ"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Solonetz",
+    "subGroup": "Gleyed Black Solonetz",
+    "code": "GLBL.SZ"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Solodized Solonetz",
+    "subGroup": "N/A",
+    "code": "SS"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Solodized Solonetz",
+    "subGroup": "Brown Solodized Solonetz",
+    "code": "B.SS"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Solodized Solonetz",
+    "subGroup": "Dark Brown Solodized Solonetz",
+    "code": "DB.SS"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Solodized Solonetz",
+    "subGroup": "Black Solodized Solonetz",
+    "code": "BL.SS"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Solodized Solonetz",
+    "subGroup": "Dark Gray Solodized Solonetz",
+    "code": "DG.SS"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Solodized Solonetz",
+    "subGroup": "Gray Solodized Solonetz",
+    "code": "G.SS"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Solodized Solonetz",
+    "subGroup": "Gleyed Brown Solodized Solonetz",
+    "code": "GLB.SS"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Solodized Solonetz",
+    "subGroup": "Gleyed Dark Brown Solodized Solonetz",
+    "code": "GLDB.SS"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Solodized Solonetz",
+    "subGroup": "Gleyed Black Solodized Solonetz",
+    "code": "GLBL.SS"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Solodized Solonetz",
+    "subGroup": "Gleyed Dark Gray Solodized Solonetz",
+    "code": "GLDG.SS"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Solodized Solonetz",
+    "subGroup": "Gleyed Gray Solodized Solonetz",
+    "code": "GLG.SS"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Solod",
+    "subGroup": "N/A",
+    "code": "SO"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Solod",
+    "subGroup": "Brown Solod",
+    "code": "B.SO"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Solod",
+    "subGroup": "Dark Brown Solod",
+    "code": "DB.SO"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Solod",
+    "subGroup": "Black Solod",
+    "code": "BL.SO"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Solod",
+    "subGroup": "Dark Gray Solod",
+    "code": "DG.SO"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Solod",
+    "subGroup": "Gray Solod",
+    "code": "G.SO"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Solod",
+    "subGroup": "Gleyed Brown Solod",
+    "code": "GLB.SO"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Solod",
+    "subGroup": "Gleyed Dark Brown Solod",
+    "code": "GLDB.SO"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Solod",
+    "subGroup": "Gleyed Black Solod",
+    "code": "GLBL.SO"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Solod",
+    "subGroup": "Gleyed Dark Gray Solod",
+    "code": "GLDG.SO"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Solod",
+    "subGroup": "Gleyed Gray Solod",
+    "code": "GLG.SO"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Vertic Solonetz",
+    "subGroup": "N/A",
+    "code": "V.SZ"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Vertic Solonetz",
+    "subGroup": "Brown Vertic Solonetz",
+    "code": "BV.SZ"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Vertic Solonetz",
+    "subGroup": "Dark Brown Vertic Solonetz",
+    "code": "DBV.SZ"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Vertic Solonetz",
+    "subGroup": "Black Vertic Solonetz",
+    "code": "BLV.SZ"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Vertic Solonetz",
+    "subGroup": "Gleyed Brown Vertic Solonetz",
+    "code": "GLBV.SZ"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Vertic Solonetz",
+    "subGroup": "Gleyed Dark Brown Vertic Solonetz",
+    "code": "GLDBV.SZ"
+  },
+  {
+    "order": "Solonetzic",
+    "greatGroup": "Vertic Solonetz",
+    "subGroup": "Gleyed Black Vertic Solonetz",
+    "code": "GLBLV.SZ"
+  },
+  {
+    "order": "Vertisolic",
+    "greatGroup": "N/A",
+    "subGroup": "N/A",
+    "code": "VERTISOLIC"
+  },
+  {
+    "order": "Vertisolic",
+    "greatGroup": "Vertisol",
+    "subGroup": "N/A",
+    "code": "V"
+  },
+  {
+    "order": "Vertisolic",
+    "greatGroup": "Vertisol",
+    "subGroup": "Orthic Vertisol",
+    "code": "O.V"
+  },
+  {
+    "order": "Vertisolic",
+    "greatGroup": "Vertisol",
+    "subGroup": "Gleyed Vertisol",
+    "code": "GL.V"
+  },
+  {
+    "order": "Vertisolic",
+    "greatGroup": "Vertisol",
+    "subGroup": "Gleysolic Vertisol",
+    "code": "GLC.V"
+  },
+  {
+    "order": "Vertisolic",
+    "greatGroup": "Humic Vertisol",
+    "subGroup": "N/A",
+    "code": "HV"
+  },
+  {
+    "order": "Vertisolic",
+    "greatGroup": "Humic Vertisol",
+    "subGroup": "Orthic Humic Vertisol",
+    "code": "O.HV"
+  },
+  {
+    "order": "Vertisolic",
+    "greatGroup": "Humic Vertisol",
+    "subGroup": "Gleyed Humic Vertisol",
+    "code": "GL.HV"
+  },
+  {
+    "order": "Vertisolic",
+    "greatGroup": "Humic Vertisol",
+    "subGroup": "Gleysolic Humic Vertisol",
+    "code": "GLC.HV"
+  },
+  {
+    "order": "Unknown or not reported",
+    "greatGroup": "Unknown or not reported",
+    "subGroup": "Unknown or not reported",
+    "code": "UNKN"
+  },
+  {
+    "order": "Not applicable",
+    "greatGroup": "Not applicable",
+    "subGroup": "Not applicable",
+    "code": "N/A"
+  }
 ]
