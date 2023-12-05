@@ -7,15 +7,19 @@ class EcpPlotNumSelectBuilder extends StatelessWidget {
       {super.key,
       required this.ecpSId,
       required this.plotType,
+      this.startingPlotType = "",
       this.startingEcpNum = "",
       required this.selectedEcpNum,
-      required this.updateEcpNum});
+      required this.updateEcpNum,
+      this.enabled = true});
 
   final int ecpSId;
+  final String startingPlotType;
   final String plotType;
   final String startingEcpNum;
   final String selectedEcpNum;
   final void Function(int ecpNum) updateEcpNum;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +30,12 @@ class EcpPlotNumSelectBuilder extends StatelessWidget {
         builder: (BuildContext context, AsyncSnapshot<List<int>> usedPlotNums) {
           return DropDownDefault(
             title: "Plot Number",
+            enabled: enabled,
             searchable: true,
             onChangedFn: (s) => updateEcpNum(int.parse(s!)),
             disabledItemFn: (s) {
-              if (selectedEcpNum != startingEcpNum && s == startingEcpNum) {
+              if (startingPlotType == plotType &&
+                  (selectedEcpNum != startingEcpNum && s == startingEcpNum)) {
                 return false;
               } else {
                 return usedPlotNums.data!
