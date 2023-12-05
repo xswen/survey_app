@@ -189,14 +189,15 @@ class EcologicalPlotSummaryPageState
                                   itemBuilder: (BuildContext cxt, int index) {
                                     EcpHeaderData ecpH = transList[index];
                                     return TileCardSelection(
-                                        title: "Plot ${ecpH.ecpNum}",
+                                        title:
+                                            "Plot ${ecpH.plotType}${ecpH.ecpNum}",
                                         onPressed: () async {
                                           ecp.complete
                                               ? Popups.show(
                                                   context,
                                                   Popups
                                                       .generateNoticeSurveyComplete(
-                                                    "Woody Debris",
+                                                    "Ecological Plot",
                                                     () {
                                                       context.pop();
                                                       goToEcpHPage(ecpH.id);
