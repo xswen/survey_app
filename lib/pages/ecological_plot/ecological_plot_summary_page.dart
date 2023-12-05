@@ -5,9 +5,9 @@ import 'package:survey_app/providers/ecological_plot_providers.dart';
 import 'package:survey_app/widgets/buttons/custom_button_styles.dart';
 
 import '../../providers/survey_info_providers.dart';
-import '../../widgets/builders/set_transect_num_builder.dart';
 import '../../widgets/date_select.dart';
 import '../../widgets/tile_cards/tile_card_selection.dart';
+import 'ecological_plot_create_plot_page.dart';
 
 class EcologicalPlotSummaryPage extends ConsumerStatefulWidget {
   static const String routeName = "ecologicalPlotSummary";
@@ -49,31 +49,20 @@ class EcologicalPlotSummaryPageState
     EcpHeaderCompanion ecpHCompanion = EcpHeaderCompanion(
         ecpSummaryId: d.Value(ecpId), complete: const d.Value(false));
 
-    Popups.show(
-        context,
-        PopupContinue(
-          "Select pot number",
-          contentWidget: Card(
-            elevation: 0,
-            color: Colors.transparent,
-            child: SetTransectNumBuilder(
-              name: "",
-              getUsedTransNums:
-                  db.ecologicalPlotTablesDao.getUsedTransNums(ecpId),
-              startingTransNum: '',
-              selectedItem: db.companionValueToStr(ecpHCompanion.ecpNum),
-              transList: kTransectNumsList,
-              updateTransNum: (int transNum) => ecpHCompanion =
-                  ecpHCompanion.copyWith(ecpNum: d.Value(transNum)),
-            ),
-          ),
-          rightBtnOnPressed: () => db.ecologicalPlotTablesDao
-              .addHeader(ecpHCompanion)
-              .then((headerId) async {
-            context.pop();
-            goToEcpHPage(headerId);
-          }),
-        ));
+    db.ecologicalPlotTablesDao.ecpPlotAvailable(ecpId).then((available) =>
+        !available
+            ? Popups.show(
+                context,
+                const PopupDismiss(
+                  "Error: No Plots available",
+                  contentText:
+                      "The max number of plots have already been created. "
+                      "Please delete a pre-existing plot first to add "
+                      "another plot.",
+                ))
+            : context.pushNamed(EcologicalPlotCreatePlotPage.routeName,
+                pathParameters: PathParamGenerator.ecpSummary(
+                    widget.state, ecpId.toString())));
   }
 
   void goToEcpHPage(int ecpHId) => context

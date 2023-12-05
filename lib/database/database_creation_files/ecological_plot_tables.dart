@@ -25,7 +25,8 @@ class EcpHeader extends Table {
       real().check(measPlotSize.isBetweenValues(0.000025, 1.0)).nullable()();
 
   @override
-  List<String> get customConstraints => ['UNIQUE (ecp_summary_id, ecp_num)'];
+  List<String> get customConstraints =>
+      ['UNIQUE (ecp_summary_id, ecp_num, plot_type)'];
 }
 
 @DataClassName("EcpSpeciesData")

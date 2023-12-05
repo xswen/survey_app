@@ -10,7 +10,7 @@ Future<EcpSummaryData> ecpData(EcpDataRef ref, int ecpId) =>
 Future<List<EcpHeaderData>> ecpTransList(EcpTransListRef ref, int ecpId) => ref
     .read(databaseProvider)
     .ecologicalPlotTablesDao
-    .getHeaderWithEcpSummryId(ecpId);
+    .getHeaderWithEcpSummaryId(ecpId);
 
 @riverpod
 Future<List<EcpSpeciesData>> ecpSpeciesList(
