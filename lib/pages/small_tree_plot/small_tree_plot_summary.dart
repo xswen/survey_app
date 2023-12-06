@@ -1,4 +1,6 @@
 import 'package:survey_app/barrels/page_imports_barrel.dart';
+import 'package:survey_app/widgets/data_input/data_input.dart';
+import 'package:survey_app/widgets/dropdowns/drop_down_default.dart';
 import 'package:survey_app/widgets/tables/table_creation_builder.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
@@ -97,42 +99,62 @@ class SmallTreePlotSummaryPageState
       ),
       endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
       body: Center(
-        child: Column(
-          children: [
-            CalendarSelect(
-              date: DateTime.now(),
-              label: "Enter Measurement Date",
-              readOnly: false,
-              setStateFn: (DateTime date) async => (),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                  vertical: kPaddingV * 2, horizontal: kPaddingH / 2),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    "Plots",
-                    style: TextStyle(fontSize: kTextTitleSize),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: kPaddingH),
-                    child: ElevatedButton(
-                        onPressed: () async => null,
-                        style: ButtonStyle(
-                            backgroundColor: false
-                                ? MaterialStateProperty.all<Color>(Colors.grey)
-                                : null),
-                        child: const Text("Add plot")),
-                  ),
-                ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+              vertical: kPaddingV * 2, horizontal: kPaddingH / 2),
+          child: ListView(
+            children: [
+              CalendarSelect(
+                date: DateTime.now(),
+                label: "Enter Measurement Date",
+                readOnly: false,
+                setStateFn: (DateTime date) async => (),
               ),
-            ),
-            TableCreationBuilder(
-                source: getSourceBuilder(["hi"]),
-                colNames: columnData.getColHeadersList(),
-                onCellTap: (DataGridCellTapDetails details) {})
-          ],
+              DropDownDefault(
+                  title: "Plot type",
+                  onChangedFn: (s) {},
+                  itemsList: [],
+                  selectedItem: "Please select plot type"),
+              DataInput(
+                  title: "Nominal Plot Size",
+                  onSubmit: (s) {},
+                  onValidate: (s) {}),
+              DataInput(
+                  title: "Measured Plot Size",
+                  onSubmit: (s) {},
+                  onValidate: (s) {}),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    vertical: kPaddingV * 2, horizontal: kPaddingH / 2),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Plots",
+                      style: TextStyle(fontSize: kTextTitleSize),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: kPaddingH),
+                      child: ElevatedButton(
+                          onPressed: () async => null,
+                          style: ButtonStyle(
+                              backgroundColor: false
+                                  ? MaterialStateProperty.all<Color>(
+                                      Colors.grey)
+                                  : null),
+                          child: const Text("Add plot")),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: TableCreationBuilder(
+                    source: getSourceBuilder(["hi"]),
+                    colNames: columnData.getColHeadersList(),
+                    onCellTap: (DataGridCellTapDetails details) {}),
+              )
+            ],
+          ),
         ),
       ),
     );
