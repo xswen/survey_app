@@ -1,4 +1,5 @@
 import 'package:survey_app/barrels/page_imports_barrel.dart';
+import 'package:survey_app/pages/small_tree_plot/small_tree_species_entry_page.dart';
 import 'package:survey_app/widgets/data_input/data_input.dart';
 import 'package:survey_app/widgets/dropdowns/drop_down_default.dart';
 import 'package:survey_app/widgets/tables/table_creation_builder.dart';
@@ -136,7 +137,9 @@ class SmallTreePlotSummaryPageState
                     Padding(
                       padding: const EdgeInsets.only(left: kPaddingH),
                       child: ElevatedButton(
-                          onPressed: () async => null,
+                          onPressed: () async => context.pushNamed(
+                              SmallTreeSpeciesEntryPage.routeName,
+                              pathParameters: widget.state.pathParameters),
                           style: ButtonStyle(
                               backgroundColor: false
                                   ? MaterialStateProperty.all<Color>(
