@@ -1,4 +1,5 @@
 import 'package:survey_app/barrels/page_imports_barrel.dart';
+import 'package:survey_app/pages/shrub_plot/shrub_plot_species_entry_page.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../widgets/data_input/data_input.dart';
@@ -114,22 +115,21 @@ class ShrubPlotSummaryPageState extends ConsumerState<ShrubPlotSummaryPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
-                      "Plots",
+                      "Species",
                       style: TextStyle(fontSize: kTextTitleSize),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: kPaddingH),
                       child: ElevatedButton(
-                          onPressed: () async => null,
-                          // context.pushNamed(
-                          // SmallTreeSpeciesEntryPage.routeName,
-                          // pathParameters: widget.state.pathParameters),
+                          onPressed: () async => context.pushNamed(
+                              ShrubPlotSpeciesEntryPage.routeName,
+                              pathParameters: widget.state.pathParameters),
                           style: ButtonStyle(
                               backgroundColor: false
                                   ? MaterialStateProperty.all<Color>(
                                       Colors.grey)
                                   : null),
-                          child: const Text("Add plot")),
+                          child: const Text("Add species")),
                     ),
                   ],
                 ),

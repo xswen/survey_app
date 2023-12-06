@@ -131,7 +131,7 @@ class SmallTreePlotSummaryPageState
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
-                      "Plots",
+                      "Species",
                       style: TextStyle(fontSize: kTextTitleSize),
                     ),
                     Padding(
@@ -145,7 +145,7 @@ class SmallTreePlotSummaryPageState
                                   ? MaterialStateProperty.all<Color>(
                                       Colors.grey)
                                   : null),
-                          child: const Text("Add plot")),
+                          child: const Text("Add species")),
                     ),
                   ],
                 ),
