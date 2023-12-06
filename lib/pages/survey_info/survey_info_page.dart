@@ -2,6 +2,7 @@ import 'package:drift/drift.dart' as d;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/pages/ecological_plot/ecological_plot_summary_page.dart';
+import 'package:survey_app/pages/small_tree_plot/small_tree_plot_summary.dart';
 import 'package:survey_app/pages/surface_substrate/surface_substrate_summary_page.dart';
 import 'package:survey_app/widgets/text/notify_no_filter_results.dart';
 
@@ -14,6 +15,7 @@ import '../../widgets/text/text_line_label.dart';
 import '../../widgets/tile_cards/tile_card_selection.dart';
 import '../../widgets/titled_border.dart';
 import '../../wrappers/survey_card.dart';
+import '../soil_pit/soil_pit_summary_table.dart';
 import '../woody_debris/woody_debris_summary_page.dart';
 import 'create_survey_page.dart';
 
@@ -164,14 +166,27 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
               .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
         }
         break;
+      case SurveyCardCategories.soilPit:
+        int id = data == null
+            ? (await db.soilPitTablesDao
+                    .addAndReturnDefaultSummary(survey.id, survey.measDate))
+                .id
+            : data.id;
+        if (context.mounted) {
+          context
+              .pushNamed(SoilPitSummaryPage.routeName,
+                  pathParameters: PathParamGenerator.soilPitSummary(
+                      widget.goRouterState, id.toString()))
+              .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
+        }
+        break;
       case SurveyCardCategories.smallTreePlot:
-        // if (context.mounted) {
-        //   context
-        //       .pushNamed(SoilPitSummaryPage.routeName,
-        //           pathParameters: PathParamGenerator.soilPitSummary(
-        //               widget.goRouterState, id.toString()))
-        //       .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
-        // }
+        if (context.mounted) {
+          context
+              .pushNamed(SmallTreePlotSummaryPage.routeName,
+                  pathParameters: widget.goRouterState.pathParameters)
+              .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
+        }
         break;
       case SurveyCardCategories.shrubPlot:
         // if (context.mounted) {
