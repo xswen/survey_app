@@ -582,6 +582,21 @@ class Database extends _$Database {
               ..where((tbl) => tbl.surveyId.equals(surveyId)))
             .getSingleOrNull()
       },
+      {
+        "category": SurveyCardCategories.smallTreePlot,
+        "name": "Small Tree Plot",
+        "surveyCardData": null
+      },
+      {
+        "category": SurveyCardCategories.shrubPlot,
+        "name": "Shrub Plot",
+        "surveyCardData": null
+      },
+      {
+        "category": SurveyCardCategories.stumpPlot,
+        "name": "Stump Plot",
+        "surveyCardData": null
+      },
     ];
 
     List<SurveyCard> cards = [];

@@ -1,17 +1,8 @@
 import 'package:go_router/go_router.dart';
-import 'package:survey_app/routes/path_parameters/path_param_keys.dart';
+import 'package:survey_app/pages/small_tree_plot/small_tree_plot_summary.dart';
 
-import '../pages/soil_pit/soil_pit_site_info_page.dart';
-import '../pages/soil_pit/soil_pit_summary_table.dart';
-
-GoRoute goRouteSoilPit = GoRoute(
-    name: SoilPitSummaryPage.routeName,
-    path: "soil_pit/:${PathParamsKeys.soilPitSummaryId}",
-    builder: (context, state) => SoilPitSummaryPage(state),
-    routes: [
-      GoRoute(
-          name: SoilPitSiteInfoPage.routeName,
-          path: "site_info",
-          builder: (context, state) => SoilPitSiteInfoPage(state),
-          routes: []),
-    ]);
+GoRoute goRouteSmallTreePlot = GoRoute(
+    name: SmallTreePlotSummaryPage.routeName,
+    path: "small_tree_plot",
+    builder: (context, state) => SmallTreePlotSummaryPage(state),
+    routes: []);
