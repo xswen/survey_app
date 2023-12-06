@@ -4,6 +4,7 @@ import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/pages/ecological_plot/ecological_plot_summary_page.dart';
 import 'package:survey_app/pages/shrub_plot/shrub_plot_summary.dart';
 import 'package:survey_app/pages/small_tree_plot/small_tree_plot_summary.dart';
+import 'package:survey_app/pages/stump_plot/stump_plot_summary_page.dart';
 import 'package:survey_app/pages/surface_substrate/surface_substrate_summary_page.dart';
 import 'package:survey_app/widgets/text/notify_no_filter_results.dart';
 
@@ -198,13 +199,12 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
         }
         break;
       case SurveyCardCategories.stumpPlot:
-        // if (context.mounted) {
-        //   context
-        //       .pushNamed(SoilPitSummaryPage.routeName,
-        //           pathParameters: PathParamGenerator.soilPitSummary(
-        //               widget.goRouterState, id.toString()))
-        //       .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
-        // }
+        if (context.mounted) {
+          context
+              .pushNamed(StumpPlotSummaryPage.routeName,
+                  pathParameters: widget.goRouterState.pathParameters)
+              .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
+        }
         break;
       default:
         debugPrint("Error: case not handled for $category");
