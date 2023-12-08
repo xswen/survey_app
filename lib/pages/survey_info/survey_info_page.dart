@@ -2,6 +2,9 @@ import 'package:drift/drift.dart' as d;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/pages/ecological_plot/ecological_plot_summary_page.dart';
+import 'package:survey_app/pages/shrub_plot/shrub_plot_summary.dart';
+import 'package:survey_app/pages/small_tree_plot/small_tree_plot_summary.dart';
+import 'package:survey_app/pages/stump_plot/stump_plot_summary_page.dart';
 import 'package:survey_app/pages/surface_substrate/surface_substrate_summary_page.dart';
 import 'package:survey_app/widgets/text/notify_no_filter_results.dart';
 
@@ -122,63 +125,89 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
       SurveyHeader survey, SurveyCardCategories category, dynamic data) async {
     final Database db = Database.instance;
 
-    if (category == SurveyCardCategories.woodyDebris) {
-      int id = data == null
-          ? (await db.woodyDebrisTablesDao
-                  .addAndReturnDefaultWdSummary(survey.id, survey.measDate))
-              .id
-          : data.id;
-      if (context.mounted) {
-        context
-            .pushNamed(WoodyDebrisSummaryPage.routeName,
-                pathParameters: PathParamGenerator.wdSummary(
-                    widget.goRouterState, id.toString()))
-            .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
-      }
-    }
-    if (category == SurveyCardCategories.surfaceSubstrate) {
-      int id = data == null
-          ? (await db.surfaceSubstrateTablesDao
-                  .addAndReturnDefaultSsSummary(survey.id, survey.measDate))
-              .id
-          : data.id;
-      if (context.mounted) {
-        context
-            .pushNamed(SurfaceSubstrateSummaryPage.routeName,
-                pathParameters: PathParamGenerator.ssSummary(
-                    widget.goRouterState, id.toString()))
-            .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
-      }
-    }
-
-    if (category == SurveyCardCategories.ecologicalPlot) {
-      int id = data == null
-          ? (await db.ecologicalPlotTablesDao
-                  .addAndReturnDefaultSummary(survey.id, survey.measDate))
-              .id
-          : data.id;
-      if (context.mounted) {
-        context
-            .pushNamed(EcologicalPlotSummaryPage.routeName,
-                pathParameters: PathParamGenerator.ecpSummary(
-                    widget.goRouterState, id.toString()))
-            .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
-      }
-    }
-
-    if (category == SurveyCardCategories.soilPit) {
-      int id = data == null
-          ? (await db.soilPitTablesDao
-                  .addAndReturnDefaultSummary(survey.id, survey.measDate))
-              .id
-          : data.id;
-      if (context.mounted) {
-        context
-            .pushNamed(SoilPitSummaryPage.routeName,
-                pathParameters: PathParamGenerator.soilPitSummary(
-                    widget.goRouterState, id.toString()))
-            .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
-      }
+    switch (category) {
+      case SurveyCardCategories.woodyDebris:
+        int id = data == null
+            ? (await db.woodyDebrisTablesDao
+                    .addAndReturnDefaultWdSummary(survey.id, survey.measDate))
+                .id
+            : data.id;
+        if (context.mounted) {
+          context
+              .pushNamed(WoodyDebrisSummaryPage.routeName,
+                  pathParameters: PathParamGenerator.wdSummary(
+                      widget.goRouterState, id.toString()))
+              .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
+        }
+        break;
+      case SurveyCardCategories.surfaceSubstrate:
+        int id = data == null
+            ? (await db.surfaceSubstrateTablesDao
+                    .addAndReturnDefaultSsSummary(survey.id, survey.measDate))
+                .id
+            : data.id;
+        if (context.mounted) {
+          context
+              .pushNamed(SurfaceSubstrateSummaryPage.routeName,
+                  pathParameters: PathParamGenerator.ssSummary(
+                      widget.goRouterState, id.toString()))
+              .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
+        }
+        break;
+      case SurveyCardCategories.ecologicalPlot:
+        int id = data == null
+            ? (await db.ecologicalPlotTablesDao
+                    .addAndReturnDefaultSummary(survey.id, survey.measDate))
+                .id
+            : data.id;
+        if (context.mounted) {
+          context
+              .pushNamed(EcologicalPlotSummaryPage.routeName,
+                  pathParameters: PathParamGenerator.ecpSummary(
+                      widget.goRouterState, id.toString()))
+              .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
+        }
+        break;
+      case SurveyCardCategories.soilPit:
+        int id = data == null
+            ? (await db.soilPitTablesDao
+                    .addAndReturnDefaultSummary(survey.id, survey.measDate))
+                .id
+            : data.id;
+        if (context.mounted) {
+          context
+              .pushNamed(SoilPitSummaryPage.routeName,
+                  pathParameters: PathParamGenerator.soilPitSummary(
+                      widget.goRouterState, id.toString()))
+              .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
+        }
+        break;
+      case SurveyCardCategories.smallTreePlot:
+        if (context.mounted) {
+          context
+              .pushNamed(SmallTreePlotSummaryPage.routeName,
+                  pathParameters: widget.goRouterState.pathParameters)
+              .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
+        }
+        break;
+      case SurveyCardCategories.shrubPlot:
+        if (context.mounted) {
+          context
+              .pushNamed(ShrubPlotSummaryPage.routeName,
+                  pathParameters: widget.goRouterState.pathParameters)
+              .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
+        }
+        break;
+      case SurveyCardCategories.stumpPlot:
+        if (context.mounted) {
+          context
+              .pushNamed(StumpPlotSummaryPage.routeName,
+                  pathParameters: widget.goRouterState.pathParameters)
+              .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
+        }
+        break;
+      default:
+        debugPrint("Error: case not handled for $category");
     }
   }
 

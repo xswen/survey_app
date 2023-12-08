@@ -5,7 +5,10 @@ import 'package:survey_app/pages/survey_info/create_survey_page.dart';
 import 'package:survey_app/pages/survey_info/dashboard.dart';
 import 'package:survey_app/pages/survey_info/survey_info_page.dart';
 import 'package:survey_app/routes/go_route_ecological_plot.dart';
+import 'package:survey_app/routes/go_route_shrub_plot.dart';
+import 'package:survey_app/routes/go_route_small_tree_plot.dart';
 import 'package:survey_app/routes/go_route_soil_pit.dart';
+import 'package:survey_app/routes/go_route_stump_plot.dart';
 import 'package:survey_app/routes/go_route_surface_substrate.dart';
 import 'package:survey_app/routes/go_route_woody_debris.dart';
 
@@ -68,6 +71,9 @@ List<GoRoute> routes = [
                 goRouteSurfaceSubstrate,
                 goRouteEcp,
                 goRouteSoilPit,
+                goRouteSmallTreePlot,
+                goRouteShrubPlot,
+                goRouteStumpPlot,
               ],
             )
           ],

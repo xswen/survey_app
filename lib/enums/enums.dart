@@ -5,6 +5,9 @@ enum SurveyCardCategories {
   surfaceSubstrate,
   ecologicalPlot,
   soilPit,
+  smallTreePlot,
+  shrubPlot,
+  stumpPlot,
 }
 
 enum SurveyStatus { notStarted, inProgress, notAssessed, complete }
