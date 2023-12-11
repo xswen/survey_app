@@ -30,7 +30,7 @@ class EcpPlotNumSelectBuilder extends StatelessWidget {
         builder: (BuildContext context, AsyncSnapshot<List<int>> usedPlotNums) {
           return DropDownDefault(
             title: "Plot Number",
-            enabled: enabled,
+            enabled: enabled && plotType.isNotEmpty,
             searchable: true,
             onChangedFn: (s) => updateEcpNum(int.parse(s!)),
             disabledItemFn: (s) {
@@ -42,26 +42,24 @@ class EcpPlotNumSelectBuilder extends StatelessWidget {
                     .contains(int.tryParse(s ?? "-1") ?? -1);
               }
             },
-            itemsList: plotType.isEmpty
-                ? []
-                : const [
-                    "1",
-                    "2",
-                    "3",
-                    "4",
-                    "5",
-                    "6",
-                    "7",
-                    "8",
-                    "9",
-                    "10",
-                    "11",
-                    "12",
-                    "13",
-                    "14",
-                    "15",
-                    "16"
-                  ],
+            itemsList: const [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "10",
+              "11",
+              "12",
+              "13",
+              "14",
+              "15",
+              "16"
+            ],
             selectedItem: selectedEcpNum.isEmpty
                 ? "Please select plot type"
                 : selectedEcpNum,

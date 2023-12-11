@@ -7,6 +7,7 @@ import 'package:survey_app/widgets/builders/ecp_genus_select_builder.dart';
 import 'package:survey_app/widgets/builders/ecp_layer_select_builder.dart';
 import 'package:survey_app/widgets/builders/ecp_species_select_builder.dart';
 import 'package:survey_app/widgets/builders/ecp_variety_select_builder.dart';
+import 'package:survey_app/widgets/builders/info_popup_builder.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../formatters/thousands_formatter.dart';
@@ -214,6 +215,51 @@ class EcologicalPlotSpeciesPageState
                     : Container(),
                 DataInput(
                     title: "Percent cover of this species in this layer",
+                    infoPopupIconBuilder: InfoPopupBuilder(
+                      popup: AlertDialog(
+                        title: const Text(
+                          "Percent Cover Table",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        content: SizedBox(
+                          width: double.maxFinite,
+                          child: SingleChildScrollView(
+                            child: SfDataGrid(
+                              verticalScrollPhysics:
+                                  const NeverScrollableScrollPhysics(),
+                              source: PlotDataSource(),
+                              columns: <GridColumn>[
+                                GridColumn(
+                                    columnName: 'plot', label: const Text('')),
+                                GridColumn(
+                                  columnName: 'tenMeterPlot',
+                                  label: Container(
+                                    alignment: Alignment.center,
+                                    child: const Text(
+                                      '10-m radius plot',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ),
+                                GridColumn(
+                                  columnName: 'fiveMeterPlot',
+                                  label: Container(
+                                    alignment: Alignment.center,
+                                    child: const Text(
+                                      '5.64-m radius plot',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                              columnWidthMode: ColumnWidthMode.fill,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                     boxLabel: "Report to the nearest 0.001%",
                     prefixIcon: FontAwesomeIcons.angleLeft,
                     suffixVal: "%",
@@ -234,34 +280,6 @@ class EcologicalPlotSpeciesPageState
                     onValidate: _errorSpeciesPct),
                 const SizedBox(
                   height: kPaddingV * 2,
-                ),
-                SfDataGrid(
-                  verticalScrollPhysics: const NeverScrollableScrollPhysics(),
-                  source: PlotDataSource(),
-                  columns: <GridColumn>[
-                    GridColumn(columnName: 'plot', label: const Text('')),
-                    GridColumn(
-                      columnName: 'tenMeterPlot',
-                      label: Container(
-                        alignment: Alignment.center,
-                        child: const Text(
-                          '10-m radius plot',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
-                    GridColumn(
-                      columnName: 'fiveMeterPlot',
-                      label: Container(
-                        alignment: Alignment.center,
-                        child: const Text(
-                          '5.64-m radius plot',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
-                  ],
-                  columnWidthMode: ColumnWidthMode.fill,
                 ),
                 const Padding(
                     padding: EdgeInsets.symmetric(vertical: kPaddingV)),

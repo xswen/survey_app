@@ -161,7 +161,7 @@ class EcologicalPlotHeaderPageState
                         PopupContinue(
                           "Warning: No species entered",
                           contentText: "No species have been recorded for "
-                              "this transect. Pressing continue means you are "
+                              "this plot. Pressing continue means you are "
                               "confirming that the survey was completed and "
                               "there were no pieces to record.\n"
                               "Are you sure you want to continue?",
@@ -242,12 +242,12 @@ class EcologicalPlotHeaderPageState
     return db.companionValueToStr(ecpH.id).isEmpty
         ? Scaffold(
             appBar: OurAppBar(
-              "$title: Transect ${db.companionValueToStr(ecpH.ecpNum)}",
+              "$title: ${db.companionValueToStr(ecpH.plotType)}${db.companionValueToStr(ecpH.ecpNum)}",
             ),
             body: const Center(child: kLoadingWidget))
         : Scaffold(
             appBar: OurAppBar(
-              "$title: Transect ${db.companionValueToStr(ecpH.ecpNum)}",
+              "$title: ${db.companionValueToStr(ecpH.plotType)}${db.companionValueToStr(ecpH.ecpNum)}",
               onLocaleChange: () {},
               backFn: () {
                 if (checkPlotNumExists()) {
@@ -270,7 +270,7 @@ class EcologicalPlotHeaderPageState
                 children: [
                   EcpPlotTypeSelectBuilder(
                       enabled: !ecpH.complete.value,
-                      selectedItem: db.companionValueToStr(ecpH.plotType),
+                      code: db.companionValueToStr(ecpH.plotType),
                       updatePlotType: (code) => setState(() => ecpH =
                           ecpH.copyWith(
                               plotType: d.Value(code),
