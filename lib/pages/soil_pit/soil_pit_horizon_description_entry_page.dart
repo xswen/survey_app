@@ -357,7 +357,7 @@ class SoilPitHorizonDescriptionEntryPageState
                   );
                 }),
             DropDownDefault(
-                title: "Mineral type",
+                title: "Horizon type",
                 onChangedFn: (s) => s == "Mineral"
                     ? updateHorizon(horizon.copyWith(
                         mineralType: d.Value(s!),

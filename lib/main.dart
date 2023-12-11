@@ -14,7 +14,7 @@ import 'package:survey_app/routes/go_route_main.dart';
 import 'l10n/locale_keys.g.dart';
 import 'routes/router_listenable.dart';
 
-String _versionCode = "Version 7";
+String _versionCode = "Version 8";
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
