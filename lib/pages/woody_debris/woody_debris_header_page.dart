@@ -39,10 +39,33 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
   void updateWdhData(WoodyDebrisHeaderCompanion entry) {
     final db = ref.read(databaseProvider);
 
-    (db.update(db.woodyDebrisHeader)..where((t) => t.id.equals(wdhId)))
-        .write(entry);
+    void update() {
+      (db.update(db.woodyDebrisHeader)..where((t) => t.id.equals(wdhId)))
+          .write(entry);
 
-    ref.refresh(wdhProvider(wdhId));
+      ref.refresh(wdhProvider(wdhId));
+    }
+
+    //If marking incomplete to edit immediately go to edit
+    !entry.complete.value
+        ? update()
+        : db.woodyDebrisTablesDao.wdPieceExists(wdhId).then((exists) => exists
+            ? update()
+            : Popups.show(
+                context,
+                PopupContinue(
+                  "Warning: No pieces entered",
+                  contentText:
+                      "No pieces of coarse woody debris have been recorded for "
+                      "this transect. Before marking the transect as complete, "
+                      "please confirm the survey was completed and there were "
+                      "no pieces to record. (confirm and mark as "
+                      "complete/return to piece measurements)",
+                  rightBtnOnPressed: () {
+                    update();
+                    context.pop();
+                  },
+                )));
   }
 
   Future<int?> getOrCreateWdSmallId() async {

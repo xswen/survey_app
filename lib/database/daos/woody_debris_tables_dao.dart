@@ -179,6 +179,10 @@ class WoodyDebrisTablesDao extends DatabaseAccessor<Database>
             ]))
           .get();
 
+  Future<bool> wdPieceExists(int headerId) async =>
+      (await getWdRoundList(headerId)).isNotEmpty ||
+      (await getWdOddList(headerId)).isNotEmpty;
+
   Future<int> getLastWdPieceNum(int wdHeaderId) async {
     final queryOdd =
         (select(woodyDebrisOdd)..where((tbl) => tbl.wdHeaderId.equals(wdHeaderId)))
