@@ -30,7 +30,6 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
 
   @override
   void initState() {
-
     wdId = PathParamValue.getWdSummaryId(widget.goRouterState);
 
     wdhId = PathParamValue.getWdHeaderId(widget.goRouterState)!;
@@ -97,7 +96,7 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
         if (errors == null) {
           List<String> missingData = [];
           wdh.swdDecayClass == -1
-              ? missingData.add("Transect Header Data")
+              ? missingData.add("Small Woody Debris Decay Class")
               : null;
           missingData.isEmpty
               ? updateWdhData(
@@ -201,9 +200,10 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
                                 context,
                                 PopupContinue("Warning: Deleting Transect",
                                     contentText:
-                                        "You are about to delete this transect. "
-                                        "Are you sure you want to continue?",
-                                    rightBtnOnPressed: () {
+                                        "You are about to delete this transect "
+                                        "and all data entered for this "
+                                        "transect. Are you sure you want to "
+                                        "continue?", rightBtnOnPressed: () {
                                   //close popup
                                   context.pop();
                                   context
