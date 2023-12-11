@@ -154,7 +154,26 @@ class EcologicalPlotHeaderPageState
     } else {
       List<String>? errors = errorCheck();
       errors == null
-          ? updateEcpHData(ecpH.copyWith(complete: const d.Value(true)))
+          ? db.ecologicalPlotTablesDao.getSpeciesList(ecpHId).then(
+                (value) => value.isEmpty
+                    ? Popups.show(
+                        context,
+                        PopupContinue(
+                          "Warning: No species entered",
+                          contentText: "No species have been recorded for "
+                              "this transect. Pressing continue means you are "
+                              "confirming that the survey was completed and "
+                              "there were no pieces to record.\n"
+                              "Are you sure you want to continue?",
+                          rightBtnOnPressed: () {
+                            updateEcpHData(
+                                ecpH.copyWith(complete: const d.Value(true)));
+                            context.pop();
+                          },
+                        ))
+                    : updateEcpHData(
+                        ecpH.copyWith(complete: const d.Value(true))),
+              )
           : Popups.show(context, PopupErrorsFoundList(errors: errors));
     }
   }

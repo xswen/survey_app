@@ -57,10 +57,10 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
                   "Warning: No pieces entered",
                   contentText:
                       "No pieces of coarse woody debris have been recorded for "
-                      "this transect. Before marking the transect as complete, "
-                      "please confirm the survey was completed and there were "
-                      "no pieces to record. (confirm and mark as "
-                      "complete/return to piece measurements)",
+                      "this transect. Pressing continue means you are confirming"
+                      "that the survey was completed and there were "
+                      "no pieces to record.\n"
+                      "Are you sure you want to continue?",
                   rightBtnOnPressed: () {
                     update();
                     context.pop();
