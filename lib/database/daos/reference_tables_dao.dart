@@ -192,6 +192,7 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
       (select(ssDepthLimit)..where((tbl) => tbl.code.equals(code)))
           .map((p0) => p0.nameEn)
           .getSingle();
+
   Future<List<String>> get ssDepthList {
     final query = selectOnly(ssDepthLimit, distinct: true)
       ..addColumns([ssDepthLimit.nameEn]);

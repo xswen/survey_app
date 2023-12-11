@@ -6,22 +6,28 @@ import '../dropdowns/drop_down_async_list.dart';
 
 class SubstrateDepthSelectBuilder extends StatelessWidget {
   const SubstrateDepthSelectBuilder(
-      {super.key, required this.updateType, required this.substrateDepthCode});
+      {super.key,
+      this.title = "Substrate Depth Measured To",
+      required this.updateType,
+      required this.substrateDepthCode});
 
+  final String title;
   final void Function(Value<int>? depth) updateType;
-  final int substrateDepthCode;
+  final int? substrateDepthCode;
 
   @override
   Widget build(BuildContext context) {
     final Database db = Database.instance;
-    Future<String> getSubstrateDepth() => db.referenceTablesDao
-        .getSubstrateDepthLimitNameFromCode(substrateDepthCode);
+    Future<String> getSubstrateDepth() async => substrateDepthCode == null
+        ? "Please select depth limit"
+        : await db.referenceTablesDao
+            .getSubstrateDepthLimitNameFromCode(substrateDepthCode!);
 
     return FutureBuilder(
         future: getSubstrateDepth(),
         builder: (BuildContext context, AsyncSnapshot<String> text) {
           return DropDownAsyncList(
-            padding: 0,
+            title: title,
             searchable: true,
             onChangedFn: (s) async => updateType(Value(await db
                 .referenceTablesDao
