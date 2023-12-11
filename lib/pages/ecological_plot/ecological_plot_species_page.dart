@@ -66,9 +66,21 @@ class PlotDataSource extends DataGridSource {
   @override
   DataGridRowAdapter? buildRow(DataGridRow row) {
     return DataGridRowAdapter(cells: [
-      Text(row.getCells()[0].value.toString()),
-      Text(row.getCells()[1].value.toString()),
-      Text(row.getCells()[2].value.toString()),
+      Container(
+          alignment: Alignment.centerLeft,
+          padding: const EdgeInsets.symmetric(horizontal: kPaddingH),
+          child: Text(
+            row.getCells()[0].value.toString(),
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          )),
+      Container(
+        alignment: Alignment.center,
+        child: Text(row.getCells()[1].value.toString()),
+      ),
+      Container(
+        alignment: Alignment.center,
+        child: Text(row.getCells()[2].value.toString()),
+      ),
     ]);
   }
 }
@@ -220,16 +232,34 @@ class EcologicalPlotSpeciesPageState
                           : null;
                     },
                     onValidate: _errorSpeciesPct),
+                const SizedBox(
+                  height: kPaddingV * 2,
+                ),
                 SfDataGrid(
+                  verticalScrollPhysics: const NeverScrollableScrollPhysics(),
                   source: PlotDataSource(),
                   columns: <GridColumn>[
                     GridColumn(columnName: 'plot', label: const Text('')),
                     GridColumn(
-                        columnName: 'tenMeterPlot',
-                        label: const Text('10-m radius plot')),
+                      columnName: 'tenMeterPlot',
+                      label: Container(
+                        alignment: Alignment.center,
+                        child: const Text(
+                          '10-m radius plot',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
                     GridColumn(
-                        columnName: 'fiveMeterPlot',
-                        label: const Text('5.64-m radius plot')),
+                      columnName: 'fiveMeterPlot',
+                      label: Container(
+                        alignment: Alignment.center,
+                        child: const Text(
+                          '5.64-m radius plot',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
                   ],
                   columnWidthMode: ColumnWidthMode.fill,
                 ),

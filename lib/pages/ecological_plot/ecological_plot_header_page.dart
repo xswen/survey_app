@@ -320,8 +320,11 @@ class EcologicalPlotHeaderPageState
                     },
                   ),
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: kPaddingH / 2),
+                    padding: const EdgeInsets.only(
+                        left: kPaddingH / 2,
+                        right: kPaddingH / 2,
+                        top: kPaddingV * 2,
+                        bottom: kPaddingV),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
