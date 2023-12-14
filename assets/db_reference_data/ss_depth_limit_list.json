@@ -30,8 +30,8 @@
     "nameFr": "Maximum depth achieved (500cm)Fr"
   },
   {
-    "code": -9,
-    "nameEn": "Non-applicable",
-    "nameFr": "Non-applicableFr"
+    "code": -1,
+    "nameEn": "Unreported",
+    "nameFr": "UnreportedFr"
   }
 ]

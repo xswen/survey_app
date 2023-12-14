@@ -34,8 +34,9 @@ class DeletePage extends StatelessWidget {
           child: Column(
             children: [
               Text(
-                "You are about to delete $objectName. "
-                "This cannot be undone. "
+                "You are about to delete $objectName and all data entered "
+                "related to $objectName.\n"
+                "This cannot be undone.\n"
                 "Are you sure you want to delete?",
                 style: const TextStyle(fontSize: 20),
               ),

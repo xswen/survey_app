@@ -277,21 +277,6 @@ class SoilPitHorizonDescriptionEntryPageState
                       horizon.copyWith(horizon: const d.Value.absent()))
                   : updateHorizon(horizon.copyWith(horizon: d.Value(s))),
             ),
-            Row(
-              children: [
-                const Text(
-                  "Horizon upper depth",
-                  style: TextStyle(fontSize: kTextHeaderSize),
-                ),
-                IconButton(
-                    onPressed: () =>
-                        Popups.show(context, const PopupDismiss("Information")),
-                    icon: const Icon(
-                      FontAwesomeIcons.circleInfo,
-                      color: Colors.blue,
-                    ))
-              ],
-            ),
             Tooltip(
               triggerMode: TooltipTriggerMode.tap,
               message: "Information place holder",
@@ -372,7 +357,7 @@ class SoilPitHorizonDescriptionEntryPageState
                   );
                 }),
             DropDownDefault(
-                title: "Mineral type",
+                title: "Horizon type",
                 onChangedFn: (s) => s == "Mineral"
                     ? updateHorizon(horizon.copyWith(
                         mineralType: d.Value(s!),

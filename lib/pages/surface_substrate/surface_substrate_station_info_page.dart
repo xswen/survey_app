@@ -72,10 +72,9 @@ class SurfaceSubstrateStationInfoPageState
             pathParameters: PathParamGenerator.ssStationInfo(
                 widget.state, stationNum.toString()),
             extra: SurfaceSubstrateTallyCompanion(
-                ssHeaderId: d.Value(sshId),
-                stationNum: d.Value(stationNum),
-                depth: const d.Value(kDataNotApplicable),
-                depthLimit: const d.Value(kDataNotApplicable)));
+              ssHeaderId: d.Value(sshId),
+              stationNum: d.Value(stationNum),
+            ));
       });
 
   List<String>? _errorCheck() {
@@ -140,7 +139,8 @@ class SurfaceSubstrateStationInfoPageState
                 substrateTypeCode:
                     db.companionValueToStr(station.substrateType),
               ),
-              station.depth != const d.Value(kDataNotApplicable)
+              station.substrateType != const d.Value.absent() &&
+                      {"OM", "BM"}.contains(station.substrateType.value)
                   ? Column(
                       children: [
                         HideInfoCheckbox(
@@ -189,43 +189,18 @@ class SurfaceSubstrateStationInfoPageState
                               },
                               onValidate: _errorSubstrateDepth),
                         ),
-                        HideInfoCheckbox(
-                          title: 'Substrate Limit',
-                          checkTitle: "Depth Limit Missing",
-                          checkValue:
-                              db.companionValueToStr(station.depthLimit) ==
-                                  "-1",
-                          onChange: (b) {
-                            b!
-                                ? Popups.show(
-                                    context,
-                                    PopupContinue(
-                                      "Warning: Setting depth limit as missing",
-                                      contentText:
-                                          "Are you sure you want to set depth limit as missing? ",
-                                      rightBtnOnPressed: () {
-                                        setState(() => station =
-                                            station.copyWith(
-                                                depthLimit: const d.Value(-1)));
-                                        context.pop();
-                                      },
-                                    ))
-                                : setState(() => station = station.copyWith(
-                                    depthLimit: const d.Value.absent()));
-                          },
-                          child: SubstrateDepthSelectBuilder(
-                            updateType: (depthLimit) => setState(() => station =
-                                station.copyWith(depthLimit: depthLimit)),
-                            substrateDepthCode: db
-                                    .companionValueToStr(station.depthLimit)
-                                    .isEmpty
-                                ? -1
-                                : station.depthLimit.value,
-                          ),
+                        SubstrateDepthSelectBuilder(
+                          updateType: (depthLimit) => setState(() => station =
+                              station.copyWith(depthLimit: depthLimit)),
+                          substrateDepthCode:
+                              db.companionValueToStr(station.depthLimit).isEmpty
+                                  ? null
+                                  : station.depthLimit.value,
                         )
                       ],
                     )
                   : Container(),
+              const SizedBox(height: kPaddingV * 2),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [

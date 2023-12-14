@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:survey_app/widgets/builders/info_popup_builder.dart';
 
 import '../../constants/margins_padding.dart';
 import '../../constants/text_designs.dart';
@@ -10,6 +11,7 @@ class DataInput extends StatefulWidget {
       required this.onSubmit,
       this.title = "",
       this.titleStyle = kTitleStyle,
+      this.infoPopupIconBuilder,
       this.boxLabel = "",
       this.startingStr = "",
       this.inputType = TextInputType.text,
@@ -31,6 +33,7 @@ class DataInput extends StatefulWidget {
   final String? Function(String?) onValidate;
   final String title;
   final TextStyle titleStyle;
+  final InfoPopupBuilder? infoPopupIconBuilder;
   final String boxLabel;
   final String startingStr;
   final TextInputType inputType;
@@ -84,7 +87,13 @@ class _DataInputState extends State<DataInput> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           widget.title.isNotEmpty
-              ? Text(widget.title, style: widget.titleStyle)
+              ? Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(widget.title, style: widget.titleStyle),
+                    widget.infoPopupIconBuilder ?? Container(),
+                  ],
+                )
               : Container(),
           SizedBox(
             child: Padding(

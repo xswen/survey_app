@@ -36,7 +36,6 @@ class WoodyDebrisHeaderMeasurementsPageState
 
   @override
   void initState() {
-
     wdId = PathParamValue.getWdSummaryId(widget.goRouterState);
 
     wdhId = PathParamValue.getWdHeaderId(widget.goRouterState);
@@ -88,15 +87,18 @@ class WoodyDebrisHeaderMeasurementsPageState
     if (result.isEmpty) {
       if (wdh.swdMeasLen.value! > wdh.nomTransLen.value!) {
         result.add(
-            "Small Measurement Length must be less or equal than the length of sample transect");
+            "The distance along the transect measured for small woody debris must "
+            "not be greater than the length of the sample transect.");
       }
       if (wdh.mcwdMeasLen.value! > wdh.nomTransLen.value!) {
         result.add(
-            "Medium Measurement Length must be less or equal than the length of sample transect");
+            "The distance along the transect measured for medium woody debris must "
+            "not be greater than the length of the sample transect.");
       }
       if (wdh.lcwdMeasLen.value! > wdh.nomTransLen.value!) {
         result.add(
-            "Large Measurement Length must be less or equal than the length of sample transect");
+            "The distance along the transect measured for large woody debris must "
+            "not be greater than the length of the sample transect.");
       }
     }
     return result;

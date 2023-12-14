@@ -199,7 +199,7 @@ class SoilPitHorizonDescriptionPageState
                                     soilPitSummaryId: d.Value(spId))),
                         style: CustomButtonStyles.inactiveButton(
                             isActive: !parentComplete),
-                        child: const Text("Add feature")),
+                        child: const Text("Add horizon")),
                   ),
                 ],
               ),

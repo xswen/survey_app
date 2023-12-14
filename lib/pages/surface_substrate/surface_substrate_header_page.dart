@@ -228,7 +228,7 @@ class SurfaceSubstrateHeaderPageState
               .then((value) => value.isEmpty
                   ? Popups.show(
                       context,
-                      PopupDismiss(
+                      const PopupDismiss(
                         "Error: No stations",
                         contentText:
                             "Please add at least one station before marking as complete",
@@ -257,11 +257,9 @@ class SurfaceSubstrateHeaderPageState
             pathParameters: PathParamGenerator.ssStationInfo(
                 widget.state, stationNum.toString()),
             extra: SurfaceSubstrateTallyCompanion(
-                ssHeaderId: d.Value(sshId),
-                stationNum: d.Value(stationNum),
-                //Assume not applicable until stated otherwise
-                depth: const d.Value(kDataNotApplicable),
-                depthLimit: const d.Value(kDataNotApplicable)));
+              ssHeaderId: d.Value(sshId),
+              stationNum: d.Value(stationNum),
+            ));
       });
 
   @override
@@ -373,8 +371,8 @@ class SurfaceSubstrateHeaderPageState
                   },
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: kPaddingH / 2),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: kPaddingH / 2, vertical: kPaddingV * 2),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

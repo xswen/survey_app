@@ -21,6 +21,9 @@ class SoilPitSiteInfoPage extends ConsumerStatefulWidget {
 
 class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
   final String title = "Soil Pit Site Info";
+  final d.Value<String> kUnknownCode = const d.Value("UNKN");
+  final d.Value<String> kNACode = const d.Value("N/A");
+
   bool changeMade = false;
   late bool parentComplete = false;
 
@@ -49,6 +52,11 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
         parentComplete = parent.complete;
       });
     }
+  }
+
+  void updateSiteInfo(SoilSiteInfoCompanion newSiteInfo) {
+    changeMade = true;
+    setState(() => siteInfo = newSiteInfo);
   }
 
   Future<String> getDrainageName(String code) async {
@@ -150,6 +158,7 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
   @override
   Widget build(BuildContext context) {
     final db = ref.read(databaseProvider);
+    bool isSoil() => !{kUnknownCode, kNACode}.contains(siteInfo.soilClass);
 
     return Scaffold(
       appBar: OurAppBar(
@@ -181,7 +190,7 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
             child: ListView(
           children: [
             const TextHeaderSeparator(
-              title: "CSSC Soil Classification Field",
+              title: "CSSC Soil Classification",
               fontSize: 20,
             ),
             DropDownAsyncList(
@@ -190,14 +199,29 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
               title: "Order",
               onChangedFn: (s) {
                 if (db.companionValueToStr(siteInfo.soilClassOrder) != s) {
-                  changeMade = true;
-                  setState(() {
-                    siteInfo = siteInfo.copyWith(
+                  if (s! == "Not applicable: non-soil") {
+                    updateSiteInfo(siteInfo.copyWith(
+                      soilClassOrder: d.Value(s),
+                      soilClassGreatGroup: const d.Value("Not applicable"),
+                      soilClassSubGroup: const d.Value("Not applicable"),
+                      soilClass: kNACode,
+                    ));
+                  } else if (s! == "Unknown or not reported") {
+                    updateSiteInfo(siteInfo.copyWith(
+                      soilClassOrder: d.Value(s),
+                      soilClassGreatGroup:
+                          const d.Value("Unknown or not reported"),
+                      soilClassSubGroup:
+                          const d.Value("Unknown or not reported"),
+                      soilClass: kUnknownCode,
+                    ));
+                  } else {
+                    updateSiteInfo(siteInfo.copyWith(
                         soilClassOrder: d.Value(s!),
                         soilClassGreatGroup: const d.Value.absent(),
                         soilClassSubGroup: const d.Value.absent(),
-                        soilClass: const d.Value.absent());
-                  });
+                        soilClass: const d.Value.absent()));
+                  }
                 }
               },
               selectedItem:
@@ -206,56 +230,75 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
                       : db.companionValueToStr(siteInfo.soilClassOrder),
               asyncItems: (s) => db.referenceTablesDao.getSoilClassOrderList(),
             ),
-            DropDownAsyncList(
-              searchable: true,
-              enabled: !parentComplete,
-              title: "Great Group",
-              onChangedFn: (s) {
-                if (db.companionValueToStr(siteInfo.soilClassGreatGroup) != s) {
-                  changeMade = true;
-                  setState(() {
-                    siteInfo = siteInfo.copyWith(
-                        soilClassGreatGroup: d.Value(s!),
-                        soilClassSubGroup: const d.Value.absent(),
-                        soilClass: const d.Value.absent());
-                  });
-                }
-              },
-              selectedItem:
-                  db.companionValueToStr(siteInfo.soilClassGreatGroup).isEmpty
-                      ? "Please select great group"
-                      : db.companionValueToStr(siteInfo.soilClassGreatGroup),
-              asyncItems: (s) => db.referenceTablesDao
-                  .getSoilClassGreatGroupList(
-                      db.companionValueToStr(siteInfo.soilClassOrder)),
-            ),
-            DropDownAsyncList(
-              searchable: true,
-              enabled: !parentComplete,
-              title: "Sub Group",
-              onChangedFn: (s) {
-                if (db.companionValueToStr(siteInfo.soilClassSubGroup) != s) {
-                  changeMade = true;
-                  db.referenceTablesDao
-                      .getSoilClassCode(
-                          db.companionValueToStr(siteInfo.soilClassOrder),
-                          db.companionValueToStr(siteInfo.soilClassGreatGroup),
-                          s!)
-                      .then((code) => setState(() {
-                            siteInfo = siteInfo.copyWith(
-                                soilClassSubGroup: d.Value(s!),
-                                soilClass: d.Value(code));
-                          }));
-                }
-              },
-              selectedItem:
-                  db.companionValueToStr(siteInfo.soilClassSubGroup).isEmpty
-                      ? "Please select sub group"
-                      : db.companionValueToStr(siteInfo.soilClassSubGroup),
-              asyncItems: (s) => db.referenceTablesDao.getSoilClassSubGroupList(
-                  db.companionValueToStr(siteInfo.soilClassOrder),
-                  db.companionValueToStr(siteInfo.soilClassGreatGroup)),
-            ),
+            isSoil()
+                ? Column(
+                    children: [
+                      DropDownAsyncList(
+                        searchable: true,
+                        enabled: !parentComplete,
+                        title: "Great Group",
+                        onChangedFn: (s) {
+                          if (db.companionValueToStr(
+                                  siteInfo.soilClassGreatGroup) !=
+                              s) {
+                            changeMade = true;
+                            setState(() {
+                              siteInfo = siteInfo.copyWith(
+                                  soilClassGreatGroup: d.Value(s!),
+                                  soilClassSubGroup: const d.Value.absent(),
+                                  soilClass: const d.Value.absent());
+                            });
+                          }
+                        },
+                        selectedItem: db
+                                .companionValueToStr(
+                                    siteInfo.soilClassGreatGroup)
+                                .isEmpty
+                            ? "Please select great group"
+                            : db.companionValueToStr(
+                                siteInfo.soilClassGreatGroup),
+                        asyncItems: (s) => db.referenceTablesDao
+                            .getSoilClassGreatGroupList(db
+                                .companionValueToStr(siteInfo.soilClassOrder)),
+                      ),
+                      DropDownAsyncList(
+                        searchable: true,
+                        enabled: !parentComplete,
+                        title: "Sub Group",
+                        onChangedFn: (s) {
+                          if (db.companionValueToStr(
+                                  siteInfo.soilClassSubGroup) !=
+                              s) {
+                            changeMade = true;
+                            db.referenceTablesDao
+                                .getSoilClassCode(
+                                    db.companionValueToStr(
+                                        siteInfo.soilClassOrder),
+                                    db.companionValueToStr(
+                                        siteInfo.soilClassGreatGroup),
+                                    s!)
+                                .then((code) => setState(() {
+                                      siteInfo = siteInfo.copyWith(
+                                          soilClassSubGroup: d.Value(s!),
+                                          soilClass: d.Value(code));
+                                    }));
+                          }
+                        },
+                        selectedItem: db
+                                .companionValueToStr(siteInfo.soilClassSubGroup)
+                                .isEmpty
+                            ? "Please select sub group"
+                            : db.companionValueToStr(
+                                siteInfo.soilClassSubGroup),
+                        asyncItems: (s) => db.referenceTablesDao
+                            .getSoilClassSubGroupList(
+                                db.companionValueToStr(siteInfo.soilClassOrder),
+                                db.companionValueToStr(
+                                    siteInfo.soilClassGreatGroup)),
+                      )
+                    ],
+                  )
+                : Container(),
             const SizedBox(height: kPaddingV * 2),
             const TextHeaderSeparator(
               title: "Measurements",
@@ -304,8 +347,17 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
                                     siteInfo.copyWith(drainage: d.Value(code));
                               }));
                     },
-                    asyncItems: (s) =>
-                        db.referenceTablesDao.getSoilDrainageNameList(),
+                    asyncItems: (s) async {
+                      List<String> namesList =
+                          await db.referenceTablesDao.getSoilDrainageNameList();
+
+                      if (isSoil()) {
+                        namesList
+                            .removeWhere((element) => element.contains("-9"));
+                      }
+
+                      return namesList;
+                    },
                     selectedItem:
                         text.data ?? "Error loading drainage class name",
                   );
@@ -328,8 +380,17 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
                                     siteInfo.copyWith(moisture: d.Value(code));
                               }));
                     },
-                    asyncItems: (s) =>
-                        db.referenceTablesDao.getSoilMoistureNameList(),
+                    asyncItems: (s) async {
+                      List<String> namesList =
+                          await db.referenceTablesDao.getSoilMoistureNameList();
+
+                      if (isSoil()) {
+                        namesList.removeWhere(
+                            (element) => element.contains("Non-applicable"));
+                      }
+
+                      return namesList;
+                    },
                     selectedItem:
                         text.data ?? "Error loading moisture class name",
                   );
@@ -366,7 +427,8 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
                 builder: (BuildContext context, AsyncSnapshot<String> text) {
                   return DropDownAsyncList(
                     title:
-                        "Form of the organic and organic-enriched mineral horizons at the soil surface",
+                        "Humus Form: form of the organic and organic-enriched "
+                        "mineral horizons at the soil surface’",
                     searchable: true,
                     enabled: !parentComplete,
                     onChangedFn: (s) {

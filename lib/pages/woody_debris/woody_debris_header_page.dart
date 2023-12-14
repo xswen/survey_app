@@ -30,7 +30,6 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
 
   @override
   void initState() {
-
     wdId = PathParamValue.getWdSummaryId(widget.goRouterState);
 
     wdhId = PathParamValue.getWdHeaderId(widget.goRouterState)!;
@@ -40,10 +39,33 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
   void updateWdhData(WoodyDebrisHeaderCompanion entry) {
     final db = ref.read(databaseProvider);
 
-    (db.update(db.woodyDebrisHeader)..where((t) => t.id.equals(wdhId)))
-        .write(entry);
+    void update() {
+      (db.update(db.woodyDebrisHeader)..where((t) => t.id.equals(wdhId)))
+          .write(entry);
 
-    ref.refresh(wdhProvider(wdhId));
+      ref.refresh(wdhProvider(wdhId));
+    }
+
+    //If marking incomplete to edit immediately go to edit
+    !entry.complete.value
+        ? update()
+        : db.woodyDebrisTablesDao.wdPieceExists(wdhId).then((exists) => exists
+            ? update()
+            : Popups.show(
+                context,
+                PopupContinue(
+                  "Warning: No pieces entered",
+                  contentText:
+                      "No pieces of coarse woody debris have been recorded for "
+                      "this transect. Pressing continue means you are confirming"
+                      "that the survey was completed and there were "
+                      "no pieces to record.\n"
+                      "Are you sure you want to continue?",
+                  rightBtnOnPressed: () {
+                    update();
+                    context.pop();
+                  },
+                )));
   }
 
   Future<int?> getOrCreateWdSmallId() async {
@@ -97,7 +119,7 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
         if (errors == null) {
           List<String> missingData = [];
           wdh.swdDecayClass == -1
-              ? missingData.add("Transect Header Data")
+              ? missingData.add("Small Woody Debris Decay Class")
               : null;
           missingData.isEmpty
               ? updateWdhData(
@@ -201,9 +223,10 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
                                 context,
                                 PopupContinue("Warning: Deleting Transect",
                                     contentText:
-                                        "You are about to delete this transect. "
-                                        "Are you sure you want to continue?",
-                                    rightBtnOnPressed: () {
+                                        "You are about to delete this transect "
+                                        "and all data entered for this "
+                                        "transect. Are you sure you want to "
+                                        "continue?", rightBtnOnPressed: () {
                                   //close popup
                                   context.pop();
                                   context

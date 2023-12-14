@@ -154,7 +154,26 @@ class EcologicalPlotHeaderPageState
     } else {
       List<String>? errors = errorCheck();
       errors == null
-          ? updateEcpHData(ecpH.copyWith(complete: const d.Value(true)))
+          ? db.ecologicalPlotTablesDao.getSpeciesList(ecpHId).then(
+                (value) => value.isEmpty
+                    ? Popups.show(
+                        context,
+                        PopupContinue(
+                          "Warning: No species entered",
+                          contentText: "No species have been recorded for "
+                              "this plot. Pressing continue means you are "
+                              "confirming that the survey was completed and "
+                              "there were no pieces to record.\n"
+                              "Are you sure you want to continue?",
+                          rightBtnOnPressed: () {
+                            updateEcpHData(
+                                ecpH.copyWith(complete: const d.Value(true)));
+                            context.pop();
+                          },
+                        ))
+                    : updateEcpHData(
+                        ecpH.copyWith(complete: const d.Value(true))),
+              )
           : Popups.show(context, PopupErrorsFoundList(errors: errors));
     }
   }
@@ -223,12 +242,12 @@ class EcologicalPlotHeaderPageState
     return db.companionValueToStr(ecpH.id).isEmpty
         ? Scaffold(
             appBar: OurAppBar(
-              "$title: Transect ${db.companionValueToStr(ecpH.ecpNum)}",
+              "$title: ${db.companionValueToStr(ecpH.plotType)}${db.companionValueToStr(ecpH.ecpNum)}",
             ),
             body: const Center(child: kLoadingWidget))
         : Scaffold(
             appBar: OurAppBar(
-              "$title: Transect ${db.companionValueToStr(ecpH.ecpNum)}",
+              "$title: ${db.companionValueToStr(ecpH.plotType)}${db.companionValueToStr(ecpH.ecpNum)}",
               onLocaleChange: () {},
               backFn: () {
                 if (checkPlotNumExists()) {
@@ -251,7 +270,7 @@ class EcologicalPlotHeaderPageState
                 children: [
                   EcpPlotTypeSelectBuilder(
                       enabled: !ecpH.complete.value,
-                      selectedItem: db.companionValueToStr(ecpH.plotType),
+                      code: db.companionValueToStr(ecpH.plotType),
                       updatePlotType: (code) => setState(() => ecpH =
                           ecpH.copyWith(
                               plotType: d.Value(code),
@@ -320,8 +339,11 @@ class EcologicalPlotHeaderPageState
                     },
                   ),
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: kPaddingH / 2),
+                    padding: const EdgeInsets.only(
+                        left: kPaddingH / 2,
+                        right: kPaddingH / 2,
+                        top: kPaddingV * 2,
+                        bottom: kPaddingV),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

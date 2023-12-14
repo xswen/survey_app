@@ -2,7 +2,6 @@ import 'package:drift/drift.dart' as d;
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/widgets/builders/ecp_plot_num_select_builder.dart';
 import 'package:survey_app/widgets/builders/ecp_plot_type_select_builder.dart';
-import 'package:survey_app/widgets/dropdowns/drop_down_default.dart';
 
 import 'ecological_plot_header_page.dart';
 
@@ -41,12 +40,13 @@ class EcologicalPlotCreatePlotPageState
       body: Column(
         children: [
           EcpPlotTypeSelectBuilder(
-              selectedItem: db.companionValueToStr(ecpHCompanion.plotType),
+              code: db.companionValueToStr(ecpHCompanion.plotType),
               updatePlotType: (code) => setState(() => ecpHCompanion =
                   ecpHCompanion.copyWith(
                       plotType: d.Value(code),
                       ecpNum: const d.Value.absent()))),
-          EcpPlotNumSelectBuilder(ecpSId: ecpSId,
+          EcpPlotNumSelectBuilder(
+              ecpSId: ecpSId,
               plotType: db.companionValueToStr(ecpHCompanion.plotType),
               selectedEcpNum: db.companionValueToStr(ecpHCompanion.ecpNum),
               updateEcpNum: (ecpNum) => setState(() => ecpHCompanion =
