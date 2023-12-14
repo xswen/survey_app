@@ -52,7 +52,7 @@ class _DropDownAsyncListState extends State<DropDownAsyncList> {
                   ),
                 ),
           DropdownSearch<String>(
-            popupProps: PopupProps.menu(
+            popupProps: PopupProps.dialog(
               showSelectedItems: true,
               showSearchBox: widget.searchable,
               disabledItemFn: widget.disabledFn,
