@@ -400,11 +400,22 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
                     appBar: OurAppBar("Woody Debris: Transect ${wdh.transNum}"),
                     endDrawer:
                         DrawerMenu(onLocaleChange: () => setState(() {})),
-                    floatingActionButton: FloatingCompleteButton(
-                      title: "Woody Debris Transect ${wdh.transNum}",
-                      complete: wdh.complete,
+                    bottomNavigationBar: ElevatedButton.icon(
+                      icon: wdh.complete
+                          ? const Icon(FontAwesomeIcons.penToSquare)
+                          : const Icon(FontAwesomeIcons.solidFloppyDisk),
+                      label: wdh.complete
+                          ? Text("Edit Woody Debris Transect ${wdh.transNum}")
+                          : Text(
+                              "Mark Woody Debris Transect ${wdh.transNum} as Complete"),
                       onPressed: () => markComplete(parentComplete, wdh),
                     ),
+
+                    // floatingActionButton: FloatingCompleteButton(
+                    //   title: "Woody Debris Transect ${wdh.transNum}",
+                    //   complete: wdh.complete,
+                    //   onPressed: () => markComplete(parentComplete, wdh),
+                    // ),
                     body: Center(
                       child: Column(
                         children: [
