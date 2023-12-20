@@ -1,14 +1,15 @@
 import 'package:drift/drift.dart' as d;
 import 'package:survey_app/barrels/page_imports_barrel.dart';
-import 'package:survey_app/pages/woody_debris/woody_debris_summary_page.dart';
 
 import '../../providers/woody_debris_providers.dart';
+import '../../widgets/builders/decay_class_select_builder.dart';
 import '../../widgets/buttons/icon_nav_button.dart';
 import '../../widgets/popups/popup_errors_found_list.dart';
 import '../../widgets/popups/popup_warning_missing_fields_list.dart';
-import '../delete_page.dart';
+import '../../widgets/text/text_header_separator.dart';
 import 'woody_debris_header_measurements_page.dart';
-import 'woody_debris_piece/woody_debris_header_piece_main.dart';
+import 'woody_debris_piece/woody_debris_piece_accu_odd_page.dart';
+import 'woody_debris_piece/woody_debris_piece_round_page.dart';
 
 class WoodyDebrisHeaderPage extends ConsumerStatefulWidget {
   static const String routeName = "woodyDebrisHeader";
@@ -27,12 +28,14 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
 
   late int wdId;
   late int wdhId;
+  late final int wdSmId;
 
   @override
   void initState() {
     wdId = PathParamValue.getWdSummaryId(widget.goRouterState);
 
     wdhId = PathParamValue.getWdHeaderId(widget.goRouterState)!;
+    wdSmId = 1;
     super.initState();
   }
 
@@ -68,18 +71,126 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
                 )));
   }
 
-  Future<int?> getOrCreateWdSmallId() async {
+  void updateDecayClass(int? newDecayClass) {
+    Database db = Database.instance;
+    (db.update(db.woodyDebrisHeader)..where((t) => t.id.equals(wdhId))).write(
+        WoodyDebrisHeaderCompanion(swdDecayClass: d.Value(newDecayClass)));
+    ref.refresh(wdhProvider(wdhId));
+  }
+
+  void updateWdSm(WoodyDebrisSmallCompanion entry) {
+    final db = ref.read(databaseProvider);
+    (db.update(db.woodyDebrisSmall)..where((t) => t.id.equals(wdSmId)))
+        .write(entry);
+    ref.refresh(wdSmallProvider(wdhId));
+  }
+
+  void createOddOrAccuPiece(String type) {
+    final db = ref.read(databaseProvider);
+    db.woodyDebrisTablesDao.getLastWdPieceNum(wdhId).then((lastPieceNum) {
+      int pieceNum = lastPieceNum + 1;
+      WoodyDebrisOddCompanion wdOdd = WoodyDebrisOddCompanion(
+          wdHeaderId: d.Value(wdhId),
+          pieceNum: d.Value(pieceNum),
+          accumOdd: d.Value(type));
+      //TODO: Move this to provider
+      context.pushNamed(WoodyDebrisPieceAccuOddPage.routeName,
+          pathParameters: PathParamGenerator.wdSmall(
+              widget.goRouterState, wdSmId.toString()),
+          extra: {WoodyDebrisPieceAccuOddPage.keyPiece: wdOdd}).then((value) {
+        ref.refresh(wdPieceOddProvider(wdhId));
+        ref.refresh(wdPieceRoundProvider(wdhId));
+      });
+    });
+  }
+
+  void addPiece() {
     final db = ref.read(databaseProvider);
 
-    WoodyDebrisSmallData? wdSm = await (db.select(db.woodyDebrisSmall)
-          ..where((tbl) => tbl.wdHeaderId.equals(wdhId)))
-        .getSingleOrNull();
+    Popups.show(
+        context,
+        SimpleDialog(
+          title: const Text("Create New: "),
+          children: [
+            SimpleDialogOption(
+              onPressed: () {
+                context.pop();
+                createOddOrAccuPiece(db.woodyDebrisTablesDao.odd);
+              },
+              child: const Text("Odd Piece"),
+            ),
+            SimpleDialogOption(
+              onPressed: () {
+                context.pop();
+                createOddOrAccuPiece(db.woodyDebrisTablesDao.accumulation);
+              },
+              child: const Text("Accumulation"),
+            ),
+            SimpleDialogOption(
+              onPressed: () async {
+                db.woodyDebrisTablesDao
+                    .getLastWdPieceNum(wdhId)
+                    .then((lastPieceNum) {
+                  int pieceNum = lastPieceNum + 1;
+                  WoodyDebrisRoundCompanion wdRound = WoodyDebrisRoundCompanion(
+                      wdHeaderId: d.Value(wdhId), pieceNum: d.Value(pieceNum));
+                  context.pop();
+                  //TODO: Move to provider
+                  context.pushNamed(WoodyDebrisPieceRoundPage.routeName,
+                      pathParameters: PathParamGenerator.wdSmall(
+                          widget.goRouterState, wdSmId.toString()),
+                      extra: {
+                        WoodyDebrisPieceRoundPage.keyPiece: wdRound
+                      }).then((value) {
+                    ref.refresh(wdPieceOddProvider(wdhId));
+                    ref.refresh(wdPieceRoundProvider(wdhId));
+                  });
+                });
+              },
+              child: const Text("Round Piece"),
+            ),
+            SimpleDialogOption(
+              onPressed: () => context.pop(),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [Text("Cancel")],
+              ),
+            ),
+          ],
+        ));
+  }
 
-    wdSm ??
-        db.woodyDebrisTablesDao
-            .addWdSmall(WoodyDebrisSmallCompanion(wdHeaderId: d.Value(wdhId)));
-
-    return (await db.woodyDebrisTablesDao.getWdSmall(wdhId))?.id;
+  void changeWdPieceData(bool transComplete,
+      {WoodyDebrisOddData? odd,
+      WoodyDebrisRoundData? round,
+      void Function()? deleteFn}) {
+    if (transComplete) {
+      Popups.show(context, completeWarningPopup);
+    } else if (odd != null) {
+      context.pushNamed(WoodyDebrisPieceAccuOddPage.routeName,
+          pathParameters: PathParamGenerator.wdSmall(
+              widget.goRouterState, wdSmId.toString()),
+          extra: {
+            WoodyDebrisPieceAccuOddPage.keyPiece: odd.toCompanion(true),
+            WoodyDebrisPieceAccuOddPage.keyDeleteFn: deleteFn
+          }).then((value) {
+        ref.refresh(wdPieceOddProvider(wdhId));
+        ref.refresh(wdPieceRoundProvider(wdhId));
+      });
+    } else if (round != null) {
+      context.pushNamed(WoodyDebrisPieceRoundPage.routeName,
+          pathParameters: PathParamGenerator.wdSmall(
+              widget.goRouterState, wdSmId.toString()),
+          extra: {
+            WoodyDebrisPieceRoundPage.keyPiece: round.toCompanion(true),
+            WoodyDebrisPieceRoundPage.keyDeleteFn: deleteFn
+          }).then((value) {
+        ref.refresh(wdPieceOddProvider(wdhId));
+        ref.refresh(wdPieceRoundProvider(wdhId));
+      });
+    } else {
+      debugPrint("Error: No data given");
+    }
   }
 
   //Return null on no issue. Otherwise return error message
@@ -149,6 +260,9 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
 
     final parentComplete = ref.watch(wdhParentCompleteProvider(wdId));
     final AsyncValue<WoodyDebrisHeaderData> wdh = ref.watch(wdhProvider(wdhId));
+    final wdSmall = ref.watch(wdSmallProvider(wdhId));
+    final pieceOdd = ref.watch(wdPieceOddProvider(wdhId));
+    final pieceRound = ref.watch(wdPieceRoundProvider(wdhId));
 
     return wdh.when(
         error: (err, stack) => Text("Error: $err"),
@@ -167,7 +281,7 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
                       onPressed: () => markComplete(parentComplete, wdh),
                     ),
                     body: Center(
-                      child: Column(
+                      child: ListView(
                         children: [
                           IconNavButton(
                             icon: const Icon(FontAwesomeIcons.file),
@@ -178,7 +292,10 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
                                   .pushNamed(
                                     WoodyDebrisHeaderMeasurementsPage.routeName,
                                     pathParameters: PathParamGenerator.wdHeader(
-                                        widget.goRouterState, wdhId.toString()),
+                                      widget.goRouterState,
+                                      wdhId.toString(),
+                                      wdSmId.toString(),
+                                    ),
                                   )
                                   .then((value) =>
                                       ref.refresh(wdhProvider(wdhId)));
@@ -186,73 +303,78 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
                             padding: const EdgeInsets.symmetric(
                                 vertical: kPaddingV, horizontal: kPaddingH),
                           ),
-                          IconNavButton(
-                            icon: const Icon(FontAwesomeIcons.ruler),
-                            space: kPaddingIcon,
-                            label: "Piece Measurements",
-                            onPressed: () async {
-                              getOrCreateWdSmallId().then((wdSmallId) {
-                                wdSmallId == null
-                                    ? debugPrint("Error, wdSmall returned null")
-                                    : null;
-                                context
-                                    .pushNamed(
-                                        WoodyDebrisHeaderPieceMainPage
-                                            .routeName,
-                                        pathParameters:
-                                            PathParamGenerator.wdSmall(
-                                                widget.goRouterState,
-                                                wdSmallId.toString()))
-                                    .then((value) =>
-                                        ref.refresh(wdTransListProvider(wdId)));
-                              });
-                            },
-                            padding: const EdgeInsets.symmetric(
-                                vertical: kPaddingV, horizontal: kPaddingH),
+                          const TextHeaderSeparator(
+                              title: "Small Woody Debris"),
+                          const SizedBox(
+                            height: kPaddingV,
                           ),
-                          IconNavButton(
-                            icon: const Icon(FontAwesomeIcons.trash),
-                            space: kPaddingIcon,
-                            label: "Delete Transect",
-                            onPressed: () {
-                              if (parentComplete || wdh.complete) {
-                                Popups.show(context, completeWarningPopup);
-                                return;
-                              }
-                              Popups.show(
-                                context,
-                                PopupContinue("Warning: Deleting Transect",
-                                    contentText:
-                                        "You are about to delete this transect "
-                                        "and all data entered for this "
-                                        "transect. Are you sure you want to "
-                                        "continue?", rightBtnOnPressed: () {
-                                  //close popup
-                                  context.pop();
-                                  context
-                                      .pushNamed(DeletePage.routeName, extra: {
-                                    DeletePage.keyObjectName:
-                                        "Woody Debris Transect ${wdh.transNum}",
-                                    DeletePage.keyDeleteFn: () {
-                                      db.woodyDebrisTablesDao
-                                          .deleteWoodyDebrisTransect(wdh.id)
-                                          .then((value) {
-                                        ref.refresh(wdTransListProvider(wdId));
-                                        context.goNamed(
-                                            WoodyDebrisSummaryPage.routeName,
-                                            pathParameters:
-                                                PathParamGenerator.wdSummary(
-                                                    widget.goRouterState,
-                                                    wdId.toString()));
-                                      });
-                                    },
-                                  });
-                                }),
-                              );
-                            },
+                          Padding(
                             padding: const EdgeInsets.symmetric(
-                                vertical: kPaddingV, horizontal: kPaddingH),
+                                horizontal: kPaddingH),
+                            child: DecayClassSelectBuilder(
+                              onBeforePopup: (s) async {
+                                if (wdh.complete) {
+                                  Popups.show(
+                                      context,
+                                      Popups.generateCompleteErrorPopup(
+                                          "Woody Debris"));
+                                  return false;
+                                }
+                                return true;
+                              },
+                              onChangedFn: (s) => s == "Unreported"
+                                  ? updateDecayClass(-1)
+                                  : updateDecayClass(int.parse(s!)),
+                              selectedItem: wdh.swdDecayClass == null
+                                  ? "Select Decay Class"
+                                  : wdh.swdDecayClass.toString() == "-1"
+                                      ? "Unreported"
+                                      : wdh.swdDecayClass.toString(),
+                            ),
                           ),
+                          // IconNavButton(
+                          //   icon: const Icon(FontAwesomeIcons.trash),
+                          //   space: kPaddingIcon,
+                          //   label: "Delete Transect",
+                          //   onPressed: () {
+                          //     if (parentComplete || wdh.complete) {
+                          //       Popups.show(context, completeWarningPopup);
+                          //       return;
+                          //     }
+                          //     Popups.show(
+                          //       context,
+                          //       PopupContinue("Warning: Deleting Transect",
+                          //           contentText:
+                          //               "You are about to delete this transect "
+                          //               "and all data entered for this "
+                          //               "transect. Are you sure you want to "
+                          //               "continue?", rightBtnOnPressed: () {
+                          //         //close popup
+                          //         context.pop();
+                          //         context
+                          //             .pushNamed(DeletePage.routeName, extra: {
+                          //           DeletePage.keyObjectName:
+                          //               "Woody Debris Transect ${wdh.transNum}",
+                          //           DeletePage.keyDeleteFn: () {
+                          //             db.woodyDebrisTablesDao
+                          //                 .deleteWoodyDebrisTransect(wdh.id)
+                          //                 .then((value) {
+                          //               ref.refresh(wdTransListProvider(wdId));
+                          //               context.goNamed(
+                          //                   WoodyDebrisSummaryPage.routeName,
+                          //                   pathParameters:
+                          //                       PathParamGenerator.wdSummary(
+                          //                           widget.goRouterState,
+                          //                           wdId.toString()));
+                          //             });
+                          //           },
+                          //         });
+                          //       }),
+                          //     );
+                          //   },
+                          //   padding: const EdgeInsets.symmetric(
+                          //       vertical: kPaddingV, horizontal: kPaddingH),
+                          // ),
                         ],
                       ),
                     ),

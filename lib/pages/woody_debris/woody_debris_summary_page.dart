@@ -78,14 +78,21 @@ class WoodyDebrisSummaryPageState
         ));
   }
 
-  void goToWdhPage(int wdhId) => context
-          .pushNamed(WoodyDebrisHeaderPage.routeName,
-              pathParameters: PathParamGenerator.wdHeader(
-                  widget.goRouterState, wdhId.toString()))
-          .then((value) {
-        ref.refresh(wdTransListProvider(wdId));
-        ref.refresh(wdDataProvider(surveyId));
-      });
+  void goToWdhPage(int wdhId) {
+    Database db = ref.read(databaseProvider);
+    db.woodyDebrisTablesDao.getOrCreateWdSmallId(wdhId).then(
+          (wdSmallId) => context
+              .pushNamed(WoodyDebrisHeaderPage.routeName,
+                  pathParameters: PathParamGenerator.wdHeader(
+                      widget.goRouterState,
+                      wdhId.toString(),
+                      wdSmallId.toString()))
+              .then((value) {
+            ref.refresh(wdTransListProvider(wdId));
+            ref.refresh(wdDataProvider(surveyId));
+          }),
+        );
+  }
 
   SurveyStatus getStatus(WoodyDebrisHeaderData wdh) {
     if (wdh.complete) return SurveyStatus.complete;
@@ -159,9 +166,12 @@ class WoodyDebrisSummaryPageState
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      "Select a Transect to enter data for:",
-                      style: TextStyle(fontSize: kTextHeaderSize),
+                    const Flexible(
+                      child: Text(
+                        "Select a Transect to enter data for:",
+                        style: TextStyle(fontSize: kTextHeaderSize),
+                        maxLines: null,
+                      ),
                     ),
                     ElevatedButton(
                         onPressed: () => wd.complete!
@@ -169,7 +179,9 @@ class WoodyDebrisSummaryPageState
                             : context.pushNamed(
                                 WoodyDebrisHeaderMeasurementsPage.routeName,
                                 pathParameters: PathParamGenerator.wdHeader(
-                                    widget.goRouterState, kParamMissing)),
+                                    widget.goRouterState,
+                                    kParamMissing,
+                                    kParamMissing)),
                         style: CustomButtonStyles.inactiveButton(
                             isActive: !wd.complete!),
                         child: const Row(

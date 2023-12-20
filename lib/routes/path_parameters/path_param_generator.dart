@@ -16,18 +16,23 @@ class PathParamGenerator {
       };
 
   static Map<String, String> wdHeader(
-          GoRouterState goRouterState, String wdHeaderId) =>
+          GoRouterState goRouterState, String wdHeaderId, String wdSmallId) =>
       {
         ...wdSummary(goRouterState,
             goRouterState.pathParameters[PathParamsKeys.wdSummaryId]!),
-        ...{PathParamsKeys.wdHeaderId: wdHeaderId}
+        ...{
+          PathParamsKeys.wdHeaderId: wdHeaderId,
+          PathParamsKeys.wdSmallId: wdSmallId
+        }
       };
 
   static Map<String, String> wdSmall(
           GoRouterState goRouterState, String wdSmallId) =>
       {
-        ...wdHeader(goRouterState,
-            goRouterState.pathParameters[PathParamsKeys.wdHeaderId]!),
+        ...wdHeader(
+            goRouterState,
+            goRouterState.pathParameters[PathParamsKeys.wdHeaderId]!,
+            goRouterState.pathParameters[PathParamsKeys.wdSmallId]!),
         ...{PathParamsKeys.wdSmallId: wdSmallId}
       };
 

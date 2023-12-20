@@ -141,6 +141,18 @@ class WoodyDebrisTablesDao extends DatabaseAccessor<Database>
           .getSingleOrNull();
 
 //====================Woody Debris Small====================
+  Future<int?> getOrCreateWdSmallId(int wdhId) async {
+    WoodyDebrisSmallData? wdSm = await (db.select(db.woodyDebrisSmall)
+          ..where((tbl) => tbl.wdHeaderId.equals(wdhId)))
+        .getSingleOrNull();
+
+    wdSm ??
+        db.woodyDebrisTablesDao
+            .addWdSmall(WoodyDebrisSmallCompanion(wdHeaderId: Value(wdhId)));
+
+    return (await db.woodyDebrisTablesDao.getWdSmall(wdhId))?.id;
+  }
+
   Future<int> addWdSmall(WoodyDebrisSmallCompanion entry) =>
       into(woodyDebrisSmall).insert(entry);
   Future<WoodyDebrisSmallData?> getWdSmall(int wdHeaderId) =>

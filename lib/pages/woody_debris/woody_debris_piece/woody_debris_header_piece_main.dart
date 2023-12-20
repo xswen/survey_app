@@ -5,12 +5,9 @@ import 'package:survey_app/wrappers/column_header_object.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../widgets/box_increment.dart';
-import '../../../widgets/builders/decay_class_select_builder.dart';
 import '../../../widgets/tables/table_creation_builder.dart';
 import '../../../widgets/tables/table_data_grid_source_builder.dart';
 import '../../../widgets/text/text_header_separator.dart';
-import 'woody_debris_piece_accu_odd_page.dart';
-import 'woody_debris_piece_round_page.dart';
 
 class ColNames {
   ColNames();
@@ -170,121 +167,6 @@ class WoodyDebrisHeaderPieceMainPageState
     final pieceOdd = ref.watch(wdPieceOddProvider(wdhId));
     final pieceRound = ref.watch(wdPieceRoundProvider(wdhId));
 
-    void createOddOrAccuPiece(String type) {
-      db.woodyDebrisTablesDao.getLastWdPieceNum(wdhId).then((lastPieceNum) {
-        int pieceNum = lastPieceNum + 1;
-        WoodyDebrisOddCompanion wdOdd = WoodyDebrisOddCompanion(
-            wdHeaderId: d.Value(wdhId),
-            pieceNum: d.Value(pieceNum),
-            accumOdd: d.Value(type));
-        //TODO: Move this to provider
-        context.pushNamed(WoodyDebrisPieceAccuOddPage.routeName,
-            pathParameters: PathParamGenerator.wdSmall(
-                widget.goRouterState, wdSmId.toString()),
-            extra: {WoodyDebrisPieceAccuOddPage.keyPiece: wdOdd}).then((value) {
-          ref.refresh(wdPieceOddProvider(wdhId));
-          ref.refresh(wdPieceRoundProvider(wdhId));
-        });
-      });
-    }
-
-    void updateDecayClass(int? newDecayClass) {
-      (db.update(db.woodyDebrisHeader)..where((t) => t.id.equals(wdhId))).write(
-          WoodyDebrisHeaderCompanion(swdDecayClass: d.Value(newDecayClass)));
-      ref.refresh(wdhProvider(wdhId));
-    }
-
-    void updateWdSm(WoodyDebrisSmallCompanion entry) {
-      (db.update(db.woodyDebrisSmall)..where((t) => t.id.equals(wdSmId)))
-          .write(entry);
-      ref.refresh(wdSmallProvider(wdhId));
-    }
-
-    void addPiece() => Popups.show(
-        context,
-        SimpleDialog(
-          title: const Text("Create New: "),
-          children: [
-            SimpleDialogOption(
-              onPressed: () {
-                context.pop();
-                createOddOrAccuPiece(db.woodyDebrisTablesDao.odd);
-              },
-              child: const Text("Odd Piece"),
-            ),
-            SimpleDialogOption(
-              onPressed: () {
-                context.pop();
-                createOddOrAccuPiece(db.woodyDebrisTablesDao.accumulation);
-              },
-              child: const Text("Accumulation"),
-            ),
-            SimpleDialogOption(
-              onPressed: () async {
-                db.woodyDebrisTablesDao
-                    .getLastWdPieceNum(wdhId)
-                    .then((lastPieceNum) {
-                  int pieceNum = lastPieceNum + 1;
-                  WoodyDebrisRoundCompanion wdRound = WoodyDebrisRoundCompanion(
-                      wdHeaderId: d.Value(wdhId), pieceNum: d.Value(pieceNum));
-                  context.pop();
-                  //TODO: Move to provider
-                  context.pushNamed(WoodyDebrisPieceRoundPage.routeName,
-                      pathParameters: PathParamGenerator.wdSmall(
-                          widget.goRouterState, wdSmId.toString()),
-                      extra: {
-                        WoodyDebrisPieceRoundPage.keyPiece: wdRound
-                      }).then((value) {
-                    ref.refresh(wdPieceOddProvider(wdhId));
-                    ref.refresh(wdPieceRoundProvider(wdhId));
-                  });
-                });
-              },
-              child: const Text("Round Piece"),
-            ),
-            SimpleDialogOption(
-              onPressed: () => context.pop(),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [Text("Cancel")],
-              ),
-            ),
-          ],
-        ));
-
-    void changeWdPieceData(bool transComplete,
-        {WoodyDebrisOddData? odd,
-        WoodyDebrisRoundData? round,
-        void Function()? deleteFn}) {
-      if (transComplete) {
-        Popups.show(context, completeWarningPopup);
-      } else if (odd != null) {
-        context.pushNamed(WoodyDebrisPieceAccuOddPage.routeName,
-            pathParameters: PathParamGenerator.wdSmall(
-                widget.goRouterState, wdSmId.toString()),
-            extra: {
-              WoodyDebrisPieceAccuOddPage.keyPiece: odd.toCompanion(true),
-              WoodyDebrisPieceAccuOddPage.keyDeleteFn: deleteFn
-            }).then((value) {
-          ref.refresh(wdPieceOddProvider(wdhId));
-          ref.refresh(wdPieceRoundProvider(wdhId));
-        });
-      } else if (round != null) {
-        context.pushNamed(WoodyDebrisPieceRoundPage.routeName,
-            pathParameters: PathParamGenerator.wdSmall(
-                widget.goRouterState, wdSmId.toString()),
-            extra: {
-              WoodyDebrisPieceRoundPage.keyPiece: round.toCompanion(true),
-              WoodyDebrisPieceRoundPage.keyDeleteFn: deleteFn
-            }).then((value) {
-          ref.refresh(wdPieceOddProvider(wdhId));
-          ref.refresh(wdPieceRoundProvider(wdhId));
-        });
-      } else {
-        debugPrint("Error: No data given");
-      }
-    }
-
     return wdh.when(
         data: (wdh) => Scaffold(
               appBar: OurAppBar("Woody Debris: Transect ${wdh.transNum}"),
@@ -299,30 +181,7 @@ class WoodyDebrisHeaderPieceMainPageState
                     const SizedBox(
                       height: kPaddingV,
                     ),
-                    Padding(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: kPaddingH),
-                      child: DecayClassSelectBuilder(
-                        onBeforePopup: (s) async {
-                          if (wdh.complete) {
-                            Popups.show(
-                                context,
-                                Popups.generateCompleteErrorPopup(
-                                    "Woody Debris"));
-                            return false;
-                          }
-                          return true;
-                        },
-                        onChangedFn: (s) => s == "Unreported"
-                            ? updateDecayClass(-1)
-                            : updateDecayClass(int.parse(s!)),
-                        selectedItem: wdh.swdDecayClass == null
-                            ? "Select Decay Class"
-                            : wdh.swdDecayClass.toString() == "-1"
-                                ? "Unreported"
-                                : wdh.swdDecayClass.toString(),
-                      ),
-                    ),
+
                     const SizedBox(
                       height: kPaddingV * 2,
                     ),

@@ -370,10 +370,17 @@ class WoodyDebrisHeaderMeasurementsPageState
                                 ref.refresh(wdTransListProvider(wdId));
                                 ref.refresh(wdhProvider(wdhId));
 
-                                context.goNamed(WoodyDebrisHeaderPage.routeName,
-                                    pathParameters: PathParamGenerator.wdHeader(
-                                        widget.goRouterState,
-                                        wdhId.toString()));
+                                db.woodyDebrisTablesDao
+                                    .getOrCreateWdSmallId(wdhId)
+                                    .then(
+                                      (wdSmallId) => context.goNamed(
+                                          WoodyDebrisHeaderPage.routeName,
+                                          pathParameters:
+                                              PathParamGenerator.wdHeader(
+                                                  widget.goRouterState,
+                                                  wdhId.toString(),
+                                                  wdSmallId.toString())),
+                                    );
                               });
                             }
                           },
