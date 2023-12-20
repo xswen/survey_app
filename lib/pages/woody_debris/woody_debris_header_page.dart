@@ -2,6 +2,7 @@ import 'package:drift/drift.dart' as d;
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 
 import '../../providers/woody_debris_providers.dart';
+import '../../widgets/box_increment.dart';
 import '../../widgets/builders/decay_class_select_builder.dart';
 import '../../widgets/buttons/icon_nav_button.dart';
 import '../../widgets/popups/popup_errors_found_list.dart';
@@ -303,6 +304,7 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
                             padding: const EdgeInsets.symmetric(
                                 vertical: kPaddingV, horizontal: kPaddingH),
                           ),
+                          //---------Small Woody Debris
                           const TextHeaderSeparator(
                               title: "Small Woody Debris"),
                           const SizedBox(
@@ -332,6 +334,92 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
                                       : wdh.swdDecayClass.toString(),
                             ),
                           ),
+                          const SizedBox(
+                            height: kPaddingV * 2,
+                          ),
+                          wdSmall.when(
+                              data: (wdSm) => Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      BoxIncrement(
+                                        title: "Class 1",
+                                        subtitle: "1.1 - 3.0cm",
+                                        boxVal: wdSm!.swdTallyS.toString(),
+                                        minusOnPress: () {
+                                          wdh.complete
+                                              ? Popups.show(
+                                                  context, completeWarningPopup)
+                                              : (wdSm.swdTallyS > 0
+                                                  ? updateWdSm(
+                                                      WoodyDebrisSmallCompanion(
+                                                          swdTallyS: d.Value(
+                                                              wdSm.swdTallyS -
+                                                                  1)))
+                                                  : null);
+                                        },
+                                        addOnPress: () => wdh.complete
+                                            ? Popups.show(
+                                                context, completeWarningPopup)
+                                            : updateWdSm(
+                                                WoodyDebrisSmallCompanion(
+                                                    swdTallyS: d.Value(
+                                                        wdSm.swdTallyS + 1))),
+                                      ),
+                                      BoxIncrement(
+                                        title: "Class 2",
+                                        subtitle: "3.1 - 5.0cm",
+                                        boxVal: wdSm.swdTallyM.toString(),
+                                        minusOnPress: () {
+                                          wdh.complete
+                                              ? Popups.show(
+                                                  context, completeWarningPopup)
+                                              : wdSm.swdTallyM > 0
+                                                  ? updateWdSm(
+                                                      WoodyDebrisSmallCompanion(
+                                                          swdTallyM: d.Value(
+                                                              wdSm.swdTallyM -
+                                                                  1)))
+                                                  : null;
+                                        },
+                                        addOnPress: () => wdh.complete
+                                            ? Popups.show(
+                                                context, completeWarningPopup)
+                                            : updateWdSm(
+                                                WoodyDebrisSmallCompanion(
+                                                    swdTallyM: d.Value(
+                                                        wdSm.swdTallyM + 1))),
+                                      ),
+                                      BoxIncrement(
+                                        title: "Class 3",
+                                        subtitle: "5.1 - 7.5cm",
+                                        boxVal: wdSm.swdTallyL.toString(),
+                                        minusOnPress: () {
+                                          wdh.complete
+                                              ? Popups.show(
+                                                  context, completeWarningPopup)
+                                              : (wdSm.swdTallyL > 0
+                                                  ? updateWdSm(
+                                                      WoodyDebrisSmallCompanion(
+                                                          swdTallyL: d.Value(
+                                                              wdSm.swdTallyL -
+                                                                  1)))
+                                                  : null);
+                                        },
+                                        addOnPress: () => wdh.complete
+                                            ? Popups.show(
+                                                context, completeWarningPopup)
+                                            : updateWdSm(
+                                                WoodyDebrisSmallCompanion(
+                                                    swdTallyL: d.Value(
+                                                        wdSm.swdTallyL + 1))),
+                                      ),
+                                    ],
+                                  ),
+                              error: (err, stack) => Text("Error: $err"),
+                              loading: () => const Center(
+                                  child: CircularProgressIndicator())),
+                          //---------Coarse Woody Debris
                           // IconNavButton(
                           //   icon: const Icon(FontAwesomeIcons.trash),
                           //   space: kPaddingIcon,

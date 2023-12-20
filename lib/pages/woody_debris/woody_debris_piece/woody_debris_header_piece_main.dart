@@ -1,10 +1,8 @@
-import 'package:drift/drift.dart' as d;
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/providers/woody_debris_providers.dart';
 import 'package:survey_app/wrappers/column_header_object.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '../../../widgets/box_increment.dart';
 import '../../../widgets/tables/table_creation_builder.dart';
 import '../../../widgets/tables/table_data_grid_source_builder.dart';
 import '../../../widgets/text/text_header_separator.dart';
@@ -182,84 +180,6 @@ class WoodyDebrisHeaderPieceMainPageState
                       height: kPaddingV,
                     ),
 
-                    const SizedBox(
-                      height: kPaddingV * 2,
-                    ),
-                    wdSmall.when(
-                        data: (wdSm) => Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                BoxIncrement(
-                                  title: "Class 1",
-                                  subtitle: "1.1 - 3.0cm",
-                                  boxVal: wdSm!.swdTallyS.toString(),
-                                  minusOnPress: () {
-                                    wdh.complete
-                                        ? Popups.show(
-                                            context, completeWarningPopup)
-                                        : (wdSm.swdTallyS > 0
-                                            ? updateWdSm(
-                                                WoodyDebrisSmallCompanion(
-                                                    swdTallyS: d.Value(
-                                                        wdSm.swdTallyS - 1)))
-                                            : null);
-                                  },
-                                  addOnPress: () => wdh.complete
-                                      ? Popups.show(
-                                          context, completeWarningPopup)
-                                      : updateWdSm(WoodyDebrisSmallCompanion(
-                                          swdTallyS:
-                                              d.Value(wdSm.swdTallyS + 1))),
-                                ),
-                                BoxIncrement(
-                                  title: "Class 2",
-                                  subtitle: "3.1 - 5.0cm",
-                                  boxVal: wdSm.swdTallyM.toString(),
-                                  minusOnPress: () {
-                                    wdh.complete
-                                        ? Popups.show(
-                                            context, completeWarningPopup)
-                                        : wdSm.swdTallyM > 0
-                                            ? updateWdSm(
-                                                WoodyDebrisSmallCompanion(
-                                                    swdTallyM: d.Value(
-                                                        wdSm.swdTallyM - 1)))
-                                            : null;
-                                  },
-                                  addOnPress: () => wdh.complete
-                                      ? Popups.show(
-                                          context, completeWarningPopup)
-                                      : updateWdSm(WoodyDebrisSmallCompanion(
-                                          swdTallyM:
-                                              d.Value(wdSm.swdTallyM + 1))),
-                                ),
-                                BoxIncrement(
-                                  title: "Class 3",
-                                  subtitle: "5.1 - 7.5cm",
-                                  boxVal: wdSm.swdTallyL.toString(),
-                                  minusOnPress: () {
-                                    wdh.complete
-                                        ? Popups.show(
-                                            context, completeWarningPopup)
-                                        : (wdSm.swdTallyL > 0
-                                            ? updateWdSm(
-                                                WoodyDebrisSmallCompanion(
-                                                    swdTallyL: d.Value(
-                                                        wdSm.swdTallyL - 1)))
-                                            : null);
-                                  },
-                                  addOnPress: () => wdh.complete
-                                      ? Popups.show(
-                                          context, completeWarningPopup)
-                                      : updateWdSm(WoodyDebrisSmallCompanion(
-                                          swdTallyL:
-                                              d.Value(wdSm.swdTallyL + 1))),
-                                ),
-                              ],
-                            ),
-                        error: (err, stack) => Text("Error: $err"),
-                        loading: () =>
-                            const Center(child: CircularProgressIndicator())),
                     //Coarse Woody debris
                     Padding(
                       padding:
