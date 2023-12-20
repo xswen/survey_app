@@ -1,5 +1,6 @@
 import 'package:drift/drift.dart' as d;
 import 'package:survey_app/barrels/page_imports_barrel.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../providers/woody_debris_providers.dart';
 import '../../widgets/box_increment.dart';
@@ -7,10 +8,43 @@ import '../../widgets/builders/decay_class_select_builder.dart';
 import '../../widgets/buttons/icon_nav_button.dart';
 import '../../widgets/popups/popup_errors_found_list.dart';
 import '../../widgets/popups/popup_warning_missing_fields_list.dart';
+import '../../widgets/tables/table_creation_builder.dart';
+import '../../widgets/tables/table_data_grid_source_builder.dart';
 import '../../widgets/text/text_header_separator.dart';
+import '../../wrappers/column_header_object.dart';
 import 'woody_debris_header_measurements_page.dart';
 import 'woody_debris_piece/woody_debris_piece_accu_odd_page.dart';
 import 'woody_debris_piece/woody_debris_piece_round_page.dart';
+
+class ColNames {
+  ColNames();
+  ColumnHeaders id = ColumnHeaders(ColumnHeaders.headerNameId, visible: false);
+  ColumnHeaders pieceNum = ColumnHeaders("Piece Number");
+  ColumnHeaders type = ColumnHeaders("Type");
+  ColumnHeaders genus = ColumnHeaders("Genus");
+  ColumnHeaders species = ColumnHeaders("Species");
+  ColumnHeaders horLen = ColumnHeaders("Horizontal Length");
+  ColumnHeaders verDep = ColumnHeaders("Vertical Depth");
+  ColumnHeaders diameter = ColumnHeaders("Diameter");
+  ColumnHeaders tiltAngle = ColumnHeaders("Tilt Angle");
+  ColumnHeaders decayClass = ColumnHeaders("Decay Class");
+  ColumnHeaders edit = ColumnHeaders(ColumnHeaders.headerNameEdit, sort: false);
+
+  String empty = "-";
+
+  List<ColumnHeaders> getColHeadersList() => [
+        pieceNum,
+        type,
+        genus,
+        species,
+        horLen,
+        verDep,
+        diameter,
+        tiltAngle,
+        decayClass,
+        edit
+      ];
+}
 
 class WoodyDebrisHeaderPage extends ConsumerStatefulWidget {
   static const String routeName = "woodyDebrisHeader";
@@ -31,13 +65,103 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
   late int wdhId;
   late final int wdSmId;
 
+  ColNames columnData = ColNames();
+
   @override
   void initState() {
     wdId = PathParamValue.getWdSummaryId(widget.goRouterState);
 
     wdhId = PathParamValue.getWdHeaderId(widget.goRouterState)!;
-    wdSmId = 1;
+    wdSmId = PathParamValue.getWdSmallId(widget.goRouterState);
     super.initState();
+  }
+
+  List<DataGridRow> generateDataGridRows(List<WoodyDebrisOddData> piecesOdd,
+      List<WoodyDebrisRoundData> piecesRound) {
+    List<DataGridRow> oddGrid = piecesOdd
+        .map<DataGridRow>((dataGridRow) => DataGridRow(cells: [
+              DataGridCell<int>(
+                  columnName: columnData.id.name, value: dataGridRow.id),
+              DataGridCell<int>(
+                  columnName: columnData.pieceNum.name,
+                  value: dataGridRow.pieceNum),
+              DataGridCell<String>(
+                  columnName: columnData.type.name,
+                  value: dataGridRow.accumOdd),
+              DataGridCell<String>(
+                  columnName: columnData.genus.name, value: dataGridRow.genus),
+              DataGridCell<String>(
+                  columnName: columnData.species.name,
+                  value: dataGridRow.species),
+              DataGridCell<String>(
+                  columnName: columnData.horLen.name,
+                  value: dataGridRow.horLength.toString()),
+              DataGridCell<String>(
+                  columnName: columnData.verDep.name,
+                  value: dataGridRow.verDepth.toString()),
+              DataGridCell<String>(
+                  columnName: columnData.diameter.name,
+                  value: columnData.empty),
+              DataGridCell<String>(
+                  columnName: columnData.tiltAngle.name,
+                  value: columnData.empty),
+              DataGridCell<String>(
+                  columnName: columnData.decayClass.name,
+                  value: dataGridRow.decayClass == -1
+                      ? "Missing"
+                      : dataGridRow.decayClass.toString()),
+              kEditColumnDataGridCell,
+            ]))
+        .toList();
+
+    List<DataGridRow> roundGrid = piecesRound
+        .map<DataGridRow>((dataGridRow) => DataGridRow(cells: [
+              DataGridCell<int>(
+                  columnName: columnData.id.name, value: dataGridRow.id),
+              DataGridCell<int>(
+                  columnName: columnData.pieceNum.name,
+                  value: dataGridRow.pieceNum),
+              DataGridCell<String>(
+                  columnName: columnData.type.name, value: "R"),
+              DataGridCell<String>(
+                  columnName: columnData.genus.name, value: dataGridRow.genus),
+              DataGridCell<String>(
+                  columnName: columnData.species.name,
+                  value: dataGridRow.species),
+              DataGridCell<String>(
+                  columnName: columnData.horLen.name, value: columnData.empty),
+              DataGridCell<String>(
+                  columnName: columnData.verDep.name, value: columnData.empty),
+              DataGridCell<String>(
+                  columnName: columnData.diameter.name,
+                  value: dataGridRow.diameter.toString()),
+              DataGridCell<String>(
+                  columnName: columnData.tiltAngle.name,
+                  value: dataGridRow.tiltAngle == -1
+                      ? "Missing"
+                      : dataGridRow.tiltAngle.toString()),
+              DataGridCell<String>(
+                  columnName: columnData.decayClass.name,
+                  value: dataGridRow.decayClass == -1
+                      ? "Missing"
+                      : dataGridRow.decayClass.toString()),
+              kEditColumnDataGridCell,
+            ]))
+        .toList();
+
+    return [...oddGrid, ...roundGrid];
+  }
+
+  DataGridSourceBuilder getSourceBuilder(
+      List<WoodyDebrisOddData> odd, List<WoodyDebrisRoundData> round) {
+    DataGridSourceBuilder largePieceDataSource =
+        DataGridSourceBuilder(dataGridRows: generateDataGridRows(odd, round));
+    largePieceDataSource.sortedColumns.add(SortColumnDetails(
+        name: columnData.pieceNum.name,
+        sortDirection: DataGridSortDirection.ascending));
+    largePieceDataSource.sort();
+
+    return largePieceDataSource;
   }
 
   void updateWdhData(WoodyDebrisHeaderCompanion entry) {
@@ -282,7 +406,7 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
                       onPressed: () => markComplete(parentComplete, wdh),
                     ),
                     body: Center(
-                      child: ListView(
+                      child: Column(
                         children: [
                           IconNavButton(
                             icon: const Icon(FontAwesomeIcons.file),
@@ -420,6 +544,117 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
                               loading: () => const Center(
                                   child: CircularProgressIndicator())),
                           //---------Coarse Woody Debris
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: kPaddingH / 2),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Flexible(
+                                  child: Text(
+                                    "Coarse Woody Debris",
+                                    maxLines: null,
+                                    style: TextStyle(fontSize: kTextTitleSize),
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: kPaddingH),
+                                  child: ElevatedButton(
+                                      onPressed: () => wdh.complete
+                                          ? Popups.show(
+                                              context, completeWarningPopup)
+                                          : addPiece(),
+                                      style: ButtonStyle(
+                                          backgroundColor: wdh.complete
+                                              ? MaterialStateProperty.all<
+                                                  Color>(Colors.grey)
+                                              : null),
+                                      child: const Text("Add Piece")),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: pieceRound.when(
+                              data: (round) => pieceOdd.when(
+                                data: (odd) {
+                                  DataGridSourceBuilder largePieceDataSource =
+                                      getSourceBuilder(odd, round);
+                                  return Center(
+                                    child: TableCreationBuilder(
+                                      source: largePieceDataSource,
+                                      columnWidthMode:
+                                          ColumnWidthMode.lastColumnFill,
+                                      colNames: columnData.getColHeadersList(),
+                                      onCellTap: (DataGridCellTapDetails
+                                          details) async {
+                                        // Assuming the "edit" column index is 2
+                                        if (details.column.columnName ==
+                                                columnData.edit.name &&
+                                            details.rowColumnIndex.rowIndex !=
+                                                0) {
+                                          if (wdh.complete) {
+                                            Popups.show(
+                                                context, completeWarningPopup);
+                                          } else {
+                                            int pId = largePieceDataSource
+                                                .dataGridRows[details
+                                                        .rowColumnIndex
+                                                        .rowIndex -
+                                                    1]
+                                                .getCells()[0]
+                                                .value;
+                                            if (largePieceDataSource
+                                                    .dataGridRows[details
+                                                            .rowColumnIndex
+                                                            .rowIndex -
+                                                        1]
+                                                    .getCells()[2]
+                                                    .value ==
+                                                "R") {
+                                              db.woodyDebrisTablesDao
+                                                  .getWdRound(pId)
+                                                  .then((wdRound) => changeWdPieceData(
+                                                      wdh.complete,
+                                                      round: wdRound,
+                                                      deleteFn: () => (db.delete(db
+                                                              .woodyDebrisRound)
+                                                            ..where((tbl) => tbl.id.equals(
+                                                                wdRound.id)))
+                                                          .go()
+                                                          .then((value) =>
+                                                              context.pop())));
+                                            } else {
+                                              db.woodyDebrisTablesDao
+                                                  .getWdOddAccu(pId)
+                                                  .then((wdOdd) => changeWdPieceData(
+                                                      wdh.complete,
+                                                      odd: wdOdd,
+                                                      deleteFn: () => (db.delete(
+                                                              db.woodyDebrisOdd)
+                                                            ..where((tbl) =>
+                                                                tbl.id.equals(
+                                                                    wdOdd.id)))
+                                                          .go()
+                                                          .then((value) =>
+                                                              context.pop())));
+                                            }
+                                          }
+                                        }
+                                      },
+                                    ),
+                                  );
+                                },
+                                error: (err, stack) => Text("Error: $err"),
+                                loading: () => const Center(
+                                    child: CircularProgressIndicator()),
+                              ),
+                              error: (err, stack) => Text("Error: $err"),
+                              loading: () => const Center(
+                                  child: CircularProgressIndicator()),
+                            ),
+                          ),
                           // IconNavButton(
                           //   icon: const Icon(FontAwesomeIcons.trash),
                           //   space: kPaddingIcon,

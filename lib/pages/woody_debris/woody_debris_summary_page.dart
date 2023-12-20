@@ -184,18 +184,7 @@ class WoodyDebrisSummaryPageState
                                     kParamMissing)),
                         style: CustomButtonStyles.inactiveButton(
                             isActive: !wd.complete!),
-                        child: const Row(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(right: kPaddingH),
-                              child: Icon(
-                                FontAwesomeIcons.circlePlus,
-                                size: 20,
-                              ),
-                            ),
-                            Text("Add transect")
-                          ],
-                        ))
+                        child: const Text("Add transect"))
                   ],
                 ),
               ),
