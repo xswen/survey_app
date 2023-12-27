@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:survey_app/database/daos/soil_pit_tables_dao.dart';
+import 'package:survey_app/database/database_creation_files/large_tree_plot_tables.dart';
 import 'package:survey_app/database/database_creation_files/soil_pit_tables.dart';
 import 'package:survey_app/enums/enums.dart';
 import 'package:survey_app/wrappers/survey_card.dart';
@@ -73,6 +74,9 @@ const List<Type> _tables = [
   SoilPitDepth,
   SoilPitFeature,
   SoilPitHorizonDescription,
+  //LPT
+  LptSummary,
+  LptTrees,
 ];
 
 const List<Type> _daos = [
@@ -595,6 +599,11 @@ class Database extends _$Database {
       {
         "category": SurveyCardCategories.stumpPlot,
         "name": "Stump Plot",
+        "surveyCardData": null
+      },
+      {
+        "category": SurveyCardCategories.largeTreePlot,
+        "name": "Large Tree Plot",
         "surveyCardData": null
       },
     ];

@@ -206,6 +206,14 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
               .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
         }
         break;
+      case SurveyCardCategories.largeTreePlot:
+        if (context.mounted) {
+          context
+              .pushNamed(StumpPlotSummaryPage.routeName,
+                  pathParameters: widget.goRouterState.pathParameters)
+              .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
+        }
+        break;
       default:
         debugPrint("Error: case not handled for $category");
     }

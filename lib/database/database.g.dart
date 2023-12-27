@@ -10638,6 +10638,1230 @@ class SoilPitHorizonDescriptionCompanion
   }
 }
 
+class $LptSummaryTable extends LptSummary
+    with TableInfo<$LptSummaryTable, LptSummaryData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LptSummaryTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _surveyIdMeta =
+      const VerificationMeta('surveyId');
+  @override
+  late final GeneratedColumn<int> surveyId = GeneratedColumn<int>(
+      'survey_id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'UNIQUE REFERENCES survey_headers (id)'));
+  static const VerificationMeta _measDateMeta =
+      const VerificationMeta('measDate');
+  @override
+  late final GeneratedColumn<DateTime> measDate = GeneratedColumn<DateTime>(
+      'meas_date', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [id, surveyId, measDate];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'lpt_summary';
+  @override
+  VerificationContext validateIntegrity(Insertable<LptSummaryData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('survey_id')) {
+      context.handle(_surveyIdMeta,
+          surveyId.isAcceptableOrUnknown(data['survey_id']!, _surveyIdMeta));
+    } else if (isInserting) {
+      context.missing(_surveyIdMeta);
+    }
+    if (data.containsKey('meas_date')) {
+      context.handle(_measDateMeta,
+          measDate.isAcceptableOrUnknown(data['meas_date']!, _measDateMeta));
+    } else if (isInserting) {
+      context.missing(_measDateMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  LptSummaryData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return LptSummaryData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      surveyId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}survey_id'])!,
+      measDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}meas_date'])!,
+    );
+  }
+
+  @override
+  $LptSummaryTable createAlias(String alias) {
+    return $LptSummaryTable(attachedDatabase, alias);
+  }
+}
+
+class LptSummaryData extends DataClass implements Insertable<LptSummaryData> {
+  final int id;
+  final int surveyId;
+  final DateTime measDate;
+  const LptSummaryData(
+      {required this.id, required this.surveyId, required this.measDate});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['survey_id'] = Variable<int>(surveyId);
+    map['meas_date'] = Variable<DateTime>(measDate);
+    return map;
+  }
+
+  LptSummaryCompanion toCompanion(bool nullToAbsent) {
+    return LptSummaryCompanion(
+      id: Value(id),
+      surveyId: Value(surveyId),
+      measDate: Value(measDate),
+    );
+  }
+
+  factory LptSummaryData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return LptSummaryData(
+      id: serializer.fromJson<int>(json['id']),
+      surveyId: serializer.fromJson<int>(json['surveyId']),
+      measDate: serializer.fromJson<DateTime>(json['measDate']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'surveyId': serializer.toJson<int>(surveyId),
+      'measDate': serializer.toJson<DateTime>(measDate),
+    };
+  }
+
+  LptSummaryData copyWith({int? id, int? surveyId, DateTime? measDate}) =>
+      LptSummaryData(
+        id: id ?? this.id,
+        surveyId: surveyId ?? this.surveyId,
+        measDate: measDate ?? this.measDate,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('LptSummaryData(')
+          ..write('id: $id, ')
+          ..write('surveyId: $surveyId, ')
+          ..write('measDate: $measDate')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, surveyId, measDate);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is LptSummaryData &&
+          other.id == this.id &&
+          other.surveyId == this.surveyId &&
+          other.measDate == this.measDate);
+}
+
+class LptSummaryCompanion extends UpdateCompanion<LptSummaryData> {
+  final Value<int> id;
+  final Value<int> surveyId;
+  final Value<DateTime> measDate;
+  const LptSummaryCompanion({
+    this.id = const Value.absent(),
+    this.surveyId = const Value.absent(),
+    this.measDate = const Value.absent(),
+  });
+  LptSummaryCompanion.insert({
+    this.id = const Value.absent(),
+    required int surveyId,
+    required DateTime measDate,
+  })  : surveyId = Value(surveyId),
+        measDate = Value(measDate);
+  static Insertable<LptSummaryData> custom({
+    Expression<int>? id,
+    Expression<int>? surveyId,
+    Expression<DateTime>? measDate,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (surveyId != null) 'survey_id': surveyId,
+      if (measDate != null) 'meas_date': measDate,
+    });
+  }
+
+  LptSummaryCompanion copyWith(
+      {Value<int>? id, Value<int>? surveyId, Value<DateTime>? measDate}) {
+    return LptSummaryCompanion(
+      id: id ?? this.id,
+      surveyId: surveyId ?? this.surveyId,
+      measDate: measDate ?? this.measDate,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (surveyId.present) {
+      map['survey_id'] = Variable<int>(surveyId.value);
+    }
+    if (measDate.present) {
+      map['meas_date'] = Variable<DateTime>(measDate.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LptSummaryCompanion(')
+          ..write('id: $id, ')
+          ..write('surveyId: $surveyId, ')
+          ..write('measDate: $measDate')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $LptTreesTable extends LptTrees with TableInfo<$LptTreesTable, LptTree> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LptTreesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _lptSummaryIdMeta =
+      const VerificationMeta('lptSummaryId');
+  @override
+  late final GeneratedColumn<int> lptSummaryId = GeneratedColumn<int>(
+      'lpt_summary_id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES lpt_summary (id)'));
+  static const VerificationMeta _sectorMeta = const VerificationMeta('sector');
+  @override
+  late final GeneratedColumn<int> sector = GeneratedColumn<int>(
+      'sector', aliasedName, false,
+      check: () => sector.isBetweenValues(-1, 8),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
+  static const VerificationMeta _treeNumMeta =
+      const VerificationMeta('treeNum');
+  @override
+  late final GeneratedColumn<int> treeNum = GeneratedColumn<int>(
+      'tree_num', aliasedName, false,
+      check: () => treeNum.isBetweenValues(1, 9999),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
+  static const VerificationMeta _origPlotAreaMeta =
+      const VerificationMeta('origPlotArea');
+  @override
+  late final GeneratedColumn<String> origPlotArea = GeneratedColumn<String>(
+      'orig_plot_area', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 1),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const VerificationMeta _lgTreeGenusMeta =
+      const VerificationMeta('lgTreeGenus');
+  @override
+  late final GeneratedColumn<String> lgTreeGenus = GeneratedColumn<String>(
+      'lg_tree_genus', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 4),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const VerificationMeta _lgTreeSpeciesMeta =
+      const VerificationMeta('lgTreeSpecies');
+  @override
+  late final GeneratedColumn<String> lgTreeSpecies = GeneratedColumn<String>(
+      'lg_tree_species', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 3),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const VerificationMeta _lgTreeVarietyMeta =
+      const VerificationMeta('lgTreeVariety');
+  @override
+  late final GeneratedColumn<String> lgTreeVariety = GeneratedColumn<String>(
+      'lg_tree_variety', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 3),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const VerificationMeta _lgTreeStatusMeta =
+      const VerificationMeta('lgTreeStatus');
+  @override
+  late final GeneratedColumn<String> lgTreeStatus = GeneratedColumn<String>(
+      'lg_tree_status', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 2),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const VerificationMeta _dbhMeta = const VerificationMeta('dbh');
+  @override
+  late final GeneratedColumn<double> dbh = GeneratedColumn<double>(
+      'dbh', aliasedName, false,
+      check: () => dbh.isBetweenValues(-1, 999.9),
+      type: DriftSqlType.double,
+      requiredDuringInsert: true);
+  static const VerificationMeta _measEstDbhMeta =
+      const VerificationMeta('measEstDbh');
+  @override
+  late final GeneratedColumn<String> measEstDbh = GeneratedColumn<String>(
+      'meas_est_dbh', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 1),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const VerificationMeta _heightMeta = const VerificationMeta('height');
+  @override
+  late final GeneratedColumn<double> height = GeneratedColumn<double>(
+      'height', aliasedName, false,
+      check: () => height.isBetweenValues(-1, 99.9),
+      type: DriftSqlType.double,
+      requiredDuringInsert: true);
+  static const VerificationMeta _measEstHeightMeta =
+      const VerificationMeta('measEstHeight');
+  @override
+  late final GeneratedColumn<String> measEstHeight = GeneratedColumn<String>(
+      'meas_est_height', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 1),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const VerificationMeta _crownClassMeta =
+      const VerificationMeta('crownClass');
+  @override
+  late final GeneratedColumn<String> crownClass = GeneratedColumn<String>(
+      'crown_class', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 1),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const VerificationMeta _crownBaseMeta =
+      const VerificationMeta('crownBase');
+  @override
+  late final GeneratedColumn<double> crownBase = GeneratedColumn<double>(
+      'crown_base', aliasedName, false,
+      check: () => crownBase.isBetweenValues(-9, 99.9),
+      type: DriftSqlType.double,
+      requiredDuringInsert: true);
+  static const VerificationMeta _crownTopMeta =
+      const VerificationMeta('crownTop');
+  @override
+  late final GeneratedColumn<double> crownTop = GeneratedColumn<double>(
+      'crown_top', aliasedName, false,
+      check: () => crownTop.isBetweenValues(-9, 99.9),
+      type: DriftSqlType.double,
+      requiredDuringInsert: true);
+  static const VerificationMeta _stemCondMeta =
+      const VerificationMeta('stemCond');
+  @override
+  late final GeneratedColumn<String> stemCond = GeneratedColumn<String>(
+      'stem_cond', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 1),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const VerificationMeta _crownCondMeta =
+      const VerificationMeta('crownCond');
+  @override
+  late final GeneratedColumn<int> crownCond = GeneratedColumn<int>(
+      'crown_cond', aliasedName, false,
+      check: () => crownCond.isBetweenValues(-1, 6),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
+  static const VerificationMeta _barkRetMeta =
+      const VerificationMeta('barkRet');
+  @override
+  late final GeneratedColumn<int> barkRet = GeneratedColumn<int>(
+      'bark_ret', aliasedName, false,
+      check: () => barkRet.isBetweenValues(-1, 7),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
+  static const VerificationMeta _woodCondMeta =
+      const VerificationMeta('woodCond');
+  @override
+  late final GeneratedColumn<int> woodCond = GeneratedColumn<int>(
+      'wood_cond', aliasedName, false,
+      check: () => woodCond.isBetweenValues(-1, 8),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
+  static const VerificationMeta _azimuthMeta =
+      const VerificationMeta('azimuth');
+  @override
+  late final GeneratedColumn<int> azimuth = GeneratedColumn<int>(
+      'azimuth', aliasedName, false,
+      check: () => azimuth.isBetweenValues(-1, 360),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
+  static const VerificationMeta _distanceMeta =
+      const VerificationMeta('distance');
+  @override
+  late final GeneratedColumn<double> distance = GeneratedColumn<double>(
+      'distance', aliasedName, false,
+      check: () => distance.isBetweenValues(-1, 99.99),
+      type: DriftSqlType.double,
+      requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        lptSummaryId,
+        sector,
+        treeNum,
+        origPlotArea,
+        lgTreeGenus,
+        lgTreeSpecies,
+        lgTreeVariety,
+        lgTreeStatus,
+        dbh,
+        measEstDbh,
+        height,
+        measEstHeight,
+        crownClass,
+        crownBase,
+        crownTop,
+        stemCond,
+        crownCond,
+        barkRet,
+        woodCond,
+        azimuth,
+        distance
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'lpt_trees';
+  @override
+  VerificationContext validateIntegrity(Insertable<LptTree> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('lpt_summary_id')) {
+      context.handle(
+          _lptSummaryIdMeta,
+          lptSummaryId.isAcceptableOrUnknown(
+              data['lpt_summary_id']!, _lptSummaryIdMeta));
+    } else if (isInserting) {
+      context.missing(_lptSummaryIdMeta);
+    }
+    if (data.containsKey('sector')) {
+      context.handle(_sectorMeta,
+          sector.isAcceptableOrUnknown(data['sector']!, _sectorMeta));
+    } else if (isInserting) {
+      context.missing(_sectorMeta);
+    }
+    if (data.containsKey('tree_num')) {
+      context.handle(_treeNumMeta,
+          treeNum.isAcceptableOrUnknown(data['tree_num']!, _treeNumMeta));
+    } else if (isInserting) {
+      context.missing(_treeNumMeta);
+    }
+    if (data.containsKey('orig_plot_area')) {
+      context.handle(
+          _origPlotAreaMeta,
+          origPlotArea.isAcceptableOrUnknown(
+              data['orig_plot_area']!, _origPlotAreaMeta));
+    } else if (isInserting) {
+      context.missing(_origPlotAreaMeta);
+    }
+    if (data.containsKey('lg_tree_genus')) {
+      context.handle(
+          _lgTreeGenusMeta,
+          lgTreeGenus.isAcceptableOrUnknown(
+              data['lg_tree_genus']!, _lgTreeGenusMeta));
+    } else if (isInserting) {
+      context.missing(_lgTreeGenusMeta);
+    }
+    if (data.containsKey('lg_tree_species')) {
+      context.handle(
+          _lgTreeSpeciesMeta,
+          lgTreeSpecies.isAcceptableOrUnknown(
+              data['lg_tree_species']!, _lgTreeSpeciesMeta));
+    } else if (isInserting) {
+      context.missing(_lgTreeSpeciesMeta);
+    }
+    if (data.containsKey('lg_tree_variety')) {
+      context.handle(
+          _lgTreeVarietyMeta,
+          lgTreeVariety.isAcceptableOrUnknown(
+              data['lg_tree_variety']!, _lgTreeVarietyMeta));
+    } else if (isInserting) {
+      context.missing(_lgTreeVarietyMeta);
+    }
+    if (data.containsKey('lg_tree_status')) {
+      context.handle(
+          _lgTreeStatusMeta,
+          lgTreeStatus.isAcceptableOrUnknown(
+              data['lg_tree_status']!, _lgTreeStatusMeta));
+    } else if (isInserting) {
+      context.missing(_lgTreeStatusMeta);
+    }
+    if (data.containsKey('dbh')) {
+      context.handle(
+          _dbhMeta, dbh.isAcceptableOrUnknown(data['dbh']!, _dbhMeta));
+    } else if (isInserting) {
+      context.missing(_dbhMeta);
+    }
+    if (data.containsKey('meas_est_dbh')) {
+      context.handle(
+          _measEstDbhMeta,
+          measEstDbh.isAcceptableOrUnknown(
+              data['meas_est_dbh']!, _measEstDbhMeta));
+    } else if (isInserting) {
+      context.missing(_measEstDbhMeta);
+    }
+    if (data.containsKey('height')) {
+      context.handle(_heightMeta,
+          height.isAcceptableOrUnknown(data['height']!, _heightMeta));
+    } else if (isInserting) {
+      context.missing(_heightMeta);
+    }
+    if (data.containsKey('meas_est_height')) {
+      context.handle(
+          _measEstHeightMeta,
+          measEstHeight.isAcceptableOrUnknown(
+              data['meas_est_height']!, _measEstHeightMeta));
+    } else if (isInserting) {
+      context.missing(_measEstHeightMeta);
+    }
+    if (data.containsKey('crown_class')) {
+      context.handle(
+          _crownClassMeta,
+          crownClass.isAcceptableOrUnknown(
+              data['crown_class']!, _crownClassMeta));
+    } else if (isInserting) {
+      context.missing(_crownClassMeta);
+    }
+    if (data.containsKey('crown_base')) {
+      context.handle(_crownBaseMeta,
+          crownBase.isAcceptableOrUnknown(data['crown_base']!, _crownBaseMeta));
+    } else if (isInserting) {
+      context.missing(_crownBaseMeta);
+    }
+    if (data.containsKey('crown_top')) {
+      context.handle(_crownTopMeta,
+          crownTop.isAcceptableOrUnknown(data['crown_top']!, _crownTopMeta));
+    } else if (isInserting) {
+      context.missing(_crownTopMeta);
+    }
+    if (data.containsKey('stem_cond')) {
+      context.handle(_stemCondMeta,
+          stemCond.isAcceptableOrUnknown(data['stem_cond']!, _stemCondMeta));
+    } else if (isInserting) {
+      context.missing(_stemCondMeta);
+    }
+    if (data.containsKey('crown_cond')) {
+      context.handle(_crownCondMeta,
+          crownCond.isAcceptableOrUnknown(data['crown_cond']!, _crownCondMeta));
+    } else if (isInserting) {
+      context.missing(_crownCondMeta);
+    }
+    if (data.containsKey('bark_ret')) {
+      context.handle(_barkRetMeta,
+          barkRet.isAcceptableOrUnknown(data['bark_ret']!, _barkRetMeta));
+    } else if (isInserting) {
+      context.missing(_barkRetMeta);
+    }
+    if (data.containsKey('wood_cond')) {
+      context.handle(_woodCondMeta,
+          woodCond.isAcceptableOrUnknown(data['wood_cond']!, _woodCondMeta));
+    } else if (isInserting) {
+      context.missing(_woodCondMeta);
+    }
+    if (data.containsKey('azimuth')) {
+      context.handle(_azimuthMeta,
+          azimuth.isAcceptableOrUnknown(data['azimuth']!, _azimuthMeta));
+    } else if (isInserting) {
+      context.missing(_azimuthMeta);
+    }
+    if (data.containsKey('distance')) {
+      context.handle(_distanceMeta,
+          distance.isAcceptableOrUnknown(data['distance']!, _distanceMeta));
+    } else if (isInserting) {
+      context.missing(_distanceMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  LptTree map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return LptTree(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      lptSummaryId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}lpt_summary_id'])!,
+      sector: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}sector'])!,
+      treeNum: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}tree_num'])!,
+      origPlotArea: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}orig_plot_area'])!,
+      lgTreeGenus: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}lg_tree_genus'])!,
+      lgTreeSpecies: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}lg_tree_species'])!,
+      lgTreeVariety: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}lg_tree_variety'])!,
+      lgTreeStatus: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}lg_tree_status'])!,
+      dbh: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}dbh'])!,
+      measEstDbh: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}meas_est_dbh'])!,
+      height: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}height'])!,
+      measEstHeight: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}meas_est_height'])!,
+      crownClass: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}crown_class'])!,
+      crownBase: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}crown_base'])!,
+      crownTop: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}crown_top'])!,
+      stemCond: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}stem_cond'])!,
+      crownCond: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}crown_cond'])!,
+      barkRet: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}bark_ret'])!,
+      woodCond: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}wood_cond'])!,
+      azimuth: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}azimuth'])!,
+      distance: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}distance'])!,
+    );
+  }
+
+  @override
+  $LptTreesTable createAlias(String alias) {
+    return $LptTreesTable(attachedDatabase, alias);
+  }
+}
+
+class LptTree extends DataClass implements Insertable<LptTree> {
+  final int id;
+  final int lptSummaryId;
+  final int sector;
+  final int treeNum;
+  final String origPlotArea;
+  final String lgTreeGenus;
+  final String lgTreeSpecies;
+  final String lgTreeVariety;
+  final String lgTreeStatus;
+  final double dbh;
+  final String measEstDbh;
+  final double height;
+  final String measEstHeight;
+  final String crownClass;
+  final double crownBase;
+  final double crownTop;
+  final String stemCond;
+  final int crownCond;
+  final int barkRet;
+  final int woodCond;
+  final int azimuth;
+  final double distance;
+  const LptTree(
+      {required this.id,
+      required this.lptSummaryId,
+      required this.sector,
+      required this.treeNum,
+      required this.origPlotArea,
+      required this.lgTreeGenus,
+      required this.lgTreeSpecies,
+      required this.lgTreeVariety,
+      required this.lgTreeStatus,
+      required this.dbh,
+      required this.measEstDbh,
+      required this.height,
+      required this.measEstHeight,
+      required this.crownClass,
+      required this.crownBase,
+      required this.crownTop,
+      required this.stemCond,
+      required this.crownCond,
+      required this.barkRet,
+      required this.woodCond,
+      required this.azimuth,
+      required this.distance});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['lpt_summary_id'] = Variable<int>(lptSummaryId);
+    map['sector'] = Variable<int>(sector);
+    map['tree_num'] = Variable<int>(treeNum);
+    map['orig_plot_area'] = Variable<String>(origPlotArea);
+    map['lg_tree_genus'] = Variable<String>(lgTreeGenus);
+    map['lg_tree_species'] = Variable<String>(lgTreeSpecies);
+    map['lg_tree_variety'] = Variable<String>(lgTreeVariety);
+    map['lg_tree_status'] = Variable<String>(lgTreeStatus);
+    map['dbh'] = Variable<double>(dbh);
+    map['meas_est_dbh'] = Variable<String>(measEstDbh);
+    map['height'] = Variable<double>(height);
+    map['meas_est_height'] = Variable<String>(measEstHeight);
+    map['crown_class'] = Variable<String>(crownClass);
+    map['crown_base'] = Variable<double>(crownBase);
+    map['crown_top'] = Variable<double>(crownTop);
+    map['stem_cond'] = Variable<String>(stemCond);
+    map['crown_cond'] = Variable<int>(crownCond);
+    map['bark_ret'] = Variable<int>(barkRet);
+    map['wood_cond'] = Variable<int>(woodCond);
+    map['azimuth'] = Variable<int>(azimuth);
+    map['distance'] = Variable<double>(distance);
+    return map;
+  }
+
+  LptTreesCompanion toCompanion(bool nullToAbsent) {
+    return LptTreesCompanion(
+      id: Value(id),
+      lptSummaryId: Value(lptSummaryId),
+      sector: Value(sector),
+      treeNum: Value(treeNum),
+      origPlotArea: Value(origPlotArea),
+      lgTreeGenus: Value(lgTreeGenus),
+      lgTreeSpecies: Value(lgTreeSpecies),
+      lgTreeVariety: Value(lgTreeVariety),
+      lgTreeStatus: Value(lgTreeStatus),
+      dbh: Value(dbh),
+      measEstDbh: Value(measEstDbh),
+      height: Value(height),
+      measEstHeight: Value(measEstHeight),
+      crownClass: Value(crownClass),
+      crownBase: Value(crownBase),
+      crownTop: Value(crownTop),
+      stemCond: Value(stemCond),
+      crownCond: Value(crownCond),
+      barkRet: Value(barkRet),
+      woodCond: Value(woodCond),
+      azimuth: Value(azimuth),
+      distance: Value(distance),
+    );
+  }
+
+  factory LptTree.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return LptTree(
+      id: serializer.fromJson<int>(json['id']),
+      lptSummaryId: serializer.fromJson<int>(json['lptSummaryId']),
+      sector: serializer.fromJson<int>(json['sector']),
+      treeNum: serializer.fromJson<int>(json['treeNum']),
+      origPlotArea: serializer.fromJson<String>(json['origPlotArea']),
+      lgTreeGenus: serializer.fromJson<String>(json['lgTreeGenus']),
+      lgTreeSpecies: serializer.fromJson<String>(json['lgTreeSpecies']),
+      lgTreeVariety: serializer.fromJson<String>(json['lgTreeVariety']),
+      lgTreeStatus: serializer.fromJson<String>(json['lgTreeStatus']),
+      dbh: serializer.fromJson<double>(json['dbh']),
+      measEstDbh: serializer.fromJson<String>(json['measEstDbh']),
+      height: serializer.fromJson<double>(json['height']),
+      measEstHeight: serializer.fromJson<String>(json['measEstHeight']),
+      crownClass: serializer.fromJson<String>(json['crownClass']),
+      crownBase: serializer.fromJson<double>(json['crownBase']),
+      crownTop: serializer.fromJson<double>(json['crownTop']),
+      stemCond: serializer.fromJson<String>(json['stemCond']),
+      crownCond: serializer.fromJson<int>(json['crownCond']),
+      barkRet: serializer.fromJson<int>(json['barkRet']),
+      woodCond: serializer.fromJson<int>(json['woodCond']),
+      azimuth: serializer.fromJson<int>(json['azimuth']),
+      distance: serializer.fromJson<double>(json['distance']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'lptSummaryId': serializer.toJson<int>(lptSummaryId),
+      'sector': serializer.toJson<int>(sector),
+      'treeNum': serializer.toJson<int>(treeNum),
+      'origPlotArea': serializer.toJson<String>(origPlotArea),
+      'lgTreeGenus': serializer.toJson<String>(lgTreeGenus),
+      'lgTreeSpecies': serializer.toJson<String>(lgTreeSpecies),
+      'lgTreeVariety': serializer.toJson<String>(lgTreeVariety),
+      'lgTreeStatus': serializer.toJson<String>(lgTreeStatus),
+      'dbh': serializer.toJson<double>(dbh),
+      'measEstDbh': serializer.toJson<String>(measEstDbh),
+      'height': serializer.toJson<double>(height),
+      'measEstHeight': serializer.toJson<String>(measEstHeight),
+      'crownClass': serializer.toJson<String>(crownClass),
+      'crownBase': serializer.toJson<double>(crownBase),
+      'crownTop': serializer.toJson<double>(crownTop),
+      'stemCond': serializer.toJson<String>(stemCond),
+      'crownCond': serializer.toJson<int>(crownCond),
+      'barkRet': serializer.toJson<int>(barkRet),
+      'woodCond': serializer.toJson<int>(woodCond),
+      'azimuth': serializer.toJson<int>(azimuth),
+      'distance': serializer.toJson<double>(distance),
+    };
+  }
+
+  LptTree copyWith(
+          {int? id,
+          int? lptSummaryId,
+          int? sector,
+          int? treeNum,
+          String? origPlotArea,
+          String? lgTreeGenus,
+          String? lgTreeSpecies,
+          String? lgTreeVariety,
+          String? lgTreeStatus,
+          double? dbh,
+          String? measEstDbh,
+          double? height,
+          String? measEstHeight,
+          String? crownClass,
+          double? crownBase,
+          double? crownTop,
+          String? stemCond,
+          int? crownCond,
+          int? barkRet,
+          int? woodCond,
+          int? azimuth,
+          double? distance}) =>
+      LptTree(
+        id: id ?? this.id,
+        lptSummaryId: lptSummaryId ?? this.lptSummaryId,
+        sector: sector ?? this.sector,
+        treeNum: treeNum ?? this.treeNum,
+        origPlotArea: origPlotArea ?? this.origPlotArea,
+        lgTreeGenus: lgTreeGenus ?? this.lgTreeGenus,
+        lgTreeSpecies: lgTreeSpecies ?? this.lgTreeSpecies,
+        lgTreeVariety: lgTreeVariety ?? this.lgTreeVariety,
+        lgTreeStatus: lgTreeStatus ?? this.lgTreeStatus,
+        dbh: dbh ?? this.dbh,
+        measEstDbh: measEstDbh ?? this.measEstDbh,
+        height: height ?? this.height,
+        measEstHeight: measEstHeight ?? this.measEstHeight,
+        crownClass: crownClass ?? this.crownClass,
+        crownBase: crownBase ?? this.crownBase,
+        crownTop: crownTop ?? this.crownTop,
+        stemCond: stemCond ?? this.stemCond,
+        crownCond: crownCond ?? this.crownCond,
+        barkRet: barkRet ?? this.barkRet,
+        woodCond: woodCond ?? this.woodCond,
+        azimuth: azimuth ?? this.azimuth,
+        distance: distance ?? this.distance,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('LptTree(')
+          ..write('id: $id, ')
+          ..write('lptSummaryId: $lptSummaryId, ')
+          ..write('sector: $sector, ')
+          ..write('treeNum: $treeNum, ')
+          ..write('origPlotArea: $origPlotArea, ')
+          ..write('lgTreeGenus: $lgTreeGenus, ')
+          ..write('lgTreeSpecies: $lgTreeSpecies, ')
+          ..write('lgTreeVariety: $lgTreeVariety, ')
+          ..write('lgTreeStatus: $lgTreeStatus, ')
+          ..write('dbh: $dbh, ')
+          ..write('measEstDbh: $measEstDbh, ')
+          ..write('height: $height, ')
+          ..write('measEstHeight: $measEstHeight, ')
+          ..write('crownClass: $crownClass, ')
+          ..write('crownBase: $crownBase, ')
+          ..write('crownTop: $crownTop, ')
+          ..write('stemCond: $stemCond, ')
+          ..write('crownCond: $crownCond, ')
+          ..write('barkRet: $barkRet, ')
+          ..write('woodCond: $woodCond, ')
+          ..write('azimuth: $azimuth, ')
+          ..write('distance: $distance')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hashAll([
+        id,
+        lptSummaryId,
+        sector,
+        treeNum,
+        origPlotArea,
+        lgTreeGenus,
+        lgTreeSpecies,
+        lgTreeVariety,
+        lgTreeStatus,
+        dbh,
+        measEstDbh,
+        height,
+        measEstHeight,
+        crownClass,
+        crownBase,
+        crownTop,
+        stemCond,
+        crownCond,
+        barkRet,
+        woodCond,
+        azimuth,
+        distance
+      ]);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is LptTree &&
+          other.id == this.id &&
+          other.lptSummaryId == this.lptSummaryId &&
+          other.sector == this.sector &&
+          other.treeNum == this.treeNum &&
+          other.origPlotArea == this.origPlotArea &&
+          other.lgTreeGenus == this.lgTreeGenus &&
+          other.lgTreeSpecies == this.lgTreeSpecies &&
+          other.lgTreeVariety == this.lgTreeVariety &&
+          other.lgTreeStatus == this.lgTreeStatus &&
+          other.dbh == this.dbh &&
+          other.measEstDbh == this.measEstDbh &&
+          other.height == this.height &&
+          other.measEstHeight == this.measEstHeight &&
+          other.crownClass == this.crownClass &&
+          other.crownBase == this.crownBase &&
+          other.crownTop == this.crownTop &&
+          other.stemCond == this.stemCond &&
+          other.crownCond == this.crownCond &&
+          other.barkRet == this.barkRet &&
+          other.woodCond == this.woodCond &&
+          other.azimuth == this.azimuth &&
+          other.distance == this.distance);
+}
+
+class LptTreesCompanion extends UpdateCompanion<LptTree> {
+  final Value<int> id;
+  final Value<int> lptSummaryId;
+  final Value<int> sector;
+  final Value<int> treeNum;
+  final Value<String> origPlotArea;
+  final Value<String> lgTreeGenus;
+  final Value<String> lgTreeSpecies;
+  final Value<String> lgTreeVariety;
+  final Value<String> lgTreeStatus;
+  final Value<double> dbh;
+  final Value<String> measEstDbh;
+  final Value<double> height;
+  final Value<String> measEstHeight;
+  final Value<String> crownClass;
+  final Value<double> crownBase;
+  final Value<double> crownTop;
+  final Value<String> stemCond;
+  final Value<int> crownCond;
+  final Value<int> barkRet;
+  final Value<int> woodCond;
+  final Value<int> azimuth;
+  final Value<double> distance;
+  const LptTreesCompanion({
+    this.id = const Value.absent(),
+    this.lptSummaryId = const Value.absent(),
+    this.sector = const Value.absent(),
+    this.treeNum = const Value.absent(),
+    this.origPlotArea = const Value.absent(),
+    this.lgTreeGenus = const Value.absent(),
+    this.lgTreeSpecies = const Value.absent(),
+    this.lgTreeVariety = const Value.absent(),
+    this.lgTreeStatus = const Value.absent(),
+    this.dbh = const Value.absent(),
+    this.measEstDbh = const Value.absent(),
+    this.height = const Value.absent(),
+    this.measEstHeight = const Value.absent(),
+    this.crownClass = const Value.absent(),
+    this.crownBase = const Value.absent(),
+    this.crownTop = const Value.absent(),
+    this.stemCond = const Value.absent(),
+    this.crownCond = const Value.absent(),
+    this.barkRet = const Value.absent(),
+    this.woodCond = const Value.absent(),
+    this.azimuth = const Value.absent(),
+    this.distance = const Value.absent(),
+  });
+  LptTreesCompanion.insert({
+    this.id = const Value.absent(),
+    required int lptSummaryId,
+    required int sector,
+    required int treeNum,
+    required String origPlotArea,
+    required String lgTreeGenus,
+    required String lgTreeSpecies,
+    required String lgTreeVariety,
+    required String lgTreeStatus,
+    required double dbh,
+    required String measEstDbh,
+    required double height,
+    required String measEstHeight,
+    required String crownClass,
+    required double crownBase,
+    required double crownTop,
+    required String stemCond,
+    required int crownCond,
+    required int barkRet,
+    required int woodCond,
+    required int azimuth,
+    required double distance,
+  })  : lptSummaryId = Value(lptSummaryId),
+        sector = Value(sector),
+        treeNum = Value(treeNum),
+        origPlotArea = Value(origPlotArea),
+        lgTreeGenus = Value(lgTreeGenus),
+        lgTreeSpecies = Value(lgTreeSpecies),
+        lgTreeVariety = Value(lgTreeVariety),
+        lgTreeStatus = Value(lgTreeStatus),
+        dbh = Value(dbh),
+        measEstDbh = Value(measEstDbh),
+        height = Value(height),
+        measEstHeight = Value(measEstHeight),
+        crownClass = Value(crownClass),
+        crownBase = Value(crownBase),
+        crownTop = Value(crownTop),
+        stemCond = Value(stemCond),
+        crownCond = Value(crownCond),
+        barkRet = Value(barkRet),
+        woodCond = Value(woodCond),
+        azimuth = Value(azimuth),
+        distance = Value(distance);
+  static Insertable<LptTree> custom({
+    Expression<int>? id,
+    Expression<int>? lptSummaryId,
+    Expression<int>? sector,
+    Expression<int>? treeNum,
+    Expression<String>? origPlotArea,
+    Expression<String>? lgTreeGenus,
+    Expression<String>? lgTreeSpecies,
+    Expression<String>? lgTreeVariety,
+    Expression<String>? lgTreeStatus,
+    Expression<double>? dbh,
+    Expression<String>? measEstDbh,
+    Expression<double>? height,
+    Expression<String>? measEstHeight,
+    Expression<String>? crownClass,
+    Expression<double>? crownBase,
+    Expression<double>? crownTop,
+    Expression<String>? stemCond,
+    Expression<int>? crownCond,
+    Expression<int>? barkRet,
+    Expression<int>? woodCond,
+    Expression<int>? azimuth,
+    Expression<double>? distance,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (lptSummaryId != null) 'lpt_summary_id': lptSummaryId,
+      if (sector != null) 'sector': sector,
+      if (treeNum != null) 'tree_num': treeNum,
+      if (origPlotArea != null) 'orig_plot_area': origPlotArea,
+      if (lgTreeGenus != null) 'lg_tree_genus': lgTreeGenus,
+      if (lgTreeSpecies != null) 'lg_tree_species': lgTreeSpecies,
+      if (lgTreeVariety != null) 'lg_tree_variety': lgTreeVariety,
+      if (lgTreeStatus != null) 'lg_tree_status': lgTreeStatus,
+      if (dbh != null) 'dbh': dbh,
+      if (measEstDbh != null) 'meas_est_dbh': measEstDbh,
+      if (height != null) 'height': height,
+      if (measEstHeight != null) 'meas_est_height': measEstHeight,
+      if (crownClass != null) 'crown_class': crownClass,
+      if (crownBase != null) 'crown_base': crownBase,
+      if (crownTop != null) 'crown_top': crownTop,
+      if (stemCond != null) 'stem_cond': stemCond,
+      if (crownCond != null) 'crown_cond': crownCond,
+      if (barkRet != null) 'bark_ret': barkRet,
+      if (woodCond != null) 'wood_cond': woodCond,
+      if (azimuth != null) 'azimuth': azimuth,
+      if (distance != null) 'distance': distance,
+    });
+  }
+
+  LptTreesCompanion copyWith(
+      {Value<int>? id,
+      Value<int>? lptSummaryId,
+      Value<int>? sector,
+      Value<int>? treeNum,
+      Value<String>? origPlotArea,
+      Value<String>? lgTreeGenus,
+      Value<String>? lgTreeSpecies,
+      Value<String>? lgTreeVariety,
+      Value<String>? lgTreeStatus,
+      Value<double>? dbh,
+      Value<String>? measEstDbh,
+      Value<double>? height,
+      Value<String>? measEstHeight,
+      Value<String>? crownClass,
+      Value<double>? crownBase,
+      Value<double>? crownTop,
+      Value<String>? stemCond,
+      Value<int>? crownCond,
+      Value<int>? barkRet,
+      Value<int>? woodCond,
+      Value<int>? azimuth,
+      Value<double>? distance}) {
+    return LptTreesCompanion(
+      id: id ?? this.id,
+      lptSummaryId: lptSummaryId ?? this.lptSummaryId,
+      sector: sector ?? this.sector,
+      treeNum: treeNum ?? this.treeNum,
+      origPlotArea: origPlotArea ?? this.origPlotArea,
+      lgTreeGenus: lgTreeGenus ?? this.lgTreeGenus,
+      lgTreeSpecies: lgTreeSpecies ?? this.lgTreeSpecies,
+      lgTreeVariety: lgTreeVariety ?? this.lgTreeVariety,
+      lgTreeStatus: lgTreeStatus ?? this.lgTreeStatus,
+      dbh: dbh ?? this.dbh,
+      measEstDbh: measEstDbh ?? this.measEstDbh,
+      height: height ?? this.height,
+      measEstHeight: measEstHeight ?? this.measEstHeight,
+      crownClass: crownClass ?? this.crownClass,
+      crownBase: crownBase ?? this.crownBase,
+      crownTop: crownTop ?? this.crownTop,
+      stemCond: stemCond ?? this.stemCond,
+      crownCond: crownCond ?? this.crownCond,
+      barkRet: barkRet ?? this.barkRet,
+      woodCond: woodCond ?? this.woodCond,
+      azimuth: azimuth ?? this.azimuth,
+      distance: distance ?? this.distance,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (lptSummaryId.present) {
+      map['lpt_summary_id'] = Variable<int>(lptSummaryId.value);
+    }
+    if (sector.present) {
+      map['sector'] = Variable<int>(sector.value);
+    }
+    if (treeNum.present) {
+      map['tree_num'] = Variable<int>(treeNum.value);
+    }
+    if (origPlotArea.present) {
+      map['orig_plot_area'] = Variable<String>(origPlotArea.value);
+    }
+    if (lgTreeGenus.present) {
+      map['lg_tree_genus'] = Variable<String>(lgTreeGenus.value);
+    }
+    if (lgTreeSpecies.present) {
+      map['lg_tree_species'] = Variable<String>(lgTreeSpecies.value);
+    }
+    if (lgTreeVariety.present) {
+      map['lg_tree_variety'] = Variable<String>(lgTreeVariety.value);
+    }
+    if (lgTreeStatus.present) {
+      map['lg_tree_status'] = Variable<String>(lgTreeStatus.value);
+    }
+    if (dbh.present) {
+      map['dbh'] = Variable<double>(dbh.value);
+    }
+    if (measEstDbh.present) {
+      map['meas_est_dbh'] = Variable<String>(measEstDbh.value);
+    }
+    if (height.present) {
+      map['height'] = Variable<double>(height.value);
+    }
+    if (measEstHeight.present) {
+      map['meas_est_height'] = Variable<String>(measEstHeight.value);
+    }
+    if (crownClass.present) {
+      map['crown_class'] = Variable<String>(crownClass.value);
+    }
+    if (crownBase.present) {
+      map['crown_base'] = Variable<double>(crownBase.value);
+    }
+    if (crownTop.present) {
+      map['crown_top'] = Variable<double>(crownTop.value);
+    }
+    if (stemCond.present) {
+      map['stem_cond'] = Variable<String>(stemCond.value);
+    }
+    if (crownCond.present) {
+      map['crown_cond'] = Variable<int>(crownCond.value);
+    }
+    if (barkRet.present) {
+      map['bark_ret'] = Variable<int>(barkRet.value);
+    }
+    if (woodCond.present) {
+      map['wood_cond'] = Variable<int>(woodCond.value);
+    }
+    if (azimuth.present) {
+      map['azimuth'] = Variable<int>(azimuth.value);
+    }
+    if (distance.present) {
+      map['distance'] = Variable<double>(distance.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LptTreesCompanion(')
+          ..write('id: $id, ')
+          ..write('lptSummaryId: $lptSummaryId, ')
+          ..write('sector: $sector, ')
+          ..write('treeNum: $treeNum, ')
+          ..write('origPlotArea: $origPlotArea, ')
+          ..write('lgTreeGenus: $lgTreeGenus, ')
+          ..write('lgTreeSpecies: $lgTreeSpecies, ')
+          ..write('lgTreeVariety: $lgTreeVariety, ')
+          ..write('lgTreeStatus: $lgTreeStatus, ')
+          ..write('dbh: $dbh, ')
+          ..write('measEstDbh: $measEstDbh, ')
+          ..write('height: $height, ')
+          ..write('measEstHeight: $measEstHeight, ')
+          ..write('crownClass: $crownClass, ')
+          ..write('crownBase: $crownBase, ')
+          ..write('crownTop: $crownTop, ')
+          ..write('stemCond: $stemCond, ')
+          ..write('crownCond: $crownCond, ')
+          ..write('barkRet: $barkRet, ')
+          ..write('woodCond: $woodCond, ')
+          ..write('azimuth: $azimuth, ')
+          ..write('distance: $distance')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(e);
   late final $JurisdictionsTable jurisdictions = $JurisdictionsTable(this);
@@ -10689,6 +11913,8 @@ abstract class _$Database extends GeneratedDatabase {
   late final $SoilPitFeatureTable soilPitFeature = $SoilPitFeatureTable(this);
   late final $SoilPitHorizonDescriptionTable soilPitHorizonDescription =
       $SoilPitHorizonDescriptionTable(this);
+  late final $LptSummaryTable lptSummary = $LptSummaryTable(this);
+  late final $LptTreesTable lptTrees = $LptTreesTable(this);
   late final ReferenceTablesDao referenceTablesDao =
       ReferenceTablesDao(this as Database);
   late final SurveyInfoTablesDao surveyInfoTablesDao =
@@ -10741,6 +11967,8 @@ abstract class _$Database extends GeneratedDatabase {
         soilSiteInfo,
         soilPitDepth,
         soilPitFeature,
-        soilPitHorizonDescription
+        soilPitHorizonDescription,
+        lptSummary,
+        lptTrees
       ];
 }
