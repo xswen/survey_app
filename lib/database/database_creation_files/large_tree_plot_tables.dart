@@ -2,15 +2,15 @@ import 'package:drift/drift.dart';
 
 import 'survey_info_tables.dart';
 
-class LptSummary extends Table {
+class LtpSummary extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get surveyId => integer().unique().references(SurveyHeaders, #id)();
   DateTimeColumn get measDate => dateTime()();
 }
 
-class LptTrees extends Table {
+class LtpTree extends Table {
   IntColumn get id => integer().autoIncrement()();
-  IntColumn get lptSummaryId => integer().references(LptSummary, #id)();
+  IntColumn get lptSummaryId => integer().references(LtpSummary, #id)();
   IntColumn get sector => integer().check(sector.isBetweenValues(-1, 8))();
   IntColumn get treeNum => integer().check(treeNum.isBetweenValues(1, 9999))();
   TextColumn get origPlotArea => text().withLength(min: 0, max: 1)();
@@ -34,6 +34,8 @@ class LptTrees extends Table {
   IntColumn get azimuth => integer().check(azimuth.isBetweenValues(-1, 360))();
   RealColumn get distance =>
       real().check(distance.isBetweenValues(-1, 99.99))();
+  IntColumn get renumbered =>
+      integer().check(renumbered.isBetweenValues(-1, 360))();
 
   @override
   List<String> get customConstraints => ['UNIQUE (lpt_summary_id, tree_num)'];

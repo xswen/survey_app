@@ -10638,12 +10638,12 @@ class SoilPitHorizonDescriptionCompanion
   }
 }
 
-class $LptSummaryTable extends LptSummary
-    with TableInfo<$LptSummaryTable, LptSummaryData> {
+class $LtpSummaryTable extends LtpSummary
+    with TableInfo<$LtpSummaryTable, LtpSummaryData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $LptSummaryTable(this.attachedDatabase, [this._alias]);
+  $LtpSummaryTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -10674,9 +10674,9 @@ class $LptSummaryTable extends LptSummary
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'lpt_summary';
+  static const String $name = 'ltp_summary';
   @override
-  VerificationContext validateIntegrity(Insertable<LptSummaryData> instance,
+  VerificationContext validateIntegrity(Insertable<LtpSummaryData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -10701,9 +10701,9 @@ class $LptSummaryTable extends LptSummary
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  LptSummaryData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  LtpSummaryData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return LptSummaryData(
+    return LtpSummaryData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       surveyId: attachedDatabase.typeMapping
@@ -10714,16 +10714,16 @@ class $LptSummaryTable extends LptSummary
   }
 
   @override
-  $LptSummaryTable createAlias(String alias) {
-    return $LptSummaryTable(attachedDatabase, alias);
+  $LtpSummaryTable createAlias(String alias) {
+    return $LtpSummaryTable(attachedDatabase, alias);
   }
 }
 
-class LptSummaryData extends DataClass implements Insertable<LptSummaryData> {
+class LtpSummaryData extends DataClass implements Insertable<LtpSummaryData> {
   final int id;
   final int surveyId;
   final DateTime measDate;
-  const LptSummaryData(
+  const LtpSummaryData(
       {required this.id, required this.surveyId, required this.measDate});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -10734,18 +10734,18 @@ class LptSummaryData extends DataClass implements Insertable<LptSummaryData> {
     return map;
   }
 
-  LptSummaryCompanion toCompanion(bool nullToAbsent) {
-    return LptSummaryCompanion(
+  LtpSummaryCompanion toCompanion(bool nullToAbsent) {
+    return LtpSummaryCompanion(
       id: Value(id),
       surveyId: Value(surveyId),
       measDate: Value(measDate),
     );
   }
 
-  factory LptSummaryData.fromJson(Map<String, dynamic> json,
+  factory LtpSummaryData.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return LptSummaryData(
+    return LtpSummaryData(
       id: serializer.fromJson<int>(json['id']),
       surveyId: serializer.fromJson<int>(json['surveyId']),
       measDate: serializer.fromJson<DateTime>(json['measDate']),
@@ -10761,15 +10761,15 @@ class LptSummaryData extends DataClass implements Insertable<LptSummaryData> {
     };
   }
 
-  LptSummaryData copyWith({int? id, int? surveyId, DateTime? measDate}) =>
-      LptSummaryData(
+  LtpSummaryData copyWith({int? id, int? surveyId, DateTime? measDate}) =>
+      LtpSummaryData(
         id: id ?? this.id,
         surveyId: surveyId ?? this.surveyId,
         measDate: measDate ?? this.measDate,
       );
   @override
   String toString() {
-    return (StringBuffer('LptSummaryData(')
+    return (StringBuffer('LtpSummaryData(')
           ..write('id: $id, ')
           ..write('surveyId: $surveyId, ')
           ..write('measDate: $measDate')
@@ -10782,28 +10782,28 @@ class LptSummaryData extends DataClass implements Insertable<LptSummaryData> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is LptSummaryData &&
+      (other is LtpSummaryData &&
           other.id == this.id &&
           other.surveyId == this.surveyId &&
           other.measDate == this.measDate);
 }
 
-class LptSummaryCompanion extends UpdateCompanion<LptSummaryData> {
+class LtpSummaryCompanion extends UpdateCompanion<LtpSummaryData> {
   final Value<int> id;
   final Value<int> surveyId;
   final Value<DateTime> measDate;
-  const LptSummaryCompanion({
+  const LtpSummaryCompanion({
     this.id = const Value.absent(),
     this.surveyId = const Value.absent(),
     this.measDate = const Value.absent(),
   });
-  LptSummaryCompanion.insert({
+  LtpSummaryCompanion.insert({
     this.id = const Value.absent(),
     required int surveyId,
     required DateTime measDate,
   })  : surveyId = Value(surveyId),
         measDate = Value(measDate);
-  static Insertable<LptSummaryData> custom({
+  static Insertable<LtpSummaryData> custom({
     Expression<int>? id,
     Expression<int>? surveyId,
     Expression<DateTime>? measDate,
@@ -10815,9 +10815,9 @@ class LptSummaryCompanion extends UpdateCompanion<LptSummaryData> {
     });
   }
 
-  LptSummaryCompanion copyWith(
+  LtpSummaryCompanion copyWith(
       {Value<int>? id, Value<int>? surveyId, Value<DateTime>? measDate}) {
-    return LptSummaryCompanion(
+    return LtpSummaryCompanion(
       id: id ?? this.id,
       surveyId: surveyId ?? this.surveyId,
       measDate: measDate ?? this.measDate,
@@ -10841,7 +10841,7 @@ class LptSummaryCompanion extends UpdateCompanion<LptSummaryData> {
 
   @override
   String toString() {
-    return (StringBuffer('LptSummaryCompanion(')
+    return (StringBuffer('LtpSummaryCompanion(')
           ..write('id: $id, ')
           ..write('surveyId: $surveyId, ')
           ..write('measDate: $measDate')
@@ -10850,11 +10850,11 @@ class LptSummaryCompanion extends UpdateCompanion<LptSummaryData> {
   }
 }
 
-class $LptTreesTable extends LptTrees with TableInfo<$LptTreesTable, LptTree> {
+class $LtpTreeTable extends LtpTree with TableInfo<$LtpTreeTable, LtpTreeData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $LptTreesTable(this.attachedDatabase, [this._alias]);
+  $LtpTreeTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -10872,7 +10872,7 @@ class $LptTreesTable extends LptTrees with TableInfo<$LptTreesTable, LptTree> {
       type: DriftSqlType.int,
       requiredDuringInsert: true,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES lpt_summary (id)'));
+          GeneratedColumn.constraintIsAlways('REFERENCES ltp_summary (id)'));
   static const VerificationMeta _sectorMeta = const VerificationMeta('sector');
   @override
   late final GeneratedColumn<int> sector = GeneratedColumn<int>(
@@ -11068,9 +11068,9 @@ class $LptTreesTable extends LptTrees with TableInfo<$LptTreesTable, LptTree> {
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'lpt_trees';
+  static const String $name = 'ltp_tree';
   @override
-  VerificationContext validateIntegrity(Insertable<LptTree> instance,
+  VerificationContext validateIntegrity(Insertable<LtpTreeData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -11227,9 +11227,9 @@ class $LptTreesTable extends LptTrees with TableInfo<$LptTreesTable, LptTree> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  LptTree map(Map<String, dynamic> data, {String? tablePrefix}) {
+  LtpTreeData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return LptTree(
+    return LtpTreeData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       lptSummaryId: attachedDatabase.typeMapping
@@ -11278,12 +11278,12 @@ class $LptTreesTable extends LptTrees with TableInfo<$LptTreesTable, LptTree> {
   }
 
   @override
-  $LptTreesTable createAlias(String alias) {
-    return $LptTreesTable(attachedDatabase, alias);
+  $LtpTreeTable createAlias(String alias) {
+    return $LtpTreeTable(attachedDatabase, alias);
   }
 }
 
-class LptTree extends DataClass implements Insertable<LptTree> {
+class LtpTreeData extends DataClass implements Insertable<LtpTreeData> {
   final int id;
   final int lptSummaryId;
   final int sector;
@@ -11306,7 +11306,7 @@ class LptTree extends DataClass implements Insertable<LptTree> {
   final int woodCond;
   final int azimuth;
   final double distance;
-  const LptTree(
+  const LtpTreeData(
       {required this.id,
       required this.lptSummaryId,
       required this.sector,
@@ -11357,8 +11357,8 @@ class LptTree extends DataClass implements Insertable<LptTree> {
     return map;
   }
 
-  LptTreesCompanion toCompanion(bool nullToAbsent) {
-    return LptTreesCompanion(
+  LtpTreeCompanion toCompanion(bool nullToAbsent) {
+    return LtpTreeCompanion(
       id: Value(id),
       lptSummaryId: Value(lptSummaryId),
       sector: Value(sector),
@@ -11384,10 +11384,10 @@ class LptTree extends DataClass implements Insertable<LptTree> {
     );
   }
 
-  factory LptTree.fromJson(Map<String, dynamic> json,
+  factory LtpTreeData.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return LptTree(
+    return LtpTreeData(
       id: serializer.fromJson<int>(json['id']),
       lptSummaryId: serializer.fromJson<int>(json['lptSummaryId']),
       sector: serializer.fromJson<int>(json['sector']),
@@ -11441,7 +11441,7 @@ class LptTree extends DataClass implements Insertable<LptTree> {
     };
   }
 
-  LptTree copyWith(
+  LtpTreeData copyWith(
           {int? id,
           int? lptSummaryId,
           int? sector,
@@ -11464,7 +11464,7 @@ class LptTree extends DataClass implements Insertable<LptTree> {
           int? woodCond,
           int? azimuth,
           double? distance}) =>
-      LptTree(
+      LtpTreeData(
         id: id ?? this.id,
         lptSummaryId: lptSummaryId ?? this.lptSummaryId,
         sector: sector ?? this.sector,
@@ -11490,7 +11490,7 @@ class LptTree extends DataClass implements Insertable<LptTree> {
       );
   @override
   String toString() {
-    return (StringBuffer('LptTree(')
+    return (StringBuffer('LtpTreeData(')
           ..write('id: $id, ')
           ..write('lptSummaryId: $lptSummaryId, ')
           ..write('sector: $sector, ')
@@ -11545,7 +11545,7 @@ class LptTree extends DataClass implements Insertable<LptTree> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is LptTree &&
+      (other is LtpTreeData &&
           other.id == this.id &&
           other.lptSummaryId == this.lptSummaryId &&
           other.sector == this.sector &&
@@ -11570,7 +11570,7 @@ class LptTree extends DataClass implements Insertable<LptTree> {
           other.distance == this.distance);
 }
 
-class LptTreesCompanion extends UpdateCompanion<LptTree> {
+class LtpTreeCompanion extends UpdateCompanion<LtpTreeData> {
   final Value<int> id;
   final Value<int> lptSummaryId;
   final Value<int> sector;
@@ -11593,7 +11593,7 @@ class LptTreesCompanion extends UpdateCompanion<LptTree> {
   final Value<int> woodCond;
   final Value<int> azimuth;
   final Value<double> distance;
-  const LptTreesCompanion({
+  const LtpTreeCompanion({
     this.id = const Value.absent(),
     this.lptSummaryId = const Value.absent(),
     this.sector = const Value.absent(),
@@ -11617,7 +11617,7 @@ class LptTreesCompanion extends UpdateCompanion<LptTree> {
     this.azimuth = const Value.absent(),
     this.distance = const Value.absent(),
   });
-  LptTreesCompanion.insert({
+  LtpTreeCompanion.insert({
     this.id = const Value.absent(),
     required int lptSummaryId,
     required int sector,
@@ -11661,7 +11661,7 @@ class LptTreesCompanion extends UpdateCompanion<LptTree> {
         woodCond = Value(woodCond),
         azimuth = Value(azimuth),
         distance = Value(distance);
-  static Insertable<LptTree> custom({
+  static Insertable<LtpTreeData> custom({
     Expression<int>? id,
     Expression<int>? lptSummaryId,
     Expression<int>? sector,
@@ -11711,7 +11711,7 @@ class LptTreesCompanion extends UpdateCompanion<LptTree> {
     });
   }
 
-  LptTreesCompanion copyWith(
+  LtpTreeCompanion copyWith(
       {Value<int>? id,
       Value<int>? lptSummaryId,
       Value<int>? sector,
@@ -11734,7 +11734,7 @@ class LptTreesCompanion extends UpdateCompanion<LptTree> {
       Value<int>? woodCond,
       Value<int>? azimuth,
       Value<double>? distance}) {
-    return LptTreesCompanion(
+    return LtpTreeCompanion(
       id: id ?? this.id,
       lptSummaryId: lptSummaryId ?? this.lptSummaryId,
       sector: sector ?? this.sector,
@@ -11834,7 +11834,7 @@ class LptTreesCompanion extends UpdateCompanion<LptTree> {
 
   @override
   String toString() {
-    return (StringBuffer('LptTreesCompanion(')
+    return (StringBuffer('LtpTreeCompanion(')
           ..write('id: $id, ')
           ..write('lptSummaryId: $lptSummaryId, ')
           ..write('sector: $sector, ')
@@ -11913,8 +11913,8 @@ abstract class _$Database extends GeneratedDatabase {
   late final $SoilPitFeatureTable soilPitFeature = $SoilPitFeatureTable(this);
   late final $SoilPitHorizonDescriptionTable soilPitHorizonDescription =
       $SoilPitHorizonDescriptionTable(this);
-  late final $LptSummaryTable lptSummary = $LptSummaryTable(this);
-  late final $LptTreesTable lptTrees = $LptTreesTable(this);
+  late final $LtpSummaryTable ltpSummary = $LtpSummaryTable(this);
+  late final $LtpTreeTable ltpTree = $LtpTreeTable(this);
   late final ReferenceTablesDao referenceTablesDao =
       ReferenceTablesDao(this as Database);
   late final SurveyInfoTablesDao surveyInfoTablesDao =
@@ -11968,7 +11968,7 @@ abstract class _$Database extends GeneratedDatabase {
         soilPitDepth,
         soilPitFeature,
         soilPitHorizonDescription,
-        lptSummary,
-        lptTrees
+        ltpSummary,
+        ltpTree
       ];
 }

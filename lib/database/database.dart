@@ -75,8 +75,8 @@ const List<Type> _tables = [
   SoilPitFeature,
   SoilPitHorizonDescription,
   //LPT
-  LptSummary,
-  LptTrees,
+  LtpSummary,
+  LtpTree,
 ];
 
 const List<Type> _daos = [
