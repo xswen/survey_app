@@ -1,4 +1,7 @@
 import 'package:survey_app/barrels/page_imports_barrel.dart';
+import 'package:survey_app/pages/large_tree_plot/large_tree_plot_site_tree_info_age_list_page.dart';
+import 'package:survey_app/pages/large_tree_plot/large_tree_plot_tree_info_list_page.dart';
+import 'package:survey_app/pages/large_tree_plot/large_tree_plot_tree_removed_list_page.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../widgets/buttons/icon_nav_button.dart';
@@ -190,7 +193,8 @@ class LargeTreePlotSummaryPageState
                 space: kPaddingIcon,
                 label: "Tree Information",
                 onPressed: () {
-                  // navToSiteInfo();
+                  context.pushNamed(LargeTreePlotTreeInfoListPage.routeName,
+                      pathParameters: widget.state.pathParameters);
                 },
                 padding: const EdgeInsets.symmetric(vertical: kPaddingV),
               ),
@@ -199,7 +203,8 @@ class LargeTreePlotSummaryPageState
                 space: kPaddingIcon,
                 label: "Removed Trees",
                 onPressed: () {
-                  // navToSiteInfo();
+                  context.pushNamed(LargeTreePlotTreeRemovedListPage.routeName,
+                      pathParameters: widget.state.pathParameters);
                 },
                 padding: const EdgeInsets.symmetric(vertical: kPaddingV),
               ),
@@ -208,7 +213,9 @@ class LargeTreePlotSummaryPageState
                 space: kPaddingIcon,
                 label: "Site Tree and Age Information",
                 onPressed: () {
-                  // navToSiteInfo();
+                  context.pushNamed(
+                      LargeTreePlotSiteTreeInfoAgeListPage.routeName,
+                      pathParameters: widget.state.pathParameters);
                 },
                 padding: const EdgeInsets.symmetric(vertical: kPaddingV),
               ),
