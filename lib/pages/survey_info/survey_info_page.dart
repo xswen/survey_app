@@ -2,6 +2,7 @@ import 'package:drift/drift.dart' as d;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/pages/ecological_plot/ecological_plot_summary_page.dart';
+import 'package:survey_app/pages/large_tree_plot/large_tree_plot_summary.dart';
 import 'package:survey_app/pages/shrub_plot/shrub_plot_summary.dart';
 import 'package:survey_app/pages/small_tree_plot/small_tree_plot_summary.dart';
 import 'package:survey_app/pages/stump_plot/stump_plot_summary_page.dart';
@@ -209,7 +210,7 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
       case SurveyCardCategories.largeTreePlot:
         if (context.mounted) {
           context
-              .pushNamed(StumpPlotSummaryPage.routeName,
+              .pushNamed(LargeTreePlotSummaryPage.routeName,
                   pathParameters: widget.goRouterState.pathParameters)
               .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
         }
