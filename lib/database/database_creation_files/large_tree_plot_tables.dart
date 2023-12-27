@@ -40,3 +40,54 @@ class LtpTree extends Table {
   @override
   List<String> get customConstraints => ['UNIQUE (lpt_summary_id, tree_num)'];
 }
+
+class LtpTreeDamage extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get lptSummaryId => integer().references(LtpSummary, #id)();
+  IntColumn get treeNum => integer().check(treeNum.isBetweenValues(1, 9999))();
+  TextColumn get damageAgent => text().withLength(min: 2, max: 2)();
+  TextColumn get damageLocation => text().withLength(min: 2, max: 2)();
+  IntColumn get severityPct => integer().withDefault(const Constant(-7))();
+  TextColumn get severity => text().withLength(min: 1, max: 1)();
+
+  @override
+  List<String> get customConstraints => ['UNIQUE (lpt_summary_id, tree_num)'];
+}
+
+class LtpTreeRemoved extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get lptSummaryId => integer().references(LtpSummary, #id)();
+  IntColumn get treeNum => integer().check(treeNum.isBetweenValues(1, 9999))();
+  TextColumn get reason => text().withLength(min: 1, max: 1)();
+
+  @override
+  List<String> get customConstraints => ['UNIQUE (lpt_summary_id, tree_num)'];
+}
+
+class LtpTreeAge extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get lptSummaryId => integer().references(LtpSummary, #id)();
+  TextColumn get quadrant => text().withLength(min: 2, max: 2)();
+  IntColumn get treeNum => integer().check(treeNum.isBetweenValues(1, 9999))();
+  TextColumn get siteType => text().withLength(min: 2, max: 2)();
+  RealColumn get boreDOB => real().check(boreDOB.isBetweenValues(-1, 999.9))();
+  RealColumn get boreHt => real().check(boreHt.isBetweenValues(-1, 9.9))();
+  TextColumn get suitHt => text().withLength(min: 1, max: 1)();
+  TextColumn get suitAge => text().withLength(min: 1, max: 1)();
+  RealColumn get fieldAge => real().check(fieldAge.isBetweenValues(-8, 9999))();
+  TextColumn get proCode => text().withLength(min: 3, max: 3)();
+
+  @override
+  List<String> get customConstraints => ['UNIQUE (lpt_summary_id, tree_num)'];
+}
+
+class LtpTreeRenamed extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get lptSummaryId => integer().references(LtpSummary, #id)();
+  IntColumn get treeNum => integer().check(treeNum.isBetweenValues(1, 9999))();
+  IntColumn get treeNumPrev =>
+      integer().check(treeNumPrev.isBetweenValues(1, 9999))();
+
+  @override
+  List<String> get customConstraints => ['UNIQUE (lpt_summary_id, tree_num)'];
+}

@@ -77,6 +77,10 @@ const List<Type> _tables = [
   //LPT
   LtpSummary,
   LtpTree,
+  LtpTreeDamage,
+  LtpTreeRemoved,
+  LtpTreeAge,
+  LtpTreeRenamed,
 ];
 
 const List<Type> _daos = [

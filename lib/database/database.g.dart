@@ -11039,6 +11039,14 @@ class $LtpTreeTable extends LtpTree with TableInfo<$LtpTreeTable, LtpTreeData> {
       check: () => distance.isBetweenValues(-1, 99.99),
       type: DriftSqlType.double,
       requiredDuringInsert: true);
+  static const VerificationMeta _renumberedMeta =
+      const VerificationMeta('renumbered');
+  @override
+  late final GeneratedColumn<int> renumbered = GeneratedColumn<int>(
+      'renumbered', aliasedName, false,
+      check: () => renumbered.isBetweenValues(-1, 360),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -11062,7 +11070,8 @@ class $LtpTreeTable extends LtpTree with TableInfo<$LtpTreeTable, LtpTreeData> {
         barkRet,
         woodCond,
         azimuth,
-        distance
+        distance,
+        renumbered
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -11221,6 +11230,14 @@ class $LtpTreeTable extends LtpTree with TableInfo<$LtpTreeTable, LtpTreeData> {
     } else if (isInserting) {
       context.missing(_distanceMeta);
     }
+    if (data.containsKey('renumbered')) {
+      context.handle(
+          _renumberedMeta,
+          renumbered.isAcceptableOrUnknown(
+              data['renumbered']!, _renumberedMeta));
+    } else if (isInserting) {
+      context.missing(_renumberedMeta);
+    }
     return context;
   }
 
@@ -11274,6 +11291,8 @@ class $LtpTreeTable extends LtpTree with TableInfo<$LtpTreeTable, LtpTreeData> {
           .read(DriftSqlType.int, data['${effectivePrefix}azimuth'])!,
       distance: attachedDatabase.typeMapping
           .read(DriftSqlType.double, data['${effectivePrefix}distance'])!,
+      renumbered: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}renumbered'])!,
     );
   }
 
@@ -11306,6 +11325,7 @@ class LtpTreeData extends DataClass implements Insertable<LtpTreeData> {
   final int woodCond;
   final int azimuth;
   final double distance;
+  final int renumbered;
   const LtpTreeData(
       {required this.id,
       required this.lptSummaryId,
@@ -11328,7 +11348,8 @@ class LtpTreeData extends DataClass implements Insertable<LtpTreeData> {
       required this.barkRet,
       required this.woodCond,
       required this.azimuth,
-      required this.distance});
+      required this.distance,
+      required this.renumbered});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -11354,6 +11375,7 @@ class LtpTreeData extends DataClass implements Insertable<LtpTreeData> {
     map['wood_cond'] = Variable<int>(woodCond);
     map['azimuth'] = Variable<int>(azimuth);
     map['distance'] = Variable<double>(distance);
+    map['renumbered'] = Variable<int>(renumbered);
     return map;
   }
 
@@ -11381,6 +11403,7 @@ class LtpTreeData extends DataClass implements Insertable<LtpTreeData> {
       woodCond: Value(woodCond),
       azimuth: Value(azimuth),
       distance: Value(distance),
+      renumbered: Value(renumbered),
     );
   }
 
@@ -11410,6 +11433,7 @@ class LtpTreeData extends DataClass implements Insertable<LtpTreeData> {
       woodCond: serializer.fromJson<int>(json['woodCond']),
       azimuth: serializer.fromJson<int>(json['azimuth']),
       distance: serializer.fromJson<double>(json['distance']),
+      renumbered: serializer.fromJson<int>(json['renumbered']),
     );
   }
   @override
@@ -11438,6 +11462,7 @@ class LtpTreeData extends DataClass implements Insertable<LtpTreeData> {
       'woodCond': serializer.toJson<int>(woodCond),
       'azimuth': serializer.toJson<int>(azimuth),
       'distance': serializer.toJson<double>(distance),
+      'renumbered': serializer.toJson<int>(renumbered),
     };
   }
 
@@ -11463,7 +11488,8 @@ class LtpTreeData extends DataClass implements Insertable<LtpTreeData> {
           int? barkRet,
           int? woodCond,
           int? azimuth,
-          double? distance}) =>
+          double? distance,
+          int? renumbered}) =>
       LtpTreeData(
         id: id ?? this.id,
         lptSummaryId: lptSummaryId ?? this.lptSummaryId,
@@ -11487,6 +11513,7 @@ class LtpTreeData extends DataClass implements Insertable<LtpTreeData> {
         woodCond: woodCond ?? this.woodCond,
         azimuth: azimuth ?? this.azimuth,
         distance: distance ?? this.distance,
+        renumbered: renumbered ?? this.renumbered,
       );
   @override
   String toString() {
@@ -11512,7 +11539,8 @@ class LtpTreeData extends DataClass implements Insertable<LtpTreeData> {
           ..write('barkRet: $barkRet, ')
           ..write('woodCond: $woodCond, ')
           ..write('azimuth: $azimuth, ')
-          ..write('distance: $distance')
+          ..write('distance: $distance, ')
+          ..write('renumbered: $renumbered')
           ..write(')'))
         .toString();
   }
@@ -11540,7 +11568,8 @@ class LtpTreeData extends DataClass implements Insertable<LtpTreeData> {
         barkRet,
         woodCond,
         azimuth,
-        distance
+        distance,
+        renumbered
       ]);
   @override
   bool operator ==(Object other) =>
@@ -11567,7 +11596,8 @@ class LtpTreeData extends DataClass implements Insertable<LtpTreeData> {
           other.barkRet == this.barkRet &&
           other.woodCond == this.woodCond &&
           other.azimuth == this.azimuth &&
-          other.distance == this.distance);
+          other.distance == this.distance &&
+          other.renumbered == this.renumbered);
 }
 
 class LtpTreeCompanion extends UpdateCompanion<LtpTreeData> {
@@ -11593,6 +11623,7 @@ class LtpTreeCompanion extends UpdateCompanion<LtpTreeData> {
   final Value<int> woodCond;
   final Value<int> azimuth;
   final Value<double> distance;
+  final Value<int> renumbered;
   const LtpTreeCompanion({
     this.id = const Value.absent(),
     this.lptSummaryId = const Value.absent(),
@@ -11616,6 +11647,7 @@ class LtpTreeCompanion extends UpdateCompanion<LtpTreeData> {
     this.woodCond = const Value.absent(),
     this.azimuth = const Value.absent(),
     this.distance = const Value.absent(),
+    this.renumbered = const Value.absent(),
   });
   LtpTreeCompanion.insert({
     this.id = const Value.absent(),
@@ -11640,6 +11672,7 @@ class LtpTreeCompanion extends UpdateCompanion<LtpTreeData> {
     required int woodCond,
     required int azimuth,
     required double distance,
+    required int renumbered,
   })  : lptSummaryId = Value(lptSummaryId),
         sector = Value(sector),
         treeNum = Value(treeNum),
@@ -11660,7 +11693,8 @@ class LtpTreeCompanion extends UpdateCompanion<LtpTreeData> {
         barkRet = Value(barkRet),
         woodCond = Value(woodCond),
         azimuth = Value(azimuth),
-        distance = Value(distance);
+        distance = Value(distance),
+        renumbered = Value(renumbered);
   static Insertable<LtpTreeData> custom({
     Expression<int>? id,
     Expression<int>? lptSummaryId,
@@ -11684,6 +11718,7 @@ class LtpTreeCompanion extends UpdateCompanion<LtpTreeData> {
     Expression<int>? woodCond,
     Expression<int>? azimuth,
     Expression<double>? distance,
+    Expression<int>? renumbered,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -11708,6 +11743,7 @@ class LtpTreeCompanion extends UpdateCompanion<LtpTreeData> {
       if (woodCond != null) 'wood_cond': woodCond,
       if (azimuth != null) 'azimuth': azimuth,
       if (distance != null) 'distance': distance,
+      if (renumbered != null) 'renumbered': renumbered,
     });
   }
 
@@ -11733,7 +11769,8 @@ class LtpTreeCompanion extends UpdateCompanion<LtpTreeData> {
       Value<int>? barkRet,
       Value<int>? woodCond,
       Value<int>? azimuth,
-      Value<double>? distance}) {
+      Value<double>? distance,
+      Value<int>? renumbered}) {
     return LtpTreeCompanion(
       id: id ?? this.id,
       lptSummaryId: lptSummaryId ?? this.lptSummaryId,
@@ -11757,6 +11794,7 @@ class LtpTreeCompanion extends UpdateCompanion<LtpTreeData> {
       woodCond: woodCond ?? this.woodCond,
       azimuth: azimuth ?? this.azimuth,
       distance: distance ?? this.distance,
+      renumbered: renumbered ?? this.renumbered,
     );
   }
 
@@ -11829,6 +11867,9 @@ class LtpTreeCompanion extends UpdateCompanion<LtpTreeData> {
     if (distance.present) {
       map['distance'] = Variable<double>(distance.value);
     }
+    if (renumbered.present) {
+      map['renumbered'] = Variable<int>(renumbered.value);
+    }
     return map;
   }
 
@@ -11856,7 +11897,1463 @@ class LtpTreeCompanion extends UpdateCompanion<LtpTreeData> {
           ..write('barkRet: $barkRet, ')
           ..write('woodCond: $woodCond, ')
           ..write('azimuth: $azimuth, ')
-          ..write('distance: $distance')
+          ..write('distance: $distance, ')
+          ..write('renumbered: $renumbered')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $LtpTreeDamageTable extends LtpTreeDamage
+    with TableInfo<$LtpTreeDamageTable, LtpTreeDamageData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LtpTreeDamageTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _lptSummaryIdMeta =
+      const VerificationMeta('lptSummaryId');
+  @override
+  late final GeneratedColumn<int> lptSummaryId = GeneratedColumn<int>(
+      'lpt_summary_id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES ltp_summary (id)'));
+  static const VerificationMeta _treeNumMeta =
+      const VerificationMeta('treeNum');
+  @override
+  late final GeneratedColumn<int> treeNum = GeneratedColumn<int>(
+      'tree_num', aliasedName, false,
+      check: () => treeNum.isBetweenValues(1, 9999),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
+  static const VerificationMeta _damageAgentMeta =
+      const VerificationMeta('damageAgent');
+  @override
+  late final GeneratedColumn<String> damageAgent = GeneratedColumn<String>(
+      'damage_agent', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 2, maxTextLength: 2),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const VerificationMeta _damageLocationMeta =
+      const VerificationMeta('damageLocation');
+  @override
+  late final GeneratedColumn<String> damageLocation = GeneratedColumn<String>(
+      'damage_location', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 2, maxTextLength: 2),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const VerificationMeta _severityPctMeta =
+      const VerificationMeta('severityPct');
+  @override
+  late final GeneratedColumn<int> severityPct = GeneratedColumn<int>(
+      'severity_pct', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(-7));
+  static const VerificationMeta _severityMeta =
+      const VerificationMeta('severity');
+  @override
+  late final GeneratedColumn<String> severity = GeneratedColumn<String>(
+      'severity', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 1),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        lptSummaryId,
+        treeNum,
+        damageAgent,
+        damageLocation,
+        severityPct,
+        severity
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'ltp_tree_damage';
+  @override
+  VerificationContext validateIntegrity(Insertable<LtpTreeDamageData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('lpt_summary_id')) {
+      context.handle(
+          _lptSummaryIdMeta,
+          lptSummaryId.isAcceptableOrUnknown(
+              data['lpt_summary_id']!, _lptSummaryIdMeta));
+    } else if (isInserting) {
+      context.missing(_lptSummaryIdMeta);
+    }
+    if (data.containsKey('tree_num')) {
+      context.handle(_treeNumMeta,
+          treeNum.isAcceptableOrUnknown(data['tree_num']!, _treeNumMeta));
+    } else if (isInserting) {
+      context.missing(_treeNumMeta);
+    }
+    if (data.containsKey('damage_agent')) {
+      context.handle(
+          _damageAgentMeta,
+          damageAgent.isAcceptableOrUnknown(
+              data['damage_agent']!, _damageAgentMeta));
+    } else if (isInserting) {
+      context.missing(_damageAgentMeta);
+    }
+    if (data.containsKey('damage_location')) {
+      context.handle(
+          _damageLocationMeta,
+          damageLocation.isAcceptableOrUnknown(
+              data['damage_location']!, _damageLocationMeta));
+    } else if (isInserting) {
+      context.missing(_damageLocationMeta);
+    }
+    if (data.containsKey('severity_pct')) {
+      context.handle(
+          _severityPctMeta,
+          severityPct.isAcceptableOrUnknown(
+              data['severity_pct']!, _severityPctMeta));
+    }
+    if (data.containsKey('severity')) {
+      context.handle(_severityMeta,
+          severity.isAcceptableOrUnknown(data['severity']!, _severityMeta));
+    } else if (isInserting) {
+      context.missing(_severityMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  LtpTreeDamageData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return LtpTreeDamageData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      lptSummaryId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}lpt_summary_id'])!,
+      treeNum: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}tree_num'])!,
+      damageAgent: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}damage_agent'])!,
+      damageLocation: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}damage_location'])!,
+      severityPct: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}severity_pct'])!,
+      severity: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}severity'])!,
+    );
+  }
+
+  @override
+  $LtpTreeDamageTable createAlias(String alias) {
+    return $LtpTreeDamageTable(attachedDatabase, alias);
+  }
+}
+
+class LtpTreeDamageData extends DataClass
+    implements Insertable<LtpTreeDamageData> {
+  final int id;
+  final int lptSummaryId;
+  final int treeNum;
+  final String damageAgent;
+  final String damageLocation;
+  final int severityPct;
+  final String severity;
+  const LtpTreeDamageData(
+      {required this.id,
+      required this.lptSummaryId,
+      required this.treeNum,
+      required this.damageAgent,
+      required this.damageLocation,
+      required this.severityPct,
+      required this.severity});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['lpt_summary_id'] = Variable<int>(lptSummaryId);
+    map['tree_num'] = Variable<int>(treeNum);
+    map['damage_agent'] = Variable<String>(damageAgent);
+    map['damage_location'] = Variable<String>(damageLocation);
+    map['severity_pct'] = Variable<int>(severityPct);
+    map['severity'] = Variable<String>(severity);
+    return map;
+  }
+
+  LtpTreeDamageCompanion toCompanion(bool nullToAbsent) {
+    return LtpTreeDamageCompanion(
+      id: Value(id),
+      lptSummaryId: Value(lptSummaryId),
+      treeNum: Value(treeNum),
+      damageAgent: Value(damageAgent),
+      damageLocation: Value(damageLocation),
+      severityPct: Value(severityPct),
+      severity: Value(severity),
+    );
+  }
+
+  factory LtpTreeDamageData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return LtpTreeDamageData(
+      id: serializer.fromJson<int>(json['id']),
+      lptSummaryId: serializer.fromJson<int>(json['lptSummaryId']),
+      treeNum: serializer.fromJson<int>(json['treeNum']),
+      damageAgent: serializer.fromJson<String>(json['damageAgent']),
+      damageLocation: serializer.fromJson<String>(json['damageLocation']),
+      severityPct: serializer.fromJson<int>(json['severityPct']),
+      severity: serializer.fromJson<String>(json['severity']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'lptSummaryId': serializer.toJson<int>(lptSummaryId),
+      'treeNum': serializer.toJson<int>(treeNum),
+      'damageAgent': serializer.toJson<String>(damageAgent),
+      'damageLocation': serializer.toJson<String>(damageLocation),
+      'severityPct': serializer.toJson<int>(severityPct),
+      'severity': serializer.toJson<String>(severity),
+    };
+  }
+
+  LtpTreeDamageData copyWith(
+          {int? id,
+          int? lptSummaryId,
+          int? treeNum,
+          String? damageAgent,
+          String? damageLocation,
+          int? severityPct,
+          String? severity}) =>
+      LtpTreeDamageData(
+        id: id ?? this.id,
+        lptSummaryId: lptSummaryId ?? this.lptSummaryId,
+        treeNum: treeNum ?? this.treeNum,
+        damageAgent: damageAgent ?? this.damageAgent,
+        damageLocation: damageLocation ?? this.damageLocation,
+        severityPct: severityPct ?? this.severityPct,
+        severity: severity ?? this.severity,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('LtpTreeDamageData(')
+          ..write('id: $id, ')
+          ..write('lptSummaryId: $lptSummaryId, ')
+          ..write('treeNum: $treeNum, ')
+          ..write('damageAgent: $damageAgent, ')
+          ..write('damageLocation: $damageLocation, ')
+          ..write('severityPct: $severityPct, ')
+          ..write('severity: $severity')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, lptSummaryId, treeNum, damageAgent,
+      damageLocation, severityPct, severity);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is LtpTreeDamageData &&
+          other.id == this.id &&
+          other.lptSummaryId == this.lptSummaryId &&
+          other.treeNum == this.treeNum &&
+          other.damageAgent == this.damageAgent &&
+          other.damageLocation == this.damageLocation &&
+          other.severityPct == this.severityPct &&
+          other.severity == this.severity);
+}
+
+class LtpTreeDamageCompanion extends UpdateCompanion<LtpTreeDamageData> {
+  final Value<int> id;
+  final Value<int> lptSummaryId;
+  final Value<int> treeNum;
+  final Value<String> damageAgent;
+  final Value<String> damageLocation;
+  final Value<int> severityPct;
+  final Value<String> severity;
+  const LtpTreeDamageCompanion({
+    this.id = const Value.absent(),
+    this.lptSummaryId = const Value.absent(),
+    this.treeNum = const Value.absent(),
+    this.damageAgent = const Value.absent(),
+    this.damageLocation = const Value.absent(),
+    this.severityPct = const Value.absent(),
+    this.severity = const Value.absent(),
+  });
+  LtpTreeDamageCompanion.insert({
+    this.id = const Value.absent(),
+    required int lptSummaryId,
+    required int treeNum,
+    required String damageAgent,
+    required String damageLocation,
+    this.severityPct = const Value.absent(),
+    required String severity,
+  })  : lptSummaryId = Value(lptSummaryId),
+        treeNum = Value(treeNum),
+        damageAgent = Value(damageAgent),
+        damageLocation = Value(damageLocation),
+        severity = Value(severity);
+  static Insertable<LtpTreeDamageData> custom({
+    Expression<int>? id,
+    Expression<int>? lptSummaryId,
+    Expression<int>? treeNum,
+    Expression<String>? damageAgent,
+    Expression<String>? damageLocation,
+    Expression<int>? severityPct,
+    Expression<String>? severity,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (lptSummaryId != null) 'lpt_summary_id': lptSummaryId,
+      if (treeNum != null) 'tree_num': treeNum,
+      if (damageAgent != null) 'damage_agent': damageAgent,
+      if (damageLocation != null) 'damage_location': damageLocation,
+      if (severityPct != null) 'severity_pct': severityPct,
+      if (severity != null) 'severity': severity,
+    });
+  }
+
+  LtpTreeDamageCompanion copyWith(
+      {Value<int>? id,
+      Value<int>? lptSummaryId,
+      Value<int>? treeNum,
+      Value<String>? damageAgent,
+      Value<String>? damageLocation,
+      Value<int>? severityPct,
+      Value<String>? severity}) {
+    return LtpTreeDamageCompanion(
+      id: id ?? this.id,
+      lptSummaryId: lptSummaryId ?? this.lptSummaryId,
+      treeNum: treeNum ?? this.treeNum,
+      damageAgent: damageAgent ?? this.damageAgent,
+      damageLocation: damageLocation ?? this.damageLocation,
+      severityPct: severityPct ?? this.severityPct,
+      severity: severity ?? this.severity,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (lptSummaryId.present) {
+      map['lpt_summary_id'] = Variable<int>(lptSummaryId.value);
+    }
+    if (treeNum.present) {
+      map['tree_num'] = Variable<int>(treeNum.value);
+    }
+    if (damageAgent.present) {
+      map['damage_agent'] = Variable<String>(damageAgent.value);
+    }
+    if (damageLocation.present) {
+      map['damage_location'] = Variable<String>(damageLocation.value);
+    }
+    if (severityPct.present) {
+      map['severity_pct'] = Variable<int>(severityPct.value);
+    }
+    if (severity.present) {
+      map['severity'] = Variable<String>(severity.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LtpTreeDamageCompanion(')
+          ..write('id: $id, ')
+          ..write('lptSummaryId: $lptSummaryId, ')
+          ..write('treeNum: $treeNum, ')
+          ..write('damageAgent: $damageAgent, ')
+          ..write('damageLocation: $damageLocation, ')
+          ..write('severityPct: $severityPct, ')
+          ..write('severity: $severity')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $LtpTreeRemovedTable extends LtpTreeRemoved
+    with TableInfo<$LtpTreeRemovedTable, LtpTreeRemovedData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LtpTreeRemovedTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _lptSummaryIdMeta =
+      const VerificationMeta('lptSummaryId');
+  @override
+  late final GeneratedColumn<int> lptSummaryId = GeneratedColumn<int>(
+      'lpt_summary_id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES ltp_summary (id)'));
+  static const VerificationMeta _treeNumMeta =
+      const VerificationMeta('treeNum');
+  @override
+  late final GeneratedColumn<int> treeNum = GeneratedColumn<int>(
+      'tree_num', aliasedName, false,
+      check: () => treeNum.isBetweenValues(1, 9999),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
+  static const VerificationMeta _reasonMeta = const VerificationMeta('reason');
+  @override
+  late final GeneratedColumn<String> reason = GeneratedColumn<String>(
+      'reason', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 1),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [id, lptSummaryId, treeNum, reason];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'ltp_tree_removed';
+  @override
+  VerificationContext validateIntegrity(Insertable<LtpTreeRemovedData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('lpt_summary_id')) {
+      context.handle(
+          _lptSummaryIdMeta,
+          lptSummaryId.isAcceptableOrUnknown(
+              data['lpt_summary_id']!, _lptSummaryIdMeta));
+    } else if (isInserting) {
+      context.missing(_lptSummaryIdMeta);
+    }
+    if (data.containsKey('tree_num')) {
+      context.handle(_treeNumMeta,
+          treeNum.isAcceptableOrUnknown(data['tree_num']!, _treeNumMeta));
+    } else if (isInserting) {
+      context.missing(_treeNumMeta);
+    }
+    if (data.containsKey('reason')) {
+      context.handle(_reasonMeta,
+          reason.isAcceptableOrUnknown(data['reason']!, _reasonMeta));
+    } else if (isInserting) {
+      context.missing(_reasonMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  LtpTreeRemovedData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return LtpTreeRemovedData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      lptSummaryId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}lpt_summary_id'])!,
+      treeNum: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}tree_num'])!,
+      reason: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}reason'])!,
+    );
+  }
+
+  @override
+  $LtpTreeRemovedTable createAlias(String alias) {
+    return $LtpTreeRemovedTable(attachedDatabase, alias);
+  }
+}
+
+class LtpTreeRemovedData extends DataClass
+    implements Insertable<LtpTreeRemovedData> {
+  final int id;
+  final int lptSummaryId;
+  final int treeNum;
+  final String reason;
+  const LtpTreeRemovedData(
+      {required this.id,
+      required this.lptSummaryId,
+      required this.treeNum,
+      required this.reason});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['lpt_summary_id'] = Variable<int>(lptSummaryId);
+    map['tree_num'] = Variable<int>(treeNum);
+    map['reason'] = Variable<String>(reason);
+    return map;
+  }
+
+  LtpTreeRemovedCompanion toCompanion(bool nullToAbsent) {
+    return LtpTreeRemovedCompanion(
+      id: Value(id),
+      lptSummaryId: Value(lptSummaryId),
+      treeNum: Value(treeNum),
+      reason: Value(reason),
+    );
+  }
+
+  factory LtpTreeRemovedData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return LtpTreeRemovedData(
+      id: serializer.fromJson<int>(json['id']),
+      lptSummaryId: serializer.fromJson<int>(json['lptSummaryId']),
+      treeNum: serializer.fromJson<int>(json['treeNum']),
+      reason: serializer.fromJson<String>(json['reason']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'lptSummaryId': serializer.toJson<int>(lptSummaryId),
+      'treeNum': serializer.toJson<int>(treeNum),
+      'reason': serializer.toJson<String>(reason),
+    };
+  }
+
+  LtpTreeRemovedData copyWith(
+          {int? id, int? lptSummaryId, int? treeNum, String? reason}) =>
+      LtpTreeRemovedData(
+        id: id ?? this.id,
+        lptSummaryId: lptSummaryId ?? this.lptSummaryId,
+        treeNum: treeNum ?? this.treeNum,
+        reason: reason ?? this.reason,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('LtpTreeRemovedData(')
+          ..write('id: $id, ')
+          ..write('lptSummaryId: $lptSummaryId, ')
+          ..write('treeNum: $treeNum, ')
+          ..write('reason: $reason')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, lptSummaryId, treeNum, reason);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is LtpTreeRemovedData &&
+          other.id == this.id &&
+          other.lptSummaryId == this.lptSummaryId &&
+          other.treeNum == this.treeNum &&
+          other.reason == this.reason);
+}
+
+class LtpTreeRemovedCompanion extends UpdateCompanion<LtpTreeRemovedData> {
+  final Value<int> id;
+  final Value<int> lptSummaryId;
+  final Value<int> treeNum;
+  final Value<String> reason;
+  const LtpTreeRemovedCompanion({
+    this.id = const Value.absent(),
+    this.lptSummaryId = const Value.absent(),
+    this.treeNum = const Value.absent(),
+    this.reason = const Value.absent(),
+  });
+  LtpTreeRemovedCompanion.insert({
+    this.id = const Value.absent(),
+    required int lptSummaryId,
+    required int treeNum,
+    required String reason,
+  })  : lptSummaryId = Value(lptSummaryId),
+        treeNum = Value(treeNum),
+        reason = Value(reason);
+  static Insertable<LtpTreeRemovedData> custom({
+    Expression<int>? id,
+    Expression<int>? lptSummaryId,
+    Expression<int>? treeNum,
+    Expression<String>? reason,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (lptSummaryId != null) 'lpt_summary_id': lptSummaryId,
+      if (treeNum != null) 'tree_num': treeNum,
+      if (reason != null) 'reason': reason,
+    });
+  }
+
+  LtpTreeRemovedCompanion copyWith(
+      {Value<int>? id,
+      Value<int>? lptSummaryId,
+      Value<int>? treeNum,
+      Value<String>? reason}) {
+    return LtpTreeRemovedCompanion(
+      id: id ?? this.id,
+      lptSummaryId: lptSummaryId ?? this.lptSummaryId,
+      treeNum: treeNum ?? this.treeNum,
+      reason: reason ?? this.reason,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (lptSummaryId.present) {
+      map['lpt_summary_id'] = Variable<int>(lptSummaryId.value);
+    }
+    if (treeNum.present) {
+      map['tree_num'] = Variable<int>(treeNum.value);
+    }
+    if (reason.present) {
+      map['reason'] = Variable<String>(reason.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LtpTreeRemovedCompanion(')
+          ..write('id: $id, ')
+          ..write('lptSummaryId: $lptSummaryId, ')
+          ..write('treeNum: $treeNum, ')
+          ..write('reason: $reason')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $LtpTreeAgeTable extends LtpTreeAge
+    with TableInfo<$LtpTreeAgeTable, LtpTreeAgeData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LtpTreeAgeTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _lptSummaryIdMeta =
+      const VerificationMeta('lptSummaryId');
+  @override
+  late final GeneratedColumn<int> lptSummaryId = GeneratedColumn<int>(
+      'lpt_summary_id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES ltp_summary (id)'));
+  static const VerificationMeta _quadrantMeta =
+      const VerificationMeta('quadrant');
+  @override
+  late final GeneratedColumn<String> quadrant = GeneratedColumn<String>(
+      'quadrant', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 2, maxTextLength: 2),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const VerificationMeta _treeNumMeta =
+      const VerificationMeta('treeNum');
+  @override
+  late final GeneratedColumn<int> treeNum = GeneratedColumn<int>(
+      'tree_num', aliasedName, false,
+      check: () => treeNum.isBetweenValues(1, 9999),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
+  static const VerificationMeta _siteTypeMeta =
+      const VerificationMeta('siteType');
+  @override
+  late final GeneratedColumn<String> siteType = GeneratedColumn<String>(
+      'site_type', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 2, maxTextLength: 2),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const VerificationMeta _boreDOBMeta =
+      const VerificationMeta('boreDOB');
+  @override
+  late final GeneratedColumn<double> boreDOB = GeneratedColumn<double>(
+      'bore_d_o_b', aliasedName, false,
+      check: () => boreDOB.isBetweenValues(-1, 999.9),
+      type: DriftSqlType.double,
+      requiredDuringInsert: true);
+  static const VerificationMeta _boreHtMeta = const VerificationMeta('boreHt');
+  @override
+  late final GeneratedColumn<double> boreHt = GeneratedColumn<double>(
+      'bore_ht', aliasedName, false,
+      check: () => boreHt.isBetweenValues(-1, 9.9),
+      type: DriftSqlType.double,
+      requiredDuringInsert: true);
+  static const VerificationMeta _suitHtMeta = const VerificationMeta('suitHt');
+  @override
+  late final GeneratedColumn<String> suitHt = GeneratedColumn<String>(
+      'suit_ht', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 1),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const VerificationMeta _suitAgeMeta =
+      const VerificationMeta('suitAge');
+  @override
+  late final GeneratedColumn<String> suitAge = GeneratedColumn<String>(
+      'suit_age', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 1),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const VerificationMeta _fieldAgeMeta =
+      const VerificationMeta('fieldAge');
+  @override
+  late final GeneratedColumn<double> fieldAge = GeneratedColumn<double>(
+      'field_age', aliasedName, false,
+      check: () => fieldAge.isBetweenValues(-8, 9999),
+      type: DriftSqlType.double,
+      requiredDuringInsert: true);
+  static const VerificationMeta _proCodeMeta =
+      const VerificationMeta('proCode');
+  @override
+  late final GeneratedColumn<String> proCode = GeneratedColumn<String>(
+      'pro_code', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 3, maxTextLength: 3),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        lptSummaryId,
+        quadrant,
+        treeNum,
+        siteType,
+        boreDOB,
+        boreHt,
+        suitHt,
+        suitAge,
+        fieldAge,
+        proCode
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'ltp_tree_age';
+  @override
+  VerificationContext validateIntegrity(Insertable<LtpTreeAgeData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('lpt_summary_id')) {
+      context.handle(
+          _lptSummaryIdMeta,
+          lptSummaryId.isAcceptableOrUnknown(
+              data['lpt_summary_id']!, _lptSummaryIdMeta));
+    } else if (isInserting) {
+      context.missing(_lptSummaryIdMeta);
+    }
+    if (data.containsKey('quadrant')) {
+      context.handle(_quadrantMeta,
+          quadrant.isAcceptableOrUnknown(data['quadrant']!, _quadrantMeta));
+    } else if (isInserting) {
+      context.missing(_quadrantMeta);
+    }
+    if (data.containsKey('tree_num')) {
+      context.handle(_treeNumMeta,
+          treeNum.isAcceptableOrUnknown(data['tree_num']!, _treeNumMeta));
+    } else if (isInserting) {
+      context.missing(_treeNumMeta);
+    }
+    if (data.containsKey('site_type')) {
+      context.handle(_siteTypeMeta,
+          siteType.isAcceptableOrUnknown(data['site_type']!, _siteTypeMeta));
+    } else if (isInserting) {
+      context.missing(_siteTypeMeta);
+    }
+    if (data.containsKey('bore_d_o_b')) {
+      context.handle(_boreDOBMeta,
+          boreDOB.isAcceptableOrUnknown(data['bore_d_o_b']!, _boreDOBMeta));
+    } else if (isInserting) {
+      context.missing(_boreDOBMeta);
+    }
+    if (data.containsKey('bore_ht')) {
+      context.handle(_boreHtMeta,
+          boreHt.isAcceptableOrUnknown(data['bore_ht']!, _boreHtMeta));
+    } else if (isInserting) {
+      context.missing(_boreHtMeta);
+    }
+    if (data.containsKey('suit_ht')) {
+      context.handle(_suitHtMeta,
+          suitHt.isAcceptableOrUnknown(data['suit_ht']!, _suitHtMeta));
+    } else if (isInserting) {
+      context.missing(_suitHtMeta);
+    }
+    if (data.containsKey('suit_age')) {
+      context.handle(_suitAgeMeta,
+          suitAge.isAcceptableOrUnknown(data['suit_age']!, _suitAgeMeta));
+    } else if (isInserting) {
+      context.missing(_suitAgeMeta);
+    }
+    if (data.containsKey('field_age')) {
+      context.handle(_fieldAgeMeta,
+          fieldAge.isAcceptableOrUnknown(data['field_age']!, _fieldAgeMeta));
+    } else if (isInserting) {
+      context.missing(_fieldAgeMeta);
+    }
+    if (data.containsKey('pro_code')) {
+      context.handle(_proCodeMeta,
+          proCode.isAcceptableOrUnknown(data['pro_code']!, _proCodeMeta));
+    } else if (isInserting) {
+      context.missing(_proCodeMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  LtpTreeAgeData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return LtpTreeAgeData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      lptSummaryId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}lpt_summary_id'])!,
+      quadrant: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}quadrant'])!,
+      treeNum: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}tree_num'])!,
+      siteType: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}site_type'])!,
+      boreDOB: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}bore_d_o_b'])!,
+      boreHt: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}bore_ht'])!,
+      suitHt: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}suit_ht'])!,
+      suitAge: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}suit_age'])!,
+      fieldAge: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}field_age'])!,
+      proCode: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}pro_code'])!,
+    );
+  }
+
+  @override
+  $LtpTreeAgeTable createAlias(String alias) {
+    return $LtpTreeAgeTable(attachedDatabase, alias);
+  }
+}
+
+class LtpTreeAgeData extends DataClass implements Insertable<LtpTreeAgeData> {
+  final int id;
+  final int lptSummaryId;
+  final String quadrant;
+  final int treeNum;
+  final String siteType;
+  final double boreDOB;
+  final double boreHt;
+  final String suitHt;
+  final String suitAge;
+  final double fieldAge;
+  final String proCode;
+  const LtpTreeAgeData(
+      {required this.id,
+      required this.lptSummaryId,
+      required this.quadrant,
+      required this.treeNum,
+      required this.siteType,
+      required this.boreDOB,
+      required this.boreHt,
+      required this.suitHt,
+      required this.suitAge,
+      required this.fieldAge,
+      required this.proCode});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['lpt_summary_id'] = Variable<int>(lptSummaryId);
+    map['quadrant'] = Variable<String>(quadrant);
+    map['tree_num'] = Variable<int>(treeNum);
+    map['site_type'] = Variable<String>(siteType);
+    map['bore_d_o_b'] = Variable<double>(boreDOB);
+    map['bore_ht'] = Variable<double>(boreHt);
+    map['suit_ht'] = Variable<String>(suitHt);
+    map['suit_age'] = Variable<String>(suitAge);
+    map['field_age'] = Variable<double>(fieldAge);
+    map['pro_code'] = Variable<String>(proCode);
+    return map;
+  }
+
+  LtpTreeAgeCompanion toCompanion(bool nullToAbsent) {
+    return LtpTreeAgeCompanion(
+      id: Value(id),
+      lptSummaryId: Value(lptSummaryId),
+      quadrant: Value(quadrant),
+      treeNum: Value(treeNum),
+      siteType: Value(siteType),
+      boreDOB: Value(boreDOB),
+      boreHt: Value(boreHt),
+      suitHt: Value(suitHt),
+      suitAge: Value(suitAge),
+      fieldAge: Value(fieldAge),
+      proCode: Value(proCode),
+    );
+  }
+
+  factory LtpTreeAgeData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return LtpTreeAgeData(
+      id: serializer.fromJson<int>(json['id']),
+      lptSummaryId: serializer.fromJson<int>(json['lptSummaryId']),
+      quadrant: serializer.fromJson<String>(json['quadrant']),
+      treeNum: serializer.fromJson<int>(json['treeNum']),
+      siteType: serializer.fromJson<String>(json['siteType']),
+      boreDOB: serializer.fromJson<double>(json['boreDOB']),
+      boreHt: serializer.fromJson<double>(json['boreHt']),
+      suitHt: serializer.fromJson<String>(json['suitHt']),
+      suitAge: serializer.fromJson<String>(json['suitAge']),
+      fieldAge: serializer.fromJson<double>(json['fieldAge']),
+      proCode: serializer.fromJson<String>(json['proCode']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'lptSummaryId': serializer.toJson<int>(lptSummaryId),
+      'quadrant': serializer.toJson<String>(quadrant),
+      'treeNum': serializer.toJson<int>(treeNum),
+      'siteType': serializer.toJson<String>(siteType),
+      'boreDOB': serializer.toJson<double>(boreDOB),
+      'boreHt': serializer.toJson<double>(boreHt),
+      'suitHt': serializer.toJson<String>(suitHt),
+      'suitAge': serializer.toJson<String>(suitAge),
+      'fieldAge': serializer.toJson<double>(fieldAge),
+      'proCode': serializer.toJson<String>(proCode),
+    };
+  }
+
+  LtpTreeAgeData copyWith(
+          {int? id,
+          int? lptSummaryId,
+          String? quadrant,
+          int? treeNum,
+          String? siteType,
+          double? boreDOB,
+          double? boreHt,
+          String? suitHt,
+          String? suitAge,
+          double? fieldAge,
+          String? proCode}) =>
+      LtpTreeAgeData(
+        id: id ?? this.id,
+        lptSummaryId: lptSummaryId ?? this.lptSummaryId,
+        quadrant: quadrant ?? this.quadrant,
+        treeNum: treeNum ?? this.treeNum,
+        siteType: siteType ?? this.siteType,
+        boreDOB: boreDOB ?? this.boreDOB,
+        boreHt: boreHt ?? this.boreHt,
+        suitHt: suitHt ?? this.suitHt,
+        suitAge: suitAge ?? this.suitAge,
+        fieldAge: fieldAge ?? this.fieldAge,
+        proCode: proCode ?? this.proCode,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('LtpTreeAgeData(')
+          ..write('id: $id, ')
+          ..write('lptSummaryId: $lptSummaryId, ')
+          ..write('quadrant: $quadrant, ')
+          ..write('treeNum: $treeNum, ')
+          ..write('siteType: $siteType, ')
+          ..write('boreDOB: $boreDOB, ')
+          ..write('boreHt: $boreHt, ')
+          ..write('suitHt: $suitHt, ')
+          ..write('suitAge: $suitAge, ')
+          ..write('fieldAge: $fieldAge, ')
+          ..write('proCode: $proCode')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, lptSummaryId, quadrant, treeNum, siteType,
+      boreDOB, boreHt, suitHt, suitAge, fieldAge, proCode);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is LtpTreeAgeData &&
+          other.id == this.id &&
+          other.lptSummaryId == this.lptSummaryId &&
+          other.quadrant == this.quadrant &&
+          other.treeNum == this.treeNum &&
+          other.siteType == this.siteType &&
+          other.boreDOB == this.boreDOB &&
+          other.boreHt == this.boreHt &&
+          other.suitHt == this.suitHt &&
+          other.suitAge == this.suitAge &&
+          other.fieldAge == this.fieldAge &&
+          other.proCode == this.proCode);
+}
+
+class LtpTreeAgeCompanion extends UpdateCompanion<LtpTreeAgeData> {
+  final Value<int> id;
+  final Value<int> lptSummaryId;
+  final Value<String> quadrant;
+  final Value<int> treeNum;
+  final Value<String> siteType;
+  final Value<double> boreDOB;
+  final Value<double> boreHt;
+  final Value<String> suitHt;
+  final Value<String> suitAge;
+  final Value<double> fieldAge;
+  final Value<String> proCode;
+  const LtpTreeAgeCompanion({
+    this.id = const Value.absent(),
+    this.lptSummaryId = const Value.absent(),
+    this.quadrant = const Value.absent(),
+    this.treeNum = const Value.absent(),
+    this.siteType = const Value.absent(),
+    this.boreDOB = const Value.absent(),
+    this.boreHt = const Value.absent(),
+    this.suitHt = const Value.absent(),
+    this.suitAge = const Value.absent(),
+    this.fieldAge = const Value.absent(),
+    this.proCode = const Value.absent(),
+  });
+  LtpTreeAgeCompanion.insert({
+    this.id = const Value.absent(),
+    required int lptSummaryId,
+    required String quadrant,
+    required int treeNum,
+    required String siteType,
+    required double boreDOB,
+    required double boreHt,
+    required String suitHt,
+    required String suitAge,
+    required double fieldAge,
+    required String proCode,
+  })  : lptSummaryId = Value(lptSummaryId),
+        quadrant = Value(quadrant),
+        treeNum = Value(treeNum),
+        siteType = Value(siteType),
+        boreDOB = Value(boreDOB),
+        boreHt = Value(boreHt),
+        suitHt = Value(suitHt),
+        suitAge = Value(suitAge),
+        fieldAge = Value(fieldAge),
+        proCode = Value(proCode);
+  static Insertable<LtpTreeAgeData> custom({
+    Expression<int>? id,
+    Expression<int>? lptSummaryId,
+    Expression<String>? quadrant,
+    Expression<int>? treeNum,
+    Expression<String>? siteType,
+    Expression<double>? boreDOB,
+    Expression<double>? boreHt,
+    Expression<String>? suitHt,
+    Expression<String>? suitAge,
+    Expression<double>? fieldAge,
+    Expression<String>? proCode,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (lptSummaryId != null) 'lpt_summary_id': lptSummaryId,
+      if (quadrant != null) 'quadrant': quadrant,
+      if (treeNum != null) 'tree_num': treeNum,
+      if (siteType != null) 'site_type': siteType,
+      if (boreDOB != null) 'bore_d_o_b': boreDOB,
+      if (boreHt != null) 'bore_ht': boreHt,
+      if (suitHt != null) 'suit_ht': suitHt,
+      if (suitAge != null) 'suit_age': suitAge,
+      if (fieldAge != null) 'field_age': fieldAge,
+      if (proCode != null) 'pro_code': proCode,
+    });
+  }
+
+  LtpTreeAgeCompanion copyWith(
+      {Value<int>? id,
+      Value<int>? lptSummaryId,
+      Value<String>? quadrant,
+      Value<int>? treeNum,
+      Value<String>? siteType,
+      Value<double>? boreDOB,
+      Value<double>? boreHt,
+      Value<String>? suitHt,
+      Value<String>? suitAge,
+      Value<double>? fieldAge,
+      Value<String>? proCode}) {
+    return LtpTreeAgeCompanion(
+      id: id ?? this.id,
+      lptSummaryId: lptSummaryId ?? this.lptSummaryId,
+      quadrant: quadrant ?? this.quadrant,
+      treeNum: treeNum ?? this.treeNum,
+      siteType: siteType ?? this.siteType,
+      boreDOB: boreDOB ?? this.boreDOB,
+      boreHt: boreHt ?? this.boreHt,
+      suitHt: suitHt ?? this.suitHt,
+      suitAge: suitAge ?? this.suitAge,
+      fieldAge: fieldAge ?? this.fieldAge,
+      proCode: proCode ?? this.proCode,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (lptSummaryId.present) {
+      map['lpt_summary_id'] = Variable<int>(lptSummaryId.value);
+    }
+    if (quadrant.present) {
+      map['quadrant'] = Variable<String>(quadrant.value);
+    }
+    if (treeNum.present) {
+      map['tree_num'] = Variable<int>(treeNum.value);
+    }
+    if (siteType.present) {
+      map['site_type'] = Variable<String>(siteType.value);
+    }
+    if (boreDOB.present) {
+      map['bore_d_o_b'] = Variable<double>(boreDOB.value);
+    }
+    if (boreHt.present) {
+      map['bore_ht'] = Variable<double>(boreHt.value);
+    }
+    if (suitHt.present) {
+      map['suit_ht'] = Variable<String>(suitHt.value);
+    }
+    if (suitAge.present) {
+      map['suit_age'] = Variable<String>(suitAge.value);
+    }
+    if (fieldAge.present) {
+      map['field_age'] = Variable<double>(fieldAge.value);
+    }
+    if (proCode.present) {
+      map['pro_code'] = Variable<String>(proCode.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LtpTreeAgeCompanion(')
+          ..write('id: $id, ')
+          ..write('lptSummaryId: $lptSummaryId, ')
+          ..write('quadrant: $quadrant, ')
+          ..write('treeNum: $treeNum, ')
+          ..write('siteType: $siteType, ')
+          ..write('boreDOB: $boreDOB, ')
+          ..write('boreHt: $boreHt, ')
+          ..write('suitHt: $suitHt, ')
+          ..write('suitAge: $suitAge, ')
+          ..write('fieldAge: $fieldAge, ')
+          ..write('proCode: $proCode')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $LtpTreeRenamedTable extends LtpTreeRenamed
+    with TableInfo<$LtpTreeRenamedTable, LtpTreeRenamedData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LtpTreeRenamedTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _lptSummaryIdMeta =
+      const VerificationMeta('lptSummaryId');
+  @override
+  late final GeneratedColumn<int> lptSummaryId = GeneratedColumn<int>(
+      'lpt_summary_id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES ltp_summary (id)'));
+  static const VerificationMeta _treeNumMeta =
+      const VerificationMeta('treeNum');
+  @override
+  late final GeneratedColumn<int> treeNum = GeneratedColumn<int>(
+      'tree_num', aliasedName, false,
+      check: () => treeNum.isBetweenValues(1, 9999),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
+  static const VerificationMeta _treeNumPrevMeta =
+      const VerificationMeta('treeNumPrev');
+  @override
+  late final GeneratedColumn<int> treeNumPrev = GeneratedColumn<int>(
+      'tree_num_prev', aliasedName, false,
+      check: () => treeNumPrev.isBetweenValues(1, 9999),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, lptSummaryId, treeNum, treeNumPrev];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'ltp_tree_renamed';
+  @override
+  VerificationContext validateIntegrity(Insertable<LtpTreeRenamedData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('lpt_summary_id')) {
+      context.handle(
+          _lptSummaryIdMeta,
+          lptSummaryId.isAcceptableOrUnknown(
+              data['lpt_summary_id']!, _lptSummaryIdMeta));
+    } else if (isInserting) {
+      context.missing(_lptSummaryIdMeta);
+    }
+    if (data.containsKey('tree_num')) {
+      context.handle(_treeNumMeta,
+          treeNum.isAcceptableOrUnknown(data['tree_num']!, _treeNumMeta));
+    } else if (isInserting) {
+      context.missing(_treeNumMeta);
+    }
+    if (data.containsKey('tree_num_prev')) {
+      context.handle(
+          _treeNumPrevMeta,
+          treeNumPrev.isAcceptableOrUnknown(
+              data['tree_num_prev']!, _treeNumPrevMeta));
+    } else if (isInserting) {
+      context.missing(_treeNumPrevMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  LtpTreeRenamedData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return LtpTreeRenamedData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      lptSummaryId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}lpt_summary_id'])!,
+      treeNum: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}tree_num'])!,
+      treeNumPrev: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}tree_num_prev'])!,
+    );
+  }
+
+  @override
+  $LtpTreeRenamedTable createAlias(String alias) {
+    return $LtpTreeRenamedTable(attachedDatabase, alias);
+  }
+}
+
+class LtpTreeRenamedData extends DataClass
+    implements Insertable<LtpTreeRenamedData> {
+  final int id;
+  final int lptSummaryId;
+  final int treeNum;
+  final int treeNumPrev;
+  const LtpTreeRenamedData(
+      {required this.id,
+      required this.lptSummaryId,
+      required this.treeNum,
+      required this.treeNumPrev});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['lpt_summary_id'] = Variable<int>(lptSummaryId);
+    map['tree_num'] = Variable<int>(treeNum);
+    map['tree_num_prev'] = Variable<int>(treeNumPrev);
+    return map;
+  }
+
+  LtpTreeRenamedCompanion toCompanion(bool nullToAbsent) {
+    return LtpTreeRenamedCompanion(
+      id: Value(id),
+      lptSummaryId: Value(lptSummaryId),
+      treeNum: Value(treeNum),
+      treeNumPrev: Value(treeNumPrev),
+    );
+  }
+
+  factory LtpTreeRenamedData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return LtpTreeRenamedData(
+      id: serializer.fromJson<int>(json['id']),
+      lptSummaryId: serializer.fromJson<int>(json['lptSummaryId']),
+      treeNum: serializer.fromJson<int>(json['treeNum']),
+      treeNumPrev: serializer.fromJson<int>(json['treeNumPrev']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'lptSummaryId': serializer.toJson<int>(lptSummaryId),
+      'treeNum': serializer.toJson<int>(treeNum),
+      'treeNumPrev': serializer.toJson<int>(treeNumPrev),
+    };
+  }
+
+  LtpTreeRenamedData copyWith(
+          {int? id, int? lptSummaryId, int? treeNum, int? treeNumPrev}) =>
+      LtpTreeRenamedData(
+        id: id ?? this.id,
+        lptSummaryId: lptSummaryId ?? this.lptSummaryId,
+        treeNum: treeNum ?? this.treeNum,
+        treeNumPrev: treeNumPrev ?? this.treeNumPrev,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('LtpTreeRenamedData(')
+          ..write('id: $id, ')
+          ..write('lptSummaryId: $lptSummaryId, ')
+          ..write('treeNum: $treeNum, ')
+          ..write('treeNumPrev: $treeNumPrev')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, lptSummaryId, treeNum, treeNumPrev);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is LtpTreeRenamedData &&
+          other.id == this.id &&
+          other.lptSummaryId == this.lptSummaryId &&
+          other.treeNum == this.treeNum &&
+          other.treeNumPrev == this.treeNumPrev);
+}
+
+class LtpTreeRenamedCompanion extends UpdateCompanion<LtpTreeRenamedData> {
+  final Value<int> id;
+  final Value<int> lptSummaryId;
+  final Value<int> treeNum;
+  final Value<int> treeNumPrev;
+  const LtpTreeRenamedCompanion({
+    this.id = const Value.absent(),
+    this.lptSummaryId = const Value.absent(),
+    this.treeNum = const Value.absent(),
+    this.treeNumPrev = const Value.absent(),
+  });
+  LtpTreeRenamedCompanion.insert({
+    this.id = const Value.absent(),
+    required int lptSummaryId,
+    required int treeNum,
+    required int treeNumPrev,
+  })  : lptSummaryId = Value(lptSummaryId),
+        treeNum = Value(treeNum),
+        treeNumPrev = Value(treeNumPrev);
+  static Insertable<LtpTreeRenamedData> custom({
+    Expression<int>? id,
+    Expression<int>? lptSummaryId,
+    Expression<int>? treeNum,
+    Expression<int>? treeNumPrev,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (lptSummaryId != null) 'lpt_summary_id': lptSummaryId,
+      if (treeNum != null) 'tree_num': treeNum,
+      if (treeNumPrev != null) 'tree_num_prev': treeNumPrev,
+    });
+  }
+
+  LtpTreeRenamedCompanion copyWith(
+      {Value<int>? id,
+      Value<int>? lptSummaryId,
+      Value<int>? treeNum,
+      Value<int>? treeNumPrev}) {
+    return LtpTreeRenamedCompanion(
+      id: id ?? this.id,
+      lptSummaryId: lptSummaryId ?? this.lptSummaryId,
+      treeNum: treeNum ?? this.treeNum,
+      treeNumPrev: treeNumPrev ?? this.treeNumPrev,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (lptSummaryId.present) {
+      map['lpt_summary_id'] = Variable<int>(lptSummaryId.value);
+    }
+    if (treeNum.present) {
+      map['tree_num'] = Variable<int>(treeNum.value);
+    }
+    if (treeNumPrev.present) {
+      map['tree_num_prev'] = Variable<int>(treeNumPrev.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LtpTreeRenamedCompanion(')
+          ..write('id: $id, ')
+          ..write('lptSummaryId: $lptSummaryId, ')
+          ..write('treeNum: $treeNum, ')
+          ..write('treeNumPrev: $treeNumPrev')
           ..write(')'))
         .toString();
   }
@@ -11915,6 +13412,10 @@ abstract class _$Database extends GeneratedDatabase {
       $SoilPitHorizonDescriptionTable(this);
   late final $LtpSummaryTable ltpSummary = $LtpSummaryTable(this);
   late final $LtpTreeTable ltpTree = $LtpTreeTable(this);
+  late final $LtpTreeDamageTable ltpTreeDamage = $LtpTreeDamageTable(this);
+  late final $LtpTreeRemovedTable ltpTreeRemoved = $LtpTreeRemovedTable(this);
+  late final $LtpTreeAgeTable ltpTreeAge = $LtpTreeAgeTable(this);
+  late final $LtpTreeRenamedTable ltpTreeRenamed = $LtpTreeRenamedTable(this);
   late final ReferenceTablesDao referenceTablesDao =
       ReferenceTablesDao(this as Database);
   late final SurveyInfoTablesDao surveyInfoTablesDao =
@@ -11969,6 +13470,10 @@ abstract class _$Database extends GeneratedDatabase {
         soilPitFeature,
         soilPitHorizonDescription,
         ltpSummary,
-        ltpTree
+        ltpTree,
+        ltpTreeDamage,
+        ltpTreeRemoved,
+        ltpTreeAge,
+        ltpTreeRenamed
       ];
 }

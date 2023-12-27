@@ -204,7 +204,7 @@ class LargeTreePlotSummaryPageState
                 padding: const EdgeInsets.symmetric(vertical: kPaddingV),
               ),
               IconNavButton(
-                icon: const Icon(FontAwesomeIcons.xmark),
+                icon: const Icon(FontAwesomeIcons.info),
                 space: kPaddingIcon,
                 label: "Site Tree and Age Information",
                 onPressed: () {
