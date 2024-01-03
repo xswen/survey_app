@@ -65,11 +65,14 @@ class TileCardSurvey extends StatelessWidget {
       //     ),
       //   ],
       // ),
+      enabled: status != SurveyStatus.notAssessed,
       endActionPane: ActionPane(
         motion: const ScrollMotion(),
         children: [
           SlidableAction(
-            onPressed: (context) {},
+            onPressed: (context) {
+              onNotAssessed();
+            },
             backgroundColor: Colors.teal,
             foregroundColor: Colors.white,
             icon: FontAwesomeIcons.circleXmark,

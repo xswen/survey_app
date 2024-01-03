@@ -80,7 +80,7 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
   SurveyStatus getStatus(dynamic data) {
     if (data == null) {
       return SurveyStatus.notStarted;
-    } else if (data?.complete == null) {
+    } else if (data?.notAssessed) {
       return SurveyStatus.notAssessed;
     } else if (data?.complete) {
       return SurveyStatus.complete;
@@ -101,7 +101,20 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
       tileCards.add(TileCardSurvey(
         title: name,
         status: getStatus(data),
-        onNotAssessed: () {},
+        onNotAssessed: () {
+          if (survey.complete && data == null) {
+            Popups.show(
+                context,
+                PopupDismiss(
+                  "Nothing to show",
+                  contentText: "Survey has been marked as complete. "
+                      "No data found for $name. Please mark survey as "
+                      "edit if you wish to add data to $name",
+                ));
+            return;
+          }
+          getMarkNotAssessed(survey, category, data);
+        },
         onPressed: () {
           if (survey.complete && data == null) {
             Popups.show(
@@ -122,6 +135,78 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
     return tileCards;
   }
 
+  void getMarkNotAssessed(
+      SurveyHeader survey, SurveyCardCategories category, dynamic data) async {
+    final Database db = Database.instance;
+
+    switch (category) {
+      case SurveyCardCategories.woodyDebris:
+        data != null
+            ? Popups.show(
+                context,
+                PopupContinue(
+                  "Warning: Pre-existing data",
+                  contentText:
+                      "There is already data added for this card. Marking as "
+                      "'Not Assessed' will delete all of this data. "
+                      "This cannot be undone.\n Are you sure you want to continue?",
+                  rightBtnOnPressed: () => db.woodyDebrisTablesDao
+                      .markNotAssessed(surveyId, wdIdExists: true)
+                      .then((value) {
+                    ref.refresh(updateSurveyCardProvider(surveyId));
+                    context.pop();
+                  }),
+                ))
+            : db.woodyDebrisTablesDao.markNotAssessed(surveyId).then(
+                (value) => ref.refresh(updateSurveyCardProvider(surveyId)));
+        break;
+      // case SurveyCardCategories.surfaceSubstrate:
+      //   int id = data == null
+      //       ? (await db.surfaceSubstrateTablesDao
+      //               .addAndReturnDefaultSsSummary(survey.id, survey.measDate))
+      //           .id
+      //       : data.id;
+      //   if (context.mounted) {
+      //     context
+      //         .pushNamed(SurfaceSubstrateSummaryPage.routeName,
+      //             pathParameters: PathParamGenerator.ssSummary(
+      //                 widget.goRouterState, id.toString()))
+      //         .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
+      //   }
+      //   break;
+      // case SurveyCardCategories.ecologicalPlot:
+      //   int id = data == null
+      //       ? (await db.ecologicalPlotTablesDao
+      //               .addAndReturnDefaultSummary(survey.id, survey.measDate))
+      //           .id
+      //       : data.id;
+      //   if (context.mounted) {
+      //     context
+      //         .pushNamed(EcologicalPlotSummaryPage.routeName,
+      //             pathParameters: PathParamGenerator.ecpSummary(
+      //                 widget.goRouterState, id.toString()))
+      //         .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
+      //   }
+      //   break;
+      // case SurveyCardCategories.soilPit:
+      //   int id = data == null
+      //       ? (await db.soilPitTablesDao
+      //               .addAndReturnDefaultSummary(survey.id, survey.measDate))
+      //           .id
+      //       : data.id;
+      //   if (context.mounted) {
+      //     context
+      //         .pushNamed(SoilPitSummaryPage.routeName,
+      //             pathParameters: PathParamGenerator.soilPitSummary(
+      //                 widget.goRouterState, id.toString()))
+      //         .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
+      //   }
+      //   break;
+      default:
+        debugPrint("Error: case not handled for $category");
+    }
+  }
+
   //Behaviour when tile is clicked. Set state and regenerate cards on return.
   void getNav(
       SurveyHeader survey, SurveyCardCategories category, dynamic data) async {
@@ -129,11 +214,22 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
 
     switch (category) {
       case SurveyCardCategories.woodyDebris:
-        int id = data == null
-            ? (await db.woodyDebrisTablesDao
-                    .addAndReturnDefaultWdSummary(survey.id, survey.measDate))
-                .id
-            : data.id;
+        int id = 0;
+        if (data == null) {
+          id = (await db.woodyDebrisTablesDao
+                  .addAndReturnDefaultWdSummary(survey.id, survey.measDate))
+              .id;
+        } else {
+          id = data.id;
+          if (data.notAssessed) {
+            await (db.update(db.woodyDebrisSummary)
+                  ..where((t) => t.id.equals(id)))
+                .write(WoodyDebrisSummaryCompanion(
+                    notAssessed: const d.Value(false),
+                    measDate: d.Value(survey.measDate)));
+          }
+        }
+
         if (context.mounted) {
           context
               .pushNamed(WoodyDebrisSummaryPage.routeName,

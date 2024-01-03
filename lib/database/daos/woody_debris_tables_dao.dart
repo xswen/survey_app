@@ -33,6 +33,17 @@ class WoodyDebrisTablesDao extends DatabaseAccessor<Database>
     delete(woodyDebrisRound).go();
   }
 
+  Future<void> markNotAssessed(int surveyId, {bool wdIdExists = false}) async {
+    if (wdIdExists) {
+      var tmp = await deleteWoodyDebrisSummary(surveyId);
+    }
+
+    int tmp2 = await addWdSummary(WoodyDebrisSummaryCompanion(
+        surveyId: Value(surveyId),
+        measDate: Value(DateTime.now()),
+        notAssessed: const Value(true)));
+  }
+
   //==================Deletion===============================
   Future<void> deleteWoodyDebrisSummary(int surveyId) async {
     WoodyDebrisSummaryData wdS = await getWdSummaryFromSurveyId(surveyId);
