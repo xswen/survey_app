@@ -4458,11 +4458,21 @@ class $WoodyDebrisSummaryTable extends WoodyDebrisSummary
       check: () => numTransects.isBetweenValues(1, 9),
       type: DriftSqlType.int,
       requiredDuringInsert: false);
+  static const VerificationMeta _notAssessedMeta =
+      const VerificationMeta('notAssessed');
+  @override
+  late final GeneratedColumn<bool> notAssessed = GeneratedColumn<bool>(
+      'not_assessed', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("not_assessed" IN (0, 1))'),
+      defaultValue: const Constant(false));
   static const VerificationMeta _completeMeta =
       const VerificationMeta('complete');
   @override
   late final GeneratedColumn<bool> complete = GeneratedColumn<bool>(
-      'complete', aliasedName, true,
+      'complete', aliasedName, false,
       type: DriftSqlType.bool,
       requiredDuringInsert: false,
       defaultConstraints:
@@ -4470,7 +4480,7 @@ class $WoodyDebrisSummaryTable extends WoodyDebrisSummary
       defaultValue: const Constant(false));
   @override
   List<GeneratedColumn> get $columns =>
-      [id, surveyId, measDate, numTransects, complete];
+      [id, surveyId, measDate, numTransects, notAssessed, complete];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -4503,6 +4513,12 @@ class $WoodyDebrisSummaryTable extends WoodyDebrisSummary
           numTransects.isAcceptableOrUnknown(
               data['num_transects']!, _numTransectsMeta));
     }
+    if (data.containsKey('not_assessed')) {
+      context.handle(
+          _notAssessedMeta,
+          notAssessed.isAcceptableOrUnknown(
+              data['not_assessed']!, _notAssessedMeta));
+    }
     if (data.containsKey('complete')) {
       context.handle(_completeMeta,
           complete.isAcceptableOrUnknown(data['complete']!, _completeMeta));
@@ -4524,8 +4540,10 @@ class $WoodyDebrisSummaryTable extends WoodyDebrisSummary
           .read(DriftSqlType.dateTime, data['${effectivePrefix}meas_date'])!,
       numTransects: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}num_transects']),
+      notAssessed: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}not_assessed'])!,
       complete: attachedDatabase.typeMapping
-          .read(DriftSqlType.bool, data['${effectivePrefix}complete']),
+          .read(DriftSqlType.bool, data['${effectivePrefix}complete'])!,
     );
   }
 
@@ -4541,13 +4559,15 @@ class WoodyDebrisSummaryData extends DataClass
   final int surveyId;
   final DateTime measDate;
   final int? numTransects;
-  final bool? complete;
+  final bool notAssessed;
+  final bool complete;
   const WoodyDebrisSummaryData(
       {required this.id,
       required this.surveyId,
       required this.measDate,
       this.numTransects,
-      this.complete});
+      required this.notAssessed,
+      required this.complete});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -4557,9 +4577,8 @@ class WoodyDebrisSummaryData extends DataClass
     if (!nullToAbsent || numTransects != null) {
       map['num_transects'] = Variable<int>(numTransects);
     }
-    if (!nullToAbsent || complete != null) {
-      map['complete'] = Variable<bool>(complete);
-    }
+    map['not_assessed'] = Variable<bool>(notAssessed);
+    map['complete'] = Variable<bool>(complete);
     return map;
   }
 
@@ -4571,9 +4590,8 @@ class WoodyDebrisSummaryData extends DataClass
       numTransects: numTransects == null && nullToAbsent
           ? const Value.absent()
           : Value(numTransects),
-      complete: complete == null && nullToAbsent
-          ? const Value.absent()
-          : Value(complete),
+      notAssessed: Value(notAssessed),
+      complete: Value(complete),
     );
   }
 
@@ -4585,7 +4603,8 @@ class WoodyDebrisSummaryData extends DataClass
       surveyId: serializer.fromJson<int>(json['surveyId']),
       measDate: serializer.fromJson<DateTime>(json['measDate']),
       numTransects: serializer.fromJson<int?>(json['numTransects']),
-      complete: serializer.fromJson<bool?>(json['complete']),
+      notAssessed: serializer.fromJson<bool>(json['notAssessed']),
+      complete: serializer.fromJson<bool>(json['complete']),
     );
   }
   @override
@@ -4596,7 +4615,8 @@ class WoodyDebrisSummaryData extends DataClass
       'surveyId': serializer.toJson<int>(surveyId),
       'measDate': serializer.toJson<DateTime>(measDate),
       'numTransects': serializer.toJson<int?>(numTransects),
-      'complete': serializer.toJson<bool?>(complete),
+      'notAssessed': serializer.toJson<bool>(notAssessed),
+      'complete': serializer.toJson<bool>(complete),
     };
   }
 
@@ -4605,14 +4625,16 @@ class WoodyDebrisSummaryData extends DataClass
           int? surveyId,
           DateTime? measDate,
           Value<int?> numTransects = const Value.absent(),
-          Value<bool?> complete = const Value.absent()}) =>
+          bool? notAssessed,
+          bool? complete}) =>
       WoodyDebrisSummaryData(
         id: id ?? this.id,
         surveyId: surveyId ?? this.surveyId,
         measDate: measDate ?? this.measDate,
         numTransects:
             numTransects.present ? numTransects.value : this.numTransects,
-        complete: complete.present ? complete.value : this.complete,
+        notAssessed: notAssessed ?? this.notAssessed,
+        complete: complete ?? this.complete,
       );
   @override
   String toString() {
@@ -4621,6 +4643,7 @@ class WoodyDebrisSummaryData extends DataClass
           ..write('surveyId: $surveyId, ')
           ..write('measDate: $measDate, ')
           ..write('numTransects: $numTransects, ')
+          ..write('notAssessed: $notAssessed, ')
           ..write('complete: $complete')
           ..write(')'))
         .toString();
@@ -4628,7 +4651,7 @@ class WoodyDebrisSummaryData extends DataClass
 
   @override
   int get hashCode =>
-      Object.hash(id, surveyId, measDate, numTransects, complete);
+      Object.hash(id, surveyId, measDate, numTransects, notAssessed, complete);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -4637,6 +4660,7 @@ class WoodyDebrisSummaryData extends DataClass
           other.surveyId == this.surveyId &&
           other.measDate == this.measDate &&
           other.numTransects == this.numTransects &&
+          other.notAssessed == this.notAssessed &&
           other.complete == this.complete);
 }
 
@@ -4646,12 +4670,14 @@ class WoodyDebrisSummaryCompanion
   final Value<int> surveyId;
   final Value<DateTime> measDate;
   final Value<int?> numTransects;
-  final Value<bool?> complete;
+  final Value<bool> notAssessed;
+  final Value<bool> complete;
   const WoodyDebrisSummaryCompanion({
     this.id = const Value.absent(),
     this.surveyId = const Value.absent(),
     this.measDate = const Value.absent(),
     this.numTransects = const Value.absent(),
+    this.notAssessed = const Value.absent(),
     this.complete = const Value.absent(),
   });
   WoodyDebrisSummaryCompanion.insert({
@@ -4659,6 +4685,7 @@ class WoodyDebrisSummaryCompanion
     required int surveyId,
     required DateTime measDate,
     this.numTransects = const Value.absent(),
+    this.notAssessed = const Value.absent(),
     this.complete = const Value.absent(),
   })  : surveyId = Value(surveyId),
         measDate = Value(measDate);
@@ -4667,6 +4694,7 @@ class WoodyDebrisSummaryCompanion
     Expression<int>? surveyId,
     Expression<DateTime>? measDate,
     Expression<int>? numTransects,
+    Expression<bool>? notAssessed,
     Expression<bool>? complete,
   }) {
     return RawValuesInsertable({
@@ -4674,6 +4702,7 @@ class WoodyDebrisSummaryCompanion
       if (surveyId != null) 'survey_id': surveyId,
       if (measDate != null) 'meas_date': measDate,
       if (numTransects != null) 'num_transects': numTransects,
+      if (notAssessed != null) 'not_assessed': notAssessed,
       if (complete != null) 'complete': complete,
     });
   }
@@ -4683,12 +4712,14 @@ class WoodyDebrisSummaryCompanion
       Value<int>? surveyId,
       Value<DateTime>? measDate,
       Value<int?>? numTransects,
-      Value<bool?>? complete}) {
+      Value<bool>? notAssessed,
+      Value<bool>? complete}) {
     return WoodyDebrisSummaryCompanion(
       id: id ?? this.id,
       surveyId: surveyId ?? this.surveyId,
       measDate: measDate ?? this.measDate,
       numTransects: numTransects ?? this.numTransects,
+      notAssessed: notAssessed ?? this.notAssessed,
       complete: complete ?? this.complete,
     );
   }
@@ -4708,6 +4739,9 @@ class WoodyDebrisSummaryCompanion
     if (numTransects.present) {
       map['num_transects'] = Variable<int>(numTransects.value);
     }
+    if (notAssessed.present) {
+      map['not_assessed'] = Variable<bool>(notAssessed.value);
+    }
     if (complete.present) {
       map['complete'] = Variable<bool>(complete.value);
     }
@@ -4721,6 +4755,7 @@ class WoodyDebrisSummaryCompanion
           ..write('surveyId: $surveyId, ')
           ..write('measDate: $measDate, ')
           ..write('numTransects: $numTransects, ')
+          ..write('notAssessed: $notAssessed, ')
           ..write('complete: $complete')
           ..write(')'))
         .toString();
@@ -6485,6 +6520,16 @@ class $SurfaceSubstrateSummaryTable extends SurfaceSubstrateSummary
       check: () => numTransects.isBetweenValues(1, 9),
       type: DriftSqlType.int,
       requiredDuringInsert: false);
+  static const VerificationMeta _notAssessedMeta =
+      const VerificationMeta('notAssessed');
+  @override
+  late final GeneratedColumn<bool> notAssessed = GeneratedColumn<bool>(
+      'not_assessed', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("not_assessed" IN (0, 1))'),
+      defaultValue: const Constant(false));
   static const VerificationMeta _completeMeta =
       const VerificationMeta('complete');
   @override
@@ -6497,7 +6542,7 @@ class $SurfaceSubstrateSummaryTable extends SurfaceSubstrateSummary
       defaultValue: const Constant(false));
   @override
   List<GeneratedColumn> get $columns =>
-      [id, surveyId, measDate, numTransects, complete];
+      [id, surveyId, measDate, numTransects, notAssessed, complete];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -6530,6 +6575,12 @@ class $SurfaceSubstrateSummaryTable extends SurfaceSubstrateSummary
           numTransects.isAcceptableOrUnknown(
               data['num_transects']!, _numTransectsMeta));
     }
+    if (data.containsKey('not_assessed')) {
+      context.handle(
+          _notAssessedMeta,
+          notAssessed.isAcceptableOrUnknown(
+              data['not_assessed']!, _notAssessedMeta));
+    }
     if (data.containsKey('complete')) {
       context.handle(_completeMeta,
           complete.isAcceptableOrUnknown(data['complete']!, _completeMeta));
@@ -6552,6 +6603,8 @@ class $SurfaceSubstrateSummaryTable extends SurfaceSubstrateSummary
           .read(DriftSqlType.dateTime, data['${effectivePrefix}meas_date'])!,
       numTransects: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}num_transects']),
+      notAssessed: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}not_assessed'])!,
       complete: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}complete'])!,
     );
@@ -6569,12 +6622,14 @@ class SurfaceSubstrateSummaryData extends DataClass
   final int surveyId;
   final DateTime measDate;
   final int? numTransects;
+  final bool notAssessed;
   final bool complete;
   const SurfaceSubstrateSummaryData(
       {required this.id,
       required this.surveyId,
       required this.measDate,
       this.numTransects,
+      required this.notAssessed,
       required this.complete});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -6585,6 +6640,7 @@ class SurfaceSubstrateSummaryData extends DataClass
     if (!nullToAbsent || numTransects != null) {
       map['num_transects'] = Variable<int>(numTransects);
     }
+    map['not_assessed'] = Variable<bool>(notAssessed);
     map['complete'] = Variable<bool>(complete);
     return map;
   }
@@ -6597,6 +6653,7 @@ class SurfaceSubstrateSummaryData extends DataClass
       numTransects: numTransects == null && nullToAbsent
           ? const Value.absent()
           : Value(numTransects),
+      notAssessed: Value(notAssessed),
       complete: Value(complete),
     );
   }
@@ -6609,6 +6666,7 @@ class SurfaceSubstrateSummaryData extends DataClass
       surveyId: serializer.fromJson<int>(json['surveyId']),
       measDate: serializer.fromJson<DateTime>(json['measDate']),
       numTransects: serializer.fromJson<int?>(json['numTransects']),
+      notAssessed: serializer.fromJson<bool>(json['notAssessed']),
       complete: serializer.fromJson<bool>(json['complete']),
     );
   }
@@ -6620,6 +6678,7 @@ class SurfaceSubstrateSummaryData extends DataClass
       'surveyId': serializer.toJson<int>(surveyId),
       'measDate': serializer.toJson<DateTime>(measDate),
       'numTransects': serializer.toJson<int?>(numTransects),
+      'notAssessed': serializer.toJson<bool>(notAssessed),
       'complete': serializer.toJson<bool>(complete),
     };
   }
@@ -6629,6 +6688,7 @@ class SurfaceSubstrateSummaryData extends DataClass
           int? surveyId,
           DateTime? measDate,
           Value<int?> numTransects = const Value.absent(),
+          bool? notAssessed,
           bool? complete}) =>
       SurfaceSubstrateSummaryData(
         id: id ?? this.id,
@@ -6636,6 +6696,7 @@ class SurfaceSubstrateSummaryData extends DataClass
         measDate: measDate ?? this.measDate,
         numTransects:
             numTransects.present ? numTransects.value : this.numTransects,
+        notAssessed: notAssessed ?? this.notAssessed,
         complete: complete ?? this.complete,
       );
   @override
@@ -6645,6 +6706,7 @@ class SurfaceSubstrateSummaryData extends DataClass
           ..write('surveyId: $surveyId, ')
           ..write('measDate: $measDate, ')
           ..write('numTransects: $numTransects, ')
+          ..write('notAssessed: $notAssessed, ')
           ..write('complete: $complete')
           ..write(')'))
         .toString();
@@ -6652,7 +6714,7 @@ class SurfaceSubstrateSummaryData extends DataClass
 
   @override
   int get hashCode =>
-      Object.hash(id, surveyId, measDate, numTransects, complete);
+      Object.hash(id, surveyId, measDate, numTransects, notAssessed, complete);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -6661,6 +6723,7 @@ class SurfaceSubstrateSummaryData extends DataClass
           other.surveyId == this.surveyId &&
           other.measDate == this.measDate &&
           other.numTransects == this.numTransects &&
+          other.notAssessed == this.notAssessed &&
           other.complete == this.complete);
 }
 
@@ -6670,12 +6733,14 @@ class SurfaceSubstrateSummaryCompanion
   final Value<int> surveyId;
   final Value<DateTime> measDate;
   final Value<int?> numTransects;
+  final Value<bool> notAssessed;
   final Value<bool> complete;
   const SurfaceSubstrateSummaryCompanion({
     this.id = const Value.absent(),
     this.surveyId = const Value.absent(),
     this.measDate = const Value.absent(),
     this.numTransects = const Value.absent(),
+    this.notAssessed = const Value.absent(),
     this.complete = const Value.absent(),
   });
   SurfaceSubstrateSummaryCompanion.insert({
@@ -6683,6 +6748,7 @@ class SurfaceSubstrateSummaryCompanion
     required int surveyId,
     required DateTime measDate,
     this.numTransects = const Value.absent(),
+    this.notAssessed = const Value.absent(),
     this.complete = const Value.absent(),
   })  : surveyId = Value(surveyId),
         measDate = Value(measDate);
@@ -6691,6 +6757,7 @@ class SurfaceSubstrateSummaryCompanion
     Expression<int>? surveyId,
     Expression<DateTime>? measDate,
     Expression<int>? numTransects,
+    Expression<bool>? notAssessed,
     Expression<bool>? complete,
   }) {
     return RawValuesInsertable({
@@ -6698,6 +6765,7 @@ class SurfaceSubstrateSummaryCompanion
       if (surveyId != null) 'survey_id': surveyId,
       if (measDate != null) 'meas_date': measDate,
       if (numTransects != null) 'num_transects': numTransects,
+      if (notAssessed != null) 'not_assessed': notAssessed,
       if (complete != null) 'complete': complete,
     });
   }
@@ -6707,12 +6775,14 @@ class SurfaceSubstrateSummaryCompanion
       Value<int>? surveyId,
       Value<DateTime>? measDate,
       Value<int?>? numTransects,
+      Value<bool>? notAssessed,
       Value<bool>? complete}) {
     return SurfaceSubstrateSummaryCompanion(
       id: id ?? this.id,
       surveyId: surveyId ?? this.surveyId,
       measDate: measDate ?? this.measDate,
       numTransects: numTransects ?? this.numTransects,
+      notAssessed: notAssessed ?? this.notAssessed,
       complete: complete ?? this.complete,
     );
   }
@@ -6732,6 +6802,9 @@ class SurfaceSubstrateSummaryCompanion
     if (numTransects.present) {
       map['num_transects'] = Variable<int>(numTransects.value);
     }
+    if (notAssessed.present) {
+      map['not_assessed'] = Variable<bool>(notAssessed.value);
+    }
     if (complete.present) {
       map['complete'] = Variable<bool>(complete.value);
     }
@@ -6745,6 +6818,7 @@ class SurfaceSubstrateSummaryCompanion
           ..write('surveyId: $surveyId, ')
           ..write('measDate: $measDate, ')
           ..write('numTransects: $numTransects, ')
+          ..write('notAssessed: $notAssessed, ')
           ..write('complete: $complete')
           ..write(')'))
         .toString();
@@ -7479,6 +7553,16 @@ class $EcpSummaryTable extends EcpSummary
       check: () => numEcps.isBetweenValues(1, 9),
       type: DriftSqlType.int,
       requiredDuringInsert: false);
+  static const VerificationMeta _notAssessedMeta =
+      const VerificationMeta('notAssessed');
+  @override
+  late final GeneratedColumn<bool> notAssessed = GeneratedColumn<bool>(
+      'not_assessed', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("not_assessed" IN (0, 1))'),
+      defaultValue: const Constant(false));
   static const VerificationMeta _completeMeta =
       const VerificationMeta('complete');
   @override
@@ -7491,7 +7575,7 @@ class $EcpSummaryTable extends EcpSummary
       defaultValue: const Constant(false));
   @override
   List<GeneratedColumn> get $columns =>
-      [id, surveyId, measDate, numEcps, complete];
+      [id, surveyId, measDate, numEcps, notAssessed, complete];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -7521,6 +7605,12 @@ class $EcpSummaryTable extends EcpSummary
       context.handle(_numEcpsMeta,
           numEcps.isAcceptableOrUnknown(data['num_ecps']!, _numEcpsMeta));
     }
+    if (data.containsKey('not_assessed')) {
+      context.handle(
+          _notAssessedMeta,
+          notAssessed.isAcceptableOrUnknown(
+              data['not_assessed']!, _notAssessedMeta));
+    }
     if (data.containsKey('complete')) {
       context.handle(_completeMeta,
           complete.isAcceptableOrUnknown(data['complete']!, _completeMeta));
@@ -7542,6 +7632,8 @@ class $EcpSummaryTable extends EcpSummary
           .read(DriftSqlType.dateTime, data['${effectivePrefix}meas_date'])!,
       numEcps: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}num_ecps']),
+      notAssessed: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}not_assessed'])!,
       complete: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}complete'])!,
     );
@@ -7558,12 +7650,14 @@ class EcpSummaryData extends DataClass implements Insertable<EcpSummaryData> {
   final int surveyId;
   final DateTime measDate;
   final int? numEcps;
+  final bool notAssessed;
   final bool complete;
   const EcpSummaryData(
       {required this.id,
       required this.surveyId,
       required this.measDate,
       this.numEcps,
+      required this.notAssessed,
       required this.complete});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -7574,6 +7668,7 @@ class EcpSummaryData extends DataClass implements Insertable<EcpSummaryData> {
     if (!nullToAbsent || numEcps != null) {
       map['num_ecps'] = Variable<int>(numEcps);
     }
+    map['not_assessed'] = Variable<bool>(notAssessed);
     map['complete'] = Variable<bool>(complete);
     return map;
   }
@@ -7586,6 +7681,7 @@ class EcpSummaryData extends DataClass implements Insertable<EcpSummaryData> {
       numEcps: numEcps == null && nullToAbsent
           ? const Value.absent()
           : Value(numEcps),
+      notAssessed: Value(notAssessed),
       complete: Value(complete),
     );
   }
@@ -7598,6 +7694,7 @@ class EcpSummaryData extends DataClass implements Insertable<EcpSummaryData> {
       surveyId: serializer.fromJson<int>(json['surveyId']),
       measDate: serializer.fromJson<DateTime>(json['measDate']),
       numEcps: serializer.fromJson<int?>(json['numEcps']),
+      notAssessed: serializer.fromJson<bool>(json['notAssessed']),
       complete: serializer.fromJson<bool>(json['complete']),
     );
   }
@@ -7609,6 +7706,7 @@ class EcpSummaryData extends DataClass implements Insertable<EcpSummaryData> {
       'surveyId': serializer.toJson<int>(surveyId),
       'measDate': serializer.toJson<DateTime>(measDate),
       'numEcps': serializer.toJson<int?>(numEcps),
+      'notAssessed': serializer.toJson<bool>(notAssessed),
       'complete': serializer.toJson<bool>(complete),
     };
   }
@@ -7618,12 +7716,14 @@ class EcpSummaryData extends DataClass implements Insertable<EcpSummaryData> {
           int? surveyId,
           DateTime? measDate,
           Value<int?> numEcps = const Value.absent(),
+          bool? notAssessed,
           bool? complete}) =>
       EcpSummaryData(
         id: id ?? this.id,
         surveyId: surveyId ?? this.surveyId,
         measDate: measDate ?? this.measDate,
         numEcps: numEcps.present ? numEcps.value : this.numEcps,
+        notAssessed: notAssessed ?? this.notAssessed,
         complete: complete ?? this.complete,
       );
   @override
@@ -7633,13 +7733,15 @@ class EcpSummaryData extends DataClass implements Insertable<EcpSummaryData> {
           ..write('surveyId: $surveyId, ')
           ..write('measDate: $measDate, ')
           ..write('numEcps: $numEcps, ')
+          ..write('notAssessed: $notAssessed, ')
           ..write('complete: $complete')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, surveyId, measDate, numEcps, complete);
+  int get hashCode =>
+      Object.hash(id, surveyId, measDate, numEcps, notAssessed, complete);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -7648,6 +7750,7 @@ class EcpSummaryData extends DataClass implements Insertable<EcpSummaryData> {
           other.surveyId == this.surveyId &&
           other.measDate == this.measDate &&
           other.numEcps == this.numEcps &&
+          other.notAssessed == this.notAssessed &&
           other.complete == this.complete);
 }
 
@@ -7656,12 +7759,14 @@ class EcpSummaryCompanion extends UpdateCompanion<EcpSummaryData> {
   final Value<int> surveyId;
   final Value<DateTime> measDate;
   final Value<int?> numEcps;
+  final Value<bool> notAssessed;
   final Value<bool> complete;
   const EcpSummaryCompanion({
     this.id = const Value.absent(),
     this.surveyId = const Value.absent(),
     this.measDate = const Value.absent(),
     this.numEcps = const Value.absent(),
+    this.notAssessed = const Value.absent(),
     this.complete = const Value.absent(),
   });
   EcpSummaryCompanion.insert({
@@ -7669,6 +7774,7 @@ class EcpSummaryCompanion extends UpdateCompanion<EcpSummaryData> {
     required int surveyId,
     required DateTime measDate,
     this.numEcps = const Value.absent(),
+    this.notAssessed = const Value.absent(),
     this.complete = const Value.absent(),
   })  : surveyId = Value(surveyId),
         measDate = Value(measDate);
@@ -7677,6 +7783,7 @@ class EcpSummaryCompanion extends UpdateCompanion<EcpSummaryData> {
     Expression<int>? surveyId,
     Expression<DateTime>? measDate,
     Expression<int>? numEcps,
+    Expression<bool>? notAssessed,
     Expression<bool>? complete,
   }) {
     return RawValuesInsertable({
@@ -7684,6 +7791,7 @@ class EcpSummaryCompanion extends UpdateCompanion<EcpSummaryData> {
       if (surveyId != null) 'survey_id': surveyId,
       if (measDate != null) 'meas_date': measDate,
       if (numEcps != null) 'num_ecps': numEcps,
+      if (notAssessed != null) 'not_assessed': notAssessed,
       if (complete != null) 'complete': complete,
     });
   }
@@ -7693,12 +7801,14 @@ class EcpSummaryCompanion extends UpdateCompanion<EcpSummaryData> {
       Value<int>? surveyId,
       Value<DateTime>? measDate,
       Value<int?>? numEcps,
+      Value<bool>? notAssessed,
       Value<bool>? complete}) {
     return EcpSummaryCompanion(
       id: id ?? this.id,
       surveyId: surveyId ?? this.surveyId,
       measDate: measDate ?? this.measDate,
       numEcps: numEcps ?? this.numEcps,
+      notAssessed: notAssessed ?? this.notAssessed,
       complete: complete ?? this.complete,
     );
   }
@@ -7718,6 +7828,9 @@ class EcpSummaryCompanion extends UpdateCompanion<EcpSummaryData> {
     if (numEcps.present) {
       map['num_ecps'] = Variable<int>(numEcps.value);
     }
+    if (notAssessed.present) {
+      map['not_assessed'] = Variable<bool>(notAssessed.value);
+    }
     if (complete.present) {
       map['complete'] = Variable<bool>(complete.value);
     }
@@ -7731,6 +7844,7 @@ class EcpSummaryCompanion extends UpdateCompanion<EcpSummaryData> {
           ..write('surveyId: $surveyId, ')
           ..write('measDate: $measDate, ')
           ..write('numEcps: $numEcps, ')
+          ..write('notAssessed: $notAssessed, ')
           ..write('complete: $complete')
           ..write(')'))
         .toString();
@@ -8600,6 +8714,16 @@ class $SoilPitSummaryTable extends SoilPitSummary
   late final GeneratedColumn<DateTime> measDate = GeneratedColumn<DateTime>(
       'meas_date', aliasedName, false,
       type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _notAssessedMeta =
+      const VerificationMeta('notAssessed');
+  @override
+  late final GeneratedColumn<bool> notAssessed = GeneratedColumn<bool>(
+      'not_assessed', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("not_assessed" IN (0, 1))'),
+      defaultValue: const Constant(false));
   static const VerificationMeta _completeMeta =
       const VerificationMeta('complete');
   @override
@@ -8611,7 +8735,8 @@ class $SoilPitSummaryTable extends SoilPitSummary
           GeneratedColumn.constraintIsAlways('CHECK ("complete" IN (0, 1))'),
       defaultValue: const Constant(false));
   @override
-  List<GeneratedColumn> get $columns => [id, surveyId, measDate, complete];
+  List<GeneratedColumn> get $columns =>
+      [id, surveyId, measDate, notAssessed, complete];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -8637,6 +8762,12 @@ class $SoilPitSummaryTable extends SoilPitSummary
     } else if (isInserting) {
       context.missing(_measDateMeta);
     }
+    if (data.containsKey('not_assessed')) {
+      context.handle(
+          _notAssessedMeta,
+          notAssessed.isAcceptableOrUnknown(
+              data['not_assessed']!, _notAssessedMeta));
+    }
     if (data.containsKey('complete')) {
       context.handle(_completeMeta,
           complete.isAcceptableOrUnknown(data['complete']!, _completeMeta));
@@ -8656,6 +8787,8 @@ class $SoilPitSummaryTable extends SoilPitSummary
           .read(DriftSqlType.int, data['${effectivePrefix}survey_id'])!,
       measDate: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}meas_date'])!,
+      notAssessed: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}not_assessed'])!,
       complete: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}complete'])!,
     );
@@ -8672,11 +8805,13 @@ class SoilPitSummaryData extends DataClass
   final int id;
   final int surveyId;
   final DateTime measDate;
+  final bool notAssessed;
   final bool complete;
   const SoilPitSummaryData(
       {required this.id,
       required this.surveyId,
       required this.measDate,
+      required this.notAssessed,
       required this.complete});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -8684,6 +8819,7 @@ class SoilPitSummaryData extends DataClass
     map['id'] = Variable<int>(id);
     map['survey_id'] = Variable<int>(surveyId);
     map['meas_date'] = Variable<DateTime>(measDate);
+    map['not_assessed'] = Variable<bool>(notAssessed);
     map['complete'] = Variable<bool>(complete);
     return map;
   }
@@ -8693,6 +8829,7 @@ class SoilPitSummaryData extends DataClass
       id: Value(id),
       surveyId: Value(surveyId),
       measDate: Value(measDate),
+      notAssessed: Value(notAssessed),
       complete: Value(complete),
     );
   }
@@ -8704,6 +8841,7 @@ class SoilPitSummaryData extends DataClass
       id: serializer.fromJson<int>(json['id']),
       surveyId: serializer.fromJson<int>(json['surveyId']),
       measDate: serializer.fromJson<DateTime>(json['measDate']),
+      notAssessed: serializer.fromJson<bool>(json['notAssessed']),
       complete: serializer.fromJson<bool>(json['complete']),
     );
   }
@@ -8714,16 +8852,22 @@ class SoilPitSummaryData extends DataClass
       'id': serializer.toJson<int>(id),
       'surveyId': serializer.toJson<int>(surveyId),
       'measDate': serializer.toJson<DateTime>(measDate),
+      'notAssessed': serializer.toJson<bool>(notAssessed),
       'complete': serializer.toJson<bool>(complete),
     };
   }
 
   SoilPitSummaryData copyWith(
-          {int? id, int? surveyId, DateTime? measDate, bool? complete}) =>
+          {int? id,
+          int? surveyId,
+          DateTime? measDate,
+          bool? notAssessed,
+          bool? complete}) =>
       SoilPitSummaryData(
         id: id ?? this.id,
         surveyId: surveyId ?? this.surveyId,
         measDate: measDate ?? this.measDate,
+        notAssessed: notAssessed ?? this.notAssessed,
         complete: complete ?? this.complete,
       );
   @override
@@ -8732,13 +8876,15 @@ class SoilPitSummaryData extends DataClass
           ..write('id: $id, ')
           ..write('surveyId: $surveyId, ')
           ..write('measDate: $measDate, ')
+          ..write('notAssessed: $notAssessed, ')
           ..write('complete: $complete')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, surveyId, measDate, complete);
+  int get hashCode =>
+      Object.hash(id, surveyId, measDate, notAssessed, complete);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -8746,6 +8892,7 @@ class SoilPitSummaryData extends DataClass
           other.id == this.id &&
           other.surveyId == this.surveyId &&
           other.measDate == this.measDate &&
+          other.notAssessed == this.notAssessed &&
           other.complete == this.complete);
 }
 
@@ -8753,17 +8900,20 @@ class SoilPitSummaryCompanion extends UpdateCompanion<SoilPitSummaryData> {
   final Value<int> id;
   final Value<int> surveyId;
   final Value<DateTime> measDate;
+  final Value<bool> notAssessed;
   final Value<bool> complete;
   const SoilPitSummaryCompanion({
     this.id = const Value.absent(),
     this.surveyId = const Value.absent(),
     this.measDate = const Value.absent(),
+    this.notAssessed = const Value.absent(),
     this.complete = const Value.absent(),
   });
   SoilPitSummaryCompanion.insert({
     this.id = const Value.absent(),
     required int surveyId,
     required DateTime measDate,
+    this.notAssessed = const Value.absent(),
     this.complete = const Value.absent(),
   })  : surveyId = Value(surveyId),
         measDate = Value(measDate);
@@ -8771,12 +8921,14 @@ class SoilPitSummaryCompanion extends UpdateCompanion<SoilPitSummaryData> {
     Expression<int>? id,
     Expression<int>? surveyId,
     Expression<DateTime>? measDate,
+    Expression<bool>? notAssessed,
     Expression<bool>? complete,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (surveyId != null) 'survey_id': surveyId,
       if (measDate != null) 'meas_date': measDate,
+      if (notAssessed != null) 'not_assessed': notAssessed,
       if (complete != null) 'complete': complete,
     });
   }
@@ -8785,11 +8937,13 @@ class SoilPitSummaryCompanion extends UpdateCompanion<SoilPitSummaryData> {
       {Value<int>? id,
       Value<int>? surveyId,
       Value<DateTime>? measDate,
+      Value<bool>? notAssessed,
       Value<bool>? complete}) {
     return SoilPitSummaryCompanion(
       id: id ?? this.id,
       surveyId: surveyId ?? this.surveyId,
       measDate: measDate ?? this.measDate,
+      notAssessed: notAssessed ?? this.notAssessed,
       complete: complete ?? this.complete,
     );
   }
@@ -8806,6 +8960,9 @@ class SoilPitSummaryCompanion extends UpdateCompanion<SoilPitSummaryData> {
     if (measDate.present) {
       map['meas_date'] = Variable<DateTime>(measDate.value);
     }
+    if (notAssessed.present) {
+      map['not_assessed'] = Variable<bool>(notAssessed.value);
+    }
     if (complete.present) {
       map['complete'] = Variable<bool>(complete.value);
     }
@@ -8818,6 +8975,7 @@ class SoilPitSummaryCompanion extends UpdateCompanion<SoilPitSummaryData> {
           ..write('id: $id, ')
           ..write('surveyId: $surveyId, ')
           ..write('measDate: $measDate, ')
+          ..write('notAssessed: $notAssessed, ')
           ..write('complete: $complete')
           ..write(')'))
         .toString();
@@ -10668,8 +10826,29 @@ class $LtpSummaryTable extends LtpSummary
   late final GeneratedColumn<DateTime> measDate = GeneratedColumn<DateTime>(
       'meas_date', aliasedName, false,
       type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _notAssessedMeta =
+      const VerificationMeta('notAssessed');
   @override
-  List<GeneratedColumn> get $columns => [id, surveyId, measDate];
+  late final GeneratedColumn<bool> notAssessed = GeneratedColumn<bool>(
+      'not_assessed', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("not_assessed" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  static const VerificationMeta _completeMeta =
+      const VerificationMeta('complete');
+  @override
+  late final GeneratedColumn<bool> complete = GeneratedColumn<bool>(
+      'complete', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("complete" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, surveyId, measDate, notAssessed, complete];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -10695,6 +10874,16 @@ class $LtpSummaryTable extends LtpSummary
     } else if (isInserting) {
       context.missing(_measDateMeta);
     }
+    if (data.containsKey('not_assessed')) {
+      context.handle(
+          _notAssessedMeta,
+          notAssessed.isAcceptableOrUnknown(
+              data['not_assessed']!, _notAssessedMeta));
+    }
+    if (data.containsKey('complete')) {
+      context.handle(_completeMeta,
+          complete.isAcceptableOrUnknown(data['complete']!, _completeMeta));
+    }
     return context;
   }
 
@@ -10710,6 +10899,10 @@ class $LtpSummaryTable extends LtpSummary
           .read(DriftSqlType.int, data['${effectivePrefix}survey_id'])!,
       measDate: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}meas_date'])!,
+      notAssessed: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}not_assessed'])!,
+      complete: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}complete'])!,
     );
   }
 
@@ -10723,14 +10916,22 @@ class LtpSummaryData extends DataClass implements Insertable<LtpSummaryData> {
   final int id;
   final int surveyId;
   final DateTime measDate;
+  final bool notAssessed;
+  final bool complete;
   const LtpSummaryData(
-      {required this.id, required this.surveyId, required this.measDate});
+      {required this.id,
+      required this.surveyId,
+      required this.measDate,
+      required this.notAssessed,
+      required this.complete});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['survey_id'] = Variable<int>(surveyId);
     map['meas_date'] = Variable<DateTime>(measDate);
+    map['not_assessed'] = Variable<bool>(notAssessed);
+    map['complete'] = Variable<bool>(complete);
     return map;
   }
 
@@ -10739,6 +10940,8 @@ class LtpSummaryData extends DataClass implements Insertable<LtpSummaryData> {
       id: Value(id),
       surveyId: Value(surveyId),
       measDate: Value(measDate),
+      notAssessed: Value(notAssessed),
+      complete: Value(complete),
     );
   }
 
@@ -10749,6 +10952,8 @@ class LtpSummaryData extends DataClass implements Insertable<LtpSummaryData> {
       id: serializer.fromJson<int>(json['id']),
       surveyId: serializer.fromJson<int>(json['surveyId']),
       measDate: serializer.fromJson<DateTime>(json['measDate']),
+      notAssessed: serializer.fromJson<bool>(json['notAssessed']),
+      complete: serializer.fromJson<bool>(json['complete']),
     );
   }
   @override
@@ -10758,69 +10963,99 @@ class LtpSummaryData extends DataClass implements Insertable<LtpSummaryData> {
       'id': serializer.toJson<int>(id),
       'surveyId': serializer.toJson<int>(surveyId),
       'measDate': serializer.toJson<DateTime>(measDate),
+      'notAssessed': serializer.toJson<bool>(notAssessed),
+      'complete': serializer.toJson<bool>(complete),
     };
   }
 
-  LtpSummaryData copyWith({int? id, int? surveyId, DateTime? measDate}) =>
+  LtpSummaryData copyWith(
+          {int? id,
+          int? surveyId,
+          DateTime? measDate,
+          bool? notAssessed,
+          bool? complete}) =>
       LtpSummaryData(
         id: id ?? this.id,
         surveyId: surveyId ?? this.surveyId,
         measDate: measDate ?? this.measDate,
+        notAssessed: notAssessed ?? this.notAssessed,
+        complete: complete ?? this.complete,
       );
   @override
   String toString() {
     return (StringBuffer('LtpSummaryData(')
           ..write('id: $id, ')
           ..write('surveyId: $surveyId, ')
-          ..write('measDate: $measDate')
+          ..write('measDate: $measDate, ')
+          ..write('notAssessed: $notAssessed, ')
+          ..write('complete: $complete')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, surveyId, measDate);
+  int get hashCode =>
+      Object.hash(id, surveyId, measDate, notAssessed, complete);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is LtpSummaryData &&
           other.id == this.id &&
           other.surveyId == this.surveyId &&
-          other.measDate == this.measDate);
+          other.measDate == this.measDate &&
+          other.notAssessed == this.notAssessed &&
+          other.complete == this.complete);
 }
 
 class LtpSummaryCompanion extends UpdateCompanion<LtpSummaryData> {
   final Value<int> id;
   final Value<int> surveyId;
   final Value<DateTime> measDate;
+  final Value<bool> notAssessed;
+  final Value<bool> complete;
   const LtpSummaryCompanion({
     this.id = const Value.absent(),
     this.surveyId = const Value.absent(),
     this.measDate = const Value.absent(),
+    this.notAssessed = const Value.absent(),
+    this.complete = const Value.absent(),
   });
   LtpSummaryCompanion.insert({
     this.id = const Value.absent(),
     required int surveyId,
     required DateTime measDate,
+    this.notAssessed = const Value.absent(),
+    this.complete = const Value.absent(),
   })  : surveyId = Value(surveyId),
         measDate = Value(measDate);
   static Insertable<LtpSummaryData> custom({
     Expression<int>? id,
     Expression<int>? surveyId,
     Expression<DateTime>? measDate,
+    Expression<bool>? notAssessed,
+    Expression<bool>? complete,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (surveyId != null) 'survey_id': surveyId,
       if (measDate != null) 'meas_date': measDate,
+      if (notAssessed != null) 'not_assessed': notAssessed,
+      if (complete != null) 'complete': complete,
     });
   }
 
   LtpSummaryCompanion copyWith(
-      {Value<int>? id, Value<int>? surveyId, Value<DateTime>? measDate}) {
+      {Value<int>? id,
+      Value<int>? surveyId,
+      Value<DateTime>? measDate,
+      Value<bool>? notAssessed,
+      Value<bool>? complete}) {
     return LtpSummaryCompanion(
       id: id ?? this.id,
       surveyId: surveyId ?? this.surveyId,
       measDate: measDate ?? this.measDate,
+      notAssessed: notAssessed ?? this.notAssessed,
+      complete: complete ?? this.complete,
     );
   }
 
@@ -10836,6 +11071,12 @@ class LtpSummaryCompanion extends UpdateCompanion<LtpSummaryData> {
     if (measDate.present) {
       map['meas_date'] = Variable<DateTime>(measDate.value);
     }
+    if (notAssessed.present) {
+      map['not_assessed'] = Variable<bool>(notAssessed.value);
+    }
+    if (complete.present) {
+      map['complete'] = Variable<bool>(complete.value);
+    }
     return map;
   }
 
@@ -10844,7 +11085,9 @@ class LtpSummaryCompanion extends UpdateCompanion<LtpSummaryData> {
     return (StringBuffer('LtpSummaryCompanion(')
           ..write('id: $id, ')
           ..write('surveyId: $surveyId, ')
-          ..write('measDate: $measDate')
+          ..write('measDate: $measDate, ')
+          ..write('notAssessed: $notAssessed, ')
+          ..write('complete: $complete')
           ..write(')'))
         .toString();
   }
