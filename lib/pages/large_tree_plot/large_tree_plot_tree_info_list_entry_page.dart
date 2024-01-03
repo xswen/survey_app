@@ -5,18 +5,18 @@ import '../../widgets/dropdowns/drop_down_default.dart';
 import '../../widgets/popups/popup_warning_change_made.dart';
 import '../../widgets/text/text_header_separator.dart';
 
-class LargeTreePlotInfoListEntryPage extends ConsumerStatefulWidget {
+class LargeTreePlotTreeInfoListEntryPage extends ConsumerStatefulWidget {
   static const String routeName = "largeTreePlotInfoListEntry";
   final GoRouterState state;
-  const LargeTreePlotInfoListEntryPage(this.state, {super.key});
+  const LargeTreePlotTreeInfoListEntryPage(this.state, {super.key});
 
   @override
-  LargeTreePlotInfoListEntryPageState createState() =>
-      LargeTreePlotInfoListEntryPageState();
+  LargeTreePlotTreeInfoListEntryPageState createState() =>
+      LargeTreePlotTreeInfoListEntryPageState();
 }
 
-class LargeTreePlotInfoListEntryPageState
-    extends ConsumerState<LargeTreePlotInfoListEntryPage> {
+class LargeTreePlotTreeInfoListEntryPageState
+    extends ConsumerState<LargeTreePlotTreeInfoListEntryPage> {
   final String title = "Tree Info";
   bool changeMade = false;
 

@@ -1,5 +1,5 @@
 import 'package:survey_app/barrels/page_imports_barrel.dart';
-import 'package:survey_app/pages/large_tree_plot/large_tree_plot_info_list_entry_page.dart';
+import 'package:survey_app/pages/large_tree_plot/large_tree_plot_tree_info_list_entry_page.dart';
 import 'package:survey_app/widgets/tables/table_creation_builder.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
@@ -192,7 +192,7 @@ class LargeTreePlotTreeInfoListPageState
                         onPressed: () async => false
                             ? Popups.show(context, completeWarningPopup)
                             : context.pushNamed(
-                                LargeTreePlotInfoListEntryPage.routeName,
+                                LargeTreePlotTreeInfoListEntryPage.routeName,
                                 pathParameters: widget.state.pathParameters,
                                 extra: null),
                         style:
