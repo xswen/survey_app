@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:survey_app/pages/large_tree_plot/large_tree_plot_info_list_entry_page.dart';
 import 'package:survey_app/pages/large_tree_plot/large_tree_plot_site_tree_info_age_list_page.dart';
 import 'package:survey_app/pages/large_tree_plot/large_tree_plot_summary.dart';
 import 'package:survey_app/pages/large_tree_plot/large_tree_plot_tree_info_list_page.dart';
@@ -13,7 +14,14 @@ GoRoute goRouteLargeTreePlot = GoRoute(
           name: LargeTreePlotTreeInfoListPage.routeName,
           path: "tree_info_list",
           builder: (context, state) => LargeTreePlotTreeInfoListPage(state),
-          routes: []),
+          routes: [
+            GoRoute(
+                name: LargeTreePlotInfoListEntryPage.routeName,
+                path: "tree_info_entry",
+                builder: (context, state) =>
+                    LargeTreePlotInfoListEntryPage(state),
+                routes: []),
+          ]),
       GoRoute(
           name: LargeTreePlotTreeRemovedListPage.routeName,
           path: "tree_removed_list",

@@ -1,7 +1,9 @@
 import 'package:survey_app/barrels/page_imports_barrel.dart';
+import 'package:survey_app/pages/large_tree_plot/large_tree_plot_info_list_entry_page.dart';
 import 'package:survey_app/widgets/tables/table_creation_builder.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import '../../widgets/buttons/custom_button_styles.dart';
 import '../../widgets/tables/table_data_grid_source_builder.dart';
 import '../../wrappers/column_header_object.dart';
 
@@ -189,14 +191,12 @@ class LargeTreePlotTreeInfoListPageState
                     child: ElevatedButton(
                         onPressed: () async => false
                             ? Popups.show(context, completeWarningPopup)
-                            : null,
-                        // context.pushNamed(SoilPitFeatureEntryPage.routeName,
-                        //     pathParameters: PathParamGenerator.soilPitSummary(
-                        //         widget.state, spId.toString()),
-                        //     extra: SoilPitFeatureCompanion(
-                        //         soilPitSummaryId: d.Value(spId))),
-                        // style: CustomButtonStyles.inactiveButton(
-                        //     isActive: !parentComplete),
+                            : context.pushNamed(
+                                LargeTreePlotInfoListEntryPage.routeName,
+                                pathParameters: widget.state.pathParameters,
+                                extra: null),
+                        style:
+                            CustomButtonStyles.inactiveButton(isActive: !false),
                         child: const Text("Add tree")),
                   ),
                 ],
