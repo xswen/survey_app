@@ -65,7 +65,8 @@ class TileCardSurvey extends StatelessWidget {
       //     ),
       //   ],
       // ),
-      enabled: status != SurveyStatus.notAssessed,
+      enabled:
+          status != SurveyStatus.notAssessed && status != SurveyStatus.complete,
       endActionPane: ActionPane(
         motion: const ScrollMotion(),
         children: [
