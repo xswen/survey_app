@@ -8,6 +8,7 @@ import 'package:survey_app/pages/small_tree_plot/small_tree_plot_summary.dart';
 import 'package:survey_app/pages/stump_plot/stump_plot_summary_page.dart';
 import 'package:survey_app/pages/surface_substrate/surface_substrate_summary_page.dart';
 import 'package:survey_app/widgets/text/notify_no_filter_results.dart';
+import 'package:survey_app/widgets/tile_cards/tile_card_survey.dart';
 
 import '../../formatters/format_date.dart';
 import '../../formatters/format_string.dart';
@@ -15,7 +16,6 @@ import '../../providers/survey_info_providers.dart';
 import '../../widgets/buttons/edit_icon_button.dart';
 import '../../widgets/tags/tag_chips.dart';
 import '../../widgets/text/text_line_label.dart';
-import '../../widgets/tile_cards/tile_card_selection.dart';
 import '../../widgets/titled_border.dart';
 import '../../wrappers/survey_card.dart';
 import '../soil_pit/soil_pit_summary_table.dart';
@@ -89,18 +89,19 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
     }
   }
 
-  List<TileCardSelection> generateTileCards(
+  List<TileCardSurvey> generateTileCards(
       SurveyHeader survey, List<SurveyCard> cards) {
-    List<TileCardSelection> tileCards = [];
+    List<TileCardSurvey> tileCards = [];
 
     for (SurveyCard card in cards) {
       SurveyCardCategories category = card.category;
       String name = card.name;
       dynamic data = card.surveyCardData;
 
-      tileCards.add(TileCardSelection(
+      tileCards.add(TileCardSurvey(
         title: name,
         status: getStatus(data),
+        onNotAssessed: () {},
         onPressed: () {
           if (survey.complete && data == null) {
             Popups.show(
