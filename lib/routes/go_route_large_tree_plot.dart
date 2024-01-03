@@ -3,6 +3,7 @@ import 'package:survey_app/pages/large_tree_plot/large_tree_plot_site_tree_info_
 import 'package:survey_app/pages/large_tree_plot/large_tree_plot_summary.dart';
 import 'package:survey_app/pages/large_tree_plot/large_tree_plot_tree_info_list_entry_page.dart';
 import 'package:survey_app/pages/large_tree_plot/large_tree_plot_tree_info_list_page.dart';
+import 'package:survey_app/pages/large_tree_plot/large_tree_plot_tree_removed_list_entry_page.dart';
 import 'package:survey_app/pages/large_tree_plot/large_tree_plot_tree_removed_list_page.dart';
 
 GoRoute goRouteLargeTreePlot = GoRoute(
@@ -17,7 +18,7 @@ GoRoute goRouteLargeTreePlot = GoRoute(
           routes: [
             GoRoute(
                 name: LargeTreePlotTreeInfoListEntryPage.routeName,
-                path: "tree_info_entry",
+                path: "entry",
                 builder: (context, state) =>
                     LargeTreePlotTreeInfoListEntryPage(state),
                 routes: []),
@@ -26,7 +27,14 @@ GoRoute goRouteLargeTreePlot = GoRoute(
           name: LargeTreePlotTreeRemovedListPage.routeName,
           path: "tree_removed_list",
           builder: (context, state) => LargeTreePlotTreeRemovedListPage(state),
-          routes: []),
+          routes: [
+            GoRoute(
+                name: LargeTreePlotTreeRemovedListEntryPage.routeName,
+                path: "entry2",
+                builder: (context, state) =>
+                    LargeTreePlotTreeRemovedListEntryPage(state),
+                routes: []),
+          ]),
       GoRoute(
           name: LargeTreePlotSiteTreeInfoAgeListPage.routeName,
           path: "tree_info_age_list",

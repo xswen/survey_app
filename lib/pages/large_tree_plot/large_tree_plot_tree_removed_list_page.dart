@@ -1,11 +1,11 @@
 import 'package:survey_app/barrels/page_imports_barrel.dart';
+import 'package:survey_app/pages/large_tree_plot/large_tree_plot_tree_removed_list_entry_page.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../widgets/buttons/custom_button_styles.dart';
 import '../../widgets/tables/table_creation_builder.dart';
 import '../../widgets/tables/table_data_grid_source_builder.dart';
 import '../../wrappers/column_header_object.dart';
-import 'large_tree_plot_tree_info_list_entry_page.dart';
 
 class ColNames {
   ColNames();
@@ -73,7 +73,7 @@ class LargeTreePlotTreeRemovedListPageState
     debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
     return Scaffold(
       appBar: OurAppBar(
-        "Large Tree Plot",
+        "Removed Trees",
         backFn: () {
           //ref.refresh(updateSurveyCardProvider(surveyId));
           context.pop();
@@ -102,7 +102,7 @@ class LargeTreePlotTreeRemovedListPageState
                         onPressed: () async => false
                             ? null //Popups.show(context, completeWarningPopup)
                             : context.pushNamed(
-                                LargeTreePlotTreeInfoListEntryPage.routeName,
+                                LargeTreePlotTreeRemovedListEntryPage.routeName,
                                 pathParameters: widget.state.pathParameters,
                                 extra: null),
                         style:
