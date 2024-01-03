@@ -65,8 +65,33 @@ class LargeTreePlotInfoListEntryPageState
                   "Missing"
                 ],
                 selectedItem: "Please select sector"),
-            DataInput(
-                title: "Tree number", onSubmit: (s) {}, onValidate: (s) {}),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: kPaddingV * 2),
+                const Text("Tree number", style: kTitleStyle),
+                CheckboxListTile(
+                  title: const Text(
+                    "Renumbered",
+                    style: kTextStyle,
+                  ),
+                  value: true,
+                  onChanged: (check) {},
+                  controlAffinity: ListTileControlAffinity.platform,
+                ),
+                DataInput(
+                    title: "New tree number",
+                    generalPadding: const EdgeInsets.only(bottom: kPaddingV),
+                    onSubmit: (s) {},
+                    onValidate: (s) {}),
+                DataInput(
+                    title: "Original tree number",
+                    generalPadding: const EdgeInsets.only(bottom: kPaddingV),
+                    onSubmit: (s) {},
+                    onValidate: (s) {}),
+              ],
+            ),
             DropDownDefault(
                 title: "Original plot area",
                 onChangedFn: (s) {},
