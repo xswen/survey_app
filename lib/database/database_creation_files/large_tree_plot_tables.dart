@@ -74,7 +74,8 @@ class LtpTreeAge extends Table {
   RealColumn get boreHt => real().check(boreHt.isBetweenValues(-1, 9.9))();
   TextColumn get suitHt => text().withLength(min: 1, max: 1)();
   TextColumn get suitAge => text().withLength(min: 1, max: 1)();
-  RealColumn get fieldAge => real().check(fieldAge.isBetweenValues(-8, 9999))();
+  IntColumn get fieldAge =>
+      integer().check(fieldAge.isBetweenValues(-8, 9999))();
   TextColumn get proCode => text().withLength(min: 3, max: 3)();
 
   @override

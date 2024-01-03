@@ -12639,10 +12639,10 @@ class $LtpTreeAgeTable extends LtpTreeAge
   static const VerificationMeta _fieldAgeMeta =
       const VerificationMeta('fieldAge');
   @override
-  late final GeneratedColumn<double> fieldAge = GeneratedColumn<double>(
+  late final GeneratedColumn<int> fieldAge = GeneratedColumn<int>(
       'field_age', aliasedName, false,
       check: () => fieldAge.isBetweenValues(-8, 9999),
-      type: DriftSqlType.double,
+      type: DriftSqlType.int,
       requiredDuringInsert: true);
   static const VerificationMeta _proCodeMeta =
       const VerificationMeta('proCode');
@@ -12770,7 +12770,7 @@ class $LtpTreeAgeTable extends LtpTreeAge
       suitAge: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}suit_age'])!,
       fieldAge: attachedDatabase.typeMapping
-          .read(DriftSqlType.double, data['${effectivePrefix}field_age'])!,
+          .read(DriftSqlType.int, data['${effectivePrefix}field_age'])!,
       proCode: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}pro_code'])!,
     );
@@ -12792,7 +12792,7 @@ class LtpTreeAgeData extends DataClass implements Insertable<LtpTreeAgeData> {
   final double boreHt;
   final String suitHt;
   final String suitAge;
-  final double fieldAge;
+  final int fieldAge;
   final String proCode;
   const LtpTreeAgeData(
       {required this.id,
@@ -12818,7 +12818,7 @@ class LtpTreeAgeData extends DataClass implements Insertable<LtpTreeAgeData> {
     map['bore_ht'] = Variable<double>(boreHt);
     map['suit_ht'] = Variable<String>(suitHt);
     map['suit_age'] = Variable<String>(suitAge);
-    map['field_age'] = Variable<double>(fieldAge);
+    map['field_age'] = Variable<int>(fieldAge);
     map['pro_code'] = Variable<String>(proCode);
     return map;
   }
@@ -12852,7 +12852,7 @@ class LtpTreeAgeData extends DataClass implements Insertable<LtpTreeAgeData> {
       boreHt: serializer.fromJson<double>(json['boreHt']),
       suitHt: serializer.fromJson<String>(json['suitHt']),
       suitAge: serializer.fromJson<String>(json['suitAge']),
-      fieldAge: serializer.fromJson<double>(json['fieldAge']),
+      fieldAge: serializer.fromJson<int>(json['fieldAge']),
       proCode: serializer.fromJson<String>(json['proCode']),
     );
   }
@@ -12869,7 +12869,7 @@ class LtpTreeAgeData extends DataClass implements Insertable<LtpTreeAgeData> {
       'boreHt': serializer.toJson<double>(boreHt),
       'suitHt': serializer.toJson<String>(suitHt),
       'suitAge': serializer.toJson<String>(suitAge),
-      'fieldAge': serializer.toJson<double>(fieldAge),
+      'fieldAge': serializer.toJson<int>(fieldAge),
       'proCode': serializer.toJson<String>(proCode),
     };
   }
@@ -12884,7 +12884,7 @@ class LtpTreeAgeData extends DataClass implements Insertable<LtpTreeAgeData> {
           double? boreHt,
           String? suitHt,
           String? suitAge,
-          double? fieldAge,
+          int? fieldAge,
           String? proCode}) =>
       LtpTreeAgeData(
         id: id ?? this.id,
@@ -12947,7 +12947,7 @@ class LtpTreeAgeCompanion extends UpdateCompanion<LtpTreeAgeData> {
   final Value<double> boreHt;
   final Value<String> suitHt;
   final Value<String> suitAge;
-  final Value<double> fieldAge;
+  final Value<int> fieldAge;
   final Value<String> proCode;
   const LtpTreeAgeCompanion({
     this.id = const Value.absent(),
@@ -12972,7 +12972,7 @@ class LtpTreeAgeCompanion extends UpdateCompanion<LtpTreeAgeData> {
     required double boreHt,
     required String suitHt,
     required String suitAge,
-    required double fieldAge,
+    required int fieldAge,
     required String proCode,
   })  : lptSummaryId = Value(lptSummaryId),
         quadrant = Value(quadrant),
@@ -12994,7 +12994,7 @@ class LtpTreeAgeCompanion extends UpdateCompanion<LtpTreeAgeData> {
     Expression<double>? boreHt,
     Expression<String>? suitHt,
     Expression<String>? suitAge,
-    Expression<double>? fieldAge,
+    Expression<int>? fieldAge,
     Expression<String>? proCode,
   }) {
     return RawValuesInsertable({
@@ -13022,7 +13022,7 @@ class LtpTreeAgeCompanion extends UpdateCompanion<LtpTreeAgeData> {
       Value<double>? boreHt,
       Value<String>? suitHt,
       Value<String>? suitAge,
-      Value<double>? fieldAge,
+      Value<int>? fieldAge,
       Value<String>? proCode}) {
     return LtpTreeAgeCompanion(
       id: id ?? this.id,
@@ -13070,7 +13070,7 @@ class LtpTreeAgeCompanion extends UpdateCompanion<LtpTreeAgeData> {
       map['suit_age'] = Variable<String>(suitAge.value);
     }
     if (fieldAge.present) {
-      map['field_age'] = Variable<double>(fieldAge.value);
+      map['field_age'] = Variable<int>(fieldAge.value);
     }
     if (proCode.present) {
       map['pro_code'] = Variable<String>(proCode.value);
