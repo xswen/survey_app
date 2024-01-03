@@ -99,33 +99,26 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
       String name = card.name;
       dynamic data = card.surveyCardData;
 
+      PopupDismiss popup = PopupDismiss(
+        "Nothing to show",
+        contentText: "Survey has been marked as complete. "
+            "No data found for $name. Please mark survey as "
+            "edit if you wish to add data to $name",
+      );
+
       tileCards.add(TileCardSurvey(
         title: name,
         status: getStatus(data),
         onNotAssessed: () {
           if (survey.complete && data == null) {
-            Popups.show(
-                context,
-                PopupDismiss(
-                  "Nothing to show",
-                  contentText: "Survey has been marked as complete. "
-                      "No data found for $name. Please mark survey as "
-                      "edit if you wish to add data to $name",
-                ));
+            Popups.show(context, popup);
             return;
           }
           getMarkNotAssessed(survey, category, data);
         },
         onPressed: () {
           if (survey.complete && data == null) {
-            Popups.show(
-                context,
-                PopupDismiss(
-                  "Nothing to show",
-                  contentText: "Survey has been marked as complete. "
-                      "No data found for $name. Please mark survey as "
-                      "edit if you wish to add data to $name",
-                ));
+            Popups.show(context, popup);
             return;
           }
           getNav(survey, category, data);
