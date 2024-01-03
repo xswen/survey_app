@@ -7,6 +7,7 @@ import 'package:survey_app/pages/shrub_plot/shrub_plot_summary.dart';
 import 'package:survey_app/pages/small_tree_plot/small_tree_plot_summary.dart';
 import 'package:survey_app/pages/stump_plot/stump_plot_summary_page.dart';
 import 'package:survey_app/pages/surface_substrate/surface_substrate_summary_page.dart';
+import 'package:survey_app/widgets/popups/popups_survey_info_mark_not_assessed.dart';
 import 'package:survey_app/widgets/text/notify_no_filter_results.dart';
 import 'package:survey_app/widgets/tile_cards/tile_card_survey.dart';
 
@@ -144,12 +145,7 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
         data != null
             ? Popups.show(
                 context,
-                PopupContinue(
-                  "Warning: Pre-existing data",
-                  contentText:
-                      "There is already data added for this card. Marking as "
-                      "'Not Assessed' will delete all of this data. "
-                      "This cannot be undone.\n Are you sure you want to continue?",
+                PopupsSurveyInfoMarkNotAssessed(
                   rightBtnOnPressed: () => db.woodyDebrisTablesDao
                       .markNotAssessed(surveyId, wdIdExists: true)
                       .then((value) {
