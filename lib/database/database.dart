@@ -572,62 +572,68 @@ class Database extends _$Database {
       return false;
     }
 
+    const String category = "category";
+    const String name = "name";
+    const String surveyCardData = "surveyCardData";
+
     var operations = [
       {
-        "category": SurveyCardCategories.woodyDebris,
-        "name": "Woody Debris",
-        "surveyCardData": await (select(woodyDebrisSummary)
+        category: SurveyCardCategories.woodyDebris,
+        name: "Woody Debris",
+        surveyCardData: await (select(woodyDebrisSummary)
               ..where((tbl) => tbl.surveyId.equals(surveyId)))
             .getSingleOrNull()
       },
       {
-        "category": SurveyCardCategories.surfaceSubstrate,
-        "name": "Surface Substrate",
-        "surveyCardData": await (select(surfaceSubstrateSummary)
+        category: SurveyCardCategories.surfaceSubstrate,
+        name: "Surface Substrate",
+        surveyCardData: await (select(surfaceSubstrateSummary)
               ..where((tbl) => tbl.surveyId.equals(surveyId)))
             .getSingleOrNull()
       },
       {
-        "category": SurveyCardCategories.ecologicalPlot,
-        "name": "Ecological Plot",
-        "surveyCardData": await (select(ecpSummary)
+        category: SurveyCardCategories.ecologicalPlot,
+        name: "Ecological Plot",
+        surveyCardData: await (select(ecpSummary)
               ..where((tbl) => tbl.surveyId.equals(surveyId)))
             .getSingleOrNull()
       },
       {
-        "category": SurveyCardCategories.soilPit,
-        "name": "Soil Pit",
-        "surveyCardData": await (select(soilPitSummary)
+        category: SurveyCardCategories.soilPit,
+        name: "Soil Pit",
+        surveyCardData: await (select(soilPitSummary)
               ..where((tbl) => tbl.surveyId.equals(surveyId)))
             .getSingleOrNull()
       },
       {
-        "category": SurveyCardCategories.smallTreePlot,
-        "name": "Small Tree Plot",
-        "surveyCardData": null
+        category: SurveyCardCategories.smallTreePlot,
+        name: "Small Tree Plot",
+        surveyCardData: null
       },
       {
-        "category": SurveyCardCategories.shrubPlot,
-        "name": "Shrub Plot",
-        "surveyCardData": null
+        category: SurveyCardCategories.shrubPlot,
+        name: "Shrub Plot",
+        surveyCardData: null
       },
       {
-        "category": SurveyCardCategories.stumpPlot,
-        "name": "Stump Plot",
-        "surveyCardData": null
+        category: SurveyCardCategories.stumpPlot,
+        name: "Stump Plot",
+        surveyCardData: null
       },
       {
-        "category": SurveyCardCategories.largeTreePlot,
-        "name": "Large Tree Plot",
-        "surveyCardData": null
+        category: SurveyCardCategories.largeTreePlot,
+        name: "Large Tree Plot",
+        surveyCardData: await (select(ltpSummary)
+              ..where((tbl) => tbl.surveyId.equals(surveyId)))
+            .getSingleOrNull()
       },
     ];
 
     List<SurveyCard> cards = [];
     for (var op in operations) {
-      checkFilter(op["surveyCardData"])
-          ? cards.add(SurveyCard(op["category"] as SurveyCardCategories,
-              op["name"] as String, op["surveyCardData"] as dynamic))
+      checkFilter(op[surveyCardData])
+          ? cards.add(SurveyCard(op[category] as SurveyCardCategories,
+              op[name] as String, op[surveyCardData] as dynamic))
           : null;
     }
 
