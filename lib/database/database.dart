@@ -538,7 +538,13 @@ class Database extends _$Database {
   Future<List<SurveyCard>> getCards(int surveyId,
       {HashSet<SurveyStatus>? filters}) async {
     bool checkFilter(dynamic cardData) {
-      //No filter
+      /*
+      * - Not Started: Occurs when `data == null`. In all other cases, `data != null`.
+      * - Complete: True only if `data!.complete == true`.
+      * - Not Assessed: True only if `notAssessed == true`.
+      * - In Progress: True only if `data!.complete == false` AND `notAssessed == false`.
+       */
+
       if (filters == null || filters.isEmpty) {
         return true;
       }
@@ -549,12 +555,17 @@ class Database extends _$Database {
       }
 
       if (filters.contains(SurveyStatus.inProgress) &&
-          cardData!.complete == false) {
+          (cardData!.complete == false && cardData!.notAssessed == false)) {
         return true;
       }
 
       if (filters.contains(SurveyStatus.complete) &&
           cardData!.complete == true) {
+        return true;
+      }
+
+      if (filters.contains(SurveyStatus.notAssessed) &&
+          cardData!.notAssessed == true) {
         return true;
       }
 

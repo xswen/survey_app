@@ -21,6 +21,7 @@ class SurveyCardFilter extends _$SurveyCardFilter {
       : state = HashSet<SurveyStatus>.of({
           SurveyStatus.complete,
           SurveyStatus.inProgress,
+          SurveyStatus.notAssessed,
         });
 
   void selectedNotStarted(bool selected) => selected
@@ -31,6 +32,16 @@ class SurveyCardFilter extends _$SurveyCardFilter {
       : state = HashSet<SurveyStatus>.of({
           for (final status in state)
             if (status != SurveyStatus.notStarted) status
+        });
+
+  void selectedNotAssessed(bool selected) => selected
+      ? state = HashSet<SurveyStatus>.of({
+          ...state,
+          SurveyStatus.notAssessed,
+        })
+      : state = HashSet<SurveyStatus>.of({
+          for (final status in state)
+            if (status != SurveyStatus.notAssessed) status
         });
 
   void selectedInProgress(bool selected) => selected

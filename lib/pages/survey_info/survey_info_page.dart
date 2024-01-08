@@ -512,6 +512,13 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
                             .selectedInProgress(selected),
                       ),
                       TagChip(
+                        title: "Not Assessed",
+                        selected: filters.contains(SurveyStatus.notAssessed),
+                        onSelected: (selected) => ref
+                            .read(surveyCardFilterProvider.notifier)
+                            .selectedNotAssessed(selected),
+                      ),
+                      TagChip(
                         title: "Not Started",
                         selected: filters.contains(SurveyStatus.notStarted),
                         onSelected: (selected) => ref
