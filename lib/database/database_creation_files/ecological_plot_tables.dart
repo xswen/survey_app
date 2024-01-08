@@ -10,6 +10,7 @@ class EcpSummary extends Table {
   //TODO: Double check these checks
   IntColumn get numEcps =>
       integer().check(numEcps.isBetweenValues(1, 9)).nullable()();
+  BoolColumn get notAssessed => boolean().withDefault(const Constant(false))();
   BoolColumn get complete => boolean().withDefault(const Constant(false))();
 }
 

@@ -7,7 +7,9 @@ import 'package:survey_app/pages/shrub_plot/shrub_plot_summary.dart';
 import 'package:survey_app/pages/small_tree_plot/small_tree_plot_summary.dart';
 import 'package:survey_app/pages/stump_plot/stump_plot_summary_page.dart';
 import 'package:survey_app/pages/surface_substrate/surface_substrate_summary_page.dart';
+import 'package:survey_app/widgets/popups/popups_survey_info_mark_not_assessed.dart';
 import 'package:survey_app/widgets/text/notify_no_filter_results.dart';
+import 'package:survey_app/widgets/tile_cards/tile_card_survey.dart';
 
 import '../../formatters/format_date.dart';
 import '../../formatters/format_string.dart';
@@ -15,7 +17,6 @@ import '../../providers/survey_info_providers.dart';
 import '../../widgets/buttons/edit_icon_button.dart';
 import '../../widgets/tags/tag_chips.dart';
 import '../../widgets/text/text_line_label.dart';
-import '../../widgets/tile_cards/tile_card_selection.dart';
 import '../../widgets/titled_border.dart';
 import '../../wrappers/survey_card.dart';
 import '../soil_pit/soil_pit_summary_table.dart';
@@ -80,7 +81,7 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
   SurveyStatus getStatus(dynamic data) {
     if (data == null) {
       return SurveyStatus.notStarted;
-    } else if (data?.complete == null) {
+    } else if (data?.notAssessed) {
       return SurveyStatus.notAssessed;
     } else if (data?.complete) {
       return SurveyStatus.complete;
@@ -89,28 +90,35 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
     }
   }
 
-  List<TileCardSelection> generateTileCards(
+  List<TileCardSurvey> generateTileCards(
       SurveyHeader survey, List<SurveyCard> cards) {
-    List<TileCardSelection> tileCards = [];
+    List<TileCardSurvey> tileCards = [];
 
     for (SurveyCard card in cards) {
       SurveyCardCategories category = card.category;
       String name = card.name;
       dynamic data = card.surveyCardData;
 
-      tileCards.add(TileCardSelection(
+      PopupDismiss popup = PopupDismiss(
+        "Nothing to show",
+        contentText: "Survey has been marked as complete. "
+            "No data found for $name. Please mark survey as "
+            "edit if you wish to add data to $name",
+      );
+
+      tileCards.add(TileCardSurvey(
         title: name,
         status: getStatus(data),
+        onNotAssessed: () {
+          if (survey.complete && data == null) {
+            Popups.show(context, popup);
+            return;
+          }
+          getMarkNotAssessed(survey, category, data);
+        },
         onPressed: () {
           if (survey.complete && data == null) {
-            Popups.show(
-                context,
-                PopupDismiss(
-                  "Nothing to show",
-                  contentText: "Survey has been marked as complete. "
-                      "No data found for $name. Please mark survey as "
-                      "edit if you wish to add data to $name",
-                ));
+            Popups.show(context, popup);
             return;
           }
           getNav(survey, category, data);
@@ -121,6 +129,73 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
     return tileCards;
   }
 
+  void getMarkNotAssessed(
+      SurveyHeader survey, SurveyCardCategories category, dynamic data) async {
+    final Database db = Database.instance;
+
+    switch (category) {
+      case SurveyCardCategories.woodyDebris:
+        data != null
+            ? Popups.show(
+                context,
+                PopupsSurveyInfoMarkNotAssessed(
+                  rightBtnOnPressed: () => db.woodyDebrisTablesDao
+                      .markNotAssessed(surveyId, wdIdExists: true)
+                      .then((value) {
+                    ref.refresh(updateSurveyCardProvider(surveyId));
+                    context.pop();
+                  }),
+                ))
+            : db.woodyDebrisTablesDao.markNotAssessed(surveyId).then(
+                (value) => ref.refresh(updateSurveyCardProvider(surveyId)));
+        break;
+      // case SurveyCardCategories.surfaceSubstrate:
+      //   int id = data == null
+      //       ? (await db.surfaceSubstrateTablesDao
+      //               .addAndReturnDefaultSsSummary(survey.id, survey.measDate))
+      //           .id
+      //       : data.id;
+      //   if (context.mounted) {
+      //     context
+      //         .pushNamed(SurfaceSubstrateSummaryPage.routeName,
+      //             pathParameters: PathParamGenerator.ssSummary(
+      //                 widget.goRouterState, id.toString()))
+      //         .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
+      //   }
+      //   break;
+      // case SurveyCardCategories.ecologicalPlot:
+      //   int id = data == null
+      //       ? (await db.ecologicalPlotTablesDao
+      //               .addAndReturnDefaultSummary(survey.id, survey.measDate))
+      //           .id
+      //       : data.id;
+      //   if (context.mounted) {
+      //     context
+      //         .pushNamed(EcologicalPlotSummaryPage.routeName,
+      //             pathParameters: PathParamGenerator.ecpSummary(
+      //                 widget.goRouterState, id.toString()))
+      //         .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
+      //   }
+      //   break;
+      // case SurveyCardCategories.soilPit:
+      //   int id = data == null
+      //       ? (await db.soilPitTablesDao
+      //               .addAndReturnDefaultSummary(survey.id, survey.measDate))
+      //           .id
+      //       : data.id;
+      //   if (context.mounted) {
+      //     context
+      //         .pushNamed(SoilPitSummaryPage.routeName,
+      //             pathParameters: PathParamGenerator.soilPitSummary(
+      //                 widget.goRouterState, id.toString()))
+      //         .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
+      //   }
+      //   break;
+      default:
+        debugPrint("Error: case not handled for $category");
+    }
+  }
+
   //Behaviour when tile is clicked. Set state and regenerate cards on return.
   void getNav(
       SurveyHeader survey, SurveyCardCategories category, dynamic data) async {
@@ -128,11 +203,22 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
 
     switch (category) {
       case SurveyCardCategories.woodyDebris:
-        int id = data == null
-            ? (await db.woodyDebrisTablesDao
-                    .addAndReturnDefaultWdSummary(survey.id, survey.measDate))
-                .id
-            : data.id;
+        int id = 0;
+        if (data == null) {
+          id = (await db.woodyDebrisTablesDao
+                  .addAndReturnDefaultWdSummary(survey.id, survey.measDate))
+              .id;
+        } else {
+          id = data.id;
+          if (data.notAssessed) {
+            await (db.update(db.woodyDebrisSummary)
+                  ..where((t) => t.id.equals(id)))
+                .write(WoodyDebrisSummaryCompanion(
+                    notAssessed: const d.Value(false),
+                    measDate: d.Value(survey.measDate)));
+          }
+        }
+
         if (context.mounted) {
           context
               .pushNamed(WoodyDebrisSummaryPage.routeName,
@@ -424,6 +510,13 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
                         onSelected: (selected) => ref
                             .read(surveyCardFilterProvider.notifier)
                             .selectedInProgress(selected),
+                      ),
+                      TagChip(
+                        title: "Not Assessed",
+                        selected: filters.contains(SurveyStatus.notAssessed),
+                        onSelected: (selected) => ref
+                            .read(surveyCardFilterProvider.notifier)
+                            .selectedNotAssessed(selected),
                       ),
                       TagChip(
                         title: "Not Started",

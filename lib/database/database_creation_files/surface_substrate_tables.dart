@@ -8,6 +8,7 @@ class SurfaceSubstrateSummary extends Table {
   DateTimeColumn get measDate => dateTime()();
   IntColumn get numTransects =>
       integer().check(numTransects.isBetweenValues(1, 9)).nullable()();
+  BoolColumn get notAssessed => boolean().withDefault(const Constant(false))();
   BoolColumn get complete => boolean().withDefault(const Constant(false))();
 }
 

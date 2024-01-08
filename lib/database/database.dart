@@ -538,7 +538,13 @@ class Database extends _$Database {
   Future<List<SurveyCard>> getCards(int surveyId,
       {HashSet<SurveyStatus>? filters}) async {
     bool checkFilter(dynamic cardData) {
-      //No filter
+      /*
+      * - Not Started: Occurs when `data == null`. In all other cases, `data != null`.
+      * - Complete: True only if `data!.complete == true`.
+      * - Not Assessed: True only if `notAssessed == true`.
+      * - In Progress: True only if `data!.complete == false` AND `notAssessed == false`.
+       */
+
       if (filters == null || filters.isEmpty) {
         return true;
       }
@@ -549,7 +555,7 @@ class Database extends _$Database {
       }
 
       if (filters.contains(SurveyStatus.inProgress) &&
-          cardData!.complete == false) {
+          (cardData!.complete == false && cardData!.notAssessed == false)) {
         return true;
       }
 
@@ -558,65 +564,76 @@ class Database extends _$Database {
         return true;
       }
 
+      if (filters.contains(SurveyStatus.notAssessed) &&
+          cardData!.notAssessed == true) {
+        return true;
+      }
+
       return false;
     }
 
+    const String category = "category";
+    const String name = "name";
+    const String surveyCardData = "surveyCardData";
+
     var operations = [
       {
-        "category": SurveyCardCategories.woodyDebris,
-        "name": "Woody Debris",
-        "surveyCardData": await (select(woodyDebrisSummary)
+        category: SurveyCardCategories.woodyDebris,
+        name: "Woody Debris",
+        surveyCardData: await (select(woodyDebrisSummary)
               ..where((tbl) => tbl.surveyId.equals(surveyId)))
             .getSingleOrNull()
       },
       {
-        "category": SurveyCardCategories.surfaceSubstrate,
-        "name": "Surface Substrate",
-        "surveyCardData": await (select(surfaceSubstrateSummary)
+        category: SurveyCardCategories.surfaceSubstrate,
+        name: "Surface Substrate",
+        surveyCardData: await (select(surfaceSubstrateSummary)
               ..where((tbl) => tbl.surveyId.equals(surveyId)))
             .getSingleOrNull()
       },
       {
-        "category": SurveyCardCategories.ecologicalPlot,
-        "name": "Ecological Plot",
-        "surveyCardData": await (select(ecpSummary)
+        category: SurveyCardCategories.ecologicalPlot,
+        name: "Ecological Plot",
+        surveyCardData: await (select(ecpSummary)
               ..where((tbl) => tbl.surveyId.equals(surveyId)))
             .getSingleOrNull()
       },
       {
-        "category": SurveyCardCategories.soilPit,
-        "name": "Soil Pit",
-        "surveyCardData": await (select(soilPitSummary)
+        category: SurveyCardCategories.soilPit,
+        name: "Soil Pit",
+        surveyCardData: await (select(soilPitSummary)
               ..where((tbl) => tbl.surveyId.equals(surveyId)))
             .getSingleOrNull()
       },
       {
-        "category": SurveyCardCategories.smallTreePlot,
-        "name": "Small Tree Plot",
-        "surveyCardData": null
+        category: SurveyCardCategories.smallTreePlot,
+        name: "Small Tree Plot",
+        surveyCardData: null
       },
       {
-        "category": SurveyCardCategories.shrubPlot,
-        "name": "Shrub Plot",
-        "surveyCardData": null
+        category: SurveyCardCategories.shrubPlot,
+        name: "Shrub Plot",
+        surveyCardData: null
       },
       {
-        "category": SurveyCardCategories.stumpPlot,
-        "name": "Stump Plot",
-        "surveyCardData": null
+        category: SurveyCardCategories.stumpPlot,
+        name: "Stump Plot",
+        surveyCardData: null
       },
       {
-        "category": SurveyCardCategories.largeTreePlot,
-        "name": "Large Tree Plot",
-        "surveyCardData": null
+        category: SurveyCardCategories.largeTreePlot,
+        name: "Large Tree Plot",
+        surveyCardData: await (select(ltpSummary)
+              ..where((tbl) => tbl.surveyId.equals(surveyId)))
+            .getSingleOrNull()
       },
     ];
 
     List<SurveyCard> cards = [];
     for (var op in operations) {
-      checkFilter(op["surveyCardData"])
-          ? cards.add(SurveyCard(op["category"] as SurveyCardCategories,
-              op["name"] as String, op["surveyCardData"] as dynamic))
+      checkFilter(op[surveyCardData])
+          ? cards.add(SurveyCard(op[category] as SurveyCardCategories,
+              op[name] as String, op[surveyCardData] as dynamic))
           : null;
     }
 
