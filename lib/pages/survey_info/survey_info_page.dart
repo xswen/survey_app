@@ -46,6 +46,7 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
   Map<SurveyStatus, List<String>>? checkAllComplete(List<SurveyCard> cards) {
     List<String> notStarted = [];
     List<String> inProgress = [];
+    List<String> notAssessed = [];
     bool oneComplete = false;
 
     for (SurveyCard card in cards) {
@@ -56,6 +57,8 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
         notStarted.add(card.name);
       } else if (!oneComplete && status == SurveyStatus.complete) {
         oneComplete = true;
+      } else if (status == SurveyStatus.notAssessed) {
+        notAssessed.add(card.name);
       }
     }
 
@@ -63,18 +66,20 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
     if (inProgress.isNotEmpty) {
       return {SurveyStatus.inProgress: inProgress};
     }
-    //Case there are no surveys in progress or marked as complete
+    //Case there is none in progress, but some are still left not started
+    else if (notStarted.isNotEmpty) {
+      return {SurveyStatus.notStarted: notStarted};
+    }
+    //All surveys are accounted for but not a single survey is marked as complete
     else if (!oneComplete) {
       return {
         SurveyStatus.complete: ["None complete"]
       };
-    }
-    //Case there is none in progress, at least one marked as complete
-    else if (notStarted.isNotEmpty) {
-      return {SurveyStatus.notStarted: notStarted};
+    } else if (notAssessed.isNotEmpty) {
+      return {SurveyStatus.notAssessed: notAssessed};
     }
 
-    //Case every card is marked complete
+    //Case every card is marked complete or not assessed
     return null;
   }
 
@@ -366,7 +371,38 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
                     ),
                   ),
                   const Text(
-                    "Please complete or delete to continue.",
+                    "Please complete or mark as 'not assessed' to continue.",
+                    textAlign: TextAlign.start,
+                  )
+                ],
+              ),
+            ));
+      }
+      //Case some cards are left as not started
+      else if (result.containsKey(SurveyStatus.notStarted)) {
+        Popups.show(
+            context,
+            PopupDismiss(
+              "Error: Surveys not accounted for",
+              contentWidget: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "There are survey cards that are still unaccounted for. "
+                    "Please complete or mark as not assessed to continue.",
+                    textAlign: TextAlign.start,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 12),
+                    child: Text(
+                      FormatString.generateBulletList(
+                          result[SurveyStatus.notStarted] ??
+                              ["Error no not started surveys found"]),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                  const Text(
+                    "Please complete or mark as 'not assessed' to continue.",
                     textAlign: TextAlign.start,
                   )
                 ],
@@ -382,15 +418,15 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
                     "\nPlease complete at least one survey card to mark as completed."));
       }
       //Case where at least one card has been started
-      else if (result.containsKey(SurveyStatus.notStarted)) {
+      else if (result.containsKey(SurveyStatus.notAssessed)) {
         Popups.show(
             context,
-            PopupContinue("Warning: Not all survey cards are completed",
+            PopupContinue("Warning: Some survey cards marked as not assessed",
                 contentWidget: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      "The following survey cards are still not completed",
+                      "The following survey cards have been marked as not assessed",
                       textAlign: TextAlign.start,
                     ),
                     Padding(
@@ -398,7 +434,7 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
                       child: Text(
                         FormatString.generateBulletList(
                             result[SurveyStatus.notStarted] ??
-                                ["Error no notStarted found"]),
+                                ["Error no not assessed cards found"]),
                         textAlign: TextAlign.start,
                       ),
                     ),
