@@ -196,6 +196,21 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
     }
   }
 
+  void handleNotAssessed(Function() fn) {
+    Popups.show(
+        context,
+        PopupContinue(
+          "Warning: Card marked as 'Not Assessed'",
+          contentText: "This card has already been marked as not assessed. "
+              "Pressing continue will mark it as assessed. Are you sure you"
+              " want to continue?",
+          rightBtnOnPressed: () {
+            fn();
+            context.pop();
+          },
+        ));
+  }
+
   //Behaviour when tile is clicked. Set state and regenerate cards on return.
   void getNav(
       SurveyHeader survey, SurveyCardCategories category, dynamic data) async {
@@ -203,29 +218,34 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
 
     switch (category) {
       case SurveyCardCategories.woodyDebris:
-        int id = 0;
-        if (data == null) {
-          id = (await db.woodyDebrisTablesDao
-                  .addAndReturnDefaultWdSummary(survey.id, survey.measDate))
-              .id;
-        } else {
-          id = data.id;
-          if (data.notAssessed) {
-            await (db.update(db.woodyDebrisSummary)
-                  ..where((t) => t.id.equals(id)))
-                .write(WoodyDebrisSummaryCompanion(
-                    notAssessed: const d.Value(false),
-                    measDate: d.Value(survey.measDate)));
+        void nav(int id) {
+          if (context.mounted) {
+            context
+                .pushNamed(WoodyDebrisSummaryPage.routeName,
+                    pathParameters: PathParamGenerator.wdSummary(
+                        widget.goRouterState, id.toString()))
+                .then(
+                    (value) => ref.refresh(updateSurveyCardProvider(surveyId)));
           }
         }
 
-        if (context.mounted) {
-          context
-              .pushNamed(WoodyDebrisSummaryPage.routeName,
-                  pathParameters: PathParamGenerator.wdSummary(
-                      widget.goRouterState, id.toString()))
-              .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
+        if (data == null) {
+          nav((await db.woodyDebrisTablesDao
+                  .addAndReturnDefaultWdSummary(survey.id, survey.measDate))
+              .id);
+        } else {
+          if (data.notAssessed) {
+            handleNotAssessed(() => (db.update(db.woodyDebrisSummary)
+                  ..where((t) => t.id.equals(data.id)))
+                .write(WoodyDebrisSummaryCompanion(
+                    notAssessed: const d.Value(false),
+                    measDate: d.Value(survey.measDate)))
+                .then((value) => nav(data.id)));
+          } else {
+            nav(data.id);
+          }
         }
+
         break;
       case SurveyCardCategories.surfaceSubstrate:
         int id = data == null
