@@ -3,6 +3,8 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:survey_app/enums/enums.dart';
 
+import 'tile_cards.dart';
+
 class TileCardSelection extends StatelessWidget {
   const TileCardSelection(
       {super.key,
@@ -15,38 +17,6 @@ class TileCardSelection extends StatelessWidget {
   final String? subtitle;
   final SurveyStatus? status;
   final void Function() onPressed;
-
-  Color generateColour(SurveyStatus? status) {
-    switch (status) {
-      case SurveyStatus.notStarted:
-        return Colors.blueGrey;
-      case SurveyStatus.inProgress:
-        return Colors.blue;
-      case SurveyStatus.complete:
-        return Colors.grey;
-      case SurveyStatus.notAssessed:
-        return Colors.teal;
-      default:
-        //Default button colour
-        return Colors.indigo;
-    }
-  }
-
-  String getStatusSubtitle(SurveyStatus? status) {
-    switch (status) {
-      case SurveyStatus.notStarted:
-        return "Not Started";
-      case SurveyStatus.inProgress:
-        return "In Progress";
-      case SurveyStatus.complete:
-        return "Complete";
-      case SurveyStatus.notAssessed:
-        return "Not Assessed";
-      default:
-        //Case
-        return "";
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,13 +60,13 @@ class TileCardSelection extends StatelessWidget {
         ],
       ),
       child: Card(
-        color: generateColour(status),
+        color: TileCards.getStatusColour(status),
         child: ListTile(
           title: Text(
             title,
             style: const TextStyle(color: Colors.white),
           ),
-          subtitle: Text(subtitle ?? getStatusSubtitle(status)),
+          subtitle: Text(subtitle ?? TileCards.getStatusSubtitle(status)),
           onTap: () {
             onPressed();
           },
