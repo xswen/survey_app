@@ -8,6 +8,7 @@ import '../../l10n/locale_keys.g.dart';
 import '../../providers/survey_info_providers.dart';
 import '../../widgets/tags/tag_chips.dart';
 import '../../widgets/tile_cards/tile_card_dashboard.dart';
+import '../delete_page.dart';
 import 'create_survey_page.dart';
 import 'survey_info_page.dart';
 
@@ -97,46 +98,43 @@ class DashboardPageState extends ConsumerState<DashboardPage> {
                       itemBuilder: (BuildContext cxt, int index) {
                         SurveyHeader survey = surveys[index];
                         return TitleCardDashboard(
-                            surveyHeader: survey,
-                            onTap: () async {
-                              context.pushNamed(
-                                SurveyInfoPage.routeName,
-                                pathParameters: PathParamGenerator.surveyInfo(
-                                    survey.id.toString()),
-                              );
-                            },
-                            onDelete: () => Database
-                                .instance.surveyInfoTablesDao
-                                .deleteSurvey(survey.id)
-                            //     Popups.show(
-                            //   context,
-                            //   PopupContinue(
-                            //     "Warning: Deleting Survey",
-                            //     contentText: "You are about to delete plot "
-                            //         "${ecpH.plotType}${ecpH.ecpNum}. "
-                            //         "Are you sure you want to continue?",
-                            //     rightBtnOnPressed: () {
-                            //       //close popup
-                            //       context.pop();
-                            //       context.pushNamed(DeletePage.routeName, extra: {
-                            //         DeletePage.keyObjectName:
-                            //             "Ecological Plot ${ecpH.plotType}${ecpH.ecpNum}",
-                            //         DeletePage.keyDeleteFn: () {
-                            //           Database.instance.ecologicalPlotTablesDao
-                            //               .deleteEcpHeader(ecpH.id)
-                            //               .then((value) {
-                            //             ref.refresh(ecpTransListProvider(ecpId));
-                            //             context.goNamed(
-                            //                 EcologicalPlotSummaryPage.routeName,
-                            //                 pathParameters:
-                            //                     widget.state.pathParameters);
-                            //           });
-                            //         },
-                            //       });
-                            //     },
-                            //   ),
-                            // ),
+                          surveyHeader: survey,
+                          onTap: () async {
+                            context.pushNamed(
+                              SurveyInfoPage.routeName,
+                              pathParameters: PathParamGenerator.surveyInfo(
+                                  survey.id.toString()),
                             );
+                          },
+                          onDelete: () => Popups.show(
+                            context,
+                            PopupContinue(
+                              "Warning: Deleting Survey",
+                              contentText:
+                                  "You are about to delete the entire survey "
+                                  "for Jurisdiction: ${survey.province}, Plot #"
+                                  "${survey.nfiPlot}, Measurement number: ${survey.measNum}. "
+                                  "Are you sure you want to continue?",
+                              rightBtnOnPressed: () {
+                                //close popup
+                                context.pop();
+                                context.pushNamed(DeletePage.routeName, extra: {
+                                  DeletePage.keyObjectName:
+                                      "Survey ${survey.province}-${survey.nfiPlot}-${survey.measNum}",
+                                  DeletePage.keyDeleteFn: () {
+                                    Database.instance.surveyInfoTablesDao
+                                        .deleteSurvey(survey.id)
+                                        .then((value) {
+                                      ref.refresh(
+                                          updateSurveyHeaderListProvider);
+                                      context.goNamed(DashboardPage.routeName);
+                                    });
+                                  },
+                                });
+                              },
+                            ),
+                          ),
+                        );
                       },
                     ),
             ),

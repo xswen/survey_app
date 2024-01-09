@@ -26,7 +26,7 @@ class SurveyInfoTablesDao extends DatabaseAccessor<Database>
     (delete(surveyHeaders)..where((tbl) => tbl.id.equals(surveyId))).go();
   }
 
-  void deleteSurvey(int surveyId) async {
+  Future<void> deleteSurvey(int surveyId) async {
     Database db = Database.instance;
     await db.woodyDebrisTablesDao.deleteSummaryWithSurveyId(surveyId);
     await db.surfaceSubstrateTablesDao.deleteSummaryWithSurveyId(surveyId);
