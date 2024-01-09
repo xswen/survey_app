@@ -5,53 +5,32 @@ import 'package:survey_app/enums/enums.dart';
 
 import 'tile_cards.dart';
 
-class TileCardSelection extends StatelessWidget {
-  const TileCardSelection(
+class TileCardTransect extends StatelessWidget {
+  const TileCardTransect(
       {super.key,
       required this.title,
       this.subtitle,
       required this.onPressed,
-      this.status});
+      this.status,
+      this.onDelete});
 
   final String title;
   final String? subtitle;
   final SurveyStatus? status;
   final void Function() onPressed;
+  final void Function()? onDelete;
 
   @override
   Widget build(BuildContext context) {
     return Slidable(
-      startActionPane: ActionPane(
-        motion: const ScrollMotion(),
-        children: [
-          SlidableAction(
-            onPressed: (context) {},
-            backgroundColor: Colors.teal,
-            foregroundColor: Colors.white,
-            icon: FontAwesomeIcons.circleXmark,
-            label: 'Mark as not assessed',
-          ),
-          SlidableAction(
-            onPressed: (context) {},
-            backgroundColor: const Color(0xFFFE4A49),
-            foregroundColor: Colors.white,
-            icon: FontAwesomeIcons.trash,
-            label: 'Delete',
-          ),
-        ],
-      ),
+      enabled: status != SurveyStatus.complete,
       endActionPane: ActionPane(
         motion: const ScrollMotion(),
         children: [
           SlidableAction(
-            onPressed: (context) {},
-            backgroundColor: Colors.teal,
-            foregroundColor: Colors.white,
-            icon: FontAwesomeIcons.circleXmark,
-            label: 'Mark as not assessed',
-          ),
-          SlidableAction(
-            onPressed: (context) {},
+            onPressed: (context) {
+              onDelete != null ? onDelete!() : null;
+            },
             backgroundColor: const Color(0xFFFE4A49),
             foregroundColor: Colors.white,
             icon: FontAwesomeIcons.trash,

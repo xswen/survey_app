@@ -6,7 +6,7 @@ import 'package:survey_app/widgets/buttons/custom_button_styles.dart';
 
 import '../../providers/survey_info_providers.dart';
 import '../../widgets/date_select.dart';
-import '../../widgets/tile_cards/tile_card_selection.dart';
+import '../../widgets/tile_cards/tile_card_transect.dart';
 import 'ecological_plot_create_plot_page.dart';
 
 class EcologicalPlotSummaryPage extends ConsumerStatefulWidget {
@@ -188,7 +188,7 @@ class EcologicalPlotSummaryPageState
                                   itemCount: transList.length,
                                   itemBuilder: (BuildContext cxt, int index) {
                                     EcpHeaderData ecpH = transList[index];
-                                    return TileCardSelection(
+                                    return TileCardTransect(
                                         title:
                                             "Plot ${ecpH.plotType}${ecpH.ecpNum}",
                                         onPressed: () async {

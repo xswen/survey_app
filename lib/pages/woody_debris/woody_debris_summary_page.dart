@@ -7,7 +7,8 @@ import 'package:survey_app/widgets/buttons/custom_button_styles.dart';
 import '../../providers/survey_info_providers.dart';
 import '../../providers/woody_debris_providers.dart';
 import '../../widgets/date_select.dart';
-import '../../widgets/tile_cards/tile_card_selection.dart';
+import '../../widgets/tile_cards/tile_card_transect.dart';
+import '../delete_page.dart';
 import 'woody_debris_header_measurements_page.dart';
 
 class WoodyDebrisSummaryPage extends ConsumerStatefulWidget {
@@ -205,22 +206,56 @@ class WoodyDebrisSummaryPageState
                             itemCount: transList.length,
                             itemBuilder: (BuildContext cxt, int index) {
                               WoodyDebrisHeaderData wdh = transList[index];
-                              return TileCardSelection(
-                                  title: "Transect ${wdh.transNum}",
-                                  onPressed: () async {
-                                    wd.complete!
-                                        ? Popups.show(
-                                            context,
-                                            Popups.generateNoticeSurveyComplete(
-                                              "Woody Debris",
-                                              () {
-                                                context.pop();
-                                                goToWdhPage(wdh.id);
-                                              },
-                                            ))
-                                        : goToWdhPage(wdh.id);
-                                  },
-                                  status: getStatus(wdh));
+                              return TileCardTransect(
+                                title: "Transect ${wdh.transNum}",
+                                onPressed: () async {
+                                  wd.complete!
+                                      ? Popups.show(
+                                          context,
+                                          Popups.generateNoticeSurveyComplete(
+                                            "Woody Debris",
+                                            () {
+                                              context.pop();
+                                              goToWdhPage(wdh.id);
+                                            },
+                                          ))
+                                      : goToWdhPage(wdh.id);
+                                },
+                                status: getStatus(wdh),
+                                onDelete: () => Popups.show(
+                                  context,
+                                  PopupContinue(
+                                      "Warning: Deleting Woody Debris Transect",
+                                      contentText:
+                                          "You are about to delete transect ${wdh.transNum}. "
+                                          "Are you sure you want to continue?",
+                                      rightBtnOnPressed: () {
+                                    //close popup
+                                    context.pop();
+                                    context.pushNamed(DeletePage.routeName,
+                                        extra: {
+                                          DeletePage.keyObjectName:
+                                              "Woody Debris Transect ${wdh.transNum}",
+                                          DeletePage.keyDeleteFn: () {
+                                            Database
+                                                .instance.woodyDebrisTablesDao
+                                                .deleteWoodyDebrisTransect(
+                                                    wdh.id)
+                                                .then((value) {
+                                              ref.refresh(
+                                                  wdTransListProvider(wdId));
+                                              context.goNamed(
+                                                  WoodyDebrisSummaryPage
+                                                      .routeName,
+                                                  pathParameters: widget
+                                                      .goRouterState
+                                                      .pathParameters);
+                                            });
+                                          },
+                                        });
+                                  }),
+                                ),
+                              );
                             }),
                   );
                 },

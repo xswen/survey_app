@@ -6,9 +6,9 @@ import 'package:survey_app/widgets/popups/popup_create_transect.dart';
 
 import '../../providers/survey_info_providers.dart';
 import '../../widgets/buttons/custom_button_styles.dart';
-
 import '../../widgets/date_select.dart';
-import '../../widgets/tile_cards/tile_card_selection.dart';
+import '../../widgets/tile_cards/tile_card_transect.dart';
+import '../delete_page.dart';
 
 class SurfaceSubstrateSummaryPage extends ConsumerStatefulWidget {
   static const String routeName = "surfaceSubstrateSummary";
@@ -159,7 +159,6 @@ class SurfaceSubstrateSummaryPageState
                               : createTransect(),
                           style: CustomButtonStyles.inactiveButton(
                               isActive: !ss.complete),
-
                           child: const Row(
                             children: [
                               Padding(
@@ -193,23 +192,55 @@ class SurfaceSubstrateSummaryPageState
                               itemBuilder: (BuildContext cxt, int index) {
                                 SurfaceSubstrateHeaderData header =
                                     transList[index];
-                                return TileCardSelection(
-                                    title: "Transect ${header.transNum}",
-                                    onPressed: () async {
-                                      ss.complete
-                                          ? Popups.show(
-                                              context,
-                                              Popups
-                                                  .generateNoticeSurveyComplete(
-                                                "Woody Debris",
-                                                () {
-                                                  context.pop();
-                                                  goToSshPage(header.id);
-                                                },
-                                              ))
-                                          : goToSshPage(header.id);
-                                    },
-                                    status: getStatus(header));
+                                return TileCardTransect(
+                                  title: "Transect ${header.transNum}",
+                                  onPressed: () async {
+                                    ss.complete
+                                        ? Popups.show(
+                                            context,
+                                            Popups.generateNoticeSurveyComplete(
+                                              "Woody Debris",
+                                              () {
+                                                context.pop();
+                                                goToSshPage(header.id);
+                                              },
+                                            ))
+                                        : goToSshPage(header.id);
+                                  },
+                                  status: getStatus(header),
+                                  onDelete: () => Popups.show(
+                                    context,
+                                    PopupContinue(
+                                        "Warning: Deleting Surface Substrate Transect",
+                                        contentText:
+                                            "You are about to delete transect ${header.transNum}. "
+                                            "Are you sure you want to continue?",
+                                        rightBtnOnPressed: () {
+                                      //close popup
+                                      context.pop();
+                                      context.pushNamed(DeletePage.routeName,
+                                          extra: {
+                                            DeletePage.keyObjectName:
+                                                "Surface Substrate Transect ${header.transNum}",
+                                            DeletePage.keyDeleteFn: () {
+                                              Database.instance
+                                                  .surfaceSubstrateTablesDao
+                                                  .deleteSurfaceSubstrateHeader(
+                                                      header.id)
+                                                  .then((value) {
+                                                ref.refresh(
+                                                    ssTransListProvider(ssId));
+                                                context.goNamed(
+                                                    SurfaceSubstrateSummaryPage
+                                                        .routeName,
+                                                    pathParameters: widget
+                                                        .state.pathParameters);
+                                              });
+                                            },
+                                          });
+                                    }),
+                                  ),
+                                );
                               }),
                     );
                   },
