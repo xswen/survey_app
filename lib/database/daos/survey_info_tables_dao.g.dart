@@ -7,4 +7,13 @@ mixin _$SurveyInfoTablesDaoMixin on DatabaseAccessor<Database> {
   $JurisdictionsTable get jurisdictions => attachedDatabase.jurisdictions;
   $PlotsTable get plots => attachedDatabase.plots;
   $SurveyHeadersTable get surveyHeaders => attachedDatabase.surveyHeaders;
+  $WoodyDebrisSummaryTable get woodyDebrisSummary =>
+      attachedDatabase.woodyDebrisSummary;
+  $WoodyDebrisHeaderTable get woodyDebrisHeader =>
+      attachedDatabase.woodyDebrisHeader;
+  $SurfaceSubstrateSummaryTable get surfaceSubstrateSummary =>
+      attachedDatabase.surfaceSubstrateSummary;
+  $EcpSummaryTable get ecpSummary => attachedDatabase.ecpSummary;
+  $SoilPitSummaryTable get soilPitSummary => attachedDatabase.soilPitSummary;
+  $LtpSummaryTable get ltpSummary => attachedDatabase.ltpSummary;
 }

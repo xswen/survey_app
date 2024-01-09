@@ -97,15 +97,46 @@ class DashboardPageState extends ConsumerState<DashboardPage> {
                       itemBuilder: (BuildContext cxt, int index) {
                         SurveyHeader survey = surveys[index];
                         return TitleCardDashboard(
-                          surveyHeader: survey,
-                          onTap: () async {
-                            context.pushNamed(
-                              SurveyInfoPage.routeName,
-                              pathParameters: PathParamGenerator.surveyInfo(
-                                  survey.id.toString()),
+                            surveyHeader: survey,
+                            onTap: () async {
+                              context.pushNamed(
+                                SurveyInfoPage.routeName,
+                                pathParameters: PathParamGenerator.surveyInfo(
+                                    survey.id.toString()),
+                              );
+                            },
+                            onDelete: () => Database
+                                .instance.surveyInfoTablesDao
+                                .deleteSurvey(survey.id)
+                            //     Popups.show(
+                            //   context,
+                            //   PopupContinue(
+                            //     "Warning: Deleting Survey",
+                            //     contentText: "You are about to delete plot "
+                            //         "${ecpH.plotType}${ecpH.ecpNum}. "
+                            //         "Are you sure you want to continue?",
+                            //     rightBtnOnPressed: () {
+                            //       //close popup
+                            //       context.pop();
+                            //       context.pushNamed(DeletePage.routeName, extra: {
+                            //         DeletePage.keyObjectName:
+                            //             "Ecological Plot ${ecpH.plotType}${ecpH.ecpNum}",
+                            //         DeletePage.keyDeleteFn: () {
+                            //           Database.instance.ecologicalPlotTablesDao
+                            //               .deleteEcpHeader(ecpH.id)
+                            //               .then((value) {
+                            //             ref.refresh(ecpTransListProvider(ecpId));
+                            //             context.goNamed(
+                            //                 EcologicalPlotSummaryPage.routeName,
+                            //                 pathParameters:
+                            //                     widget.state.pathParameters);
+                            //           });
+                            //         },
+                            //       });
+                            //     },
+                            //   ),
+                            // ),
                             );
-                          },
-                        );
                       },
                     ),
             ),

@@ -6,10 +6,14 @@ import 'package:survey_app/widgets/date_select.dart';
 
 class TitleCardDashboard extends StatelessWidget {
   const TitleCardDashboard(
-      {super.key, required this.surveyHeader, required this.onTap});
+      {super.key,
+      required this.surveyHeader,
+      required this.onTap,
+      required this.onDelete});
 
   final SurveyHeader surveyHeader;
   final void Function() onTap;
+  final void Function() onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +25,7 @@ class TitleCardDashboard extends StatelessWidget {
             motion: const ScrollMotion(),
             children: [
               SlidableAction(
-                onPressed: (context) {},
+                onPressed: (context) => onDelete(),
                 backgroundColor: const Color(0xFFFE4A49),
                 foregroundColor: Colors.white,
                 icon: Icons.delete,

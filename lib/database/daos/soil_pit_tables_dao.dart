@@ -36,6 +36,14 @@ class SoilPitTablesDao extends DatabaseAccessor<Database>
   }
 
   //====================Deletion====================
+  Future<void> deleteSummaryWithSurveyId(int id) async {
+    SoilPitSummaryData? summary = await (select(soilPitSummary)
+          ..where((tbl) => tbl.surveyId.equals(id)))
+        .getSingleOrNull();
+
+    summary != null ? deleteSoilSiteInfoFromSummaryId(summary.id) : null;
+  }
+
   Future<void> deleteSoilPitSummary(int id) async {
     await deleteSoilSiteInfoFromSummaryId(id);
     await (delete(soilPitFeature)

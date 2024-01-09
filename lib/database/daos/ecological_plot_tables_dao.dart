@@ -34,6 +34,14 @@ class EcologicalPlotTablesDao extends DatabaseAccessor<Database>
   }
 
   //====================Deletion====================
+  Future<void> deleteSummaryWithSurveyId(int id) async {
+    EcpSummaryData? summary = await (select(ecpSummary)
+          ..where((tbl) => tbl.surveyId.equals(id)))
+        .getSingleOrNull();
+
+    summary != null ? deleteEcpSummary(summary.id) : null;
+  }
+
   Future<void> deleteEcpSummary(int id) async {
     final headers = await getHeaderWithEcpSummaryId(id);
     for (final header in headers) {

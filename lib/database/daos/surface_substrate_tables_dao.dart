@@ -35,6 +35,15 @@ class SurfaceSubstrateTablesDao extends DatabaseAccessor<Database>
   }
 
   //====================Deletion====================
+  Future<void> deleteSummaryWithSurveyId(int id) async {
+    SurfaceSubstrateSummaryData? summary =
+        await (select(surfaceSubstrateSummary)
+              ..where((tbl) => tbl.surveyId.equals(id)))
+            .getSingleOrNull();
+
+    summary != null ? deleteSurfaceSubstrateSummary(summary.id) : null;
+  }
+
   Future<void> deleteSurfaceSubstrateSummary(int summaryId) async {
     // First, delete related SurfaceSubstrateHeaders
     await deleteSurfaceSubstrateHeadersBySummaryId(summaryId);

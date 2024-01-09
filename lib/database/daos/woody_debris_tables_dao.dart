@@ -45,6 +45,14 @@ class WoodyDebrisTablesDao extends DatabaseAccessor<Database>
   }
 
   //==================Deletion===============================
+  Future<void> deleteSummaryWithSurveyId(int id) async {
+    WoodyDebrisSummaryData? wdS = await (select(woodyDebrisSummary)
+          ..where((tbl) => tbl.surveyId.equals(id)))
+        .getSingleOrNull();
+
+    wdS != null ? deleteWoodyDebrisSummary(wdS.id) : null;
+  }
+
   Future<void> deleteWoodyDebrisSummary(int id) async {
     List<WoodyDebrisHeaderData> wdHList = await getWdHeadersFromWdSId(id);
 
