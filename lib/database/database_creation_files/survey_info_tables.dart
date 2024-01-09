@@ -18,3 +18,65 @@ class SurveyHeaders extends Table {
   List<String> get customConstraints =>
       ['UNIQUE (nfi_plot, meas_num, province)'];
 }
+
+class SurveySummary extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get surveyId => integer().unique().references(SurveyHeaders, #id)();
+  BoolColumn get notAssessed => boolean().withDefault(const Constant(false))();
+  BoolColumn get complete => boolean().withDefault(const Constant(false))();
+  IntColumn get referenceTree => integer().nullable()();
+  TextColumn get crewOne => text().nullable()();
+  TextColumn get crewTwo => text().nullable()();
+  TextColumn get crewThree => text().nullable()();
+}
+
+class SurveyHeaderGroundPhoto extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get surveyId => integer().unique().references(SurveyHeaders, #id)();
+  BoolColumn get plotPin => boolean().withDefault(const Constant(false))();
+  BoolColumn get transectOneFifteenUnder =>
+      boolean().withDefault(const Constant(false))();
+  BoolColumn get transectOneFifteenOver =>
+      boolean().withDefault(const Constant(false))();
+  BoolColumn get transectTwoFifteenUnder =>
+      boolean().withDefault(const Constant(false))();
+  BoolColumn get transectTwoFifteenOver =>
+      boolean().withDefault(const Constant(false))();
+  BoolColumn get horizontal => boolean().withDefault(const Constant(false))();
+  BoolColumn get canopy => boolean().withDefault(const Constant(false))();
+  BoolColumn get soilProfile => boolean().withDefault(const Constant(false))();
+  BoolColumn get otherOne => boolean().withDefault(const Constant(false))();
+  BoolColumn get otherTwo => boolean().withDefault(const Constant(false))();
+  BoolColumn get otherThree => boolean().withDefault(const Constant(false))();
+  BoolColumn get otherFour => boolean().withDefault(const Constant(false))();
+}
+
+class SurveyHeaderTree extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get surveyId => integer().unique().references(SurveyHeaders, #id)();
+  TextColumn get fieldResponsibility => text()();
+  TextColumn get fieldCheckBy => text()();
+  DateTimeColumn get fieldDate => dateTime()();
+  TextColumn get officeCheckBy => text()();
+  DateTimeColumn get officeDate => dateTime()();
+}
+
+class SurveyHeaderEcological extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get surveyId => integer().unique().references(SurveyHeaders, #id)();
+  TextColumn get fieldResponsibility => text()();
+  TextColumn get fieldCheckBy => text()();
+  DateTimeColumn get fieldDate => dateTime()();
+  TextColumn get officeCheckBy => text()();
+  DateTimeColumn get officeDate => dateTime()();
+}
+
+class SurveyHeaderSoil extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get surveyId => integer().unique().references(SurveyHeaders, #id)();
+  TextColumn get fieldResponsibility => text()();
+  TextColumn get fieldCheckBy => text()();
+  DateTimeColumn get fieldDate => dateTime()();
+  TextColumn get officeCheckBy => text()();
+  DateTimeColumn get officeDate => dateTime()();
+}

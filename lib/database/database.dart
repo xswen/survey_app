@@ -54,6 +54,11 @@ const List<Type> _tables = [
   MetaComment,
   //Survey Tables
   SurveyHeaders,
+  SurveySummary,
+  SurveyHeaderGroundPhoto,
+  SurveyHeaderTree,
+  SurveyHeaderEcological,
+  SurveyHeaderSoil,
   //Woody Debris Tables
   WoodyDebrisSummary,
   WoodyDebrisHeader,
@@ -576,6 +581,13 @@ class Database extends _$Database {
     const String surveyCardData = "surveyCardData";
 
     var operations = [
+      {
+        category: SurveyCardCategories.surveyHeader,
+        name: "Survey Header",
+        surveyCardData: await (select(surveySummary)
+              ..where((tbl) => tbl.surveyId.equals(surveyId)))
+            .getSingleOrNull()
+      },
       {
         category: SurveyCardCategories.woodyDebris,
         name: "Woody Debris",
