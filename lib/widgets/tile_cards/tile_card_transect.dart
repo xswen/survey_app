@@ -12,13 +12,13 @@ class TileCardTransect extends StatelessWidget {
       this.subtitle,
       required this.onPressed,
       this.status,
-      this.onDelete});
+      required this.onDelete});
 
   final String title;
   final String? subtitle;
   final SurveyStatus? status;
   final void Function() onPressed;
-  final void Function()? onDelete;
+  final void Function() onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +28,7 @@ class TileCardTransect extends StatelessWidget {
         motion: const ScrollMotion(),
         children: [
           SlidableAction(
-            onPressed: (context) {
-              onDelete != null ? onDelete!() : null;
-            },
+            onPressed: (context) => onDelete(),
             backgroundColor: const Color(0xFFFE4A49),
             foregroundColor: Colors.white,
             icon: FontAwesomeIcons.trash,

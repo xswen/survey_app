@@ -7,6 +7,7 @@ import 'package:survey_app/widgets/buttons/custom_button_styles.dart';
 import '../../providers/survey_info_providers.dart';
 import '../../widgets/date_select.dart';
 import '../../widgets/tile_cards/tile_card_transect.dart';
+import '../delete_page.dart';
 import 'ecological_plot_create_plot_page.dart';
 
 class EcologicalPlotSummaryPage extends ConsumerStatefulWidget {
@@ -189,23 +190,59 @@ class EcologicalPlotSummaryPageState
                                   itemBuilder: (BuildContext cxt, int index) {
                                     EcpHeaderData ecpH = transList[index];
                                     return TileCardTransect(
-                                        title:
-                                            "Plot ${ecpH.plotType}${ecpH.ecpNum}",
-                                        onPressed: () async {
-                                          ecp.complete
-                                              ? Popups.show(
-                                                  context,
-                                                  Popups
-                                                      .generateNoticeSurveyComplete(
-                                                    "Ecological Plot",
-                                                    () {
-                                                      context.pop();
-                                                      goToEcpHPage(ecpH.id);
-                                                    },
-                                                  ))
-                                              : goToEcpHPage(ecpH.id);
-                                        },
-                                        status: getStatus(ecpH));
+                                      title:
+                                          "Plot ${ecpH.plotType}${ecpH.ecpNum}",
+                                      onPressed: () async {
+                                        ecp.complete
+                                            ? Popups.show(
+                                                context,
+                                                Popups
+                                                    .generateNoticeSurveyComplete(
+                                                  "Ecological Plot",
+                                                  () {
+                                                    context.pop();
+                                                    goToEcpHPage(ecpH.id);
+                                                  },
+                                                ))
+                                            : goToEcpHPage(ecpH.id);
+                                      },
+                                      status: getStatus(ecpH),
+                                      onDelete: () => Popups.show(
+                                        context,
+                                        PopupContinue(
+                                            "Warning: Deleting Ecological Plot",
+                                            contentText:
+                                                "You are about to delete plot "
+                                                "${ecpH.plotType}${ecpH.ecpNum}. "
+                                                "Are you sure you want to continue?",
+                                            rightBtnOnPressed: () {
+                                          //close popup
+                                          context.pop();
+                                          context.pushNamed(
+                                              DeletePage.routeName,
+                                              extra: {
+                                                DeletePage.keyObjectName:
+                                                    "Ecological Plot ${ecpH.plotType}${ecpH.ecpNum}",
+                                                DeletePage.keyDeleteFn: () {
+                                                  Database.instance
+                                                      .ecologicalPlotTablesDao
+                                                      .deleteEcpHeader(ecpH.id)
+                                                      .then((value) {
+                                                    ref.refresh(
+                                                        ecpTransListProvider(
+                                                            ecpId));
+                                                    context.goNamed(
+                                                        EcologicalPlotSummaryPage
+                                                            .routeName,
+                                                        pathParameters: widget
+                                                            .state
+                                                            .pathParameters);
+                                                  });
+                                                },
+                                              });
+                                        }),
+                                      ),
+                                    );
                                   }),
                         );
                       },
