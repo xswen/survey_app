@@ -24,7 +24,28 @@ class SoilPitTablesDao extends DatabaseAccessor<Database>
     delete(soilPitHorizonDescription).go();
   }
 
+  Future<void> markNotAssessed(int surveyId, int? spId) async {
+    if (spId != null) {
+      var tmp = await deleteSoilPitSummary(spId);
+    }
+
+    int tmp2 = await addSummary(SoilPitSummaryCompanion(
+        surveyId: Value(surveyId),
+        measDate: Value(DateTime.now()),
+        notAssessed: const Value(true)));
+  }
+
   //====================Deletion====================
+  Future<void> deleteSoilPitSummary(int id) async {
+    await deleteSoilSiteInfoFromSummaryId(id);
+    await (delete(soilPitFeature)
+          ..where((tbl) => tbl.soilPitSummaryId.equals(id)))
+        .go();
+    await (delete(soilPitHorizonDescription)
+          ..where((tbl) => tbl.soilPitSummaryId.equals(id)))
+        .go();
+    await (delete(soilPitSummary)..where((tbl) => tbl.id.equals(id))).go();
+  }
 
   Future<void> deleteSoilSiteInfoFromSummaryId(int id) async {
     await (delete(soilSiteInfo)

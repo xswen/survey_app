@@ -164,7 +164,7 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
         break;
       case SurveyCardCategories.soilPit:
         markNotAssessed =
-            db.ecologicalPlotTablesDao.markNotAssessed(surveyId, data?.id);
+            db.soilPitTablesDao.markNotAssessed(surveyId, data?.id);
         break;
       default:
         debugPrint("Error: case not handled for $category");
