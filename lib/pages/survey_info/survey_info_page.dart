@@ -139,27 +139,18 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
     final Database db = Database.instance;
 
     void mark() {
+      Future<void>? tmp;
+
       switch (category) {
         case SurveyCardCategories.woodyDebris:
-          db.woodyDebrisTablesDao
-              .markNotAssessed(surveyId, wdId: data?.id)
-              .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
+          tmp =
+              db.woodyDebrisTablesDao.markNotAssessed(surveyId, wdId: data?.id);
           break;
-        case SurveyCardCategories.surfaceSubstrate:
-          // data != null
-          //     ? Popups.show(
-          //         context,
-          //         PopupsSurveyInfoMarkNotAssessed(
-          //           rightBtnOnPressed: () => db.woodyDebrisTablesDao
-          //               .markNotAssessed(surveyId)
-          //               .then((value) {
-          //             ref.refresh(updateSurveyCardProvider(surveyId));
-          //             context.pop();
-          //           }),
-          //         ))
-          //     : db.woodyDebrisTablesDao.markNotAssessed(surveyId).then(
-          //         (value) => ref.refresh(updateSurveyCardProvider(surveyId)));
-          break;
+        // case SurveyCardCategories.surfaceSubstrate:
+        //   db.surfaceSubstrateTablesDao
+        //       .markNotAssessed(surveyId, ssId: data?.id)
+        //       .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
+        //   break;
 
         //   int id = data == null
         //       ? (await db.surfaceSubstrateTablesDao
@@ -205,6 +196,8 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
         default:
           debugPrint("Error: case not handled for $category");
       }
+
+      tmp?.then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
     }
 
     data != null

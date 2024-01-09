@@ -23,9 +23,9 @@ class SurfaceSubstrateTablesDao extends DatabaseAccessor<Database>
     delete(surfaceSubstrateTally).go();
   }
 
-  Future<void> markNotAssessed(int surveyId, {bool ssIdExists = false}) async {
-    if (ssIdExists) {
-      var tmp = await deleteSurfaceSubstrateSummary(surveyId);
+  Future<void> markNotAssessed(int surveyId, {int? ssId}) async {
+    if (ssId != null) {
+      var tmp = await deleteSurfaceSubstrateSummary(ssId);
     }
 
     int tmp2 = await addSsSummary(SurfaceSubstrateSummaryCompanion(
