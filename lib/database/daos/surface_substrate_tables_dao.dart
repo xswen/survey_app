@@ -23,7 +23,7 @@ class SurfaceSubstrateTablesDao extends DatabaseAccessor<Database>
     delete(surfaceSubstrateTally).go();
   }
 
-  Future<void> markNotAssessed(int surveyId, {int? ssId}) async {
+  Future<void> markNotAssessed(int surveyId, int? ssId) async {
     if (ssId != null) {
       var tmp = await deleteSurfaceSubstrateSummary(ssId);
     }
@@ -61,9 +61,11 @@ class SurfaceSubstrateTablesDao extends DatabaseAccessor<Database>
         .go();
   }
 
-  Future<void> deleteSurfaceSubstrateHeader(int id) async =>
-      await (delete(surfaceSubstrateHeader)..where((tbl) => tbl.id.equals(id)))
-          .go();
+  Future<void> deleteSurfaceSubstrateHeader(int id) async {
+    await deleteSurfaceSubstrateTallyByHeaderId(id);
+    await (delete(surfaceSubstrateHeader)..where((tbl) => tbl.id.equals(id)))
+        .go();
+  }
 
   Future<void> deleteSurfaceSubstrateTallyByHeaderId(int headerId) async {
     await (delete(surfaceSubstrateTally)
@@ -80,10 +82,17 @@ class SurfaceSubstrateTablesDao extends DatabaseAccessor<Database>
             ..where((tbl) => tbl.surveyId.equals(surveyId)))
           .getSingle();
 
-  Future<SurfaceSubstrateSummaryData> addAndReturnDefaultSsSummary(
+  Future<SurfaceSubstrateSummaryData> setAndReturnDefaultSsSummary(
       int surveyId, DateTime measDate) async {
-    int summaryId = await addSsSummary(SurfaceSubstrateSummaryCompanion(
-        surveyId: Value(surveyId), measDate: Value(measDate)));
+    SurfaceSubstrateSummaryCompanion entry = SurfaceSubstrateSummaryCompanion(
+        surveyId: Value(surveyId),
+        measDate: Value(measDate),
+        complete: const Value(false),
+        notAssessed: const Value(false));
+
+    await into(surfaceSubstrateSummary).insert(entry,
+        onConflict: DoUpdate((old) => entry,
+            target: [surfaceSubstrateSummary.surveyId]));
 
     return getSsSummary(surveyId);
   }

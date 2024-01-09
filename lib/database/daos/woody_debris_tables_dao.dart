@@ -33,7 +33,7 @@ class WoodyDebrisTablesDao extends DatabaseAccessor<Database>
     delete(woodyDebrisRound).go();
   }
 
-  Future<void> markNotAssessed(int surveyId, {int? wdId}) async {
+  Future<void> markNotAssessed(int surveyId, int? wdId) async {
     if (wdId != null) {
       var tmp = await deleteWoodyDebrisSummary(wdId);
     }
@@ -91,10 +91,17 @@ class WoodyDebrisTablesDao extends DatabaseAccessor<Database>
             ..where((tbl) => tbl.surveyId.equals(surveyId)))
           .getSingle();
 
-  Future<WoodyDebrisSummaryData> addAndReturnDefaultWdSummary(
+  Future<WoodyDebrisSummaryData> setAndReturnDefaultWdSummary(
       int surveyId, DateTime measDate) async {
-    int tmp = await addWdSummary(WoodyDebrisSummaryCompanion(
-        surveyId: Value(surveyId), measDate: Value(measDate)));
+    WoodyDebrisSummaryCompanion entry = WoodyDebrisSummaryCompanion(
+        surveyId: Value(surveyId),
+        measDate: Value(measDate),
+        complete: const Value(false),
+        notAssessed: const Value(false));
+
+    await into(woodyDebrisSummary).insert(entry,
+        onConflict:
+            DoUpdate((old) => entry, target: [woodyDebrisSummary.surveyId]));
 
     return getWdSummaryFromSurveyId(surveyId);
   }
