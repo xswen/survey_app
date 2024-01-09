@@ -146,11 +146,10 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
           tmp =
               db.woodyDebrisTablesDao.markNotAssessed(surveyId, wdId: data?.id);
           break;
-        // case SurveyCardCategories.surfaceSubstrate:
-        //   db.surfaceSubstrateTablesDao
-        //       .markNotAssessed(surveyId, ssId: data?.id)
-        //       .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
-        //   break;
+        case SurveyCardCategories.surfaceSubstrate:
+          tmp = db.surfaceSubstrateTablesDao
+              .markNotAssessed(surveyId, ssId: data?.id);
+          break;
 
         //   int id = data == null
         //       ? (await db.surfaceSubstrateTablesDao
@@ -241,7 +240,6 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
                     (value) => ref.refresh(updateSurveyCardProvider(surveyId)));
           }
         }
-
         if (data == null) {
           nav((await db.woodyDebrisTablesDao
                   .addAndReturnDefaultWdSummary(survey.id, survey.measDate))
@@ -258,22 +256,37 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
             nav(data.id);
           }
         }
-
         break;
+
       case SurveyCardCategories.surfaceSubstrate:
-        int id = data == null
-            ? (await db.surfaceSubstrateTablesDao
-                    .addAndReturnDefaultSsSummary(survey.id, survey.measDate))
-                .id
-            : data.id;
-        if (context.mounted) {
-          context
-              .pushNamed(SurfaceSubstrateSummaryPage.routeName,
-                  pathParameters: PathParamGenerator.ssSummary(
-                      widget.goRouterState, id.toString()))
-              .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
+        void nav(int id) {
+          if (context.mounted) {
+            context
+                .pushNamed(SurfaceSubstrateSummaryPage.routeName,
+                    pathParameters: PathParamGenerator.ssSummary(
+                        widget.goRouterState, id.toString()))
+                .then(
+                    (value) => ref.refresh(updateSurveyCardProvider(surveyId)));
+          }
+        }
+        if (data == null) {
+          nav((await db.surfaceSubstrateTablesDao
+                  .addAndReturnDefaultSsSummary(survey.id, survey.measDate))
+              .id);
+        } else {
+          if (data.notAssessed) {
+            handleNotAssessed(() => (db.update(db.surfaceSubstrateSummary)
+                  ..where((t) => t.id.equals(data.id)))
+                .write(SurfaceSubstrateSummaryCompanion(
+                    notAssessed: const d.Value(false),
+                    measDate: d.Value(survey.measDate)))
+                .then((value) => nav(data.id)));
+          } else {
+            nav(data.id);
+          }
         }
         break;
+
       case SurveyCardCategories.ecologicalPlot:
         int id = data == null
             ? (await db.ecologicalPlotTablesDao
