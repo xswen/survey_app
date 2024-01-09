@@ -2,6 +2,7 @@ import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/pages/stump_plot/stump_plot_species_entry_page.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import '../../providers/survey_info_providers.dart';
 import '../../widgets/data_input/data_input.dart';
 import '../../widgets/date_select.dart';
 import '../../widgets/dropdowns/drop_down_default.dart';
@@ -52,6 +53,13 @@ class StumpPlotSummaryPage extends ConsumerStatefulWidget {
 
 class StumpPlotSummaryPageState extends ConsumerState<StumpPlotSummaryPage> {
   final ColNames columnData = ColNames();
+  late final int surveyId;
+
+  @override
+  void initState() {
+    surveyId = PathParamValue.getSurveyId(widget.state)!;
+    super.initState();
+  }
 
   List<DataGridRow> generateDataGridRows(List<String> plots) {
     return [
@@ -96,7 +104,7 @@ class StumpPlotSummaryPageState extends ConsumerState<StumpPlotSummaryPage> {
       appBar: OurAppBar(
         "Stump Plot",
         backFn: () {
-          //ref.refresh(updateSurveyCardProvider(surveyId));
+          ref.refresh(updateSurveyCardProvider(surveyId));
           context.pop();
         },
       ),

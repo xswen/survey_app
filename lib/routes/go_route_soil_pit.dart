@@ -6,7 +6,7 @@ import 'package:survey_app/pages/soil_pit/soil_pit_horizon_description_page.dart
 import 'package:survey_app/routes/path_parameters/path_param_keys.dart';
 
 import '../pages/soil_pit/soil_pit_site_info_page.dart';
-import '../pages/soil_pit/soil_pit_summary_table.dart';
+import '../pages/soil_pit/soil_pit_summary_page.dart';
 
 GoRoute goRouteSoilPit = GoRoute(
     name: SoilPitSummaryPage.routeName,

@@ -17,7 +17,7 @@ import '../ecological_plot/ecological_plot_summary_page.dart';
 import '../large_tree_plot/large_tree_plot_summary.dart';
 import '../shrub_plot/shrub_plot_summary.dart';
 import '../small_tree_plot/small_tree_plot_summary.dart';
-import '../soil_pit/soil_pit_summary_table.dart';
+import '../soil_pit/soil_pit_summary_page.dart';
 import '../stump_plot/stump_plot_summary_page.dart';
 import '../surface_substrate/surface_substrate_summary_page.dart';
 import '../woody_debris/woody_debris_summary_page.dart';
