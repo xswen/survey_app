@@ -3,6 +3,7 @@ import 'package:survey_app/pages/large_tree_plot/large_tree_plot_site_tree_info_
 import 'package:survey_app/pages/large_tree_plot/large_tree_plot_tree_info_list_page.dart';
 import 'package:survey_app/pages/large_tree_plot/large_tree_plot_tree_removed_list_page.dart';
 
+import '../../providers/survey_info_providers.dart';
 import '../../widgets/buttons/icon_nav_button.dart';
 import '../../widgets/data_input/data_input.dart';
 import '../../widgets/dropdowns/drop_down_default.dart';
@@ -19,6 +20,13 @@ class LargeTreePlotSummaryPage extends ConsumerStatefulWidget {
 
 class LargeTreePlotSummaryPageState
     extends ConsumerState<LargeTreePlotSummaryPage> {
+  late final int surveyId;
+  @override
+  void initState() {
+    surveyId = PathParamValue.getSurveyId(widget.state)!;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final db = ref.read(databaseProvider);
@@ -27,7 +35,7 @@ class LargeTreePlotSummaryPageState
       appBar: OurAppBar(
         "Large Tree Plot",
         backFn: () {
-          //ref.refresh(updateSurveyCardProvider(surveyId));
+          ref.refresh(updateSurveyCardProvider(surveyId));
           context.pop();
         },
       ),

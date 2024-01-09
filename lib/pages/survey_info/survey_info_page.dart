@@ -1,12 +1,6 @@
 import 'package:drift/drift.dart' as d;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
-import 'package:survey_app/pages/ecological_plot/ecological_plot_summary_page.dart';
-import 'package:survey_app/pages/large_tree_plot/large_tree_plot_summary.dart';
-import 'package:survey_app/pages/shrub_plot/shrub_plot_summary.dart';
-import 'package:survey_app/pages/small_tree_plot/small_tree_plot_summary.dart';
-import 'package:survey_app/pages/stump_plot/stump_plot_summary_page.dart';
-import 'package:survey_app/pages/surface_substrate/surface_substrate_summary_page.dart';
 import 'package:survey_app/widgets/popups/popups_survey_info_mark_not_assessed.dart';
 import 'package:survey_app/widgets/text/notify_no_filter_results.dart';
 import 'package:survey_app/widgets/tile_cards/tile_card_survey.dart';
@@ -19,7 +13,13 @@ import '../../widgets/tags/tag_chips.dart';
 import '../../widgets/text/text_line_label.dart';
 import '../../widgets/titled_border.dart';
 import '../../wrappers/survey_card.dart';
-import '../soil_pit/soil_pit_summary_table.dart';
+import '../ecological_plot/ecological_plot_summary_page.dart';
+import '../large_tree_plot/large_tree_plot_summary.dart';
+import '../shrub_plot/shrub_plot_summary.dart';
+import '../small_tree_plot/small_tree_plot_summary.dart';
+import '../soil_pit/soil_pit_summary_page.dart';
+import '../stump_plot/stump_plot_summary_page.dart';
+import '../surface_substrate/surface_substrate_summary_page.dart';
 import '../woody_debris/woody_debris_summary_page.dart';
 import 'create_survey_page.dart';
 
@@ -46,6 +46,7 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
   Map<SurveyStatus, List<String>>? checkAllComplete(List<SurveyCard> cards) {
     List<String> notStarted = [];
     List<String> inProgress = [];
+    List<String> notAssessed = [];
     bool oneComplete = false;
 
     for (SurveyCard card in cards) {
@@ -56,6 +57,8 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
         notStarted.add(card.name);
       } else if (!oneComplete && status == SurveyStatus.complete) {
         oneComplete = true;
+      } else if (status == SurveyStatus.notAssessed) {
+        notAssessed.add(card.name);
       }
     }
 
@@ -63,18 +66,20 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
     if (inProgress.isNotEmpty) {
       return {SurveyStatus.inProgress: inProgress};
     }
-    //Case there are no surveys in progress or marked as complete
+    //Case there is none in progress, but some are still left not started
+    else if (notStarted.isNotEmpty) {
+      return {SurveyStatus.notStarted: notStarted};
+    }
+    //All surveys are accounted for but not a single survey is marked as complete
     else if (!oneComplete) {
       return {
         SurveyStatus.complete: ["None complete"]
       };
-    }
-    //Case there is none in progress, at least one marked as complete
-    else if (notStarted.isNotEmpty) {
-      return {SurveyStatus.notStarted: notStarted};
+    } else if (notAssessed.isNotEmpty) {
+      return {SurveyStatus.notAssessed: notAssessed};
     }
 
-    //Case every card is marked complete
+    //Case every card is marked complete or not assessed
     return null;
   }
 
@@ -114,14 +119,24 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
             Popups.show(context, popup);
             return;
           }
-          getMarkNotAssessed(survey, category, data);
+          data != null
+              ? Popups.show(context,
+                  PopupsSurveyInfoMarkNotAssessed(rightBtnOnPressed: () {
+                  getMarkNotAssessed(category, data);
+                  context.pop();
+                }))
+              : getMarkNotAssessed(category, data);
         },
         onPressed: () {
           if (survey.complete && data == null) {
             Popups.show(context, popup);
             return;
           }
-          getNav(survey, category, data);
+          if (data?.notAssessed ?? false) {
+            handleNotAssessed(() => getNav(survey, category, data));
+          } else {
+            getNav(survey, category, data);
+          }
         },
       ));
     }
@@ -129,71 +144,50 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
     return tileCards;
   }
 
-  void getMarkNotAssessed(
-      SurveyHeader survey, SurveyCardCategories category, dynamic data) async {
+  void getMarkNotAssessed(SurveyCardCategories category, dynamic data) async {
     final Database db = Database.instance;
+
+    Future<void>? markNotAssessed;
 
     switch (category) {
       case SurveyCardCategories.woodyDebris:
-        data != null
-            ? Popups.show(
-                context,
-                PopupsSurveyInfoMarkNotAssessed(
-                  rightBtnOnPressed: () => db.woodyDebrisTablesDao
-                      .markNotAssessed(surveyId, wdIdExists: true)
-                      .then((value) {
-                    ref.refresh(updateSurveyCardProvider(surveyId));
-                    context.pop();
-                  }),
-                ))
-            : db.woodyDebrisTablesDao.markNotAssessed(surveyId).then(
-                (value) => ref.refresh(updateSurveyCardProvider(surveyId)));
+        markNotAssessed =
+            db.woodyDebrisTablesDao.markNotAssessed(surveyId, data?.id);
         break;
-      // case SurveyCardCategories.surfaceSubstrate:
-      //   int id = data == null
-      //       ? (await db.surfaceSubstrateTablesDao
-      //               .addAndReturnDefaultSsSummary(survey.id, survey.measDate))
-      //           .id
-      //       : data.id;
-      //   if (context.mounted) {
-      //     context
-      //         .pushNamed(SurfaceSubstrateSummaryPage.routeName,
-      //             pathParameters: PathParamGenerator.ssSummary(
-      //                 widget.goRouterState, id.toString()))
-      //         .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
-      //   }
-      //   break;
-      // case SurveyCardCategories.ecologicalPlot:
-      //   int id = data == null
-      //       ? (await db.ecologicalPlotTablesDao
-      //               .addAndReturnDefaultSummary(survey.id, survey.measDate))
-      //           .id
-      //       : data.id;
-      //   if (context.mounted) {
-      //     context
-      //         .pushNamed(EcologicalPlotSummaryPage.routeName,
-      //             pathParameters: PathParamGenerator.ecpSummary(
-      //                 widget.goRouterState, id.toString()))
-      //         .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
-      //   }
-      //   break;
-      // case SurveyCardCategories.soilPit:
-      //   int id = data == null
-      //       ? (await db.soilPitTablesDao
-      //               .addAndReturnDefaultSummary(survey.id, survey.measDate))
-      //           .id
-      //       : data.id;
-      //   if (context.mounted) {
-      //     context
-      //         .pushNamed(SoilPitSummaryPage.routeName,
-      //             pathParameters: PathParamGenerator.soilPitSummary(
-      //                 widget.goRouterState, id.toString()))
-      //         .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
-      //   }
-      //   break;
+      case SurveyCardCategories.surfaceSubstrate:
+        markNotAssessed =
+            db.surfaceSubstrateTablesDao.markNotAssessed(surveyId, data?.id);
+        break;
+      case SurveyCardCategories.ecologicalPlot:
+        markNotAssessed =
+            db.ecologicalPlotTablesDao.markNotAssessed(surveyId, data?.id);
+        break;
+      case SurveyCardCategories.soilPit:
+        markNotAssessed =
+            db.soilPitTablesDao.markNotAssessed(surveyId, data?.id);
+        break;
       default:
         debugPrint("Error: case not handled for $category");
+        return;
     }
+
+    markNotAssessed
+        .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
+  }
+
+  void handleNotAssessed(Function() fn) {
+    Popups.show(
+        context,
+        PopupContinue(
+          "Warning: Card marked as 'Not Assessed'",
+          contentText: "This card has already been marked as not assessed. "
+              "Pressing continue will mark it as assessed. Are you sure you"
+              " want to continue?",
+          rightBtnOnPressed: () {
+            fn();
+            context.pop();
+          },
+        ));
   }
 
   //Behaviour when tile is clicked. Set state and regenerate cards on return.
@@ -201,73 +195,41 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
       SurveyHeader survey, SurveyCardCategories category, dynamic data) async {
     final Database db = Database.instance;
 
+    Future<int> getId(Future<dynamic> Function() fn) async =>
+        (data == null || data.notAssessed) ? (await fn()).id : data.id;
+
     switch (category) {
       case SurveyCardCategories.woodyDebris:
-        int id = 0;
-        if (data == null) {
-          id = (await db.woodyDebrisTablesDao
-                  .addAndReturnDefaultWdSummary(survey.id, survey.measDate))
-              .id;
-        } else {
-          id = data.id;
-          if (data.notAssessed) {
-            await (db.update(db.woodyDebrisSummary)
-                  ..where((t) => t.id.equals(id)))
-                .write(WoodyDebrisSummaryCompanion(
-                    notAssessed: const d.Value(false),
-                    measDate: d.Value(survey.measDate)));
-          }
-        }
-
-        if (context.mounted) {
-          context
-              .pushNamed(WoodyDebrisSummaryPage.routeName,
-                  pathParameters: PathParamGenerator.wdSummary(
-                      widget.goRouterState, id.toString()))
-              .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
-        }
+        getId(() => db.woodyDebrisTablesDao
+            .setAndReturnDefaultWdSummary(survey.id, survey.measDate)).then(
+          (id) => context.pushNamed(WoodyDebrisSummaryPage.routeName,
+              pathParameters: PathParamGenerator.wdSummary(
+                  widget.goRouterState, id.toString())),
+        );
         break;
       case SurveyCardCategories.surfaceSubstrate:
-        int id = data == null
-            ? (await db.surfaceSubstrateTablesDao
-                    .addAndReturnDefaultSsSummary(survey.id, survey.measDate))
-                .id
-            : data.id;
-        if (context.mounted) {
-          context
-              .pushNamed(SurfaceSubstrateSummaryPage.routeName,
-                  pathParameters: PathParamGenerator.ssSummary(
-                      widget.goRouterState, id.toString()))
-              .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
-        }
+        getId(() => db.surfaceSubstrateTablesDao
+            .setAndReturnDefaultSsSummary(survey.id, survey.measDate)).then(
+          (id) => context.pushNamed(SurfaceSubstrateSummaryPage.routeName,
+              pathParameters: PathParamGenerator.ssSummary(
+                  widget.goRouterState, id.toString())),
+        );
         break;
       case SurveyCardCategories.ecologicalPlot:
-        int id = data == null
-            ? (await db.ecologicalPlotTablesDao
-                    .addAndReturnDefaultSummary(survey.id, survey.measDate))
-                .id
-            : data.id;
-        if (context.mounted) {
-          context
-              .pushNamed(EcologicalPlotSummaryPage.routeName,
-                  pathParameters: PathParamGenerator.ecpSummary(
-                      widget.goRouterState, id.toString()))
-              .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
-        }
+        getId(() => db.ecologicalPlotTablesDao
+            .setAndReturnDefaultSummary(survey.id, survey.measDate)).then(
+          (id) => context.pushNamed(EcologicalPlotSummaryPage.routeName,
+              pathParameters: PathParamGenerator.ecpSummary(
+                  widget.goRouterState, id.toString())),
+        );
         break;
       case SurveyCardCategories.soilPit:
-        int id = data == null
-            ? (await db.soilPitTablesDao
-                    .addAndReturnDefaultSummary(survey.id, survey.measDate))
-                .id
-            : data.id;
-        if (context.mounted) {
-          context
-              .pushNamed(SoilPitSummaryPage.routeName,
-                  pathParameters: PathParamGenerator.soilPitSummary(
-                      widget.goRouterState, id.toString()))
-              .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
-        }
+        getId(() => db.soilPitTablesDao
+            .setAndReturnDefaultSummary(survey.id, survey.measDate)).then(
+          (id) => context.pushNamed(SoilPitSummaryPage.routeName,
+              pathParameters: PathParamGenerator.soilPitSummary(
+                  widget.goRouterState, id.toString())),
+        );
         break;
       case SurveyCardCategories.smallTreePlot:
         if (context.mounted) {
@@ -303,6 +265,7 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
         break;
       default:
         debugPrint("Error: case not handled for $category");
+        return;
     }
   }
 
@@ -346,7 +309,38 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
                     ),
                   ),
                   const Text(
-                    "Please complete or delete to continue.",
+                    "Please complete or mark as 'not assessed' to continue.",
+                    textAlign: TextAlign.start,
+                  )
+                ],
+              ),
+            ));
+      }
+      //Case some cards are left as not started
+      else if (result.containsKey(SurveyStatus.notStarted)) {
+        Popups.show(
+            context,
+            PopupDismiss(
+              "Error: Surveys not accounted for",
+              contentWidget: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "There are survey cards that are still unaccounted for. "
+                    "Please complete or mark as not assessed to continue.",
+                    textAlign: TextAlign.start,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 12),
+                    child: Text(
+                      FormatString.generateBulletList(
+                          result[SurveyStatus.notStarted] ??
+                              ["Error no not started surveys found"]),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                  const Text(
+                    "Please complete or mark as 'not assessed' to continue.",
                     textAlign: TextAlign.start,
                   )
                 ],
@@ -362,15 +356,15 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
                     "\nPlease complete at least one survey card to mark as completed."));
       }
       //Case where at least one card has been started
-      else if (result.containsKey(SurveyStatus.notStarted)) {
+      else if (result.containsKey(SurveyStatus.notAssessed)) {
         Popups.show(
             context,
-            PopupContinue("Warning: Not all survey cards are completed",
+            PopupContinue("Warning: Some survey cards marked as not assessed",
                 contentWidget: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      "The following survey cards are still not completed",
+                      "The following survey cards have been marked as not assessed",
                       textAlign: TextAlign.start,
                     ),
                     Padding(
@@ -378,7 +372,7 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
                       child: Text(
                         FormatString.generateBulletList(
                             result[SurveyStatus.notStarted] ??
-                                ["Error no notStarted found"]),
+                                ["Error no not assessed cards found"]),
                         textAlign: TextAlign.start,
                       ),
                     ),

@@ -8,6 +8,7 @@ import '../../l10n/locale_keys.g.dart';
 import '../../providers/survey_info_providers.dart';
 import '../../widgets/tags/tag_chips.dart';
 import '../../widgets/tile_cards/tile_card_dashboard.dart';
+import '../delete_page.dart';
 import 'create_survey_page.dart';
 import 'survey_info_page.dart';
 
@@ -105,6 +106,34 @@ class DashboardPageState extends ConsumerState<DashboardPage> {
                                   survey.id.toString()),
                             );
                           },
+                          onDelete: () => Popups.show(
+                            context,
+                            PopupContinue(
+                              "Warning: Deleting Survey",
+                              contentText:
+                                  "You are about to delete the entire survey "
+                                  "for Jurisdiction: ${survey.province}, Plot #"
+                                  "${survey.nfiPlot}, Measurement number: ${survey.measNum}. "
+                                  "Are you sure you want to continue?",
+                              rightBtnOnPressed: () {
+                                //close popup
+                                context.pop();
+                                context.pushNamed(DeletePage.routeName, extra: {
+                                  DeletePage.keyObjectName:
+                                      "Survey ${survey.province}-${survey.nfiPlot}-${survey.measNum}",
+                                  DeletePage.keyDeleteFn: () {
+                                    Database.instance.surveyInfoTablesDao
+                                        .deleteSurvey(survey.id)
+                                        .then((value) {
+                                      ref.refresh(
+                                          updateSurveyHeaderListProvider);
+                                      context.goNamed(DashboardPage.routeName);
+                                    });
+                                  },
+                                });
+                              },
+                            ),
+                          ),
                         );
                       },
                     ),

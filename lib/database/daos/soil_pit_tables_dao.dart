@@ -10,7 +10,6 @@ part 'soil_pit_tables_dao.g.dart';
   SoilPitCode,
   SoilPitSummary,
   SoilSiteInfo,
-  SoilPitDepth,
   SoilPitFeature,
   SoilPitHorizonDescription,
 ])
@@ -21,9 +20,54 @@ class SoilPitTablesDao extends DatabaseAccessor<Database>
   //For testing purposes only
   void clearTables() {
     delete(soilSiteInfo).go();
-    delete(soilPitDepth).go();
     delete(soilPitFeature).go();
     delete(soilPitHorizonDescription).go();
+  }
+
+  Future<void> markNotAssessed(int surveyId, int? spId) async {
+    if (spId != null) {
+      var tmp = await deleteSoilPitSummary(spId);
+    }
+
+    int tmp2 = await addSummary(SoilPitSummaryCompanion(
+        surveyId: Value(surveyId),
+        measDate: Value(DateTime.now()),
+        notAssessed: const Value(true)));
+  }
+
+  //====================Deletion====================
+  Future<void> deleteSummaryWithSurveyId(int id) async {
+    SoilPitSummaryData? summary = await (select(soilPitSummary)
+          ..where((tbl) => tbl.surveyId.equals(id)))
+        .getSingleOrNull();
+
+    summary != null ? deleteSoilSiteInfoFromSummaryId(summary.id) : null;
+  }
+
+  Future<void> deleteSoilPitSummary(int id) async {
+    await deleteSoilSiteInfoFromSummaryId(id);
+    await (delete(soilPitFeature)
+          ..where((tbl) => tbl.soilPitSummaryId.equals(id)))
+        .go();
+    await (delete(soilPitHorizonDescription)
+          ..where((tbl) => tbl.soilPitSummaryId.equals(id)))
+        .go();
+    await (delete(soilPitSummary)..where((tbl) => tbl.id.equals(id))).go();
+  }
+
+  Future<void> deleteSoilSiteInfoFromSummaryId(int id) async {
+    await (delete(soilSiteInfo)
+          ..where((tbl) => tbl.soilPitSummaryId.equals(id)))
+        .go();
+  }
+
+  Future<void> deleteSoilPitFeature(int id) async {
+    await (delete(soilPitFeature)..where((tbl) => tbl.id.equals(id))).go();
+  }
+
+  Future<void> deleteSoilPitHorizonDescription(int id) async {
+    await (delete(soilPitHorizonDescription)..where((tbl) => tbl.id.equals(id)))
+        .go();
   }
 
   //====================Soil Summary====================
@@ -34,10 +78,18 @@ class SoilPitTablesDao extends DatabaseAccessor<Database>
   Future<SoilPitSummaryData> getSummaryWithSurveyId(int surveyId) =>
       (select(soilPitSummary)..where((tbl) => tbl.surveyId.equals(surveyId)))
           .getSingle();
-  Future<SoilPitSummaryData> addAndReturnDefaultSummary(
+
+  Future<SoilPitSummaryData> setAndReturnDefaultSummary(
       int surveyId, DateTime measDate) async {
-    int summaryId = await addSummary(SoilPitSummaryCompanion(
-        surveyId: Value(surveyId), measDate: Value(measDate)));
+    SoilPitSummaryCompanion entry = SoilPitSummaryCompanion(
+        surveyId: Value(surveyId),
+        measDate: Value(measDate),
+        complete: const Value(false),
+        notAssessed: const Value(false));
+
+    int summaryId = await into(soilPitSummary).insert(entry,
+        onConflict:
+            DoUpdate((old) => entry, target: [soilPitSummary.surveyId]));
 
     return await getSummary(summaryId);
   }

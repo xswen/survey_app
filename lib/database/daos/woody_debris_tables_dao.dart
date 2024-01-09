@@ -33,9 +33,9 @@ class WoodyDebrisTablesDao extends DatabaseAccessor<Database>
     delete(woodyDebrisRound).go();
   }
 
-  Future<void> markNotAssessed(int surveyId, {bool wdIdExists = false}) async {
-    if (wdIdExists) {
-      var tmp = await deleteWoodyDebrisSummary(surveyId);
+  Future<void> markNotAssessed(int surveyId, int? wdId) async {
+    if (wdId != null) {
+      var tmp = await deleteWoodyDebrisSummary(wdId);
     }
 
     int tmp2 = await addWdSummary(WoodyDebrisSummaryCompanion(
@@ -45,16 +45,23 @@ class WoodyDebrisTablesDao extends DatabaseAccessor<Database>
   }
 
   //==================Deletion===============================
-  Future<void> deleteWoodyDebrisSummary(int surveyId) async {
-    WoodyDebrisSummaryData wdS = await getWdSummaryFromSurveyId(surveyId);
-    List<WoodyDebrisHeaderData> wdHList = await getWdHeadersFromWdSId(wdS.id);
+  Future<void> deleteSummaryWithSurveyId(int id) async {
+    WoodyDebrisSummaryData? wdS = await (select(woodyDebrisSummary)
+          ..where((tbl) => tbl.surveyId.equals(id)))
+        .getSingleOrNull();
+
+    wdS != null ? deleteWoodyDebrisSummary(wdS.id) : null;
+  }
+
+  Future<void> deleteWoodyDebrisSummary(int id) async {
+    List<WoodyDebrisHeaderData> wdHList = await getWdHeadersFromWdSId(id);
 
     for (WoodyDebrisHeaderData wdH in wdHList) {
       var tmp = await deleteWoodyDebrisTransect(wdH.id);
     }
 
     var tmp = await (delete(woodyDebrisSummary)
-          ..where((tbl) => tbl.id.equals(wdS.id)))
+          ..where((tbl) => tbl.id.equals(id)))
         .go();
   }
 
@@ -92,10 +99,17 @@ class WoodyDebrisTablesDao extends DatabaseAccessor<Database>
             ..where((tbl) => tbl.surveyId.equals(surveyId)))
           .getSingle();
 
-  Future<WoodyDebrisSummaryData> addAndReturnDefaultWdSummary(
+  Future<WoodyDebrisSummaryData> setAndReturnDefaultWdSummary(
       int surveyId, DateTime measDate) async {
-    int tmp = await addWdSummary(WoodyDebrisSummaryCompanion(
-        surveyId: Value(surveyId), measDate: Value(measDate)));
+    WoodyDebrisSummaryCompanion entry = WoodyDebrisSummaryCompanion(
+        surveyId: Value(surveyId),
+        measDate: Value(measDate),
+        complete: const Value(false),
+        notAssessed: const Value(false));
+
+    await into(woodyDebrisSummary).insert(entry,
+        onConflict:
+            DoUpdate((old) => entry, target: [woodyDebrisSummary.surveyId]));
 
     return getWdSummaryFromSurveyId(surveyId);
   }

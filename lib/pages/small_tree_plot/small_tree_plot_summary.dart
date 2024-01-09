@@ -5,6 +5,7 @@ import 'package:survey_app/widgets/dropdowns/drop_down_default.dart';
 import 'package:survey_app/widgets/tables/table_creation_builder.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import '../../providers/survey_info_providers.dart';
 import '../../widgets/date_select.dart';
 import '../../widgets/tables/table_data_grid_source_builder.dart';
 import '../../wrappers/column_header_object.dart';
@@ -54,6 +55,12 @@ class SmallTreePlotSummaryPage extends ConsumerStatefulWidget {
 class SmallTreePlotSummaryPageState
     extends ConsumerState<SmallTreePlotSummaryPage> {
   final ColNames columnData = ColNames();
+  late final int surveyId;
+  @override
+  void initState() {
+    surveyId = PathParamValue.getSurveyId(widget.state)!;
+    super.initState();
+  }
 
   List<DataGridRow> generateDataGridRows(List<String> plots) {
     return [
@@ -94,7 +101,7 @@ class SmallTreePlotSummaryPageState
       appBar: OurAppBar(
         "Small Tree Plot",
         backFn: () {
-          //ref.refresh(updateSurveyCardProvider(surveyId));
+          ref.refresh(updateSurveyCardProvider(surveyId));
           context.pop();
         },
       ),

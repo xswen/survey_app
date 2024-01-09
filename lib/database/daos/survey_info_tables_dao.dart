@@ -10,7 +10,7 @@ part 'survey_info_tables_dao.g.dart';
 
 const List<Type> _tables = [
   //Survey Tables
-  SurveyHeaders,
+  SurveyHeaders
 ];
 
 @DriftAccessor(tables: _tables)
@@ -26,7 +26,15 @@ class SurveyInfoTablesDao extends DatabaseAccessor<Database>
     (delete(surveyHeaders)..where((tbl) => tbl.id.equals(surveyId))).go();
   }
 
-  void deleteSurvey(int surveyId) {}
+  Future<void> deleteSurvey(int surveyId) async {
+    Database db = Database.instance;
+    await db.woodyDebrisTablesDao.deleteSummaryWithSurveyId(surveyId);
+    await db.surfaceSubstrateTablesDao.deleteSummaryWithSurveyId(surveyId);
+    await db.ecologicalPlotTablesDao.deleteSummaryWithSurveyId(surveyId);
+    await db.soilPitTablesDao.deleteSummaryWithSurveyId(surveyId);
+
+    deleteSiteInfo(surveyId);
+  }
 
   Future<int> addSurvey(SurveyHeadersCompanion entry) =>
       into(surveyHeaders).insert(entry);

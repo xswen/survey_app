@@ -240,7 +240,7 @@ class SurfaceSubstrateStationInfoPageState
                           context.pop();
                           context.pushNamed(DeletePage.routeName, extra: {
                             DeletePage.keyObjectName:
-                                "Surface Substrate Station: ${station.toString()}",
+                                "Surface Substrate Station ${db.companionValueToStr(station.stationNum)}",
                             DeletePage.keyDeleteFn: () {
                               (db.delete(db.surfaceSubstrateTally)
                                     ..where((tbl) =>

@@ -71,7 +71,6 @@ const List<Type> _tables = [
   //Soil Tables
   SoilPitSummary,
   SoilSiteInfo,
-  SoilPitDepth,
   SoilPitFeature,
   SoilPitHorizonDescription,
   //LPT

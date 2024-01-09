@@ -1,7 +1,7 @@
 import 'package:drift/drift.dart' as d;
 import 'package:flutter/services.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
-import 'package:survey_app/pages/soil_pit/soil_pit_summary_table.dart';
+import 'package:survey_app/pages/soil_pit/soil_pit_summary_page.dart';
 import 'package:survey_app/providers/soil_pit_providers.dart';
 import 'package:survey_app/widgets/dropdowns/drop_down_async_list.dart';
 

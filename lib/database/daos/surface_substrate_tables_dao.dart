@@ -23,6 +23,65 @@ class SurfaceSubstrateTablesDao extends DatabaseAccessor<Database>
     delete(surfaceSubstrateTally).go();
   }
 
+  Future<void> markNotAssessed(int surveyId, int? ssId) async {
+    if (ssId != null) {
+      var tmp = await deleteSurfaceSubstrateSummary(ssId);
+    }
+
+    int tmp2 = await addSsSummary(SurfaceSubstrateSummaryCompanion(
+        surveyId: Value(surveyId),
+        measDate: Value(DateTime.now()),
+        notAssessed: const Value(true)));
+  }
+
+  //====================Deletion====================
+  Future<void> deleteSummaryWithSurveyId(int id) async {
+    SurfaceSubstrateSummaryData? summary =
+        await (select(surfaceSubstrateSummary)
+              ..where((tbl) => tbl.surveyId.equals(id)))
+            .getSingleOrNull();
+
+    summary != null ? deleteSurfaceSubstrateSummary(summary.id) : null;
+  }
+
+  Future<void> deleteSurfaceSubstrateSummary(int summaryId) async {
+    // First, delete related SurfaceSubstrateHeaders
+    await deleteSurfaceSubstrateHeadersBySummaryId(summaryId);
+    // Then, delete the summary
+    await (delete(surfaceSubstrateSummary)
+          ..where((tbl) => tbl.id.equals(summaryId)))
+        .go();
+  }
+
+  Future<void> deleteSurfaceSubstrateHeadersBySummaryId(int summaryId) async {
+    // Get all headers related to the summary
+    final headers = await (select(surfaceSubstrateHeader)
+          ..where((tbl) => tbl.ssId.equals(summaryId)))
+        .get();
+
+    // Delete related SurfaceSubstrateTally for each header
+    for (final header in headers) {
+      await deleteSurfaceSubstrateTallyByHeaderId(header.id);
+    }
+
+    // Delete the headers
+    await (delete(surfaceSubstrateHeader)
+          ..where((tbl) => tbl.ssId.equals(summaryId)))
+        .go();
+  }
+
+  Future<void> deleteSurfaceSubstrateHeader(int id) async {
+    await deleteSurfaceSubstrateTallyByHeaderId(id);
+    await (delete(surfaceSubstrateHeader)..where((tbl) => tbl.id.equals(id)))
+        .go();
+  }
+
+  Future<void> deleteSurfaceSubstrateTallyByHeaderId(int headerId) async {
+    await (delete(surfaceSubstrateTally)
+          ..where((tbl) => tbl.ssHeaderId.equals(headerId)))
+        .go();
+  }
+
   //====================Surface Substrate Summary====================
   Future<int> addSsSummary(SurfaceSubstrateSummaryCompanion entry) =>
       into(surfaceSubstrateSummary).insert(entry);
@@ -32,10 +91,17 @@ class SurfaceSubstrateTablesDao extends DatabaseAccessor<Database>
             ..where((tbl) => tbl.surveyId.equals(surveyId)))
           .getSingle();
 
-  Future<SurfaceSubstrateSummaryData> addAndReturnDefaultSsSummary(
+  Future<SurfaceSubstrateSummaryData> setAndReturnDefaultSsSummary(
       int surveyId, DateTime measDate) async {
-    int summaryId = await addSsSummary(SurfaceSubstrateSummaryCompanion(
-        surveyId: Value(surveyId), measDate: Value(measDate)));
+    SurfaceSubstrateSummaryCompanion entry = SurfaceSubstrateSummaryCompanion(
+        surveyId: Value(surveyId),
+        measDate: Value(measDate),
+        complete: const Value(false),
+        notAssessed: const Value(false));
+
+    await into(surfaceSubstrateSummary).insert(entry,
+        onConflict: DoUpdate((old) => entry,
+            target: [surfaceSubstrateSummary.surveyId]));
 
     return getSsSummary(surveyId);
   }

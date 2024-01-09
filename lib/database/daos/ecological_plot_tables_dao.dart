@@ -22,6 +22,43 @@ class EcologicalPlotTablesDao extends DatabaseAccessor<Database>
     delete(ecpSpecies).go();
   }
 
+  Future<void> markNotAssessed(int surveyId, int? ecpId) async {
+    if (ecpId != null) {
+      var tmp = await deleteEcpSummary(ecpId);
+    }
+
+    int tmp2 = await addSummary(EcpSummaryCompanion(
+        surveyId: Value(surveyId),
+        measDate: Value(DateTime.now()),
+        notAssessed: const Value(true)));
+  }
+
+  //====================Deletion====================
+  Future<void> deleteSummaryWithSurveyId(int id) async {
+    EcpSummaryData? summary = await (select(ecpSummary)
+          ..where((tbl) => tbl.surveyId.equals(id)))
+        .getSingleOrNull();
+
+    summary != null ? deleteEcpSummary(summary.id) : null;
+  }
+
+  Future<void> deleteEcpSummary(int id) async {
+    final headers = await getHeaderWithEcpSummaryId(id);
+    for (final header in headers) {
+      deleteEcpHeader(header.id);
+    }
+
+    await (delete(ecpSummary)..where((tbl) => tbl.id.equals(id))).go();
+  }
+
+  Future<void> deleteEcpHeader(int id) async {
+    await (delete(ecpSpecies)..where((t) => t.ecpHeaderId.equals(id))).go();
+    await (delete(ecpHeader)..where((tbl) => tbl.id.equals(id))).go();
+  }
+
+  Future<int> deleteSpecies(int ecpSpeciesId) =>
+      (delete(ecpSpecies)..where((t) => t.id.equals(ecpSpeciesId))).go();
+
   //====================ECP Summary====================
   Future<int> addSummary(EcpSummaryCompanion entry) =>
       into(ecpSummary).insert(entry);
@@ -30,10 +67,16 @@ class EcologicalPlotTablesDao extends DatabaseAccessor<Database>
   Future<EcpSummaryData?> getSummaryWithSurveyId(int surveyId) =>
       (select(ecpSummary)..where((tbl) => tbl.surveyId.equals(surveyId)))
           .getSingleOrNull();
-  Future<EcpSummaryData> addAndReturnDefaultSummary(
+
+  Future<EcpSummaryData> setAndReturnDefaultSummary(
       int surveyId, DateTime measDate) async {
-    int summaryId = await addSummary(EcpSummaryCompanion(
-        surveyId: Value(surveyId), measDate: Value(measDate)));
+    EcpSummaryCompanion entry = EcpSummaryCompanion(
+        surveyId: Value(surveyId),
+        measDate: Value(measDate),
+        complete: const Value(false),
+        notAssessed: const Value(false));
+    int summaryId = await into(ecpSummary).insert(entry,
+        onConflict: DoUpdate((old) => entry, target: [ecpSummary.surveyId]));
 
     return await getSummary(summaryId);
   }
@@ -82,8 +125,6 @@ class EcologicalPlotTablesDao extends DatabaseAccessor<Database>
   }
 
 //====================ECP Species====================
-  Future<int> deleteSpecies(int ecpSpeciesId) =>
-      (delete(ecpSpecies)..where((t) => t.id.equals(ecpSpeciesId))).go();
   Future<int> addSpecies(EcpSpeciesCompanion entry) =>
       into(ecpSpecies).insert(entry);
   Future<int> addOrUpdateSpecies(EcpSpeciesCompanion entry) =>
