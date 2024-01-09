@@ -539,13 +539,9 @@ class SoilPitHorizonDescriptionEntryPageState
                         context.pushNamed(DeletePage.routeName, extra: {
                           DeletePage.keyObjectName:
                               "Soil Pit Feature: ${horizon.toString()}",
-                          DeletePage.keyDeleteFn: () {
-                            (db.delete(db.soilPitHorizonDescription)
-                                  ..where(
-                                      (tbl) => tbl.id.equals(horizon.id.value)))
-                                .go()
-                                .then((value) => goToHorizonPage());
-                          },
+                          DeletePage.keyDeleteFn: () => db.soilPitTablesDao
+                              .deleteSoilPitHorizonDescription(horizon.id.value)
+                              .then((value) => goToHorizonPage()),
                         });
                       }),
                     ),

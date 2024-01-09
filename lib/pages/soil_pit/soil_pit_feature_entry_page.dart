@@ -249,10 +249,8 @@ class SoilPitFeatureEntryPageState
                           DeletePage.keyObjectName:
                               "Soil Pit Feature: ${feature.toString()}",
                           DeletePage.keyDeleteFn: () {
-                            (db.delete(db.soilPitFeature)
-                                  ..where(
-                                      (tbl) => tbl.id.equals(feature.id.value)))
-                                .go()
+                            db.soilPitTablesDao
+                                .deleteSoilPitFeature(feature.id.value)
                                 .then((value) => goToFeaturePage());
                           },
                         });

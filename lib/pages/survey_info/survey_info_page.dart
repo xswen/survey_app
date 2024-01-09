@@ -162,20 +162,10 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
         markNotAssessed =
             db.ecologicalPlotTablesDao.markNotAssessed(surveyId, data?.id);
         break;
-      // case SurveyCardCategories.soilPit:
-      //   int id = data == null
-      //       ? (await db.soilPitTablesDao
-      //               .addAndReturnDefaultSummary(survey.id, survey.measDate))
-      //           .id
-      //       : data.id;
-      //   if (context.mounted) {
-      //     context
-      //         .pushNamed(SoilPitSummaryPage.routeName,
-      //             pathParameters: PathParamGenerator.soilPitSummary(
-      //                 widget.goRouterState, id.toString()))
-      //         .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
-      //   }
-      //   break;
+      case SurveyCardCategories.soilPit:
+        markNotAssessed =
+            db.ecologicalPlotTablesDao.markNotAssessed(surveyId, data?.id);
+        break;
       default:
         debugPrint("Error: case not handled for $category");
         return;
@@ -234,18 +224,12 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
         );
         break;
       case SurveyCardCategories.soilPit:
-        int id = data == null
-            ? (await db.soilPitTablesDao
-                    .addAndReturnDefaultSummary(survey.id, survey.measDate))
-                .id
-            : data.id;
-        if (context.mounted) {
-          context
-              .pushNamed(SoilPitSummaryPage.routeName,
-                  pathParameters: PathParamGenerator.soilPitSummary(
-                      widget.goRouterState, id.toString()))
-              .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
-        }
+        getId(() => db.soilPitTablesDao
+            .setAndReturnDefaultSummary(survey.id, survey.measDate)).then(
+          (id) => context.pushNamed(SoilPitSummaryPage.routeName,
+              pathParameters: PathParamGenerator.soilPitSummary(
+                  widget.goRouterState, id.toString())),
+        );
         break;
       case SurveyCardCategories.smallTreePlot:
         if (context.mounted) {

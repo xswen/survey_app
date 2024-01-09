@@ -44,10 +44,7 @@ class EcologicalPlotTablesDao extends DatabaseAccessor<Database>
   }
 
   Future<void> deleteEcpHeader(int id) async {
-    final species = await getSpeciesList(id);
-    for (final s in species) {
-      deleteSpecies(s.id);
-    }
+    await (delete(ecpSpecies)..where((t) => t.ecpHeaderId.equals(id))).go();
     await (delete(ecpHeader)..where((tbl) => tbl.id.equals(id))).go();
   }
 

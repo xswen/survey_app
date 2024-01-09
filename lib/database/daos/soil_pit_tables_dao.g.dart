@@ -10,7 +10,6 @@ mixin _$SoilPitTablesDaoMixin on DatabaseAccessor<Database> {
   $SurveyHeadersTable get surveyHeaders => attachedDatabase.surveyHeaders;
   $SoilPitSummaryTable get soilPitSummary => attachedDatabase.soilPitSummary;
   $SoilSiteInfoTable get soilSiteInfo => attachedDatabase.soilSiteInfo;
-  $SoilPitDepthTable get soilPitDepth => attachedDatabase.soilPitDepth;
   $SoilPitFeatureTable get soilPitFeature => attachedDatabase.soilPitFeature;
   $SoilPitHorizonDescriptionTable get soilPitHorizonDescription =>
       attachedDatabase.soilPitHorizonDescription;
