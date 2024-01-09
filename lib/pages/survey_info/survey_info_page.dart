@@ -138,67 +138,82 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
       SurveyHeader survey, SurveyCardCategories category, dynamic data) async {
     final Database db = Database.instance;
 
-    switch (category) {
-      case SurveyCardCategories.woodyDebris:
-        data != null
-            ? Popups.show(
-                context,
-                PopupsSurveyInfoMarkNotAssessed(
-                  rightBtnOnPressed: () => db.woodyDebrisTablesDao
-                      .markNotAssessed(surveyId, wdIdExists: true)
-                      .then((value) {
-                    ref.refresh(updateSurveyCardProvider(surveyId));
-                    context.pop();
-                  }),
-                ))
-            : db.woodyDebrisTablesDao.markNotAssessed(surveyId).then(
-                (value) => ref.refresh(updateSurveyCardProvider(surveyId)));
-        break;
-      // case SurveyCardCategories.surfaceSubstrate:
-      //   int id = data == null
-      //       ? (await db.surfaceSubstrateTablesDao
-      //               .addAndReturnDefaultSsSummary(survey.id, survey.measDate))
-      //           .id
-      //       : data.id;
-      //   if (context.mounted) {
-      //     context
-      //         .pushNamed(SurfaceSubstrateSummaryPage.routeName,
-      //             pathParameters: PathParamGenerator.ssSummary(
-      //                 widget.goRouterState, id.toString()))
-      //         .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
-      //   }
-      //   break;
-      // case SurveyCardCategories.ecologicalPlot:
-      //   int id = data == null
-      //       ? (await db.ecologicalPlotTablesDao
-      //               .addAndReturnDefaultSummary(survey.id, survey.measDate))
-      //           .id
-      //       : data.id;
-      //   if (context.mounted) {
-      //     context
-      //         .pushNamed(EcologicalPlotSummaryPage.routeName,
-      //             pathParameters: PathParamGenerator.ecpSummary(
-      //                 widget.goRouterState, id.toString()))
-      //         .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
-      //   }
-      //   break;
-      // case SurveyCardCategories.soilPit:
-      //   int id = data == null
-      //       ? (await db.soilPitTablesDao
-      //               .addAndReturnDefaultSummary(survey.id, survey.measDate))
-      //           .id
-      //       : data.id;
-      //   if (context.mounted) {
-      //     context
-      //         .pushNamed(SoilPitSummaryPage.routeName,
-      //             pathParameters: PathParamGenerator.soilPitSummary(
-      //                 widget.goRouterState, id.toString()))
-      //         .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
-      //   }
-      //   break;
-      default:
-        debugPrint("Error: case not handled for $category");
+    void mark() {
+      switch (category) {
+        case SurveyCardCategories.woodyDebris:
+          db.woodyDebrisTablesDao
+              .markNotAssessed(surveyId, wdId: data?.id)
+              .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
+          break;
+        case SurveyCardCategories.surfaceSubstrate:
+          // data != null
+          //     ? Popups.show(
+          //         context,
+          //         PopupsSurveyInfoMarkNotAssessed(
+          //           rightBtnOnPressed: () => db.woodyDebrisTablesDao
+          //               .markNotAssessed(surveyId)
+          //               .then((value) {
+          //             ref.refresh(updateSurveyCardProvider(surveyId));
+          //             context.pop();
+          //           }),
+          //         ))
+          //     : db.woodyDebrisTablesDao.markNotAssessed(surveyId).then(
+          //         (value) => ref.refresh(updateSurveyCardProvider(surveyId)));
+          break;
+
+        //   int id = data == null
+        //       ? (await db.surfaceSubstrateTablesDao
+        //               .addAndReturnDefaultSsSummary(survey.id, survey.measDate))
+        //           .id
+        //       : data.id;
+        //   if (context.mounted) {
+        //     context
+        //         .pushNamed(SurfaceSubstrateSummaryPage.routeName,
+        //             pathParameters: PathParamGenerator.ssSummary(
+        //                 widget.goRouterState, id.toString()))
+        //         .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
+        //   }
+        //   break;
+        // case SurveyCardCategories.ecologicalPlot:
+        //   int id = data == null
+        //       ? (await db.ecologicalPlotTablesDao
+        //               .addAndReturnDefaultSummary(survey.id, survey.measDate))
+        //           .id
+        //       : data.id;
+        //   if (context.mounted) {
+        //     context
+        //         .pushNamed(EcologicalPlotSummaryPage.routeName,
+        //             pathParameters: PathParamGenerator.ecpSummary(
+        //                 widget.goRouterState, id.toString()))
+        //         .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
+        //   }
+        //   break;
+        // case SurveyCardCategories.soilPit:
+        //   int id = data == null
+        //       ? (await db.soilPitTablesDao
+        //               .addAndReturnDefaultSummary(survey.id, survey.measDate))
+        //           .id
+        //       : data.id;
+        //   if (context.mounted) {
+        //     context
+        //         .pushNamed(SoilPitSummaryPage.routeName,
+        //             pathParameters: PathParamGenerator.soilPitSummary(
+        //                 widget.goRouterState, id.toString()))
+        //         .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
+        //   }
+        //   break;
+        default:
+          debugPrint("Error: case not handled for $category");
+      }
     }
+
+    data != null
+        ? Popups.show(context,
+            PopupsSurveyInfoMarkNotAssessed(rightBtnOnPressed: () {
+            mark();
+            context.pop();
+          }))
+        : mark();
   }
 
   void handleNotAssessed(Function() fn) {

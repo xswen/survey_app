@@ -33,9 +33,9 @@ class WoodyDebrisTablesDao extends DatabaseAccessor<Database>
     delete(woodyDebrisRound).go();
   }
 
-  Future<void> markNotAssessed(int surveyId, {bool wdIdExists = false}) async {
-    if (wdIdExists) {
-      var tmp = await deleteWoodyDebrisSummary(surveyId);
+  Future<void> markNotAssessed(int surveyId, {int? wdId}) async {
+    if (wdId != null) {
+      var tmp = await deleteWoodyDebrisSummary(wdId);
     }
 
     int tmp2 = await addWdSummary(WoodyDebrisSummaryCompanion(
@@ -45,16 +45,15 @@ class WoodyDebrisTablesDao extends DatabaseAccessor<Database>
   }
 
   //==================Deletion===============================
-  Future<void> deleteWoodyDebrisSummary(int surveyId) async {
-    WoodyDebrisSummaryData wdS = await getWdSummaryFromSurveyId(surveyId);
-    List<WoodyDebrisHeaderData> wdHList = await getWdHeadersFromWdSId(wdS.id);
+  Future<void> deleteWoodyDebrisSummary(int id) async {
+    List<WoodyDebrisHeaderData> wdHList = await getWdHeadersFromWdSId(id);
 
     for (WoodyDebrisHeaderData wdH in wdHList) {
       var tmp = await deleteWoodyDebrisTransect(wdH.id);
     }
 
     var tmp = await (delete(woodyDebrisSummary)
-          ..where((tbl) => tbl.id.equals(wdS.id)))
+          ..where((tbl) => tbl.id.equals(id)))
         .go();
   }
 
