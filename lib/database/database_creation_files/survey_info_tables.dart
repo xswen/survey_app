@@ -28,6 +28,8 @@ class SurveySummary extends Table {
   TextColumn get crewOne => text().nullable()();
   TextColumn get crewTwo => text().nullable()();
   TextColumn get crewThree => text().nullable()();
+  IntColumn get numberPhotos =>
+      integer().withDefault(const Constant(0)).nullable()();
 }
 
 class SurveyHeaderGroundPhoto extends Table {
