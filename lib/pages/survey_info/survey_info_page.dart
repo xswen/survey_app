@@ -11,6 +11,7 @@ import '../../formatters/format_date.dart';
 import '../../formatters/format_string.dart';
 import '../../providers/survey_info_providers.dart';
 import '../../widgets/buttons/edit_icon_button.dart';
+import '../../widgets/buttons/mark_complete_button.dart';
 import '../../widgets/tags/tag_chips.dart';
 import '../../widgets/text/text_line_label.dart';
 import '../../widgets/titled_border.dart';
@@ -419,153 +420,177 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
     AsyncValue<SurveyHeader> survey = ref.watch(updateSurveyProvider(surveyId));
     final filters = ref.watch(surveyCardFilterProvider);
 
-    return Scaffold(
-        appBar: OurAppBar(
-          title,
-          backFn: () {
-            ref.refresh(updateSurveyHeaderListProvider);
-            context.pop();
-          },
-        ),
-        body: survey.when(
-          error: (err, stack) => Text("Error: $err"),
-          loading: () => const Center(child: CircularProgressIndicator()),
-          data: (survey) {
-            AsyncValue<List<SurveyCard>> cards =
-                ref.watch(updateSurveyCardProvider(surveyId));
-
-            return Center(
-              child: Column(
-                children: [
-                  TitledBorder(
-                      title: "Measurement Data",
-                      actions: EditIconButton(onPressed: () async {
-                        if (survey.complete) {
-                          Popups.show(context,
-                              Popups.generateCompleteErrorPopup("Survey"));
-                        } else {
-                          db.referenceTablesDao
-                              .getJurisdictionName(
-                                  survey.province, context.locale)
-                              .then((provinceName) async => context.pushNamed(
-                                    CreateSurveyPage.routeName,
-                                    queryParameters: {"province": provinceName},
-                                    extra: {
-                                      CreateSurveyPage.keySurvey:
-                                          survey.toCompanion(true),
-                                      CreateSurveyPage.keyUpdateDash: null,
-                                      CreateSurveyPage.keyLastMeasNum: await (db
-                                          .referenceTablesDao
-                                          .getLastMeasNum(survey.nfiPlot))
-                                    },
-                                  ).then((value) => ref.refresh(
-                                      updateSurveyProvider(surveyId))));
-                        }
-                      }),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
+    return survey.when(
+        error: (err, stack) => Text("Error: $err"),
+        loading: () => Scaffold(
+            appBar: OurAppBar(
+              title,
+              backFn: () {
+                ref.refresh(updateSurveyHeaderListProvider);
+                context.pop();
+              },
+            ),
+            endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
+            body: const Center(child: CircularProgressIndicator())),
+        data: (survey) {
+          AsyncValue<List<SurveyCard>> cards =
+              ref.watch(updateSurveyCardProvider(surveyId));
+          return cards.when(
+            error: (err, stack) => Text("Error: $err"),
+            loading: () => Scaffold(
+                appBar: OurAppBar(
+                  title,
+                  backFn: () {
+                    ref.refresh(updateSurveyHeaderListProvider);
+                    context.pop();
+                  },
+                ),
+                endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
+                body: const Center(child: CircularProgressIndicator())),
+            data: (cards) => Scaffold(
+                appBar: OurAppBar(
+                  title,
+                  complete: survey.complete,
+                  backFn: () {
+                    ref.refresh(updateSurveyHeaderListProvider);
+                    context.pop();
+                  },
+                ),
+                endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
+                bottomNavigationBar: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: MarkCompleteButton(
+                      title: title,
+                      complete: survey.complete,
+                      onPressed: () => handleFABClick(survey, cards)),
+                ),
+                body: Center(
+                  child: Column(
+                    children: [
+                      TitledBorder(
+                          title: "Measurement Data",
+                          actions: EditIconButton(onPressed: () async {
+                            if (survey.complete) {
+                              Popups.show(context,
+                                  Popups.generateCompleteErrorPopup("Survey"));
+                            } else {
+                              db.referenceTablesDao
+                                  .getJurisdictionName(
+                                      survey.province, context.locale)
+                                  .then((provinceName) async => context
+                                          .pushNamed(
+                                        CreateSurveyPage.routeName,
+                                        queryParameters: {
+                                          "province": provinceName
+                                        },
+                                        extra: {
+                                          CreateSurveyPage.keySurvey:
+                                              survey.toCompanion(true),
+                                          CreateSurveyPage.keyUpdateDash: null,
+                                          CreateSurveyPage.keyLastMeasNum:
+                                              await (db.referenceTablesDao
+                                                  .getLastMeasNum(
+                                                      survey.nfiPlot))
+                                        },
+                                      ).then((value) => ref.refresh(
+                                              updateSurveyProvider(surveyId))));
+                            }
+                          }),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  TextLineLabelTop(
-                                      value: Text(survey.province),
-                                      label: const Text("Jurisdiction")),
-                                  TextLineLabelTop(
-                                      value: Text(survey.nfiPlot.toString()),
-                                      label: const Text("Plot Number")),
-                                ],
-                              ),
-                              kDividerV,
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  TextLineLabelTop(
-                                      value: Text(survey.measNum.toString()),
-                                      label: const Text("Meas. Number")),
-                                  TextLineLabelTop(
-                                      value: Text(
-                                          FormatDate.toStr(survey.measDate)),
-                                      label: const Text("Meas. Date")),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      TextLineLabelTop(
+                                          value: Text(survey.province),
+                                          label: const Text("Jurisdiction")),
+                                      TextLineLabelTop(
+                                          value:
+                                              Text(survey.nfiPlot.toString()),
+                                          label: const Text("Plot Number")),
+                                    ],
+                                  ),
+                                  kDividerV,
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      TextLineLabelTop(
+                                          value:
+                                              Text(survey.measNum.toString()),
+                                          label: const Text("Meas. Number")),
+                                      TextLineLabelTop(
+                                          value: Text(FormatDate.toStr(
+                                              survey.measDate)),
+                                          label: const Text("Meas. Date")),
+                                    ],
+                                  ),
                                 ],
                               ),
                             ],
+                          )),
+                      const Divider(
+                        thickness: 2,
+                      ),
+                      Wrap(
+                        alignment: WrapAlignment.start,
+                        spacing: kPaddingH,
+                        children: [
+                          TagChip(
+                            title: "All",
+                            selected: filters.isEmpty,
+                            onSelected: (selected) => ref
+                                .read(surveyCardFilterProvider.notifier)
+                                .selectedAll(selected),
+                          ),
+                          TagChip(
+                            title: "Completed",
+                            selected: filters.contains(SurveyStatus.complete),
+                            onSelected: (selected) => ref
+                                .read(surveyCardFilterProvider.notifier)
+                                .selectedComplete(selected),
+                          ),
+                          TagChip(
+                            title: "In Progress",
+                            selected: filters.contains(SurveyStatus.inProgress),
+                            onSelected: (selected) => ref
+                                .read(surveyCardFilterProvider.notifier)
+                                .selectedInProgress(selected),
+                          ),
+                          TagChip(
+                            title: "Not Assessed",
+                            selected:
+                                filters.contains(SurveyStatus.notAssessed),
+                            onSelected: (selected) => ref
+                                .read(surveyCardFilterProvider.notifier)
+                                .selectedNotAssessed(selected),
+                          ),
+                          TagChip(
+                            title: "Not Started",
+                            selected: filters.contains(SurveyStatus.notStarted),
+                            onSelected: (selected) => ref
+                                .read(surveyCardFilterProvider.notifier)
+                                .selectedNotStarted(selected),
                           ),
                         ],
-                      )),
-                  const Divider(
-                    thickness: 2,
-                  ),
-                  Wrap(
-                    alignment: WrapAlignment.start,
-                    spacing: kPaddingH,
-                    children: [
-                      TagChip(
-                        title: "All",
-                        selected: filters.isEmpty,
-                        onSelected: (selected) => ref
-                            .read(surveyCardFilterProvider.notifier)
-                            .selectedAll(selected),
                       ),
-                      TagChip(
-                        title: "Completed",
-                        selected: filters.contains(SurveyStatus.complete),
-                        onSelected: (selected) => ref
-                            .read(surveyCardFilterProvider.notifier)
-                            .selectedComplete(selected),
-                      ),
-                      TagChip(
-                        title: "In Progress",
-                        selected: filters.contains(SurveyStatus.inProgress),
-                        onSelected: (selected) => ref
-                            .read(surveyCardFilterProvider.notifier)
-                            .selectedInProgress(selected),
-                      ),
-                      TagChip(
-                        title: "Not Assessed",
-                        selected: filters.contains(SurveyStatus.notAssessed),
-                        onSelected: (selected) => ref
-                            .read(surveyCardFilterProvider.notifier)
-                            .selectedNotAssessed(selected),
-                      ),
-                      TagChip(
-                        title: "Not Started",
-                        selected: filters.contains(SurveyStatus.notStarted),
-                        onSelected: (selected) => ref
-                            .read(surveyCardFilterProvider.notifier)
-                            .selectedNotStarted(selected),
-                      ),
-                    ],
-                  ),
-                  cards.when(
-                    error: (err, stack) => Text("Error: $err"),
-                    loading: () =>
-                        const Center(child: CircularProgressIndicator()),
-                    data: (cards) => Expanded(
-                      child: Scaffold(
-                        floatingActionButton: FloatingCompleteButton(
-                          title: title,
-                          complete: survey.complete,
-                          onPressed: () => handleFABClick(survey, cards),
-                        ),
-                        body: cards.isEmpty
-                            ? const NotifyNoFilterResults()
-                            : ListView(
+                      cards.isEmpty
+                          ? const NotifyNoFilterResults()
+                          : Expanded(
+                              child: ListView(
                                 children: generateTileCards(survey, cards),
                               ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            );
-          },
-        ));
+                            ),
+                    ],
+                  ),
+                )),
+          );
+        });
   }
 }
