@@ -422,31 +422,13 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
 
     return survey.when(
         error: (err, stack) => Text("Error: $err"),
-        loading: () => Scaffold(
-            appBar: OurAppBar(
-              title,
-              backFn: () {
-                ref.refresh(updateSurveyHeaderListProvider);
-                context.pop();
-              },
-            ),
-            endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
-            body: const Center(child: CircularProgressIndicator())),
+        loading: () => DefaultPageLoadingScaffold(title: title),
         data: (survey) {
           AsyncValue<List<SurveyCard>> cards =
               ref.watch(updateSurveyCardProvider(surveyId));
           return cards.when(
             error: (err, stack) => Text("Error: $err"),
-            loading: () => Scaffold(
-                appBar: OurAppBar(
-                  title,
-                  backFn: () {
-                    ref.refresh(updateSurveyHeaderListProvider);
-                    context.pop();
-                  },
-                ),
-                endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
-                body: const Center(child: CircularProgressIndicator())),
+            loading: () => DefaultPageLoadingScaffold(title: title),
             data: (cards) => Scaffold(
                 appBar: OurAppBar(
                   title,

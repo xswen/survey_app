@@ -80,16 +80,7 @@ class SoilPitSummaryPageState extends ConsumerState<SoilPitSummaryPage> {
 
     return spSummary.when(
       error: (err, stack) => Text("Error: $err"),
-      loading: () => Scaffold(
-          appBar: OurAppBar(
-            title,
-            backFn: () {
-              ref.refresh(updateSurveyHeaderListProvider);
-              context.pop();
-            },
-          ),
-          endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
-          body: const Center(child: CircularProgressIndicator())),
+      loading: () => DefaultPageLoadingScaffold(title: title),
       data: (spSummary) {
         void markComplete() {
           spSummary.complete

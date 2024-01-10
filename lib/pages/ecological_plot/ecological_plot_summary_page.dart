@@ -123,28 +123,10 @@ class EcologicalPlotSummaryPageState
 
     return ecpSummary.when(
         error: (err, stack) => Text("Error: $err"),
-        loading: () => Scaffold(
-            appBar: OurAppBar(
-              title,
-              backFn: () {
-                ref.refresh(updateSurveyCardProvider(surveyId));
-                context.pop();
-              },
-            ),
-            endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
-            body: const Center(child: CircularProgressIndicator())),
+        loading: () => DefaultPageLoadingScaffold(title: title),
         data: (ecp) => transList.when(
               error: (err, stack) => Text("Error: $err"),
-              loading: () => Scaffold(
-                  appBar: OurAppBar(
-                    title,
-                    backFn: () {
-                      ref.refresh(updateSurveyCardProvider(surveyId));
-                      context.pop();
-                    },
-                  ),
-                  endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
-                  body: const Center(child: CircularProgressIndicator())),
+              loading: () => DefaultPageLoadingScaffold(title: title),
               data: (transList) => Scaffold(
                 appBar: OurAppBar(
                   title,
