@@ -457,13 +457,10 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
                   },
                 ),
                 endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
-                bottomNavigationBar: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: MarkCompleteButton(
-                      title: title,
-                      complete: survey.complete,
-                      onPressed: () => handleFABClick(survey, cards)),
-                ),
+                bottomNavigationBar: MarkCompleteButton(
+                    title: title,
+                    complete: survey.complete,
+                    onPressed: () => handleFABClick(survey, cards)),
                 body: Center(
                   child: Column(
                     children: [

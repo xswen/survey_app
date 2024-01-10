@@ -155,13 +155,10 @@ class EcologicalPlotSummaryPageState
                   },
                 ),
                 endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
-                bottomNavigationBar: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: MarkCompleteButton(
-                      title: "Ecological Plot",
-                      complete: ecp.complete,
-                      onPressed: () => markComplete(ecp, transList)),
-                ),
+                bottomNavigationBar: MarkCompleteButton(
+                    title: "Ecological Plot",
+                    complete: ecp.complete,
+                    onPressed: () => markComplete(ecp, transList)),
                 body: Column(
                   children: [
                     CalendarSelect(

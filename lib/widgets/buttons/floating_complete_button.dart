@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+//Mostly been deprecated by mark_complete_button
+
 class FloatingCompleteButton extends StatelessWidget {
   const FloatingCompleteButton(
       {super.key,

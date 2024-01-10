@@ -270,13 +270,10 @@ class EcologicalPlotHeaderPageState
               },
             ),
             endDrawer: DrawerMenu(onLocaleChange: () {}),
-            bottomNavigationBar: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: MarkCompleteButton(
-                  title: fullTitle,
-                  complete: ecpH.complete.value,
-                  onPressed: () => markComplete()),
-            ),
+            bottomNavigationBar: MarkCompleteButton(
+                title: fullTitle,
+                complete: ecpH.complete.value,
+                onPressed: () => markComplete()),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: kPaddingH),
               child: Column(
