@@ -6,7 +6,9 @@ import '../../providers/woody_debris_providers.dart';
 import '../../widgets/box_increment.dart';
 import '../../widgets/builders/decay_class_select_builder.dart';
 import '../../widgets/buttons/icon_nav_button.dart';
+import '../../widgets/buttons/mark_complete_button.dart';
 import '../../widgets/popups/popup_errors_found_list.dart';
+import '../../widgets/popups/popup_marked_complete.dart';
 import '../../widgets/popups/popup_warning_missing_fields_list.dart';
 import '../../widgets/tables/table_creation_builder.dart';
 import '../../widgets/tables/table_data_grid_source_builder.dart';
@@ -357,18 +359,25 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
           wdh.swdDecayClass == -1
               ? missingData.add("Small Woody Debris Decay Class")
               : null;
-          missingData.isEmpty
-              ? updateWdhData(
-                  const WoodyDebrisHeaderCompanion(complete: d.Value(true)))
-              : Popups.show(
-                  context,
-                  PopupWarningMissingFieldsList(
-                      missingFields: missingData,
-                      rightBtnOnPressed: () {
-                        updateWdhData(const WoodyDebrisHeaderCompanion(
-                            complete: d.Value(true)));
-                        context.pop();
-                      }));
+          if (missingData.isEmpty) {
+            updateWdhData(
+                const WoodyDebrisHeaderCompanion(complete: d.Value(true)));
+            Popups.show(context,
+                const PopupMarkedComplete(title: "Woody debris header"));
+          }
+          Popups.show(
+              context,
+              PopupWarningMissingFieldsList(
+                  missingFields: missingData,
+                  rightBtnOnPressed: () {
+                    updateWdhData(const WoodyDebrisHeaderCompanion(
+                        complete: d.Value(true)));
+                    Popups.show(
+                        context,
+                        const PopupMarkedComplete(
+                            title: "Woody debris header"));
+                    context.pop();
+                  }));
         } else {
           Popups.show(
             context,
@@ -391,31 +400,24 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
 
     return wdh.when(
         error: (err, stack) => Text("Error: $err"),
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () =>
+            const DefaultPageLoadingScaffold(title: "Woody Debris Transect"),
         data: (wdh) {
           return parentComplete.when(
               error: (err, stack) => Text("Error: $err"),
-              loading: () => const Center(child: CircularProgressIndicator()),
+              loading: () => DefaultPageLoadingScaffold(
+                  title: "Woody Debris: Transect ${wdh.transNum}"),
               data: (parentComplete) => Scaffold(
-                    appBar: OurAppBar("Woody Debris: Transect ${wdh.transNum}"),
+                    appBar: OurAppBar(
+                      "Woody Debris: Transect ${wdh.transNum}",
+                      complete: wdh.complete,
+                    ),
                     endDrawer:
                         DrawerMenu(onLocaleChange: () => setState(() {})),
-                    bottomNavigationBar: ElevatedButton.icon(
-                      icon: wdh.complete
-                          ? const Icon(FontAwesomeIcons.penToSquare)
-                          : const Icon(FontAwesomeIcons.solidFloppyDisk),
-                      label: wdh.complete
-                          ? Text("Edit Woody Debris Transect ${wdh.transNum}")
-                          : Text(
-                              "Mark Woody Debris Transect ${wdh.transNum} as Complete"),
-                      onPressed: () => markComplete(parentComplete, wdh),
-                    ),
-
-                    // floatingActionButton: FloatingCompleteButton(
-                    //   title: "Woody Debris Transect ${wdh.transNum}",
-                    //   complete: wdh.complete,
-                    //   onPressed: () => markComplete(parentComplete, wdh),
-                    // ),
+                    bottomNavigationBar: MarkCompleteButton(
+                        title: "Woody Debris: Transect ${wdh.transNum}",
+                        complete: wdh.complete,
+                        onPressed: () => markComplete(parentComplete, wdh)),
                     body: Center(
                       child: Column(
                         children: [

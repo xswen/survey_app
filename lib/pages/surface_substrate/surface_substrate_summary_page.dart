@@ -3,10 +3,13 @@ import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/pages/surface_substrate/surface_substrate_header_page.dart';
 import 'package:survey_app/providers/surface_substrate_providers.dart';
 import 'package:survey_app/widgets/popups/popup_create_transect.dart';
+import 'package:survey_app/widgets/popups/popup_notice_survey_complete.dart';
 
 import '../../providers/survey_info_providers.dart';
 import '../../widgets/buttons/custom_button_styles.dart';
+import '../../widgets/buttons/mark_complete_button.dart';
 import '../../widgets/date_select.dart';
+import '../../widgets/popups/popup_marked_complete.dart';
 import '../../widgets/tile_cards/tile_card_transect.dart';
 import '../delete_page.dart';
 
@@ -102,10 +105,14 @@ class SurfaceSubstrateSummaryPageState
       } else if (transList.isEmpty) {
         Popups.showMissingTransect(context);
       } else {
-        checkHeadersComplete(transList)
-            ? updateSsSummary(
-                const SurfaceSubstrateSummaryCompanion(complete: d.Value(true)))
-            : Popups.showIncompleteTransect(context);
+        if (checkHeadersComplete(transList)) {
+          updateSsSummary(
+              const SurfaceSubstrateSummaryCompanion(complete: d.Value(true)));
+          Popups.show(context,
+              const PopupMarkedComplete(title: "Surface substrate summary"));
+        } else {
+          Popups.showIncompleteTransect(context);
+        }
       }
     });
   }
@@ -117,139 +124,134 @@ class SurfaceSubstrateSummaryPageState
     AsyncValue<List<SurfaceSubstrateHeaderData>> transList =
         ref.watch(ssTransListProvider(ssId));
 
-    return Scaffold(
-        appBar: OurAppBar(
-          title,
-          backFn: () {
-            ref.refresh(updateSurveyCardProvider(surveyId));
-            context.pop();
-          },
-        ),
-        endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
-        body: Center(
-          child: ssSummary.when(
+    return ssSummary.when(
+        error: (err, stack) => Text("Error: $err"),
+        loading: () => DefaultPageLoadingScaffold(title: title),
+        data: (ss) => transList.when(
             error: (err, stack) => Text("Error: $err"),
-            loading: () => const Center(child: CircularProgressIndicator()),
-            data: (ss) => Column(
-              children: [
-                CalendarSelect(
-                  date: ss.measDate,
-                  label: "Enter Measurement Date",
-                  readOnly: ss.complete,
-                  readOnlyPopup: completeWarningPopup,
-                  setStateFn: (DateTime date) async => updateSsSummary(
-                      SurfaceSubstrateSummaryCompanion(
-                          measDate: d.Value(date))),
-                ),
-                const SizedBox(height: kPaddingV),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                      kPaddingH, 0, kPaddingH, kPaddingV / 2),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            loading: () => DefaultPageLoadingScaffold(title: title),
+            data: (transList) => Scaffold(
+                  appBar: OurAppBar(
+                    title,
+                    complete: ss.complete,
+                    backFn: () {
+                      ref.refresh(updateSurveyHeaderListProvider);
+                      context.pop();
+                    },
+                  ),
+                  endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
+                  bottomNavigationBar: MarkCompleteButton(
+                      title: title,
+                      complete: ss.complete,
+                      onPressed: () => markComplete(ss, transList)),
+                  body: Column(
                     children: [
-                      const Text(
-                        "Select a Transect to enter data for:",
-                        style: TextStyle(fontSize: kTextHeaderSize),
+                      CalendarSelect(
+                        date: ss.measDate,
+                        label: "Enter Measurement Date",
+                        readOnly: ss.complete,
+                        readOnlyPopup: completeWarningPopup,
+                        setStateFn: (DateTime date) async => updateSsSummary(
+                            SurfaceSubstrateSummaryCompanion(
+                                measDate: d.Value(date))),
                       ),
-                      ElevatedButton(
-                          onPressed: () => ss.complete
-                              ? Popups.show(context, completeWarningPopup)
-                              : createTransect(),
-                          style: CustomButtonStyles.inactiveButton(
-                              isActive: !ss.complete),
-                          child: const Row(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(right: kPaddingH),
-                                child: Icon(
-                                  FontAwesomeIcons.circlePlus,
-                                  size: 20,
-                                ),
-                              ),
-                              Text("Add transect")
-                            ],
-                          )),
+                      const SizedBox(height: kPaddingV),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(
+                            kPaddingH, 0, kPaddingH, kPaddingV / 2),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              "Select a Transect to enter data for:",
+                              style: TextStyle(fontSize: kTextHeaderSize),
+                            ),
+                            ElevatedButton(
+                                onPressed: () => ss.complete
+                                    ? Popups.show(context, completeWarningPopup)
+                                    : createTransect(),
+                                style: CustomButtonStyles.inactiveButton(
+                                    isActive: !ss.complete),
+                                child: const Row(
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.only(right: kPaddingH),
+                                      child: Icon(
+                                        FontAwesomeIcons.circlePlus,
+                                        size: 20,
+                                      ),
+                                    ),
+                                    Text("Add transect")
+                                  ],
+                                )),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: transList.isEmpty
+                            ? const Center(
+                                child: Text(
+                                    "No transects created. Please add transect."))
+                            : ListView.builder(
+                                itemCount: transList.length,
+                                itemBuilder: (BuildContext cxt, int index) {
+                                  SurfaceSubstrateHeaderData header =
+                                      transList[index];
+                                  return TileCardTransect(
+                                    title: "Transect ${header.transNum}",
+                                    onPressed: () async {
+                                      ss.complete
+                                          ? Popups.show(
+                                              context,
+                                              PopupNoticeSurveyComplete(
+                                                  title: title,
+                                                  rightBtnOnPressed: () {
+                                                    context.pop();
+                                                    goToSshPage(header.id);
+                                                  }))
+                                          : goToSshPage(header.id);
+                                    },
+                                    status: getStatus(header),
+                                    onDelete: () => Popups.show(
+                                      context,
+                                      PopupContinue(
+                                          "Warning: Deleting Surface Substrate Transect",
+                                          contentText:
+                                              "You are about to delete transect ${header.transNum}. "
+                                              "Are you sure you want to continue?",
+                                          rightBtnOnPressed: () {
+                                        //close popup
+                                        context.pop();
+                                        context.pushNamed(DeletePage.routeName,
+                                            extra: {
+                                              DeletePage.keyObjectName:
+                                                  "Surface Substrate Transect ${header.transNum}",
+                                              DeletePage.keyDeleteFn: () {
+                                                Database.instance
+                                                    .surfaceSubstrateTablesDao
+                                                    .deleteSurfaceSubstrateHeader(
+                                                        header.id)
+                                                    .then((value) {
+                                                  ref.refresh(
+                                                      ssTransListProvider(
+                                                          ssId));
+                                                  context.goNamed(
+                                                      SurfaceSubstrateSummaryPage
+                                                          .routeName,
+                                                      pathParameters: widget
+                                                          .state
+                                                          .pathParameters);
+                                                });
+                                              },
+                                            });
+                                      }),
+                                    ),
+                                  );
+                                }),
+                      ),
                     ],
                   ),
-                ),
-                Expanded(
-                    child: transList.when(
-                  data: (transList) {
-                    return Scaffold(
-                      floatingActionButton: FloatingCompleteButton(
-                        title: title,
-                        complete: ss.complete,
-                        onPressed: () => markComplete(ss, transList),
-                      ),
-                      body: transList.isEmpty
-                          ? const Center(
-                              child: Text(
-                                  "No transects created. Please add transect."))
-                          : ListView.builder(
-                              itemCount: transList.length,
-                              itemBuilder: (BuildContext cxt, int index) {
-                                SurfaceSubstrateHeaderData header =
-                                    transList[index];
-                                return TileCardTransect(
-                                  title: "Transect ${header.transNum}",
-                                  onPressed: () async {
-                                    ss.complete
-                                        ? Popups.show(
-                                            context,
-                                            Popups.generateNoticeSurveyComplete(
-                                              "Woody Debris",
-                                              () {
-                                                context.pop();
-                                                goToSshPage(header.id);
-                                              },
-                                            ))
-                                        : goToSshPage(header.id);
-                                  },
-                                  status: getStatus(header),
-                                  onDelete: () => Popups.show(
-                                    context,
-                                    PopupContinue(
-                                        "Warning: Deleting Surface Substrate Transect",
-                                        contentText:
-                                            "You are about to delete transect ${header.transNum}. "
-                                            "Are you sure you want to continue?",
-                                        rightBtnOnPressed: () {
-                                      //close popup
-                                      context.pop();
-                                      context.pushNamed(DeletePage.routeName,
-                                          extra: {
-                                            DeletePage.keyObjectName:
-                                                "Surface Substrate Transect ${header.transNum}",
-                                            DeletePage.keyDeleteFn: () {
-                                              Database.instance
-                                                  .surfaceSubstrateTablesDao
-                                                  .deleteSurfaceSubstrateHeader(
-                                                      header.id)
-                                                  .then((value) {
-                                                ref.refresh(
-                                                    ssTransListProvider(ssId));
-                                                context.goNamed(
-                                                    SurfaceSubstrateSummaryPage
-                                                        .routeName,
-                                                    pathParameters: widget
-                                                        .state.pathParameters);
-                                              });
-                                            },
-                                          });
-                                    }),
-                                  ),
-                                );
-                              }),
-                    );
-                  },
-                  error: (err, stack) => Text("Error: $err"),
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
-                )),
-              ],
-            ),
-          ),
-        ));
+                )));
   }
 }

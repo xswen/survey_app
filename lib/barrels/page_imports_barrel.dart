@@ -16,6 +16,7 @@ export '../routes/path_parameters/path_param_keys.dart';
 export '../routes/path_parameters/path_param_value.dart';
 export '../widgets/app_bar.dart';
 export '../widgets/buttons/floating_complete_button.dart';
+export '../widgets/default_page_loading_scaffold.dart';
 export '../widgets/drawer_menu.dart';
 export '../widgets/popups/popup_continue.dart';
 export '../widgets/popups/popup_dismiss.dart';

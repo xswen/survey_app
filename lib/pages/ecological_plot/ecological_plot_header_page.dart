@@ -10,7 +10,9 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import '../../formatters/thousands_formatter.dart';
 import '../../widgets/builders/ecp_plot_num_select_builder.dart';
 import '../../widgets/builders/ecp_plot_type_select_builder.dart';
+import '../../widgets/buttons/mark_complete_button.dart';
 import '../../widgets/popups/popup_errors_found_list.dart';
+import '../../widgets/popups/popup_marked_complete.dart';
 import '../../widgets/tables/table_creation_builder.dart';
 import '../../widgets/tables/table_data_grid_source_builder.dart';
 import '../../wrappers/column_header_object.dart';
@@ -145,39 +147,6 @@ class EcologicalPlotHeaderPageState
             ));
       });
 
-  void markComplete() async {
-    final db = Database.instance;
-    if (parentComplete) {
-      Popups.show(context, popupSurveyComplete);
-    } else if (ecpH.complete.value) {
-      updateEcpHData(ecpH.copyWith(complete: const d.Value(false)));
-    } else {
-      List<String>? errors = errorCheck();
-      errors == null
-          ? db.ecologicalPlotTablesDao.getSpeciesList(ecpHId).then(
-                (value) => value.isEmpty
-                    ? Popups.show(
-                        context,
-                        PopupContinue(
-                          "Warning: No species entered",
-                          contentText: "No species have been recorded for "
-                              "this plot. Pressing continue means you are "
-                              "confirming that the survey was completed and "
-                              "there were no pieces to record.\n"
-                              "Are you sure you want to continue?",
-                          rightBtnOnPressed: () {
-                            updateEcpHData(
-                                ecpH.copyWith(complete: const d.Value(true)));
-                            context.pop();
-                          },
-                        ))
-                    : updateEcpHData(
-                        ecpH.copyWith(complete: const d.Value(true))),
-              )
-          : Popups.show(context, PopupErrorsFoundList(errors: errors));
-    }
-  }
-
   //Error Checks
   List<String>? errorCheck() {
     final db = ref.read(databaseProvider);
@@ -239,15 +208,59 @@ class EcologicalPlotHeaderPageState
     final AsyncValue<List<EcpSpeciesData>> speciesList =
         ref.watch(ecpSpeciesListProvider(ecpHId));
 
+    String fullTitle =
+        "$title: ${db.companionValueToStr(ecpH.plotType)}${db.companionValueToStr(ecpH.ecpNum)}";
+
+    void markComplete() async {
+      final db = Database.instance;
+      if (parentComplete) {
+        Popups.show(context, popupSurveyComplete);
+      } else if (ecpH.complete.value) {
+        updateEcpHData(ecpH.copyWith(complete: const d.Value(false)));
+      } else {
+        List<String>? errors = errorCheck();
+        errors == null
+            ? db.ecologicalPlotTablesDao.getSpeciesList(ecpHId).then(
+                (value) {
+                  if (value.isEmpty) {
+                    Popups.show(
+                        context,
+                        PopupContinue(
+                          "Warning: No species entered",
+                          contentText: "No species have been recorded for "
+                              "this plot. Pressing continue means you are "
+                              "confirming that the survey was completed and "
+                              "there were no pieces to record.\n"
+                              "Are you sure you want to continue?",
+                          rightBtnOnPressed: () {
+                            updateEcpHData(
+                                ecpH.copyWith(complete: const d.Value(true)));
+                            context.pop();
+                            Popups.show(
+                                context, PopupMarkedComplete(title: fullTitle));
+                          },
+                        ));
+                  } else {
+                    updateEcpHData(
+                        ecpH.copyWith(complete: const d.Value(true)));
+                    Popups.show(context, PopupMarkedComplete(title: fullTitle));
+                  }
+                },
+              )
+            : Popups.show(context, PopupErrorsFoundList(errors: errors));
+      }
+    }
+
     return db.companionValueToStr(ecpH.id).isEmpty
         ? Scaffold(
             appBar: OurAppBar(
-              "$title: ${db.companionValueToStr(ecpH.plotType)}${db.companionValueToStr(ecpH.ecpNum)}",
+              fullTitle,
             ),
             body: const Center(child: kLoadingWidget))
         : Scaffold(
             appBar: OurAppBar(
-              "$title: ${db.companionValueToStr(ecpH.plotType)}${db.companionValueToStr(ecpH.ecpNum)}",
+              fullTitle,
+              complete: ecpH.complete.value,
               onLocaleChange: () {},
               backFn: () {
                 if (checkPlotNumExists()) {
@@ -256,14 +269,11 @@ class EcologicalPlotHeaderPageState
                 }
               },
             ),
-            floatingActionButton: FloatingCompleteButton(
-              title: "Ecological Plot",
-              complete: db.companionValueToStr(ecpH.complete).isEmpty
-                  ? false
-                  : ecpH.complete.value,
-              onPressed: () => markComplete(),
-            ),
             endDrawer: DrawerMenu(onLocaleChange: () {}),
+            bottomNavigationBar: MarkCompleteButton(
+                title: fullTitle,
+                complete: ecpH.complete.value,
+                onPressed: () => markComplete()),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: kPaddingH),
               child: Column(
