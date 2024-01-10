@@ -7,6 +7,7 @@ import 'package:survey_app/providers/soil_pit_providers.dart';
 import 'package:survey_app/widgets/buttons/icon_nav_button.dart';
 
 import '../../providers/survey_info_providers.dart';
+import '../../widgets/buttons/mark_complete_button.dart';
 import '../../widgets/date_select.dart';
 
 class SoilPitSummaryPage extends ConsumerStatefulWidget {
@@ -35,6 +36,8 @@ class SoilPitSummaryPageState extends ConsumerState<SoilPitSummaryPage> {
 
     super.initState();
   }
+
+  //TODO: Parent complete
 
   void navToSiteInfo() => ref
           .read(databaseProvider)
@@ -75,43 +78,55 @@ class SoilPitSummaryPageState extends ConsumerState<SoilPitSummaryPage> {
     AsyncValue<SoilPitSummaryData> spSummary =
         ref.watch(soilSummaryDataProvider(spId));
 
-    return Scaffold(
-      appBar: OurAppBar(
-        title,
-        backFn: () {
-          ref.refresh(updateSurveyCardProvider(surveyId));
-          context.pop();
-        },
-      ),
-      endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
-      body: Center(
-          child: spSummary.when(
-        error: (err, stack) => Text("Error: $err"),
-        loading: () => const Center(child: CircularProgressIndicator()),
-        data: (spSummary) => Scaffold(
-          floatingActionButton: FloatingCompleteButton(
-            title: title,
-            complete: spSummary.complete,
-            onPressed: () => spSummary.complete
-                ? updateSpSummary(
-                    const SoilPitSummaryCompanion(complete: d.Value(false)))
-                : db.soilPitTablesDao
-                    .getSiteInfoFromSummaryId(spId)
-                    .then((value) {
-                    if (value == null) {
-                      Popups.show(
-                          context,
-                          const PopupDismiss(
-                            "Error: Soil Pit Site Info",
-                            contentText:
-                                "Soil site info needs to be filled out before soil pit can be marked complete.",
-                          ));
-                    } else {
-                      updateSpSummary(SoilPitSummaryCompanion(
-                          complete: d.Value(!spSummary.complete)));
-                    }
-                  }),
+    return spSummary.when(
+      error: (err, stack) => Text("Error: $err"),
+      loading: () => Scaffold(
+          appBar: OurAppBar(
+            title,
+            backFn: () {
+              ref.refresh(updateSurveyHeaderListProvider);
+              context.pop();
+            },
           ),
+          endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
+          body: const Center(child: CircularProgressIndicator())),
+      data: (spSummary) {
+        void markComplete() {
+          spSummary.complete
+              ? updateSpSummary(
+                  const SoilPitSummaryCompanion(complete: d.Value(false)))
+              : db.soilPitTablesDao
+                  .getSiteInfoFromSummaryId(spId)
+                  .then((value) {
+                  if (value == null) {
+                    Popups.show(
+                        context,
+                        const PopupDismiss(
+                          "Error: Soil Pit Site Info",
+                          contentText:
+                              "Soil site info needs to be filled out before soil pit can be marked complete.",
+                        ));
+                  } else {
+                    updateSpSummary(SoilPitSummaryCompanion(
+                        complete: d.Value(!spSummary.complete)));
+                  }
+                });
+        }
+
+        return Scaffold(
+          appBar: OurAppBar(
+            title,
+            complete: spSummary.complete,
+            backFn: () {
+              ref.refresh(updateSurveyHeaderListProvider);
+              context.pop();
+            },
+          ),
+          endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
+          bottomNavigationBar: MarkCompleteButton(
+              title: title,
+              complete: spSummary.complete,
+              onPressed: () => markComplete()),
           body: Column(
             children: [
               CalendarSelect(
@@ -154,8 +169,8 @@ class SoilPitSummaryPageState extends ConsumerState<SoilPitSummaryPage> {
               ),
             ],
           ),
-        ),
-      )),
+        );
+      },
     );
   }
 }
