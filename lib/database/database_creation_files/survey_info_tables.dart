@@ -56,29 +56,29 @@ class SurveyHeaderGroundPhoto extends Table {
 class SurveyHeaderTree extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get surveyId => integer().unique().references(SurveyHeaders, #id)();
-  TextColumn get fieldResponsibility => text()();
-  TextColumn get fieldCheckBy => text()();
-  DateTimeColumn get fieldDate => dateTime()();
-  TextColumn get officeCheckBy => text()();
-  DateTimeColumn get officeDate => dateTime()();
+  TextColumn get fieldResponsibility => text().nullable()();
+  TextColumn get fieldCheckBy => text().nullable()();
+  DateTimeColumn get fieldDate => dateTime().nullable()();
+  TextColumn get officeCheckBy => text().nullable()();
+  DateTimeColumn get officeDate => dateTime().nullable()();
 }
 
 class SurveyHeaderEcological extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get surveyId => integer().unique().references(SurveyHeaders, #id)();
-  TextColumn get fieldResponsibility => text()();
-  TextColumn get fieldCheckBy => text()();
-  DateTimeColumn get fieldDate => dateTime()();
-  TextColumn get officeCheckBy => text()();
-  DateTimeColumn get officeDate => dateTime()();
+  TextColumn get fieldResponsibility => text().nullable()();
+  TextColumn get fieldCheckBy => text().nullable()();
+  DateTimeColumn get fieldDate => dateTime().nullable()();
+  TextColumn get officeCheckBy => text().nullable()();
+  DateTimeColumn get officeDate => dateTime().nullable()();
 }
 
 class SurveyHeaderSoil extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get surveyId => integer().unique().references(SurveyHeaders, #id)();
-  TextColumn get fieldResponsibility => text()();
-  TextColumn get fieldCheckBy => text()();
-  DateTimeColumn get fieldDate => dateTime()();
-  TextColumn get officeCheckBy => text()();
-  DateTimeColumn get officeDate => dateTime()();
+  TextColumn get fieldResponsibility => text().nullable()();
+  TextColumn get fieldCheckBy => text().nullable()();
+  DateTimeColumn get fieldDate => dateTime().nullable()();
+  TextColumn get officeCheckBy => text().nullable()();
+  DateTimeColumn get officeDate => dateTime().nullable()();
 }

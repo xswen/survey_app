@@ -114,6 +114,10 @@ class SurveyInfoTablesDao extends DatabaseAccessor<Database>
   Future<int> addSummary(SurveySummaryCompanion entry) =>
       into(surveySummary).insert(entry);
 
+  Future<SurveySummaryData> getSummaryFromSurveyId(int id) =>
+      (select(surveySummary)..where((tbl) => tbl.surveyId.equals(id)))
+          .getSingle();
+
   Future<SurveySummaryData> getSummary(int id) =>
       (select(surveySummary)..where((tbl) => tbl.id.equals(id))).getSingle();
 
@@ -223,5 +227,53 @@ class SurveyInfoTablesDao extends DatabaseAccessor<Database>
     }
 
     await update(surveyHeaderGroundPhoto).replace(gp);
+  }
+
+//==============================Tree Data======================================
+  Future<SurveyHeaderTreeData> getTreeDataFromSurveyId(int surveyId) async {
+    SurveyHeaderTreeData? data = await (select(surveyHeaderTree)
+          ..where((tbl) => tbl.surveyId.equals(surveyId)))
+        .getSingleOrNull();
+    if (data == null) {
+      into(surveyHeaderTree)
+          .insert(SurveyHeaderTreeCompanion(surveyId: Value(surveyId)));
+    }
+    return data ??
+        await (select(surveyHeaderTree)
+              ..where((tbl) => tbl.surveyId.equals(surveyId)))
+            .getSingle();
+  }
+
+//=============================Ecological Data==================================
+  Future<SurveyHeaderEcologicalData> getEcologicalDataFromSurveyId(
+      int surveyId) async {
+    SurveyHeaderEcologicalData? data = await (select(surveyHeaderEcological)
+          ..where((tbl) => tbl.surveyId.equals(surveyId)))
+        .getSingleOrNull();
+
+    if (data == null) {
+      into(surveyHeaderEcological)
+          .insert(SurveyHeaderEcologicalCompanion(surveyId: Value(surveyId)));
+    }
+    return data ??
+        await (select(surveyHeaderEcological)
+              ..where((tbl) => tbl.surveyId.equals(surveyId)))
+            .getSingle();
+  }
+
+//===============================Soil Data======================================
+  Future<SurveyHeaderSoilData> getSoilDataFromSurveyId(int surveyId) async {
+    SurveyHeaderSoilData? data = await (select(surveyHeaderSoil)
+          ..where((tbl) => tbl.surveyId.equals(surveyId)))
+        .getSingleOrNull();
+
+    if (data == null) {
+      into(surveyHeaderSoil)
+          .insert(SurveyHeaderSoilCompanion(surveyId: Value(surveyId)));
+    }
+    return data ??
+        await (select(surveyHeaderSoil)
+              ..where((tbl) => tbl.surveyId.equals(surveyId)))
+            .getSingle();
   }
 }
