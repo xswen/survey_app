@@ -11,6 +11,7 @@ import 'package:survey_app/routes/go_route_small_tree_plot.dart';
 import 'package:survey_app/routes/go_route_soil_pit.dart';
 import 'package:survey_app/routes/go_route_stump_plot.dart';
 import 'package:survey_app/routes/go_route_surface_substrate.dart';
+import 'package:survey_app/routes/go_route_survey_info.dart';
 import 'package:survey_app/routes/go_route_woody_debris.dart';
 
 import '../main.dart';
@@ -68,6 +69,7 @@ List<GoRoute> routes = [
               path: "survey-info/:${PathParamsKeys.surveyId}",
               builder: (context, state) => SurveyInfoPage(goRouterState: state),
               routes: [
+                goRouteSurveyInfo,
                 goRouteWoodyDebris,
                 goRouteSurfaceSubstrate,
                 goRouteEcp,

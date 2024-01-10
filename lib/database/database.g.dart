@@ -4420,6 +4420,2352 @@ class MetaCommentCompanion extends UpdateCompanion<MetaCommentData> {
   }
 }
 
+class $SurveySummaryTable extends SurveySummary
+    with TableInfo<$SurveySummaryTable, SurveySummaryData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SurveySummaryTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _surveyIdMeta =
+      const VerificationMeta('surveyId');
+  @override
+  late final GeneratedColumn<int> surveyId = GeneratedColumn<int>(
+      'survey_id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'UNIQUE REFERENCES survey_headers (id)'));
+  static const VerificationMeta _notAssessedMeta =
+      const VerificationMeta('notAssessed');
+  @override
+  late final GeneratedColumn<bool> notAssessed = GeneratedColumn<bool>(
+      'not_assessed', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("not_assessed" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  static const VerificationMeta _completeMeta =
+      const VerificationMeta('complete');
+  @override
+  late final GeneratedColumn<bool> complete = GeneratedColumn<bool>(
+      'complete', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("complete" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  static const VerificationMeta _referenceTreeMeta =
+      const VerificationMeta('referenceTree');
+  @override
+  late final GeneratedColumn<int> referenceTree = GeneratedColumn<int>(
+      'reference_tree', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _crewOneMeta =
+      const VerificationMeta('crewOne');
+  @override
+  late final GeneratedColumn<String> crewOne = GeneratedColumn<String>(
+      'crew_one', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _crewTwoMeta =
+      const VerificationMeta('crewTwo');
+  @override
+  late final GeneratedColumn<String> crewTwo = GeneratedColumn<String>(
+      'crew_two', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _crewThreeMeta =
+      const VerificationMeta('crewThree');
+  @override
+  late final GeneratedColumn<String> crewThree = GeneratedColumn<String>(
+      'crew_three', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _numberPhotosMeta =
+      const VerificationMeta('numberPhotos');
+  @override
+  late final GeneratedColumn<int> numberPhotos = GeneratedColumn<int>(
+      'number_photos', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        surveyId,
+        notAssessed,
+        complete,
+        referenceTree,
+        crewOne,
+        crewTwo,
+        crewThree,
+        numberPhotos
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'survey_summary';
+  @override
+  VerificationContext validateIntegrity(Insertable<SurveySummaryData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('survey_id')) {
+      context.handle(_surveyIdMeta,
+          surveyId.isAcceptableOrUnknown(data['survey_id']!, _surveyIdMeta));
+    } else if (isInserting) {
+      context.missing(_surveyIdMeta);
+    }
+    if (data.containsKey('not_assessed')) {
+      context.handle(
+          _notAssessedMeta,
+          notAssessed.isAcceptableOrUnknown(
+              data['not_assessed']!, _notAssessedMeta));
+    }
+    if (data.containsKey('complete')) {
+      context.handle(_completeMeta,
+          complete.isAcceptableOrUnknown(data['complete']!, _completeMeta));
+    }
+    if (data.containsKey('reference_tree')) {
+      context.handle(
+          _referenceTreeMeta,
+          referenceTree.isAcceptableOrUnknown(
+              data['reference_tree']!, _referenceTreeMeta));
+    }
+    if (data.containsKey('crew_one')) {
+      context.handle(_crewOneMeta,
+          crewOne.isAcceptableOrUnknown(data['crew_one']!, _crewOneMeta));
+    }
+    if (data.containsKey('crew_two')) {
+      context.handle(_crewTwoMeta,
+          crewTwo.isAcceptableOrUnknown(data['crew_two']!, _crewTwoMeta));
+    }
+    if (data.containsKey('crew_three')) {
+      context.handle(_crewThreeMeta,
+          crewThree.isAcceptableOrUnknown(data['crew_three']!, _crewThreeMeta));
+    }
+    if (data.containsKey('number_photos')) {
+      context.handle(
+          _numberPhotosMeta,
+          numberPhotos.isAcceptableOrUnknown(
+              data['number_photos']!, _numberPhotosMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  SurveySummaryData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SurveySummaryData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      surveyId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}survey_id'])!,
+      notAssessed: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}not_assessed'])!,
+      complete: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}complete'])!,
+      referenceTree: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}reference_tree']),
+      crewOne: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}crew_one']),
+      crewTwo: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}crew_two']),
+      crewThree: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}crew_three']),
+      numberPhotos: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}number_photos']),
+    );
+  }
+
+  @override
+  $SurveySummaryTable createAlias(String alias) {
+    return $SurveySummaryTable(attachedDatabase, alias);
+  }
+}
+
+class SurveySummaryData extends DataClass
+    implements Insertable<SurveySummaryData> {
+  final int id;
+  final int surveyId;
+  final bool notAssessed;
+  final bool complete;
+  final int? referenceTree;
+  final String? crewOne;
+  final String? crewTwo;
+  final String? crewThree;
+  final int? numberPhotos;
+  const SurveySummaryData(
+      {required this.id,
+      required this.surveyId,
+      required this.notAssessed,
+      required this.complete,
+      this.referenceTree,
+      this.crewOne,
+      this.crewTwo,
+      this.crewThree,
+      this.numberPhotos});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['survey_id'] = Variable<int>(surveyId);
+    map['not_assessed'] = Variable<bool>(notAssessed);
+    map['complete'] = Variable<bool>(complete);
+    if (!nullToAbsent || referenceTree != null) {
+      map['reference_tree'] = Variable<int>(referenceTree);
+    }
+    if (!nullToAbsent || crewOne != null) {
+      map['crew_one'] = Variable<String>(crewOne);
+    }
+    if (!nullToAbsent || crewTwo != null) {
+      map['crew_two'] = Variable<String>(crewTwo);
+    }
+    if (!nullToAbsent || crewThree != null) {
+      map['crew_three'] = Variable<String>(crewThree);
+    }
+    if (!nullToAbsent || numberPhotos != null) {
+      map['number_photos'] = Variable<int>(numberPhotos);
+    }
+    return map;
+  }
+
+  SurveySummaryCompanion toCompanion(bool nullToAbsent) {
+    return SurveySummaryCompanion(
+      id: Value(id),
+      surveyId: Value(surveyId),
+      notAssessed: Value(notAssessed),
+      complete: Value(complete),
+      referenceTree: referenceTree == null && nullToAbsent
+          ? const Value.absent()
+          : Value(referenceTree),
+      crewOne: crewOne == null && nullToAbsent
+          ? const Value.absent()
+          : Value(crewOne),
+      crewTwo: crewTwo == null && nullToAbsent
+          ? const Value.absent()
+          : Value(crewTwo),
+      crewThree: crewThree == null && nullToAbsent
+          ? const Value.absent()
+          : Value(crewThree),
+      numberPhotos: numberPhotos == null && nullToAbsent
+          ? const Value.absent()
+          : Value(numberPhotos),
+    );
+  }
+
+  factory SurveySummaryData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SurveySummaryData(
+      id: serializer.fromJson<int>(json['id']),
+      surveyId: serializer.fromJson<int>(json['surveyId']),
+      notAssessed: serializer.fromJson<bool>(json['notAssessed']),
+      complete: serializer.fromJson<bool>(json['complete']),
+      referenceTree: serializer.fromJson<int?>(json['referenceTree']),
+      crewOne: serializer.fromJson<String?>(json['crewOne']),
+      crewTwo: serializer.fromJson<String?>(json['crewTwo']),
+      crewThree: serializer.fromJson<String?>(json['crewThree']),
+      numberPhotos: serializer.fromJson<int?>(json['numberPhotos']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'surveyId': serializer.toJson<int>(surveyId),
+      'notAssessed': serializer.toJson<bool>(notAssessed),
+      'complete': serializer.toJson<bool>(complete),
+      'referenceTree': serializer.toJson<int?>(referenceTree),
+      'crewOne': serializer.toJson<String?>(crewOne),
+      'crewTwo': serializer.toJson<String?>(crewTwo),
+      'crewThree': serializer.toJson<String?>(crewThree),
+      'numberPhotos': serializer.toJson<int?>(numberPhotos),
+    };
+  }
+
+  SurveySummaryData copyWith(
+          {int? id,
+          int? surveyId,
+          bool? notAssessed,
+          bool? complete,
+          Value<int?> referenceTree = const Value.absent(),
+          Value<String?> crewOne = const Value.absent(),
+          Value<String?> crewTwo = const Value.absent(),
+          Value<String?> crewThree = const Value.absent(),
+          Value<int?> numberPhotos = const Value.absent()}) =>
+      SurveySummaryData(
+        id: id ?? this.id,
+        surveyId: surveyId ?? this.surveyId,
+        notAssessed: notAssessed ?? this.notAssessed,
+        complete: complete ?? this.complete,
+        referenceTree:
+            referenceTree.present ? referenceTree.value : this.referenceTree,
+        crewOne: crewOne.present ? crewOne.value : this.crewOne,
+        crewTwo: crewTwo.present ? crewTwo.value : this.crewTwo,
+        crewThree: crewThree.present ? crewThree.value : this.crewThree,
+        numberPhotos:
+            numberPhotos.present ? numberPhotos.value : this.numberPhotos,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('SurveySummaryData(')
+          ..write('id: $id, ')
+          ..write('surveyId: $surveyId, ')
+          ..write('notAssessed: $notAssessed, ')
+          ..write('complete: $complete, ')
+          ..write('referenceTree: $referenceTree, ')
+          ..write('crewOne: $crewOne, ')
+          ..write('crewTwo: $crewTwo, ')
+          ..write('crewThree: $crewThree, ')
+          ..write('numberPhotos: $numberPhotos')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, surveyId, notAssessed, complete,
+      referenceTree, crewOne, crewTwo, crewThree, numberPhotos);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SurveySummaryData &&
+          other.id == this.id &&
+          other.surveyId == this.surveyId &&
+          other.notAssessed == this.notAssessed &&
+          other.complete == this.complete &&
+          other.referenceTree == this.referenceTree &&
+          other.crewOne == this.crewOne &&
+          other.crewTwo == this.crewTwo &&
+          other.crewThree == this.crewThree &&
+          other.numberPhotos == this.numberPhotos);
+}
+
+class SurveySummaryCompanion extends UpdateCompanion<SurveySummaryData> {
+  final Value<int> id;
+  final Value<int> surveyId;
+  final Value<bool> notAssessed;
+  final Value<bool> complete;
+  final Value<int?> referenceTree;
+  final Value<String?> crewOne;
+  final Value<String?> crewTwo;
+  final Value<String?> crewThree;
+  final Value<int?> numberPhotos;
+  const SurveySummaryCompanion({
+    this.id = const Value.absent(),
+    this.surveyId = const Value.absent(),
+    this.notAssessed = const Value.absent(),
+    this.complete = const Value.absent(),
+    this.referenceTree = const Value.absent(),
+    this.crewOne = const Value.absent(),
+    this.crewTwo = const Value.absent(),
+    this.crewThree = const Value.absent(),
+    this.numberPhotos = const Value.absent(),
+  });
+  SurveySummaryCompanion.insert({
+    this.id = const Value.absent(),
+    required int surveyId,
+    this.notAssessed = const Value.absent(),
+    this.complete = const Value.absent(),
+    this.referenceTree = const Value.absent(),
+    this.crewOne = const Value.absent(),
+    this.crewTwo = const Value.absent(),
+    this.crewThree = const Value.absent(),
+    this.numberPhotos = const Value.absent(),
+  }) : surveyId = Value(surveyId);
+  static Insertable<SurveySummaryData> custom({
+    Expression<int>? id,
+    Expression<int>? surveyId,
+    Expression<bool>? notAssessed,
+    Expression<bool>? complete,
+    Expression<int>? referenceTree,
+    Expression<String>? crewOne,
+    Expression<String>? crewTwo,
+    Expression<String>? crewThree,
+    Expression<int>? numberPhotos,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (surveyId != null) 'survey_id': surveyId,
+      if (notAssessed != null) 'not_assessed': notAssessed,
+      if (complete != null) 'complete': complete,
+      if (referenceTree != null) 'reference_tree': referenceTree,
+      if (crewOne != null) 'crew_one': crewOne,
+      if (crewTwo != null) 'crew_two': crewTwo,
+      if (crewThree != null) 'crew_three': crewThree,
+      if (numberPhotos != null) 'number_photos': numberPhotos,
+    });
+  }
+
+  SurveySummaryCompanion copyWith(
+      {Value<int>? id,
+      Value<int>? surveyId,
+      Value<bool>? notAssessed,
+      Value<bool>? complete,
+      Value<int?>? referenceTree,
+      Value<String?>? crewOne,
+      Value<String?>? crewTwo,
+      Value<String?>? crewThree,
+      Value<int?>? numberPhotos}) {
+    return SurveySummaryCompanion(
+      id: id ?? this.id,
+      surveyId: surveyId ?? this.surveyId,
+      notAssessed: notAssessed ?? this.notAssessed,
+      complete: complete ?? this.complete,
+      referenceTree: referenceTree ?? this.referenceTree,
+      crewOne: crewOne ?? this.crewOne,
+      crewTwo: crewTwo ?? this.crewTwo,
+      crewThree: crewThree ?? this.crewThree,
+      numberPhotos: numberPhotos ?? this.numberPhotos,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (surveyId.present) {
+      map['survey_id'] = Variable<int>(surveyId.value);
+    }
+    if (notAssessed.present) {
+      map['not_assessed'] = Variable<bool>(notAssessed.value);
+    }
+    if (complete.present) {
+      map['complete'] = Variable<bool>(complete.value);
+    }
+    if (referenceTree.present) {
+      map['reference_tree'] = Variable<int>(referenceTree.value);
+    }
+    if (crewOne.present) {
+      map['crew_one'] = Variable<String>(crewOne.value);
+    }
+    if (crewTwo.present) {
+      map['crew_two'] = Variable<String>(crewTwo.value);
+    }
+    if (crewThree.present) {
+      map['crew_three'] = Variable<String>(crewThree.value);
+    }
+    if (numberPhotos.present) {
+      map['number_photos'] = Variable<int>(numberPhotos.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SurveySummaryCompanion(')
+          ..write('id: $id, ')
+          ..write('surveyId: $surveyId, ')
+          ..write('notAssessed: $notAssessed, ')
+          ..write('complete: $complete, ')
+          ..write('referenceTree: $referenceTree, ')
+          ..write('crewOne: $crewOne, ')
+          ..write('crewTwo: $crewTwo, ')
+          ..write('crewThree: $crewThree, ')
+          ..write('numberPhotos: $numberPhotos')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $SurveyHeaderGroundPhotoTable extends SurveyHeaderGroundPhoto
+    with TableInfo<$SurveyHeaderGroundPhotoTable, SurveyHeaderGroundPhotoData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SurveyHeaderGroundPhotoTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _surveyIdMeta =
+      const VerificationMeta('surveyId');
+  @override
+  late final GeneratedColumn<int> surveyId = GeneratedColumn<int>(
+      'survey_id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'UNIQUE REFERENCES survey_headers (id)'));
+  static const VerificationMeta _plotPinMeta =
+      const VerificationMeta('plotPin');
+  @override
+  late final GeneratedColumn<bool> plotPin = GeneratedColumn<bool>(
+      'plot_pin', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("plot_pin" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  static const VerificationMeta _transectOneFifteenUnderMeta =
+      const VerificationMeta('transectOneFifteenUnder');
+  @override
+  late final GeneratedColumn<bool> transectOneFifteenUnder =
+      GeneratedColumn<bool>('transect_one_fifteen_under', aliasedName, false,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintIsAlways(
+              'CHECK ("transect_one_fifteen_under" IN (0, 1))'),
+          defaultValue: const Constant(false));
+  static const VerificationMeta _transectOneFifteenOverMeta =
+      const VerificationMeta('transectOneFifteenOver');
+  @override
+  late final GeneratedColumn<bool> transectOneFifteenOver =
+      GeneratedColumn<bool>('transect_one_fifteen_over', aliasedName, false,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintIsAlways(
+              'CHECK ("transect_one_fifteen_over" IN (0, 1))'),
+          defaultValue: const Constant(false));
+  static const VerificationMeta _transectTwoFifteenUnderMeta =
+      const VerificationMeta('transectTwoFifteenUnder');
+  @override
+  late final GeneratedColumn<bool> transectTwoFifteenUnder =
+      GeneratedColumn<bool>('transect_two_fifteen_under', aliasedName, false,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintIsAlways(
+              'CHECK ("transect_two_fifteen_under" IN (0, 1))'),
+          defaultValue: const Constant(false));
+  static const VerificationMeta _transectTwoFifteenOverMeta =
+      const VerificationMeta('transectTwoFifteenOver');
+  @override
+  late final GeneratedColumn<bool> transectTwoFifteenOver =
+      GeneratedColumn<bool>('transect_two_fifteen_over', aliasedName, false,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintIsAlways(
+              'CHECK ("transect_two_fifteen_over" IN (0, 1))'),
+          defaultValue: const Constant(false));
+  static const VerificationMeta _horizontalMeta =
+      const VerificationMeta('horizontal');
+  @override
+  late final GeneratedColumn<bool> horizontal = GeneratedColumn<bool>(
+      'horizontal', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("horizontal" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  static const VerificationMeta _canopyMeta = const VerificationMeta('canopy');
+  @override
+  late final GeneratedColumn<bool> canopy = GeneratedColumn<bool>(
+      'canopy', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("canopy" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  static const VerificationMeta _soilProfileMeta =
+      const VerificationMeta('soilProfile');
+  @override
+  late final GeneratedColumn<bool> soilProfile = GeneratedColumn<bool>(
+      'soil_profile', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("soil_profile" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  static const VerificationMeta _otherOneMeta =
+      const VerificationMeta('otherOne');
+  @override
+  late final GeneratedColumn<bool> otherOne = GeneratedColumn<bool>(
+      'other_one', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("other_one" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  static const VerificationMeta _otherTwoMeta =
+      const VerificationMeta('otherTwo');
+  @override
+  late final GeneratedColumn<bool> otherTwo = GeneratedColumn<bool>(
+      'other_two', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("other_two" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  static const VerificationMeta _otherThreeMeta =
+      const VerificationMeta('otherThree');
+  @override
+  late final GeneratedColumn<bool> otherThree = GeneratedColumn<bool>(
+      'other_three', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("other_three" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  static const VerificationMeta _otherFourMeta =
+      const VerificationMeta('otherFour');
+  @override
+  late final GeneratedColumn<bool> otherFour = GeneratedColumn<bool>(
+      'other_four', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("other_four" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        surveyId,
+        plotPin,
+        transectOneFifteenUnder,
+        transectOneFifteenOver,
+        transectTwoFifteenUnder,
+        transectTwoFifteenOver,
+        horizontal,
+        canopy,
+        soilProfile,
+        otherOne,
+        otherTwo,
+        otherThree,
+        otherFour
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'survey_header_ground_photo';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<SurveyHeaderGroundPhotoData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('survey_id')) {
+      context.handle(_surveyIdMeta,
+          surveyId.isAcceptableOrUnknown(data['survey_id']!, _surveyIdMeta));
+    } else if (isInserting) {
+      context.missing(_surveyIdMeta);
+    }
+    if (data.containsKey('plot_pin')) {
+      context.handle(_plotPinMeta,
+          plotPin.isAcceptableOrUnknown(data['plot_pin']!, _plotPinMeta));
+    }
+    if (data.containsKey('transect_one_fifteen_under')) {
+      context.handle(
+          _transectOneFifteenUnderMeta,
+          transectOneFifteenUnder.isAcceptableOrUnknown(
+              data['transect_one_fifteen_under']!,
+              _transectOneFifteenUnderMeta));
+    }
+    if (data.containsKey('transect_one_fifteen_over')) {
+      context.handle(
+          _transectOneFifteenOverMeta,
+          transectOneFifteenOver.isAcceptableOrUnknown(
+              data['transect_one_fifteen_over']!, _transectOneFifteenOverMeta));
+    }
+    if (data.containsKey('transect_two_fifteen_under')) {
+      context.handle(
+          _transectTwoFifteenUnderMeta,
+          transectTwoFifteenUnder.isAcceptableOrUnknown(
+              data['transect_two_fifteen_under']!,
+              _transectTwoFifteenUnderMeta));
+    }
+    if (data.containsKey('transect_two_fifteen_over')) {
+      context.handle(
+          _transectTwoFifteenOverMeta,
+          transectTwoFifteenOver.isAcceptableOrUnknown(
+              data['transect_two_fifteen_over']!, _transectTwoFifteenOverMeta));
+    }
+    if (data.containsKey('horizontal')) {
+      context.handle(
+          _horizontalMeta,
+          horizontal.isAcceptableOrUnknown(
+              data['horizontal']!, _horizontalMeta));
+    }
+    if (data.containsKey('canopy')) {
+      context.handle(_canopyMeta,
+          canopy.isAcceptableOrUnknown(data['canopy']!, _canopyMeta));
+    }
+    if (data.containsKey('soil_profile')) {
+      context.handle(
+          _soilProfileMeta,
+          soilProfile.isAcceptableOrUnknown(
+              data['soil_profile']!, _soilProfileMeta));
+    }
+    if (data.containsKey('other_one')) {
+      context.handle(_otherOneMeta,
+          otherOne.isAcceptableOrUnknown(data['other_one']!, _otherOneMeta));
+    }
+    if (data.containsKey('other_two')) {
+      context.handle(_otherTwoMeta,
+          otherTwo.isAcceptableOrUnknown(data['other_two']!, _otherTwoMeta));
+    }
+    if (data.containsKey('other_three')) {
+      context.handle(
+          _otherThreeMeta,
+          otherThree.isAcceptableOrUnknown(
+              data['other_three']!, _otherThreeMeta));
+    }
+    if (data.containsKey('other_four')) {
+      context.handle(_otherFourMeta,
+          otherFour.isAcceptableOrUnknown(data['other_four']!, _otherFourMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  SurveyHeaderGroundPhotoData map(Map<String, dynamic> data,
+      {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SurveyHeaderGroundPhotoData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      surveyId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}survey_id'])!,
+      plotPin: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}plot_pin'])!,
+      transectOneFifteenUnder: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool,
+          data['${effectivePrefix}transect_one_fifteen_under'])!,
+      transectOneFifteenOver: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool,
+          data['${effectivePrefix}transect_one_fifteen_over'])!,
+      transectTwoFifteenUnder: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool,
+          data['${effectivePrefix}transect_two_fifteen_under'])!,
+      transectTwoFifteenOver: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool,
+          data['${effectivePrefix}transect_two_fifteen_over'])!,
+      horizontal: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}horizontal'])!,
+      canopy: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}canopy'])!,
+      soilProfile: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}soil_profile'])!,
+      otherOne: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}other_one'])!,
+      otherTwo: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}other_two'])!,
+      otherThree: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}other_three'])!,
+      otherFour: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}other_four'])!,
+    );
+  }
+
+  @override
+  $SurveyHeaderGroundPhotoTable createAlias(String alias) {
+    return $SurveyHeaderGroundPhotoTable(attachedDatabase, alias);
+  }
+}
+
+class SurveyHeaderGroundPhotoData extends DataClass
+    implements Insertable<SurveyHeaderGroundPhotoData> {
+  final int id;
+  final int surveyId;
+  final bool plotPin;
+  final bool transectOneFifteenUnder;
+  final bool transectOneFifteenOver;
+  final bool transectTwoFifteenUnder;
+  final bool transectTwoFifteenOver;
+  final bool horizontal;
+  final bool canopy;
+  final bool soilProfile;
+  final bool otherOne;
+  final bool otherTwo;
+  final bool otherThree;
+  final bool otherFour;
+  const SurveyHeaderGroundPhotoData(
+      {required this.id,
+      required this.surveyId,
+      required this.plotPin,
+      required this.transectOneFifteenUnder,
+      required this.transectOneFifteenOver,
+      required this.transectTwoFifteenUnder,
+      required this.transectTwoFifteenOver,
+      required this.horizontal,
+      required this.canopy,
+      required this.soilProfile,
+      required this.otherOne,
+      required this.otherTwo,
+      required this.otherThree,
+      required this.otherFour});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['survey_id'] = Variable<int>(surveyId);
+    map['plot_pin'] = Variable<bool>(plotPin);
+    map['transect_one_fifteen_under'] = Variable<bool>(transectOneFifteenUnder);
+    map['transect_one_fifteen_over'] = Variable<bool>(transectOneFifteenOver);
+    map['transect_two_fifteen_under'] = Variable<bool>(transectTwoFifteenUnder);
+    map['transect_two_fifteen_over'] = Variable<bool>(transectTwoFifteenOver);
+    map['horizontal'] = Variable<bool>(horizontal);
+    map['canopy'] = Variable<bool>(canopy);
+    map['soil_profile'] = Variable<bool>(soilProfile);
+    map['other_one'] = Variable<bool>(otherOne);
+    map['other_two'] = Variable<bool>(otherTwo);
+    map['other_three'] = Variable<bool>(otherThree);
+    map['other_four'] = Variable<bool>(otherFour);
+    return map;
+  }
+
+  SurveyHeaderGroundPhotoCompanion toCompanion(bool nullToAbsent) {
+    return SurveyHeaderGroundPhotoCompanion(
+      id: Value(id),
+      surveyId: Value(surveyId),
+      plotPin: Value(plotPin),
+      transectOneFifteenUnder: Value(transectOneFifteenUnder),
+      transectOneFifteenOver: Value(transectOneFifteenOver),
+      transectTwoFifteenUnder: Value(transectTwoFifteenUnder),
+      transectTwoFifteenOver: Value(transectTwoFifteenOver),
+      horizontal: Value(horizontal),
+      canopy: Value(canopy),
+      soilProfile: Value(soilProfile),
+      otherOne: Value(otherOne),
+      otherTwo: Value(otherTwo),
+      otherThree: Value(otherThree),
+      otherFour: Value(otherFour),
+    );
+  }
+
+  factory SurveyHeaderGroundPhotoData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SurveyHeaderGroundPhotoData(
+      id: serializer.fromJson<int>(json['id']),
+      surveyId: serializer.fromJson<int>(json['surveyId']),
+      plotPin: serializer.fromJson<bool>(json['plotPin']),
+      transectOneFifteenUnder:
+          serializer.fromJson<bool>(json['transectOneFifteenUnder']),
+      transectOneFifteenOver:
+          serializer.fromJson<bool>(json['transectOneFifteenOver']),
+      transectTwoFifteenUnder:
+          serializer.fromJson<bool>(json['transectTwoFifteenUnder']),
+      transectTwoFifteenOver:
+          serializer.fromJson<bool>(json['transectTwoFifteenOver']),
+      horizontal: serializer.fromJson<bool>(json['horizontal']),
+      canopy: serializer.fromJson<bool>(json['canopy']),
+      soilProfile: serializer.fromJson<bool>(json['soilProfile']),
+      otherOne: serializer.fromJson<bool>(json['otherOne']),
+      otherTwo: serializer.fromJson<bool>(json['otherTwo']),
+      otherThree: serializer.fromJson<bool>(json['otherThree']),
+      otherFour: serializer.fromJson<bool>(json['otherFour']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'surveyId': serializer.toJson<int>(surveyId),
+      'plotPin': serializer.toJson<bool>(plotPin),
+      'transectOneFifteenUnder':
+          serializer.toJson<bool>(transectOneFifteenUnder),
+      'transectOneFifteenOver': serializer.toJson<bool>(transectOneFifteenOver),
+      'transectTwoFifteenUnder':
+          serializer.toJson<bool>(transectTwoFifteenUnder),
+      'transectTwoFifteenOver': serializer.toJson<bool>(transectTwoFifteenOver),
+      'horizontal': serializer.toJson<bool>(horizontal),
+      'canopy': serializer.toJson<bool>(canopy),
+      'soilProfile': serializer.toJson<bool>(soilProfile),
+      'otherOne': serializer.toJson<bool>(otherOne),
+      'otherTwo': serializer.toJson<bool>(otherTwo),
+      'otherThree': serializer.toJson<bool>(otherThree),
+      'otherFour': serializer.toJson<bool>(otherFour),
+    };
+  }
+
+  SurveyHeaderGroundPhotoData copyWith(
+          {int? id,
+          int? surveyId,
+          bool? plotPin,
+          bool? transectOneFifteenUnder,
+          bool? transectOneFifteenOver,
+          bool? transectTwoFifteenUnder,
+          bool? transectTwoFifteenOver,
+          bool? horizontal,
+          bool? canopy,
+          bool? soilProfile,
+          bool? otherOne,
+          bool? otherTwo,
+          bool? otherThree,
+          bool? otherFour}) =>
+      SurveyHeaderGroundPhotoData(
+        id: id ?? this.id,
+        surveyId: surveyId ?? this.surveyId,
+        plotPin: plotPin ?? this.plotPin,
+        transectOneFifteenUnder:
+            transectOneFifteenUnder ?? this.transectOneFifteenUnder,
+        transectOneFifteenOver:
+            transectOneFifteenOver ?? this.transectOneFifteenOver,
+        transectTwoFifteenUnder:
+            transectTwoFifteenUnder ?? this.transectTwoFifteenUnder,
+        transectTwoFifteenOver:
+            transectTwoFifteenOver ?? this.transectTwoFifteenOver,
+        horizontal: horizontal ?? this.horizontal,
+        canopy: canopy ?? this.canopy,
+        soilProfile: soilProfile ?? this.soilProfile,
+        otherOne: otherOne ?? this.otherOne,
+        otherTwo: otherTwo ?? this.otherTwo,
+        otherThree: otherThree ?? this.otherThree,
+        otherFour: otherFour ?? this.otherFour,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('SurveyHeaderGroundPhotoData(')
+          ..write('id: $id, ')
+          ..write('surveyId: $surveyId, ')
+          ..write('plotPin: $plotPin, ')
+          ..write('transectOneFifteenUnder: $transectOneFifteenUnder, ')
+          ..write('transectOneFifteenOver: $transectOneFifteenOver, ')
+          ..write('transectTwoFifteenUnder: $transectTwoFifteenUnder, ')
+          ..write('transectTwoFifteenOver: $transectTwoFifteenOver, ')
+          ..write('horizontal: $horizontal, ')
+          ..write('canopy: $canopy, ')
+          ..write('soilProfile: $soilProfile, ')
+          ..write('otherOne: $otherOne, ')
+          ..write('otherTwo: $otherTwo, ')
+          ..write('otherThree: $otherThree, ')
+          ..write('otherFour: $otherFour')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      id,
+      surveyId,
+      plotPin,
+      transectOneFifteenUnder,
+      transectOneFifteenOver,
+      transectTwoFifteenUnder,
+      transectTwoFifteenOver,
+      horizontal,
+      canopy,
+      soilProfile,
+      otherOne,
+      otherTwo,
+      otherThree,
+      otherFour);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SurveyHeaderGroundPhotoData &&
+          other.id == this.id &&
+          other.surveyId == this.surveyId &&
+          other.plotPin == this.plotPin &&
+          other.transectOneFifteenUnder == this.transectOneFifteenUnder &&
+          other.transectOneFifteenOver == this.transectOneFifteenOver &&
+          other.transectTwoFifteenUnder == this.transectTwoFifteenUnder &&
+          other.transectTwoFifteenOver == this.transectTwoFifteenOver &&
+          other.horizontal == this.horizontal &&
+          other.canopy == this.canopy &&
+          other.soilProfile == this.soilProfile &&
+          other.otherOne == this.otherOne &&
+          other.otherTwo == this.otherTwo &&
+          other.otherThree == this.otherThree &&
+          other.otherFour == this.otherFour);
+}
+
+class SurveyHeaderGroundPhotoCompanion
+    extends UpdateCompanion<SurveyHeaderGroundPhotoData> {
+  final Value<int> id;
+  final Value<int> surveyId;
+  final Value<bool> plotPin;
+  final Value<bool> transectOneFifteenUnder;
+  final Value<bool> transectOneFifteenOver;
+  final Value<bool> transectTwoFifteenUnder;
+  final Value<bool> transectTwoFifteenOver;
+  final Value<bool> horizontal;
+  final Value<bool> canopy;
+  final Value<bool> soilProfile;
+  final Value<bool> otherOne;
+  final Value<bool> otherTwo;
+  final Value<bool> otherThree;
+  final Value<bool> otherFour;
+  const SurveyHeaderGroundPhotoCompanion({
+    this.id = const Value.absent(),
+    this.surveyId = const Value.absent(),
+    this.plotPin = const Value.absent(),
+    this.transectOneFifteenUnder = const Value.absent(),
+    this.transectOneFifteenOver = const Value.absent(),
+    this.transectTwoFifteenUnder = const Value.absent(),
+    this.transectTwoFifteenOver = const Value.absent(),
+    this.horizontal = const Value.absent(),
+    this.canopy = const Value.absent(),
+    this.soilProfile = const Value.absent(),
+    this.otherOne = const Value.absent(),
+    this.otherTwo = const Value.absent(),
+    this.otherThree = const Value.absent(),
+    this.otherFour = const Value.absent(),
+  });
+  SurveyHeaderGroundPhotoCompanion.insert({
+    this.id = const Value.absent(),
+    required int surveyId,
+    this.plotPin = const Value.absent(),
+    this.transectOneFifteenUnder = const Value.absent(),
+    this.transectOneFifteenOver = const Value.absent(),
+    this.transectTwoFifteenUnder = const Value.absent(),
+    this.transectTwoFifteenOver = const Value.absent(),
+    this.horizontal = const Value.absent(),
+    this.canopy = const Value.absent(),
+    this.soilProfile = const Value.absent(),
+    this.otherOne = const Value.absent(),
+    this.otherTwo = const Value.absent(),
+    this.otherThree = const Value.absent(),
+    this.otherFour = const Value.absent(),
+  }) : surveyId = Value(surveyId);
+  static Insertable<SurveyHeaderGroundPhotoData> custom({
+    Expression<int>? id,
+    Expression<int>? surveyId,
+    Expression<bool>? plotPin,
+    Expression<bool>? transectOneFifteenUnder,
+    Expression<bool>? transectOneFifteenOver,
+    Expression<bool>? transectTwoFifteenUnder,
+    Expression<bool>? transectTwoFifteenOver,
+    Expression<bool>? horizontal,
+    Expression<bool>? canopy,
+    Expression<bool>? soilProfile,
+    Expression<bool>? otherOne,
+    Expression<bool>? otherTwo,
+    Expression<bool>? otherThree,
+    Expression<bool>? otherFour,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (surveyId != null) 'survey_id': surveyId,
+      if (plotPin != null) 'plot_pin': plotPin,
+      if (transectOneFifteenUnder != null)
+        'transect_one_fifteen_under': transectOneFifteenUnder,
+      if (transectOneFifteenOver != null)
+        'transect_one_fifteen_over': transectOneFifteenOver,
+      if (transectTwoFifteenUnder != null)
+        'transect_two_fifteen_under': transectTwoFifteenUnder,
+      if (transectTwoFifteenOver != null)
+        'transect_two_fifteen_over': transectTwoFifteenOver,
+      if (horizontal != null) 'horizontal': horizontal,
+      if (canopy != null) 'canopy': canopy,
+      if (soilProfile != null) 'soil_profile': soilProfile,
+      if (otherOne != null) 'other_one': otherOne,
+      if (otherTwo != null) 'other_two': otherTwo,
+      if (otherThree != null) 'other_three': otherThree,
+      if (otherFour != null) 'other_four': otherFour,
+    });
+  }
+
+  SurveyHeaderGroundPhotoCompanion copyWith(
+      {Value<int>? id,
+      Value<int>? surveyId,
+      Value<bool>? plotPin,
+      Value<bool>? transectOneFifteenUnder,
+      Value<bool>? transectOneFifteenOver,
+      Value<bool>? transectTwoFifteenUnder,
+      Value<bool>? transectTwoFifteenOver,
+      Value<bool>? horizontal,
+      Value<bool>? canopy,
+      Value<bool>? soilProfile,
+      Value<bool>? otherOne,
+      Value<bool>? otherTwo,
+      Value<bool>? otherThree,
+      Value<bool>? otherFour}) {
+    return SurveyHeaderGroundPhotoCompanion(
+      id: id ?? this.id,
+      surveyId: surveyId ?? this.surveyId,
+      plotPin: plotPin ?? this.plotPin,
+      transectOneFifteenUnder:
+          transectOneFifteenUnder ?? this.transectOneFifteenUnder,
+      transectOneFifteenOver:
+          transectOneFifteenOver ?? this.transectOneFifteenOver,
+      transectTwoFifteenUnder:
+          transectTwoFifteenUnder ?? this.transectTwoFifteenUnder,
+      transectTwoFifteenOver:
+          transectTwoFifteenOver ?? this.transectTwoFifteenOver,
+      horizontal: horizontal ?? this.horizontal,
+      canopy: canopy ?? this.canopy,
+      soilProfile: soilProfile ?? this.soilProfile,
+      otherOne: otherOne ?? this.otherOne,
+      otherTwo: otherTwo ?? this.otherTwo,
+      otherThree: otherThree ?? this.otherThree,
+      otherFour: otherFour ?? this.otherFour,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (surveyId.present) {
+      map['survey_id'] = Variable<int>(surveyId.value);
+    }
+    if (plotPin.present) {
+      map['plot_pin'] = Variable<bool>(plotPin.value);
+    }
+    if (transectOneFifteenUnder.present) {
+      map['transect_one_fifteen_under'] =
+          Variable<bool>(transectOneFifteenUnder.value);
+    }
+    if (transectOneFifteenOver.present) {
+      map['transect_one_fifteen_over'] =
+          Variable<bool>(transectOneFifteenOver.value);
+    }
+    if (transectTwoFifteenUnder.present) {
+      map['transect_two_fifteen_under'] =
+          Variable<bool>(transectTwoFifteenUnder.value);
+    }
+    if (transectTwoFifteenOver.present) {
+      map['transect_two_fifteen_over'] =
+          Variable<bool>(transectTwoFifteenOver.value);
+    }
+    if (horizontal.present) {
+      map['horizontal'] = Variable<bool>(horizontal.value);
+    }
+    if (canopy.present) {
+      map['canopy'] = Variable<bool>(canopy.value);
+    }
+    if (soilProfile.present) {
+      map['soil_profile'] = Variable<bool>(soilProfile.value);
+    }
+    if (otherOne.present) {
+      map['other_one'] = Variable<bool>(otherOne.value);
+    }
+    if (otherTwo.present) {
+      map['other_two'] = Variable<bool>(otherTwo.value);
+    }
+    if (otherThree.present) {
+      map['other_three'] = Variable<bool>(otherThree.value);
+    }
+    if (otherFour.present) {
+      map['other_four'] = Variable<bool>(otherFour.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SurveyHeaderGroundPhotoCompanion(')
+          ..write('id: $id, ')
+          ..write('surveyId: $surveyId, ')
+          ..write('plotPin: $plotPin, ')
+          ..write('transectOneFifteenUnder: $transectOneFifteenUnder, ')
+          ..write('transectOneFifteenOver: $transectOneFifteenOver, ')
+          ..write('transectTwoFifteenUnder: $transectTwoFifteenUnder, ')
+          ..write('transectTwoFifteenOver: $transectTwoFifteenOver, ')
+          ..write('horizontal: $horizontal, ')
+          ..write('canopy: $canopy, ')
+          ..write('soilProfile: $soilProfile, ')
+          ..write('otherOne: $otherOne, ')
+          ..write('otherTwo: $otherTwo, ')
+          ..write('otherThree: $otherThree, ')
+          ..write('otherFour: $otherFour')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $SurveyHeaderTreeTable extends SurveyHeaderTree
+    with TableInfo<$SurveyHeaderTreeTable, SurveyHeaderTreeData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SurveyHeaderTreeTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _surveyIdMeta =
+      const VerificationMeta('surveyId');
+  @override
+  late final GeneratedColumn<int> surveyId = GeneratedColumn<int>(
+      'survey_id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'UNIQUE REFERENCES survey_headers (id)'));
+  static const VerificationMeta _fieldResponsibilityMeta =
+      const VerificationMeta('fieldResponsibility');
+  @override
+  late final GeneratedColumn<String> fieldResponsibility =
+      GeneratedColumn<String>('field_responsibility', aliasedName, true,
+          type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _fieldCheckByMeta =
+      const VerificationMeta('fieldCheckBy');
+  @override
+  late final GeneratedColumn<String> fieldCheckBy = GeneratedColumn<String>(
+      'field_check_by', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _fieldDateMeta =
+      const VerificationMeta('fieldDate');
+  @override
+  late final GeneratedColumn<DateTime> fieldDate = GeneratedColumn<DateTime>(
+      'field_date', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  static const VerificationMeta _officeCheckByMeta =
+      const VerificationMeta('officeCheckBy');
+  @override
+  late final GeneratedColumn<String> officeCheckBy = GeneratedColumn<String>(
+      'office_check_by', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _officeDateMeta =
+      const VerificationMeta('officeDate');
+  @override
+  late final GeneratedColumn<DateTime> officeDate = GeneratedColumn<DateTime>(
+      'office_date', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        surveyId,
+        fieldResponsibility,
+        fieldCheckBy,
+        fieldDate,
+        officeCheckBy,
+        officeDate
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'survey_header_tree';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<SurveyHeaderTreeData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('survey_id')) {
+      context.handle(_surveyIdMeta,
+          surveyId.isAcceptableOrUnknown(data['survey_id']!, _surveyIdMeta));
+    } else if (isInserting) {
+      context.missing(_surveyIdMeta);
+    }
+    if (data.containsKey('field_responsibility')) {
+      context.handle(
+          _fieldResponsibilityMeta,
+          fieldResponsibility.isAcceptableOrUnknown(
+              data['field_responsibility']!, _fieldResponsibilityMeta));
+    }
+    if (data.containsKey('field_check_by')) {
+      context.handle(
+          _fieldCheckByMeta,
+          fieldCheckBy.isAcceptableOrUnknown(
+              data['field_check_by']!, _fieldCheckByMeta));
+    }
+    if (data.containsKey('field_date')) {
+      context.handle(_fieldDateMeta,
+          fieldDate.isAcceptableOrUnknown(data['field_date']!, _fieldDateMeta));
+    }
+    if (data.containsKey('office_check_by')) {
+      context.handle(
+          _officeCheckByMeta,
+          officeCheckBy.isAcceptableOrUnknown(
+              data['office_check_by']!, _officeCheckByMeta));
+    }
+    if (data.containsKey('office_date')) {
+      context.handle(
+          _officeDateMeta,
+          officeDate.isAcceptableOrUnknown(
+              data['office_date']!, _officeDateMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  SurveyHeaderTreeData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SurveyHeaderTreeData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      surveyId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}survey_id'])!,
+      fieldResponsibility: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}field_responsibility']),
+      fieldCheckBy: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}field_check_by']),
+      fieldDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}field_date']),
+      officeCheckBy: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}office_check_by']),
+      officeDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}office_date']),
+    );
+  }
+
+  @override
+  $SurveyHeaderTreeTable createAlias(String alias) {
+    return $SurveyHeaderTreeTable(attachedDatabase, alias);
+  }
+}
+
+class SurveyHeaderTreeData extends DataClass
+    implements Insertable<SurveyHeaderTreeData> {
+  final int id;
+  final int surveyId;
+  final String? fieldResponsibility;
+  final String? fieldCheckBy;
+  final DateTime? fieldDate;
+  final String? officeCheckBy;
+  final DateTime? officeDate;
+  const SurveyHeaderTreeData(
+      {required this.id,
+      required this.surveyId,
+      this.fieldResponsibility,
+      this.fieldCheckBy,
+      this.fieldDate,
+      this.officeCheckBy,
+      this.officeDate});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['survey_id'] = Variable<int>(surveyId);
+    if (!nullToAbsent || fieldResponsibility != null) {
+      map['field_responsibility'] = Variable<String>(fieldResponsibility);
+    }
+    if (!nullToAbsent || fieldCheckBy != null) {
+      map['field_check_by'] = Variable<String>(fieldCheckBy);
+    }
+    if (!nullToAbsent || fieldDate != null) {
+      map['field_date'] = Variable<DateTime>(fieldDate);
+    }
+    if (!nullToAbsent || officeCheckBy != null) {
+      map['office_check_by'] = Variable<String>(officeCheckBy);
+    }
+    if (!nullToAbsent || officeDate != null) {
+      map['office_date'] = Variable<DateTime>(officeDate);
+    }
+    return map;
+  }
+
+  SurveyHeaderTreeCompanion toCompanion(bool nullToAbsent) {
+    return SurveyHeaderTreeCompanion(
+      id: Value(id),
+      surveyId: Value(surveyId),
+      fieldResponsibility: fieldResponsibility == null && nullToAbsent
+          ? const Value.absent()
+          : Value(fieldResponsibility),
+      fieldCheckBy: fieldCheckBy == null && nullToAbsent
+          ? const Value.absent()
+          : Value(fieldCheckBy),
+      fieldDate: fieldDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(fieldDate),
+      officeCheckBy: officeCheckBy == null && nullToAbsent
+          ? const Value.absent()
+          : Value(officeCheckBy),
+      officeDate: officeDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(officeDate),
+    );
+  }
+
+  factory SurveyHeaderTreeData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SurveyHeaderTreeData(
+      id: serializer.fromJson<int>(json['id']),
+      surveyId: serializer.fromJson<int>(json['surveyId']),
+      fieldResponsibility:
+          serializer.fromJson<String?>(json['fieldResponsibility']),
+      fieldCheckBy: serializer.fromJson<String?>(json['fieldCheckBy']),
+      fieldDate: serializer.fromJson<DateTime?>(json['fieldDate']),
+      officeCheckBy: serializer.fromJson<String?>(json['officeCheckBy']),
+      officeDate: serializer.fromJson<DateTime?>(json['officeDate']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'surveyId': serializer.toJson<int>(surveyId),
+      'fieldResponsibility': serializer.toJson<String?>(fieldResponsibility),
+      'fieldCheckBy': serializer.toJson<String?>(fieldCheckBy),
+      'fieldDate': serializer.toJson<DateTime?>(fieldDate),
+      'officeCheckBy': serializer.toJson<String?>(officeCheckBy),
+      'officeDate': serializer.toJson<DateTime?>(officeDate),
+    };
+  }
+
+  SurveyHeaderTreeData copyWith(
+          {int? id,
+          int? surveyId,
+          Value<String?> fieldResponsibility = const Value.absent(),
+          Value<String?> fieldCheckBy = const Value.absent(),
+          Value<DateTime?> fieldDate = const Value.absent(),
+          Value<String?> officeCheckBy = const Value.absent(),
+          Value<DateTime?> officeDate = const Value.absent()}) =>
+      SurveyHeaderTreeData(
+        id: id ?? this.id,
+        surveyId: surveyId ?? this.surveyId,
+        fieldResponsibility: fieldResponsibility.present
+            ? fieldResponsibility.value
+            : this.fieldResponsibility,
+        fieldCheckBy:
+            fieldCheckBy.present ? fieldCheckBy.value : this.fieldCheckBy,
+        fieldDate: fieldDate.present ? fieldDate.value : this.fieldDate,
+        officeCheckBy:
+            officeCheckBy.present ? officeCheckBy.value : this.officeCheckBy,
+        officeDate: officeDate.present ? officeDate.value : this.officeDate,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('SurveyHeaderTreeData(')
+          ..write('id: $id, ')
+          ..write('surveyId: $surveyId, ')
+          ..write('fieldResponsibility: $fieldResponsibility, ')
+          ..write('fieldCheckBy: $fieldCheckBy, ')
+          ..write('fieldDate: $fieldDate, ')
+          ..write('officeCheckBy: $officeCheckBy, ')
+          ..write('officeDate: $officeDate')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, surveyId, fieldResponsibility,
+      fieldCheckBy, fieldDate, officeCheckBy, officeDate);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SurveyHeaderTreeData &&
+          other.id == this.id &&
+          other.surveyId == this.surveyId &&
+          other.fieldResponsibility == this.fieldResponsibility &&
+          other.fieldCheckBy == this.fieldCheckBy &&
+          other.fieldDate == this.fieldDate &&
+          other.officeCheckBy == this.officeCheckBy &&
+          other.officeDate == this.officeDate);
+}
+
+class SurveyHeaderTreeCompanion extends UpdateCompanion<SurveyHeaderTreeData> {
+  final Value<int> id;
+  final Value<int> surveyId;
+  final Value<String?> fieldResponsibility;
+  final Value<String?> fieldCheckBy;
+  final Value<DateTime?> fieldDate;
+  final Value<String?> officeCheckBy;
+  final Value<DateTime?> officeDate;
+  const SurveyHeaderTreeCompanion({
+    this.id = const Value.absent(),
+    this.surveyId = const Value.absent(),
+    this.fieldResponsibility = const Value.absent(),
+    this.fieldCheckBy = const Value.absent(),
+    this.fieldDate = const Value.absent(),
+    this.officeCheckBy = const Value.absent(),
+    this.officeDate = const Value.absent(),
+  });
+  SurveyHeaderTreeCompanion.insert({
+    this.id = const Value.absent(),
+    required int surveyId,
+    this.fieldResponsibility = const Value.absent(),
+    this.fieldCheckBy = const Value.absent(),
+    this.fieldDate = const Value.absent(),
+    this.officeCheckBy = const Value.absent(),
+    this.officeDate = const Value.absent(),
+  }) : surveyId = Value(surveyId);
+  static Insertable<SurveyHeaderTreeData> custom({
+    Expression<int>? id,
+    Expression<int>? surveyId,
+    Expression<String>? fieldResponsibility,
+    Expression<String>? fieldCheckBy,
+    Expression<DateTime>? fieldDate,
+    Expression<String>? officeCheckBy,
+    Expression<DateTime>? officeDate,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (surveyId != null) 'survey_id': surveyId,
+      if (fieldResponsibility != null)
+        'field_responsibility': fieldResponsibility,
+      if (fieldCheckBy != null) 'field_check_by': fieldCheckBy,
+      if (fieldDate != null) 'field_date': fieldDate,
+      if (officeCheckBy != null) 'office_check_by': officeCheckBy,
+      if (officeDate != null) 'office_date': officeDate,
+    });
+  }
+
+  SurveyHeaderTreeCompanion copyWith(
+      {Value<int>? id,
+      Value<int>? surveyId,
+      Value<String?>? fieldResponsibility,
+      Value<String?>? fieldCheckBy,
+      Value<DateTime?>? fieldDate,
+      Value<String?>? officeCheckBy,
+      Value<DateTime?>? officeDate}) {
+    return SurveyHeaderTreeCompanion(
+      id: id ?? this.id,
+      surveyId: surveyId ?? this.surveyId,
+      fieldResponsibility: fieldResponsibility ?? this.fieldResponsibility,
+      fieldCheckBy: fieldCheckBy ?? this.fieldCheckBy,
+      fieldDate: fieldDate ?? this.fieldDate,
+      officeCheckBy: officeCheckBy ?? this.officeCheckBy,
+      officeDate: officeDate ?? this.officeDate,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (surveyId.present) {
+      map['survey_id'] = Variable<int>(surveyId.value);
+    }
+    if (fieldResponsibility.present) {
+      map['field_responsibility'] = Variable<String>(fieldResponsibility.value);
+    }
+    if (fieldCheckBy.present) {
+      map['field_check_by'] = Variable<String>(fieldCheckBy.value);
+    }
+    if (fieldDate.present) {
+      map['field_date'] = Variable<DateTime>(fieldDate.value);
+    }
+    if (officeCheckBy.present) {
+      map['office_check_by'] = Variable<String>(officeCheckBy.value);
+    }
+    if (officeDate.present) {
+      map['office_date'] = Variable<DateTime>(officeDate.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SurveyHeaderTreeCompanion(')
+          ..write('id: $id, ')
+          ..write('surveyId: $surveyId, ')
+          ..write('fieldResponsibility: $fieldResponsibility, ')
+          ..write('fieldCheckBy: $fieldCheckBy, ')
+          ..write('fieldDate: $fieldDate, ')
+          ..write('officeCheckBy: $officeCheckBy, ')
+          ..write('officeDate: $officeDate')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $SurveyHeaderEcologicalTable extends SurveyHeaderEcological
+    with TableInfo<$SurveyHeaderEcologicalTable, SurveyHeaderEcologicalData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SurveyHeaderEcologicalTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _surveyIdMeta =
+      const VerificationMeta('surveyId');
+  @override
+  late final GeneratedColumn<int> surveyId = GeneratedColumn<int>(
+      'survey_id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'UNIQUE REFERENCES survey_headers (id)'));
+  static const VerificationMeta _fieldResponsibilityMeta =
+      const VerificationMeta('fieldResponsibility');
+  @override
+  late final GeneratedColumn<String> fieldResponsibility =
+      GeneratedColumn<String>('field_responsibility', aliasedName, true,
+          type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _fieldCheckByMeta =
+      const VerificationMeta('fieldCheckBy');
+  @override
+  late final GeneratedColumn<String> fieldCheckBy = GeneratedColumn<String>(
+      'field_check_by', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _fieldDateMeta =
+      const VerificationMeta('fieldDate');
+  @override
+  late final GeneratedColumn<DateTime> fieldDate = GeneratedColumn<DateTime>(
+      'field_date', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  static const VerificationMeta _officeCheckByMeta =
+      const VerificationMeta('officeCheckBy');
+  @override
+  late final GeneratedColumn<String> officeCheckBy = GeneratedColumn<String>(
+      'office_check_by', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _officeDateMeta =
+      const VerificationMeta('officeDate');
+  @override
+  late final GeneratedColumn<DateTime> officeDate = GeneratedColumn<DateTime>(
+      'office_date', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        surveyId,
+        fieldResponsibility,
+        fieldCheckBy,
+        fieldDate,
+        officeCheckBy,
+        officeDate
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'survey_header_ecological';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<SurveyHeaderEcologicalData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('survey_id')) {
+      context.handle(_surveyIdMeta,
+          surveyId.isAcceptableOrUnknown(data['survey_id']!, _surveyIdMeta));
+    } else if (isInserting) {
+      context.missing(_surveyIdMeta);
+    }
+    if (data.containsKey('field_responsibility')) {
+      context.handle(
+          _fieldResponsibilityMeta,
+          fieldResponsibility.isAcceptableOrUnknown(
+              data['field_responsibility']!, _fieldResponsibilityMeta));
+    }
+    if (data.containsKey('field_check_by')) {
+      context.handle(
+          _fieldCheckByMeta,
+          fieldCheckBy.isAcceptableOrUnknown(
+              data['field_check_by']!, _fieldCheckByMeta));
+    }
+    if (data.containsKey('field_date')) {
+      context.handle(_fieldDateMeta,
+          fieldDate.isAcceptableOrUnknown(data['field_date']!, _fieldDateMeta));
+    }
+    if (data.containsKey('office_check_by')) {
+      context.handle(
+          _officeCheckByMeta,
+          officeCheckBy.isAcceptableOrUnknown(
+              data['office_check_by']!, _officeCheckByMeta));
+    }
+    if (data.containsKey('office_date')) {
+      context.handle(
+          _officeDateMeta,
+          officeDate.isAcceptableOrUnknown(
+              data['office_date']!, _officeDateMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  SurveyHeaderEcologicalData map(Map<String, dynamic> data,
+      {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SurveyHeaderEcologicalData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      surveyId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}survey_id'])!,
+      fieldResponsibility: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}field_responsibility']),
+      fieldCheckBy: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}field_check_by']),
+      fieldDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}field_date']),
+      officeCheckBy: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}office_check_by']),
+      officeDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}office_date']),
+    );
+  }
+
+  @override
+  $SurveyHeaderEcologicalTable createAlias(String alias) {
+    return $SurveyHeaderEcologicalTable(attachedDatabase, alias);
+  }
+}
+
+class SurveyHeaderEcologicalData extends DataClass
+    implements Insertable<SurveyHeaderEcologicalData> {
+  final int id;
+  final int surveyId;
+  final String? fieldResponsibility;
+  final String? fieldCheckBy;
+  final DateTime? fieldDate;
+  final String? officeCheckBy;
+  final DateTime? officeDate;
+  const SurveyHeaderEcologicalData(
+      {required this.id,
+      required this.surveyId,
+      this.fieldResponsibility,
+      this.fieldCheckBy,
+      this.fieldDate,
+      this.officeCheckBy,
+      this.officeDate});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['survey_id'] = Variable<int>(surveyId);
+    if (!nullToAbsent || fieldResponsibility != null) {
+      map['field_responsibility'] = Variable<String>(fieldResponsibility);
+    }
+    if (!nullToAbsent || fieldCheckBy != null) {
+      map['field_check_by'] = Variable<String>(fieldCheckBy);
+    }
+    if (!nullToAbsent || fieldDate != null) {
+      map['field_date'] = Variable<DateTime>(fieldDate);
+    }
+    if (!nullToAbsent || officeCheckBy != null) {
+      map['office_check_by'] = Variable<String>(officeCheckBy);
+    }
+    if (!nullToAbsent || officeDate != null) {
+      map['office_date'] = Variable<DateTime>(officeDate);
+    }
+    return map;
+  }
+
+  SurveyHeaderEcologicalCompanion toCompanion(bool nullToAbsent) {
+    return SurveyHeaderEcologicalCompanion(
+      id: Value(id),
+      surveyId: Value(surveyId),
+      fieldResponsibility: fieldResponsibility == null && nullToAbsent
+          ? const Value.absent()
+          : Value(fieldResponsibility),
+      fieldCheckBy: fieldCheckBy == null && nullToAbsent
+          ? const Value.absent()
+          : Value(fieldCheckBy),
+      fieldDate: fieldDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(fieldDate),
+      officeCheckBy: officeCheckBy == null && nullToAbsent
+          ? const Value.absent()
+          : Value(officeCheckBy),
+      officeDate: officeDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(officeDate),
+    );
+  }
+
+  factory SurveyHeaderEcologicalData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SurveyHeaderEcologicalData(
+      id: serializer.fromJson<int>(json['id']),
+      surveyId: serializer.fromJson<int>(json['surveyId']),
+      fieldResponsibility:
+          serializer.fromJson<String?>(json['fieldResponsibility']),
+      fieldCheckBy: serializer.fromJson<String?>(json['fieldCheckBy']),
+      fieldDate: serializer.fromJson<DateTime?>(json['fieldDate']),
+      officeCheckBy: serializer.fromJson<String?>(json['officeCheckBy']),
+      officeDate: serializer.fromJson<DateTime?>(json['officeDate']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'surveyId': serializer.toJson<int>(surveyId),
+      'fieldResponsibility': serializer.toJson<String?>(fieldResponsibility),
+      'fieldCheckBy': serializer.toJson<String?>(fieldCheckBy),
+      'fieldDate': serializer.toJson<DateTime?>(fieldDate),
+      'officeCheckBy': serializer.toJson<String?>(officeCheckBy),
+      'officeDate': serializer.toJson<DateTime?>(officeDate),
+    };
+  }
+
+  SurveyHeaderEcologicalData copyWith(
+          {int? id,
+          int? surveyId,
+          Value<String?> fieldResponsibility = const Value.absent(),
+          Value<String?> fieldCheckBy = const Value.absent(),
+          Value<DateTime?> fieldDate = const Value.absent(),
+          Value<String?> officeCheckBy = const Value.absent(),
+          Value<DateTime?> officeDate = const Value.absent()}) =>
+      SurveyHeaderEcologicalData(
+        id: id ?? this.id,
+        surveyId: surveyId ?? this.surveyId,
+        fieldResponsibility: fieldResponsibility.present
+            ? fieldResponsibility.value
+            : this.fieldResponsibility,
+        fieldCheckBy:
+            fieldCheckBy.present ? fieldCheckBy.value : this.fieldCheckBy,
+        fieldDate: fieldDate.present ? fieldDate.value : this.fieldDate,
+        officeCheckBy:
+            officeCheckBy.present ? officeCheckBy.value : this.officeCheckBy,
+        officeDate: officeDate.present ? officeDate.value : this.officeDate,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('SurveyHeaderEcologicalData(')
+          ..write('id: $id, ')
+          ..write('surveyId: $surveyId, ')
+          ..write('fieldResponsibility: $fieldResponsibility, ')
+          ..write('fieldCheckBy: $fieldCheckBy, ')
+          ..write('fieldDate: $fieldDate, ')
+          ..write('officeCheckBy: $officeCheckBy, ')
+          ..write('officeDate: $officeDate')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, surveyId, fieldResponsibility,
+      fieldCheckBy, fieldDate, officeCheckBy, officeDate);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SurveyHeaderEcologicalData &&
+          other.id == this.id &&
+          other.surveyId == this.surveyId &&
+          other.fieldResponsibility == this.fieldResponsibility &&
+          other.fieldCheckBy == this.fieldCheckBy &&
+          other.fieldDate == this.fieldDate &&
+          other.officeCheckBy == this.officeCheckBy &&
+          other.officeDate == this.officeDate);
+}
+
+class SurveyHeaderEcologicalCompanion
+    extends UpdateCompanion<SurveyHeaderEcologicalData> {
+  final Value<int> id;
+  final Value<int> surveyId;
+  final Value<String?> fieldResponsibility;
+  final Value<String?> fieldCheckBy;
+  final Value<DateTime?> fieldDate;
+  final Value<String?> officeCheckBy;
+  final Value<DateTime?> officeDate;
+  const SurveyHeaderEcologicalCompanion({
+    this.id = const Value.absent(),
+    this.surveyId = const Value.absent(),
+    this.fieldResponsibility = const Value.absent(),
+    this.fieldCheckBy = const Value.absent(),
+    this.fieldDate = const Value.absent(),
+    this.officeCheckBy = const Value.absent(),
+    this.officeDate = const Value.absent(),
+  });
+  SurveyHeaderEcologicalCompanion.insert({
+    this.id = const Value.absent(),
+    required int surveyId,
+    this.fieldResponsibility = const Value.absent(),
+    this.fieldCheckBy = const Value.absent(),
+    this.fieldDate = const Value.absent(),
+    this.officeCheckBy = const Value.absent(),
+    this.officeDate = const Value.absent(),
+  }) : surveyId = Value(surveyId);
+  static Insertable<SurveyHeaderEcologicalData> custom({
+    Expression<int>? id,
+    Expression<int>? surveyId,
+    Expression<String>? fieldResponsibility,
+    Expression<String>? fieldCheckBy,
+    Expression<DateTime>? fieldDate,
+    Expression<String>? officeCheckBy,
+    Expression<DateTime>? officeDate,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (surveyId != null) 'survey_id': surveyId,
+      if (fieldResponsibility != null)
+        'field_responsibility': fieldResponsibility,
+      if (fieldCheckBy != null) 'field_check_by': fieldCheckBy,
+      if (fieldDate != null) 'field_date': fieldDate,
+      if (officeCheckBy != null) 'office_check_by': officeCheckBy,
+      if (officeDate != null) 'office_date': officeDate,
+    });
+  }
+
+  SurveyHeaderEcologicalCompanion copyWith(
+      {Value<int>? id,
+      Value<int>? surveyId,
+      Value<String?>? fieldResponsibility,
+      Value<String?>? fieldCheckBy,
+      Value<DateTime?>? fieldDate,
+      Value<String?>? officeCheckBy,
+      Value<DateTime?>? officeDate}) {
+    return SurveyHeaderEcologicalCompanion(
+      id: id ?? this.id,
+      surveyId: surveyId ?? this.surveyId,
+      fieldResponsibility: fieldResponsibility ?? this.fieldResponsibility,
+      fieldCheckBy: fieldCheckBy ?? this.fieldCheckBy,
+      fieldDate: fieldDate ?? this.fieldDate,
+      officeCheckBy: officeCheckBy ?? this.officeCheckBy,
+      officeDate: officeDate ?? this.officeDate,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (surveyId.present) {
+      map['survey_id'] = Variable<int>(surveyId.value);
+    }
+    if (fieldResponsibility.present) {
+      map['field_responsibility'] = Variable<String>(fieldResponsibility.value);
+    }
+    if (fieldCheckBy.present) {
+      map['field_check_by'] = Variable<String>(fieldCheckBy.value);
+    }
+    if (fieldDate.present) {
+      map['field_date'] = Variable<DateTime>(fieldDate.value);
+    }
+    if (officeCheckBy.present) {
+      map['office_check_by'] = Variable<String>(officeCheckBy.value);
+    }
+    if (officeDate.present) {
+      map['office_date'] = Variable<DateTime>(officeDate.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SurveyHeaderEcologicalCompanion(')
+          ..write('id: $id, ')
+          ..write('surveyId: $surveyId, ')
+          ..write('fieldResponsibility: $fieldResponsibility, ')
+          ..write('fieldCheckBy: $fieldCheckBy, ')
+          ..write('fieldDate: $fieldDate, ')
+          ..write('officeCheckBy: $officeCheckBy, ')
+          ..write('officeDate: $officeDate')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $SurveyHeaderSoilTable extends SurveyHeaderSoil
+    with TableInfo<$SurveyHeaderSoilTable, SurveyHeaderSoilData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SurveyHeaderSoilTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _surveyIdMeta =
+      const VerificationMeta('surveyId');
+  @override
+  late final GeneratedColumn<int> surveyId = GeneratedColumn<int>(
+      'survey_id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'UNIQUE REFERENCES survey_headers (id)'));
+  static const VerificationMeta _fieldResponsibilityMeta =
+      const VerificationMeta('fieldResponsibility');
+  @override
+  late final GeneratedColumn<String> fieldResponsibility =
+      GeneratedColumn<String>('field_responsibility', aliasedName, true,
+          type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _fieldCheckByMeta =
+      const VerificationMeta('fieldCheckBy');
+  @override
+  late final GeneratedColumn<String> fieldCheckBy = GeneratedColumn<String>(
+      'field_check_by', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _fieldDateMeta =
+      const VerificationMeta('fieldDate');
+  @override
+  late final GeneratedColumn<DateTime> fieldDate = GeneratedColumn<DateTime>(
+      'field_date', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  static const VerificationMeta _officeCheckByMeta =
+      const VerificationMeta('officeCheckBy');
+  @override
+  late final GeneratedColumn<String> officeCheckBy = GeneratedColumn<String>(
+      'office_check_by', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _officeDateMeta =
+      const VerificationMeta('officeDate');
+  @override
+  late final GeneratedColumn<DateTime> officeDate = GeneratedColumn<DateTime>(
+      'office_date', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        surveyId,
+        fieldResponsibility,
+        fieldCheckBy,
+        fieldDate,
+        officeCheckBy,
+        officeDate
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'survey_header_soil';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<SurveyHeaderSoilData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('survey_id')) {
+      context.handle(_surveyIdMeta,
+          surveyId.isAcceptableOrUnknown(data['survey_id']!, _surveyIdMeta));
+    } else if (isInserting) {
+      context.missing(_surveyIdMeta);
+    }
+    if (data.containsKey('field_responsibility')) {
+      context.handle(
+          _fieldResponsibilityMeta,
+          fieldResponsibility.isAcceptableOrUnknown(
+              data['field_responsibility']!, _fieldResponsibilityMeta));
+    }
+    if (data.containsKey('field_check_by')) {
+      context.handle(
+          _fieldCheckByMeta,
+          fieldCheckBy.isAcceptableOrUnknown(
+              data['field_check_by']!, _fieldCheckByMeta));
+    }
+    if (data.containsKey('field_date')) {
+      context.handle(_fieldDateMeta,
+          fieldDate.isAcceptableOrUnknown(data['field_date']!, _fieldDateMeta));
+    }
+    if (data.containsKey('office_check_by')) {
+      context.handle(
+          _officeCheckByMeta,
+          officeCheckBy.isAcceptableOrUnknown(
+              data['office_check_by']!, _officeCheckByMeta));
+    }
+    if (data.containsKey('office_date')) {
+      context.handle(
+          _officeDateMeta,
+          officeDate.isAcceptableOrUnknown(
+              data['office_date']!, _officeDateMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  SurveyHeaderSoilData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SurveyHeaderSoilData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      surveyId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}survey_id'])!,
+      fieldResponsibility: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}field_responsibility']),
+      fieldCheckBy: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}field_check_by']),
+      fieldDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}field_date']),
+      officeCheckBy: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}office_check_by']),
+      officeDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}office_date']),
+    );
+  }
+
+  @override
+  $SurveyHeaderSoilTable createAlias(String alias) {
+    return $SurveyHeaderSoilTable(attachedDatabase, alias);
+  }
+}
+
+class SurveyHeaderSoilData extends DataClass
+    implements Insertable<SurveyHeaderSoilData> {
+  final int id;
+  final int surveyId;
+  final String? fieldResponsibility;
+  final String? fieldCheckBy;
+  final DateTime? fieldDate;
+  final String? officeCheckBy;
+  final DateTime? officeDate;
+  const SurveyHeaderSoilData(
+      {required this.id,
+      required this.surveyId,
+      this.fieldResponsibility,
+      this.fieldCheckBy,
+      this.fieldDate,
+      this.officeCheckBy,
+      this.officeDate});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['survey_id'] = Variable<int>(surveyId);
+    if (!nullToAbsent || fieldResponsibility != null) {
+      map['field_responsibility'] = Variable<String>(fieldResponsibility);
+    }
+    if (!nullToAbsent || fieldCheckBy != null) {
+      map['field_check_by'] = Variable<String>(fieldCheckBy);
+    }
+    if (!nullToAbsent || fieldDate != null) {
+      map['field_date'] = Variable<DateTime>(fieldDate);
+    }
+    if (!nullToAbsent || officeCheckBy != null) {
+      map['office_check_by'] = Variable<String>(officeCheckBy);
+    }
+    if (!nullToAbsent || officeDate != null) {
+      map['office_date'] = Variable<DateTime>(officeDate);
+    }
+    return map;
+  }
+
+  SurveyHeaderSoilCompanion toCompanion(bool nullToAbsent) {
+    return SurveyHeaderSoilCompanion(
+      id: Value(id),
+      surveyId: Value(surveyId),
+      fieldResponsibility: fieldResponsibility == null && nullToAbsent
+          ? const Value.absent()
+          : Value(fieldResponsibility),
+      fieldCheckBy: fieldCheckBy == null && nullToAbsent
+          ? const Value.absent()
+          : Value(fieldCheckBy),
+      fieldDate: fieldDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(fieldDate),
+      officeCheckBy: officeCheckBy == null && nullToAbsent
+          ? const Value.absent()
+          : Value(officeCheckBy),
+      officeDate: officeDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(officeDate),
+    );
+  }
+
+  factory SurveyHeaderSoilData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SurveyHeaderSoilData(
+      id: serializer.fromJson<int>(json['id']),
+      surveyId: serializer.fromJson<int>(json['surveyId']),
+      fieldResponsibility:
+          serializer.fromJson<String?>(json['fieldResponsibility']),
+      fieldCheckBy: serializer.fromJson<String?>(json['fieldCheckBy']),
+      fieldDate: serializer.fromJson<DateTime?>(json['fieldDate']),
+      officeCheckBy: serializer.fromJson<String?>(json['officeCheckBy']),
+      officeDate: serializer.fromJson<DateTime?>(json['officeDate']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'surveyId': serializer.toJson<int>(surveyId),
+      'fieldResponsibility': serializer.toJson<String?>(fieldResponsibility),
+      'fieldCheckBy': serializer.toJson<String?>(fieldCheckBy),
+      'fieldDate': serializer.toJson<DateTime?>(fieldDate),
+      'officeCheckBy': serializer.toJson<String?>(officeCheckBy),
+      'officeDate': serializer.toJson<DateTime?>(officeDate),
+    };
+  }
+
+  SurveyHeaderSoilData copyWith(
+          {int? id,
+          int? surveyId,
+          Value<String?> fieldResponsibility = const Value.absent(),
+          Value<String?> fieldCheckBy = const Value.absent(),
+          Value<DateTime?> fieldDate = const Value.absent(),
+          Value<String?> officeCheckBy = const Value.absent(),
+          Value<DateTime?> officeDate = const Value.absent()}) =>
+      SurveyHeaderSoilData(
+        id: id ?? this.id,
+        surveyId: surveyId ?? this.surveyId,
+        fieldResponsibility: fieldResponsibility.present
+            ? fieldResponsibility.value
+            : this.fieldResponsibility,
+        fieldCheckBy:
+            fieldCheckBy.present ? fieldCheckBy.value : this.fieldCheckBy,
+        fieldDate: fieldDate.present ? fieldDate.value : this.fieldDate,
+        officeCheckBy:
+            officeCheckBy.present ? officeCheckBy.value : this.officeCheckBy,
+        officeDate: officeDate.present ? officeDate.value : this.officeDate,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('SurveyHeaderSoilData(')
+          ..write('id: $id, ')
+          ..write('surveyId: $surveyId, ')
+          ..write('fieldResponsibility: $fieldResponsibility, ')
+          ..write('fieldCheckBy: $fieldCheckBy, ')
+          ..write('fieldDate: $fieldDate, ')
+          ..write('officeCheckBy: $officeCheckBy, ')
+          ..write('officeDate: $officeDate')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, surveyId, fieldResponsibility,
+      fieldCheckBy, fieldDate, officeCheckBy, officeDate);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SurveyHeaderSoilData &&
+          other.id == this.id &&
+          other.surveyId == this.surveyId &&
+          other.fieldResponsibility == this.fieldResponsibility &&
+          other.fieldCheckBy == this.fieldCheckBy &&
+          other.fieldDate == this.fieldDate &&
+          other.officeCheckBy == this.officeCheckBy &&
+          other.officeDate == this.officeDate);
+}
+
+class SurveyHeaderSoilCompanion extends UpdateCompanion<SurveyHeaderSoilData> {
+  final Value<int> id;
+  final Value<int> surveyId;
+  final Value<String?> fieldResponsibility;
+  final Value<String?> fieldCheckBy;
+  final Value<DateTime?> fieldDate;
+  final Value<String?> officeCheckBy;
+  final Value<DateTime?> officeDate;
+  const SurveyHeaderSoilCompanion({
+    this.id = const Value.absent(),
+    this.surveyId = const Value.absent(),
+    this.fieldResponsibility = const Value.absent(),
+    this.fieldCheckBy = const Value.absent(),
+    this.fieldDate = const Value.absent(),
+    this.officeCheckBy = const Value.absent(),
+    this.officeDate = const Value.absent(),
+  });
+  SurveyHeaderSoilCompanion.insert({
+    this.id = const Value.absent(),
+    required int surveyId,
+    this.fieldResponsibility = const Value.absent(),
+    this.fieldCheckBy = const Value.absent(),
+    this.fieldDate = const Value.absent(),
+    this.officeCheckBy = const Value.absent(),
+    this.officeDate = const Value.absent(),
+  }) : surveyId = Value(surveyId);
+  static Insertable<SurveyHeaderSoilData> custom({
+    Expression<int>? id,
+    Expression<int>? surveyId,
+    Expression<String>? fieldResponsibility,
+    Expression<String>? fieldCheckBy,
+    Expression<DateTime>? fieldDate,
+    Expression<String>? officeCheckBy,
+    Expression<DateTime>? officeDate,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (surveyId != null) 'survey_id': surveyId,
+      if (fieldResponsibility != null)
+        'field_responsibility': fieldResponsibility,
+      if (fieldCheckBy != null) 'field_check_by': fieldCheckBy,
+      if (fieldDate != null) 'field_date': fieldDate,
+      if (officeCheckBy != null) 'office_check_by': officeCheckBy,
+      if (officeDate != null) 'office_date': officeDate,
+    });
+  }
+
+  SurveyHeaderSoilCompanion copyWith(
+      {Value<int>? id,
+      Value<int>? surveyId,
+      Value<String?>? fieldResponsibility,
+      Value<String?>? fieldCheckBy,
+      Value<DateTime?>? fieldDate,
+      Value<String?>? officeCheckBy,
+      Value<DateTime?>? officeDate}) {
+    return SurveyHeaderSoilCompanion(
+      id: id ?? this.id,
+      surveyId: surveyId ?? this.surveyId,
+      fieldResponsibility: fieldResponsibility ?? this.fieldResponsibility,
+      fieldCheckBy: fieldCheckBy ?? this.fieldCheckBy,
+      fieldDate: fieldDate ?? this.fieldDate,
+      officeCheckBy: officeCheckBy ?? this.officeCheckBy,
+      officeDate: officeDate ?? this.officeDate,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (surveyId.present) {
+      map['survey_id'] = Variable<int>(surveyId.value);
+    }
+    if (fieldResponsibility.present) {
+      map['field_responsibility'] = Variable<String>(fieldResponsibility.value);
+    }
+    if (fieldCheckBy.present) {
+      map['field_check_by'] = Variable<String>(fieldCheckBy.value);
+    }
+    if (fieldDate.present) {
+      map['field_date'] = Variable<DateTime>(fieldDate.value);
+    }
+    if (officeCheckBy.present) {
+      map['office_check_by'] = Variable<String>(officeCheckBy.value);
+    }
+    if (officeDate.present) {
+      map['office_date'] = Variable<DateTime>(officeDate.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SurveyHeaderSoilCompanion(')
+          ..write('id: $id, ')
+          ..write('surveyId: $surveyId, ')
+          ..write('fieldResponsibility: $fieldResponsibility, ')
+          ..write('fieldCheckBy: $fieldCheckBy, ')
+          ..write('fieldDate: $fieldDate, ')
+          ..write('officeCheckBy: $officeCheckBy, ')
+          ..write('officeDate: $officeDate')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $WoodyDebrisSummaryTable extends WoodyDebrisSummary
     with TableInfo<$WoodyDebrisSummaryTable, WoodyDebrisSummaryData> {
   @override
@@ -9570,9 +11916,7 @@ class $SoilPitFeatureTable extends SoilPitFeature
   @override
   late final GeneratedColumn<String> soilPitCode = GeneratedColumn<String>(
       'soil_pit_code', aliasedName, false,
-      additionalChecks: GeneratedColumn.checkTextLength(maxTextLength: 3),
-      type: DriftSqlType.string,
-      requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _soilFeatureMeta =
       const VerificationMeta('soilFeature');
   @override
@@ -9880,9 +12224,7 @@ class $SoilPitHorizonDescriptionTable extends SoilPitHorizonDescription
   @override
   late final GeneratedColumn<String> soilPitCodeField = GeneratedColumn<String>(
       'soil_pit_code_field', aliasedName, false,
-      additionalChecks: GeneratedColumn.checkTextLength(maxTextLength: 3),
-      type: DriftSqlType.string,
-      requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _horizonNumMeta =
       const VerificationMeta('horizonNum');
   @override
@@ -13321,6 +15663,15 @@ abstract class _$Database extends GeneratedDatabase {
   late final $SoilTextureTable soilTexture = $SoilTextureTable(this);
   late final $SurveyHeadersTable surveyHeaders = $SurveyHeadersTable(this);
   late final $MetaCommentTable metaComment = $MetaCommentTable(this);
+  late final $SurveySummaryTable surveySummary = $SurveySummaryTable(this);
+  late final $SurveyHeaderGroundPhotoTable surveyHeaderGroundPhoto =
+      $SurveyHeaderGroundPhotoTable(this);
+  late final $SurveyHeaderTreeTable surveyHeaderTree =
+      $SurveyHeaderTreeTable(this);
+  late final $SurveyHeaderEcologicalTable surveyHeaderEcological =
+      $SurveyHeaderEcologicalTable(this);
+  late final $SurveyHeaderSoilTable surveyHeaderSoil =
+      $SurveyHeaderSoilTable(this);
   late final $WoodyDebrisSummaryTable woodyDebrisSummary =
       $WoodyDebrisSummaryTable(this);
   late final $WoodyDebrisHeaderTable woodyDebrisHeader =
@@ -13387,6 +15738,11 @@ abstract class _$Database extends GeneratedDatabase {
         soilTexture,
         surveyHeaders,
         metaComment,
+        surveySummary,
+        surveyHeaderGroundPhoto,
+        surveyHeaderTree,
+        surveyHeaderEcological,
+        surveyHeaderSoil,
         woodyDebrisSummary,
         woodyDebrisHeader,
         woodyDebrisSmall,

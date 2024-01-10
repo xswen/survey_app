@@ -22,6 +22,7 @@ import '../stump_plot/stump_plot_summary_page.dart';
 import '../surface_substrate/surface_substrate_summary_page.dart';
 import '../woody_debris/woody_debris_summary_page.dart';
 import 'create_survey_page.dart';
+import 'survey_info_header_info/survey_info_summary_page.dart';
 
 class SurveyInfoPage extends ConsumerStatefulWidget {
   static const String routeName = "surveyInfo";
@@ -150,6 +151,9 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
     Future<void>? markNotAssessed;
 
     switch (category) {
+      case SurveyCardCategories.surveyHeader:
+        markNotAssessed = db.surveyInfoTablesDao.markNotAssessed(surveyId);
+        break;
       case SurveyCardCategories.woodyDebris:
         markNotAssessed =
             db.woodyDebrisTablesDao.markNotAssessed(surveyId, data?.id);
@@ -199,6 +203,13 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
         (data == null || data.notAssessed) ? (await fn()).id : data.id;
 
     switch (category) {
+      case SurveyCardCategories.surveyHeader:
+        getId(() =>
+            db.surveyInfoTablesDao.setAndReturnDefaultSummary(survey.id)).then(
+          (id) => context.pushNamed(SurveyInfoSummaryPage.routeName,
+              pathParameters: widget.goRouterState.pathParameters),
+        );
+        break;
       case SurveyCardCategories.woodyDebris:
         getId(() => db.woodyDebrisTablesDao
             .setAndReturnDefaultWdSummary(survey.id, survey.measDate)).then(
@@ -416,7 +427,7 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
               child: Column(
                 children: [
                   TitledBorder(
-                      title: "Header Data",
+                      title: "Measurement Data",
                       actions: EditIconButton(onPressed: () async {
                         if (survey.complete) {
                           Popups.show(context,

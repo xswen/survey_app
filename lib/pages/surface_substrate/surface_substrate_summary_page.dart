@@ -78,7 +78,6 @@ class SurfaceSubstrateSummaryPageState
 
   SurveyStatus getStatus(SurfaceSubstrateHeaderData data) {
     if (data.complete) return SurveyStatus.complete;
-    if (data.transNum == null) return SurveyStatus.notStarted;
     return SurveyStatus.inProgress;
   }
 
