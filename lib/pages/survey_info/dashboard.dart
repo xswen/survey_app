@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:drift/drift.dart' as d;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
+import 'package:survey_app/widgets/popups/popup_notice_survey_complete.dart';
 
 import '../../l10n/locale_keys.g.dart';
 import '../../providers/survey_info_providers.dart';
@@ -97,14 +98,26 @@ class DashboardPageState extends ConsumerState<DashboardPage> {
                       itemCount: (surveys).length,
                       itemBuilder: (BuildContext cxt, int index) {
                         SurveyHeader survey = surveys[index];
+                        String title = "${survey.nfiPlot}, "
+                            "Measurement number: ${survey.measNum}";
                         return TitleCardDashboard(
                           surveyHeader: survey,
                           onTap: () async {
-                            context.pushNamed(
-                              SurveyInfoPage.routeName,
-                              pathParameters: PathParamGenerator.surveyInfo(
-                                  survey.id.toString()),
-                            );
+                            void nav() => context.pushNamed(
+                                  SurveyInfoPage.routeName,
+                                  pathParameters: PathParamGenerator.surveyInfo(
+                                      survey.id.toString()),
+                                );
+
+                            if (survey.complete) {
+                              Popups.show(
+                                  context,
+                                  PopupNoticeSurveyComplete(
+                                    title: title,
+                                    rightBtnOnPressed: nav,
+                                  ));
+                            }
+                            nav();
                           },
                           onDelete: () => Popups.show(
                             context,
@@ -113,8 +126,7 @@ class DashboardPageState extends ConsumerState<DashboardPage> {
                               contentText:
                                   "You are about to delete the entire survey "
                                   "for Jurisdiction: ${survey.province}, Plot #"
-                                  "${survey.nfiPlot}, Measurement number: ${survey.measNum}. "
-                                  "Are you sure you want to continue?",
+                                  "$title. Are you sure you want to continue?",
                               rightBtnOnPressed: () {
                                 //close popup
                                 context.pop();
