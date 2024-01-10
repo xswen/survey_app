@@ -10,6 +10,7 @@ import '../../formatters/thousands_formatter.dart';
 import '../../widgets/builders/set_transect_num_builder.dart';
 import '../../widgets/buttons/mark_complete_button.dart';
 import '../../widgets/data_input/data_input.dart';
+import '../../widgets/popups/popup_marked_complete.dart';
 import '../../widgets/tables/table_creation_builder.dart';
 import '../../widgets/tables/table_data_grid_source_builder.dart';
 import '../../wrappers/column_header_object.dart';
@@ -224,17 +225,20 @@ class SurfaceSubstrateHeaderPageState
     } else {
       List<String>? errors = errorCheck();
       errors == null
-          ? db.surfaceSubstrateTablesDao
-              .getSsTallyList(sshId)
-              .then((value) => value.isEmpty
-                  ? Popups.show(
-                      context,
-                      const PopupDismiss(
-                        "Error: No stations",
-                        contentText:
-                            "Please add at least one station before marking as complete",
-                      ))
-                  : updateSshData(ssh.copyWith(complete: const d.Value(true))))
+          ? db.surfaceSubstrateTablesDao.getSsTallyList(sshId).then((value) {
+              if (value.isEmpty) {
+                Popups.show(
+                    context,
+                    const PopupDismiss(
+                      "Error: No stations",
+                      contentText:
+                          "Please add at least one station before marking as complete",
+                    ));
+              } else {
+                updateSshData(ssh.copyWith(complete: const d.Value(true)));
+                Popups.show(context, PopupMarkedComplete(title: title));
+              }
+            })
           : Popups.show(context, PopupErrorsFoundList(errors: errors));
     }
   }

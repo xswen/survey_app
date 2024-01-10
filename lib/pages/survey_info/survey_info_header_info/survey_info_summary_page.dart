@@ -7,7 +7,9 @@ import 'package:survey_app/widgets/popups/popup_errors_found_list.dart';
 
 import '../../../formatters/thousands_formatter.dart';
 import '../../../providers/survey_info_providers.dart';
+import '../../../widgets/buttons/mark_complete_button.dart';
 import '../../../widgets/date_select.dart';
+import '../../../widgets/popups/popup_marked_complete.dart';
 import '../../../widgets/text/text_header_separator.dart';
 
 class SurveyInfoSummaryPage extends ConsumerStatefulWidget {
@@ -82,14 +84,8 @@ class SurveyInfoSummaryPageState extends ConsumerState<SurveyInfoSummaryPage> {
       results.addAll(errorCheckSoilData());
 
       if (results.isEmpty) {
-        Popups.show(
-            context,
-            const PopupDismiss(
-              "Marked Complete",
-              contentText: "Card will now be locked. Please mark as edit "
-                  "to make any future changes.",
-            ));
         updateSummary(summary.copyWith(complete: const d.Value(true)));
+        Popups.show(context, PopupMarkedComplete(title: title));
       } else {
         Popups.show(context, PopupErrorsFoundList(errors: results));
       }
@@ -199,36 +195,25 @@ class SurveyInfoSummaryPageState extends ConsumerState<SurveyInfoSummaryPage> {
   Widget build(BuildContext context) {
     final db = ref.read(databaseProvider);
     debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
+
+    String title = "Survey Info Summary";
+
     return db.companionValueToStr(summary.id).isEmpty
-        ? Scaffold(
-            appBar: OurAppBar(
-              "Survey Info Summary",
-              backFn: () {
-                ref.refresh(updateSurveyCardProvider(surveyId));
-                context.pop();
-              },
-            ),
-            endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
-            body: const Center(child: kLoadingWidget),
-          )
+        ? DefaultPageLoadingScaffold(title: title)
         : Scaffold(
             appBar: OurAppBar(
               "Survey Info Summary",
+              complete: summary.complete.value,
               backFn: () {
                 ref.refresh(updateSurveyCardProvider(surveyId));
                 context.pop();
               },
             ),
             endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
-            bottomNavigationBar: ElevatedButton.icon(
-              icon: summary.complete.value
-                  ? const Icon(FontAwesomeIcons.penToSquare)
-                  : const Icon(FontAwesomeIcons.solidFloppyDisk),
-              label: summary.complete.value
-                  ? const Text("Edit Survey Info Summary")
-                  : const Text("Mark Survey Info Summary as Complete"),
-              onPressed: () => markComplete(),
-            ),
+            bottomNavigationBar: MarkCompleteButton(
+                title: title,
+                complete: summary.complete.value,
+                onPressed: () => markComplete()),
             body: Center(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(
@@ -294,6 +279,7 @@ class SurveyInfoSummaryPageState extends ConsumerState<SurveyInfoSummaryPage> {
                             padding: const EdgeInsets.symmetric(
                                 vertical: kPaddingV * 2),
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const TextHeaderSeparator(title: "Photos"),
                                 DataInput(

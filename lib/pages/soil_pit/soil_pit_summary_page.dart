@@ -9,6 +9,7 @@ import 'package:survey_app/widgets/buttons/icon_nav_button.dart';
 import '../../providers/survey_info_providers.dart';
 import '../../widgets/buttons/mark_complete_button.dart';
 import '../../widgets/date_select.dart';
+import '../../widgets/popups/popup_marked_complete.dart';
 
 class SoilPitSummaryPage extends ConsumerStatefulWidget {
   static const String routeName = "soilPitSummary";
@@ -100,6 +101,7 @@ class SoilPitSummaryPageState extends ConsumerState<SoilPitSummaryPage> {
                   } else {
                     updateSpSummary(SoilPitSummaryCompanion(
                         complete: d.Value(!spSummary.complete)));
+                    Popups.show(context, PopupMarkedComplete(title: title));
                   }
                 });
         }

@@ -3,10 +3,13 @@ import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/pages/woody_debris/woody_debris_header_page.dart';
 import 'package:survey_app/widgets/builders/set_transect_num_builder.dart';
 import 'package:survey_app/widgets/buttons/custom_button_styles.dart';
+import 'package:survey_app/widgets/popups/popup_notice_survey_complete.dart';
 
 import '../../providers/survey_info_providers.dart';
 import '../../providers/woody_debris_providers.dart';
+import '../../widgets/buttons/mark_complete_button.dart';
 import '../../widgets/date_select.dart';
+import '../../widgets/popups/popup_marked_complete.dart';
 import '../../widgets/tile_cards/tile_card_transect.dart';
 import '../delete_page.dart';
 import 'woody_debris_header_measurements_page.dart';
@@ -122,10 +125,14 @@ class WoodyDebrisSummaryPageState
       } else if (transList.isEmpty) {
         Popups.showMissingTransect(context);
       } else {
-        checkHeadersComplete(transList)
-            ? updateWdSummary(
-                const WoodyDebrisSummaryCompanion(complete: d.Value(true)))
-            : Popups.showIncompleteTransect(context);
+        if (checkHeadersComplete(transList)) {
+          updateWdSummary(
+              const WoodyDebrisSummaryCompanion(complete: d.Value(true)));
+          Popups.show(context,
+              const PopupMarkedComplete(title: "Woody debris summary"));
+        } else {
+          Popups.showIncompleteTransect(context);
+        }
       }
     });
   }
@@ -137,20 +144,27 @@ class WoodyDebrisSummaryPageState
     AsyncValue<List<WoodyDebrisHeaderData>> transList =
         ref.watch(wdTransListProvider(wdId));
 
-    return Scaffold(
-      appBar: OurAppBar(
-        title,
-        backFn: () {
-          ref.refresh(updateSurveyCardProvider(surveyId));
-          context.pop();
-        },
-      ),
-      endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
-      body: Center(
-        child: wdSummary.when(
-          error: (err, stack) => Text("Error: $err"),
-          loading: () => const Center(child: CircularProgressIndicator()),
-          data: (wd) => Column(
+    return wdSummary.when(
+      error: (err, stack) => Text("Error: $err"),
+      loading: () => DefaultPageLoadingScaffold(title: title),
+      data: (wd) => transList.when(
+        error: (err, stack) => Text("Error: $err"),
+        loading: () => DefaultPageLoadingScaffold(title: title),
+        data: (transList) => Scaffold(
+          appBar: OurAppBar(
+            title,
+            complete: wd.complete,
+            backFn: () {
+              ref.refresh(updateSurveyCardProvider(surveyId));
+              context.pop();
+            },
+          ),
+          endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
+          bottomNavigationBar: MarkCompleteButton(
+              title: title,
+              complete: wd.complete,
+              onPressed: () => markComplete(wd, transList)),
+          body: Column(
             children: [
               CalendarSelect(
                 date: wd.measDate,
@@ -190,78 +204,60 @@ class WoodyDebrisSummaryPageState
                 ),
               ),
               Expanded(
-                  child: transList.when(
-                data: (transList) {
-                  return Scaffold(
-                    floatingActionButton: FloatingCompleteButton(
-                      title: title,
-                      complete: wd.complete!,
-                      onPressed: () => markComplete(wd, transList),
-                    ),
-                    body: transList.isEmpty
-                        ? const Center(
-                            child: Text(
-                                "No transects created. Please add transect."))
-                        : ListView.builder(
-                            itemCount: transList.length,
-                            itemBuilder: (BuildContext cxt, int index) {
-                              WoodyDebrisHeaderData wdh = transList[index];
-                              return TileCardTransect(
-                                title: "Transect ${wdh.transNum}",
-                                onPressed: () async {
-                                  wd.complete!
-                                      ? Popups.show(
-                                          context,
-                                          Popups.generateNoticeSurveyComplete(
-                                            "Woody Debris",
-                                            () {
-                                              context.pop();
-                                              goToWdhPage(wdh.id);
-                                            },
-                                          ))
-                                      : goToWdhPage(wdh.id);
-                                },
-                                status: getStatus(wdh),
-                                onDelete: () => Popups.show(
-                                  context,
-                                  PopupContinue(
-                                      "Warning: Deleting Woody Debris Transect",
-                                      contentText:
-                                          "You are about to delete transect ${wdh.transNum}. "
-                                          "Are you sure you want to continue?",
-                                      rightBtnOnPressed: () {
-                                    //close popup
-                                    context.pop();
-                                    context.pushNamed(DeletePage.routeName,
-                                        extra: {
-                                          DeletePage.keyObjectName:
-                                              "Woody Debris Transect ${wdh.transNum}",
-                                          DeletePage.keyDeleteFn: () {
-                                            Database
-                                                .instance.woodyDebrisTablesDao
-                                                .deleteWoodyDebrisTransect(
-                                                    wdh.id)
-                                                .then((value) {
-                                              ref.refresh(
-                                                  wdTransListProvider(wdId));
-                                              context.goNamed(
-                                                  WoodyDebrisSummaryPage
-                                                      .routeName,
-                                                  pathParameters: widget
-                                                      .goRouterState
-                                                      .pathParameters);
-                                            });
-                                          },
-                                        });
-                                  }),
-                                ),
-                              );
-                            }),
-                  );
-                },
-                error: (err, stack) => Text("Error: $err"),
-                loading: () => const Center(child: CircularProgressIndicator()),
-              ))
+                child: transList.isEmpty
+                    ? const Center(
+                        child:
+                            Text("No transects created. Please add transect."))
+                    : ListView.builder(
+                        itemCount: transList.length,
+                        itemBuilder: (BuildContext cxt, int index) {
+                          WoodyDebrisHeaderData wdh = transList[index];
+                          return TileCardTransect(
+                            title: "Transect ${wdh.transNum}",
+                            onPressed: () async {
+                              wd.complete!
+                                  ? Popups.show(
+                                      context,
+                                      PopupNoticeSurveyComplete(
+                                        title: title,
+                                        rightBtnOnPressed: () {
+                                          context.pop();
+                                          goToWdhPage(wdh.id);
+                                        },
+                                      ))
+                                  : goToWdhPage(wdh.id);
+                            },
+                            status: getStatus(wdh),
+                            onDelete: () => Popups.show(
+                              context,
+                              PopupContinue(
+                                  "Warning: Deleting Woody Debris Transect",
+                                  contentText:
+                                      "You are about to delete transect ${wdh.transNum}. "
+                                      "Are you sure you want to continue?",
+                                  rightBtnOnPressed: () {
+                                //close popup
+                                context.pop();
+                                context.pushNamed(DeletePage.routeName, extra: {
+                                  DeletePage.keyObjectName:
+                                      "Woody Debris Transect ${wdh.transNum}",
+                                  DeletePage.keyDeleteFn: () {
+                                    Database.instance.woodyDebrisTablesDao
+                                        .deleteWoodyDebrisTransect(wdh.id)
+                                        .then((value) {
+                                      ref.refresh(wdTransListProvider(wdId));
+                                      context.goNamed(
+                                          WoodyDebrisSummaryPage.routeName,
+                                          pathParameters: widget
+                                              .goRouterState.pathParameters);
+                                    });
+                                  },
+                                });
+                              }),
+                            ),
+                          );
+                        }),
+              ),
             ],
           ),
         ),

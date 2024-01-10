@@ -9,6 +9,7 @@ import '../../providers/survey_info_providers.dart';
 import '../../widgets/buttons/custom_button_styles.dart';
 import '../../widgets/buttons/mark_complete_button.dart';
 import '../../widgets/date_select.dart';
+import '../../widgets/popups/popup_marked_complete.dart';
 import '../../widgets/tile_cards/tile_card_transect.dart';
 import '../delete_page.dart';
 
@@ -104,10 +105,14 @@ class SurfaceSubstrateSummaryPageState
       } else if (transList.isEmpty) {
         Popups.showMissingTransect(context);
       } else {
-        checkHeadersComplete(transList)
-            ? updateSsSummary(
-                const SurfaceSubstrateSummaryCompanion(complete: d.Value(true)))
-            : Popups.showIncompleteTransect(context);
+        if (checkHeadersComplete(transList)) {
+          updateSsSummary(
+              const SurfaceSubstrateSummaryCompanion(complete: d.Value(true)));
+          Popups.show(context,
+              const PopupMarkedComplete(title: "Surface substrate summary"));
+        } else {
+          Popups.showIncompleteTransect(context);
+        }
       }
     });
   }

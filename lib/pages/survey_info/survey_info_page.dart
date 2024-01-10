@@ -11,6 +11,7 @@ import '../../formatters/format_string.dart';
 import '../../providers/survey_info_providers.dart';
 import '../../widgets/buttons/edit_icon_button.dart';
 import '../../widgets/buttons/mark_complete_button.dart';
+import '../../widgets/popups/popup_marked_complete.dart';
 import '../../widgets/tags/tag_chips.dart';
 import '../../widgets/text/text_line_label.dart';
 import '../../widgets/titled_border.dart';
@@ -367,7 +368,7 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
               ),
             ));
       }
-      //Case where no card has been started
+      //Case where no card has been completed
       else if (result.containsKey(SurveyStatus.complete)) {
         Popups.show(
             context,
@@ -375,7 +376,7 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
                 contentText: "No survey cards have been marked as complete."
                     "\nPlease complete at least one survey card to mark as completed."));
       }
-      //Case where at least one card has been started
+      //Case where at least one card has been completed
       else if (result.containsKey(SurveyStatus.notAssessed)) {
         Popups.show(
             context,
@@ -403,9 +404,13 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
                   ],
                 ), rightBtnOnPressed: () {
               updateSummary(
-                  SurveyHeadersCompanion(complete: d.Value(!survey.complete)));
+                  const SurveyHeadersCompanion(complete: d.Value(true)));
+              Popups.show(context, PopupMarkedComplete(title: title));
               context.pop();
             }));
+      } else {
+        updateSummary(const SurveyHeadersCompanion(complete: d.Value(true)));
+        Popups.show(context, PopupMarkedComplete(title: title));
       }
     }
   }
