@@ -299,7 +299,7 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
     ref.refresh(updateSurveyProvider(surveyId));
   }
 
-  void handleFABClick(SurveyHeader survey, List<SurveyCard> cards) {
+  void markComplete(SurveyHeader survey, List<SurveyCard> cards) {
     if (survey.complete) {
       updateSummary(const SurveyHeadersCompanion(complete: d.Value(false)));
     } else {
@@ -460,7 +460,7 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
                 bottomNavigationBar: MarkCompleteButton(
                     title: title,
                     complete: survey.complete,
-                    onPressed: () => handleFABClick(survey, cards)),
+                    onPressed: () => markComplete(survey, cards)),
                 body: Center(
                   child: Column(
                     children: [
