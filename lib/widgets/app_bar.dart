@@ -17,7 +17,7 @@ class OurAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: BackButton(
         onPressed: backFn ?? () => context.pop(),
       ),
-      backgroundColor: complete ? Colors.grey : Colors.blue,
+      backgroundColor: complete ? Colors.teal : Colors.blue,
     );
   }
 

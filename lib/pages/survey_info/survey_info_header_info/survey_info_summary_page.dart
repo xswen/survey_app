@@ -227,8 +227,7 @@ class SurveyInfoSummaryPageState extends ConsumerState<SurveyInfoSummaryPage> {
               label: summary.complete.value
                   ? const Text("Edit Survey Info Summary")
                   : const Text("Mark Survey Info Summary as Complete"),
-              onPressed: () =>
-                  markComplete(), // markComplete(parentComplete, wdh),
+              onPressed: () => markComplete(),
             ),
             body: Center(
               child: Padding(
