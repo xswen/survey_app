@@ -1,7 +1,6 @@
 import 'package:drift/drift.dart' as d;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
-import 'package:survey_app/extensions/extensions.dart';
 import 'package:survey_app/widgets/popups/popup_notice_survey_complete.dart';
 import 'package:survey_app/widgets/popups/popups_survey_info_mark_not_assessed.dart';
 import 'package:survey_app/widgets/text/notify_no_filter_results.dart';
@@ -110,8 +109,8 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
 
       PopupDismiss popup = PopupDismiss(
         "Nothing to show",
-        contentText: "Survey has been marked as complete. "
-            "No data found for $name. Please mark survey as "
+        contentText: "Survey has been marked as complete and $name is marked"
+            "as 'Not Assessed'. Please mark survey as "
             "edit if you wish to add data to $name",
       );
 
@@ -134,19 +133,17 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
         onPressed: () {
           if (survey.complete && data == null) {
             Popups.show(context, popup);
-            return;
-          }
-          if (data?.notAssessed ?? false) {
-            handleNotAssessed(() => getNav(survey, category, data));
-          } else if (data?.complete ?? false) {
+          } else if (survey.complete) {
             Popups.show(
                 context,
                 PopupNoticeSurveyComplete(
-                    title: category.name.camelCaseToTitle(),
+                    title: "Survey",
                     rightBtnOnPressed: () {
                       getNav(survey, category, data);
                       context.pop();
                     }));
+          } else if (data?.notAssessed ?? false) {
+            handleNotAssessed(() => getNav(survey, category, data));
           } else {
             getNav(survey, category, data);
           }

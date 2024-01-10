@@ -2,8 +2,8 @@ import 'package:drift/drift.dart' as d;
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/pages/surface_substrate/surface_substrate_header_page.dart';
 import 'package:survey_app/providers/surface_substrate_providers.dart';
-import 'package:survey_app/widgets/default_page_loading_scaffold.dart';
 import 'package:survey_app/widgets/popups/popup_create_transect.dart';
+import 'package:survey_app/widgets/popups/popup_notice_survey_complete.dart';
 
 import '../../providers/survey_info_providers.dart';
 import '../../widgets/buttons/custom_button_styles.dart';
@@ -199,14 +199,12 @@ class SurfaceSubstrateSummaryPageState
                                       ss.complete
                                           ? Popups.show(
                                               context,
-                                              Popups
-                                                  .generateNoticeSurveyComplete(
-                                                "Woody Debris",
-                                                () {
-                                                  context.pop();
-                                                  goToSshPage(header.id);
-                                                },
-                                              ))
+                                              PopupNoticeSurveyComplete(
+                                                  title: title,
+                                                  rightBtnOnPressed: () {
+                                                    context.pop();
+                                                    goToSshPage(header.id);
+                                                  }))
                                           : goToSshPage(header.id);
                                     },
                                     status: getStatus(header),
