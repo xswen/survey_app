@@ -136,6 +136,12 @@ class Database extends _$Database {
     });
   }
 
+  String companionValueToStr(value) => (value == null ||
+          value == const d.Value.absent() ||
+          value == const d.Value(null))
+      ? ""
+      : value.value.toString();
+
   @override
   MigrationStrategy get migration => MigrationStrategy(
         onCreate: (m) async {
@@ -589,6 +595,11 @@ class Database extends _$Database {
             .getSingleOrNull()
       },
       {
+        category: SurveyCardCategories.groundPlot,
+        name: "Ground Plot Info",
+        surveyCardData: null
+      },
+      {
         category: SurveyCardCategories.woodyDebris,
         name: "Woody Debris",
         surveyCardData: await (select(woodyDebrisSummary)
@@ -650,10 +661,4 @@ class Database extends _$Database {
 
     return cards;
   }
-
-  String companionValueToStr(value) => (value == null ||
-          value == const d.Value.absent() ||
-          value == const d.Value(null))
-      ? ""
-      : value.value.toString();
 }

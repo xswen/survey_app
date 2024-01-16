@@ -2,6 +2,7 @@ enum DropDownType { str, int }
 
 enum SurveyCardCategories {
   surveyHeader,
+  groundPlot,
   woodyDebris,
   surfaceSubstrate,
   ecologicalPlot,
