@@ -5,6 +5,7 @@ import 'package:survey_app/pages/survey_info/create_survey_page.dart';
 import 'package:survey_app/pages/survey_info/dashboard.dart';
 import 'package:survey_app/pages/survey_info/survey_info_page.dart';
 import 'package:survey_app/routes/go_route_ecological_plot.dart';
+import 'package:survey_app/routes/go_route_ground_plot.dart';
 import 'package:survey_app/routes/go_route_large_tree_plot.dart';
 import 'package:survey_app/routes/go_route_shrub_plot.dart';
 import 'package:survey_app/routes/go_route_small_tree_plot.dart';
@@ -78,6 +79,7 @@ List<GoRoute> routes = [
                 goRouteShrubPlot,
                 goRouteStumpPlot,
                 goRouteLargeTreePlot,
+                goRouteGroundPlot
               ],
             )
           ],
