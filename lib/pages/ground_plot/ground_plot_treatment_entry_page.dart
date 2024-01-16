@@ -17,7 +17,7 @@ class GroundPlotTreatmentEntryPageState
     final db = ref.read(databaseProvider);
     debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
     return Scaffold(
-      appBar: const OurAppBar("Title"),
+      appBar: const OurAppBar("Treatment Entry"),
       endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
       body: Center(
           child: Padding(

@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart' as d;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
+import 'package:survey_app/pages/ground_plot/ground_plot_summary_page.dart';
 import 'package:survey_app/widgets/popups/popup_notice_survey_complete.dart';
 import 'package:survey_app/widgets/popups/popups_survey_info_mark_not_assessed.dart';
 import 'package:survey_app/widgets/text/notify_no_filter_results.dart';
@@ -217,6 +218,12 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
         getId(() =>
             db.surveyInfoTablesDao.setAndReturnDefaultSummary(survey.id)).then(
           (id) => context.pushNamed(SurveyInfoSummaryPage.routeName,
+              pathParameters: widget.goRouterState.pathParameters),
+        );
+        break;
+      case SurveyCardCategories.groundPlot:
+        getId(
+          () => context.pushNamed(GroundPlotSummaryPage.routeName,
               pathParameters: widget.goRouterState.pathParameters),
         );
         break;

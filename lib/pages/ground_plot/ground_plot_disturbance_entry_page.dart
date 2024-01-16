@@ -17,7 +17,7 @@ class GroundPlotDisturbanceEntryPageState
     final db = ref.read(databaseProvider);
     debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
     return Scaffold(
-      appBar: const OurAppBar("Title"),
+      appBar: const OurAppBar("Natural Disturbance Entry"),
       endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
       body: Center(
           child: Padding(

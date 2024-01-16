@@ -1,4 +1,5 @@
 import 'package:survey_app/barrels/page_imports_barrel.dart';
+import 'package:survey_app/pages/ground_plot/ground_plot_origin_entry_page.dart';
 
 class GroundPlotOriginPage extends ConsumerStatefulWidget {
   static const String routeName = "groundPlotOrigin";
@@ -15,7 +16,7 @@ class GroundPlotOriginPageState extends ConsumerState<GroundPlotOriginPage> {
     final db = ref.read(databaseProvider);
     debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
     return Scaffold(
-      appBar: const OurAppBar("Title"),
+      appBar: const OurAppBar("Tree Cover Origin"),
       endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
       body: Center(
           child: Padding(
@@ -23,7 +24,10 @@ class GroundPlotOriginPageState extends ConsumerState<GroundPlotOriginPage> {
             vertical: kPaddingV * 2, horizontal: kPaddingH / 2),
         child: ElevatedButton(
           child: const Text("tmp"),
-          onPressed: () {},
+          onPressed: () {
+            context.pushNamed(GroundPlotOriginEntryPage.routeName,
+                pathParameters: widget.state.pathParameters);
+          },
         ),
       )),
     );
