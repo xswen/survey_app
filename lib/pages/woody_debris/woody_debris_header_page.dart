@@ -423,7 +423,6 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
                         children: [
                           IconNavButton(
                             icon: const Icon(FontAwesomeIcons.file),
-                            space: kPaddingIcon,
                             label: "Transect Header Data",
                             onPressed: () async {
                               context

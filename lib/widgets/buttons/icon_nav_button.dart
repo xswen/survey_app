@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../constants/margins_padding.dart';
+
 class IconNavButton extends StatelessWidget {
   const IconNavButton(
       {super.key,
       this.icon = const SizedBox.shrink(),
-      this.space = 0,
+      this.space = kPaddingIcon,
       this.padding = const EdgeInsets.all(0),
       required this.label,
       required this.onPressed});

@@ -3,8 +3,10 @@ import 'package:survey_app/pages/ground_plot/ground_plot_disturbance_page.dart';
 import 'package:survey_app/pages/ground_plot/ground_plot_origin_page.dart';
 import 'package:survey_app/pages/ground_plot/ground_plot_site_info_page.dart';
 import 'package:survey_app/pages/ground_plot/ground_plot_treatment_page.dart';
+import 'package:survey_app/widgets/buttons/icon_nav_button.dart';
 
 import '../../providers/survey_info_providers.dart';
+import '../../widgets/text/text_header_separator.dart';
 
 class GroundPlotSummaryPage extends ConsumerStatefulWidget {
   static const String routeName = "groundPlotSummary";
@@ -41,36 +43,42 @@ class GroundPlotSummaryPageState extends ConsumerState<GroundPlotSummaryPage> {
           child: Padding(
         padding: const EdgeInsets.symmetric(
             vertical: kPaddingV * 2, horizontal: kPaddingH / 2),
-        child: Column(
+        child: ListView(
           children: [
-            ElevatedButton(
-              child: const Text("Site Info"),
+            IconNavButton(
+              icon: const Icon(FontAwesomeIcons.info),
+              label: 'Site Info',
               onPressed: () {
                 context.pushNamed(GroundPlotSiteInfoPage.routeName,
                     pathParameters: widget.state.pathParameters);
               },
             ),
-            ElevatedButton(
-              child: const Text("Disturbance"),
+            IconNavButton(
+              label: 'Disturbance',
+              icon: const Icon(FontAwesomeIcons.fire),
               onPressed: () {
                 context.pushNamed(GroundPlotDisturbancePage.routeName,
                     pathParameters: widget.state.pathParameters);
               },
             ),
-            ElevatedButton(
-              child: const Text("Tree Cover Origin"),
+            IconNavButton(
+              label: 'Tree Cover Origin',
+              icon: const Icon(FontAwesomeIcons.tree),
               onPressed: () {
                 context.pushNamed(GroundPlotOriginPage.routeName,
                     pathParameters: widget.state.pathParameters);
               },
             ),
-            ElevatedButton(
-              child: const Text("Plot Treatment and Activity"),
+            IconNavButton(
+              label: 'Plot Treatment and Activity',
+              icon: const Icon(FontAwesomeIcons.file),
               onPressed: () {
                 context.pushNamed(GroundPlotTreatmentPage.routeName,
                     pathParameters: widget.state.pathParameters);
               },
             ),
+            const TextHeaderSeparator(title: "User information and Comments"),
+            const Text("TODO: Add Comment Box")
           ],
         ),
       )),
