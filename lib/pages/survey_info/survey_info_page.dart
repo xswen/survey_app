@@ -222,10 +222,9 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
         );
         break;
       case SurveyCardCategories.groundPlot:
-        getId(
-          () => context.pushNamed(GroundPlotSummaryPage.routeName,
-              pathParameters: widget.goRouterState.pathParameters),
-        );
+        context.pushNamed(GroundPlotSummaryPage.routeName,
+            pathParameters: widget.goRouterState.pathParameters);
+
         break;
       case SurveyCardCategories.woodyDebris:
         getId(() => db.woodyDebrisTablesDao

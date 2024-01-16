@@ -73,8 +73,10 @@ class _DataInputState extends State<DataInput> {
   @override
   void dispose() {
     if (widget.controller == null) {
-      debugPrint("No parent controller found. Disposing widget controller");
       controller.dispose();
+    } else {
+      debugPrint("Warning: Parent controller found. Controller deletion needs "
+          "to be handled manually");
     }
     super.dispose();
   }

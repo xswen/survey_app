@@ -4,6 +4,8 @@ import 'package:survey_app/pages/ground_plot/ground_plot_origin_page.dart';
 import 'package:survey_app/pages/ground_plot/ground_plot_site_info_page.dart';
 import 'package:survey_app/pages/ground_plot/ground_plot_treatment_page.dart';
 
+import '../../providers/survey_info_providers.dart';
+
 class GroundPlotSummaryPage extends ConsumerStatefulWidget {
   static const String routeName = "groundPlotSummary";
   final GoRouterState state;
@@ -14,12 +16,26 @@ class GroundPlotSummaryPage extends ConsumerStatefulWidget {
 }
 
 class GroundPlotSummaryPageState extends ConsumerState<GroundPlotSummaryPage> {
+  late final int surveyId;
+
+  @override
+  void initState() {
+    surveyId = PathParamValue.getSurveyId(widget.state)!;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final db = ref.read(databaseProvider);
     debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
     return Scaffold(
-      appBar: const OurAppBar("Ground Plot Info Summary"),
+      appBar: OurAppBar(
+        "Ground Plot Info Summary",
+        backFn: () {
+          ref.refresh(updateSurveyCardProvider(surveyId));
+          context.pop();
+        },
+      ),
       endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
       body: Center(
           child: Padding(
