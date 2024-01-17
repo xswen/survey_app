@@ -1,5 +1,6 @@
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/widgets/Expansion/expansion_title.dart';
+import 'package:survey_app/widgets/checkbox/custom_checkbox.dart';
 import 'package:survey_app/widgets/checkbox/hide_info_checkbox.dart';
 import 'package:survey_app/widgets/data_input/data_input.dart';
 import 'package:survey_app/widgets/dropdowns/drop_down_default.dart';
@@ -209,6 +210,56 @@ class GroundPlotSiteInfoPageState
                   title: "Wetland class",
                   onChangedFn: (s) {},
                   itemsList: test,
+                  selectedItem: "Please select",
+                ),
+              ],
+            ),
+            ExpansionTitle(
+              title: "Plot Center Location",
+              children: [
+                CustomCheckbox(
+                  title: "Coordinates are post-processed",
+                  checkValue: false,
+                ),
+                DataInput(
+                    title: "UTM Northing",
+                    onSubmit: (s) {},
+                    onValidate: (s) {}),
+                DataInput(
+                    title: "UTM Easting", onSubmit: (s) {}, onValidate: (s) {}),
+                DataInput(
+                    title: "Field Accuracy Northing",
+                    onSubmit: (s) {},
+                    onValidate: (s) {}),
+                DataInput(
+                    title: "Field Accuracy Easting",
+                    onSubmit: (s) {},
+                    onValidate: (s) {}),
+              ],
+            ),
+            ExpansionTitle(
+              title: "General GPS Information",
+              children: [
+                DataInput(
+                    title: "GPS Make", onSubmit: (s) {}, onValidate: (s) {}),
+                DataInput(
+                    title: "GPS Model", onSubmit: (s) {}, onValidate: (s) {}),
+                HideInfoCheckbox(
+                  title: "Points averaged",
+                  checkTitle: "Unreported",
+                  checkValue: false,
+                  child: DataInput(onSubmit: (s) {}, onValidate: (s) {}),
+                ),
+                DropDownDefault(
+                  title: "Density class",
+                  onChangedFn: (s) {},
+                  itemsList: [...test, "unreported"],
+                  selectedItem: "Please select",
+                ),
+                DropDownDefault(
+                  title: "UTM Zone",
+                  onChangedFn: (s) {},
+                  itemsList: [...test, "unreported"],
                   selectedItem: "Please select",
                 ),
               ],
