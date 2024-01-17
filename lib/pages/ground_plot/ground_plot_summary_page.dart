@@ -6,6 +6,7 @@ import 'package:survey_app/pages/ground_plot/ground_plot_treatment_page.dart';
 import 'package:survey_app/widgets/buttons/icon_nav_button.dart';
 
 import '../../providers/survey_info_providers.dart';
+import '../../widgets/buttons/mark_complete_button.dart';
 import '../../widgets/date_select.dart';
 import '../../widgets/text/text_header_separator.dart';
 
@@ -40,6 +41,11 @@ class GroundPlotSummaryPageState extends ConsumerState<GroundPlotSummaryPage> {
         },
       ),
       endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
+      bottomNavigationBar: MarkCompleteButton(
+        title: "Ground Plot Info Summary",
+        complete: false,
+        onPressed: () => null,
+      ),
       body: Center(
           child: Padding(
         padding: const EdgeInsets.symmetric(
