@@ -82,12 +82,12 @@ class LargeTreePlotTreeInfoListEntryPageState
                 ),
                 DataInput(
                     title: "New tree number",
-                    generalPadding: const EdgeInsets.only(bottom: kPaddingV),
+                    paddingGeneral: const EdgeInsets.only(bottom: kPaddingV),
                     onSubmit: (s) {},
                     onValidate: (s) {}),
                 DataInput(
                     title: "Original tree number",
-                    generalPadding: const EdgeInsets.only(bottom: kPaddingV),
+                    paddingGeneral: const EdgeInsets.only(bottom: kPaddingV),
                     onSubmit: (s) {},
                     onValidate: (s) {}),
               ],
@@ -142,7 +142,7 @@ class LargeTreePlotTreeInfoListEntryPageState
                   controlAffinity: ListTileControlAffinity.platform,
                 ),
                 DataInput(
-                    generalPadding: const EdgeInsets.only(bottom: kPaddingV),
+                    paddingGeneral: const EdgeInsets.only(bottom: kPaddingV),
                     onSubmit: (s) {},
                     onValidate: (s) {}),
               ],
@@ -191,7 +191,7 @@ class LargeTreePlotTreeInfoListEntryPageState
                   controlAffinity: ListTileControlAffinity.platform,
                 ),
                 DataInput(
-                    generalPadding: const EdgeInsets.only(bottom: 0),
+                    paddingGeneral: const EdgeInsets.only(bottom: 0),
                     onSubmit: (s) {},
                     onValidate: (s) {}),
               ],

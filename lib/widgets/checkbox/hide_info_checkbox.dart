@@ -7,7 +7,7 @@ class HideInfoCheckbox extends StatefulWidget {
   const HideInfoCheckbox({
     super.key,
     this.title = "",
-    this.checkTitle = "",
+    this.titleWidget = "",
     required this.checkValue,
     this.onChange,
     required this.child,
@@ -18,7 +18,7 @@ class HideInfoCheckbox extends StatefulWidget {
   State<HideInfoCheckbox> createState() => _HideInfoCheckboxState();
 
   final String title;
-  final String checkTitle;
+  final String titleWidget;
   final bool checkValue;
   final ValueChanged<bool?>? onChange;
   final Widget child;
@@ -59,7 +59,7 @@ class _HideInfoCheckboxState extends State<HideInfoCheckbox> {
             ),
           ),
           CustomCheckbox(
-            title: widget.checkTitle,
+            title: widget.titleWidget,
             checkValue: _isChecked,
             onChange: _handleCheckboxChanged,
           ),

@@ -57,19 +57,19 @@ class SmallTreeSpeciesEntryPageState
                 selectedItem: "Please select status"),
             HideInfoCheckbox(
               title: "Small tree DBH",
-              checkTitle: "Unreported",
+              titleWidget: "Unreported",
               checkValue: false,
               child: DataInput(
-                  generalPadding: const EdgeInsets.only(top: 0),
+                  paddingGeneral: const EdgeInsets.only(top: 0),
                   onSubmit: (s) {},
                   onValidate: (s) {}),
             ),
             HideInfoCheckbox(
               title: "Small tree height",
-              checkTitle: "Unreported",
+              titleWidget: "Unreported",
               checkValue: false,
               child: DataInput(
-                  generalPadding: const EdgeInsets.only(top: 0),
+                  paddingGeneral: const EdgeInsets.only(top: 0),
                   onSubmit: (s) {},
                   onValidate: (s) {}),
             ),

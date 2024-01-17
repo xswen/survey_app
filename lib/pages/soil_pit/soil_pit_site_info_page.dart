@@ -313,7 +313,7 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
               prefixIcon: FontAwesomeIcons.ruler,
               suffixVal: "cm",
               startingStr: db.companionValueToStr(siteInfo.profileDepth),
-              generalPadding: const EdgeInsets.all(0),
+              paddingGeneral: const EdgeInsets.all(0),
               onValidate: (s) => errorProfileDepth(s),
               inputType: const TextInputType.numberWithOptions(decimal: true),
               inputFormatters: [

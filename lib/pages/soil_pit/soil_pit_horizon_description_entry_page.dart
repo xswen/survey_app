@@ -249,7 +249,7 @@ class SoilPitHorizonDescriptionEntryPageState
               prefixIcon: FontAwesomeIcons.list,
               suffixVal: "",
               startingStr: db.companionValueToStr(horizon.horizonNum),
-              generalPadding: const EdgeInsets.all(0),
+              paddingGeneral: const EdgeInsets.all(0),
               onValidate: (s) => null,
               inputType: const TextInputType.numberWithOptions(decimal: false),
               inputFormatters: [
@@ -282,7 +282,7 @@ class SoilPitHorizonDescriptionEntryPageState
               message: "Information place holder",
               child: HideInfoCheckbox(
                 title: "Horizon upper depth",
-                checkTitle: "Unreported",
+                titleWidget: "Unreported",
                 checkValue:
                     db.companionValueToStr(horizon.horizonUpper) == "-1.0",
                 onChange: (b) => b!
@@ -295,7 +295,7 @@ class SoilPitHorizonDescriptionEntryPageState
                   prefixIcon: FontAwesomeIcons.ruler,
                   suffixVal: "cm",
                   startingStr: db.companionValueToStr(horizon.horizonUpper),
-                  generalPadding: const EdgeInsets.all(0),
+                  paddingGeneral: const EdgeInsets.all(0),
                   onValidate: (s) => errorHorUpperDepth(s),
                   inputType:
                       const TextInputType.numberWithOptions(decimal: true),
@@ -313,7 +313,7 @@ class SoilPitHorizonDescriptionEntryPageState
             ),
             HideInfoCheckbox(
               title: "Average thickness of horizon",
-              checkTitle: "Unreported",
+              titleWidget: "Unreported",
               checkValue: db.companionValueToStr(horizon.thickness) == "-1.0",
               onChange: (b) => b!
                   ? updateHorizon(
@@ -325,7 +325,7 @@ class SoilPitHorizonDescriptionEntryPageState
                 prefixIcon: FontAwesomeIcons.ruler,
                 suffixVal: "cm",
                 startingStr: db.companionValueToStr(horizon.thickness),
-                generalPadding: const EdgeInsets.all(0),
+                paddingGeneral: const EdgeInsets.all(0),
                 onValidate: (s) => errorHorThickness(s),
                 inputType: const TextInputType.numberWithOptions(decimal: true),
                 inputFormatters: [
@@ -409,7 +409,7 @@ class SoilPitHorizonDescriptionEntryPageState
                       ),
                       HideInfoCheckbox(
                         title: "Volumetric percent gravel",
-                        checkTitle: "Not applicable",
+                        titleWidget: "Not applicable",
                         padding: const EdgeInsets.all(0),
                         checkValue:
                             db.companionValueToStr(horizon.cfGrav) == "-9",
@@ -425,7 +425,7 @@ class SoilPitHorizonDescriptionEntryPageState
                           prefixIcon: FontAwesomeIcons.percent,
                           suffixVal: "%",
                           startingStr: db.companionValueToStr(horizon.cfGrav),
-                          generalPadding: const EdgeInsets.all(0),
+                          paddingGeneral: const EdgeInsets.all(0),
                           onValidate: (s) => errorCf(s),
                           inputType: const TextInputType.numberWithOptions(
                               decimal: true),
@@ -443,7 +443,7 @@ class SoilPitHorizonDescriptionEntryPageState
                       ),
                       HideInfoCheckbox(
                         title: "Volumetric percent cobbles",
-                        checkTitle: "Not applicable",
+                        titleWidget: "Not applicable",
                         padding: const EdgeInsets.all(0),
                         checkValue:
                             db.companionValueToStr(horizon.cfCobb) == "-9",
@@ -459,7 +459,7 @@ class SoilPitHorizonDescriptionEntryPageState
                           prefixIcon: FontAwesomeIcons.percent,
                           suffixVal: "%",
                           startingStr: db.companionValueToStr(horizon.cfCobb),
-                          generalPadding: const EdgeInsets.all(0),
+                          paddingGeneral: const EdgeInsets.all(0),
                           onValidate: (s) => errorCf(s),
                           inputType: const TextInputType.numberWithOptions(
                               decimal: true),
@@ -477,7 +477,7 @@ class SoilPitHorizonDescriptionEntryPageState
                       ),
                       HideInfoCheckbox(
                         title: "Volumetric percent stone",
-                        checkTitle: "Not applicable",
+                        titleWidget: "Not applicable",
                         padding: const EdgeInsets.all(0),
                         checkValue:
                             db.companionValueToStr(horizon.cfStone) == "-9",
@@ -493,7 +493,7 @@ class SoilPitHorizonDescriptionEntryPageState
                           prefixIcon: FontAwesomeIcons.percent,
                           suffixVal: "%",
                           startingStr: db.companionValueToStr(horizon.cfStone),
-                          generalPadding: const EdgeInsets.all(0),
+                          paddingGeneral: const EdgeInsets.all(0),
                           onValidate: (s) => errorCf(s),
                           inputType: const TextInputType.numberWithOptions(
                               decimal: true),

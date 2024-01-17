@@ -1,4 +1,8 @@
 import 'package:survey_app/barrels/page_imports_barrel.dart';
+import 'package:survey_app/widgets/checkbox/hide_info_checkbox.dart';
+
+import '../../widgets/data_input/data_input.dart';
+import '../../widgets/dropdowns/drop_down_default.dart';
 
 class GroundPlotTreatmentEntryPage extends ConsumerStatefulWidget {
   static const String routeName = "groundPlotTreatmentEntry";
@@ -19,13 +23,32 @@ class GroundPlotTreatmentEntryPageState
     return Scaffold(
       appBar: const OurAppBar("Treatment Entry"),
       endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
+      bottomNavigationBar:
+          ElevatedButton(child: Text("Save"), onPressed: () => null),
       body: Center(
           child: Padding(
         padding: const EdgeInsets.symmetric(
             vertical: kPaddingV * 2, horizontal: kPaddingH / 2),
-        child: ElevatedButton(
-          child: const Text("tmp"),
-          onPressed: () {},
+        child: ListView(
+          children: [
+            DropDownDefault(
+                title: "Type",
+                onChangedFn: (s) {},
+                itemsList: ["CC", "PC"],
+                selectedItem: ""),
+            DataInput(
+                title: "Treatment year", onSubmit: (s) {}, onValidate: (s) {}),
+            HideInfoCheckbox(
+              title: "Treatment extent",
+              titleWidget: "Unreported",
+              checkValue: false,
+              child: DataInput(
+                  paddingGeneral: EdgeInsets.zero,
+                  paddingTextbox: EdgeInsets.zero,
+                  onSubmit: (s) {},
+                  onValidate: (s) {}),
+            )
+          ],
         ),
       )),
     );

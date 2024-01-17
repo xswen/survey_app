@@ -77,18 +77,18 @@ class GroundPlotSiteInfoPageState
                     onValidate: (s) {}),
                 HideInfoCheckbox(
                   title: "Provincial Ecosystem type reference",
-                  checkTitle: "Unreported",
+                  titleWidget: "Unreported",
                   checkValue: false,
                   child: DataInput(
-                    generalPadding: EdgeInsets.zero,
-                    textBoxPadding: EdgeInsets.zero,
+                    paddingGeneral: EdgeInsets.zero,
+                    paddingTextbox: EdgeInsets.zero,
                     onSubmit: (s) {},
                     onValidate: (s) {},
                   ),
                 ),
                 HideInfoCheckbox(
                   title: "Measurement of slope gradient",
-                  checkTitle: "Unreported",
+                  titleWidget: "Unreported",
                   checkValue: false,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -96,8 +96,8 @@ class GroundPlotSiteInfoPageState
                     children: [
                       Expanded(
                         child: DataInput(
-                          generalPadding: EdgeInsets.zero,
-                          textBoxPadding: EdgeInsets.zero,
+                          paddingGeneral: EdgeInsets.zero,
+                          paddingTextbox: EdgeInsets.zero,
                           onSubmit: (s) {},
                           onValidate: (s) {
                             return null;
@@ -114,8 +114,8 @@ class GroundPlotSiteInfoPageState
                               AlertDialog(
                                 title: const Text('Measurement in degrees'),
                                 content: DataInput(
-                                  generalPadding: EdgeInsets.zero,
-                                  textBoxPadding: EdgeInsets.zero,
+                                  paddingGeneral: EdgeInsets.zero,
+                                  paddingTextbox: EdgeInsets.zero,
                                   onSubmit: (s) {},
                                   onValidate: (s) {},
                                 ),
@@ -136,15 +136,15 @@ class GroundPlotSiteInfoPageState
                 ),
                 HideInfoCheckbox(
                   title: "Orientation of slope",
-                  checkTitle: "Unreported",
+                  titleWidget: "Unreported",
                   checkValue: false,
                   child: HideInfoCheckbox(
                     padding: EdgeInsets.zero,
-                    checkTitle: "Flat terrain",
+                    titleWidget: "Flat terrain",
                     checkValue: false,
                     child: DataInput(
-                      generalPadding: EdgeInsets.zero,
-                      textBoxPadding: EdgeInsets.zero,
+                      paddingGeneral: EdgeInsets.zero,
+                      paddingTextbox: EdgeInsets.zero,
                       onSubmit: (s) {},
                       onValidate: (s) {},
                     ),
@@ -152,11 +152,11 @@ class GroundPlotSiteInfoPageState
                 ),
                 HideInfoCheckbox(
                   title: "Elevation at plot center",
-                  checkTitle: "Unreported",
+                  titleWidget: "Unreported",
                   checkValue: false,
                   child: DataInput(
-                    generalPadding: EdgeInsets.zero,
-                    textBoxPadding: EdgeInsets.zero,
+                    paddingGeneral: EdgeInsets.zero,
+                    paddingTextbox: EdgeInsets.zero,
                     onSubmit: (s) {},
                     onValidate: (s) {},
                   ),
@@ -248,7 +248,7 @@ class GroundPlotSiteInfoPageState
                     title: "GPS Model", onSubmit: (s) {}, onValidate: (s) {}),
                 HideInfoCheckbox(
                   title: "Points averaged",
-                  checkTitle: "Unreported",
+                  titleWidget: "Unreported",
                   checkValue: false,
                   child: DataInput(onSubmit: (s) {}, onValidate: (s) {}),
                 ),

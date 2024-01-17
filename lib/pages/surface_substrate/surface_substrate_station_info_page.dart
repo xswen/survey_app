@@ -145,7 +145,7 @@ class SurfaceSubstrateStationInfoPageState
                       children: [
                         HideInfoCheckbox(
                           title: "Substrate Depth",
-                          checkTitle: "Substrate Depth Missing",
+                          titleWidget: "Substrate Depth Missing",
                           checkValue:
                               db.companionValueToStr(station.depth) == "-1",
                           onChange: (b) {
@@ -178,8 +178,8 @@ class SurfaceSubstrateStationInfoPageState
                                 LengthLimitingTextInputFormatter(3),
                                 ThousandsFormatter(allowFraction: false),
                               ],
-                              generalPadding: const EdgeInsets.all(0),
-                              textBoxPadding: const EdgeInsets.all(0),
+                              paddingGeneral: const EdgeInsets.all(0),
+                              paddingTextbox: const EdgeInsets.all(0),
                               onSubmit: (String s) {
                                 int? val = int.tryParse(s);
                                 val != null

@@ -53,33 +53,33 @@ class StumpPlotSpeciesEntryPageState
                 selectedItem: "Please select variety"),
             HideInfoCheckbox(
               title: "Stump DIB",
-              checkTitle: "Unreported",
+              titleWidget: "Unreported",
               checkValue: false,
               child: DataInput(
                   boxLabel: "Top inside bark diameter of stump in cm.",
-                  generalPadding: const EdgeInsets.only(top: 0),
+                  paddingGeneral: const EdgeInsets.only(top: 0),
                   onSubmit: (s) {},
                   onValidate: (s) {}),
             ),
             HideInfoCheckbox(
               title: "Stump diameter",
-              checkTitle: "Unreported",
+              titleWidget: "Unreported",
               checkValue: false,
               child: DataInput(
                   boxLabel: "Top diameter of stump including bark, if present. "
                       "If no bark present then STUMP_DIAMETER = STUMP_DIB. "
                       "Reported in cm.",
-                  generalPadding: const EdgeInsets.only(top: 0),
+                  paddingGeneral: const EdgeInsets.only(top: 0),
                   onSubmit: (s) {},
                   onValidate: (s) {}),
             ),
             HideInfoCheckbox(
               title: "Stump length",
-              checkTitle: "Unreported",
+              titleWidget: "Unreported",
               checkValue: false,
               child: DataInput(
                   boxLabel: "Length, measured to the nearest 0.01 m.",
-                  generalPadding: const EdgeInsets.only(top: 0),
+                  paddingGeneral: const EdgeInsets.only(top: 0),
                   onSubmit: (s) {},
                   onValidate: (s) {}),
             ),

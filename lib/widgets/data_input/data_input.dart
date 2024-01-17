@@ -18,9 +18,9 @@ class DataInput extends StatefulWidget {
       this.inputFormatters,
       this.prefixIcon,
       this.suffixVal,
-      this.generalPadding =
+      this.paddingGeneral =
           const EdgeInsets.only(top: kPaddingV * 2, bottom: 0),
-      this.textBoxPadding = const EdgeInsets.only(top: kPaddingV),
+      this.paddingTextbox = const EdgeInsets.only(top: kPaddingV),
       this.readOnly = false,
       //Manually pass a controller if controller ever needs to be cleared
       //A controller created for this purpose will be cleared by this widget
@@ -42,8 +42,8 @@ class DataInput extends StatefulWidget {
   final List<TextInputFormatter>? inputFormatters;
   final IconData? prefixIcon;
   final String? suffixVal;
-  final EdgeInsets generalPadding;
-  final EdgeInsets textBoxPadding;
+  final EdgeInsets paddingGeneral;
+  final EdgeInsets paddingTextbox;
   final TextEditingController? controller;
 
   @override
@@ -78,7 +78,7 @@ class _DataInputState extends State<DataInput> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: widget.generalPadding,
+      padding: widget.paddingGeneral,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,7 +93,7 @@ class _DataInputState extends State<DataInput> {
               ],
             ),
           Padding(
-            padding: widget.textBoxPadding,
+            padding: widget.paddingTextbox,
             child: TextFormField(
               autovalidateMode: widget.autovalidateMode,
               readOnly: widget.readOnly,
