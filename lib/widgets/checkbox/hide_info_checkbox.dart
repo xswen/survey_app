@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:survey_app/widgets/checkbox/custom_checkbox.dart';
 
 import '../../constants/margins_padding.dart';
-import '../../constants/text_designs.dart';
 
 class HideInfoCheckbox extends StatefulWidget {
   const HideInfoCheckbox({
@@ -58,17 +58,10 @@ class _HideInfoCheckboxState extends State<HideInfoCheckbox> {
               widget.title,
             ),
           ),
-          CheckboxListTile(
-            title: widget.checkTitle.isEmpty
-                ? null
-                : Text(
-                    widget.checkTitle,
-                    style: kTextStyle,
-                  ),
-            value: _isChecked,
-            onChanged: _handleCheckboxChanged,
-            contentPadding: EdgeInsets.zero,
-            controlAffinity: ListTileControlAffinity.platform,
+          CustomCheckbox(
+            title: widget.checkTitle,
+            checkValue: widget.checkValue,
+            onChange: _handleCheckboxChanged,
           ),
           Visibility(
             visible: !_isChecked,
