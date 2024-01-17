@@ -99,13 +99,14 @@ class GroundPlotDisturbancePageState
             Padding(
               padding: const EdgeInsets.symmetric(
                   vertical: kPaddingV * 2, horizontal: kPaddingH / 2),
-              child: Wrap(
-                alignment: WrapAlignment.spaceBetween,
-                runAlignment: WrapAlignment.spaceAround,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    "Natural Disturbance to the Plot Vegetation",
-                    style: TextStyle(fontSize: kTextTitleSize),
+                  Expanded(
+                    child: const Text(
+                      "Natural Disturbance to the Plot Vegetation",
+                      style: TextStyle(fontSize: kTextTitleSize),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: kPaddingH),
@@ -159,18 +160,6 @@ class GroundPlotDisturbancePageState
           ],
         ),
       )),
-      // Center(
-      //     child: Padding(
-      //   padding: const EdgeInsets.symmetric(
-      //       vertical: kPaddingV * 2, horizontal: kPaddingH / 2),
-      //   child: ElevatedButton(
-      //     child: const Text("tmp"),
-      //     onPressed: () {
-      //       context.pushNamed(GroundPlotDisturbanceEntryPage.routeName,
-      //           pathParameters: widget.state.pathParameters);
-      //     },
-      //   ),
-      // )),
     );
   }
 }
