@@ -1,5 +1,5 @@
 import 'package:survey_app/barrels/page_imports_barrel.dart';
-import 'package:survey_app/widgets/Expansion/test.dart';
+import 'package:survey_app/widgets/Expansion/expansion_title.dart';
 import 'package:survey_app/widgets/checkbox/hide_info_checkbox.dart';
 import 'package:survey_app/widgets/data_input/data_input.dart';
 import 'package:survey_app/widgets/dropdowns/drop_down_default.dart';
@@ -17,7 +17,7 @@ class GroundPlotSiteInfoPage extends ConsumerStatefulWidget {
 class GroundPlotSiteInfoPageState
     extends ConsumerState<GroundPlotSiteInfoPage> {
   List<String> test = ["test", "test"];
-  bool plotComp = false;
+  bool? plotComp;
 
   @override
   Widget build(BuildContext context) {
@@ -33,15 +33,34 @@ class GroundPlotSiteInfoPageState
             vertical: kPaddingV * 2, horizontal: kPaddingH / 2),
         child: ListView(
           children: [
-            const ExpansionTitle(
-              title: "Site Info",
-              children: [Text("hi")],
-            ),
-
-            const SizedBox(height: kPaddingH), //Plot Completion
             Column(
               children: [
-                const TextHeaderSeparator(title: "Site Info"),
+                const TextHeaderSeparator(title: "Plot Completion"),
+                DropDownDefault(
+                    title: "Plot completion",
+                    onChangedFn: (s) {
+                      setState(() {
+                        s == "Full" ? plotComp = true : plotComp = false;
+                      });
+                    },
+                    itemsList: const ["Full", "Partial", "Unavailable"],
+                    selectedItem: "Please select completion level"),
+                Visibility(
+                  visible: plotComp != null && !plotComp!,
+                  child: DropDownDefault(
+                    title: "Reason",
+                    onChangedFn: (s) {},
+                    itemsList: test,
+                    selectedItem:
+                        "Please select a reason for why plot wasn't completed",
+                  ),
+                ),
+                const SizedBox(height: kPaddingH),
+              ],
+            ), //Plot completion
+            ExpansionTitle(
+              title: "Site Info",
+              children: [
                 DropDownDefault(
                     title: "Ecozone",
                     onChangedFn: (s) {},
@@ -124,8 +143,73 @@ class GroundPlotSiteInfoPageState
                     ),
                   ),
                 ),
+                HideInfoCheckbox(
+                  title: "Elevation at plot center",
+                  checkTitle: "Unreported",
+                  checkValue: false,
+                  child: DataInput(
+                    generalPadding: EdgeInsets.zero,
+                    textBoxPadding: EdgeInsets.zero,
+                    onSubmit: (s) {},
+                    onValidate: (s) {},
+                  ),
+                ),
               ],
-            ), //Site Info
+            ),
+            ExpansionTitle(
+              title: "Land Cover Classification",
+              children: [
+                DropDownDefault(
+                  title: "Land Base",
+                  onChangedFn: (s) {},
+                  itemsList: test,
+                  selectedItem: "Please select",
+                ),
+                DropDownDefault(
+                  title: "Land Cover",
+                  onChangedFn: (s) {},
+                  itemsList: test,
+                  selectedItem: "Please select",
+                ),
+                DropDownDefault(
+                  title: "Land Position",
+                  onChangedFn: (s) {},
+                  itemsList: test,
+                  selectedItem: "Please select",
+                ),
+                DropDownDefault(
+                  title: "Vegetation type",
+                  onChangedFn: (s) {},
+                  itemsList: test,
+                  selectedItem: "Please select",
+                ),
+                DropDownDefault(
+                  title: "Density class",
+                  onChangedFn: (s) {},
+                  itemsList: test,
+                  selectedItem: "Please select",
+                ),
+                DropDownDefault(
+                  title: "Stand structure",
+                  onChangedFn: (s) {},
+                  itemsList: test,
+                  selectedItem: "Please select",
+                ),
+                DropDownDefault(
+                  title: "Succession stage",
+                  onChangedFn: (s) {},
+                  itemsList: test,
+                  selectedItem: "Please select",
+                ),
+                DropDownDefault(
+                  title: "Wetland class",
+                  onChangedFn: (s) {},
+                  itemsList: test,
+                  selectedItem: "Please select",
+                ),
+              ],
+            )
+            //Site Info
           ],
         ),
       )),
