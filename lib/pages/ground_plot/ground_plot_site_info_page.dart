@@ -18,6 +18,8 @@ class GroundPlotSiteInfoPageState
     extends ConsumerState<GroundPlotSiteInfoPage> {
   List<String> test = ["test", "test"];
   bool? plotComp;
+  bool unreported = false;
+  bool flat = true;
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +96,9 @@ class GroundPlotSiteInfoPageState
                           generalPadding: EdgeInsets.zero,
                           textBoxPadding: EdgeInsets.zero,
                           onSubmit: (s) {},
-                          onValidate: (s) {},
+                          onValidate: (s) {
+                            return null;
+                          },
                         ),
                       ),
                       const SizedBox(
@@ -208,8 +212,7 @@ class GroundPlotSiteInfoPageState
                   selectedItem: "Please select",
                 ),
               ],
-            )
-            //Site Info
+            ),
           ],
         ),
       )),

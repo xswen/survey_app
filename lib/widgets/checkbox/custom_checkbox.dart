@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../constants/text_designs.dart';
 
-class CustomCheckbox extends StatefulWidget {
+class CustomCheckbox extends StatelessWidget {
   const CustomCheckbox(
       {super.key,
       required this.title,
@@ -16,40 +16,16 @@ class CustomCheckbox extends StatefulWidget {
   final EdgeInsets contentPadding;
 
   @override
-  State<CustomCheckbox> createState() => _CustomCheckboxState();
-}
-
-class _CustomCheckboxState extends State<CustomCheckbox> {
-  late bool _isChecked;
-
-  @override
-  void initState() {
-    super.initState();
-    _isChecked = widget.checkValue;
-  }
-
-  void _handleCheckboxChanged(bool? newValue) {
-    if (newValue != null) {
-      setState(() {
-        _isChecked = newValue;
-      });
-      if (widget.onChange != null) {
-        widget.onChange!(newValue);
-      }
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     return CheckboxListTile(
-      title: widget.title.isEmpty
+      title: title.isEmpty
           ? null
           : Text(
-              widget.title,
+              title,
               style: kTextStyle,
             ),
-      value: _isChecked,
-      onChanged: _handleCheckboxChanged,
+      value: checkValue,
+      onChanged: onChange,
       contentPadding: EdgeInsets.zero,
       controlAffinity: ListTileControlAffinity.platform,
     );

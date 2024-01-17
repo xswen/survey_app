@@ -2,10 +2,11 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:survey_app/barrels/page_imports_barrel.dart';
+import 'package:survey_app/constants/text_designs.dart';
 
-/// This is a copy of the Expansion tile code with changes to header behavior
+import '../../constants/margins_padding.dart';
 
 const Duration _kExpand = Duration(milliseconds: 200);
 
@@ -227,7 +228,7 @@ class ExpansionTitle extends StatefulWidget {
     this.onExpansionChanged,
     this.children = const <Widget>[],
     this.trailing,
-    this.initiallyExpanded = true,
+    this.initiallyExpanded = false,
     this.maintainState = false,
     this.tilePadding,
     this.expandedCrossAxisAlignment,
@@ -322,7 +323,7 @@ class ExpansionTitle extends StatefulWidget {
   /// Specifies padding for the [ListTile].
   ///
   /// Analogous to [ListTile.contentPadding], this property defines the insets for
-  /// the [leading], [titleWidget], [subtitle] and [trailing] widgets. It does not inset
+  /// the [leading], [title], [subtitle] and [trailing] widgets. It does not inset
   /// the expanded [children] widgets.
   ///
   /// If this property is null then [ExpansionTileThemeData.tilePadding] is used. If that
@@ -418,7 +419,7 @@ class ExpansionTitle extends StatefulWidget {
   ///
   /// If this property is null then [ExpansionTileThemeData.textColor] is used. If that
   /// is also null then and [ThemeData.useMaterial3] is true, color of the [TextTheme.bodyLarge]
-  /// will be used for the [titleWidget] and [subtitle]. Otherwise, defaults to [ColorScheme.primary] color.
+  /// will be used for the [title] and [subtitle]. Otherwise, defaults to [ColorScheme.primary] color.
   ///
   /// See also:
   ///
@@ -432,7 +433,7 @@ class ExpansionTitle extends StatefulWidget {
   ///
   /// If this property is null then [ExpansionTileThemeData.collapsedTextColor] is used.
   /// If that is also null and [ThemeData.useMaterial3] is true, color of the
-  /// [TextTheme.bodyLarge] will be used for the [titleWidget] and [subtitle]. Otherwise,
+  /// [TextTheme.bodyLarge] will be used for the [title] and [subtitle]. Otherwise,
   /// defaults to color of the [TextTheme.titleMedium].
   ///
   /// See also:
@@ -661,7 +662,6 @@ class _ExpansionTitleState extends State<ExpansionTitle>
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 ListTileTheme.merge(
-                  contentPadding: EdgeInsets.zero,
                   iconColor: _iconColor.value ?? expansionTileTheme.iconColor,
                   textColor: _headerColor.value,
                   child: ListTile(
@@ -752,7 +752,7 @@ class _ExpansionTitleState extends State<ExpansionTitle>
           )
       ..end = widget.shape ??
           expansionTileTheme.shape ??
-          const Border(
+          Border(
             top: BorderSide(color: Colors.transparent),
             bottom: BorderSide(color: Colors.transparent),
           );

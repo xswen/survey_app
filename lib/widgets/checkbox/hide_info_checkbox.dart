@@ -60,7 +60,7 @@ class _HideInfoCheckboxState extends State<HideInfoCheckbox> {
           ),
           CustomCheckbox(
             title: widget.checkTitle,
-            checkValue: widget.checkValue,
+            checkValue: _isChecked,
             onChange: _handleCheckboxChanged,
           ),
           Visibility(
