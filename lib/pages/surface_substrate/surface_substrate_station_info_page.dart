@@ -4,8 +4,8 @@ import 'package:survey_app/pages/surface_substrate/surface_substrate_header_page
 import 'package:survey_app/providers/surface_substrate_providers.dart';
 import 'package:survey_app/widgets/builders/substrate_depth_select_builder.dart';
 import 'package:survey_app/widgets/buttons/delete_button.dart';
+import 'package:survey_app/widgets/checkbox/hide_info_checkbox.dart';
 import 'package:survey_app/widgets/data_input/data_input.dart';
-import 'package:survey_app/widgets/hide_info_checkbox.dart';
 import 'package:survey_app/widgets/popups/popup_errors_found_list.dart';
 
 import '../../barrels/page_imports_barrel.dart';

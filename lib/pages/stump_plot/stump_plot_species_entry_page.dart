@@ -2,9 +2,9 @@ import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/widgets/builders/decay_class_select_builder.dart';
 
 import '../../widgets/buttons/delete_button.dart';
+import '../../widgets/checkbox/hide_info_checkbox.dart';
 import '../../widgets/data_input/data_input.dart';
 import '../../widgets/dropdowns/drop_down_default.dart';
-import '../../widgets/hide_info_checkbox.dart';
 
 class StumpPlotSpeciesEntryPage extends ConsumerStatefulWidget {
   static const String routeName = "stumpPlotSpeciesEntry";
@@ -53,7 +53,7 @@ class StumpPlotSpeciesEntryPageState
                 selectedItem: "Please select variety"),
             HideInfoCheckbox(
               title: "Stump DIB",
-              checkTitle: "Missing",
+              checkTitle: "Unreported",
               checkValue: false,
               child: DataInput(
                   boxLabel: "Top inside bark diameter of stump in cm.",
@@ -63,7 +63,7 @@ class StumpPlotSpeciesEntryPageState
             ),
             HideInfoCheckbox(
               title: "Stump diameter",
-              checkTitle: "Missing",
+              checkTitle: "Unreported",
               checkValue: false,
               child: DataInput(
                   boxLabel: "Top diameter of stump including bark, if present. "
@@ -75,7 +75,7 @@ class StumpPlotSpeciesEntryPageState
             ),
             HideInfoCheckbox(
               title: "Stump length",
-              checkTitle: "Missing",
+              checkTitle: "Unreported",
               checkValue: false,
               child: DataInput(
                   boxLabel: "Length, measured to the nearest 0.01 m.",

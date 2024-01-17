@@ -8,9 +8,9 @@ import 'package:survey_app/widgets/dropdowns/drop_down_default.dart';
 import '../../formatters/thousands_formatter.dart';
 import '../../widgets/builders/soil_pit_code_select_builder.dart';
 import '../../widgets/buttons/delete_button.dart';
+import '../../widgets/checkbox/hide_info_checkbox.dart';
 import '../../widgets/data_input/data_input.dart';
 import '../../widgets/dropdowns/drop_down_async_list.dart';
-import '../../widgets/hide_info_checkbox.dart';
 import '../../widgets/popups/popup_errors_found_list.dart';
 import '../../widgets/popups/popup_warning_change_made.dart';
 import '../../widgets/text/text_header_separator.dart';
@@ -282,7 +282,7 @@ class SoilPitHorizonDescriptionEntryPageState
               message: "Information place holder",
               child: HideInfoCheckbox(
                 title: "Horizon upper depth",
-                checkTitle: "Missing",
+                checkTitle: "Unreported",
                 checkValue:
                     db.companionValueToStr(horizon.horizonUpper) == "-1.0",
                 onChange: (b) => b!
@@ -313,7 +313,7 @@ class SoilPitHorizonDescriptionEntryPageState
             ),
             HideInfoCheckbox(
               title: "Average thickness of horizon",
-              checkTitle: "Missing",
+              checkTitle: "Unreported",
               checkValue: db.companionValueToStr(horizon.thickness) == "-1.0",
               onChange: (b) => b!
                   ? updateHorizon(

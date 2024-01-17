@@ -7,7 +7,7 @@ import 'package:survey_app/constants/constant_values.dart';
 import 'package:survey_app/database/database.dart';
 import 'package:survey_app/pages/woody_debris/woody_debris_piece/woody_debris_piece_error_checks.dart';
 import 'package:survey_app/widgets/buttons/delete_button.dart';
-import 'package:survey_app/widgets/hide_info_checkbox.dart';
+import 'package:survey_app/widgets/checkbox/hide_info_checkbox.dart';
 import 'package:survey_app/widgets/popups/popup_continue.dart';
 import 'package:survey_app/widgets/popups/popup_errors_found_list.dart';
 import 'package:survey_app/widgets/popups/popup_warning_missing_fields_list.dart';

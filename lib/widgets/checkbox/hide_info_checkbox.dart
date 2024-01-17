@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-import '../constants/margins_padding.dart';
-import '../constants/text_designs.dart';
+import '../../constants/margins_padding.dart';
+import '../../constants/text_designs.dart';
 
 class HideInfoCheckbox extends StatefulWidget {
   const HideInfoCheckbox({
     super.key,
     this.title = "",
     this.checkTitle = "",
+    required this.checkValue,
     this.onChange,
     required this.child,
-    required this.checkValue,
     this.padding = const EdgeInsets.only(top: kPaddingV * 2),
   });
 
@@ -20,35 +20,60 @@ class HideInfoCheckbox extends StatefulWidget {
   final String title;
   final String checkTitle;
   final bool checkValue;
-  final void Function(bool?)? onChange;
+  final ValueChanged<bool?>? onChange;
   final Widget child;
-  final EdgeInsetsGeometry padding;
+  final EdgeInsets padding;
 }
 
 class _HideInfoCheckboxState extends State<HideInfoCheckbox> {
+  late bool _isChecked;
+
+  @override
+  void initState() {
+    super.initState();
+    _isChecked = widget.checkValue;
+  }
+
+  void _handleCheckboxChanged(bool? newValue) {
+    if (newValue != null) {
+      setState(() {
+        _isChecked = newValue;
+      });
+      if (widget.onChange != null) {
+        widget.onChange!(newValue);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: widget.padding,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          widget.title.isEmpty
-              ? Container()
-              : Text(widget.title, style: kTitleStyle),
+          Visibility(
+            visible: widget.title.isNotEmpty,
+            child: Text(
+              widget.title,
+            ),
+          ),
           CheckboxListTile(
             title: widget.checkTitle.isEmpty
-                ? Container()
+                ? null
                 : Text(
                     widget.checkTitle,
                     style: kTextStyle,
                   ),
-            value: widget.checkValue,
-            onChanged: widget.onChange,
+            value: _isChecked,
+            onChanged: _handleCheckboxChanged,
+            contentPadding: EdgeInsets.zero,
             controlAffinity: ListTileControlAffinity.platform,
           ),
-          if (!widget.checkValue) widget.child,
+          Visibility(
+            visible: !_isChecked,
+            child: widget.child,
+          ),
         ],
       ),
     );

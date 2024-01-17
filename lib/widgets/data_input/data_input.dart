@@ -26,11 +26,13 @@ class DataInput extends StatefulWidget {
       //A controller created for this purpose will be cleared by this widget
       //AND SHOULD NOT be cleared by parent class
       this.controller,
+      this.autovalidateMode = AutovalidateMode.onUserInteraction,
       required this.onValidate});
 
   final bool readOnly;
   final void Function(String) onSubmit;
   final String? Function(String?) onValidate;
+  final AutovalidateMode autovalidateMode;
   final String title;
   final TextStyle titleStyle;
   final InfoPopupBuilder? infoPopupIconBuilder;
@@ -52,32 +54,24 @@ class _DataInputState extends State<DataInput> {
   Widget? _prefixIcon;
   Widget? _suffixVal;
 
-  late final TextEditingController controller;
+  late final TextEditingController _controller;
 
   @override
   void initState() {
-    widget.prefixIcon != null ? _prefixIcon = Icon(widget.prefixIcon) : null;
-    widget.suffixVal != null
-        ? _suffixVal = Padding(
-            padding: const EdgeInsets.symmetric(horizontal: kPaddingH),
-            child: Text(widget.suffixVal!),
-          )
-        : null;
-
-    controller = widget.controller ?? TextEditingController();
-    controller.text = widget.startingStr;
+    _controller =
+        widget.controller ?? TextEditingController(text: widget.startingStr);
     super.initState();
   }
 
   // dispose it when the widget is unmounted
   @override
   void dispose() {
-    if (widget.controller == null) {
-      controller.dispose();
-    } else {
-      debugPrint("Warning: Parent controller found. Controller deletion needs "
-          "to be handled manually");
-    }
+    widget.controller == null
+        ? _controller.dispose()
+        : debugPrint(
+            "Warning: Parent controller found. Controller deletion needs "
+            "to be handled manually");
+
     super.dispose();
   }
 
@@ -86,40 +80,42 @@ class _DataInputState extends State<DataInput> {
     return Padding(
       padding: widget.generalPadding,
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          widget.title.isNotEmpty
-              ? Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(widget.title, style: widget.titleStyle),
-                    widget.infoPopupIconBuilder ?? Container(),
-                  ],
-                )
-              : Container(),
-          SizedBox(
-            child: Padding(
-              padding: widget.textBoxPadding,
-              child: TextFormField(
-                autovalidateMode: AutovalidateMode.always,
-                readOnly: widget.readOnly,
-                controller: controller,
-                validator: (String? value) {
-                  return widget.onValidate(value);
-                },
-                onChanged: (s) {
-                  widget.onSubmit(s);
-                },
-                keyboardType: widget.inputType,
-                inputFormatters: widget.inputFormatters,
-                decoration: InputDecoration(
-                  labelText: widget.boxLabel,
-                  prefixIcon: _prefixIcon,
-                  suffixIcon: _suffixVal,
-                  suffixIconConstraints:
-                      const BoxConstraints(minWidth: 0, minHeight: 0),
-                  border: const OutlineInputBorder(
-                      borderSide: BorderSide(width: 3, color: Colors.grey)),
+          if (widget.title.isNotEmpty)
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(widget.title, style: widget.titleStyle),
+                if (widget.infoPopupIconBuilder != null)
+                  widget.infoPopupIconBuilder!,
+              ],
+            ),
+          Padding(
+            padding: widget.textBoxPadding,
+            child: TextFormField(
+              autovalidateMode: widget.autovalidateMode,
+              readOnly: widget.readOnly,
+              controller: _controller,
+              validator: widget.onValidate,
+              onChanged: widget.onSubmit,
+              keyboardType: widget.inputType,
+              inputFormatters: widget.inputFormatters,
+              decoration: InputDecoration(
+                labelText: widget.boxLabel,
+                prefixIcon:
+                    widget.prefixIcon != null ? Icon(widget.prefixIcon) : null,
+                suffixIcon: widget.suffixVal != null
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Text(widget.suffixVal!),
+                      )
+                    : null,
+                suffixIconConstraints:
+                    const BoxConstraints(minWidth: 0, minHeight: 0),
+                border: const OutlineInputBorder(
+                  borderSide: BorderSide(width: 3, color: Colors.grey),
                 ),
               ),
             ),

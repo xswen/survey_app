@@ -1,5 +1,5 @@
 import 'package:survey_app/barrels/page_imports_barrel.dart';
-import 'package:survey_app/widgets/hide_info_checkbox.dart';
+import 'package:survey_app/widgets/checkbox/hide_info_checkbox.dart';
 
 import '../../widgets/buttons/delete_button.dart';
 import '../../widgets/data_input/data_input.dart';
@@ -57,7 +57,7 @@ class SmallTreeSpeciesEntryPageState
                 selectedItem: "Please select status"),
             HideInfoCheckbox(
               title: "Small tree DBH",
-              checkTitle: "Missing",
+              checkTitle: "Unreported",
               checkValue: false,
               child: DataInput(
                   generalPadding: const EdgeInsets.only(top: 0),
@@ -66,7 +66,7 @@ class SmallTreeSpeciesEntryPageState
             ),
             HideInfoCheckbox(
               title: "Small tree height",
-              checkTitle: "Missing",
+              checkTitle: "Unreported",
               checkValue: false,
               child: DataInput(
                   generalPadding: const EdgeInsets.only(top: 0),

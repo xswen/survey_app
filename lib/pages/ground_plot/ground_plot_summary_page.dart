@@ -6,6 +6,7 @@ import 'package:survey_app/pages/ground_plot/ground_plot_treatment_page.dart';
 import 'package:survey_app/widgets/buttons/icon_nav_button.dart';
 
 import '../../providers/survey_info_providers.dart';
+import '../../widgets/date_select.dart';
 import '../../widgets/text/text_header_separator.dart';
 
 class GroundPlotSummaryPage extends ConsumerStatefulWidget {
@@ -45,6 +46,13 @@ class GroundPlotSummaryPageState extends ConsumerState<GroundPlotSummaryPage> {
             vertical: kPaddingV * 2, horizontal: kPaddingH / 2),
         child: ListView(
           children: [
+            CalendarSelect(
+              date: DateTime.now(),
+              label: "Enter Measurement Date",
+              readOnly: false,
+              // readOnlyPopup: completeWarningPopup,
+              setStateFn: (DateTime date) async => null,
+            ),
             IconNavButton(
               icon: const Icon(FontAwesomeIcons.info),
               label: 'Site Info',
