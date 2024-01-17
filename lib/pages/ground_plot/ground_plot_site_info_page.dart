@@ -30,6 +30,8 @@ class GroundPlotSiteInfoPageState
     return Scaffold(
       appBar: const OurAppBar("Ground Plot Site Info"),
       endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
+      bottomNavigationBar:
+          ElevatedButton(child: Text("Save"), onPressed: () => null),
       body: Center(
           child: Padding(
         padding: const EdgeInsets.symmetric(
