@@ -1,6 +1,7 @@
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/widgets/checkbox/hide_info_checkbox.dart';
 
+import '../../widgets/builders/reference_name_select_builder.dart';
 import '../../widgets/buttons/delete_button.dart';
 import '../../widgets/data_input/data_input.dart';
 import '../../widgets/dropdowns/drop_down_default.dart';
@@ -30,11 +31,16 @@ class SmallTreeSpeciesEntryPageState
         padding: const EdgeInsets.all(kPaddingH),
         child: Center(
           child: ListView(children: [
-            DropDownDefault(
-                title: "Original plot area",
-                onChangedFn: (s) {},
-                itemsList: [],
-                selectedItem: "Please select plot area"),
+            ReferenceNameSelectBuilder(
+              title: "Original plot area",
+              defaultSelectedValue: "Select plot area",
+              name: db.referenceTablesDao.getStpOrigAreaName(""),
+              asyncListFn: db.referenceTablesDao.getStpOrigAreaList,
+              enabled: true,
+              onChange: (s) => db.referenceTablesDao
+                  .getStpOrigAreaCode(s)
+                  .then((value) => null),
+            ),
             DropDownDefault(
                 title: "Small tree genus",
                 onChangedFn: (s) {},
@@ -50,11 +56,16 @@ class SmallTreeSpeciesEntryPageState
                 onChangedFn: (s) {},
                 itemsList: [],
                 selectedItem: "Please select variety"),
-            DropDownDefault(
-                title: "Small tree status",
-                onChangedFn: (s) {},
-                itemsList: [],
-                selectedItem: "Please select status"),
+            ReferenceNameSelectBuilder(
+              title: "Small tree status",
+              defaultSelectedValue: "Please select status",
+              name: db.referenceTablesDao.getStpStatusName(""),
+              asyncListFn: db.referenceTablesDao.getStpStatusList,
+              enabled: true,
+              onChange: (s) => db.referenceTablesDao
+                  .getStpStatusCode(s)
+                  .then((value) => null),
+            ),
             HideInfoCheckbox(
               title: "Small tree DBH",
               titleWidget: "Unreported",
@@ -73,16 +84,26 @@ class SmallTreeSpeciesEntryPageState
                   onSubmit: (s) {},
                   onValidate: (s) {}),
             ),
-            DropDownDefault(
-                title: "Measured or estimated small tree height",
-                onChangedFn: (s) {},
-                itemsList: [],
-                selectedItem: "Please select"),
-            DropDownDefault(
-                title: "Stem condition",
-                onChangedFn: (s) {},
-                itemsList: [],
-                selectedItem: "Please select"),
+            ReferenceNameSelectBuilder(
+              title: "Measured or estimated small tree height",
+              defaultSelectedValue: "Select height",
+              name: db.referenceTablesDao.getStpHeightName(""),
+              asyncListFn: db.referenceTablesDao.getStpHeightList,
+              enabled: true,
+              onChange: (s) => db.referenceTablesDao
+                  .getStpOrigAreaCode(s)
+                  .then((value) => null),
+            ),
+            ReferenceNameSelectBuilder(
+              title: "Stem condition",
+              defaultSelectedValue: "Select stem condition",
+              name: db.referenceTablesDao.getStpStemConditionName(""),
+              asyncListFn: db.referenceTablesDao.getStpStemConditionList,
+              enabled: true,
+              onChange: (s) => db.referenceTablesDao
+                  .getStpStemConditionCode(s)
+                  .then((value) => null),
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: kPaddingV * 2),
               child: Row(

@@ -27,4 +27,10 @@ mixin _$ReferenceTablesDaoMixin on DatabaseAccessor<Database> {
       attachedDatabase.soilHorizonDesignation;
   $SoilColorTable get soilColor => attachedDatabase.soilColor;
   $SoilTextureTable get soilTexture => attachedDatabase.soilTexture;
+  $StpTypeTable get stpType => attachedDatabase.stpType;
+  $StpOrigPlotAreaTable get stpOrigPlotArea => attachedDatabase.stpOrigPlotArea;
+  $StpStatusFieldTable get stpStatusField => attachedDatabase.stpStatusField;
+  $StpHeightTable get stpHeight => attachedDatabase.stpHeight;
+  $StpStemConditionTable get stpStemCondition =>
+      attachedDatabase.stpStemCondition;
 }

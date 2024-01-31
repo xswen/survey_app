@@ -127,3 +127,32 @@ class SoilTexture extends Table {
   TextColumn get code => text()();
   TextColumn get name => text()();
 }
+
+//Small Tree Plot
+class StpType extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class StpOrigPlotArea extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+//Must have field suffix so doesn't mess up auto generator
+//Table names can't end in status
+class StpStatusField extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+  TextColumn get description => text()();
+}
+
+class StpHeight extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class StpStemCondition extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}

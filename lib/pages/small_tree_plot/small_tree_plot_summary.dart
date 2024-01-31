@@ -1,11 +1,12 @@
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/pages/small_tree_plot/small_tree_species_entry_page.dart';
+import 'package:survey_app/widgets/builders/reference_name_select_builder.dart';
 import 'package:survey_app/widgets/data_input/data_input.dart';
-import 'package:survey_app/widgets/dropdowns/drop_down_default.dart';
 import 'package:survey_app/widgets/tables/table_creation_builder.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../providers/survey_info_providers.dart';
+import '../../widgets/buttons/mark_complete_button.dart';
 import '../../widgets/date_select.dart';
 import '../../widgets/tables/table_data_grid_source_builder.dart';
 import '../../wrappers/column_header_object.dart';
@@ -105,6 +106,8 @@ class SmallTreePlotSummaryPageState
           context.pop();
         },
       ),
+      bottomNavigationBar: MarkCompleteButton(
+          title: "Small Tree Plot", complete: false, onPressed: () => null),
       endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
       body: Center(
         child: Padding(
@@ -118,11 +121,14 @@ class SmallTreePlotSummaryPageState
                 readOnly: false,
                 setStateFn: (DateTime date) async => (),
               ),
-              DropDownDefault(
-                  title: "Plot type",
-                  onChangedFn: (s) {},
-                  itemsList: [],
-                  selectedItem: "Please select plot type"),
+              ReferenceNameSelectBuilder(
+                name: db.referenceTablesDao.getStpTypeName(""),
+                asyncListFn: db.referenceTablesDao.getStpTypeList,
+                enabled: true,
+                onChange: (s) => db.referenceTablesDao
+                    .getStpTypeCode(s)
+                    .then((value) => null),
+              ),
               DataInput(
                   title: "Nominal Plot Size",
                   onSubmit: (s) {},
@@ -157,12 +163,10 @@ class SmallTreePlotSummaryPageState
                   ],
                 ),
               ),
-              Expanded(
-                child: TableCreationBuilder(
-                    source: getSourceBuilder(["hi"]),
-                    colNames: columnData.getColHeadersList(),
-                    onCellTap: (DataGridCellTapDetails details) {}),
-              )
+              TableCreationBuilder(
+                  source: getSourceBuilder(["hi"]),
+                  colNames: columnData.getColHeadersList(),
+                  onCellTap: (DataGridCellTapDetails details) {})
             ],
           ),
         ),

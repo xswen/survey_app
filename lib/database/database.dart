@@ -49,6 +49,11 @@ const List<Type> _tables = [
   SoilHorizonDesignation,
   SoilColor,
   SoilTexture,
+  StpType,
+  StpOrigPlotArea,
+  StpStatusField,
+  StpHeight,
+  StpStemCondition,
 
   //Metadata Tables
   MetaComment,
@@ -178,6 +183,14 @@ class Database extends _$Database {
           List<SoilColorCompanion> soilColorList = await _getSoilColors();
           List<SoilTextureCompanion> soilTextureList = await _getSoilTextures();
 
+          List<StpTypeCompanion> stpTypeList = await _getStpCode();
+          List<StpOrigPlotAreaCompanion> stpOrigAreaList =
+              await _getStpOrigPlotArea();
+          List<StpStatusFieldCompanion> stpStatusList = await _getStpStatus();
+          List<StpHeightCompanion> stpHeightList = await _getStpHeight();
+          List<StpStemConditionCompanion> stpStemConditionList =
+              await _getStpStemCondition();
+
           c.debugPrint("Init Values");
           await batch((b) {
             b.insertAll(jurisdictions, jurisdictionsList);
@@ -200,6 +213,12 @@ class Database extends _$Database {
             b.insertAll(soilHorizonDesignation, soilHorizonDesignationList);
             b.insertAll(soilColor, soilColorList);
             b.insertAll(soilTexture, soilTextureList);
+
+            b.insertAll(stpType, stpTypeList);
+            b.insertAll(stpOrigPlotArea, stpOrigAreaList);
+            b.insertAll(stpStatusField, stpStatusList);
+            b.insertAll(stpHeight, stpHeightList);
+            b.insertAll(stpStemCondition, stpStemConditionList);
 
             _initTest(b);
           });
@@ -434,6 +453,66 @@ class Database extends _$Database {
 
     return jsonData.map((dynamic item) {
       return SoilTextureCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<StpTypeCompanion>> _getStpCode() async {
+    List<dynamic> jsonData =
+        await _loadJsonData('assets/db_reference_data/stp_plot_type_list.json');
+
+    return jsonData.map((dynamic item) {
+      return StpTypeCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<StpOrigPlotAreaCompanion>> _getStpOrigPlotArea() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/stp_orig_plot_area_list.json');
+
+    return jsonData.map((dynamic item) {
+      return StpOrigPlotAreaCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<StpStatusFieldCompanion>> _getStpStatus() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/stp_plot_status_list.json');
+
+    return jsonData.map((dynamic item) {
+      return StpStatusFieldCompanion(
+          code: Value(item["code"]),
+          name: Value(item["name"]),
+          description: Value(item["description"]));
+    }).toList();
+  }
+
+  Future<List<StpHeightCompanion>> _getStpHeight() async {
+    List<dynamic> jsonData =
+        await _loadJsonData('assets/db_reference_data/stp_height_list.json');
+
+    return jsonData.map((dynamic item) {
+      return StpHeightCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<StpStemConditionCompanion>> _getStpStemCondition() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/stp_stem_condition_list.json');
+
+    return jsonData.map((dynamic item) {
+      return StpStemConditionCompanion(
         code: Value(item["code"]),
         name: Value(item["name"]),
       );

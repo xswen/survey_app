@@ -27,6 +27,11 @@ part 'reference_tables_dao.g.dart';
   SoilHorizonDesignation,
   SoilColor,
   SoilTexture,
+  StpType,
+  StpOrigPlotArea,
+  StpStatusField,
+  StpHeight,
+  StpStemCondition
 ])
 class ReferenceTablesDao extends DatabaseAccessor<Database>
     with _$ReferenceTablesDaoMixin {
@@ -532,6 +537,114 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
 
   Future<String> getSoilTextureCode(String name) =>
       (select(soilTexture, distinct: true)
+            ..where((tbl) => tbl.name.equals(name)))
+          .map((row) => row.code)
+          .getSingle();
+
+  //Small Tree Plot
+  Future<List<String>> getStpTypeList() {
+    final query = selectOnly(stpType, distinct: true)
+      ..addColumns([stpType.name])
+      ..where(stpType.name.isNotNull());
+
+    return query
+        .map((row) => row.read(stpType.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getStpTypeName(String code) =>
+      (select(stpType, distinct: true)..where((tbl) => tbl.code.equals(code)))
+          .map((row) => row.name)
+          .getSingle();
+
+  Future<String> getStpTypeCode(String name) =>
+      (select(stpType, distinct: true)..where((tbl) => tbl.name.equals(name)))
+          .map((row) => row.code)
+          .getSingle();
+
+  Future<List<String>> getStpOrigAreaList() {
+    final query = selectOnly(stpOrigPlotArea, distinct: true)
+      ..addColumns([stpOrigPlotArea.name])
+      ..where(stpOrigPlotArea.name.isNotNull());
+
+    return query
+        .map((row) => row.read(stpOrigPlotArea.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getStpOrigAreaName(String code) =>
+      (select(stpOrigPlotArea, distinct: true)
+            ..where((tbl) => tbl.code.equals(code)))
+          .map((row) => row.name)
+          .getSingle();
+
+  Future<String> getStpOrigAreaCode(String name) =>
+      (select(stpOrigPlotArea, distinct: true)
+            ..where((tbl) => tbl.name.equals(name)))
+          .map((row) => row.code)
+          .getSingle();
+
+  Future<List<String>> getStpStatusList() {
+    final query = selectOnly(stpStatusField, distinct: true)
+      ..addColumns([stpStatusField.name])
+      ..where(stpStatusField.name.isNotNull());
+
+    return query
+        .map((row) => row.read(stpStatusField.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getStpStatusName(String code) =>
+      (select(stpStatusField, distinct: true)
+            ..where((tbl) => tbl.code.equals(code)))
+          .map((row) => row.name)
+          .getSingle();
+
+  Future<String> getStpStatusCode(String name) =>
+      (select(stpStatusField, distinct: true)
+            ..where((tbl) => tbl.name.equals(name)))
+          .map((row) => row.code)
+          .getSingle();
+
+  Future<List<String>> getStpHeightList() {
+    final query = selectOnly(stpHeight, distinct: true)
+      ..addColumns([stpHeight.name])
+      ..where(stpHeight.name.isNotNull());
+
+    return query
+        .map((row) => row.read(stpHeight.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getStpHeightName(String code) =>
+      (select(stpHeight, distinct: true)..where((tbl) => tbl.code.equals(code)))
+          .map((row) => row.name)
+          .getSingle();
+
+  Future<String> getStpHeightCode(String name) =>
+      (select(stpHeight, distinct: true)..where((tbl) => tbl.name.equals(name)))
+          .map((row) => row.code)
+          .getSingle();
+
+  Future<List<String>> getStpStemConditionList() {
+    final query = selectOnly(stpStemCondition, distinct: true)
+      ..addColumns([stpStemCondition.name])
+      ..where(stpStemCondition.name.isNotNull());
+
+    return query
+        .map(
+            (row) => row.read(stpStemCondition.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getStpStemConditionName(String code) =>
+      (select(stpStemCondition, distinct: true)
+            ..where((tbl) => tbl.code.equals(code)))
+          .map((row) => row.name)
+          .getSingle();
+
+  Future<String> getStpStemConditionCode(String name) =>
+      (select(stpStemCondition, distinct: true)
             ..where((tbl) => tbl.name.equals(name)))
           .map((row) => row.code)
           .getSingle();
