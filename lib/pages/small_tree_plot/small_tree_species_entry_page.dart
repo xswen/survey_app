@@ -1,10 +1,11 @@
+import 'package:flutter/services.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/widgets/checkbox/hide_info_checkbox.dart';
 
+import '../../formatters/thousands_formatter.dart';
 import '../../widgets/builders/reference_name_select_builder.dart';
 import '../../widgets/buttons/delete_button.dart';
 import '../../widgets/data_input/data_input.dart';
-import '../../widgets/dropdowns/drop_down_default.dart';
 
 class SmallTreeSpeciesEntryPage extends ConsumerStatefulWidget {
   static const String routeName = "smallTreeSpeciesEntry";
@@ -18,6 +19,24 @@ class SmallTreeSpeciesEntryPage extends ConsumerStatefulWidget {
 
 class SmallTreeSpeciesEntryPageState
     extends ConsumerState<SmallTreeSpeciesEntryPage> {
+  String? _errorDbh(String? value) {
+    if (value == null || value == "") {
+      return "Can't be left empty";
+    } else if (double.parse(value) < 0.1 || double.parse(value) > 8.9) {
+      return "Dbh must be between 0.1 and 8.9cm";
+    }
+    return null;
+  }
+
+  String? _errorHeight(String? value) {
+    if (value == null || value == "") {
+      return "Can't be left empty";
+    } else if (double.parse(value) < 1.3 || double.parse(value) > 20) {
+      return "Height3 must be between 1.3 and 20m";
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     final db = ref.read(databaseProvider);
@@ -41,21 +60,30 @@ class SmallTreeSpeciesEntryPageState
                   .getStpOrigAreaCode(s)
                   .then((value) => null),
             ),
-            DropDownDefault(
-                title: "Small tree genus",
-                onChangedFn: (s) {},
-                itemsList: [],
-                selectedItem: "Please select genus"),
-            DropDownDefault(
-                title: "Small tree species",
-                onChangedFn: (s) {},
-                itemsList: [],
-                selectedItem: "Please select species"),
-            DropDownDefault(
-                title: "Small tree variety",
-                onChangedFn: (s) {},
-                itemsList: [],
-                selectedItem: "Please select variety"),
+            ReferenceNameSelectBuilder(
+              title: "Small tree genus",
+              defaultSelectedValue: "Select genus",
+              name: db.referenceTablesDao.getStpOrigAreaName(""),
+              asyncListFn: () async => [],
+              enabled: true,
+              onChange: (s) => null,
+            ),
+            ReferenceNameSelectBuilder(
+              title: "Small tree species",
+              defaultSelectedValue: "Select species",
+              name: db.referenceTablesDao.getStpOrigAreaName(""),
+              asyncListFn: () async => [],
+              enabled: true,
+              onChange: (s) => null,
+            ),
+            ReferenceNameSelectBuilder(
+              title: "Small tree variety",
+              defaultSelectedValue: "Select variety",
+              name: db.referenceTablesDao.getStpOrigAreaName(""),
+              asyncListFn: () async => [],
+              enabled: true,
+              onChange: (s) => null,
+            ),
             ReferenceNameSelectBuilder(
               title: "Small tree status",
               defaultSelectedValue: "Please select status",
@@ -70,19 +98,47 @@ class SmallTreeSpeciesEntryPageState
               title: "Small tree DBH",
               titleWidget: "Unreported",
               checkValue: false,
+              onChange: (b) => -1,
               child: DataInput(
+                  boxLabel: "Report to the nearest 0.1cm",
+                  prefixIcon: FontAwesomeIcons.ruler,
+                  suffixVal: "cm",
+                  inputType:
+                      const TextInputType.numberWithOptions(decimal: true),
+                  startingStr: "",
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(3),
+                    ThousandsFormatter(
+                        allowFraction: true,
+                        decimalPlaces: 1,
+                        maxDigitsBeforeDecimal: 1),
+                  ],
                   paddingGeneral: const EdgeInsets.only(top: 0),
                   onSubmit: (s) {},
-                  onValidate: (s) {}),
+                  onValidate: _errorDbh),
             ),
             HideInfoCheckbox(
               title: "Small tree height",
               titleWidget: "Unreported",
               checkValue: false,
+              onChange: (b) => -1,
               child: DataInput(
+                  boxLabel: "Report to the nearest 0.1m",
+                  prefixIcon: FontAwesomeIcons.ruler,
+                  suffixVal: "m",
+                  inputType:
+                      const TextInputType.numberWithOptions(decimal: true),
+                  startingStr: "",
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(4),
+                    ThousandsFormatter(
+                        allowFraction: true,
+                        decimalPlaces: 1,
+                        maxDigitsBeforeDecimal: 2),
+                  ],
                   paddingGeneral: const EdgeInsets.only(top: 0),
                   onSubmit: (s) {},
-                  onValidate: (s) {}),
+                  onValidate: _errorHeight),
             ),
             ReferenceNameSelectBuilder(
               title: "Measured or estimated small tree height",

@@ -11,6 +11,7 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:survey_app/database/daos/soil_pit_tables_dao.dart';
 import 'package:survey_app/database/database_creation_files/large_tree_plot_tables.dart';
+import 'package:survey_app/database/database_creation_files/small_tree_plot_tables.dart';
 import 'package:survey_app/database/database_creation_files/soil_pit_tables.dart';
 import 'package:survey_app/enums/enums.dart';
 import 'package:survey_app/wrappers/survey_card.dart';
@@ -90,6 +91,9 @@ const List<Type> _tables = [
   LtpTreeRemoved,
   LtpTreeAge,
   LtpTreeRenamed,
+  //STP
+  StpSummary,
+  StpSpecies,
 ];
 
 const List<Type> _daos = [
