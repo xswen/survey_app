@@ -4787,6 +4787,563 @@ class StpStemConditionCompanion extends UpdateCompanion<StpStemConditionData> {
   }
 }
 
+class $ShrubPlotTypeTable extends ShrubPlotType
+    with TableInfo<$ShrubPlotTypeTable, ShrubPlotTypeData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ShrubPlotTypeTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _codeMeta = const VerificationMeta('code');
+  @override
+  late final GeneratedColumn<String> code = GeneratedColumn<String>(
+      'code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [code, name];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'shrub_plot_type';
+  @override
+  VerificationContext validateIntegrity(Insertable<ShrubPlotTypeData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('code')) {
+      context.handle(
+          _codeMeta, code.isAcceptableOrUnknown(data['code']!, _codeMeta));
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => const {};
+  @override
+  ShrubPlotTypeData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ShrubPlotTypeData(
+      code: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}code'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+    );
+  }
+
+  @override
+  $ShrubPlotTypeTable createAlias(String alias) {
+    return $ShrubPlotTypeTable(attachedDatabase, alias);
+  }
+}
+
+class ShrubPlotTypeData extends DataClass
+    implements Insertable<ShrubPlotTypeData> {
+  final String code;
+  final String name;
+  const ShrubPlotTypeData({required this.code, required this.name});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['code'] = Variable<String>(code);
+    map['name'] = Variable<String>(name);
+    return map;
+  }
+
+  ShrubPlotTypeCompanion toCompanion(bool nullToAbsent) {
+    return ShrubPlotTypeCompanion(
+      code: Value(code),
+      name: Value(name),
+    );
+  }
+
+  factory ShrubPlotTypeData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ShrubPlotTypeData(
+      code: serializer.fromJson<String>(json['code']),
+      name: serializer.fromJson<String>(json['name']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'code': serializer.toJson<String>(code),
+      'name': serializer.toJson<String>(name),
+    };
+  }
+
+  ShrubPlotTypeData copyWith({String? code, String? name}) => ShrubPlotTypeData(
+        code: code ?? this.code,
+        name: name ?? this.name,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('ShrubPlotTypeData(')
+          ..write('code: $code, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(code, name);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ShrubPlotTypeData &&
+          other.code == this.code &&
+          other.name == this.name);
+}
+
+class ShrubPlotTypeCompanion extends UpdateCompanion<ShrubPlotTypeData> {
+  final Value<String> code;
+  final Value<String> name;
+  final Value<int> rowid;
+  const ShrubPlotTypeCompanion({
+    this.code = const Value.absent(),
+    this.name = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ShrubPlotTypeCompanion.insert({
+    required String code,
+    required String name,
+    this.rowid = const Value.absent(),
+  })  : code = Value(code),
+        name = Value(name);
+  static Insertable<ShrubPlotTypeData> custom({
+    Expression<String>? code,
+    Expression<String>? name,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (code != null) 'code': code,
+      if (name != null) 'name': name,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ShrubPlotTypeCompanion copyWith(
+      {Value<String>? code, Value<String>? name, Value<int>? rowid}) {
+    return ShrubPlotTypeCompanion(
+      code: code ?? this.code,
+      name: name ?? this.name,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (code.present) {
+      map['code'] = Variable<String>(code.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ShrubPlotTypeCompanion(')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ShrubStatusFieldTable extends ShrubStatusField
+    with TableInfo<$ShrubStatusFieldTable, ShrubStatusFieldData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ShrubStatusFieldTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _codeMeta = const VerificationMeta('code');
+  @override
+  late final GeneratedColumn<String> code = GeneratedColumn<String>(
+      'code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [code, name];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'shrub_status_field';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<ShrubStatusFieldData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('code')) {
+      context.handle(
+          _codeMeta, code.isAcceptableOrUnknown(data['code']!, _codeMeta));
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => const {};
+  @override
+  ShrubStatusFieldData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ShrubStatusFieldData(
+      code: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}code'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+    );
+  }
+
+  @override
+  $ShrubStatusFieldTable createAlias(String alias) {
+    return $ShrubStatusFieldTable(attachedDatabase, alias);
+  }
+}
+
+class ShrubStatusFieldData extends DataClass
+    implements Insertable<ShrubStatusFieldData> {
+  final String code;
+  final String name;
+  const ShrubStatusFieldData({required this.code, required this.name});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['code'] = Variable<String>(code);
+    map['name'] = Variable<String>(name);
+    return map;
+  }
+
+  ShrubStatusFieldCompanion toCompanion(bool nullToAbsent) {
+    return ShrubStatusFieldCompanion(
+      code: Value(code),
+      name: Value(name),
+    );
+  }
+
+  factory ShrubStatusFieldData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ShrubStatusFieldData(
+      code: serializer.fromJson<String>(json['code']),
+      name: serializer.fromJson<String>(json['name']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'code': serializer.toJson<String>(code),
+      'name': serializer.toJson<String>(name),
+    };
+  }
+
+  ShrubStatusFieldData copyWith({String? code, String? name}) =>
+      ShrubStatusFieldData(
+        code: code ?? this.code,
+        name: name ?? this.name,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('ShrubStatusFieldData(')
+          ..write('code: $code, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(code, name);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ShrubStatusFieldData &&
+          other.code == this.code &&
+          other.name == this.name);
+}
+
+class ShrubStatusFieldCompanion extends UpdateCompanion<ShrubStatusFieldData> {
+  final Value<String> code;
+  final Value<String> name;
+  final Value<int> rowid;
+  const ShrubStatusFieldCompanion({
+    this.code = const Value.absent(),
+    this.name = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ShrubStatusFieldCompanion.insert({
+    required String code,
+    required String name,
+    this.rowid = const Value.absent(),
+  })  : code = Value(code),
+        name = Value(name);
+  static Insertable<ShrubStatusFieldData> custom({
+    Expression<String>? code,
+    Expression<String>? name,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (code != null) 'code': code,
+      if (name != null) 'name': name,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ShrubStatusFieldCompanion copyWith(
+      {Value<String>? code, Value<String>? name, Value<int>? rowid}) {
+    return ShrubStatusFieldCompanion(
+      code: code ?? this.code,
+      name: name ?? this.name,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (code.present) {
+      map['code'] = Variable<String>(code.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ShrubStatusFieldCompanion(')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ShrubBasalDiameterTable extends ShrubBasalDiameter
+    with TableInfo<$ShrubBasalDiameterTable, ShrubBasalDiameterData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ShrubBasalDiameterTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _codeMeta = const VerificationMeta('code');
+  @override
+  late final GeneratedColumn<String> code = GeneratedColumn<String>(
+      'code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [code, name];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'shrub_basal_diameter';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<ShrubBasalDiameterData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('code')) {
+      context.handle(
+          _codeMeta, code.isAcceptableOrUnknown(data['code']!, _codeMeta));
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => const {};
+  @override
+  ShrubBasalDiameterData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ShrubBasalDiameterData(
+      code: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}code'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+    );
+  }
+
+  @override
+  $ShrubBasalDiameterTable createAlias(String alias) {
+    return $ShrubBasalDiameterTable(attachedDatabase, alias);
+  }
+}
+
+class ShrubBasalDiameterData extends DataClass
+    implements Insertable<ShrubBasalDiameterData> {
+  final String code;
+  final String name;
+  const ShrubBasalDiameterData({required this.code, required this.name});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['code'] = Variable<String>(code);
+    map['name'] = Variable<String>(name);
+    return map;
+  }
+
+  ShrubBasalDiameterCompanion toCompanion(bool nullToAbsent) {
+    return ShrubBasalDiameterCompanion(
+      code: Value(code),
+      name: Value(name),
+    );
+  }
+
+  factory ShrubBasalDiameterData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ShrubBasalDiameterData(
+      code: serializer.fromJson<String>(json['code']),
+      name: serializer.fromJson<String>(json['name']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'code': serializer.toJson<String>(code),
+      'name': serializer.toJson<String>(name),
+    };
+  }
+
+  ShrubBasalDiameterData copyWith({String? code, String? name}) =>
+      ShrubBasalDiameterData(
+        code: code ?? this.code,
+        name: name ?? this.name,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('ShrubBasalDiameterData(')
+          ..write('code: $code, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(code, name);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ShrubBasalDiameterData &&
+          other.code == this.code &&
+          other.name == this.name);
+}
+
+class ShrubBasalDiameterCompanion
+    extends UpdateCompanion<ShrubBasalDiameterData> {
+  final Value<String> code;
+  final Value<String> name;
+  final Value<int> rowid;
+  const ShrubBasalDiameterCompanion({
+    this.code = const Value.absent(),
+    this.name = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ShrubBasalDiameterCompanion.insert({
+    required String code,
+    required String name,
+    this.rowid = const Value.absent(),
+  })  : code = Value(code),
+        name = Value(name);
+  static Insertable<ShrubBasalDiameterData> custom({
+    Expression<String>? code,
+    Expression<String>? name,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (code != null) 'code': code,
+      if (name != null) 'name': name,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ShrubBasalDiameterCompanion copyWith(
+      {Value<String>? code, Value<String>? name, Value<int>? rowid}) {
+    return ShrubBasalDiameterCompanion(
+      code: code ?? this.code,
+      name: name ?? this.name,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (code.present) {
+      map['code'] = Variable<String>(code.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ShrubBasalDiameterCompanion(')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $SurveyHeadersTable extends SurveyHeaders
     with TableInfo<$SurveyHeadersTable, SurveyHeader> {
   @override
@@ -17606,6 +18163,11 @@ abstract class _$Database extends GeneratedDatabase {
   late final $StpHeightTable stpHeight = $StpHeightTable(this);
   late final $StpStemConditionTable stpStemCondition =
       $StpStemConditionTable(this);
+  late final $ShrubPlotTypeTable shrubPlotType = $ShrubPlotTypeTable(this);
+  late final $ShrubStatusFieldTable shrubStatusField =
+      $ShrubStatusFieldTable(this);
+  late final $ShrubBasalDiameterTable shrubBasalDiameter =
+      $ShrubBasalDiameterTable(this);
   late final $SurveyHeadersTable surveyHeaders = $SurveyHeadersTable(this);
   late final $MetaCommentTable metaComment = $MetaCommentTable(this);
   late final $SurveySummaryTable surveySummary = $SurveySummaryTable(this);
@@ -17688,6 +18250,9 @@ abstract class _$Database extends GeneratedDatabase {
         stpStatusField,
         stpHeight,
         stpStemCondition,
+        shrubPlotType,
+        shrubStatusField,
+        shrubBasalDiameter,
         surveyHeaders,
         metaComment,
         surveySummary,

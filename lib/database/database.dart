@@ -55,6 +55,9 @@ const List<Type> _tables = [
   StpStatusField,
   StpHeight,
   StpStemCondition,
+  ShrubPlotType,
+  ShrubStatusField,
+  ShrubBasalDiameter,
 
   //Metadata Tables
   MetaComment,
@@ -195,6 +198,13 @@ class Database extends _$Database {
           List<StpStemConditionCompanion> stpStemConditionList =
               await _getStpStemCondition();
 
+          List<ShrubBasalDiameterCompanion> shrubBasalDiameterList =
+              await _getShrubBasalDiameter();
+          List<ShrubPlotTypeCompanion> shrubPlotTypeList =
+              await _getShrubPlotType();
+          List<ShrubStatusFieldCompanion> shrubStatusList =
+              await _getShrubStatusField();
+
           c.debugPrint("Init Values");
           await batch((b) {
             b.insertAll(jurisdictions, jurisdictionsList);
@@ -223,6 +233,10 @@ class Database extends _$Database {
             b.insertAll(stpStatusField, stpStatusList);
             b.insertAll(stpHeight, stpHeightList);
             b.insertAll(stpStemCondition, stpStemConditionList);
+
+            b.insertAll(shrubBasalDiameter, shrubBasalDiameterList);
+            b.insertAll(shrubPlotType, shrubPlotTypeList);
+            b.insertAll(shrubStatusField, shrubStatusList);
 
             _initTest(b);
           });
@@ -517,6 +531,42 @@ class Database extends _$Database {
 
     return jsonData.map((dynamic item) {
       return StpStemConditionCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<ShrubPlotTypeCompanion>> _getShrubPlotType() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/shrub_plot_type_list.json');
+
+    return jsonData.map((dynamic item) {
+      return ShrubPlotTypeCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<ShrubBasalDiameterCompanion>> _getShrubBasalDiameter() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/shrub_basal_diameter_list.json');
+
+    return jsonData.map((dynamic item) {
+      return ShrubBasalDiameterCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<ShrubStatusFieldCompanion>> _getShrubStatusField() async {
+    List<dynamic> jsonData =
+        await _loadJsonData('assets/db_reference_data/shrub_status_list.json');
+
+    return jsonData.map((dynamic item) {
+      return ShrubStatusFieldCompanion(
         code: Value(item["code"]),
         name: Value(item["name"]),
       );

@@ -156,3 +156,21 @@ class StpStemCondition extends Table {
   TextColumn get code => text()();
   TextColumn get name => text()();
 }
+
+//Shrub
+class ShrubPlotType extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class ShrubBasalDiameter extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+//Must have field suffix so doesn't mess up auto generator
+//Table names can't end in status
+class ShrubStatusField extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}

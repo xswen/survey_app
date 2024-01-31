@@ -33,4 +33,9 @@ mixin _$ReferenceTablesDaoMixin on DatabaseAccessor<Database> {
   $StpHeightTable get stpHeight => attachedDatabase.stpHeight;
   $StpStemConditionTable get stpStemCondition =>
       attachedDatabase.stpStemCondition;
+  $ShrubPlotTypeTable get shrubPlotType => attachedDatabase.shrubPlotType;
+  $ShrubStatusFieldTable get shrubStatusField =>
+      attachedDatabase.shrubStatusField;
+  $ShrubBasalDiameterTable get shrubBasalDiameter =>
+      attachedDatabase.shrubBasalDiameter;
 }

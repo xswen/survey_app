@@ -1,11 +1,15 @@
+import 'package:flutter/services.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/pages/shrub_plot/shrub_plot_species_entry_page.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import '../../formatters/thousands_formatter.dart';
 import '../../providers/survey_info_providers.dart';
+import '../../widgets/builders/reference_name_select_builder.dart';
+import '../../widgets/buttons/mark_complete_button.dart';
+import '../../widgets/checkbox/hide_info_checkbox.dart';
 import '../../widgets/data_input/data_input.dart';
 import '../../widgets/date_select.dart';
-import '../../widgets/dropdowns/drop_down_default.dart';
 import '../../widgets/tables/table_creation_builder.dart';
 import '../../widgets/tables/table_data_grid_source_builder.dart';
 import '../../wrappers/column_header_object.dart';
@@ -77,6 +81,24 @@ class ShrubPlotSummaryPageState extends ConsumerState<ShrubPlotSummaryPage> {
     return source;
   }
 
+  String? _errorNom(String? value) {
+    if (value == null || value == "") {
+      return "Can't be left empty";
+    } else if (double.parse(value) < 0.0020 || double.parse(value) > 0.04) {
+      return "Dbh must be between 0.0020 and 0.04ha";
+    }
+    return null;
+  }
+
+  String? _errorMeas(String? value) {
+    if (value == null || value == "") {
+      return "Can't be left empty";
+    } else if (double.parse(value) < 0.0005 || double.parse(value) > 0.04) {
+      return "Dbh must be between 0.0005 and 0.04ha";
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     final db = ref.read(databaseProvider);
@@ -89,6 +111,8 @@ class ShrubPlotSummaryPageState extends ConsumerState<ShrubPlotSummaryPage> {
           context.pop();
         },
       ),
+      bottomNavigationBar: MarkCompleteButton(
+          title: "Shrub Plot", complete: false, onPressed: () => null),
       endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
       body: Center(
         child: Padding(
@@ -102,19 +126,60 @@ class ShrubPlotSummaryPageState extends ConsumerState<ShrubPlotSummaryPage> {
                 readOnly: false,
                 setStateFn: (DateTime date) async => (),
               ),
-              DropDownDefault(
-                  title: "Plot type",
-                  onChangedFn: (s) {},
-                  itemsList: [],
-                  selectedItem: "Please select plot type"),
-              DataInput(
-                  title: "Nominal Plot Size",
-                  onSubmit: (s) {},
-                  onValidate: (s) {}),
-              DataInput(
-                  title: "Measured Plot Size",
-                  onSubmit: (s) {},
-                  onValidate: (s) {}),
+              ReferenceNameSelectBuilder(
+                name: db.referenceTablesDao.getShrubPlotTypeName(""),
+                asyncListFn: db.referenceTablesDao.getShrubPlotTypeList,
+                enabled: true,
+                onChange: (s) => db.referenceTablesDao
+                    .getShrubPlotTypeCode(s)
+                    .then((value) => null),
+              ),
+              HideInfoCheckbox(
+                title: "Nominal Plot Size",
+                titleWidget: "Unreported",
+                checkValue: false,
+                onChange: (b) => -1,
+                child: DataInput(
+                    boxLabel: "Report to the nearest 0.0001ha",
+                    prefixIcon: FontAwesomeIcons.rulerCombined,
+                    suffixVal: "ha",
+                    inputType:
+                        const TextInputType.numberWithOptions(decimal: true),
+                    startingStr: "",
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(6),
+                      ThousandsFormatter(
+                          allowFraction: true,
+                          decimalPlaces: 6,
+                          maxDigitsBeforeDecimal: 1),
+                    ],
+                    paddingGeneral: const EdgeInsets.only(top: 0),
+                    onSubmit: (s) {},
+                    onValidate: _errorNom),
+              ),
+              HideInfoCheckbox(
+                title: "Measured Plot Size",
+                titleWidget: "Unreported",
+                checkValue: false,
+                onChange: (b) => -1,
+                child: DataInput(
+                    boxLabel: "Report to the nearest 0.0001ha",
+                    prefixIcon: FontAwesomeIcons.chartArea,
+                    suffixVal: "ha",
+                    inputType:
+                        const TextInputType.numberWithOptions(decimal: true),
+                    startingStr: "",
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(6),
+                      ThousandsFormatter(
+                          allowFraction: true,
+                          decimalPlaces: 6,
+                          maxDigitsBeforeDecimal: 1),
+                    ],
+                    paddingGeneral: const EdgeInsets.only(top: 0),
+                    onSubmit: (s) {},
+                    onValidate: _errorMeas),
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(
                     vertical: kPaddingV * 2, horizontal: kPaddingH / 2),
@@ -141,12 +206,10 @@ class ShrubPlotSummaryPageState extends ConsumerState<ShrubPlotSummaryPage> {
                   ],
                 ),
               ),
-              Expanded(
-                child: TableCreationBuilder(
-                    source: getSourceBuilder(["hi"]),
-                    colNames: columnData.getColHeadersList(),
-                    onCellTap: (DataGridCellTapDetails details) {}),
-              )
+              TableCreationBuilder(
+                  source: getSourceBuilder(["hi"]),
+                  colNames: columnData.getColHeadersList(),
+                  onCellTap: (DataGridCellTapDetails details) {})
             ],
           ),
         ),

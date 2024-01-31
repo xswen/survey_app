@@ -31,7 +31,10 @@ part 'reference_tables_dao.g.dart';
   StpOrigPlotArea,
   StpStatusField,
   StpHeight,
-  StpStemCondition
+  StpStemCondition,
+  ShrubPlotType,
+  ShrubStatusField,
+  ShrubBasalDiameter,
 ])
 class ReferenceTablesDao extends DatabaseAccessor<Database>
     with _$ReferenceTablesDaoMixin {
@@ -645,6 +648,74 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
 
   Future<String> getStpStemConditionCode(String name) =>
       (select(stpStemCondition, distinct: true)
+            ..where((tbl) => tbl.name.equals(name)))
+          .map((row) => row.code)
+          .getSingle();
+
+  Future<List<String>> getShrubPlotTypeList() {
+    final query = selectOnly(shrubPlotType, distinct: true)
+      ..addColumns([shrubPlotType.name])
+      ..where(shrubPlotType.name.isNotNull());
+
+    return query
+        .map((row) => row.read(shrubPlotType.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getShrubPlotTypeName(String code) =>
+      (select(shrubPlotType, distinct: true)
+            ..where((tbl) => tbl.code.equals(code)))
+          .map((row) => row.name)
+          .getSingle();
+
+  Future<String> getShrubPlotTypeCode(String name) =>
+      (select(shrubPlotType, distinct: true)
+            ..where((tbl) => tbl.name.equals(name)))
+          .map((row) => row.code)
+          .getSingle();
+
+  Future<List<String>> getShrubStatusList() {
+    final query = selectOnly(shrubStatusField, distinct: true)
+      ..addColumns([shrubStatusField.name])
+      ..where(shrubStatusField.name.isNotNull());
+
+    return query
+        .map(
+            (row) => row.read(shrubStatusField.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getShrubStatusName(String code) =>
+      (select(shrubStatusField, distinct: true)
+            ..where((tbl) => tbl.code.equals(code)))
+          .map((row) => row.name)
+          .getSingle();
+
+  Future<String> getShrubStatusCode(String name) =>
+      (select(shrubStatusField, distinct: true)
+            ..where((tbl) => tbl.name.equals(name)))
+          .map((row) => row.code)
+          .getSingle();
+
+  Future<List<String>> getShrubBasalDiameterList() {
+    final query = selectOnly(shrubBasalDiameter, distinct: true)
+      ..addColumns([shrubBasalDiameter.name])
+      ..where(shrubBasalDiameter.name.isNotNull());
+
+    return query
+        .map((row) =>
+            row.read(shrubBasalDiameter.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getShrubBasalDiameterName(String code) =>
+      (select(shrubBasalDiameter, distinct: true)
+            ..where((tbl) => tbl.code.equals(code)))
+          .map((row) => row.name)
+          .getSingle();
+
+  Future<String> getShrubBasalDiameterCode(String name) =>
+      (select(shrubBasalDiameter, distinct: true)
             ..where((tbl) => tbl.name.equals(name)))
           .map((row) => row.code)
           .getSingle();
