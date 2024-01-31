@@ -38,4 +38,7 @@ mixin _$ReferenceTablesDaoMixin on DatabaseAccessor<Database> {
       attachedDatabase.shrubStatusField;
   $ShrubBasalDiameterTable get shrubBasalDiameter =>
       attachedDatabase.shrubBasalDiameter;
+  $StumpPlotTypeTable get stumpPlotType => attachedDatabase.stumpPlotType;
+  $StumpOrigPlotAreaTable get stumpOrigPlotArea =>
+      attachedDatabase.stumpOrigPlotArea;
 }

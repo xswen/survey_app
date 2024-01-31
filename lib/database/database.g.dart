@@ -5344,6 +5344,377 @@ class ShrubBasalDiameterCompanion
   }
 }
 
+class $StumpPlotTypeTable extends StumpPlotType
+    with TableInfo<$StumpPlotTypeTable, StumpPlotTypeData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $StumpPlotTypeTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _codeMeta = const VerificationMeta('code');
+  @override
+  late final GeneratedColumn<String> code = GeneratedColumn<String>(
+      'code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [code, name];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'stump_plot_type';
+  @override
+  VerificationContext validateIntegrity(Insertable<StumpPlotTypeData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('code')) {
+      context.handle(
+          _codeMeta, code.isAcceptableOrUnknown(data['code']!, _codeMeta));
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => const {};
+  @override
+  StumpPlotTypeData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return StumpPlotTypeData(
+      code: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}code'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+    );
+  }
+
+  @override
+  $StumpPlotTypeTable createAlias(String alias) {
+    return $StumpPlotTypeTable(attachedDatabase, alias);
+  }
+}
+
+class StumpPlotTypeData extends DataClass
+    implements Insertable<StumpPlotTypeData> {
+  final String code;
+  final String name;
+  const StumpPlotTypeData({required this.code, required this.name});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['code'] = Variable<String>(code);
+    map['name'] = Variable<String>(name);
+    return map;
+  }
+
+  StumpPlotTypeCompanion toCompanion(bool nullToAbsent) {
+    return StumpPlotTypeCompanion(
+      code: Value(code),
+      name: Value(name),
+    );
+  }
+
+  factory StumpPlotTypeData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return StumpPlotTypeData(
+      code: serializer.fromJson<String>(json['code']),
+      name: serializer.fromJson<String>(json['name']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'code': serializer.toJson<String>(code),
+      'name': serializer.toJson<String>(name),
+    };
+  }
+
+  StumpPlotTypeData copyWith({String? code, String? name}) => StumpPlotTypeData(
+        code: code ?? this.code,
+        name: name ?? this.name,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('StumpPlotTypeData(')
+          ..write('code: $code, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(code, name);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is StumpPlotTypeData &&
+          other.code == this.code &&
+          other.name == this.name);
+}
+
+class StumpPlotTypeCompanion extends UpdateCompanion<StumpPlotTypeData> {
+  final Value<String> code;
+  final Value<String> name;
+  final Value<int> rowid;
+  const StumpPlotTypeCompanion({
+    this.code = const Value.absent(),
+    this.name = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  StumpPlotTypeCompanion.insert({
+    required String code,
+    required String name,
+    this.rowid = const Value.absent(),
+  })  : code = Value(code),
+        name = Value(name);
+  static Insertable<StumpPlotTypeData> custom({
+    Expression<String>? code,
+    Expression<String>? name,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (code != null) 'code': code,
+      if (name != null) 'name': name,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  StumpPlotTypeCompanion copyWith(
+      {Value<String>? code, Value<String>? name, Value<int>? rowid}) {
+    return StumpPlotTypeCompanion(
+      code: code ?? this.code,
+      name: name ?? this.name,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (code.present) {
+      map['code'] = Variable<String>(code.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('StumpPlotTypeCompanion(')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $StumpOrigPlotAreaTable extends StumpOrigPlotArea
+    with TableInfo<$StumpOrigPlotAreaTable, StumpOrigPlotAreaData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $StumpOrigPlotAreaTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _codeMeta = const VerificationMeta('code');
+  @override
+  late final GeneratedColumn<String> code = GeneratedColumn<String>(
+      'code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [code, name];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'stump_orig_plot_area';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<StumpOrigPlotAreaData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('code')) {
+      context.handle(
+          _codeMeta, code.isAcceptableOrUnknown(data['code']!, _codeMeta));
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => const {};
+  @override
+  StumpOrigPlotAreaData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return StumpOrigPlotAreaData(
+      code: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}code'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+    );
+  }
+
+  @override
+  $StumpOrigPlotAreaTable createAlias(String alias) {
+    return $StumpOrigPlotAreaTable(attachedDatabase, alias);
+  }
+}
+
+class StumpOrigPlotAreaData extends DataClass
+    implements Insertable<StumpOrigPlotAreaData> {
+  final String code;
+  final String name;
+  const StumpOrigPlotAreaData({required this.code, required this.name});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['code'] = Variable<String>(code);
+    map['name'] = Variable<String>(name);
+    return map;
+  }
+
+  StumpOrigPlotAreaCompanion toCompanion(bool nullToAbsent) {
+    return StumpOrigPlotAreaCompanion(
+      code: Value(code),
+      name: Value(name),
+    );
+  }
+
+  factory StumpOrigPlotAreaData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return StumpOrigPlotAreaData(
+      code: serializer.fromJson<String>(json['code']),
+      name: serializer.fromJson<String>(json['name']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'code': serializer.toJson<String>(code),
+      'name': serializer.toJson<String>(name),
+    };
+  }
+
+  StumpOrigPlotAreaData copyWith({String? code, String? name}) =>
+      StumpOrigPlotAreaData(
+        code: code ?? this.code,
+        name: name ?? this.name,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('StumpOrigPlotAreaData(')
+          ..write('code: $code, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(code, name);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is StumpOrigPlotAreaData &&
+          other.code == this.code &&
+          other.name == this.name);
+}
+
+class StumpOrigPlotAreaCompanion
+    extends UpdateCompanion<StumpOrigPlotAreaData> {
+  final Value<String> code;
+  final Value<String> name;
+  final Value<int> rowid;
+  const StumpOrigPlotAreaCompanion({
+    this.code = const Value.absent(),
+    this.name = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  StumpOrigPlotAreaCompanion.insert({
+    required String code,
+    required String name,
+    this.rowid = const Value.absent(),
+  })  : code = Value(code),
+        name = Value(name);
+  static Insertable<StumpOrigPlotAreaData> custom({
+    Expression<String>? code,
+    Expression<String>? name,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (code != null) 'code': code,
+      if (name != null) 'name': name,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  StumpOrigPlotAreaCompanion copyWith(
+      {Value<String>? code, Value<String>? name, Value<int>? rowid}) {
+    return StumpOrigPlotAreaCompanion(
+      code: code ?? this.code,
+      name: name ?? this.name,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (code.present) {
+      map['code'] = Variable<String>(code.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('StumpOrigPlotAreaCompanion(')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $SurveyHeadersTable extends SurveyHeaders
     with TableInfo<$SurveyHeadersTable, SurveyHeader> {
   @override
@@ -18168,6 +18539,9 @@ abstract class _$Database extends GeneratedDatabase {
       $ShrubStatusFieldTable(this);
   late final $ShrubBasalDiameterTable shrubBasalDiameter =
       $ShrubBasalDiameterTable(this);
+  late final $StumpPlotTypeTable stumpPlotType = $StumpPlotTypeTable(this);
+  late final $StumpOrigPlotAreaTable stumpOrigPlotArea =
+      $StumpOrigPlotAreaTable(this);
   late final $SurveyHeadersTable surveyHeaders = $SurveyHeadersTable(this);
   late final $MetaCommentTable metaComment = $MetaCommentTable(this);
   late final $SurveySummaryTable surveySummary = $SurveySummaryTable(this);
@@ -18253,6 +18627,8 @@ abstract class _$Database extends GeneratedDatabase {
         shrubPlotType,
         shrubStatusField,
         shrubBasalDiameter,
+        stumpPlotType,
+        stumpOrigPlotArea,
         surveyHeaders,
         metaComment,
         surveySummary,

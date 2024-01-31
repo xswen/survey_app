@@ -41,7 +41,7 @@ class ShrubPlotSpeciesEntryPageState
         child: Center(
           child: ListView(children: [
             ReferenceNameSelectBuilder(
-              title: "Small tree genus",
+              title: "Genus",
               defaultSelectedValue: "Select genus",
               name: db.referenceTablesDao.getStpOrigAreaName(""),
               asyncListFn: () async => [],
@@ -49,7 +49,7 @@ class ShrubPlotSpeciesEntryPageState
               onChange: (s) => null,
             ),
             ReferenceNameSelectBuilder(
-              title: "Small tree species",
+              title: "Species",
               defaultSelectedValue: "Select species",
               name: db.referenceTablesDao.getStpOrigAreaName(""),
               asyncListFn: () async => [],
@@ -57,7 +57,7 @@ class ShrubPlotSpeciesEntryPageState
               onChange: (s) => null,
             ),
             ReferenceNameSelectBuilder(
-              title: "Small tree variety",
+              title: "Variety",
               defaultSelectedValue: "Select variety",
               name: db.referenceTablesDao.getStpOrigAreaName(""),
               asyncListFn: () async => [],
@@ -65,7 +65,7 @@ class ShrubPlotSpeciesEntryPageState
               onChange: (s) => null,
             ),
             ReferenceNameSelectBuilder(
-              title: "Small tree status",
+              title: "Status",
               defaultSelectedValue: "Please select status",
               name: db.referenceTablesDao.getShrubStatusName(""),
               asyncListFn: db.referenceTablesDao.getShrubStatusList,

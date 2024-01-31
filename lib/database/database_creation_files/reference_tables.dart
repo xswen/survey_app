@@ -174,3 +174,14 @@ class ShrubStatusField extends Table {
   TextColumn get code => text()();
   TextColumn get name => text()();
 }
+
+//Stump
+class StumpPlotType extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class StumpOrigPlotArea extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}

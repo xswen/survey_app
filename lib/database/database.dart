@@ -58,6 +58,8 @@ const List<Type> _tables = [
   ShrubPlotType,
   ShrubStatusField,
   ShrubBasalDiameter,
+  StumpPlotType,
+  StumpOrigPlotArea,
 
   //Metadata Tables
   MetaComment,
@@ -205,6 +207,11 @@ class Database extends _$Database {
           List<ShrubStatusFieldCompanion> shrubStatusList =
               await _getShrubStatusField();
 
+          List<StumpPlotTypeCompanion> stumpPlotTypeList =
+              await _getStumpPlotType();
+          List<StumpOrigPlotAreaCompanion> stumpOrigPlotAreaList =
+              await _getStumpOrigPlotArea();
+
           c.debugPrint("Init Values");
           await batch((b) {
             b.insertAll(jurisdictions, jurisdictionsList);
@@ -237,6 +244,9 @@ class Database extends _$Database {
             b.insertAll(shrubBasalDiameter, shrubBasalDiameterList);
             b.insertAll(shrubPlotType, shrubPlotTypeList);
             b.insertAll(shrubStatusField, shrubStatusList);
+
+            b.insertAll(stumpPlotType, stumpPlotTypeList);
+            b.insertAll(stumpOrigPlotArea, stumpOrigPlotAreaList);
 
             _initTest(b);
           });
@@ -567,6 +577,30 @@ class Database extends _$Database {
 
     return jsonData.map((dynamic item) {
       return ShrubStatusFieldCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<StumpPlotTypeCompanion>> _getStumpPlotType() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/stump_plot_type_list.json');
+
+    return jsonData.map((dynamic item) {
+      return StumpPlotTypeCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<StumpOrigPlotAreaCompanion>> _getStumpOrigPlotArea() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/stump_orig_plot_area_list.json');
+
+    return jsonData.map((dynamic item) {
+      return StumpOrigPlotAreaCompanion(
         code: Value(item["code"]),
         name: Value(item["name"]),
       );

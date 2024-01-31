@@ -35,6 +35,8 @@ part 'reference_tables_dao.g.dart';
   ShrubPlotType,
   ShrubStatusField,
   ShrubBasalDiameter,
+  StumpPlotType,
+  StumpOrigPlotArea,
 ])
 class ReferenceTablesDao extends DatabaseAccessor<Database>
     with _$ReferenceTablesDaoMixin {
@@ -716,6 +718,51 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
 
   Future<String> getShrubBasalDiameterCode(String name) =>
       (select(shrubBasalDiameter, distinct: true)
+            ..where((tbl) => tbl.name.equals(name)))
+          .map((row) => row.code)
+          .getSingle();
+
+  Future<List<String>> getStumpPlotTypeList() {
+    final query = selectOnly(stumpPlotType, distinct: true)
+      ..addColumns([stumpPlotType.name])
+      ..where(stumpPlotType.name.isNotNull());
+
+    return query
+        .map((row) => row.read(stumpPlotType.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getStumpPlotTypeName(String code) =>
+      (select(stumpPlotType, distinct: true)
+            ..where((tbl) => tbl.code.equals(code)))
+          .map((row) => row.name)
+          .getSingle();
+
+  Future<String> getStumpPlotTypeCode(String name) =>
+      (select(stumpPlotType, distinct: true)
+            ..where((tbl) => tbl.name.equals(name)))
+          .map((row) => row.code)
+          .getSingle();
+
+  Future<List<String>> getStumpOrigPlotAreaList() {
+    final query = selectOnly(stumpOrigPlotArea, distinct: true)
+      ..addColumns([stumpOrigPlotArea.name])
+      ..where(stumpOrigPlotArea.name.isNotNull());
+
+    return query
+        .map((row) =>
+            row.read(stumpOrigPlotArea.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getStumpOrigPlotAreaName(String code) =>
+      (select(stumpOrigPlotArea, distinct: true)
+            ..where((tbl) => tbl.code.equals(code)))
+          .map((row) => row.name)
+          .getSingle();
+
+  Future<String> getStumpOrigPlotAreaCode(String name) =>
+      (select(stumpOrigPlotArea, distinct: true)
             ..where((tbl) => tbl.name.equals(name)))
           .map((row) => row.code)
           .getSingle();

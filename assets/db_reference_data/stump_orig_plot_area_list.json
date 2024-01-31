@@ -1,0 +1,14 @@
+[
+  {
+    "code": "Y",
+    "name": "Y: Tree occurs within the area of the plot measured during last measurement cycle"
+  },
+  {
+    "code": "N",
+    "name": "N: Tree occurs outside of the area of the plot measured during the last measurement cycle"
+  },
+  {
+    "code": "U",
+    "name": "U: Unknown"
+  }
+]
