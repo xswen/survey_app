@@ -490,7 +490,7 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
                         });
                       }
                     },
-                    child: const Text("Submit"))),
+                    child: const Text("Save"))),
           ],
         )),
       ),

@@ -1,10 +1,10 @@
 import 'package:flutter/services.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/widgets/builders/decay_class_select_builder.dart';
+import 'package:survey_app/widgets/buttons/save_entry_button.dart';
 
 import '../../formatters/thousands_formatter.dart';
 import '../../widgets/builders/reference_name_select_builder.dart';
-import '../../widgets/buttons/delete_button.dart';
 import '../../widgets/checkbox/hide_info_checkbox.dart';
 import '../../widgets/data_input/data_input.dart';
 
@@ -172,43 +172,33 @@ class StumpPlotSpeciesEntryPageState
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: kPaddingV * 2),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                      onPressed: () => null,
-                      child: const Text("Save and return")),
-                  ElevatedButton(
-                      onPressed: () => null,
-                      child: const Text("Save and Add New Feature")),
-                ],
+              child: SaveEntryButton(
+                saveRetFn: () => null,
+                saveAndAddFn: () => null,
+                delVisible: true,
+                deleteFn: () => Popups.show(
+                  context,
+                  PopupContinue("Warning: Deleting Stump Plot Species",
+                      contentText: "You are about to delete this feature. "
+                          "Are you sure you want to continue?",
+                      rightBtnOnPressed: () {
+                    //close popup
+                    context.pop();
+                    // context.pushNamed(DeletePage.routeName, extra: {
+                    //   DeletePage.keyObjectName:
+                    //   "Soil Pit Feature: ${feature.toString()}",
+                    //   DeletePage.keyDeleteFn: () {
+                    //     (db.delete(db.soilPitFeature)
+                    //       ..where(
+                    //               (tbl) => tbl.id.equals(feature.id.value)))
+                    //         .go()
+                    //         .then((value) => goToFeaturePage());
+                    //   },
+                    // });
+                  }),
+                ),
               ),
             ),
-            true
-                ? DeleteButton(
-                    delete: () => Popups.show(
-                      context,
-                      PopupContinue("Warning: Deleting Stump Plot Species",
-                          contentText: "You are about to delete this feature. "
-                              "Are you sure you want to continue?",
-                          rightBtnOnPressed: () {
-                        //close popup
-                        context.pop();
-                        // context.pushNamed(DeletePage.routeName, extra: {
-                        //   DeletePage.keyObjectName:
-                        //   "Soil Pit Feature: ${feature.toString()}",
-                        //   DeletePage.keyDeleteFn: () {
-                        //     (db.delete(db.soilPitFeature)
-                        //       ..where(
-                        //               (tbl) => tbl.id.equals(feature.id.value)))
-                        //         .go()
-                        //         .then((value) => goToFeaturePage());
-                        //   },
-                        // });
-                      }),
-                    ),
-                  )
-                : Container()
           ]),
         ),
       ),
