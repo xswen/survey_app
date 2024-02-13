@@ -60,7 +60,8 @@ const List<Type> _tables = [
   ShrubBasalDiameter,
   StumpPlotType,
   StumpOrigPlotArea,
-
+  LtpPlotType,
+  LtpPlotSplit,
   //Metadata Tables
   MetaComment,
   //Survey Tables
@@ -212,6 +213,10 @@ class Database extends _$Database {
           List<StumpOrigPlotAreaCompanion> stumpOrigPlotAreaList =
               await _getStumpOrigPlotArea();
 
+          List<LtpPlotTypeCompanion> ltpPlotTypeList = await _getLtpPlotType();
+          List<LtpPlotSplitCompanion> ltpPlotSplitList =
+              await _getLtpPlotSplit();
+
           c.debugPrint("Init Values");
           await batch((b) {
             b.insertAll(jurisdictions, jurisdictionsList);
@@ -247,6 +252,9 @@ class Database extends _$Database {
 
             b.insertAll(stumpPlotType, stumpPlotTypeList);
             b.insertAll(stumpOrigPlotArea, stumpOrigPlotAreaList);
+
+            b.insertAll(ltpPlotType, ltpPlotTypeList);
+            b.insertAll(ltpPlotSplit, ltpPlotSplitList);
 
             _initTest(b);
           });
@@ -607,6 +615,31 @@ class Database extends _$Database {
     }).toList();
   }
 
+  //LTP
+  Future<List<LtpPlotTypeCompanion>> _getLtpPlotType() async {
+    List<dynamic> jsonData =
+        await _loadJsonData('assets/db_reference_data/ltp_plot_type_list.json');
+
+    return jsonData.map((dynamic item) {
+      return LtpPlotTypeCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<LtpPlotSplitCompanion>> _getLtpPlotSplit() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/ltp_plot_split_list.json');
+
+    return jsonData.map((dynamic item) {
+      return LtpPlotSplitCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
   void _initTest(Batch b) {
     b.replace(
         plots,
@@ -787,6 +820,7 @@ class Database extends _$Database {
               ..where((tbl) => tbl.surveyId.equals(surveyId)))
             .getSingleOrNull()
       },
+      //TODO: to add
       {
         category: SurveyCardCategories.soilPit,
         name: "Soil Pit",

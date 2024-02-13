@@ -185,3 +185,14 @@ class StumpOrigPlotArea extends Table {
   TextColumn get code => text()();
   TextColumn get name => text()();
 }
+
+//LTP
+class LtpPlotType extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class LtpPlotSplit extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}

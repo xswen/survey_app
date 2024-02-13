@@ -6,6 +6,7 @@ import 'package:survey_app/pages/large_tree_plot/large_tree_plot_tree_removed_li
 import '../../providers/survey_info_providers.dart';
 import '../../widgets/buttons/icon_nav_button.dart';
 import '../../widgets/data_input/data_input.dart';
+import '../../widgets/date_select.dart';
 import '../../widgets/dropdowns/drop_down_default.dart';
 
 class LargeTreePlotSummaryPage extends ConsumerStatefulWidget {
@@ -46,6 +47,12 @@ class LargeTreePlotSummaryPageState
               vertical: kPaddingV * 2, horizontal: kPaddingH / 2),
           child: ListView(
             children: [
+              CalendarSelect(
+                date: DateTime.now(),
+                label: "Enter Measurement Date",
+                readOnly: false,
+                setStateFn: (DateTime date) async => (),
+              ),
               DropDownDefault(
                   title: "Plot type",
                   onChangedFn: (s) {},
