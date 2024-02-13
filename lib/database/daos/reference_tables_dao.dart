@@ -37,6 +37,8 @@ part 'reference_tables_dao.g.dart';
   ShrubBasalDiameter,
   StumpPlotType,
   StumpOrigPlotArea,
+  LtpPlotType,
+  LtpPlotSplit,
 ])
 class ReferenceTablesDao extends DatabaseAccessor<Database>
     with _$ReferenceTablesDaoMixin {
@@ -763,6 +765,51 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
 
   Future<String> getStumpOrigPlotAreaCode(String name) =>
       (select(stumpOrigPlotArea, distinct: true)
+            ..where((tbl) => tbl.name.equals(name)))
+          .map((row) => row.code)
+          .getSingle();
+
+  //LTP
+  Future<List<String>> getLtpPlotTypeList() {
+    final query = selectOnly(ltpPlotType, distinct: true)
+      ..addColumns([ltpPlotType.name])
+      ..where(ltpPlotType.name.isNotNull());
+
+    return query
+        .map((row) => row.read(ltpPlotType.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getLtpPlotTypeName(String code) =>
+      (select(ltpPlotType, distinct: true)
+            ..where((tbl) => tbl.code.equals(code)))
+          .map((row) => row.name)
+          .getSingle();
+
+  Future<String> getLtpPlotTypeCode(String name) =>
+      (select(ltpPlotType, distinct: true)
+            ..where((tbl) => tbl.name.equals(name)))
+          .map((row) => row.code)
+          .getSingle();
+
+  Future<List<String>> getLtpPlotSplitList() {
+    final query = selectOnly(ltpPlotSplit, distinct: true)
+      ..addColumns([ltpPlotSplit.name])
+      ..where(ltpPlotSplit.name.isNotNull());
+
+    return query
+        .map((row) => row.read(ltpPlotSplit.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getLtpPlotSplitName(String code) =>
+      (select(ltpPlotSplit, distinct: true)
+            ..where((tbl) => tbl.code.equals(code)))
+          .map((row) => row.name)
+          .getSingle();
+
+  Future<String> getLtpPlotSplitCode(String name) =>
+      (select(ltpPlotSplit, distinct: true)
             ..where((tbl) => tbl.name.equals(name)))
           .map((row) => row.code)
           .getSingle();

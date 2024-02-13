@@ -1,13 +1,16 @@
+import 'package:flutter/services.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/pages/large_tree_plot/large_tree_plot_site_tree_info_age_list_page.dart';
 import 'package:survey_app/pages/large_tree_plot/large_tree_plot_tree_info_list_page.dart';
 import 'package:survey_app/pages/large_tree_plot/large_tree_plot_tree_removed_list_page.dart';
+import 'package:survey_app/widgets/builders/reference_name_select_builder.dart';
 
+import '../../formatters/thousands_formatter.dart';
 import '../../providers/survey_info_providers.dart';
 import '../../widgets/buttons/icon_nav_button.dart';
+import '../../widgets/buttons/mark_complete_button.dart';
 import '../../widgets/data_input/data_input.dart';
 import '../../widgets/date_select.dart';
-import '../../widgets/dropdowns/drop_down_default.dart';
 
 class LargeTreePlotSummaryPage extends ConsumerStatefulWidget {
   static const String routeName = "largeTreePlotSummary";
@@ -28,6 +31,24 @@ class LargeTreePlotSummaryPageState
     super.initState();
   }
 
+  String? _errorNom(String? value) {
+    if (value == null || value == "") {
+      return "Can't be left empty";
+    } else if (double.parse(value) < 0.03 || double.parse(value) > 0.1) {
+      return "Dbh must be between 0.03 and 0.1ha";
+    }
+    return null;
+  }
+
+  String? _errorMeas(String? value) {
+    if (value == null || value == "") {
+      return "Can't be left empty";
+    } else if (double.parse(value) < 0.0075 || double.parse(value) > 0.1000) {
+      return "Dbh must be between 0.0075 and 0.1000ha";
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     final db = ref.read(databaseProvider);
@@ -40,6 +61,8 @@ class LargeTreePlotSummaryPageState
           context.pop();
         },
       ),
+      bottomNavigationBar: MarkCompleteButton(
+          title: "Large Tree Plot", complete: false, onPressed: () => null),
       endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
       body: Center(
         child: Padding(
@@ -53,24 +76,59 @@ class LargeTreePlotSummaryPageState
                 readOnly: false,
                 setStateFn: (DateTime date) async => (),
               ),
-              DropDownDefault(
-                  title: "Plot type",
-                  onChangedFn: (s) {},
-                  itemsList: [],
-                  selectedItem: "Please select plot type"),
+              ReferenceNameSelectBuilder(
+                name: db.referenceTablesDao.getLtpPlotTypeName(""),
+                asyncListFn: db.referenceTablesDao.getLtpPlotTypeList,
+                enabled: true,
+                onChange: (s) => db.referenceTablesDao
+                    .getLtpPlotTypeCode(s)
+                    .then((value) => null),
+              ),
               DataInput(
-                  title: "Nominal plot Size",
-                  onSubmit: (s) {},
-                  onValidate: (s) {}),
+                title: "Nominal plot Size",
+                boxLabel: "Report to the nearest 0.0001 ha",
+                prefixIcon: FontAwesomeIcons.rulerCombined,
+                suffixVal: "ha",
+                inputType: const TextInputType.numberWithOptions(decimal: true),
+                startingStr: "",
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(6),
+                  ThousandsFormatter(
+                      allowFraction: true,
+                      decimalPlaces: 6,
+                      maxDigitsBeforeDecimal: 1),
+                ],
+                paddingGeneral: const EdgeInsets.only(top: 0),
+                onSubmit: (s) {},
+                onValidate: _errorNom,
+              ),
               DataInput(
-                  title: "Measured plot Size",
-                  onSubmit: (s) {},
-                  onValidate: (s) {}),
-              DropDownDefault(
-                  title: "Plot split",
-                  onChangedFn: (s) {},
-                  itemsList: [],
-                  selectedItem: "Please select plot split"),
+                title: "Measured plot Size",
+                boxLabel: "Report to the nearest 0.0001ha",
+                prefixIcon: FontAwesomeIcons.chartArea,
+                suffixVal: "ha",
+                inputType: const TextInputType.numberWithOptions(decimal: true),
+                startingStr: "",
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(6),
+                  ThousandsFormatter(
+                      allowFraction: true,
+                      decimalPlaces: 6,
+                      maxDigitsBeforeDecimal: 1),
+                ],
+                paddingGeneral: const EdgeInsets.only(top: 0),
+                onSubmit: (s) {},
+                onValidate: _errorMeas,
+              ),
+              ReferenceNameSelectBuilder(
+                title: "Plot split",
+                name: db.referenceTablesDao.getLtpPlotSplitName(""),
+                asyncListFn: db.referenceTablesDao.getLtpPlotSplitList,
+                enabled: true,
+                onChange: (s) => db.referenceTablesDao
+                    .getLtpPlotSplitCode(s)
+                    .then((value) => null),
+              ),
               const SizedBox(height: kPaddingV),
               IconNavButton(
                 icon: const Icon(FontAwesomeIcons.tree),
