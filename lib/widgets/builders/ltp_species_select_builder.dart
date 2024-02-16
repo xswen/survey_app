@@ -9,14 +9,12 @@ class LtpSpeciesSelectBuilder extends StatelessWidget {
       {super.key,
       this.onBeforePopup,
       required this.enabled,
-      required this.onChangedFn,
       required this.selectedSpeciesCode,
       required this.genusCode,
       required this.updateSpeciesFn});
 
   final Future<bool?> Function(String?)? onBeforePopup;
   final bool enabled;
-  final void Function(String?) onChangedFn;
   final String selectedSpeciesCode;
   final String genusCode;
   final void Function(Value<String>? speciesCode, Value<String>? varietyCode)

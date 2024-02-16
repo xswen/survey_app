@@ -217,3 +217,8 @@ class LtpStatusField extends Table {
   TextColumn get name => text()();
   TextColumn get description => text()();
 }
+
+class LtpCrownClass extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}

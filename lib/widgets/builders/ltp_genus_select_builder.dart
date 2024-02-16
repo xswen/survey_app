@@ -17,8 +17,8 @@ class LtpGenusSelectBuilder extends StatelessWidget {
   final String title;
   final bool enabled;
   final Future<bool?> Function(String?)? onBeforePopup;
-  final void Function(Value<String>? genusCode, Value<String>? speciesCode,
-      Value<String>? varietyCode) updateGenusFn;
+  final void Function(Value<String> genusCode, Value<String> speciesCode,
+      Value<String> varietyCode) updateGenusFn;
   final String genusCode;
 
   @override

@@ -861,10 +861,17 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
     return names[0];
   }
 
-  Future<List<String>> getLtpSpeciesNamesFromGenus(String genusCode) =>
-      (select(ltpGenus)..where((tbl) => tbl.genusCode.equals(genusCode)))
-          .map((p0) => p0.speciesLatinName)
-          .get();
+  Future<List<String>> getLtpSpeciesNamesFromGenus(String genusCode) {
+    final query = selectOnly(ltpGenus, distinct: true)
+      ..addColumns([ltpGenus.speciesLatinName])
+      ..where(ltpGenus.genusCode.equals(genusCode));
+
+    return query
+        .map((p0) =>
+            p0.read(ltpGenus.speciesLatinName) ??
+            "error on loading ltp species list")
+        .get();
+  }
 
   Future<bool> checkLtpNonNullSpeciesExists(String genusCode) async {
     List<String> speciesCodes = await ((select(ltpGenus)
@@ -892,13 +899,19 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
           .getSingle();
 
   Future<List<String>> getLtpVarietyNamesFromGenusSpecies(
-          String genusCode, String speciesCode) =>
-      (select(ltpGenus)
-            ..where((tbl) =>
-                tbl.genusCode.equals(genusCode) &
-                tbl.speciesCode.equals(speciesCode)))
-          .map((p0) => p0.varietyLatinName)
-          .get();
+      String genusCode, String speciesCode) {
+    final query = selectOnly(ltpGenus, distinct: true)
+      ..addColumns([ltpGenus.varietyLatinName])
+      ..where(ltpGenus.varietyLatinName.isNotNull() &
+          ltpGenus.genusCode.equals(genusCode) &
+          ltpGenus.speciesCode.equals(speciesCode));
+
+    return query
+        .map((p0) =>
+            p0.read(ltpGenus.varietyLatinName) ??
+            "error on loading ltp variety list")
+        .get();
+  }
 
   Future<bool> checkLtpNonNullVarietyExists(
       String genusCode, String speciesCode) async {
@@ -931,4 +944,32 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
                 tbl.varietyCode.equals(varietyCode)))
           .map((p0) => p0.varietyLatinName)
           .getSingle();
+
+  Future<List<String>> getLtpStatusFieldList() {
+    final query = selectOnly(ltpStatusField, distinct: true)
+      ..addColumns([ltpStatusField.name])
+      ..where(ltpStatusField.name.isNotNull());
+
+    return query
+        .map((row) => row.read(ltpStatusField.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getLtpStatusFieldName(String code) {
+    return (select(ltpStatusField)..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
+
+  Future<String> getLtpStatusFieldCode(String name) {
+    return (select(ltpStatusField)..where((tbl) => tbl.name.equals(name)))
+        .map((row) => row.code)
+        .getSingle();
+  }
+
+  Future<String> getLtpStatusFieldDescription(String code) {
+    return (select(ltpStatusField)..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.description)
+        .getSingle();
+  }
 }

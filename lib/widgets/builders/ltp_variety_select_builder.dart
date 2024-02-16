@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import '../../database/database.dart';
 import '../dropdowns/drop_down_async_list.dart';
 
-class LtpGenusSelectBuilder extends StatelessWidget {
-  const LtpGenusSelectBuilder(
+class LtpVarietySelectBuilder extends StatelessWidget {
+  const LtpVarietySelectBuilder(
       {super.key,
       required this.title,
       required this.enabled,
@@ -21,7 +21,7 @@ class LtpGenusSelectBuilder extends StatelessWidget {
   final String genusCode;
   final String speciesCode;
   final String selectedVarietyCode;
-  final void Function(Value<String>? genusCode) updateVarietyFn;
+  final void Function(Value<String>? varietyCode) updateVarietyFn;
 
   @override
   Widget build(BuildContext context) {
