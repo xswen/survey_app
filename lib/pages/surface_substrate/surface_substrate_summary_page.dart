@@ -135,7 +135,7 @@ class SurfaceSubstrateSummaryPageState
                     title,
                     complete: ss.complete,
                     backFn: () {
-                      ref.refresh(updateSurveyHeaderListProvider);
+                      ref.refresh(updateSurveyCardProvider(surveyId));
                       context.pop();
                     },
                   ),

@@ -27,4 +27,33 @@ mixin _$ReferenceTablesDaoMixin on DatabaseAccessor<Database> {
       attachedDatabase.soilHorizonDesignation;
   $SoilColorTable get soilColor => attachedDatabase.soilColor;
   $SoilTextureTable get soilTexture => attachedDatabase.soilTexture;
+  $StpTypeTable get stpType => attachedDatabase.stpType;
+  $StpOrigPlotAreaTable get stpOrigPlotArea => attachedDatabase.stpOrigPlotArea;
+  $StpStatusFieldTable get stpStatusField => attachedDatabase.stpStatusField;
+  $StpHeightTable get stpHeight => attachedDatabase.stpHeight;
+  $StpStemConditionTable get stpStemCondition =>
+      attachedDatabase.stpStemCondition;
+  $ShrubPlotTypeTable get shrubPlotType => attachedDatabase.shrubPlotType;
+  $ShrubStatusFieldTable get shrubStatusField =>
+      attachedDatabase.shrubStatusField;
+  $ShrubBasalDiameterTable get shrubBasalDiameter =>
+      attachedDatabase.shrubBasalDiameter;
+  $StumpPlotTypeTable get stumpPlotType => attachedDatabase.stumpPlotType;
+  $StumpOrigPlotAreaTable get stumpOrigPlotArea =>
+      attachedDatabase.stumpOrigPlotArea;
+  $LtpPlotTypeTable get ltpPlotType => attachedDatabase.ltpPlotType;
+  $LtpPlotSplitTable get ltpPlotSplit => attachedDatabase.ltpPlotSplit;
+  $LtpOrigPlotAreaTable get ltpOrigPlotArea => attachedDatabase.ltpOrigPlotArea;
+  $LtpStatusFieldTable get ltpStatusField => attachedDatabase.ltpStatusField;
+  $LtpGenusTable get ltpGenus => attachedDatabase.ltpGenus;
+  $LtpCrownClassFieldTable get ltpCrownClassField =>
+      attachedDatabase.ltpCrownClassField;
+  $LtpBarkConditionTable get ltpBarkCondition =>
+      attachedDatabase.ltpBarkCondition;
+  $LtpCrownConditionTable get ltpCrownCondition =>
+      attachedDatabase.ltpCrownCondition;
+  $LtpStemConditionTable get ltpStemCondition =>
+      attachedDatabase.ltpStemCondition;
+  $LtpWoodConditionTable get ltpWoodCondition =>
+      attachedDatabase.ltpWoodCondition;
 }

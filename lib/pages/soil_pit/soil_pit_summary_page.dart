@@ -111,7 +111,7 @@ class SoilPitSummaryPageState extends ConsumerState<SoilPitSummaryPage> {
             title,
             complete: spSummary.complete,
             backFn: () {
-              ref.refresh(updateSurveyHeaderListProvider);
+              ref.refresh(updateSurveyCardProvider(surveyId));
               context.pop();
             },
           ),

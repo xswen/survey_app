@@ -1,5 +1,13 @@
+import 'package:flutter/services.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
+import 'package:survey_app/widgets/builders/ltp_genus_select_builder.dart';
+import 'package:survey_app/widgets/builders/ltp_species_select_builder.dart';
+import 'package:survey_app/widgets/builders/ltp_variety_select_builder.dart';
 
+import '../../formatters/thousands_formatter.dart';
+import '../../widgets/builders/reference_name_select_builder.dart';
+import '../../widgets/buttons/save_entry_button.dart';
+import '../../widgets/checkbox/hide_info_checkbox.dart';
 import '../../widgets/data_input/data_input.dart';
 import '../../widgets/dropdowns/drop_down_default.dart';
 import '../../widgets/popups/popup_warning_change_made.dart';
@@ -19,6 +27,16 @@ class LargeTreePlotTreeInfoListEntryPageState
     extends ConsumerState<LargeTreePlotTreeInfoListEntryPage> {
   final String title = "Tree Info";
   bool changeMade = false;
+  bool tmpRenum = false;
+  String tempMeasType = "";
+  String tmpHeight = "";
+  String tmpGenus = "";
+  String tmpSpecies = "";
+  String tmpVariety = "";
+  String tmpStatus = "";
+  bool tmpCrownHeight = false;
+  bool tmpAz = false;
+  bool tmpDist = false;
 
   @override
   Widget build(BuildContext context) {
@@ -76,47 +94,86 @@ class LargeTreePlotTreeInfoListEntryPageState
                     "Renumbered",
                     style: kTextStyle,
                   ),
-                  value: true,
-                  onChanged: (check) {},
+                  value: tmpRenum,
+                  onChanged: (check) {
+                    if (check != null) {
+                      setState(() {
+                        tmpRenum = check;
+                      });
+                    }
+                  },
                   controlAffinity: ListTileControlAffinity.platform,
                 ),
-                DataInput(
-                    title: "New tree number",
-                    paddingGeneral: const EdgeInsets.only(bottom: kPaddingV),
-                    onSubmit: (s) {},
-                    onValidate: (s) {}),
-                DataInput(
-                    title: "Original tree number",
-                    paddingGeneral: const EdgeInsets.only(bottom: kPaddingV),
-                    onSubmit: (s) {},
-                    onValidate: (s) {}),
+                Visibility(
+                    visible: tmpRenum,
+                    child: Column(
+                      children: [
+                        DataInput(
+                            title: "New tree number",
+                            paddingGeneral:
+                                const EdgeInsets.only(bottom: kPaddingV),
+                            onSubmit: (s) {},
+                            onValidate: (s) {}),
+                        DataInput(
+                            title: "Original tree number",
+                            paddingGeneral:
+                                const EdgeInsets.only(bottom: kPaddingV),
+                            onSubmit: (s) {},
+                            onValidate: (s) {}),
+                      ],
+                    )),
               ],
             ),
-            DropDownDefault(
-                title: "Original plot area",
-                onChangedFn: (s) {},
-                itemsList: const ["Y", "N", "X", "U"],
-                selectedItem: "Please select plot area code"),
-            DropDownDefault(
+            ReferenceNameSelectBuilder(
+              title: "Original plot area",
+              defaultSelectedValue: "Please select original plot area",
+              name: db.referenceTablesDao.getLtpOrigPlotAreaName(""),
+              asyncListFn: db.referenceTablesDao.getLtpOrigPlotAreaList,
+              enabled: true,
+              onChange: (s) => db.referenceTablesDao
+                  .getLtpOrigPlotAreaCode(s)
+                  .then((value) => null),
+            ),
+            LtpGenusSelectBuilder(
                 title: "Tree genus",
-                onChangedFn: (s) {},
-                itemsList: const [],
-                selectedItem: "Please select tree genus"),
-            DropDownDefault(
-                title: "Tree species",
-                onChangedFn: (s) {},
-                itemsList: const [],
-                selectedItem: "Please select tree species"),
-            DropDownDefault(
-                title: "Tree variety",
-                onChangedFn: (s) {},
-                itemsList: const [],
-                selectedItem: "Please select tree variety"),
-            DropDownDefault(
-                title: "Tree status",
-                onChangedFn: (s) {},
-                itemsList: const ["LS", "LF", "DS", "M"],
-                selectedItem: "Please select tree status"),
+                enabled: true,
+                updateGenusFn: (genus, species, variety) {
+                  setState(() {
+                    tmpGenus = genus.value;
+                    tmpSpecies = db.companionValueToStr(species);
+                    tmpVariety = db.companionValueToStr(variety);
+                  });
+                },
+                genusCode: tmpGenus),
+            LtpSpeciesSelectBuilder(
+                enabled: true,
+                selectedSpeciesCode: tmpSpecies,
+                genusCode: tmpGenus,
+                updateSpeciesFn: (species, variety) {
+                  setState(() {
+                    tmpSpecies = db.companionValueToStr(species);
+                    tmpVariety = db.companionValueToStr(variety);
+                  });
+                }),
+            LtpVarietySelectBuilder(
+                title: "Tree Variety",
+                enabled: true,
+                genusCode: tmpGenus,
+                speciesCode: tmpSpecies,
+                selectedVarietyCode: tmpVariety,
+                updateVarietyFn: (variety) {
+                  tmpVariety = db.companionValueToStr(variety);
+                }),
+            ReferenceNameSelectBuilder(
+              title: "Tree status",
+              defaultSelectedValue: "Please select tree status",
+              name: db.referenceTablesDao.getLtpStatusFieldName(""),
+              asyncListFn: db.referenceTablesDao.getLtpStatusFieldList,
+              enabled: true,
+              onChange: (s) => db.referenceTablesDao
+                  .getLtpStatusFieldCode(s)
+                  .then((value) => null),
+            ),
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,8 +185,12 @@ class LargeTreePlotTreeInfoListEntryPageState
                     "Measured",
                     style: kTextStyle,
                   ),
-                  value: true,
-                  onChanged: (check) {},
+                  value: tempMeasType == "M",
+                  onChanged: (check) {
+                    setState(() {
+                      check == true ? tempMeasType = "M" : tempMeasType = "E";
+                    });
+                  },
                   controlAffinity: ListTileControlAffinity.platform,
                 ),
                 CheckboxListTile(
@@ -137,14 +198,39 @@ class LargeTreePlotTreeInfoListEntryPageState
                     "Estimated",
                     style: kTextStyle,
                   ),
-                  value: false,
-                  onChanged: (check) {},
+                  value: tempMeasType == "E",
+                  onChanged: (check) {
+                    setState(() {
+                      check == false ? tempMeasType = "M" : tempMeasType = "E";
+                    });
+                  },
                   controlAffinity: ListTileControlAffinity.platform,
                 ),
                 DataInput(
-                    paddingGeneral: const EdgeInsets.only(bottom: kPaddingV),
+                    boxLabel: "Report to the nearest 0.1cm",
+                    prefixIcon: FontAwesomeIcons.ruler,
+                    suffixVal: "cm",
+                    inputType:
+                        const TextInputType.numberWithOptions(decimal: true),
+                    startingStr: "",
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(5),
+                      ThousandsFormatter(
+                          allowFraction: true,
+                          decimalPlaces: 1,
+                          maxDigitsBeforeDecimal: 3),
+                    ],
+                    paddingGeneral: const EdgeInsets.only(top: 0),
                     onSubmit: (s) {},
-                    onValidate: (s) {}),
+                    onValidate: (s) {
+                      if (s == null || s == "") {
+                        return "Can't be left empty";
+                      } else if (double.parse(s) < 0.1 ||
+                          double.parse(s) > 999.9) {
+                        return "Dbh must be between 0.1 and 999.9cm";
+                      }
+                      return null;
+                    }),
               ],
             ),
             Column(
@@ -158,8 +244,12 @@ class LargeTreePlotTreeInfoListEntryPageState
                     "Actual field measurement",
                     style: kTextStyle,
                   ),
-                  value: true,
-                  onChanged: (check) {},
+                  value: tmpHeight == "A",
+                  onChanged: (check) {
+                    setState(() {
+                      check == true ? tmpHeight = "A" : tmpHeight = "N";
+                    });
+                  },
                   controlAffinity: ListTileControlAffinity.platform,
                 ),
                 CheckboxListTile(
@@ -167,8 +257,12 @@ class LargeTreePlotTreeInfoListEntryPageState
                     "Calculated (e.g. using height diameter curves)",
                     style: kTextStyle,
                   ),
-                  value: false,
-                  onChanged: (check) {},
+                  value: tmpHeight == "C",
+                  onChanged: (check) {
+                    setState(() {
+                      check == true ? tmpHeight = "C" : tmpHeight = "N";
+                    });
+                  },
                   controlAffinity: ListTileControlAffinity.platform,
                 ),
                 CheckboxListTile(
@@ -176,8 +270,12 @@ class LargeTreePlotTreeInfoListEntryPageState
                     "Estimated by field crew",
                     style: kTextStyle,
                   ),
-                  value: false,
-                  onChanged: (check) {},
+                  value: tmpHeight == "E",
+                  onChanged: (check) {
+                    setState(() {
+                      check == true ? tmpHeight = "E" : tmpHeight = "N";
+                    });
+                  },
                   controlAffinity: ListTileControlAffinity.platform,
                 ),
                 CheckboxListTile(
@@ -186,79 +284,236 @@ class LargeTreePlotTreeInfoListEntryPageState
                     style: kTextStyle,
                   ),
                   // contentPadding: EdgeInsets.zero,
-                  value: false,
-                  onChanged: (check) {},
+                  value: tmpHeight == "N",
+                  onChanged: (check) {
+                    setState(() {
+                      check == true ? tmpHeight = "N" : tmpHeight = "";
+                    });
+                  },
                   controlAffinity: ListTileControlAffinity.platform,
                 ),
                 DataInput(
-                    paddingGeneral: const EdgeInsets.only(bottom: 0),
+                    boxLabel: "Report to the nearest 0.1m",
+                    prefixIcon: FontAwesomeIcons.ruler,
+                    suffixVal: "m",
+                    inputType:
+                        const TextInputType.numberWithOptions(decimal: true),
+                    startingStr: "",
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(5),
+                      ThousandsFormatter(
+                          allowFraction: true,
+                          decimalPlaces: 1,
+                          maxDigitsBeforeDecimal: 3),
+                    ],
+                    paddingGeneral: const EdgeInsets.only(top: 0),
                     onSubmit: (s) {},
-                    onValidate: (s) {}),
+                    onValidate: (s) {
+                      if (s == null || s == "") {
+                        return "Can't be left empty";
+                      } else if (double.parse(s) < 0.1 ||
+                          double.parse(s) > 999.9) {
+                        return "Dbh must be between 0.1 and 999.9cm";
+                      }
+                      return null;
+                    }),
               ],
             ),
-            DropDownDefault(
-                title: "Crown class",
-                onChangedFn: (s) {},
-                itemsList: const ["D", "C", "I", "S", "V", "N", "M"],
-                selectedItem: "Please select tree status"),
-            DataInput(
-                title: "Height to base of live crown",
-                onSubmit: (s) {},
-                onValidate: (s) {}),
-            DataInput(
-                title: "Height to top of live crown",
-                onSubmit: (s) {},
-                onValidate: (s) {}),
+            ReferenceNameSelectBuilder(
+              title: "Crown class",
+              defaultSelectedValue: "Please select crown class",
+              name: db.referenceTablesDao.getLtpCrownClassFieldName(""),
+              asyncListFn: db.referenceTablesDao.getLtpCrownClassFieldList,
+              enabled: true,
+              onChange: (s) => db.referenceTablesDao
+                  .getLtpCrownClassFieldCode(s)
+                  .then((value) => setState(() => null)),
+            ),
+            ReferenceNameSelectBuilder(
+              title: "Tree status",
+              defaultSelectedValue: "Please select tree status",
+              name: db.referenceTablesDao.getLtpStatusFieldName(""),
+              asyncListFn: db.referenceTablesDao.getLtpStatusFieldList,
+              enabled: true,
+              onChange: (s) => db.referenceTablesDao
+                  .getLtpStatusFieldCode(s)
+                  .then((value) => setState(() => tmpStatus = value)),
+            ),
+            Visibility(
+              visible: !(tmpStatus == "DS" || tmpStatus == "LF"),
+              child: Column(
+                children: [
+                  HideInfoCheckbox(
+                    title: "Height to base of live crown",
+                    titleWidget: "Missing",
+                    checkValue: tmpCrownHeight,
+                    child: DataInput(
+                        boxLabel: "Report to the nearest 0.1m",
+                        prefixIcon: FontAwesomeIcons.ruler,
+                        suffixVal: "m",
+                        inputType: const TextInputType.numberWithOptions(
+                            decimal: true),
+                        startingStr: "",
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(5),
+                          ThousandsFormatter(
+                              allowFraction: true,
+                              decimalPlaces: 1,
+                              maxDigitsBeforeDecimal: 3),
+                        ],
+                        paddingGeneral: const EdgeInsets.only(top: 0),
+                        onSubmit: (s) {},
+                        onValidate: (s) {
+                          if (s == null || s == "") {
+                            return "Can't be left empty";
+                          } else if (double.parse(s) < 0.1 ||
+                              double.parse(s) > 999.9) {
+                            return "Dbh must be between 0.1 and 999.9cm";
+                          }
+                          return null;
+                        }),
+                  ),
+                  HideInfoCheckbox(
+                    title: "Height to top of live crown",
+                    titleWidget: "Missing",
+                    checkValue: tmpCrownHeight,
+                    child: DataInput(
+                        boxLabel: "Report to the nearest 0.1m",
+                        prefixIcon: FontAwesomeIcons.ruler,
+                        suffixVal: "m",
+                        inputType: const TextInputType.numberWithOptions(
+                            decimal: true),
+                        startingStr: "",
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(5),
+                          ThousandsFormatter(
+                              allowFraction: true,
+                              decimalPlaces: 1,
+                              maxDigitsBeforeDecimal: 3),
+                        ],
+                        paddingGeneral: const EdgeInsets.only(top: 0),
+                        onSubmit: (s) {},
+                        onValidate: (s) {
+                          if (s == null || s == "") {
+                            return "Can't be left empty";
+                          } else if (double.parse(s) < 0.1 ||
+                              double.parse(s) > 999.9) {
+                            return "Dbh must be between 0.1 and 999.9cm";
+                          }
+                          return null;
+                        }),
+                  ),
+                ],
+              ),
+            ),
             const SizedBox(height: kPaddingV * 2),
             const TextHeaderSeparator(
               title: "Condition",
               fontSize: 20,
             ),
-            DropDownDefault(
-                title: "Stem condition",
-                onChangedFn: (s) {},
-                itemsList: const ["B", "I", "M"],
-                selectedItem: "Please select tree status"),
-            DropDownDefault(
-                title: "Crown condition",
-                onChangedFn: (s) {},
-                itemsList: const ["1", "2", "3", "4", "5", "6", "Missing"],
-                selectedItem: "Please select tree status"),
-            DropDownDefault(
-                title: "Bark condition",
-                onChangedFn: (s) {},
-                itemsList: const ["1", "2", "3", "4", "5", "6", "7", "Missing"],
-                selectedItem: "Please select tree status"),
-            DropDownDefault(
-                title: "Wood condition",
-                onChangedFn: (s) {},
-                itemsList: const [
-                  "1",
-                  "2",
-                  "3",
-                  "4",
-                  "5",
-                  "6",
-                  "7",
-                  "8",
-                  "Missing"
-                ],
-                selectedItem: "Please select tree status"),
+            ReferenceNameSelectBuilder(
+              title: "Stem condition",
+              defaultSelectedValue: "Please select stem condition",
+              name: db.referenceTablesDao.getLtpStemConditionName(""),
+              asyncListFn: db.referenceTablesDao.getLtpStemConditionList,
+              enabled: true,
+              onChange: (s) => db.referenceTablesDao
+                  .getLtpStemConditionCode(s)
+                  .then((value) => setState(() => null)),
+            ),
+            ReferenceNameSelectBuilder(
+              title: "Crown condition",
+              defaultSelectedValue: "Please select crown condition",
+              name: db.referenceTablesDao.getLtpCrownConditionName(""),
+              asyncListFn: db.referenceTablesDao.getLtpCrownConditionList,
+              enabled: true,
+              onChange: (s) => db.referenceTablesDao
+                  .getLtpCrownConditionCode(s)
+                  .then((value) => setState(() => null)),
+            ),
+            ReferenceNameSelectBuilder(
+              title: "Bark condition",
+              defaultSelectedValue: "Please select bark condition",
+              name: db.referenceTablesDao.getLtpBarkConditionName(""),
+              asyncListFn: db.referenceTablesDao.getLtpBarkConditionList,
+              enabled: true,
+              onChange: (s) => db.referenceTablesDao
+                  .getLtpWoodConditionCode(s)
+                  .then((value) => setState(() => null)),
+            ),
+
+            ReferenceNameSelectBuilder(
+              title: "Wood Condition",
+              defaultSelectedValue: "Please select wood condition",
+              name: db.referenceTablesDao.getLtpWoodConditionName(""),
+              asyncListFn: db.referenceTablesDao.getLtpBarkConditionList,
+              enabled: true,
+              onChange: (s) => db.referenceTablesDao
+                  .getLtpWoodConditionCode(s)
+                  .then((value) => setState(() => null)),
+            ),
             const SizedBox(height: kPaddingV * 2),
             const TextHeaderSeparator(
               title: "Stem Mapping",
               fontSize: 20,
             ),
-            DataInput(
-                title: "Azimuth to tree", onSubmit: (s) {}, onValidate: (s) {}),
-            DataInput(
-                title: "Distance to tree face",
-                onSubmit: (s) {},
-                onValidate: (s) {}),
-            DataInput(
-                title: "Live crown length",
-                onSubmit: (s) {},
-                onValidate: (s) {}),
+            HideInfoCheckbox(
+                titleWidget: "No trees stem mapped",
+                checkValue: tmpAz,
+                child: Column(
+                  children: [
+                    DataInput(
+                        title: "Azimuth to tree",
+                        boxLabel: "Report to the nearest degree",
+                        prefixIcon: FontAwesomeIcons.ruler,
+                        suffixVal: kDegreeSign,
+                        inputType: const TextInputType.numberWithOptions(
+                            decimal: false),
+                        startingStr: "",
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(3),
+                          ThousandsFormatter(allowFraction: false),
+                        ],
+                        paddingGeneral: const EdgeInsets.only(top: 0),
+                        onSubmit: (s) {},
+                        onValidate: (s) {
+                          if (s == null || s == "") {
+                            return "Can't be left empty";
+                          } else if (double.parse(s) < 0 ||
+                              double.parse(s) > 360) {
+                            return "Dbh must be between 0.1 and 999.9cm";
+                          }
+                          return null;
+                        }),
+                    DataInput(
+                        title: "Distance to tree face",
+                        boxLabel: "Report to the nearest 0.1m",
+                        prefixIcon: FontAwesomeIcons.ruler,
+                        suffixVal: "m",
+                        inputType: const TextInputType.numberWithOptions(
+                            decimal: true),
+                        startingStr: "",
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(4),
+                          ThousandsFormatter(
+                              allowFraction: true,
+                              decimalPlaces: 1,
+                              maxDigitsBeforeDecimal: 2),
+                        ],
+                        paddingGeneral: const EdgeInsets.only(top: 0),
+                        onSubmit: (s) {},
+                        onValidate: (s) {
+                          if (s == null || s == "") {
+                            return "Can't be left empty";
+                          } else if (double.parse(s) < 0.1 ||
+                              double.parse(s) > 99.9) {
+                            return "Dbh must be between 0.1 and 999.9cm";
+                          }
+                          return null;
+                        }),
+                  ],
+                )),
+
             const SizedBox(height: kPaddingV * 2),
             const TextHeaderSeparator(
               title: "Damage Agents",
@@ -268,44 +523,38 @@ class LargeTreePlotTreeInfoListEntryPageState
             Text("TO ADD"),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: kPaddingV * 2),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                      onPressed: () => null, //handleSubmit(goToHorizonPage),
-                      child: const Text("Save and return")),
-                  ElevatedButton(
-                      onPressed: () =>
-                          null, //handleSubmit(goToNewHorizonEntry),
-                      child: const Text("Save and add new tree")),
-                ],
+              child: SaveEntryButton(
+                saveRetFn: () => null,
+                saveAndAddFn: () => null,
+                delVisible: true,
+                deleteFn: () => Popups.show(
+                  context,
+                  PopupContinue("Warning: Deleting Large Tree Plot Feature",
+                      contentText: "You are about to delete this feature. "
+                          "Are you sure you want to continue?",
+                      rightBtnOnPressed: () {
+                    //close popup
+                    context.pop();
+                    // context.pushNamed(DeletePage.routeName, extra: {
+                    //         rightBtnOnPressed: () {
+                    //           //close popup
+                    //           context.pop();
+                    //           context.pushNamed(DeletePage.routeName, extra: {
+                    //             DeletePage.keyObjectName:
+                    //             "Soil Pit Feature: ${horizon.toString()}",
+                    //             DeletePage.keyDeleteFn: () {
+                    //               (db.delete(db.soilPitHorizonDescription)
+                    //                 ..where(
+                    //                         (tbl) => tbl.id.equals(horizon.id.value)))
+                    //                   .go()
+                    //                   .then((value) => goToHorizonPage());
+                    //             },
+                    //           });
+                    //         }),
+                  }),
+                ),
               ),
             ),
-            // horizon.id != const d.Value.absent()
-            //     ? DeleteButton(
-            //   delete: () => Popups.show(
-            //     context,
-            //     PopupContinue("Warning: Deleting Soil Pit Feature",
-            //         contentText: "You are about to delete this feature. "
-            //             "Are you sure you want to continue?",
-            //         rightBtnOnPressed: () {
-            //           //close popup
-            //           context.pop();
-            //           context.pushNamed(DeletePage.routeName, extra: {
-            //             DeletePage.keyObjectName:
-            //             "Soil Pit Feature: ${horizon.toString()}",
-            //             DeletePage.keyDeleteFn: () {
-            //               (db.delete(db.soilPitHorizonDescription)
-            //                 ..where(
-            //                         (tbl) => tbl.id.equals(horizon.id.value)))
-            //                   .go()
-            //                   .then((value) => goToHorizonPage());
-            //             },
-            //           });
-            //         }),
-            //   ),
-            // )
-            //     : Container()
           ]),
         ),
       ),

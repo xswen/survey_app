@@ -127,3 +127,118 @@ class SoilTexture extends Table {
   TextColumn get code => text()();
   TextColumn get name => text()();
 }
+
+//Small Tree Plot
+class StpType extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class StpOrigPlotArea extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+//Must have field suffix so doesn't mess up auto generator
+//Table names can't end in status
+class StpStatusField extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+  TextColumn get description => text()();
+}
+
+class StpHeight extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class StpStemCondition extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+//Shrub
+class ShrubPlotType extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class ShrubBasalDiameter extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+//Must have field suffix so doesn't mess up auto generator
+//Table names can't end in status
+class ShrubStatusField extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+//Stump
+class StumpPlotType extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class StumpOrigPlotArea extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+//LTP
+@DataClassName("LtpGenusData")
+class LtpGenus extends Table {
+  TextColumn get genusLatinName => text()();
+  TextColumn get speciesLatinName => text()();
+  TextColumn get varietyLatinName => text()();
+  TextColumn get genusCode => text()();
+  TextColumn get speciesCode => text()();
+  TextColumn get varietyCode => text()();
+}
+
+class LtpPlotType extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class LtpPlotSplit extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class LtpOrigPlotArea extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class LtpStatusField extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+  TextColumn get description => text()();
+}
+
+class LtpCrownClassField extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class LtpBarkCondition extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class LtpCrownCondition extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class LtpStemCondition extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class LtpWoodCondition extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}

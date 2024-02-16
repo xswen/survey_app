@@ -1,0 +1,14 @@
+[
+  {
+    "code": "B",
+    "name": "Broken"
+  },
+  {
+    "code": "I",
+    "name": "Intact"
+  },
+  {
+    "code": "M",
+    "name": "Missing"
+  }
+]

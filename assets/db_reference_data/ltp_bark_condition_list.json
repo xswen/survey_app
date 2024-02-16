@@ -1,0 +1,34 @@
+[
+  {
+    "code": "1",
+    "name": "1: All bark present."
+  },
+  {
+    "code": "2",
+    "name": "2: Bark lost on damaged areas only (< 5% lost)."
+  },
+  {
+    "code": "3",
+    "name": "3: Most bark present, bare patches, some bark may be loose (5%–25% lost)."
+  },
+  {
+    "code": "4",
+    "name": "4: Bare sections, firm and loose bark remains (26%–50% lost)."
+  },
+  {
+    "code": "5",
+    "name": "5: Most bark gone, firm, and loose bark remains (51%–75% lost)."
+  },
+  {
+    "code": "6",
+    "name": "6: Trace of bark remains (76%–99% lost)."
+  },
+  {
+    "code": "7",
+    "name": "7: No bark (100% lost)."
+  },
+  {
+    "code": "-1",
+    "name": "-1: Missing"
+  }
+]

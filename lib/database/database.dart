@@ -11,6 +11,7 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:survey_app/database/daos/soil_pit_tables_dao.dart';
 import 'package:survey_app/database/database_creation_files/large_tree_plot_tables.dart';
+import 'package:survey_app/database/database_creation_files/small_tree_plot_tables.dart';
 import 'package:survey_app/database/database_creation_files/soil_pit_tables.dart';
 import 'package:survey_app/enums/enums.dart';
 import 'package:survey_app/wrappers/survey_card.dart';
@@ -49,7 +50,26 @@ const List<Type> _tables = [
   SoilHorizonDesignation,
   SoilColor,
   SoilTexture,
-
+  StpType,
+  StpOrigPlotArea,
+  StpStatusField,
+  StpHeight,
+  StpStemCondition,
+  ShrubPlotType,
+  ShrubStatusField,
+  ShrubBasalDiameter,
+  StumpPlotType,
+  StumpOrigPlotArea,
+  LtpPlotType,
+  LtpPlotSplit,
+  LtpOrigPlotArea,
+  LtpStatusField,
+  LtpGenus,
+  LtpCrownClassField,
+  LtpBarkCondition,
+  LtpCrownCondition,
+  LtpStemCondition,
+  LtpWoodCondition,
   //Metadata Tables
   MetaComment,
   //Survey Tables
@@ -85,6 +105,9 @@ const List<Type> _tables = [
   LtpTreeRemoved,
   LtpTreeAge,
   LtpTreeRenamed,
+  //STP
+  StpSummary,
+  StpSpecies,
 ];
 
 const List<Type> _daos = [
@@ -178,6 +201,44 @@ class Database extends _$Database {
           List<SoilColorCompanion> soilColorList = await _getSoilColors();
           List<SoilTextureCompanion> soilTextureList = await _getSoilTextures();
 
+          List<StpTypeCompanion> stpTypeList = await _getStpCode();
+          List<StpOrigPlotAreaCompanion> stpOrigAreaList =
+              await _getStpOrigPlotArea();
+          List<StpStatusFieldCompanion> stpStatusList = await _getStpStatus();
+          List<StpHeightCompanion> stpHeightList = await _getStpHeight();
+          List<StpStemConditionCompanion> stpStemConditionList =
+              await _getStpStemCondition();
+
+          List<ShrubBasalDiameterCompanion> shrubBasalDiameterList =
+              await _getShrubBasalDiameter();
+          List<ShrubPlotTypeCompanion> shrubPlotTypeList =
+              await _getShrubPlotType();
+          List<ShrubStatusFieldCompanion> shrubStatusList =
+              await _getShrubStatusField();
+
+          List<StumpPlotTypeCompanion> stumpPlotTypeList =
+              await _getStumpPlotType();
+          List<StumpOrigPlotAreaCompanion> stumpOrigPlotAreaList =
+              await _getStumpOrigPlotArea();
+
+          List<LtpPlotTypeCompanion> ltpPlotTypeList = await _getLtpPlotType();
+          List<LtpPlotSplitCompanion> ltpPlotSplitList =
+              await _getLtpPlotSplit();
+          List<LtpGenusCompanion> ltpGenusList = await _getLtpGenus();
+          List<LtpOrigPlotAreaCompanion> ltpOrigPlotList =
+              await _getLtpOrigPlotArea();
+          List<LtpStatusFieldCompanion> ltpStatusList = await _getLtpStatus();
+          List<LtpCrownClassFieldCompanion> ltpCrownClassList =
+              await _getLtpCrownClass();
+          List<LtpBarkConditionCompanion> ltpBarkConditionList =
+              await _getLtpBarkCondition();
+          List<LtpCrownConditionCompanion> ltpCrownConditionList =
+              await _getLtpCrownCondition();
+          List<LtpStemConditionCompanion> ltpStemConditionList =
+              await _getLtpStemCondition();
+          List<LtpWoodConditionCompanion> ltpWoodConditionList =
+              await _getLtpWoodCondition();
+
           c.debugPrint("Init Values");
           await batch((b) {
             b.insertAll(jurisdictions, jurisdictionsList);
@@ -200,6 +261,30 @@ class Database extends _$Database {
             b.insertAll(soilHorizonDesignation, soilHorizonDesignationList);
             b.insertAll(soilColor, soilColorList);
             b.insertAll(soilTexture, soilTextureList);
+
+            b.insertAll(stpType, stpTypeList);
+            b.insertAll(stpOrigPlotArea, stpOrigAreaList);
+            b.insertAll(stpStatusField, stpStatusList);
+            b.insertAll(stpHeight, stpHeightList);
+            b.insertAll(stpStemCondition, stpStemConditionList);
+
+            b.insertAll(shrubBasalDiameter, shrubBasalDiameterList);
+            b.insertAll(shrubPlotType, shrubPlotTypeList);
+            b.insertAll(shrubStatusField, shrubStatusList);
+
+            b.insertAll(stumpPlotType, stumpPlotTypeList);
+            b.insertAll(stumpOrigPlotArea, stumpOrigPlotAreaList);
+
+            b.insertAll(ltpPlotType, ltpPlotTypeList);
+            b.insertAll(ltpPlotSplit, ltpPlotSplitList);
+            b.insertAll(ltpGenus, ltpGenusList);
+            b.insertAll(ltpOrigPlotArea, ltpOrigPlotList);
+            b.insertAll(ltpStatusField, ltpStatusList);
+            b.insertAll(ltpCrownClassField, ltpCrownClassList);
+            b.insertAll(ltpBarkCondition, ltpBarkConditionList);
+            b.insertAll(ltpCrownCondition, ltpCrownConditionList);
+            b.insertAll(ltpStemCondition, ltpStemConditionList);
+            b.insertAll(ltpWoodCondition, ltpWoodConditionList);
 
             _initTest(b);
           });
@@ -440,6 +525,247 @@ class Database extends _$Database {
     }).toList();
   }
 
+  Future<List<StpTypeCompanion>> _getStpCode() async {
+    List<dynamic> jsonData =
+        await _loadJsonData('assets/db_reference_data/stp_plot_type_list.json');
+
+    return jsonData.map((dynamic item) {
+      return StpTypeCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<StpOrigPlotAreaCompanion>> _getStpOrigPlotArea() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/stp_orig_plot_area_list.json');
+
+    return jsonData.map((dynamic item) {
+      return StpOrigPlotAreaCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<StpStatusFieldCompanion>> _getStpStatus() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/stp_plot_status_list.json');
+
+    return jsonData.map((dynamic item) {
+      return StpStatusFieldCompanion(
+          code: Value(item["code"]),
+          name: Value(item["name"]),
+          description: Value(item["description"]));
+    }).toList();
+  }
+
+  Future<List<StpHeightCompanion>> _getStpHeight() async {
+    List<dynamic> jsonData =
+        await _loadJsonData('assets/db_reference_data/stp_height_list.json');
+
+    return jsonData.map((dynamic item) {
+      return StpHeightCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<StpStemConditionCompanion>> _getStpStemCondition() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/stp_stem_condition_list.json');
+
+    return jsonData.map((dynamic item) {
+      return StpStemConditionCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<ShrubPlotTypeCompanion>> _getShrubPlotType() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/shrub_plot_type_list.json');
+
+    return jsonData.map((dynamic item) {
+      return ShrubPlotTypeCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<ShrubBasalDiameterCompanion>> _getShrubBasalDiameter() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/shrub_basal_diameter_list.json');
+
+    return jsonData.map((dynamic item) {
+      return ShrubBasalDiameterCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<ShrubStatusFieldCompanion>> _getShrubStatusField() async {
+    List<dynamic> jsonData =
+        await _loadJsonData('assets/db_reference_data/shrub_status_list.json');
+
+    return jsonData.map((dynamic item) {
+      return ShrubStatusFieldCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<StumpPlotTypeCompanion>> _getStumpPlotType() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/stump_plot_type_list.json');
+
+    return jsonData.map((dynamic item) {
+      return StumpPlotTypeCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<StumpOrigPlotAreaCompanion>> _getStumpOrigPlotArea() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/stump_orig_plot_area_list.json');
+
+    return jsonData.map((dynamic item) {
+      return StumpOrigPlotAreaCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  //LTP
+  Future<List<LtpPlotTypeCompanion>> _getLtpPlotType() async {
+    List<dynamic> jsonData =
+        await _loadJsonData('assets/db_reference_data/ltp_plot_type_list.json');
+
+    return jsonData.map((dynamic item) {
+      return LtpPlotTypeCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<LtpPlotSplitCompanion>> _getLtpPlotSplit() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/ltp_plot_split_list.json');
+
+    return jsonData.map((dynamic item) {
+      return LtpPlotSplitCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<LtpGenusCompanion>> _getLtpGenus() async {
+    List<dynamic> jsonData =
+        await _loadJsonData('assets/db_reference_data/ltp_tree_list.json');
+
+    return jsonData.map((dynamic item) {
+      return LtpGenusCompanion(
+        genusLatinName: Value(item["genusLatinName"]),
+        speciesLatinName: Value(item["speciesLatinName"]),
+        varietyLatinName: Value(item["varietyLatinName"]),
+        genusCode: Value(item["genusCode"]),
+        speciesCode: Value(item["speciesCode"]),
+        varietyCode: Value(item["varietyCode"]),
+      );
+    }).toList();
+  }
+
+  Future<List<LtpOrigPlotAreaCompanion>> _getLtpOrigPlotArea() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/ltp_orig_plot_area_list.json');
+
+    return jsonData.map((dynamic item) {
+      return LtpOrigPlotAreaCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<LtpStatusFieldCompanion>> _getLtpStatus() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/ltp_tree_status_list.json');
+
+    return jsonData.map((dynamic item) {
+      return LtpStatusFieldCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+        description: Value(item["description"]),
+      );
+    }).toList();
+  }
+
+  Future<List<LtpCrownClassFieldCompanion>> _getLtpCrownClass() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/ltp_crown_class_list.json');
+    return jsonData.map((dynamic item) {
+      return LtpCrownClassFieldCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<LtpBarkConditionCompanion>> _getLtpBarkCondition() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/ltp_bark_condition_list.json');
+    return jsonData.map((dynamic item) {
+      return LtpBarkConditionCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<LtpCrownConditionCompanion>> _getLtpCrownCondition() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/ltp_crown_condition_list.json');
+    return jsonData.map((dynamic item) {
+      return LtpCrownConditionCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<LtpStemConditionCompanion>> _getLtpStemCondition() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/ltp_stem_condition_list.json');
+    return jsonData.map((dynamic item) {
+      return LtpStemConditionCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<LtpWoodConditionCompanion>> _getLtpWoodCondition() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/ltp_wood_condition_list.json');
+    return jsonData.map((dynamic item) {
+      return LtpWoodConditionCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
   void _initTest(Batch b) {
     b.replace(
         plots,
@@ -620,6 +946,7 @@ class Database extends _$Database {
               ..where((tbl) => tbl.surveyId.equals(surveyId)))
             .getSingleOrNull()
       },
+      //TODO: to add
       {
         category: SurveyCardCategories.soilPit,
         name: "Soil Pit",

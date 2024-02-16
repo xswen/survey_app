@@ -1,9 +1,11 @@
+import 'package:flutter/services.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/widgets/checkbox/hide_info_checkbox.dart';
 
+import '../../formatters/thousands_formatter.dart';
+import '../../widgets/builders/reference_name_select_builder.dart';
 import '../../widgets/buttons/delete_button.dart';
 import '../../widgets/data_input/data_input.dart';
-import '../../widgets/dropdowns/drop_down_default.dart';
 
 class SmallTreeSpeciesEntryPage extends ConsumerStatefulWidget {
   static const String routeName = "smallTreeSpeciesEntry";
@@ -17,6 +19,24 @@ class SmallTreeSpeciesEntryPage extends ConsumerStatefulWidget {
 
 class SmallTreeSpeciesEntryPageState
     extends ConsumerState<SmallTreeSpeciesEntryPage> {
+  String? _errorDbh(String? value) {
+    if (value == null || value == "") {
+      return "Can't be left empty";
+    } else if (double.parse(value) < 0.1 || double.parse(value) > 8.9) {
+      return "Dbh must be between 0.1 and 8.9cm";
+    }
+    return null;
+  }
+
+  String? _errorHeight(String? value) {
+    if (value == null || value == "") {
+      return "Can't be left empty";
+    } else if (double.parse(value) < 1.3 || double.parse(value) > 20) {
+      return "Height3 must be between 1.3 and 20m";
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     final db = ref.read(databaseProvider);
@@ -30,59 +50,116 @@ class SmallTreeSpeciesEntryPageState
         padding: const EdgeInsets.all(kPaddingH),
         child: Center(
           child: ListView(children: [
-            DropDownDefault(
-                title: "Original plot area",
-                onChangedFn: (s) {},
-                itemsList: [],
-                selectedItem: "Please select plot area"),
-            DropDownDefault(
-                title: "Small tree genus",
-                onChangedFn: (s) {},
-                itemsList: [],
-                selectedItem: "Please select genus"),
-            DropDownDefault(
-                title: "Small tree species",
-                onChangedFn: (s) {},
-                itemsList: [],
-                selectedItem: "Please select species"),
-            DropDownDefault(
-                title: "Small tree variety",
-                onChangedFn: (s) {},
-                itemsList: [],
-                selectedItem: "Please select variety"),
-            DropDownDefault(
-                title: "Small tree status",
-                onChangedFn: (s) {},
-                itemsList: [],
-                selectedItem: "Please select status"),
+            ReferenceNameSelectBuilder(
+              title: "Original plot area",
+              defaultSelectedValue: "Select plot area",
+              name: db.referenceTablesDao.getStpOrigAreaName(""),
+              asyncListFn: db.referenceTablesDao.getStpOrigAreaList,
+              enabled: true,
+              onChange: (s) => db.referenceTablesDao
+                  .getStpOrigAreaCode(s)
+                  .then((value) => null),
+            ),
+            ReferenceNameSelectBuilder(
+              title: "Small tree genus",
+              defaultSelectedValue: "Select genus",
+              name: db.referenceTablesDao.getStpOrigAreaName(""),
+              asyncListFn: () async => [],
+              enabled: true,
+              onChange: (s) => null,
+            ),
+            ReferenceNameSelectBuilder(
+              title: "Small tree species",
+              defaultSelectedValue: "Select species",
+              name: db.referenceTablesDao.getStpOrigAreaName(""),
+              asyncListFn: () async => [],
+              enabled: true,
+              onChange: (s) => null,
+            ),
+            ReferenceNameSelectBuilder(
+              title: "Small tree variety",
+              defaultSelectedValue: "Select variety",
+              name: db.referenceTablesDao.getStpOrigAreaName(""),
+              asyncListFn: () async => [],
+              enabled: true,
+              onChange: (s) => null,
+            ),
+            ReferenceNameSelectBuilder(
+              title: "Small tree status",
+              defaultSelectedValue: "Please select status",
+              name: db.referenceTablesDao.getStpStatusName(""),
+              asyncListFn: db.referenceTablesDao.getStpStatusList,
+              enabled: true,
+              onChange: (s) => db.referenceTablesDao
+                  .getStpStatusCode(s)
+                  .then((value) => null),
+            ),
             HideInfoCheckbox(
               title: "Small tree DBH",
               titleWidget: "Unreported",
               checkValue: false,
+              onChange: (b) => -1,
               child: DataInput(
+                  boxLabel: "Report to the nearest 0.1cm",
+                  prefixIcon: FontAwesomeIcons.ruler,
+                  suffixVal: "cm",
+                  inputType:
+                      const TextInputType.numberWithOptions(decimal: true),
+                  startingStr: "",
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(3),
+                    ThousandsFormatter(
+                        allowFraction: true,
+                        decimalPlaces: 1,
+                        maxDigitsBeforeDecimal: 1),
+                  ],
                   paddingGeneral: const EdgeInsets.only(top: 0),
                   onSubmit: (s) {},
-                  onValidate: (s) {}),
+                  onValidate: _errorDbh),
             ),
             HideInfoCheckbox(
               title: "Small tree height",
               titleWidget: "Unreported",
               checkValue: false,
+              onChange: (b) => -1,
               child: DataInput(
+                  boxLabel: "Report to the nearest 0.1m",
+                  prefixIcon: FontAwesomeIcons.ruler,
+                  suffixVal: "m",
+                  inputType:
+                      const TextInputType.numberWithOptions(decimal: true),
+                  startingStr: "",
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(4),
+                    ThousandsFormatter(
+                        allowFraction: true,
+                        decimalPlaces: 1,
+                        maxDigitsBeforeDecimal: 2),
+                  ],
                   paddingGeneral: const EdgeInsets.only(top: 0),
                   onSubmit: (s) {},
-                  onValidate: (s) {}),
+                  onValidate: _errorHeight),
             ),
-            DropDownDefault(
-                title: "Measured or estimated small tree height",
-                onChangedFn: (s) {},
-                itemsList: [],
-                selectedItem: "Please select"),
-            DropDownDefault(
-                title: "Stem condition",
-                onChangedFn: (s) {},
-                itemsList: [],
-                selectedItem: "Please select"),
+            ReferenceNameSelectBuilder(
+              title: "Measured or estimated small tree height",
+              defaultSelectedValue: "Select height",
+              name: db.referenceTablesDao.getStpHeightName(""),
+              asyncListFn: db.referenceTablesDao.getStpHeightList,
+              enabled: true,
+              onChange: (s) => db.referenceTablesDao
+                  .getStpOrigAreaCode(s)
+                  .then((value) => null),
+            ),
+            ReferenceNameSelectBuilder(
+              title: "Stem condition",
+              defaultSelectedValue: "Select stem condition",
+              name: db.referenceTablesDao.getStpStemConditionName(""),
+              asyncListFn: db.referenceTablesDao.getStpStemConditionList,
+              enabled: true,
+              onChange: (s) => db.referenceTablesDao
+                  .getStpStemConditionCode(s)
+                  .then((value) => null),
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: kPaddingV * 2),
               child: Row(

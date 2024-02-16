@@ -27,6 +27,26 @@ part 'reference_tables_dao.g.dart';
   SoilHorizonDesignation,
   SoilColor,
   SoilTexture,
+  StpType,
+  StpOrigPlotArea,
+  StpStatusField,
+  StpHeight,
+  StpStemCondition,
+  ShrubPlotType,
+  ShrubStatusField,
+  ShrubBasalDiameter,
+  StumpPlotType,
+  StumpOrigPlotArea,
+  LtpPlotType,
+  LtpPlotSplit,
+  LtpOrigPlotArea,
+  LtpStatusField,
+  LtpGenus,
+  LtpCrownClassField,
+  LtpBarkCondition,
+  LtpCrownCondition,
+  LtpStemCondition,
+  LtpWoodCondition,
 ])
 class ReferenceTablesDao extends DatabaseAccessor<Database>
     with _$ReferenceTablesDaoMixin {
@@ -535,4 +555,536 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
             ..where((tbl) => tbl.name.equals(name)))
           .map((row) => row.code)
           .getSingle();
+
+  //Small Tree Plot
+  Future<List<String>> getStpTypeList() {
+    final query = selectOnly(stpType, distinct: true)
+      ..addColumns([stpType.name])
+      ..where(stpType.name.isNotNull());
+
+    return query
+        .map((row) => row.read(stpType.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getStpTypeName(String code) =>
+      (select(stpType, distinct: true)..where((tbl) => tbl.code.equals(code)))
+          .map((row) => row.name)
+          .getSingle();
+
+  Future<String> getStpTypeCode(String name) =>
+      (select(stpType, distinct: true)..where((tbl) => tbl.name.equals(name)))
+          .map((row) => row.code)
+          .getSingle();
+
+  Future<List<String>> getStpOrigAreaList() {
+    final query = selectOnly(stpOrigPlotArea, distinct: true)
+      ..addColumns([stpOrigPlotArea.name])
+      ..where(stpOrigPlotArea.name.isNotNull());
+
+    return query
+        .map((row) => row.read(stpOrigPlotArea.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getStpOrigAreaName(String code) =>
+      (select(stpOrigPlotArea, distinct: true)
+            ..where((tbl) => tbl.code.equals(code)))
+          .map((row) => row.name)
+          .getSingle();
+
+  Future<String> getStpOrigAreaCode(String name) =>
+      (select(stpOrigPlotArea, distinct: true)
+            ..where((tbl) => tbl.name.equals(name)))
+          .map((row) => row.code)
+          .getSingle();
+
+  Future<List<String>> getStpStatusList() {
+    final query = selectOnly(stpStatusField, distinct: true)
+      ..addColumns([stpStatusField.name])
+      ..where(stpStatusField.name.isNotNull());
+
+    return query
+        .map((row) => row.read(stpStatusField.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getStpStatusName(String code) =>
+      (select(stpStatusField, distinct: true)
+            ..where((tbl) => tbl.code.equals(code)))
+          .map((row) => row.name)
+          .getSingle();
+
+  Future<String> getStpStatusCode(String name) =>
+      (select(stpStatusField, distinct: true)
+            ..where((tbl) => tbl.name.equals(name)))
+          .map((row) => row.code)
+          .getSingle();
+
+  Future<List<String>> getStpHeightList() {
+    final query = selectOnly(stpHeight, distinct: true)
+      ..addColumns([stpHeight.name])
+      ..where(stpHeight.name.isNotNull());
+
+    return query
+        .map((row) => row.read(stpHeight.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getStpHeightName(String code) =>
+      (select(stpHeight, distinct: true)..where((tbl) => tbl.code.equals(code)))
+          .map((row) => row.name)
+          .getSingle();
+
+  Future<String> getStpHeightCode(String name) =>
+      (select(stpHeight, distinct: true)..where((tbl) => tbl.name.equals(name)))
+          .map((row) => row.code)
+          .getSingle();
+
+  Future<List<String>> getStpStemConditionList() {
+    final query = selectOnly(stpStemCondition, distinct: true)
+      ..addColumns([stpStemCondition.name])
+      ..where(stpStemCondition.name.isNotNull());
+
+    return query
+        .map(
+            (row) => row.read(stpStemCondition.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getStpStemConditionName(String code) =>
+      (select(stpStemCondition, distinct: true)
+            ..where((tbl) => tbl.code.equals(code)))
+          .map((row) => row.name)
+          .getSingle();
+
+  Future<String> getStpStemConditionCode(String name) =>
+      (select(stpStemCondition, distinct: true)
+            ..where((tbl) => tbl.name.equals(name)))
+          .map((row) => row.code)
+          .getSingle();
+
+  Future<List<String>> getShrubPlotTypeList() {
+    final query = selectOnly(shrubPlotType, distinct: true)
+      ..addColumns([shrubPlotType.name])
+      ..where(shrubPlotType.name.isNotNull());
+
+    return query
+        .map((row) => row.read(shrubPlotType.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getShrubPlotTypeName(String code) =>
+      (select(shrubPlotType, distinct: true)
+            ..where((tbl) => tbl.code.equals(code)))
+          .map((row) => row.name)
+          .getSingle();
+
+  Future<String> getShrubPlotTypeCode(String name) =>
+      (select(shrubPlotType, distinct: true)
+            ..where((tbl) => tbl.name.equals(name)))
+          .map((row) => row.code)
+          .getSingle();
+
+  Future<List<String>> getShrubStatusList() {
+    final query = selectOnly(shrubStatusField, distinct: true)
+      ..addColumns([shrubStatusField.name])
+      ..where(shrubStatusField.name.isNotNull());
+
+    return query
+        .map(
+            (row) => row.read(shrubStatusField.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getShrubStatusName(String code) =>
+      (select(shrubStatusField, distinct: true)
+            ..where((tbl) => tbl.code.equals(code)))
+          .map((row) => row.name)
+          .getSingle();
+
+  Future<String> getShrubStatusCode(String name) =>
+      (select(shrubStatusField, distinct: true)
+            ..where((tbl) => tbl.name.equals(name)))
+          .map((row) => row.code)
+          .getSingle();
+
+  Future<List<String>> getShrubBasalDiameterList() {
+    final query = selectOnly(shrubBasalDiameter, distinct: true)
+      ..addColumns([shrubBasalDiameter.name])
+      ..where(shrubBasalDiameter.name.isNotNull());
+
+    return query
+        .map((row) =>
+            row.read(shrubBasalDiameter.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getShrubBasalDiameterName(String code) =>
+      (select(shrubBasalDiameter, distinct: true)
+            ..where((tbl) => tbl.code.equals(code)))
+          .map((row) => row.name)
+          .getSingle();
+
+  Future<String> getShrubBasalDiameterCode(String name) =>
+      (select(shrubBasalDiameter, distinct: true)
+            ..where((tbl) => tbl.name.equals(name)))
+          .map((row) => row.code)
+          .getSingle();
+
+  Future<List<String>> getStumpPlotTypeList() {
+    final query = selectOnly(stumpPlotType, distinct: true)
+      ..addColumns([stumpPlotType.name])
+      ..where(stumpPlotType.name.isNotNull());
+
+    return query
+        .map((row) => row.read(stumpPlotType.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getStumpPlotTypeName(String code) =>
+      (select(stumpPlotType, distinct: true)
+            ..where((tbl) => tbl.code.equals(code)))
+          .map((row) => row.name)
+          .getSingle();
+
+  Future<String> getStumpPlotTypeCode(String name) =>
+      (select(stumpPlotType, distinct: true)
+            ..where((tbl) => tbl.name.equals(name)))
+          .map((row) => row.code)
+          .getSingle();
+
+  Future<List<String>> getStumpOrigPlotAreaList() {
+    final query = selectOnly(stumpOrigPlotArea, distinct: true)
+      ..addColumns([stumpOrigPlotArea.name])
+      ..where(stumpOrigPlotArea.name.isNotNull());
+
+    return query
+        .map((row) =>
+            row.read(stumpOrigPlotArea.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getStumpOrigPlotAreaName(String code) =>
+      (select(stumpOrigPlotArea, distinct: true)
+            ..where((tbl) => tbl.code.equals(code)))
+          .map((row) => row.name)
+          .getSingle();
+
+  Future<String> getStumpOrigPlotAreaCode(String name) =>
+      (select(stumpOrigPlotArea, distinct: true)
+            ..where((tbl) => tbl.name.equals(name)))
+          .map((row) => row.code)
+          .getSingle();
+
+  //LTP
+  Future<List<String>> getLtpPlotTypeList() {
+    final query = selectOnly(ltpPlotType, distinct: true)
+      ..addColumns([ltpPlotType.name])
+      ..where(ltpPlotType.name.isNotNull());
+
+    return query
+        .map((row) => row.read(ltpPlotType.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getLtpPlotTypeName(String code) =>
+      (select(ltpPlotType, distinct: true)
+            ..where((tbl) => tbl.code.equals(code)))
+          .map((row) => row.name)
+          .getSingle();
+
+  Future<String> getLtpPlotTypeCode(String name) =>
+      (select(ltpPlotType, distinct: true)
+            ..where((tbl) => tbl.name.equals(name)))
+          .map((row) => row.code)
+          .getSingle();
+
+  Future<List<String>> getLtpPlotSplitList() {
+    final query = selectOnly(ltpPlotSplit, distinct: true)
+      ..addColumns([ltpPlotSplit.name])
+      ..where(ltpPlotSplit.name.isNotNull());
+
+    return query
+        .map((row) => row.read(ltpPlotSplit.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getLtpPlotSplitName(String code) =>
+      (select(ltpPlotSplit, distinct: true)
+            ..where((tbl) => tbl.code.equals(code)))
+          .map((row) => row.name)
+          .getSingle();
+
+  Future<String> getLtpPlotSplitCode(String name) =>
+      (select(ltpPlotSplit, distinct: true)
+            ..where((tbl) => tbl.name.equals(name)))
+          .map((row) => row.code)
+          .getSingle();
+
+  Future<List<String>> getLtpOrigPlotAreaList() {
+    final query = selectOnly(ltpOrigPlotArea, distinct: true)
+      ..addColumns([ltpOrigPlotArea.name])
+      ..where(ltpOrigPlotArea.name.isNotNull());
+
+    return query
+        .map((row) => row.read(ltpOrigPlotArea.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getLtpOrigPlotAreaName(String code) {
+    return (select(ltpOrigPlotArea)..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
+
+  Future<String> getLtpOrigPlotAreaCode(String name) {
+    return (select(ltpOrigPlotArea)..where((tbl) => tbl.name.equals(name)))
+        .map((row) => row.code)
+        .getSingle();
+  }
+
+  Future<List<String>> get ltpGenusLatinNames {
+    final query = selectOnly(ltpGenus, distinct: true)
+      ..addColumns([ltpGenus.genusLatinName]);
+    return query.map((p0) => p0.read(ltpGenus.genusLatinName)!).get();
+  }
+
+  Future<String> getLtpGenusCodeFromName(String name) async {
+    List<String> codes = await ((select(ltpGenus)
+          ..where((tbl) => tbl.genusLatinName.equals(name)))
+        .map((p0) => p0.genusCode)
+        .get());
+    return codes[0];
+  }
+
+  Future<String> getLtpGenusNameFromCode(String code) async {
+    List<String> names = await ((select(ltpGenus)
+          ..where((tbl) => tbl.genusCode.equals(code)))
+        .map((p0) => p0.genusLatinName)
+        .get());
+    return names[0];
+  }
+
+  Future<List<String>> getLtpSpeciesNamesFromGenus(String genusCode) {
+    final query = selectOnly(ltpGenus, distinct: true)
+      ..addColumns([ltpGenus.speciesLatinName])
+      ..where(ltpGenus.genusCode.equals(genusCode));
+
+    return query
+        .map((p0) =>
+            p0.read(ltpGenus.speciesLatinName) ??
+            "error on loading ltp species list")
+        .get();
+  }
+
+  Future<bool> checkLtpNonNullSpeciesExists(String genusCode) async {
+    List<String> speciesCodes = await ((select(ltpGenus)
+          ..where((tbl) => tbl.genusCode.equals(genusCode)))
+        .map((p0) => p0.speciesCode)
+        .get());
+
+    return speciesCodes.length == 1 && speciesCodes[0] == kSpeciesUnknownCode;
+  }
+
+  Future<String> getLtpSpeciesCode(String genusCode, String speciesName) =>
+      (select(ltpGenus)
+            ..where((tbl) =>
+                tbl.genusCode.equals(genusCode) &
+                tbl.speciesLatinName.equals(speciesName)))
+          .map((p0) => p0.speciesCode)
+          .getSingle();
+
+  Future<String> getLtpSpeciesName(String genusCode, String speciesCode) =>
+      (select(ltpGenus)
+            ..where((tbl) =>
+                tbl.genusCode.equals(genusCode) &
+                tbl.speciesCode.equals(speciesCode)))
+          .map((p0) => p0.speciesLatinName)
+          .getSingle();
+
+  Future<List<String>> getLtpVarietyNamesFromGenusSpecies(
+      String genusCode, String speciesCode) {
+    final query = selectOnly(ltpGenus, distinct: true)
+      ..addColumns([ltpGenus.varietyLatinName])
+      ..where(ltpGenus.varietyLatinName.isNotNull() &
+          ltpGenus.genusCode.equals(genusCode) &
+          ltpGenus.speciesCode.equals(speciesCode));
+
+    return query
+        .map((p0) =>
+            p0.read(ltpGenus.varietyLatinName) ??
+            "error on loading ltp variety list")
+        .get();
+  }
+
+  Future<bool> checkLtpNonNullVarietyExists(
+      String genusCode, String speciesCode) async {
+    List<String> varietyCodes = await ((select(ltpGenus)
+          ..where((tbl) =>
+              tbl.genusCode.equals(genusCode) &
+              tbl.speciesCode.equals(speciesCode)))
+        .map((p0) => p0.varietyCode)
+        .get());
+
+    return varietyCodes.length == 1 && varietyCodes[0] == "NULL";
+  }
+
+  Future<String> getLtpVarietyCode(
+          String genusCode, String speciesCode, String varietyName) =>
+      (select(ltpGenus)
+            ..where((tbl) =>
+                tbl.genusCode.equals(genusCode) &
+                tbl.speciesCode.equals(speciesCode) &
+                tbl.varietyLatinName.equals(varietyName)))
+          .map((p0) => p0.varietyCode)
+          .getSingle();
+
+  Future<String> getLtpVarietyName(
+          String genusCode, String speciesCode, String varietyCode) =>
+      (select(ltpGenus)
+            ..where((tbl) =>
+                tbl.genusCode.equals(genusCode) &
+                tbl.speciesCode.equals(speciesCode) &
+                tbl.varietyCode.equals(varietyCode)))
+          .map((p0) => p0.varietyLatinName)
+          .getSingle();
+
+  Future<List<String>> getLtpStatusFieldList() {
+    final query = selectOnly(ltpStatusField, distinct: true)
+      ..addColumns([ltpStatusField.name])
+      ..where(ltpStatusField.name.isNotNull());
+
+    return query
+        .map((row) => row.read(ltpStatusField.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getLtpStatusFieldName(String code) {
+    return (select(ltpStatusField)..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
+
+  Future<String> getLtpStatusFieldCode(String name) {
+    return (select(ltpStatusField)..where((tbl) => tbl.name.equals(name)))
+        .map((row) => row.code)
+        .getSingle();
+  }
+
+  Future<String> getLtpStatusFieldDescription(String code) {
+    return (select(ltpStatusField)..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.description)
+        .getSingle();
+  }
+
+  Future<List<String>> getLtpCrownClassFieldList() {
+    final query = selectOnly(ltpCrownClassField, distinct: true)
+      ..addColumns([ltpCrownClassField.name])
+      ..where(ltpCrownClassField.name.isNotNull());
+    return query
+        .map((row) =>
+            row.read(ltpCrownClassField.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getLtpCrownClassFieldName(String code) {
+    return (select(ltpCrownClassField)..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
+
+  Future<String> getLtpCrownClassFieldCode(String name) {
+    return (select(ltpCrownClassField)..where((tbl) => tbl.name.equals(name)))
+        .map((row) => row.code)
+        .getSingle();
+  }
+
+  Future<List<String>> getLtpBarkConditionList() {
+    final query = selectOnly(ltpBarkCondition, distinct: true)
+      ..addColumns([ltpBarkCondition.name])
+      ..where(ltpBarkCondition.name.isNotNull());
+    return query
+        .map(
+            (row) => row.read(ltpBarkCondition.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getLtpBarkConditionName(String code) {
+    return (select(ltpBarkCondition)..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
+
+  Future<String> getLtpBarkConditionCode(String name) {
+    return (select(ltpBarkCondition)..where((tbl) => tbl.name.equals(name)))
+        .map((row) => row.code)
+        .getSingle();
+  }
+
+  Future<List<String>> getLtpCrownConditionList() {
+    final query = selectOnly(ltpCrownCondition, distinct: true)
+      ..addColumns([ltpCrownCondition.name])
+      ..where(ltpCrownCondition.name.isNotNull());
+    return query
+        .map((row) =>
+            row.read(ltpCrownCondition.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getLtpCrownConditionName(String code) {
+    return (select(ltpCrownCondition)..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
+
+  Future<String> getLtpCrownConditionCode(String name) {
+    return (select(ltpCrownCondition)..where((tbl) => tbl.name.equals(name)))
+        .map((row) => row.code)
+        .getSingle();
+  }
+
+  Future<List<String>> getLtpStemConditionList() {
+    final query = selectOnly(ltpStemCondition, distinct: true)
+      ..addColumns([ltpStemCondition.name])
+      ..where(ltpStemCondition.name.isNotNull());
+    return query
+        .map(
+            (row) => row.read(ltpStemCondition.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getLtpStemConditionName(String code) {
+    return (select(ltpStemCondition)..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
+
+  Future<String> getLtpStemConditionCode(String name) {
+    return (select(ltpStemCondition)..where((tbl) => tbl.name.equals(name)))
+        .map((row) => row.code)
+        .getSingle();
+  }
+
+  Future<List<String>> getLtpWoodConditionList() {
+    final query = selectOnly(ltpWoodCondition, distinct: true)
+      ..addColumns([ltpWoodCondition.name])
+      ..where(ltpWoodCondition.name.isNotNull());
+    return query
+        .map(
+            (row) => row.read(ltpWoodCondition.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getLtpWoodConditionName(String code) {
+    return (select(ltpWoodCondition)..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
+
+  Future<String> getLtpWoodConditionCode(String name) {
+    return (select(ltpWoodCondition)..where((tbl) => tbl.name.equals(name)))
+        .map((row) => row.code)
+        .getSingle();
+  }
 }

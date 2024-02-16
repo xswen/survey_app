@@ -11,6 +11,8 @@ class ThousandsFormatter extends TextInputFormatter {
   final bool allowFraction;
   final int decimalPlaces;
   final bool allowNegative;
+  final int?
+      maxDigitsBeforeDecimal; // New parameter to limit digits before decimal
 
   final NumberFormat _formatter;
 
@@ -18,6 +20,7 @@ class ThousandsFormatter extends TextInputFormatter {
     this.allowFraction = false,
     this.decimalPlaces = 2,
     this.allowNegative = false,
+    this.maxDigitsBeforeDecimal, // Initialize in constructor
   }) : _formatter = NumberFormat('#0.${'#' * decimalPlaces}');
 
   @override
@@ -36,12 +39,22 @@ class ThousandsFormatter extends TextInputFormatter {
           : (allowNegative
               ? FilteringTextInputFormatter.allow(RegExp('[0-9-]+'))
               : FilteringTextInputFormatter.digitsOnly),
-      // because FilteringTextInputFormatter.allow(RegExp(r'^-?[0-9]+')), does not work
-      // https://github.com/flutter/flutter/issues/21874
       formatPattern: (String filteredString) {
+        // Truncate digits before the decimal if they exceed the limit
+        if (maxDigitsBeforeDecimal != null) {
+          int decimalIndex = filteredString.indexOf(decimalSeparator);
+          String beforeDecimal = decimalIndex > -1
+              ? filteredString.substring(0, decimalIndex)
+              : filteredString;
+          String afterDecimal =
+              decimalIndex > -1 ? filteredString.substring(decimalIndex) : '';
+          if (beforeDecimal.length > maxDigitsBeforeDecimal!) {
+            beforeDecimal = beforeDecimal
+                .substring(beforeDecimal.length - maxDigitsBeforeDecimal!);
+            filteredString = beforeDecimal + afterDecimal;
+          }
+        }
         if (allowNegative) {
-          // filter negative sign in the middle
-          // this will also remove redundant negative signs
           if ('-'.allMatches(filteredString).isNotEmpty) {
             filteredString = (filteredString.startsWith('-') ? '-' : '') +
                 filteredString.replaceAll('-', '');
