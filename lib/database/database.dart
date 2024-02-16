@@ -62,6 +62,9 @@ const List<Type> _tables = [
   StumpOrigPlotArea,
   LtpPlotType,
   LtpPlotSplit,
+  LtpOrigPlotArea,
+  LtpStatusField,
+  LtpGenus,
   //Metadata Tables
   MetaComment,
   //Survey Tables
@@ -216,6 +219,10 @@ class Database extends _$Database {
           List<LtpPlotTypeCompanion> ltpPlotTypeList = await _getLtpPlotType();
           List<LtpPlotSplitCompanion> ltpPlotSplitList =
               await _getLtpPlotSplit();
+          List<LtpGenusCompanion> ltpGenusList = await _getLtpGenus();
+          List<LtpOrigPlotAreaCompanion> ltpOrigPlotList =
+              await _getLtpOrigPlotArea();
+          List<LtpStatusFieldCompanion> ltpStatusList = await _getLtpStatus();
 
           c.debugPrint("Init Values");
           await batch((b) {
@@ -255,6 +262,9 @@ class Database extends _$Database {
 
             b.insertAll(ltpPlotType, ltpPlotTypeList);
             b.insertAll(ltpPlotSplit, ltpPlotSplitList);
+            b.insertAll(ltpGenus, ltpGenusList);
+            b.insertAll(ltpOrigPlotArea, ltpOrigPlotList);
+            b.insertAll(ltpStatusField, ltpStatusList);
 
             _initTest(b);
           });
@@ -636,6 +646,47 @@ class Database extends _$Database {
       return LtpPlotSplitCompanion(
         code: Value(item["code"]),
         name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<LtpGenusCompanion>> _getLtpGenus() async {
+    List<dynamic> jsonData =
+        await _loadJsonData('assets/db_reference_data/ltp_tree_list.json');
+
+    return jsonData.map((dynamic item) {
+      return LtpGenusCompanion(
+        genusLatinName: Value(item["genusLatinName"]),
+        speciesLatinName: Value(item["speciesLatinName"]),
+        varietyLatinName: Value(item["varietyLatinName"]),
+        genusCode: Value(item["genusCode"]),
+        speciesCode: Value(item["speciesCode"]),
+        varietyCode: Value(item["varietyCode"]),
+      );
+    }).toList();
+  }
+
+  Future<List<LtpOrigPlotAreaCompanion>> _getLtpOrigPlotArea() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/ltp_orig_plot_area_list.json');
+
+    return jsonData.map((dynamic item) {
+      return LtpOrigPlotAreaCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<LtpStatusFieldCompanion>> _getLtpStatus() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/ltp_tree_status_list.json');
+
+    return jsonData.map((dynamic item) {
+      return LtpStatusFieldCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+        description: Value(item["description"]),
       );
     }).toList();
   }

@@ -39,6 +39,9 @@ part 'reference_tables_dao.g.dart';
   StumpOrigPlotArea,
   LtpPlotType,
   LtpPlotSplit,
+  LtpOrigPlotArea,
+  LtpStatusField,
+  LtpGenus,
 ])
 class ReferenceTablesDao extends DatabaseAccessor<Database>
     with _$ReferenceTablesDaoMixin {
@@ -812,5 +815,120 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
       (select(ltpPlotSplit, distinct: true)
             ..where((tbl) => tbl.name.equals(name)))
           .map((row) => row.code)
+          .getSingle();
+
+  Future<List<String>> getLtpOrigPlotAreaList() {
+    final query = selectOnly(ltpOrigPlotArea, distinct: true)
+      ..addColumns([ltpOrigPlotArea.name])
+      ..where(ltpOrigPlotArea.name.isNotNull());
+
+    return query
+        .map((row) => row.read(ltpOrigPlotArea.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getLtpOrigPlotAreaName(String code) {
+    return (select(ltpOrigPlotArea)..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
+
+  Future<String> getLtpOrigPlotAreaCode(String name) {
+    return (select(ltpOrigPlotArea)..where((tbl) => tbl.name.equals(name)))
+        .map((row) => row.code)
+        .getSingle();
+  }
+
+  Future<List<String>> get ltpGenusLatinNames {
+    final query = selectOnly(ltpGenus, distinct: true)
+      ..addColumns([ltpGenus.genusLatinName]);
+    return query.map((p0) => p0.read(ltpGenus.genusLatinName)!).get();
+  }
+
+  Future<String> getLtpGenusCodeFromName(String name) async {
+    List<String> codes = await ((select(ltpGenus)
+          ..where((tbl) => tbl.genusLatinName.equals(name)))
+        .map((p0) => p0.genusCode)
+        .get());
+    return codes[0];
+  }
+
+  Future<String> getLtpGenusNameFromCode(String code) async {
+    List<String> names = await ((select(ltpGenus)
+          ..where((tbl) => tbl.genusCode.equals(code)))
+        .map((p0) => p0.genusLatinName)
+        .get());
+    return names[0];
+  }
+
+  Future<List<String>> getLtpSpeciesNamesFromGenus(String genusCode) =>
+      (select(ltpGenus)..where((tbl) => tbl.genusCode.equals(genusCode)))
+          .map((p0) => p0.speciesLatinName)
+          .get();
+
+  Future<bool> checkLtpNonNullSpeciesExists(String genusCode) async {
+    List<String> speciesCodes = await ((select(ltpGenus)
+          ..where((tbl) => tbl.genusCode.equals(genusCode)))
+        .map((p0) => p0.speciesCode)
+        .get());
+
+    return speciesCodes.length == 1 && speciesCodes[0] == kSpeciesUnknownCode;
+  }
+
+  Future<String> getLtpSpeciesCode(String genusCode, String speciesName) =>
+      (select(ltpGenus)
+            ..where((tbl) =>
+                tbl.genusCode.equals(genusCode) &
+                tbl.speciesLatinName.equals(speciesName)))
+          .map((p0) => p0.speciesCode)
+          .getSingle();
+
+  Future<String> getLtpSpeciesName(String genusCode, String speciesCode) =>
+      (select(ltpGenus)
+            ..where((tbl) =>
+                tbl.genusCode.equals(genusCode) &
+                tbl.speciesCode.equals(speciesCode)))
+          .map((p0) => p0.speciesLatinName)
+          .getSingle();
+
+  Future<List<String>> getLtpVarietyNamesFromGenusSpecies(
+          String genusCode, String speciesCode) =>
+      (select(ltpGenus)
+            ..where((tbl) =>
+                tbl.genusCode.equals(genusCode) &
+                tbl.speciesCode.equals(speciesCode)))
+          .map((p0) => p0.varietyLatinName)
+          .get();
+
+  Future<bool> checkLtpNonNullVarietyExists(
+      String genusCode, String speciesCode) async {
+    List<String> varietyCodes = await ((select(ltpGenus)
+          ..where((tbl) =>
+              tbl.genusCode.equals(genusCode) &
+              tbl.speciesCode.equals(speciesCode)))
+        .map((p0) => p0.varietyCode)
+        .get());
+
+    return varietyCodes.length == 1 && varietyCodes[0] == "NULL";
+  }
+
+  Future<String> getLtpVarietyCode(
+          String genusCode, String speciesCode, String varietyName) =>
+      (select(ltpGenus)
+            ..where((tbl) =>
+                tbl.genusCode.equals(genusCode) &
+                tbl.speciesCode.equals(speciesCode) &
+                tbl.varietyLatinName.equals(varietyName)))
+          .map((p0) => p0.varietyCode)
+          .getSingle();
+
+  Future<String> getLtpVarietyName(
+          String genusCode, String speciesCode, String varietyCode) =>
+      (select(ltpGenus)
+            ..where((tbl) =>
+                tbl.genusCode.equals(genusCode) &
+                tbl.speciesCode.equals(speciesCode) &
+                tbl.varietyCode.equals(varietyCode)))
+          .map((p0) => p0.varietyLatinName)
           .getSingle();
 }

@@ -6082,6 +6082,771 @@ class LtpPlotSplitCompanion extends UpdateCompanion<LtpPlotSplitData> {
   }
 }
 
+class $LtpOrigPlotAreaTable extends LtpOrigPlotArea
+    with TableInfo<$LtpOrigPlotAreaTable, LtpOrigPlotAreaData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LtpOrigPlotAreaTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _codeMeta = const VerificationMeta('code');
+  @override
+  late final GeneratedColumn<String> code = GeneratedColumn<String>(
+      'code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [code, name];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'ltp_orig_plot_area';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<LtpOrigPlotAreaData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('code')) {
+      context.handle(
+          _codeMeta, code.isAcceptableOrUnknown(data['code']!, _codeMeta));
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => const {};
+  @override
+  LtpOrigPlotAreaData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return LtpOrigPlotAreaData(
+      code: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}code'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+    );
+  }
+
+  @override
+  $LtpOrigPlotAreaTable createAlias(String alias) {
+    return $LtpOrigPlotAreaTable(attachedDatabase, alias);
+  }
+}
+
+class LtpOrigPlotAreaData extends DataClass
+    implements Insertable<LtpOrigPlotAreaData> {
+  final String code;
+  final String name;
+  const LtpOrigPlotAreaData({required this.code, required this.name});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['code'] = Variable<String>(code);
+    map['name'] = Variable<String>(name);
+    return map;
+  }
+
+  LtpOrigPlotAreaCompanion toCompanion(bool nullToAbsent) {
+    return LtpOrigPlotAreaCompanion(
+      code: Value(code),
+      name: Value(name),
+    );
+  }
+
+  factory LtpOrigPlotAreaData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return LtpOrigPlotAreaData(
+      code: serializer.fromJson<String>(json['code']),
+      name: serializer.fromJson<String>(json['name']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'code': serializer.toJson<String>(code),
+      'name': serializer.toJson<String>(name),
+    };
+  }
+
+  LtpOrigPlotAreaData copyWith({String? code, String? name}) =>
+      LtpOrigPlotAreaData(
+        code: code ?? this.code,
+        name: name ?? this.name,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('LtpOrigPlotAreaData(')
+          ..write('code: $code, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(code, name);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is LtpOrigPlotAreaData &&
+          other.code == this.code &&
+          other.name == this.name);
+}
+
+class LtpOrigPlotAreaCompanion extends UpdateCompanion<LtpOrigPlotAreaData> {
+  final Value<String> code;
+  final Value<String> name;
+  final Value<int> rowid;
+  const LtpOrigPlotAreaCompanion({
+    this.code = const Value.absent(),
+    this.name = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  LtpOrigPlotAreaCompanion.insert({
+    required String code,
+    required String name,
+    this.rowid = const Value.absent(),
+  })  : code = Value(code),
+        name = Value(name);
+  static Insertable<LtpOrigPlotAreaData> custom({
+    Expression<String>? code,
+    Expression<String>? name,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (code != null) 'code': code,
+      if (name != null) 'name': name,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  LtpOrigPlotAreaCompanion copyWith(
+      {Value<String>? code, Value<String>? name, Value<int>? rowid}) {
+    return LtpOrigPlotAreaCompanion(
+      code: code ?? this.code,
+      name: name ?? this.name,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (code.present) {
+      map['code'] = Variable<String>(code.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LtpOrigPlotAreaCompanion(')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $LtpStatusFieldTable extends LtpStatusField
+    with TableInfo<$LtpStatusFieldTable, LtpStatusFieldData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LtpStatusFieldTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _codeMeta = const VerificationMeta('code');
+  @override
+  late final GeneratedColumn<String> code = GeneratedColumn<String>(
+      'code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _descriptionMeta =
+      const VerificationMeta('description');
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+      'description', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [code, name, description];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'ltp_status_field';
+  @override
+  VerificationContext validateIntegrity(Insertable<LtpStatusFieldData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('code')) {
+      context.handle(
+          _codeMeta, code.isAcceptableOrUnknown(data['code']!, _codeMeta));
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+          _descriptionMeta,
+          description.isAcceptableOrUnknown(
+              data['description']!, _descriptionMeta));
+    } else if (isInserting) {
+      context.missing(_descriptionMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => const {};
+  @override
+  LtpStatusFieldData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return LtpStatusFieldData(
+      code: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}code'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      description: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}description'])!,
+    );
+  }
+
+  @override
+  $LtpStatusFieldTable createAlias(String alias) {
+    return $LtpStatusFieldTable(attachedDatabase, alias);
+  }
+}
+
+class LtpStatusFieldData extends DataClass
+    implements Insertable<LtpStatusFieldData> {
+  final String code;
+  final String name;
+  final String description;
+  const LtpStatusFieldData(
+      {required this.code, required this.name, required this.description});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['code'] = Variable<String>(code);
+    map['name'] = Variable<String>(name);
+    map['description'] = Variable<String>(description);
+    return map;
+  }
+
+  LtpStatusFieldCompanion toCompanion(bool nullToAbsent) {
+    return LtpStatusFieldCompanion(
+      code: Value(code),
+      name: Value(name),
+      description: Value(description),
+    );
+  }
+
+  factory LtpStatusFieldData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return LtpStatusFieldData(
+      code: serializer.fromJson<String>(json['code']),
+      name: serializer.fromJson<String>(json['name']),
+      description: serializer.fromJson<String>(json['description']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'code': serializer.toJson<String>(code),
+      'name': serializer.toJson<String>(name),
+      'description': serializer.toJson<String>(description),
+    };
+  }
+
+  LtpStatusFieldData copyWith(
+          {String? code, String? name, String? description}) =>
+      LtpStatusFieldData(
+        code: code ?? this.code,
+        name: name ?? this.name,
+        description: description ?? this.description,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('LtpStatusFieldData(')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('description: $description')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(code, name, description);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is LtpStatusFieldData &&
+          other.code == this.code &&
+          other.name == this.name &&
+          other.description == this.description);
+}
+
+class LtpStatusFieldCompanion extends UpdateCompanion<LtpStatusFieldData> {
+  final Value<String> code;
+  final Value<String> name;
+  final Value<String> description;
+  final Value<int> rowid;
+  const LtpStatusFieldCompanion({
+    this.code = const Value.absent(),
+    this.name = const Value.absent(),
+    this.description = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  LtpStatusFieldCompanion.insert({
+    required String code,
+    required String name,
+    required String description,
+    this.rowid = const Value.absent(),
+  })  : code = Value(code),
+        name = Value(name),
+        description = Value(description);
+  static Insertable<LtpStatusFieldData> custom({
+    Expression<String>? code,
+    Expression<String>? name,
+    Expression<String>? description,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (code != null) 'code': code,
+      if (name != null) 'name': name,
+      if (description != null) 'description': description,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  LtpStatusFieldCompanion copyWith(
+      {Value<String>? code,
+      Value<String>? name,
+      Value<String>? description,
+      Value<int>? rowid}) {
+    return LtpStatusFieldCompanion(
+      code: code ?? this.code,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (code.present) {
+      map['code'] = Variable<String>(code.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LtpStatusFieldCompanion(')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('description: $description, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $LtpGenusTable extends LtpGenus
+    with TableInfo<$LtpGenusTable, LtpGenusData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LtpGenusTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _genusLatinNameMeta =
+      const VerificationMeta('genusLatinName');
+  @override
+  late final GeneratedColumn<String> genusLatinName = GeneratedColumn<String>(
+      'genus_latin_name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _speciesLatinNameMeta =
+      const VerificationMeta('speciesLatinName');
+  @override
+  late final GeneratedColumn<String> speciesLatinName = GeneratedColumn<String>(
+      'species_latin_name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _varietyLatinNameMeta =
+      const VerificationMeta('varietyLatinName');
+  @override
+  late final GeneratedColumn<String> varietyLatinName = GeneratedColumn<String>(
+      'variety_latin_name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _genusCodeMeta =
+      const VerificationMeta('genusCode');
+  @override
+  late final GeneratedColumn<String> genusCode = GeneratedColumn<String>(
+      'genus_code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _speciesCodeMeta =
+      const VerificationMeta('speciesCode');
+  @override
+  late final GeneratedColumn<String> speciesCode = GeneratedColumn<String>(
+      'species_code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _varietyCodeMeta =
+      const VerificationMeta('varietyCode');
+  @override
+  late final GeneratedColumn<String> varietyCode = GeneratedColumn<String>(
+      'variety_code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [
+        genusLatinName,
+        speciesLatinName,
+        varietyLatinName,
+        genusCode,
+        speciesCode,
+        varietyCode
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'ltp_genus';
+  @override
+  VerificationContext validateIntegrity(Insertable<LtpGenusData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('genus_latin_name')) {
+      context.handle(
+          _genusLatinNameMeta,
+          genusLatinName.isAcceptableOrUnknown(
+              data['genus_latin_name']!, _genusLatinNameMeta));
+    } else if (isInserting) {
+      context.missing(_genusLatinNameMeta);
+    }
+    if (data.containsKey('species_latin_name')) {
+      context.handle(
+          _speciesLatinNameMeta,
+          speciesLatinName.isAcceptableOrUnknown(
+              data['species_latin_name']!, _speciesLatinNameMeta));
+    } else if (isInserting) {
+      context.missing(_speciesLatinNameMeta);
+    }
+    if (data.containsKey('variety_latin_name')) {
+      context.handle(
+          _varietyLatinNameMeta,
+          varietyLatinName.isAcceptableOrUnknown(
+              data['variety_latin_name']!, _varietyLatinNameMeta));
+    } else if (isInserting) {
+      context.missing(_varietyLatinNameMeta);
+    }
+    if (data.containsKey('genus_code')) {
+      context.handle(_genusCodeMeta,
+          genusCode.isAcceptableOrUnknown(data['genus_code']!, _genusCodeMeta));
+    } else if (isInserting) {
+      context.missing(_genusCodeMeta);
+    }
+    if (data.containsKey('species_code')) {
+      context.handle(
+          _speciesCodeMeta,
+          speciesCode.isAcceptableOrUnknown(
+              data['species_code']!, _speciesCodeMeta));
+    } else if (isInserting) {
+      context.missing(_speciesCodeMeta);
+    }
+    if (data.containsKey('variety_code')) {
+      context.handle(
+          _varietyCodeMeta,
+          varietyCode.isAcceptableOrUnknown(
+              data['variety_code']!, _varietyCodeMeta));
+    } else if (isInserting) {
+      context.missing(_varietyCodeMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => const {};
+  @override
+  LtpGenusData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return LtpGenusData(
+      genusLatinName: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}genus_latin_name'])!,
+      speciesLatinName: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}species_latin_name'])!,
+      varietyLatinName: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}variety_latin_name'])!,
+      genusCode: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}genus_code'])!,
+      speciesCode: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}species_code'])!,
+      varietyCode: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}variety_code'])!,
+    );
+  }
+
+  @override
+  $LtpGenusTable createAlias(String alias) {
+    return $LtpGenusTable(attachedDatabase, alias);
+  }
+}
+
+class LtpGenusData extends DataClass implements Insertable<LtpGenusData> {
+  final String genusLatinName;
+  final String speciesLatinName;
+  final String varietyLatinName;
+  final String genusCode;
+  final String speciesCode;
+  final String varietyCode;
+  const LtpGenusData(
+      {required this.genusLatinName,
+      required this.speciesLatinName,
+      required this.varietyLatinName,
+      required this.genusCode,
+      required this.speciesCode,
+      required this.varietyCode});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['genus_latin_name'] = Variable<String>(genusLatinName);
+    map['species_latin_name'] = Variable<String>(speciesLatinName);
+    map['variety_latin_name'] = Variable<String>(varietyLatinName);
+    map['genus_code'] = Variable<String>(genusCode);
+    map['species_code'] = Variable<String>(speciesCode);
+    map['variety_code'] = Variable<String>(varietyCode);
+    return map;
+  }
+
+  LtpGenusCompanion toCompanion(bool nullToAbsent) {
+    return LtpGenusCompanion(
+      genusLatinName: Value(genusLatinName),
+      speciesLatinName: Value(speciesLatinName),
+      varietyLatinName: Value(varietyLatinName),
+      genusCode: Value(genusCode),
+      speciesCode: Value(speciesCode),
+      varietyCode: Value(varietyCode),
+    );
+  }
+
+  factory LtpGenusData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return LtpGenusData(
+      genusLatinName: serializer.fromJson<String>(json['genusLatinName']),
+      speciesLatinName: serializer.fromJson<String>(json['speciesLatinName']),
+      varietyLatinName: serializer.fromJson<String>(json['varietyLatinName']),
+      genusCode: serializer.fromJson<String>(json['genusCode']),
+      speciesCode: serializer.fromJson<String>(json['speciesCode']),
+      varietyCode: serializer.fromJson<String>(json['varietyCode']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'genusLatinName': serializer.toJson<String>(genusLatinName),
+      'speciesLatinName': serializer.toJson<String>(speciesLatinName),
+      'varietyLatinName': serializer.toJson<String>(varietyLatinName),
+      'genusCode': serializer.toJson<String>(genusCode),
+      'speciesCode': serializer.toJson<String>(speciesCode),
+      'varietyCode': serializer.toJson<String>(varietyCode),
+    };
+  }
+
+  LtpGenusData copyWith(
+          {String? genusLatinName,
+          String? speciesLatinName,
+          String? varietyLatinName,
+          String? genusCode,
+          String? speciesCode,
+          String? varietyCode}) =>
+      LtpGenusData(
+        genusLatinName: genusLatinName ?? this.genusLatinName,
+        speciesLatinName: speciesLatinName ?? this.speciesLatinName,
+        varietyLatinName: varietyLatinName ?? this.varietyLatinName,
+        genusCode: genusCode ?? this.genusCode,
+        speciesCode: speciesCode ?? this.speciesCode,
+        varietyCode: varietyCode ?? this.varietyCode,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('LtpGenusData(')
+          ..write('genusLatinName: $genusLatinName, ')
+          ..write('speciesLatinName: $speciesLatinName, ')
+          ..write('varietyLatinName: $varietyLatinName, ')
+          ..write('genusCode: $genusCode, ')
+          ..write('speciesCode: $speciesCode, ')
+          ..write('varietyCode: $varietyCode')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(genusLatinName, speciesLatinName,
+      varietyLatinName, genusCode, speciesCode, varietyCode);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is LtpGenusData &&
+          other.genusLatinName == this.genusLatinName &&
+          other.speciesLatinName == this.speciesLatinName &&
+          other.varietyLatinName == this.varietyLatinName &&
+          other.genusCode == this.genusCode &&
+          other.speciesCode == this.speciesCode &&
+          other.varietyCode == this.varietyCode);
+}
+
+class LtpGenusCompanion extends UpdateCompanion<LtpGenusData> {
+  final Value<String> genusLatinName;
+  final Value<String> speciesLatinName;
+  final Value<String> varietyLatinName;
+  final Value<String> genusCode;
+  final Value<String> speciesCode;
+  final Value<String> varietyCode;
+  final Value<int> rowid;
+  const LtpGenusCompanion({
+    this.genusLatinName = const Value.absent(),
+    this.speciesLatinName = const Value.absent(),
+    this.varietyLatinName = const Value.absent(),
+    this.genusCode = const Value.absent(),
+    this.speciesCode = const Value.absent(),
+    this.varietyCode = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  LtpGenusCompanion.insert({
+    required String genusLatinName,
+    required String speciesLatinName,
+    required String varietyLatinName,
+    required String genusCode,
+    required String speciesCode,
+    required String varietyCode,
+    this.rowid = const Value.absent(),
+  })  : genusLatinName = Value(genusLatinName),
+        speciesLatinName = Value(speciesLatinName),
+        varietyLatinName = Value(varietyLatinName),
+        genusCode = Value(genusCode),
+        speciesCode = Value(speciesCode),
+        varietyCode = Value(varietyCode);
+  static Insertable<LtpGenusData> custom({
+    Expression<String>? genusLatinName,
+    Expression<String>? speciesLatinName,
+    Expression<String>? varietyLatinName,
+    Expression<String>? genusCode,
+    Expression<String>? speciesCode,
+    Expression<String>? varietyCode,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (genusLatinName != null) 'genus_latin_name': genusLatinName,
+      if (speciesLatinName != null) 'species_latin_name': speciesLatinName,
+      if (varietyLatinName != null) 'variety_latin_name': varietyLatinName,
+      if (genusCode != null) 'genus_code': genusCode,
+      if (speciesCode != null) 'species_code': speciesCode,
+      if (varietyCode != null) 'variety_code': varietyCode,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  LtpGenusCompanion copyWith(
+      {Value<String>? genusLatinName,
+      Value<String>? speciesLatinName,
+      Value<String>? varietyLatinName,
+      Value<String>? genusCode,
+      Value<String>? speciesCode,
+      Value<String>? varietyCode,
+      Value<int>? rowid}) {
+    return LtpGenusCompanion(
+      genusLatinName: genusLatinName ?? this.genusLatinName,
+      speciesLatinName: speciesLatinName ?? this.speciesLatinName,
+      varietyLatinName: varietyLatinName ?? this.varietyLatinName,
+      genusCode: genusCode ?? this.genusCode,
+      speciesCode: speciesCode ?? this.speciesCode,
+      varietyCode: varietyCode ?? this.varietyCode,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (genusLatinName.present) {
+      map['genus_latin_name'] = Variable<String>(genusLatinName.value);
+    }
+    if (speciesLatinName.present) {
+      map['species_latin_name'] = Variable<String>(speciesLatinName.value);
+    }
+    if (varietyLatinName.present) {
+      map['variety_latin_name'] = Variable<String>(varietyLatinName.value);
+    }
+    if (genusCode.present) {
+      map['genus_code'] = Variable<String>(genusCode.value);
+    }
+    if (speciesCode.present) {
+      map['species_code'] = Variable<String>(speciesCode.value);
+    }
+    if (varietyCode.present) {
+      map['variety_code'] = Variable<String>(varietyCode.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LtpGenusCompanion(')
+          ..write('genusLatinName: $genusLatinName, ')
+          ..write('speciesLatinName: $speciesLatinName, ')
+          ..write('varietyLatinName: $varietyLatinName, ')
+          ..write('genusCode: $genusCode, ')
+          ..write('speciesCode: $speciesCode, ')
+          ..write('varietyCode: $varietyCode, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $SurveyHeadersTable extends SurveyHeaders
     with TableInfo<$SurveyHeadersTable, SurveyHeader> {
   @override
@@ -18911,6 +19676,10 @@ abstract class _$Database extends GeneratedDatabase {
       $StumpOrigPlotAreaTable(this);
   late final $LtpPlotTypeTable ltpPlotType = $LtpPlotTypeTable(this);
   late final $LtpPlotSplitTable ltpPlotSplit = $LtpPlotSplitTable(this);
+  late final $LtpOrigPlotAreaTable ltpOrigPlotArea =
+      $LtpOrigPlotAreaTable(this);
+  late final $LtpStatusFieldTable ltpStatusField = $LtpStatusFieldTable(this);
+  late final $LtpGenusTable ltpGenus = $LtpGenusTable(this);
   late final $SurveyHeadersTable surveyHeaders = $SurveyHeadersTable(this);
   late final $MetaCommentTable metaComment = $MetaCommentTable(this);
   late final $SurveySummaryTable surveySummary = $SurveySummaryTable(this);
@@ -19000,6 +19769,9 @@ abstract class _$Database extends GeneratedDatabase {
         stumpOrigPlotArea,
         ltpPlotType,
         ltpPlotSplit,
+        ltpOrigPlotArea,
+        ltpStatusField,
+        ltpGenus,
         surveyHeaders,
         metaComment,
         surveySummary,

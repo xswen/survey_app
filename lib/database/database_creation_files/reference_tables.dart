@@ -187,6 +187,16 @@ class StumpOrigPlotArea extends Table {
 }
 
 //LTP
+@DataClassName("LtpGenusData")
+class LtpGenus extends Table {
+  TextColumn get genusLatinName => text()();
+  TextColumn get speciesLatinName => text()();
+  TextColumn get varietyLatinName => text()();
+  TextColumn get genusCode => text()();
+  TextColumn get speciesCode => text()();
+  TextColumn get varietyCode => text()();
+}
+
 class LtpPlotType extends Table {
   TextColumn get code => text()();
   TextColumn get name => text()();
@@ -195,4 +205,15 @@ class LtpPlotType extends Table {
 class LtpPlotSplit extends Table {
   TextColumn get code => text()();
   TextColumn get name => text()();
+}
+
+class LtpOrigPlotArea extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class LtpStatusField extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+  TextColumn get description => text()();
 }

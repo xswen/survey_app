@@ -43,4 +43,7 @@ mixin _$ReferenceTablesDaoMixin on DatabaseAccessor<Database> {
       attachedDatabase.stumpOrigPlotArea;
   $LtpPlotTypeTable get ltpPlotType => attachedDatabase.ltpPlotType;
   $LtpPlotSplitTable get ltpPlotSplit => attachedDatabase.ltpPlotSplit;
+  $LtpOrigPlotAreaTable get ltpOrigPlotArea => attachedDatabase.ltpOrigPlotArea;
+  $LtpStatusFieldTable get ltpStatusField => attachedDatabase.ltpStatusField;
+  $LtpGenusTable get ltpGenus => attachedDatabase.ltpGenus;
 }
