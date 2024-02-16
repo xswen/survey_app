@@ -46,4 +46,14 @@ mixin _$ReferenceTablesDaoMixin on DatabaseAccessor<Database> {
   $LtpOrigPlotAreaTable get ltpOrigPlotArea => attachedDatabase.ltpOrigPlotArea;
   $LtpStatusFieldTable get ltpStatusField => attachedDatabase.ltpStatusField;
   $LtpGenusTable get ltpGenus => attachedDatabase.ltpGenus;
+  $LtpCrownClassFieldTable get ltpCrownClassField =>
+      attachedDatabase.ltpCrownClassField;
+  $LtpBarkConditionTable get ltpBarkCondition =>
+      attachedDatabase.ltpBarkCondition;
+  $LtpCrownConditionTable get ltpCrownCondition =>
+      attachedDatabase.ltpCrownCondition;
+  $LtpStemConditionTable get ltpStemCondition =>
+      attachedDatabase.ltpStemCondition;
+  $LtpWoodConditionTable get ltpWoodCondition =>
+      attachedDatabase.ltpWoodCondition;
 }

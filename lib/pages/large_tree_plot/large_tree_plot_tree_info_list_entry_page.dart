@@ -6,6 +6,7 @@ import 'package:survey_app/widgets/builders/ltp_variety_select_builder.dart';
 
 import '../../formatters/thousands_formatter.dart';
 import '../../widgets/builders/reference_name_select_builder.dart';
+import '../../widgets/buttons/save_entry_button.dart';
 import '../../widgets/checkbox/hide_info_checkbox.dart';
 import '../../widgets/data_input/data_input.dart';
 import '../../widgets/dropdowns/drop_down_default.dart';
@@ -125,6 +126,7 @@ class LargeTreePlotTreeInfoListEntryPageState
             ),
             ReferenceNameSelectBuilder(
               title: "Original plot area",
+              defaultSelectedValue: "Please select original plot area",
               name: db.referenceTablesDao.getLtpOrigPlotAreaName(""),
               asyncListFn: db.referenceTablesDao.getLtpOrigPlotAreaList,
               enabled: true,
@@ -164,6 +166,7 @@ class LargeTreePlotTreeInfoListEntryPageState
                 }),
             ReferenceNameSelectBuilder(
               title: "Tree status",
+              defaultSelectedValue: "Please select tree status",
               name: db.referenceTablesDao.getLtpStatusFieldName(""),
               asyncListFn: db.referenceTablesDao.getLtpStatusFieldList,
               enabled: true,
@@ -316,13 +319,19 @@ class LargeTreePlotTreeInfoListEntryPageState
                     }),
               ],
             ),
-            DropDownDefault(
-                title: "Crown class",
-                onChangedFn: (s) {},
-                itemsList: const ["D", "C", "I", "S", "V", "N", "M"],
-                selectedItem: "Please select tree status"),
+            ReferenceNameSelectBuilder(
+              title: "Crown class",
+              defaultSelectedValue: "Please select crown class",
+              name: db.referenceTablesDao.getLtpCrownClassFieldName(""),
+              asyncListFn: db.referenceTablesDao.getLtpCrownClassFieldList,
+              enabled: true,
+              onChange: (s) => db.referenceTablesDao
+                  .getLtpCrownClassFieldCode(s)
+                  .then((value) => setState(() => null)),
+            ),
             ReferenceNameSelectBuilder(
               title: "Tree status",
+              defaultSelectedValue: "Please select tree status",
               name: db.referenceTablesDao.getLtpStatusFieldName(""),
               asyncListFn: db.referenceTablesDao.getLtpStatusFieldList,
               enabled: true,
@@ -402,36 +411,47 @@ class LargeTreePlotTreeInfoListEntryPageState
               title: "Condition",
               fontSize: 20,
             ),
-            DropDownDefault(
-                title: "Stem condition",
-                onChangedFn: (s) {},
-                itemsList: const ["B", "I", "M"],
-                selectedItem: "Please select tree status"),
-            DropDownDefault(
-                title: "Crown condition",
-                onChangedFn: (s) {},
-                itemsList: const ["1", "2", "3", "4", "5", "6", "Missing"],
-                selectedItem: "Please select tree status"),
-            DropDownDefault(
-                title: "Bark condition",
-                onChangedFn: (s) {},
-                itemsList: const ["1", "2", "3", "4", "5", "6", "7", "Missing"],
-                selectedItem: "Please select tree status"),
-            DropDownDefault(
-                title: "Wood condition",
-                onChangedFn: (s) {},
-                itemsList: const [
-                  "1",
-                  "2",
-                  "3",
-                  "4",
-                  "5",
-                  "6",
-                  "7",
-                  "8",
-                  "Missing"
-                ],
-                selectedItem: "Please select tree status"),
+            ReferenceNameSelectBuilder(
+              title: "Stem condition",
+              defaultSelectedValue: "Please select stem condition",
+              name: db.referenceTablesDao.getLtpStemConditionName(""),
+              asyncListFn: db.referenceTablesDao.getLtpStemConditionList,
+              enabled: true,
+              onChange: (s) => db.referenceTablesDao
+                  .getLtpStemConditionCode(s)
+                  .then((value) => setState(() => null)),
+            ),
+            ReferenceNameSelectBuilder(
+              title: "Crown condition",
+              defaultSelectedValue: "Please select crown condition",
+              name: db.referenceTablesDao.getLtpCrownConditionName(""),
+              asyncListFn: db.referenceTablesDao.getLtpCrownConditionList,
+              enabled: true,
+              onChange: (s) => db.referenceTablesDao
+                  .getLtpCrownConditionCode(s)
+                  .then((value) => setState(() => null)),
+            ),
+            ReferenceNameSelectBuilder(
+              title: "Bark condition",
+              defaultSelectedValue: "Please select bark condition",
+              name: db.referenceTablesDao.getLtpBarkConditionName(""),
+              asyncListFn: db.referenceTablesDao.getLtpBarkConditionList,
+              enabled: true,
+              onChange: (s) => db.referenceTablesDao
+                  .getLtpWoodConditionCode(s)
+                  .then((value) => setState(() => null)),
+            ),
+
+            ReferenceNameSelectBuilder(
+              title: "Wood Condition",
+              defaultSelectedValue: "Please select wood condition",
+              name: db.referenceTablesDao.getLtpWoodConditionName(""),
+              asyncListFn: db.referenceTablesDao.getLtpBarkConditionList,
+              enabled: true,
+              onChange: (s) => db.referenceTablesDao
+                  .getLtpWoodConditionCode(s)
+                  .then((value) => setState(() => null)),
+            ),
             const SizedBox(height: kPaddingV * 2),
             const TextHeaderSeparator(
               title: "Stem Mapping",
@@ -503,44 +523,38 @@ class LargeTreePlotTreeInfoListEntryPageState
             Text("TO ADD"),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: kPaddingV * 2),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                      onPressed: () => null, //handleSubmit(goToHorizonPage),
-                      child: const Text("Save and return")),
-                  ElevatedButton(
-                      onPressed: () =>
-                          null, //handleSubmit(goToNewHorizonEntry),
-                      child: const Text("Save and add new tree")),
-                ],
+              child: SaveEntryButton(
+                saveRetFn: () => null,
+                saveAndAddFn: () => null,
+                delVisible: true,
+                deleteFn: () => Popups.show(
+                  context,
+                  PopupContinue("Warning: Deleting Large Tree Plot Feature",
+                      contentText: "You are about to delete this feature. "
+                          "Are you sure you want to continue?",
+                      rightBtnOnPressed: () {
+                    //close popup
+                    context.pop();
+                    // context.pushNamed(DeletePage.routeName, extra: {
+                    //         rightBtnOnPressed: () {
+                    //           //close popup
+                    //           context.pop();
+                    //           context.pushNamed(DeletePage.routeName, extra: {
+                    //             DeletePage.keyObjectName:
+                    //             "Soil Pit Feature: ${horizon.toString()}",
+                    //             DeletePage.keyDeleteFn: () {
+                    //               (db.delete(db.soilPitHorizonDescription)
+                    //                 ..where(
+                    //                         (tbl) => tbl.id.equals(horizon.id.value)))
+                    //                   .go()
+                    //                   .then((value) => goToHorizonPage());
+                    //             },
+                    //           });
+                    //         }),
+                  }),
+                ),
               ),
             ),
-            // horizon.id != const d.Value.absent()
-            //     ? DeleteButton(
-            //   delete: () => Popups.show(
-            //     context,
-            //     PopupContinue("Warning: Deleting Soil Pit Feature",
-            //         contentText: "You are about to delete this feature. "
-            //             "Are you sure you want to continue?",
-            //         rightBtnOnPressed: () {
-            //           //close popup
-            //           context.pop();
-            //           context.pushNamed(DeletePage.routeName, extra: {
-            //             DeletePage.keyObjectName:
-            //             "Soil Pit Feature: ${horizon.toString()}",
-            //             DeletePage.keyDeleteFn: () {
-            //               (db.delete(db.soilPitHorizonDescription)
-            //                 ..where(
-            //                         (tbl) => tbl.id.equals(horizon.id.value)))
-            //                   .go()
-            //                   .then((value) => goToHorizonPage());
-            //             },
-            //           });
-            //         }),
-            //   ),
-            // )
-            //     : Container()
           ]),
         ),
       ),

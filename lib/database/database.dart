@@ -65,6 +65,11 @@ const List<Type> _tables = [
   LtpOrigPlotArea,
   LtpStatusField,
   LtpGenus,
+  LtpCrownClassField,
+  LtpBarkCondition,
+  LtpCrownCondition,
+  LtpStemCondition,
+  LtpWoodCondition,
   //Metadata Tables
   MetaComment,
   //Survey Tables
@@ -223,6 +228,16 @@ class Database extends _$Database {
           List<LtpOrigPlotAreaCompanion> ltpOrigPlotList =
               await _getLtpOrigPlotArea();
           List<LtpStatusFieldCompanion> ltpStatusList = await _getLtpStatus();
+          List<LtpCrownClassFieldCompanion> ltpCrownClassList =
+              await _getLtpCrownClass();
+          List<LtpBarkConditionCompanion> ltpBarkConditionList =
+              await _getLtpBarkCondition();
+          List<LtpCrownConditionCompanion> ltpCrownConditionList =
+              await _getLtpCrownCondition();
+          List<LtpStemConditionCompanion> ltpStemConditionList =
+              await _getLtpStemCondition();
+          List<LtpWoodConditionCompanion> ltpWoodConditionList =
+              await _getLtpWoodCondition();
 
           c.debugPrint("Init Values");
           await batch((b) {
@@ -265,6 +280,11 @@ class Database extends _$Database {
             b.insertAll(ltpGenus, ltpGenusList);
             b.insertAll(ltpOrigPlotArea, ltpOrigPlotList);
             b.insertAll(ltpStatusField, ltpStatusList);
+            b.insertAll(ltpCrownClassField, ltpCrownClassList);
+            b.insertAll(ltpBarkCondition, ltpBarkConditionList);
+            b.insertAll(ltpCrownCondition, ltpCrownConditionList);
+            b.insertAll(ltpStemCondition, ltpStemConditionList);
+            b.insertAll(ltpWoodCondition, ltpWoodConditionList);
 
             _initTest(b);
           });
@@ -687,6 +707,61 @@ class Database extends _$Database {
         code: Value(item["code"]),
         name: Value(item["name"]),
         description: Value(item["description"]),
+      );
+    }).toList();
+  }
+
+  Future<List<LtpCrownClassFieldCompanion>> _getLtpCrownClass() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/ltp_crown_class_list.json');
+    return jsonData.map((dynamic item) {
+      return LtpCrownClassFieldCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<LtpBarkConditionCompanion>> _getLtpBarkCondition() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/ltp_bark_condition_list.json');
+    return jsonData.map((dynamic item) {
+      return LtpBarkConditionCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<LtpCrownConditionCompanion>> _getLtpCrownCondition() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/ltp_crown_condition_list.json');
+    return jsonData.map((dynamic item) {
+      return LtpCrownConditionCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<LtpStemConditionCompanion>> _getLtpStemCondition() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/ltp_stem_condition_list.json');
+    return jsonData.map((dynamic item) {
+      return LtpStemConditionCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<LtpWoodConditionCompanion>> _getLtpWoodCondition() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/ltp_wood_condition_list.json');
+    return jsonData.map((dynamic item) {
+      return LtpWoodConditionCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
       );
     }).toList();
   }

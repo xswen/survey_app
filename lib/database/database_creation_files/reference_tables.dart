@@ -218,7 +218,27 @@ class LtpStatusField extends Table {
   TextColumn get description => text()();
 }
 
-class LtpCrownClass extends Table {
+class LtpCrownClassField extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class LtpBarkCondition extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class LtpCrownCondition extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class LtpStemCondition extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class LtpWoodCondition extends Table {
   TextColumn get code => text()();
   TextColumn get name => text()();
 }
