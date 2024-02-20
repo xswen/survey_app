@@ -894,7 +894,7 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
 
   Future<String> getLtpOrigPlotAreaName(String code) async {
     if (code.isEmpty) return "";
-
+  
     return (select(ltpOrigPlotArea)..where((tbl) => tbl.code.equals(code)))
         .map((row) => row.name)
         .getSingle();
@@ -1054,7 +1054,7 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
 
   Future<String> getLtpCrownClassFieldName(String code) async {
     if (code.isEmpty) return "";
-
+  
     return (select(ltpCrownClassField)..where((tbl) => tbl.code.equals(code)))
         .map((row) => row.name)
         .getSingle();
@@ -1102,7 +1102,7 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
 
   Future<String> getLtpCrownConditionName(String code) async {
     if (code.isEmpty) return "";
-
+  
     return (select(ltpCrownCondition)..where((tbl) => tbl.code.equals(code)))
         .map((row) => row.name)
         .getSingle();

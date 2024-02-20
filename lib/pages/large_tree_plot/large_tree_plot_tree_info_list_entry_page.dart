@@ -508,6 +508,7 @@ class LargeTreePlotTreeInfoListEntryPageState
                           } else if (double.parse(s) < 0.1 ||
                               double.parse(s) > 99.9) {
                             return "Dbh must be between 0.1 and 99.9cm";
+
                           }
                           return null;
                         }),
