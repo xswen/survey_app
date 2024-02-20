@@ -481,7 +481,7 @@ class LargeTreePlotTreeInfoListEntryPageState
                             return "Can't be left empty";
                           } else if (double.parse(s) < 0 ||
                               double.parse(s) > 360) {
-                            return "Dbh must be between 0.1 and 999.9cm";
+                            return "Dbh must be between 0$kDegreeSign and 360$kDegreeSign";
                           }
                           return null;
                         }),
@@ -494,7 +494,7 @@ class LargeTreePlotTreeInfoListEntryPageState
                             decimal: true),
                         startingStr: "",
                         inputFormatters: [
-                          LengthLimitingTextInputFormatter(4),
+                          LengthLimitingTextInputFormatter(5),
                           ThousandsFormatter(
                               allowFraction: true,
                               decimalPlaces: 1,
@@ -507,7 +507,7 @@ class LargeTreePlotTreeInfoListEntryPageState
                             return "Can't be left empty";
                           } else if (double.parse(s) < 0.1 ||
                               double.parse(s) > 99.9) {
-                            return "Dbh must be between 0.1 and 999.9cm";
+                            return "Dbh must be between 0.1 and 99.9cm";
                           }
                           return null;
                         }),

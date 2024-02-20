@@ -412,11 +412,14 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
         .get();
   }
 
-  Future<String> getSoilDepositionName(String code) =>
-      (select(soilDeposition, distinct: true)
-            ..where((tbl) => tbl.code.equals(code)))
-          .map((row) => row.name)
-          .getSingle();
+  Future<String> getSoilDepositionName(String code) async {
+    if (code.isEmpty) return "";
+
+    return (select(soilDeposition, distinct: true)
+          ..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
 
   Future<String> getSoilDepositionCode(String name) =>
       (select(soilDeposition, distinct: true)
@@ -434,11 +437,14 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
         .get();
   }
 
-  Future<String> getSoilHumusFormName(String code) =>
-      (select(soilHumusForm, distinct: true)
-            ..where((tbl) => tbl.code.equals(code)))
-          .map((row) => row.name)
-          .getSingle();
+  Future<String> getSoilHumusFormName(String code) async {
+    if (code.isEmpty) return "";
+
+    return (select(soilHumusForm, distinct: true)
+          ..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
 
   Future<String> getSoilHumusFormCode(String name) =>
       (select(soilHumusForm, distinct: true)
@@ -456,11 +462,14 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
         .get();
   }
 
-  Future<String> getSoilPitCodeName(String code) =>
-      (select(soilPitCode, distinct: true)
-            ..where((tbl) => tbl.code.equals(code)))
-          .map((row) => row.name)
-          .getSingle();
+  Future<String> getSoilPitCodeName(String code) async {
+    if (code.isEmpty) return "";
+
+    return (select(soilPitCode, distinct: true)
+          ..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
 
   Future<String> getSoilPitCodeCode(String name) =>
       (select(soilPitCode, distinct: true)
@@ -479,11 +488,14 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
         .get();
   }
 
-  Future<String> getSoilPitFeatureClassName(String code) =>
-      (select(soilPitFeatureClass, distinct: true)
-            ..where((tbl) => tbl.code.equals(code)))
-          .map((row) => row.name)
-          .getSingle();
+  Future<String> getSoilPitFeatureClassName(String code) async {
+    if (code.isEmpty) return "";
+
+    return (select(soilPitFeatureClass, distinct: true)
+          ..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
 
   Future<String> getSoilPitFeatureClassCode(String name) =>
       (select(soilPitFeatureClass, distinct: true)
@@ -502,11 +514,14 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
         .get();
   }
 
-  Future<String> getSoilHorizonDesignationName(String code) =>
-      (select(soilHorizonDesignation, distinct: true)
-            ..where((tbl) => tbl.code.equals(code)))
-          .map((row) => row.name)
-          .getSingle();
+  Future<String> getSoilHorizonDesignationName(String code) async {
+    if (code.isEmpty) return "";
+
+    return (select(soilHorizonDesignation, distinct: true)
+          ..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
 
   Future<String> getSoilHorizonDesignationCode(String name) =>
       (select(soilHorizonDesignation, distinct: true)
@@ -524,10 +539,14 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
         .get();
   }
 
-  Future<String> getSoilColorName(String code) =>
-      (select(soilColor, distinct: true)..where((tbl) => tbl.code.equals(code)))
-          .map((row) => row.name)
-          .getSingle();
+  Future<String> getSoilColorName(String code) async {
+    if (code.isEmpty) return "";
+
+    return (select(soilColor, distinct: true)
+          ..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
 
   Future<String> getSoilColorCode(String name) =>
       (select(soilColor, distinct: true)..where((tbl) => tbl.name.equals(name)))
@@ -544,11 +563,14 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
         .get();
   }
 
-  Future<String> getSoilTextureName(String code) =>
-      (select(soilTexture, distinct: true)
-            ..where((tbl) => tbl.code.equals(code)))
-          .map((row) => row.name)
-          .getSingle();
+  Future<String> getSoilTextureName(String code) async {
+    if (code.isEmpty) return "";
+
+    return (select(soilTexture, distinct: true)
+          ..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
 
   Future<String> getSoilTextureCode(String name) =>
       (select(soilTexture, distinct: true)
@@ -567,10 +589,14 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
         .get();
   }
 
-  Future<String> getStpTypeName(String code) =>
-      (select(stpType, distinct: true)..where((tbl) => tbl.code.equals(code)))
-          .map((row) => row.name)
-          .getSingle();
+  Future<String> getStpTypeName(String code) async {
+    if (code.isEmpty) return "";
+
+    return (select(stpType, distinct: true)
+          ..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
 
   Future<String> getStpTypeCode(String name) =>
       (select(stpType, distinct: true)..where((tbl) => tbl.name.equals(name)))
@@ -587,11 +613,14 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
         .get();
   }
 
-  Future<String> getStpOrigAreaName(String code) =>
-      (select(stpOrigPlotArea, distinct: true)
-            ..where((tbl) => tbl.code.equals(code)))
-          .map((row) => row.name)
-          .getSingle();
+  Future<String> getStpOrigAreaName(String code) async {
+    if (code.isEmpty) return "";
+
+    return (select(stpOrigPlotArea, distinct: true)
+          ..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
 
   Future<String> getStpOrigAreaCode(String name) =>
       (select(stpOrigPlotArea, distinct: true)
@@ -609,11 +638,14 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
         .get();
   }
 
-  Future<String> getStpStatusName(String code) =>
-      (select(stpStatusField, distinct: true)
-            ..where((tbl) => tbl.code.equals(code)))
-          .map((row) => row.name)
-          .getSingle();
+  Future<String> getStpStatusName(String code) async {
+    if (code.isEmpty) return "";
+
+    return (select(stpStatusField, distinct: true)
+          ..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
 
   Future<String> getStpStatusCode(String name) =>
       (select(stpStatusField, distinct: true)
@@ -631,10 +663,14 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
         .get();
   }
 
-  Future<String> getStpHeightName(String code) =>
-      (select(stpHeight, distinct: true)..where((tbl) => tbl.code.equals(code)))
-          .map((row) => row.name)
-          .getSingle();
+  Future<String> getStpHeightName(String code) async {
+    if (code.isEmpty) return "";
+
+    return (select(stpHeight, distinct: true)
+          ..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
 
   Future<String> getStpHeightCode(String name) =>
       (select(stpHeight, distinct: true)..where((tbl) => tbl.name.equals(name)))
@@ -652,11 +688,14 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
         .get();
   }
 
-  Future<String> getStpStemConditionName(String code) =>
-      (select(stpStemCondition, distinct: true)
-            ..where((tbl) => tbl.code.equals(code)))
-          .map((row) => row.name)
-          .getSingle();
+  Future<String> getStpStemConditionName(String code) async {
+    if (code.isEmpty) return "";
+
+    return (select(stpStemCondition, distinct: true)
+          ..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
 
   Future<String> getStpStemConditionCode(String name) =>
       (select(stpStemCondition, distinct: true)
@@ -674,11 +713,14 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
         .get();
   }
 
-  Future<String> getShrubPlotTypeName(String code) =>
-      (select(shrubPlotType, distinct: true)
-            ..where((tbl) => tbl.code.equals(code)))
-          .map((row) => row.name)
-          .getSingle();
+  Future<String> getShrubPlotTypeName(String code) async {
+    if (code.isEmpty) return "";
+
+    return (select(shrubPlotType, distinct: true)
+          ..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
 
   Future<String> getShrubPlotTypeCode(String name) =>
       (select(shrubPlotType, distinct: true)
@@ -697,11 +739,14 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
         .get();
   }
 
-  Future<String> getShrubStatusName(String code) =>
-      (select(shrubStatusField, distinct: true)
-            ..where((tbl) => tbl.code.equals(code)))
-          .map((row) => row.name)
-          .getSingle();
+  Future<String> getShrubStatusName(String code) async {
+    if (code.isEmpty) return "";
+
+    return (select(shrubStatusField, distinct: true)
+          ..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
 
   Future<String> getShrubStatusCode(String name) =>
       (select(shrubStatusField, distinct: true)
@@ -720,11 +765,14 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
         .get();
   }
 
-  Future<String> getShrubBasalDiameterName(String code) =>
-      (select(shrubBasalDiameter, distinct: true)
-            ..where((tbl) => tbl.code.equals(code)))
-          .map((row) => row.name)
-          .getSingle();
+  Future<String> getShrubBasalDiameterName(String code) async {
+    if (code.isEmpty) return "";
+
+    return (select(shrubBasalDiameter, distinct: true)
+          ..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
 
   Future<String> getShrubBasalDiameterCode(String name) =>
       (select(shrubBasalDiameter, distinct: true)
@@ -742,11 +790,14 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
         .get();
   }
 
-  Future<String> getStumpPlotTypeName(String code) =>
-      (select(stumpPlotType, distinct: true)
-            ..where((tbl) => tbl.code.equals(code)))
-          .map((row) => row.name)
-          .getSingle();
+  Future<String> getStumpPlotTypeName(String code) async {
+    if (code.isEmpty) return "";
+
+    return (select(stumpPlotType, distinct: true)
+          ..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
 
   Future<String> getStumpPlotTypeCode(String name) =>
       (select(stumpPlotType, distinct: true)
@@ -765,11 +816,14 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
         .get();
   }
 
-  Future<String> getStumpOrigPlotAreaName(String code) =>
-      (select(stumpOrigPlotArea, distinct: true)
-            ..where((tbl) => tbl.code.equals(code)))
-          .map((row) => row.name)
-          .getSingle();
+  Future<String> getStumpOrigPlotAreaName(String code) async {
+    if (code.isEmpty) return "";
+
+    return (select(stumpOrigPlotArea, distinct: true)
+          ..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
 
   Future<String> getStumpOrigPlotAreaCode(String name) =>
       (select(stumpOrigPlotArea, distinct: true)
@@ -788,11 +842,14 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
         .get();
   }
 
-  Future<String> getLtpPlotTypeName(String code) =>
-      (select(ltpPlotType, distinct: true)
-            ..where((tbl) => tbl.code.equals(code)))
-          .map((row) => row.name)
-          .getSingle();
+  Future<String> getLtpPlotTypeName(String code) async {
+    if (code.isEmpty) return "";
+
+    return (select(ltpPlotType, distinct: true)
+          ..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
 
   Future<String> getLtpPlotTypeCode(String name) =>
       (select(ltpPlotType, distinct: true)
@@ -810,11 +867,14 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
         .get();
   }
 
-  Future<String> getLtpPlotSplitName(String code) =>
-      (select(ltpPlotSplit, distinct: true)
-            ..where((tbl) => tbl.code.equals(code)))
-          .map((row) => row.name)
-          .getSingle();
+  Future<String> getLtpPlotSplitName(String code) async {
+    if (code.isEmpty) return "";
+
+    return (select(ltpPlotSplit, distinct: true)
+          ..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
 
   Future<String> getLtpPlotSplitCode(String name) =>
       (select(ltpPlotSplit, distinct: true)
@@ -832,7 +892,9 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
         .get();
   }
 
-  Future<String> getLtpOrigPlotAreaName(String code) {
+  Future<String> getLtpOrigPlotAreaName(String code) async {
+    if (code.isEmpty) return "";
+
     return (select(ltpOrigPlotArea)..where((tbl) => tbl.code.equals(code)))
         .map((row) => row.name)
         .getSingle();
@@ -960,7 +1022,9 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
         .get();
   }
 
-  Future<String> getLtpStatusFieldName(String code) {
+  Future<String> getLtpStatusFieldName(String code) async {
+    if (code.isEmpty) return "";
+
     return (select(ltpStatusField)..where((tbl) => tbl.code.equals(code)))
         .map((row) => row.name)
         .getSingle();
@@ -988,7 +1052,9 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
         .get();
   }
 
-  Future<String> getLtpCrownClassFieldName(String code) {
+  Future<String> getLtpCrownClassFieldName(String code) async {
+    if (code.isEmpty) return "";
+
     return (select(ltpCrownClassField)..where((tbl) => tbl.code.equals(code)))
         .map((row) => row.name)
         .getSingle();
@@ -1010,7 +1076,9 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
         .get();
   }
 
-  Future<String> getLtpBarkConditionName(String code) {
+  Future<String> getLtpBarkConditionName(String code) async {
+    if (code.isEmpty) return "";
+
     return (select(ltpBarkCondition)..where((tbl) => tbl.code.equals(code)))
         .map((row) => row.name)
         .getSingle();
@@ -1032,7 +1100,9 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
         .get();
   }
 
-  Future<String> getLtpCrownConditionName(String code) {
+  Future<String> getLtpCrownConditionName(String code) async {
+    if (code.isEmpty) return "";
+
     return (select(ltpCrownCondition)..where((tbl) => tbl.code.equals(code)))
         .map((row) => row.name)
         .getSingle();
@@ -1054,7 +1124,9 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
         .get();
   }
 
-  Future<String> getLtpStemConditionName(String code) {
+  Future<String> getLtpStemConditionName(String code) async {
+    if (code.isEmpty) return "";
+
     return (select(ltpStemCondition)..where((tbl) => tbl.code.equals(code)))
         .map((row) => row.name)
         .getSingle();
@@ -1076,7 +1148,9 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
         .get();
   }
 
-  Future<String> getLtpWoodConditionName(String code) {
+  Future<String> getLtpWoodConditionName(String code) async {
+    if (code.isEmpty) return "";
+
     return (select(ltpWoodCondition)..where((tbl) => tbl.code.equals(code)))
         .map((row) => row.name)
         .getSingle();

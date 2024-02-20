@@ -27,7 +27,7 @@ class ReferenceNameSelectBuilder extends StatelessWidget {
     return FutureBuilder(
       future: name,
       builder: (BuildContext context, AsyncSnapshot<String> name) {
-        String selectedValue = name.data ?? defaultSelectedValue;
+        String selectedValue = name.data ?? "Error loading data";
         return DropDownAsyncList(
           title: title,
           enabled: enabled,
@@ -35,7 +35,8 @@ class ReferenceNameSelectBuilder extends StatelessWidget {
               ? onChange(s!)
               : null,
           asyncItems: (s) => asyncListFn(),
-          selectedItem: selectedValue,
+          selectedItem:
+              selectedValue.isEmpty ? defaultSelectedValue : selectedValue,
         );
       },
     );
