@@ -1166,4 +1166,120 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
         .map((row) => row.code)
         .getSingle();
   }
+
+  Future<List<String>> getLtpQuadrantList() {
+    final query = selectOnly(ltpQuadrant, distinct: true)
+      ..addColumns([ltpQuadrant.name])
+      ..where(ltpQuadrant.name.isNotNull());
+    return query
+        .map((row) => row.read(ltpQuadrant.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getLtpQuadrantName(String code) {
+    if (code.isEmpty) return Future.value("");
+    return (select(ltpQuadrant)..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
+
+  Future<String> getLtpQuadrantCode(String name) {
+    return (select(ltpQuadrant)..where((tbl) => tbl.name.equals(name)))
+        .map((row) => row.code)
+        .getSingle();
+  }
+
+  Future<List<String>> getLtpTreeTypeList() {
+    final query = selectOnly(ltpTreeType, distinct: true)
+      ..addColumns([ltpTreeType.name])
+      ..where(ltpTreeType.name.isNotNull());
+    return query
+        .map((row) => row.read(ltpTreeType.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getLtpTreeTypeName(String code) {
+    if (code.isEmpty) return Future.value("");
+    return (select(ltpTreeType)..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
+
+  Future<String> getLtpTreeTypeCode(String name) {
+    return (select(ltpTreeType)..where((tbl) => tbl.name.equals(name)))
+        .map((row) => row.code)
+        .getSingle();
+  }
+
+  Future<List<String>> getLtpSiteHeightSuitabilityList() {
+    final query = selectOnly(ltpSiteHeightSuitability, distinct: true)
+      ..addColumns([ltpSiteHeightSuitability.name])
+      ..where(ltpSiteHeightSuitability.name.isNotNull());
+    return query
+        .map((row) =>
+            row.read(ltpSiteHeightSuitability.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getLtpSiteHeightSuitabilityName(String code) {
+    if (code.isEmpty) return Future.value("");
+    return (select(ltpSiteHeightSuitability)
+          ..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
+
+  Future<String> getLtpSiteHeightSuitabilityCode(String name) {
+    return (select(ltpSiteHeightSuitability)
+          ..where((tbl) => tbl.name.equals(name)))
+        .map((row) => row.code)
+        .getSingle();
+  }
+
+  Future<List<String>> getLtpSiteAgeSuitabilityList() {
+    final query = selectOnly(ltpSiteAgeSuitability, distinct: true)
+      ..addColumns([ltpSiteAgeSuitability.name])
+      ..where(ltpSiteAgeSuitability.name.isNotNull());
+    return query
+        .map((row) =>
+            row.read(ltpSiteAgeSuitability.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getLtpSiteAgeSuitabilityName(String code) {
+    if (code.isEmpty) return Future.value("");
+    return (select(ltpSiteAgeSuitability)
+          ..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
+
+  Future<String> getLtpSiteAgeSuitabilityCode(String name) {
+    return (select(ltpSiteAgeSuitability)
+          ..where((tbl) => tbl.name.equals(name)))
+        .map((row) => row.code)
+        .getSingle();
+  }
+
+  Future<List<String>> getLtpProrateList() {
+    final query = selectOnly(ltpProrate, distinct: true)
+      ..addColumns([ltpProrate.name])
+      ..where(ltpProrate.name.isNotNull());
+    return query
+        .map((row) => row.read(ltpProrate.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getLtpProrateName(String code) {
+    if (code.isEmpty) return Future.value("");
+    return (select(ltpProrate)..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
+
+  Future<String> getLtpProrateCode(String name) {
+    return (select(ltpProrate)..where((tbl) => tbl.name.equals(name)))
+        .map((row) => row.code)
+        .getSingle();
+  }
 }
