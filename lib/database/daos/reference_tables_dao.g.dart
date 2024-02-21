@@ -56,4 +56,11 @@ mixin _$ReferenceTablesDaoMixin on DatabaseAccessor<Database> {
       attachedDatabase.ltpStemCondition;
   $LtpWoodConditionTable get ltpWoodCondition =>
       attachedDatabase.ltpWoodCondition;
+  $LtpQuadrantTable get ltpQuadrant => attachedDatabase.ltpQuadrant;
+  $LtpTreeTypeTable get ltpTreeType => attachedDatabase.ltpTreeType;
+  $LtpSiteHeightSuitabilityTable get ltpSiteHeightSuitability =>
+      attachedDatabase.ltpSiteHeightSuitability;
+  $LtpSiteAgeSuitabilityTable get ltpSiteAgeSuitability =>
+      attachedDatabase.ltpSiteAgeSuitability;
+  $LtpProrateTable get ltpProrate => attachedDatabase.ltpProrate;
 }

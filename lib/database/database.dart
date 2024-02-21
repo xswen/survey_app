@@ -70,6 +70,11 @@ const List<Type> _tables = [
   LtpCrownCondition,
   LtpStemCondition,
   LtpWoodCondition,
+  LtpQuadrant,
+  LtpTreeType,
+  LtpSiteHeightSuitability,
+  LtpSiteAgeSuitability,
+  LtpProrate,
   //Metadata Tables
   MetaComment,
   //Survey Tables
@@ -238,6 +243,13 @@ class Database extends _$Database {
               await _getLtpStemCondition();
           List<LtpWoodConditionCompanion> ltpWoodConditionList =
               await _getLtpWoodCondition();
+          List<LtpQuadrantCompanion> ltpQuadrantList = await _getLtpQuadrant();
+          List<LtpTreeTypeCompanion> ltpTreeTypeList = await _getLtpTreeType();
+          List<LtpSiteHeightSuitabilityCompanion> ltpSiteHeightSuitabilityList =
+              await _getLtpSiteHeightSuitability();
+          List<LtpSiteAgeSuitabilityCompanion> ltpSiteAgeSuitabilityList =
+              await _getLtpSiteAgeSuitability();
+          List<LtpProrateCompanion> ltpProrateList = await _getLtpProrate();
 
           c.debugPrint("Init Values");
           await batch((b) {
@@ -285,6 +297,11 @@ class Database extends _$Database {
             b.insertAll(ltpCrownCondition, ltpCrownConditionList);
             b.insertAll(ltpStemCondition, ltpStemConditionList);
             b.insertAll(ltpWoodCondition, ltpWoodConditionList);
+            b.insertAll(ltpQuadrant, ltpQuadrantList);
+            b.insertAll(ltpTreeType, ltpTreeTypeList);
+            b.insertAll(ltpSiteHeightSuitability, ltpSiteHeightSuitabilityList);
+            b.insertAll(ltpSiteAgeSuitability, ltpSiteAgeSuitabilityList);
+            b.insertAll(ltpProrate, ltpProrateList);
 
             _initTest(b);
           });
@@ -764,6 +781,63 @@ class Database extends _$Database {
         name: Value(item["name"]),
       );
     }).toList();
+  }
+
+  Future<List<LtpQuadrantCompanion>> _getLtpQuadrant() async {
+    List<dynamic> jsonData =
+        await _loadJsonData('assets/db_reference_data/ltp_quadrant_list.json');
+    return jsonData
+        .map((dynamic item) => LtpQuadrantCompanion(
+              code: Value(item["code"]),
+              name: Value(item["name"]),
+            ))
+        .toList();
+  }
+
+  Future<List<LtpTreeTypeCompanion>> _getLtpTreeType() async {
+    List<dynamic> jsonData =
+        await _loadJsonData('assets/db_reference_data/ltp_tree_type_list.json');
+    return jsonData
+        .map((dynamic item) => LtpTreeTypeCompanion(
+              code: Value(item["code"]),
+              name: Value(item["name"]),
+            ))
+        .toList();
+  }
+
+  Future<List<LtpSiteHeightSuitabilityCompanion>>
+      _getLtpSiteHeightSuitability() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/ltp_site_height_suitability_list.json');
+    return jsonData
+        .map((dynamic item) => LtpSiteHeightSuitabilityCompanion(
+              code: Value(item["code"]),
+              name: Value(item["name"]),
+            ))
+        .toList();
+  }
+
+  Future<List<LtpSiteAgeSuitabilityCompanion>>
+      _getLtpSiteAgeSuitability() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/ltp_site_age_suitability_list.json');
+    return jsonData
+        .map((dynamic item) => LtpSiteAgeSuitabilityCompanion(
+              code: Value(item["code"]),
+              name: Value(item["name"]),
+            ))
+        .toList();
+  }
+
+  Future<List<LtpProrateCompanion>> _getLtpProrate() async {
+    List<dynamic> jsonData =
+        await _loadJsonData('assets/db_reference_data/ltp_prorate_list.json');
+    return jsonData
+        .map((dynamic item) => LtpProrateCompanion(
+              code: Value(item["code"]),
+              name: Value(item["name"]),
+            ))
+        .toList();
   }
 
   void _initTest(Batch b) {

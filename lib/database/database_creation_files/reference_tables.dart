@@ -242,3 +242,28 @@ class LtpWoodCondition extends Table {
   TextColumn get code => text()();
   TextColumn get name => text()();
 }
+
+class LtpQuadrant extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class LtpTreeType extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class LtpSiteHeightSuitability extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class LtpSiteAgeSuitability extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
+
+class LtpProrate extends Table {
+  TextColumn get code => text()();
+  TextColumn get name => text()();
+}
