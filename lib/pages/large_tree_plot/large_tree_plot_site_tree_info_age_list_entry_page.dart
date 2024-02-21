@@ -1,5 +1,8 @@
+import 'package:flutter/services.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
+import 'package:survey_app/widgets/checkbox/hide_info_checkbox.dart';
 
+import '../../formatters/thousands_formatter.dart';
 import '../../widgets/builders/reference_name_select_builder.dart';
 import '../../widgets/buttons/save_entry_button.dart';
 import '../../widgets/data_input/data_input.dart';
@@ -18,6 +21,9 @@ class LargeTreePlotSiteTreeInfoAgeListEntryPage extends ConsumerStatefulWidget {
 class LargeTreePlotSiteTreeInfoAgeListEntryPageState
     extends ConsumerState<LargeTreePlotSiteTreeInfoAgeListEntryPage> {
   bool changeMade = false;
+  String fieldAge = "";
+  bool outsideBoredHeight = false;
+  bool boredHeight = false;
 
   @override
   Widget build(BuildContext context) {
@@ -68,12 +74,66 @@ class LargeTreePlotSiteTreeInfoAgeListEntryPageState
                   .getLtpTreeTypeCode(s)
                   .then((value) => setState(() => null)),
             ),
-            DataInput(
-                title: "Outside bark diameter at bored height",
-                onSubmit: (s) {},
-                onValidate: (s) {}),
-            DataInput(
-                title: "Bored height", onSubmit: (s) {}, onValidate: (s) {}),
+
+            HideInfoCheckbox(
+              title: "Outside bark diameter at bored height",
+              titleWidget: "Missing",
+              checkValue: outsideBoredHeight,
+              child: DataInput(
+                  boxLabel: "Report to the nearest 0.1cm",
+                  prefixIcon: FontAwesomeIcons.ruler,
+                  suffixVal: "cm",
+                  inputType:
+                      const TextInputType.numberWithOptions(decimal: true),
+                  startingStr: "",
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(5),
+                    ThousandsFormatter(
+                        allowFraction: true,
+                        decimalPlaces: 1,
+                        maxDigitsBeforeDecimal: 4),
+                  ],
+                  paddingGeneral: const EdgeInsets.only(top: 0),
+                  onSubmit: (s) {},
+                  onValidate: (s) {
+                    if (s == null || s == "") {
+                      return "Can't be left empty";
+                    } else if (double.parse(s) < 0.1 ||
+                        double.parse(s) > 999.9) {
+                      return "Bored Height must be between 0.1 and 999.9cm";
+                    }
+                    return null;
+                  }),
+            ),
+            HideInfoCheckbox(
+              title: "Bored Height",
+              titleWidget: "Missing",
+              checkValue: boredHeight,
+              child: DataInput(
+                  boxLabel: "Report to the nearest 0.1m",
+                  prefixIcon: FontAwesomeIcons.ruler,
+                  suffixVal: "m",
+                  inputType:
+                      const TextInputType.numberWithOptions(decimal: true),
+                  startingStr: "",
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(3),
+                    ThousandsFormatter(
+                        allowFraction: true,
+                        decimalPlaces: 1,
+                        maxDigitsBeforeDecimal: 1),
+                  ],
+                  paddingGeneral: const EdgeInsets.only(top: 0),
+                  onSubmit: (s) {},
+                  onValidate: (s) {
+                    if (s == null || s == "") {
+                      return "Can't be left empty";
+                    } else if (double.parse(s) < 0 || double.parse(s) > 9.9) {
+                      return "Bored Height must be between 0 and 9.9m";
+                    }
+                    return null;
+                  }),
+            ),
             ReferenceNameSelectBuilder(
               title: "Site height suitability",
               defaultSelectedValue: "Please select suitability",
@@ -95,7 +155,51 @@ class LargeTreePlotSiteTreeInfoAgeListEntryPageState
                   .getLtpSiteAgeSuitabilityCode(s)
                   .then((value) => setState(() => null)),
             ),
-            DataInput(title: "Field age", onSubmit: (s) {}, onValidate: (s) {}),
+            const Text("Field age", style: kTitleStyle),
+            CheckboxListTile(
+                title: const Text(
+                  "Tree core not collected this cycle",
+                  style: kTextStyle,
+                ),
+                value: fieldAge == "N",
+                onChanged: (check) => setState(() {
+                      check == true ? fieldAge = "N" : fieldAge = "";
+                    })),
+            CheckboxListTile(
+                title: const Text(
+                  "Missing",
+                  style: kTextStyle,
+                ),
+                value: fieldAge == "M",
+                onChanged: (check) => setState(() {
+                      check == true ? fieldAge = "M" : fieldAge = "";
+                    })),
+            Visibility(
+              visible: fieldAge != "M" && fieldAge != "N",
+              child: DataInput(
+                  boxLabel: "Age determined in years",
+                  prefixIcon: FontAwesomeIcons.calendar,
+                  suffixVal: "years",
+                  inputType:
+                      const TextInputType.numberWithOptions(decimal: false),
+                  startingStr: "",
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(4),
+                    ThousandsFormatter(
+                        allowFraction: false, maxDigitsBeforeDecimal: 4),
+                  ],
+                  paddingGeneral: const EdgeInsets.only(top: 0),
+                  onSubmit: (s) {},
+                  onValidate: (s) {
+                    if (s == null || s == "") {
+                      return "Can't be left empty";
+                    } else if (double.parse(s) < 1 || double.parse(s) > 9999) {
+                      return "Age must be between 1 and 9999 years";
+                    }
+                    return null;
+                  }),
+            ),
+
             ReferenceNameSelectBuilder(
               title: "Prorate code",
               defaultSelectedValue: "Please select code",
