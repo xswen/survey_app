@@ -12,6 +12,7 @@ class ReferenceNameSelectBuilder extends StatelessWidget {
     required this.onChange,
     this.title = "Plot type",
     this.defaultSelectedValue = "Please select plot type",
+    this.searchable = false,
   });
 
   final Future<String> name;
@@ -20,6 +21,7 @@ class ReferenceNameSelectBuilder extends StatelessWidget {
   final void Function(String value) onChange;
   final String title;
   final String defaultSelectedValue;
+  final bool searchable;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +33,7 @@ class ReferenceNameSelectBuilder extends StatelessWidget {
         return DropDownAsyncList(
           title: title,
           enabled: enabled,
+          searchable: searchable,
           onChangedFn: (s) => (selectedValue.isEmpty || s != selectedValue)
               ? onChange(s!)
               : null,
