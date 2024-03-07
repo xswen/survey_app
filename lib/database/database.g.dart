@@ -20945,7 +20945,7 @@ class StpSummaryCompanion extends UpdateCompanion<StpSummaryData> {
 }
 
 class $StpSpeciesTable extends StpSpecies
-    with TableInfo<$StpSpeciesTable, StpSpecy> {
+    with TableInfo<$StpSpeciesTable, StpSpeciesData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -21063,7 +21063,7 @@ class $StpSpeciesTable extends StpSpecies
   String get actualTableName => $name;
   static const String $name = 'stp_species';
   @override
-  VerificationContext validateIntegrity(Insertable<StpSpecy> instance,
+  VerificationContext validateIntegrity(Insertable<StpSpeciesData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -21144,9 +21144,9 @@ class $StpSpeciesTable extends StpSpecies
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  StpSpecy map(Map<String, dynamic> data, {String? tablePrefix}) {
+  StpSpeciesData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return StpSpecy(
+    return StpSpeciesData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       stpSummaryId: attachedDatabase.typeMapping
@@ -21178,7 +21178,7 @@ class $StpSpeciesTable extends StpSpecies
   }
 }
 
-class StpSpecy extends DataClass implements Insertable<StpSpecy> {
+class StpSpeciesData extends DataClass implements Insertable<StpSpeciesData> {
   final int id;
   final int stpSummaryId;
   final String origPlotArea;
@@ -21190,7 +21190,7 @@ class StpSpecy extends DataClass implements Insertable<StpSpecy> {
   final double height;
   final String measHeight;
   final String stemCondition;
-  const StpSpecy(
+  const StpSpeciesData(
       {required this.id,
       required this.stpSummaryId,
       required this.origPlotArea,
@@ -21235,10 +21235,10 @@ class StpSpecy extends DataClass implements Insertable<StpSpecy> {
     );
   }
 
-  factory StpSpecy.fromJson(Map<String, dynamic> json,
+  factory StpSpeciesData.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return StpSpecy(
+    return StpSpeciesData(
       id: serializer.fromJson<int>(json['id']),
       stpSummaryId: serializer.fromJson<int>(json['stpSummaryId']),
       origPlotArea: serializer.fromJson<String>(json['origPlotArea']),
@@ -21270,7 +21270,7 @@ class StpSpecy extends DataClass implements Insertable<StpSpecy> {
     };
   }
 
-  StpSpecy copyWith(
+  StpSpeciesData copyWith(
           {int? id,
           int? stpSummaryId,
           String? origPlotArea,
@@ -21282,7 +21282,7 @@ class StpSpecy extends DataClass implements Insertable<StpSpecy> {
           double? height,
           String? measHeight,
           String? stemCondition}) =>
-      StpSpecy(
+      StpSpeciesData(
         id: id ?? this.id,
         stpSummaryId: stpSummaryId ?? this.stpSummaryId,
         origPlotArea: origPlotArea ?? this.origPlotArea,
@@ -21297,7 +21297,7 @@ class StpSpecy extends DataClass implements Insertable<StpSpecy> {
       );
   @override
   String toString() {
-    return (StringBuffer('StpSpecy(')
+    return (StringBuffer('StpSpeciesData(')
           ..write('id: $id, ')
           ..write('stpSummaryId: $stpSummaryId, ')
           ..write('origPlotArea: $origPlotArea, ')
@@ -21319,7 +21319,7 @@ class StpSpecy extends DataClass implements Insertable<StpSpecy> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is StpSpecy &&
+      (other is StpSpeciesData &&
           other.id == this.id &&
           other.stpSummaryId == this.stpSummaryId &&
           other.origPlotArea == this.origPlotArea &&
@@ -21333,7 +21333,7 @@ class StpSpecy extends DataClass implements Insertable<StpSpecy> {
           other.stemCondition == this.stemCondition);
 }
 
-class StpSpeciesCompanion extends UpdateCompanion<StpSpecy> {
+class StpSpeciesCompanion extends UpdateCompanion<StpSpeciesData> {
   final Value<int> id;
   final Value<int> stpSummaryId;
   final Value<String> origPlotArea;
@@ -21380,7 +21380,7 @@ class StpSpeciesCompanion extends UpdateCompanion<StpSpecy> {
         height = Value(height),
         measHeight = Value(measHeight),
         stemCondition = Value(stemCondition);
-  static Insertable<StpSpecy> custom({
+  static Insertable<StpSpeciesData> custom({
     Expression<int>? id,
     Expression<int>? stpSummaryId,
     Expression<String>? origPlotArea,
@@ -21493,6 +21493,1906 @@ class StpSpeciesCompanion extends UpdateCompanion<StpSpecy> {
   }
 }
 
+class $ShrubSummaryTable extends ShrubSummary
+    with TableInfo<$ShrubSummaryTable, ShrubSummaryData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ShrubSummaryTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _surveyIdMeta =
+      const VerificationMeta('surveyId');
+  @override
+  late final GeneratedColumn<int> surveyId = GeneratedColumn<int>(
+      'survey_id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'UNIQUE REFERENCES survey_headers (id)'));
+  static const VerificationMeta _measDateMeta =
+      const VerificationMeta('measDate');
+  @override
+  late final GeneratedColumn<DateTime> measDate = GeneratedColumn<DateTime>(
+      'meas_date', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _plotTypeMeta =
+      const VerificationMeta('plotType');
+  @override
+  late final GeneratedColumn<String> plotType = GeneratedColumn<String>(
+      'plot_type', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 3, maxTextLength: 3),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const VerificationMeta _nomPlotSizeMeta =
+      const VerificationMeta('nomPlotSize');
+  @override
+  late final GeneratedColumn<double> nomPlotSize = GeneratedColumn<double>(
+      'nom_plot_size', aliasedName, true,
+      check: () => nomPlotSize.isBetweenValues(-1, 0.04),
+      type: DriftSqlType.double,
+      requiredDuringInsert: false);
+  static const VerificationMeta _measPlotSizeMeta =
+      const VerificationMeta('measPlotSize');
+  @override
+  late final GeneratedColumn<double> measPlotSize = GeneratedColumn<double>(
+      'meas_plot_size', aliasedName, true,
+      check: () => measPlotSize.isBetweenValues(0.0005, 0.04),
+      type: DriftSqlType.double,
+      requiredDuringInsert: false);
+  static const VerificationMeta _notAssessedMeta =
+      const VerificationMeta('notAssessed');
+  @override
+  late final GeneratedColumn<bool> notAssessed = GeneratedColumn<bool>(
+      'not_assessed', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("not_assessed" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  static const VerificationMeta _completeMeta =
+      const VerificationMeta('complete');
+  @override
+  late final GeneratedColumn<bool> complete = GeneratedColumn<bool>(
+      'complete', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("complete" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        surveyId,
+        measDate,
+        plotType,
+        nomPlotSize,
+        measPlotSize,
+        notAssessed,
+        complete
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'shrub_summary';
+  @override
+  VerificationContext validateIntegrity(Insertable<ShrubSummaryData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('survey_id')) {
+      context.handle(_surveyIdMeta,
+          surveyId.isAcceptableOrUnknown(data['survey_id']!, _surveyIdMeta));
+    } else if (isInserting) {
+      context.missing(_surveyIdMeta);
+    }
+    if (data.containsKey('meas_date')) {
+      context.handle(_measDateMeta,
+          measDate.isAcceptableOrUnknown(data['meas_date']!, _measDateMeta));
+    } else if (isInserting) {
+      context.missing(_measDateMeta);
+    }
+    if (data.containsKey('plot_type')) {
+      context.handle(_plotTypeMeta,
+          plotType.isAcceptableOrUnknown(data['plot_type']!, _plotTypeMeta));
+    } else if (isInserting) {
+      context.missing(_plotTypeMeta);
+    }
+    if (data.containsKey('nom_plot_size')) {
+      context.handle(
+          _nomPlotSizeMeta,
+          nomPlotSize.isAcceptableOrUnknown(
+              data['nom_plot_size']!, _nomPlotSizeMeta));
+    }
+    if (data.containsKey('meas_plot_size')) {
+      context.handle(
+          _measPlotSizeMeta,
+          measPlotSize.isAcceptableOrUnknown(
+              data['meas_plot_size']!, _measPlotSizeMeta));
+    }
+    if (data.containsKey('not_assessed')) {
+      context.handle(
+          _notAssessedMeta,
+          notAssessed.isAcceptableOrUnknown(
+              data['not_assessed']!, _notAssessedMeta));
+    }
+    if (data.containsKey('complete')) {
+      context.handle(_completeMeta,
+          complete.isAcceptableOrUnknown(data['complete']!, _completeMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ShrubSummaryData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ShrubSummaryData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      surveyId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}survey_id'])!,
+      measDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}meas_date'])!,
+      plotType: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}plot_type'])!,
+      nomPlotSize: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}nom_plot_size']),
+      measPlotSize: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}meas_plot_size']),
+      notAssessed: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}not_assessed'])!,
+      complete: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}complete'])!,
+    );
+  }
+
+  @override
+  $ShrubSummaryTable createAlias(String alias) {
+    return $ShrubSummaryTable(attachedDatabase, alias);
+  }
+}
+
+class ShrubSummaryData extends DataClass
+    implements Insertable<ShrubSummaryData> {
+  final int id;
+  final int surveyId;
+  final DateTime measDate;
+  final String plotType;
+  final double? nomPlotSize;
+  final double? measPlotSize;
+  final bool notAssessed;
+  final bool complete;
+  const ShrubSummaryData(
+      {required this.id,
+      required this.surveyId,
+      required this.measDate,
+      required this.plotType,
+      this.nomPlotSize,
+      this.measPlotSize,
+      required this.notAssessed,
+      required this.complete});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['survey_id'] = Variable<int>(surveyId);
+    map['meas_date'] = Variable<DateTime>(measDate);
+    map['plot_type'] = Variable<String>(plotType);
+    if (!nullToAbsent || nomPlotSize != null) {
+      map['nom_plot_size'] = Variable<double>(nomPlotSize);
+    }
+    if (!nullToAbsent || measPlotSize != null) {
+      map['meas_plot_size'] = Variable<double>(measPlotSize);
+    }
+    map['not_assessed'] = Variable<bool>(notAssessed);
+    map['complete'] = Variable<bool>(complete);
+    return map;
+  }
+
+  ShrubSummaryCompanion toCompanion(bool nullToAbsent) {
+    return ShrubSummaryCompanion(
+      id: Value(id),
+      surveyId: Value(surveyId),
+      measDate: Value(measDate),
+      plotType: Value(plotType),
+      nomPlotSize: nomPlotSize == null && nullToAbsent
+          ? const Value.absent()
+          : Value(nomPlotSize),
+      measPlotSize: measPlotSize == null && nullToAbsent
+          ? const Value.absent()
+          : Value(measPlotSize),
+      notAssessed: Value(notAssessed),
+      complete: Value(complete),
+    );
+  }
+
+  factory ShrubSummaryData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ShrubSummaryData(
+      id: serializer.fromJson<int>(json['id']),
+      surveyId: serializer.fromJson<int>(json['surveyId']),
+      measDate: serializer.fromJson<DateTime>(json['measDate']),
+      plotType: serializer.fromJson<String>(json['plotType']),
+      nomPlotSize: serializer.fromJson<double?>(json['nomPlotSize']),
+      measPlotSize: serializer.fromJson<double?>(json['measPlotSize']),
+      notAssessed: serializer.fromJson<bool>(json['notAssessed']),
+      complete: serializer.fromJson<bool>(json['complete']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'surveyId': serializer.toJson<int>(surveyId),
+      'measDate': serializer.toJson<DateTime>(measDate),
+      'plotType': serializer.toJson<String>(plotType),
+      'nomPlotSize': serializer.toJson<double?>(nomPlotSize),
+      'measPlotSize': serializer.toJson<double?>(measPlotSize),
+      'notAssessed': serializer.toJson<bool>(notAssessed),
+      'complete': serializer.toJson<bool>(complete),
+    };
+  }
+
+  ShrubSummaryData copyWith(
+          {int? id,
+          int? surveyId,
+          DateTime? measDate,
+          String? plotType,
+          Value<double?> nomPlotSize = const Value.absent(),
+          Value<double?> measPlotSize = const Value.absent(),
+          bool? notAssessed,
+          bool? complete}) =>
+      ShrubSummaryData(
+        id: id ?? this.id,
+        surveyId: surveyId ?? this.surveyId,
+        measDate: measDate ?? this.measDate,
+        plotType: plotType ?? this.plotType,
+        nomPlotSize: nomPlotSize.present ? nomPlotSize.value : this.nomPlotSize,
+        measPlotSize:
+            measPlotSize.present ? measPlotSize.value : this.measPlotSize,
+        notAssessed: notAssessed ?? this.notAssessed,
+        complete: complete ?? this.complete,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('ShrubSummaryData(')
+          ..write('id: $id, ')
+          ..write('surveyId: $surveyId, ')
+          ..write('measDate: $measDate, ')
+          ..write('plotType: $plotType, ')
+          ..write('nomPlotSize: $nomPlotSize, ')
+          ..write('measPlotSize: $measPlotSize, ')
+          ..write('notAssessed: $notAssessed, ')
+          ..write('complete: $complete')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, surveyId, measDate, plotType, nomPlotSize,
+      measPlotSize, notAssessed, complete);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ShrubSummaryData &&
+          other.id == this.id &&
+          other.surveyId == this.surveyId &&
+          other.measDate == this.measDate &&
+          other.plotType == this.plotType &&
+          other.nomPlotSize == this.nomPlotSize &&
+          other.measPlotSize == this.measPlotSize &&
+          other.notAssessed == this.notAssessed &&
+          other.complete == this.complete);
+}
+
+class ShrubSummaryCompanion extends UpdateCompanion<ShrubSummaryData> {
+  final Value<int> id;
+  final Value<int> surveyId;
+  final Value<DateTime> measDate;
+  final Value<String> plotType;
+  final Value<double?> nomPlotSize;
+  final Value<double?> measPlotSize;
+  final Value<bool> notAssessed;
+  final Value<bool> complete;
+  const ShrubSummaryCompanion({
+    this.id = const Value.absent(),
+    this.surveyId = const Value.absent(),
+    this.measDate = const Value.absent(),
+    this.plotType = const Value.absent(),
+    this.nomPlotSize = const Value.absent(),
+    this.measPlotSize = const Value.absent(),
+    this.notAssessed = const Value.absent(),
+    this.complete = const Value.absent(),
+  });
+  ShrubSummaryCompanion.insert({
+    this.id = const Value.absent(),
+    required int surveyId,
+    required DateTime measDate,
+    required String plotType,
+    this.nomPlotSize = const Value.absent(),
+    this.measPlotSize = const Value.absent(),
+    this.notAssessed = const Value.absent(),
+    this.complete = const Value.absent(),
+  })  : surveyId = Value(surveyId),
+        measDate = Value(measDate),
+        plotType = Value(plotType);
+  static Insertable<ShrubSummaryData> custom({
+    Expression<int>? id,
+    Expression<int>? surveyId,
+    Expression<DateTime>? measDate,
+    Expression<String>? plotType,
+    Expression<double>? nomPlotSize,
+    Expression<double>? measPlotSize,
+    Expression<bool>? notAssessed,
+    Expression<bool>? complete,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (surveyId != null) 'survey_id': surveyId,
+      if (measDate != null) 'meas_date': measDate,
+      if (plotType != null) 'plot_type': plotType,
+      if (nomPlotSize != null) 'nom_plot_size': nomPlotSize,
+      if (measPlotSize != null) 'meas_plot_size': measPlotSize,
+      if (notAssessed != null) 'not_assessed': notAssessed,
+      if (complete != null) 'complete': complete,
+    });
+  }
+
+  ShrubSummaryCompanion copyWith(
+      {Value<int>? id,
+      Value<int>? surveyId,
+      Value<DateTime>? measDate,
+      Value<String>? plotType,
+      Value<double?>? nomPlotSize,
+      Value<double?>? measPlotSize,
+      Value<bool>? notAssessed,
+      Value<bool>? complete}) {
+    return ShrubSummaryCompanion(
+      id: id ?? this.id,
+      surveyId: surveyId ?? this.surveyId,
+      measDate: measDate ?? this.measDate,
+      plotType: plotType ?? this.plotType,
+      nomPlotSize: nomPlotSize ?? this.nomPlotSize,
+      measPlotSize: measPlotSize ?? this.measPlotSize,
+      notAssessed: notAssessed ?? this.notAssessed,
+      complete: complete ?? this.complete,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (surveyId.present) {
+      map['survey_id'] = Variable<int>(surveyId.value);
+    }
+    if (measDate.present) {
+      map['meas_date'] = Variable<DateTime>(measDate.value);
+    }
+    if (plotType.present) {
+      map['plot_type'] = Variable<String>(plotType.value);
+    }
+    if (nomPlotSize.present) {
+      map['nom_plot_size'] = Variable<double>(nomPlotSize.value);
+    }
+    if (measPlotSize.present) {
+      map['meas_plot_size'] = Variable<double>(measPlotSize.value);
+    }
+    if (notAssessed.present) {
+      map['not_assessed'] = Variable<bool>(notAssessed.value);
+    }
+    if (complete.present) {
+      map['complete'] = Variable<bool>(complete.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ShrubSummaryCompanion(')
+          ..write('id: $id, ')
+          ..write('surveyId: $surveyId, ')
+          ..write('measDate: $measDate, ')
+          ..write('plotType: $plotType, ')
+          ..write('nomPlotSize: $nomPlotSize, ')
+          ..write('measPlotSize: $measPlotSize, ')
+          ..write('notAssessed: $notAssessed, ')
+          ..write('complete: $complete')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ShrubListEntryTable extends ShrubListEntry
+    with TableInfo<$ShrubListEntryTable, ShrubListEntryData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ShrubListEntryTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _shrubSummaryIdMeta =
+      const VerificationMeta('shrubSummaryId');
+  @override
+  late final GeneratedColumn<int> shrubSummaryId = GeneratedColumn<int>(
+      'shrub_summary_id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'UNIQUE REFERENCES shrub_summary (id)'));
+  static const VerificationMeta _recordNumMeta =
+      const VerificationMeta('recordNum');
+  @override
+  late final GeneratedColumn<int> recordNum = GeneratedColumn<int>(
+      'record_num', aliasedName, false,
+      check: () => recordNum.isBetweenValues(1, 9999),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
+  static const VerificationMeta _shrubGenusMeta =
+      const VerificationMeta('shrubGenus');
+  @override
+  late final GeneratedColumn<String> shrubGenus = GeneratedColumn<String>(
+      'shrub_genus', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 4),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const VerificationMeta _shrubSpeciesMeta =
+      const VerificationMeta('shrubSpecies');
+  @override
+  late final GeneratedColumn<String> shrubSpecies = GeneratedColumn<String>(
+      'shrub_species', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 3),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const VerificationMeta _shrubVarietyMeta =
+      const VerificationMeta('shrubVariety');
+  @override
+  late final GeneratedColumn<String> shrubVariety = GeneratedColumn<String>(
+      'shrub_variety', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 3),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const VerificationMeta _shrubStatusMeta =
+      const VerificationMeta('shrubStatus');
+  @override
+  late final GeneratedColumn<String> shrubStatus = GeneratedColumn<String>(
+      'shrub_status', aliasedName, false,
+      check: () => shrubStatus.isIn(['LV' 'DS']),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const VerificationMeta _bdClassMeta =
+      const VerificationMeta('bdClass');
+  @override
+  late final GeneratedColumn<int> bdClass = GeneratedColumn<int>(
+      'bd_class', aliasedName, false,
+      check: () => bdClass.isBetweenValues(0, 10) | bdClass.equals(-1),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
+  static const VerificationMeta _frequencyMeta =
+      const VerificationMeta('frequency');
+  @override
+  late final GeneratedColumn<int> frequency = GeneratedColumn<int>(
+      'frequency', aliasedName, false,
+      check: () => frequency.isBetweenValues(1, 999),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        shrubSummaryId,
+        recordNum,
+        shrubGenus,
+        shrubSpecies,
+        shrubVariety,
+        shrubStatus,
+        bdClass,
+        frequency
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'shrub_list_entry';
+  @override
+  VerificationContext validateIntegrity(Insertable<ShrubListEntryData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('shrub_summary_id')) {
+      context.handle(
+          _shrubSummaryIdMeta,
+          shrubSummaryId.isAcceptableOrUnknown(
+              data['shrub_summary_id']!, _shrubSummaryIdMeta));
+    } else if (isInserting) {
+      context.missing(_shrubSummaryIdMeta);
+    }
+    if (data.containsKey('record_num')) {
+      context.handle(_recordNumMeta,
+          recordNum.isAcceptableOrUnknown(data['record_num']!, _recordNumMeta));
+    } else if (isInserting) {
+      context.missing(_recordNumMeta);
+    }
+    if (data.containsKey('shrub_genus')) {
+      context.handle(
+          _shrubGenusMeta,
+          shrubGenus.isAcceptableOrUnknown(
+              data['shrub_genus']!, _shrubGenusMeta));
+    } else if (isInserting) {
+      context.missing(_shrubGenusMeta);
+    }
+    if (data.containsKey('shrub_species')) {
+      context.handle(
+          _shrubSpeciesMeta,
+          shrubSpecies.isAcceptableOrUnknown(
+              data['shrub_species']!, _shrubSpeciesMeta));
+    } else if (isInserting) {
+      context.missing(_shrubSpeciesMeta);
+    }
+    if (data.containsKey('shrub_variety')) {
+      context.handle(
+          _shrubVarietyMeta,
+          shrubVariety.isAcceptableOrUnknown(
+              data['shrub_variety']!, _shrubVarietyMeta));
+    } else if (isInserting) {
+      context.missing(_shrubVarietyMeta);
+    }
+    if (data.containsKey('shrub_status')) {
+      context.handle(
+          _shrubStatusMeta,
+          shrubStatus.isAcceptableOrUnknown(
+              data['shrub_status']!, _shrubStatusMeta));
+    } else if (isInserting) {
+      context.missing(_shrubStatusMeta);
+    }
+    if (data.containsKey('bd_class')) {
+      context.handle(_bdClassMeta,
+          bdClass.isAcceptableOrUnknown(data['bd_class']!, _bdClassMeta));
+    } else if (isInserting) {
+      context.missing(_bdClassMeta);
+    }
+    if (data.containsKey('frequency')) {
+      context.handle(_frequencyMeta,
+          frequency.isAcceptableOrUnknown(data['frequency']!, _frequencyMeta));
+    } else if (isInserting) {
+      context.missing(_frequencyMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ShrubListEntryData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ShrubListEntryData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      shrubSummaryId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}shrub_summary_id'])!,
+      recordNum: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}record_num'])!,
+      shrubGenus: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}shrub_genus'])!,
+      shrubSpecies: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}shrub_species'])!,
+      shrubVariety: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}shrub_variety'])!,
+      shrubStatus: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}shrub_status'])!,
+      bdClass: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}bd_class'])!,
+      frequency: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}frequency'])!,
+    );
+  }
+
+  @override
+  $ShrubListEntryTable createAlias(String alias) {
+    return $ShrubListEntryTable(attachedDatabase, alias);
+  }
+}
+
+class ShrubListEntryData extends DataClass
+    implements Insertable<ShrubListEntryData> {
+  final int id;
+  final int shrubSummaryId;
+  final int recordNum;
+  final String shrubGenus;
+  final String shrubSpecies;
+  final String shrubVariety;
+  final String shrubStatus;
+  final int bdClass;
+  final int frequency;
+  const ShrubListEntryData(
+      {required this.id,
+      required this.shrubSummaryId,
+      required this.recordNum,
+      required this.shrubGenus,
+      required this.shrubSpecies,
+      required this.shrubVariety,
+      required this.shrubStatus,
+      required this.bdClass,
+      required this.frequency});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['shrub_summary_id'] = Variable<int>(shrubSummaryId);
+    map['record_num'] = Variable<int>(recordNum);
+    map['shrub_genus'] = Variable<String>(shrubGenus);
+    map['shrub_species'] = Variable<String>(shrubSpecies);
+    map['shrub_variety'] = Variable<String>(shrubVariety);
+    map['shrub_status'] = Variable<String>(shrubStatus);
+    map['bd_class'] = Variable<int>(bdClass);
+    map['frequency'] = Variable<int>(frequency);
+    return map;
+  }
+
+  ShrubListEntryCompanion toCompanion(bool nullToAbsent) {
+    return ShrubListEntryCompanion(
+      id: Value(id),
+      shrubSummaryId: Value(shrubSummaryId),
+      recordNum: Value(recordNum),
+      shrubGenus: Value(shrubGenus),
+      shrubSpecies: Value(shrubSpecies),
+      shrubVariety: Value(shrubVariety),
+      shrubStatus: Value(shrubStatus),
+      bdClass: Value(bdClass),
+      frequency: Value(frequency),
+    );
+  }
+
+  factory ShrubListEntryData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ShrubListEntryData(
+      id: serializer.fromJson<int>(json['id']),
+      shrubSummaryId: serializer.fromJson<int>(json['shrubSummaryId']),
+      recordNum: serializer.fromJson<int>(json['recordNum']),
+      shrubGenus: serializer.fromJson<String>(json['shrubGenus']),
+      shrubSpecies: serializer.fromJson<String>(json['shrubSpecies']),
+      shrubVariety: serializer.fromJson<String>(json['shrubVariety']),
+      shrubStatus: serializer.fromJson<String>(json['shrubStatus']),
+      bdClass: serializer.fromJson<int>(json['bdClass']),
+      frequency: serializer.fromJson<int>(json['frequency']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'shrubSummaryId': serializer.toJson<int>(shrubSummaryId),
+      'recordNum': serializer.toJson<int>(recordNum),
+      'shrubGenus': serializer.toJson<String>(shrubGenus),
+      'shrubSpecies': serializer.toJson<String>(shrubSpecies),
+      'shrubVariety': serializer.toJson<String>(shrubVariety),
+      'shrubStatus': serializer.toJson<String>(shrubStatus),
+      'bdClass': serializer.toJson<int>(bdClass),
+      'frequency': serializer.toJson<int>(frequency),
+    };
+  }
+
+  ShrubListEntryData copyWith(
+          {int? id,
+          int? shrubSummaryId,
+          int? recordNum,
+          String? shrubGenus,
+          String? shrubSpecies,
+          String? shrubVariety,
+          String? shrubStatus,
+          int? bdClass,
+          int? frequency}) =>
+      ShrubListEntryData(
+        id: id ?? this.id,
+        shrubSummaryId: shrubSummaryId ?? this.shrubSummaryId,
+        recordNum: recordNum ?? this.recordNum,
+        shrubGenus: shrubGenus ?? this.shrubGenus,
+        shrubSpecies: shrubSpecies ?? this.shrubSpecies,
+        shrubVariety: shrubVariety ?? this.shrubVariety,
+        shrubStatus: shrubStatus ?? this.shrubStatus,
+        bdClass: bdClass ?? this.bdClass,
+        frequency: frequency ?? this.frequency,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('ShrubListEntryData(')
+          ..write('id: $id, ')
+          ..write('shrubSummaryId: $shrubSummaryId, ')
+          ..write('recordNum: $recordNum, ')
+          ..write('shrubGenus: $shrubGenus, ')
+          ..write('shrubSpecies: $shrubSpecies, ')
+          ..write('shrubVariety: $shrubVariety, ')
+          ..write('shrubStatus: $shrubStatus, ')
+          ..write('bdClass: $bdClass, ')
+          ..write('frequency: $frequency')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, shrubSummaryId, recordNum, shrubGenus,
+      shrubSpecies, shrubVariety, shrubStatus, bdClass, frequency);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ShrubListEntryData &&
+          other.id == this.id &&
+          other.shrubSummaryId == this.shrubSummaryId &&
+          other.recordNum == this.recordNum &&
+          other.shrubGenus == this.shrubGenus &&
+          other.shrubSpecies == this.shrubSpecies &&
+          other.shrubVariety == this.shrubVariety &&
+          other.shrubStatus == this.shrubStatus &&
+          other.bdClass == this.bdClass &&
+          other.frequency == this.frequency);
+}
+
+class ShrubListEntryCompanion extends UpdateCompanion<ShrubListEntryData> {
+  final Value<int> id;
+  final Value<int> shrubSummaryId;
+  final Value<int> recordNum;
+  final Value<String> shrubGenus;
+  final Value<String> shrubSpecies;
+  final Value<String> shrubVariety;
+  final Value<String> shrubStatus;
+  final Value<int> bdClass;
+  final Value<int> frequency;
+  const ShrubListEntryCompanion({
+    this.id = const Value.absent(),
+    this.shrubSummaryId = const Value.absent(),
+    this.recordNum = const Value.absent(),
+    this.shrubGenus = const Value.absent(),
+    this.shrubSpecies = const Value.absent(),
+    this.shrubVariety = const Value.absent(),
+    this.shrubStatus = const Value.absent(),
+    this.bdClass = const Value.absent(),
+    this.frequency = const Value.absent(),
+  });
+  ShrubListEntryCompanion.insert({
+    this.id = const Value.absent(),
+    required int shrubSummaryId,
+    required int recordNum,
+    required String shrubGenus,
+    required String shrubSpecies,
+    required String shrubVariety,
+    required String shrubStatus,
+    required int bdClass,
+    required int frequency,
+  })  : shrubSummaryId = Value(shrubSummaryId),
+        recordNum = Value(recordNum),
+        shrubGenus = Value(shrubGenus),
+        shrubSpecies = Value(shrubSpecies),
+        shrubVariety = Value(shrubVariety),
+        shrubStatus = Value(shrubStatus),
+        bdClass = Value(bdClass),
+        frequency = Value(frequency);
+  static Insertable<ShrubListEntryData> custom({
+    Expression<int>? id,
+    Expression<int>? shrubSummaryId,
+    Expression<int>? recordNum,
+    Expression<String>? shrubGenus,
+    Expression<String>? shrubSpecies,
+    Expression<String>? shrubVariety,
+    Expression<String>? shrubStatus,
+    Expression<int>? bdClass,
+    Expression<int>? frequency,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (shrubSummaryId != null) 'shrub_summary_id': shrubSummaryId,
+      if (recordNum != null) 'record_num': recordNum,
+      if (shrubGenus != null) 'shrub_genus': shrubGenus,
+      if (shrubSpecies != null) 'shrub_species': shrubSpecies,
+      if (shrubVariety != null) 'shrub_variety': shrubVariety,
+      if (shrubStatus != null) 'shrub_status': shrubStatus,
+      if (bdClass != null) 'bd_class': bdClass,
+      if (frequency != null) 'frequency': frequency,
+    });
+  }
+
+  ShrubListEntryCompanion copyWith(
+      {Value<int>? id,
+      Value<int>? shrubSummaryId,
+      Value<int>? recordNum,
+      Value<String>? shrubGenus,
+      Value<String>? shrubSpecies,
+      Value<String>? shrubVariety,
+      Value<String>? shrubStatus,
+      Value<int>? bdClass,
+      Value<int>? frequency}) {
+    return ShrubListEntryCompanion(
+      id: id ?? this.id,
+      shrubSummaryId: shrubSummaryId ?? this.shrubSummaryId,
+      recordNum: recordNum ?? this.recordNum,
+      shrubGenus: shrubGenus ?? this.shrubGenus,
+      shrubSpecies: shrubSpecies ?? this.shrubSpecies,
+      shrubVariety: shrubVariety ?? this.shrubVariety,
+      shrubStatus: shrubStatus ?? this.shrubStatus,
+      bdClass: bdClass ?? this.bdClass,
+      frequency: frequency ?? this.frequency,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (shrubSummaryId.present) {
+      map['shrub_summary_id'] = Variable<int>(shrubSummaryId.value);
+    }
+    if (recordNum.present) {
+      map['record_num'] = Variable<int>(recordNum.value);
+    }
+    if (shrubGenus.present) {
+      map['shrub_genus'] = Variable<String>(shrubGenus.value);
+    }
+    if (shrubSpecies.present) {
+      map['shrub_species'] = Variable<String>(shrubSpecies.value);
+    }
+    if (shrubVariety.present) {
+      map['shrub_variety'] = Variable<String>(shrubVariety.value);
+    }
+    if (shrubStatus.present) {
+      map['shrub_status'] = Variable<String>(shrubStatus.value);
+    }
+    if (bdClass.present) {
+      map['bd_class'] = Variable<int>(bdClass.value);
+    }
+    if (frequency.present) {
+      map['frequency'] = Variable<int>(frequency.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ShrubListEntryCompanion(')
+          ..write('id: $id, ')
+          ..write('shrubSummaryId: $shrubSummaryId, ')
+          ..write('recordNum: $recordNum, ')
+          ..write('shrubGenus: $shrubGenus, ')
+          ..write('shrubSpecies: $shrubSpecies, ')
+          ..write('shrubVariety: $shrubVariety, ')
+          ..write('shrubStatus: $shrubStatus, ')
+          ..write('bdClass: $bdClass, ')
+          ..write('frequency: $frequency')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $StumpSummaryTable extends StumpSummary
+    with TableInfo<$StumpSummaryTable, StumpSummaryData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $StumpSummaryTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _surveyIdMeta =
+      const VerificationMeta('surveyId');
+  @override
+  late final GeneratedColumn<int> surveyId = GeneratedColumn<int>(
+      'survey_id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'UNIQUE REFERENCES survey_headers (id)'));
+  static const VerificationMeta _measDateMeta =
+      const VerificationMeta('measDate');
+  @override
+  late final GeneratedColumn<DateTime> measDate = GeneratedColumn<DateTime>(
+      'meas_date', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _plotTypeMeta =
+      const VerificationMeta('plotType');
+  @override
+  late final GeneratedColumn<String> plotType = GeneratedColumn<String>(
+      'plot_type', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 3, maxTextLength: 3),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const VerificationMeta _nomPlotSizeMeta =
+      const VerificationMeta('nomPlotSize');
+  @override
+  late final GeneratedColumn<double> nomPlotSize = GeneratedColumn<double>(
+      'nom_plot_size', aliasedName, true,
+      check: () => nomPlotSize.isBetweenValues(-1, 0.04),
+      type: DriftSqlType.double,
+      requiredDuringInsert: false);
+  static const VerificationMeta _measPlotSizeMeta =
+      const VerificationMeta('measPlotSize');
+  @override
+  late final GeneratedColumn<double> measPlotSize = GeneratedColumn<double>(
+      'meas_plot_size', aliasedName, true,
+      check: () => measPlotSize.isBetweenValues(0.0005, 0.04),
+      type: DriftSqlType.double,
+      requiredDuringInsert: false);
+  static const VerificationMeta _notAssessedMeta =
+      const VerificationMeta('notAssessed');
+  @override
+  late final GeneratedColumn<bool> notAssessed = GeneratedColumn<bool>(
+      'not_assessed', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("not_assessed" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  static const VerificationMeta _completeMeta =
+      const VerificationMeta('complete');
+  @override
+  late final GeneratedColumn<bool> complete = GeneratedColumn<bool>(
+      'complete', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("complete" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        surveyId,
+        measDate,
+        plotType,
+        nomPlotSize,
+        measPlotSize,
+        notAssessed,
+        complete
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'stump_summary';
+  @override
+  VerificationContext validateIntegrity(Insertable<StumpSummaryData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('survey_id')) {
+      context.handle(_surveyIdMeta,
+          surveyId.isAcceptableOrUnknown(data['survey_id']!, _surveyIdMeta));
+    } else if (isInserting) {
+      context.missing(_surveyIdMeta);
+    }
+    if (data.containsKey('meas_date')) {
+      context.handle(_measDateMeta,
+          measDate.isAcceptableOrUnknown(data['meas_date']!, _measDateMeta));
+    } else if (isInserting) {
+      context.missing(_measDateMeta);
+    }
+    if (data.containsKey('plot_type')) {
+      context.handle(_plotTypeMeta,
+          plotType.isAcceptableOrUnknown(data['plot_type']!, _plotTypeMeta));
+    } else if (isInserting) {
+      context.missing(_plotTypeMeta);
+    }
+    if (data.containsKey('nom_plot_size')) {
+      context.handle(
+          _nomPlotSizeMeta,
+          nomPlotSize.isAcceptableOrUnknown(
+              data['nom_plot_size']!, _nomPlotSizeMeta));
+    }
+    if (data.containsKey('meas_plot_size')) {
+      context.handle(
+          _measPlotSizeMeta,
+          measPlotSize.isAcceptableOrUnknown(
+              data['meas_plot_size']!, _measPlotSizeMeta));
+    }
+    if (data.containsKey('not_assessed')) {
+      context.handle(
+          _notAssessedMeta,
+          notAssessed.isAcceptableOrUnknown(
+              data['not_assessed']!, _notAssessedMeta));
+    }
+    if (data.containsKey('complete')) {
+      context.handle(_completeMeta,
+          complete.isAcceptableOrUnknown(data['complete']!, _completeMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  StumpSummaryData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return StumpSummaryData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      surveyId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}survey_id'])!,
+      measDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}meas_date'])!,
+      plotType: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}plot_type'])!,
+      nomPlotSize: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}nom_plot_size']),
+      measPlotSize: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}meas_plot_size']),
+      notAssessed: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}not_assessed'])!,
+      complete: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}complete'])!,
+    );
+  }
+
+  @override
+  $StumpSummaryTable createAlias(String alias) {
+    return $StumpSummaryTable(attachedDatabase, alias);
+  }
+}
+
+class StumpSummaryData extends DataClass
+    implements Insertable<StumpSummaryData> {
+  final int id;
+  final int surveyId;
+  final DateTime measDate;
+  final String plotType;
+  final double? nomPlotSize;
+  final double? measPlotSize;
+  final bool notAssessed;
+  final bool complete;
+  const StumpSummaryData(
+      {required this.id,
+      required this.surveyId,
+      required this.measDate,
+      required this.plotType,
+      this.nomPlotSize,
+      this.measPlotSize,
+      required this.notAssessed,
+      required this.complete});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['survey_id'] = Variable<int>(surveyId);
+    map['meas_date'] = Variable<DateTime>(measDate);
+    map['plot_type'] = Variable<String>(plotType);
+    if (!nullToAbsent || nomPlotSize != null) {
+      map['nom_plot_size'] = Variable<double>(nomPlotSize);
+    }
+    if (!nullToAbsent || measPlotSize != null) {
+      map['meas_plot_size'] = Variable<double>(measPlotSize);
+    }
+    map['not_assessed'] = Variable<bool>(notAssessed);
+    map['complete'] = Variable<bool>(complete);
+    return map;
+  }
+
+  StumpSummaryCompanion toCompanion(bool nullToAbsent) {
+    return StumpSummaryCompanion(
+      id: Value(id),
+      surveyId: Value(surveyId),
+      measDate: Value(measDate),
+      plotType: Value(plotType),
+      nomPlotSize: nomPlotSize == null && nullToAbsent
+          ? const Value.absent()
+          : Value(nomPlotSize),
+      measPlotSize: measPlotSize == null && nullToAbsent
+          ? const Value.absent()
+          : Value(measPlotSize),
+      notAssessed: Value(notAssessed),
+      complete: Value(complete),
+    );
+  }
+
+  factory StumpSummaryData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return StumpSummaryData(
+      id: serializer.fromJson<int>(json['id']),
+      surveyId: serializer.fromJson<int>(json['surveyId']),
+      measDate: serializer.fromJson<DateTime>(json['measDate']),
+      plotType: serializer.fromJson<String>(json['plotType']),
+      nomPlotSize: serializer.fromJson<double?>(json['nomPlotSize']),
+      measPlotSize: serializer.fromJson<double?>(json['measPlotSize']),
+      notAssessed: serializer.fromJson<bool>(json['notAssessed']),
+      complete: serializer.fromJson<bool>(json['complete']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'surveyId': serializer.toJson<int>(surveyId),
+      'measDate': serializer.toJson<DateTime>(measDate),
+      'plotType': serializer.toJson<String>(plotType),
+      'nomPlotSize': serializer.toJson<double?>(nomPlotSize),
+      'measPlotSize': serializer.toJson<double?>(measPlotSize),
+      'notAssessed': serializer.toJson<bool>(notAssessed),
+      'complete': serializer.toJson<bool>(complete),
+    };
+  }
+
+  StumpSummaryData copyWith(
+          {int? id,
+          int? surveyId,
+          DateTime? measDate,
+          String? plotType,
+          Value<double?> nomPlotSize = const Value.absent(),
+          Value<double?> measPlotSize = const Value.absent(),
+          bool? notAssessed,
+          bool? complete}) =>
+      StumpSummaryData(
+        id: id ?? this.id,
+        surveyId: surveyId ?? this.surveyId,
+        measDate: measDate ?? this.measDate,
+        plotType: plotType ?? this.plotType,
+        nomPlotSize: nomPlotSize.present ? nomPlotSize.value : this.nomPlotSize,
+        measPlotSize:
+            measPlotSize.present ? measPlotSize.value : this.measPlotSize,
+        notAssessed: notAssessed ?? this.notAssessed,
+        complete: complete ?? this.complete,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('StumpSummaryData(')
+          ..write('id: $id, ')
+          ..write('surveyId: $surveyId, ')
+          ..write('measDate: $measDate, ')
+          ..write('plotType: $plotType, ')
+          ..write('nomPlotSize: $nomPlotSize, ')
+          ..write('measPlotSize: $measPlotSize, ')
+          ..write('notAssessed: $notAssessed, ')
+          ..write('complete: $complete')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, surveyId, measDate, plotType, nomPlotSize,
+      measPlotSize, notAssessed, complete);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is StumpSummaryData &&
+          other.id == this.id &&
+          other.surveyId == this.surveyId &&
+          other.measDate == this.measDate &&
+          other.plotType == this.plotType &&
+          other.nomPlotSize == this.nomPlotSize &&
+          other.measPlotSize == this.measPlotSize &&
+          other.notAssessed == this.notAssessed &&
+          other.complete == this.complete);
+}
+
+class StumpSummaryCompanion extends UpdateCompanion<StumpSummaryData> {
+  final Value<int> id;
+  final Value<int> surveyId;
+  final Value<DateTime> measDate;
+  final Value<String> plotType;
+  final Value<double?> nomPlotSize;
+  final Value<double?> measPlotSize;
+  final Value<bool> notAssessed;
+  final Value<bool> complete;
+  const StumpSummaryCompanion({
+    this.id = const Value.absent(),
+    this.surveyId = const Value.absent(),
+    this.measDate = const Value.absent(),
+    this.plotType = const Value.absent(),
+    this.nomPlotSize = const Value.absent(),
+    this.measPlotSize = const Value.absent(),
+    this.notAssessed = const Value.absent(),
+    this.complete = const Value.absent(),
+  });
+  StumpSummaryCompanion.insert({
+    this.id = const Value.absent(),
+    required int surveyId,
+    required DateTime measDate,
+    required String plotType,
+    this.nomPlotSize = const Value.absent(),
+    this.measPlotSize = const Value.absent(),
+    this.notAssessed = const Value.absent(),
+    this.complete = const Value.absent(),
+  })  : surveyId = Value(surveyId),
+        measDate = Value(measDate),
+        plotType = Value(plotType);
+  static Insertable<StumpSummaryData> custom({
+    Expression<int>? id,
+    Expression<int>? surveyId,
+    Expression<DateTime>? measDate,
+    Expression<String>? plotType,
+    Expression<double>? nomPlotSize,
+    Expression<double>? measPlotSize,
+    Expression<bool>? notAssessed,
+    Expression<bool>? complete,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (surveyId != null) 'survey_id': surveyId,
+      if (measDate != null) 'meas_date': measDate,
+      if (plotType != null) 'plot_type': plotType,
+      if (nomPlotSize != null) 'nom_plot_size': nomPlotSize,
+      if (measPlotSize != null) 'meas_plot_size': measPlotSize,
+      if (notAssessed != null) 'not_assessed': notAssessed,
+      if (complete != null) 'complete': complete,
+    });
+  }
+
+  StumpSummaryCompanion copyWith(
+      {Value<int>? id,
+      Value<int>? surveyId,
+      Value<DateTime>? measDate,
+      Value<String>? plotType,
+      Value<double?>? nomPlotSize,
+      Value<double?>? measPlotSize,
+      Value<bool>? notAssessed,
+      Value<bool>? complete}) {
+    return StumpSummaryCompanion(
+      id: id ?? this.id,
+      surveyId: surveyId ?? this.surveyId,
+      measDate: measDate ?? this.measDate,
+      plotType: plotType ?? this.plotType,
+      nomPlotSize: nomPlotSize ?? this.nomPlotSize,
+      measPlotSize: measPlotSize ?? this.measPlotSize,
+      notAssessed: notAssessed ?? this.notAssessed,
+      complete: complete ?? this.complete,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (surveyId.present) {
+      map['survey_id'] = Variable<int>(surveyId.value);
+    }
+    if (measDate.present) {
+      map['meas_date'] = Variable<DateTime>(measDate.value);
+    }
+    if (plotType.present) {
+      map['plot_type'] = Variable<String>(plotType.value);
+    }
+    if (nomPlotSize.present) {
+      map['nom_plot_size'] = Variable<double>(nomPlotSize.value);
+    }
+    if (measPlotSize.present) {
+      map['meas_plot_size'] = Variable<double>(measPlotSize.value);
+    }
+    if (notAssessed.present) {
+      map['not_assessed'] = Variable<bool>(notAssessed.value);
+    }
+    if (complete.present) {
+      map['complete'] = Variable<bool>(complete.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('StumpSummaryCompanion(')
+          ..write('id: $id, ')
+          ..write('surveyId: $surveyId, ')
+          ..write('measDate: $measDate, ')
+          ..write('plotType: $plotType, ')
+          ..write('nomPlotSize: $nomPlotSize, ')
+          ..write('measPlotSize: $measPlotSize, ')
+          ..write('notAssessed: $notAssessed, ')
+          ..write('complete: $complete')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $StumpEntryTable extends StumpEntry
+    with TableInfo<$StumpEntryTable, StumpEntryData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $StumpEntryTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _shrubSummaryIdMeta =
+      const VerificationMeta('shrubSummaryId');
+  @override
+  late final GeneratedColumn<int> shrubSummaryId = GeneratedColumn<int>(
+      'shrub_summary_id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'UNIQUE REFERENCES stump_summary (id)'));
+  static const VerificationMeta _stumpNumMeta =
+      const VerificationMeta('stumpNum');
+  @override
+  late final GeneratedColumn<int> stumpNum = GeneratedColumn<int>(
+      'stump_num', aliasedName, false,
+      check: () => stumpNum.isBetweenValues(1, 9999),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
+  static const VerificationMeta _origPlotAreaMeta =
+      const VerificationMeta('origPlotArea');
+  @override
+  late final GeneratedColumn<String> origPlotArea = GeneratedColumn<String>(
+      'orig_plot_area', aliasedName, false,
+      check: () => origPlotArea.isIn(['Y' 'N' 'X' 'U']),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const VerificationMeta _stumpGenusMeta =
+      const VerificationMeta('stumpGenus');
+  @override
+  late final GeneratedColumn<String> stumpGenus = GeneratedColumn<String>(
+      'stump_genus', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 4),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const VerificationMeta _stumpSpeciesMeta =
+      const VerificationMeta('stumpSpecies');
+  @override
+  late final GeneratedColumn<String> stumpSpecies = GeneratedColumn<String>(
+      'stump_species', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 3),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const VerificationMeta _stumpVarietyMeta =
+      const VerificationMeta('stumpVariety');
+  @override
+  late final GeneratedColumn<String> stumpVariety = GeneratedColumn<String>(
+      'stump_variety', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 3),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const VerificationMeta _stumpDibMeta =
+      const VerificationMeta('stumpDib');
+  @override
+  late final GeneratedColumn<double> stumpDib = GeneratedColumn<double>(
+      'stump_dib', aliasedName, false,
+      check: () => stumpDib.isBetweenValues(4.0, 999.9) | stumpDib.equals(-1.0),
+      type: DriftSqlType.double,
+      requiredDuringInsert: true);
+  static const VerificationMeta _stumpDiameterMeta =
+      const VerificationMeta('stumpDiameter');
+  @override
+  late final GeneratedColumn<double> stumpDiameter = GeneratedColumn<double>(
+      'stump_diameter', aliasedName, false,
+      check: () =>
+          stumpDiameter.isBetweenValues(4.0, 999.9) |
+          stumpDiameter.equals(-1.0),
+      type: DriftSqlType.double,
+      requiredDuringInsert: true);
+  static const VerificationMeta _stumpDecayMeta =
+      const VerificationMeta('stumpDecay');
+  @override
+  late final GeneratedColumn<int> stumpDecay = GeneratedColumn<int>(
+      'stump_decay', aliasedName, false,
+      check: () => stumpDecay.isBetweenValues(-1, 5),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
+  static const VerificationMeta _stumpLengthMeta =
+      const VerificationMeta('stumpLength');
+  @override
+  late final GeneratedColumn<double> stumpLength = GeneratedColumn<double>(
+      'stump_length', aliasedName, false,
+      check: () =>
+          stumpLength.isBetweenValues(0.01, 1.29) | stumpLength.equals(-1.0),
+      type: DriftSqlType.double,
+      requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        shrubSummaryId,
+        stumpNum,
+        origPlotArea,
+        stumpGenus,
+        stumpSpecies,
+        stumpVariety,
+        stumpDib,
+        stumpDiameter,
+        stumpDecay,
+        stumpLength
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'stump_entry';
+  @override
+  VerificationContext validateIntegrity(Insertable<StumpEntryData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('shrub_summary_id')) {
+      context.handle(
+          _shrubSummaryIdMeta,
+          shrubSummaryId.isAcceptableOrUnknown(
+              data['shrub_summary_id']!, _shrubSummaryIdMeta));
+    } else if (isInserting) {
+      context.missing(_shrubSummaryIdMeta);
+    }
+    if (data.containsKey('stump_num')) {
+      context.handle(_stumpNumMeta,
+          stumpNum.isAcceptableOrUnknown(data['stump_num']!, _stumpNumMeta));
+    } else if (isInserting) {
+      context.missing(_stumpNumMeta);
+    }
+    if (data.containsKey('orig_plot_area')) {
+      context.handle(
+          _origPlotAreaMeta,
+          origPlotArea.isAcceptableOrUnknown(
+              data['orig_plot_area']!, _origPlotAreaMeta));
+    } else if (isInserting) {
+      context.missing(_origPlotAreaMeta);
+    }
+    if (data.containsKey('stump_genus')) {
+      context.handle(
+          _stumpGenusMeta,
+          stumpGenus.isAcceptableOrUnknown(
+              data['stump_genus']!, _stumpGenusMeta));
+    } else if (isInserting) {
+      context.missing(_stumpGenusMeta);
+    }
+    if (data.containsKey('stump_species')) {
+      context.handle(
+          _stumpSpeciesMeta,
+          stumpSpecies.isAcceptableOrUnknown(
+              data['stump_species']!, _stumpSpeciesMeta));
+    } else if (isInserting) {
+      context.missing(_stumpSpeciesMeta);
+    }
+    if (data.containsKey('stump_variety')) {
+      context.handle(
+          _stumpVarietyMeta,
+          stumpVariety.isAcceptableOrUnknown(
+              data['stump_variety']!, _stumpVarietyMeta));
+    } else if (isInserting) {
+      context.missing(_stumpVarietyMeta);
+    }
+    if (data.containsKey('stump_dib')) {
+      context.handle(_stumpDibMeta,
+          stumpDib.isAcceptableOrUnknown(data['stump_dib']!, _stumpDibMeta));
+    } else if (isInserting) {
+      context.missing(_stumpDibMeta);
+    }
+    if (data.containsKey('stump_diameter')) {
+      context.handle(
+          _stumpDiameterMeta,
+          stumpDiameter.isAcceptableOrUnknown(
+              data['stump_diameter']!, _stumpDiameterMeta));
+    } else if (isInserting) {
+      context.missing(_stumpDiameterMeta);
+    }
+    if (data.containsKey('stump_decay')) {
+      context.handle(
+          _stumpDecayMeta,
+          stumpDecay.isAcceptableOrUnknown(
+              data['stump_decay']!, _stumpDecayMeta));
+    } else if (isInserting) {
+      context.missing(_stumpDecayMeta);
+    }
+    if (data.containsKey('stump_length')) {
+      context.handle(
+          _stumpLengthMeta,
+          stumpLength.isAcceptableOrUnknown(
+              data['stump_length']!, _stumpLengthMeta));
+    } else if (isInserting) {
+      context.missing(_stumpLengthMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  StumpEntryData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return StumpEntryData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      shrubSummaryId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}shrub_summary_id'])!,
+      stumpNum: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}stump_num'])!,
+      origPlotArea: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}orig_plot_area'])!,
+      stumpGenus: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}stump_genus'])!,
+      stumpSpecies: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}stump_species'])!,
+      stumpVariety: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}stump_variety'])!,
+      stumpDib: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}stump_dib'])!,
+      stumpDiameter: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}stump_diameter'])!,
+      stumpDecay: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}stump_decay'])!,
+      stumpLength: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}stump_length'])!,
+    );
+  }
+
+  @override
+  $StumpEntryTable createAlias(String alias) {
+    return $StumpEntryTable(attachedDatabase, alias);
+  }
+}
+
+class StumpEntryData extends DataClass implements Insertable<StumpEntryData> {
+  final int id;
+  final int shrubSummaryId;
+  final int stumpNum;
+  final String origPlotArea;
+  final String stumpGenus;
+  final String stumpSpecies;
+  final String stumpVariety;
+  final double stumpDib;
+  final double stumpDiameter;
+  final int stumpDecay;
+  final double stumpLength;
+  const StumpEntryData(
+      {required this.id,
+      required this.shrubSummaryId,
+      required this.stumpNum,
+      required this.origPlotArea,
+      required this.stumpGenus,
+      required this.stumpSpecies,
+      required this.stumpVariety,
+      required this.stumpDib,
+      required this.stumpDiameter,
+      required this.stumpDecay,
+      required this.stumpLength});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['shrub_summary_id'] = Variable<int>(shrubSummaryId);
+    map['stump_num'] = Variable<int>(stumpNum);
+    map['orig_plot_area'] = Variable<String>(origPlotArea);
+    map['stump_genus'] = Variable<String>(stumpGenus);
+    map['stump_species'] = Variable<String>(stumpSpecies);
+    map['stump_variety'] = Variable<String>(stumpVariety);
+    map['stump_dib'] = Variable<double>(stumpDib);
+    map['stump_diameter'] = Variable<double>(stumpDiameter);
+    map['stump_decay'] = Variable<int>(stumpDecay);
+    map['stump_length'] = Variable<double>(stumpLength);
+    return map;
+  }
+
+  StumpEntryCompanion toCompanion(bool nullToAbsent) {
+    return StumpEntryCompanion(
+      id: Value(id),
+      shrubSummaryId: Value(shrubSummaryId),
+      stumpNum: Value(stumpNum),
+      origPlotArea: Value(origPlotArea),
+      stumpGenus: Value(stumpGenus),
+      stumpSpecies: Value(stumpSpecies),
+      stumpVariety: Value(stumpVariety),
+      stumpDib: Value(stumpDib),
+      stumpDiameter: Value(stumpDiameter),
+      stumpDecay: Value(stumpDecay),
+      stumpLength: Value(stumpLength),
+    );
+  }
+
+  factory StumpEntryData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return StumpEntryData(
+      id: serializer.fromJson<int>(json['id']),
+      shrubSummaryId: serializer.fromJson<int>(json['shrubSummaryId']),
+      stumpNum: serializer.fromJson<int>(json['stumpNum']),
+      origPlotArea: serializer.fromJson<String>(json['origPlotArea']),
+      stumpGenus: serializer.fromJson<String>(json['stumpGenus']),
+      stumpSpecies: serializer.fromJson<String>(json['stumpSpecies']),
+      stumpVariety: serializer.fromJson<String>(json['stumpVariety']),
+      stumpDib: serializer.fromJson<double>(json['stumpDib']),
+      stumpDiameter: serializer.fromJson<double>(json['stumpDiameter']),
+      stumpDecay: serializer.fromJson<int>(json['stumpDecay']),
+      stumpLength: serializer.fromJson<double>(json['stumpLength']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'shrubSummaryId': serializer.toJson<int>(shrubSummaryId),
+      'stumpNum': serializer.toJson<int>(stumpNum),
+      'origPlotArea': serializer.toJson<String>(origPlotArea),
+      'stumpGenus': serializer.toJson<String>(stumpGenus),
+      'stumpSpecies': serializer.toJson<String>(stumpSpecies),
+      'stumpVariety': serializer.toJson<String>(stumpVariety),
+      'stumpDib': serializer.toJson<double>(stumpDib),
+      'stumpDiameter': serializer.toJson<double>(stumpDiameter),
+      'stumpDecay': serializer.toJson<int>(stumpDecay),
+      'stumpLength': serializer.toJson<double>(stumpLength),
+    };
+  }
+
+  StumpEntryData copyWith(
+          {int? id,
+          int? shrubSummaryId,
+          int? stumpNum,
+          String? origPlotArea,
+          String? stumpGenus,
+          String? stumpSpecies,
+          String? stumpVariety,
+          double? stumpDib,
+          double? stumpDiameter,
+          int? stumpDecay,
+          double? stumpLength}) =>
+      StumpEntryData(
+        id: id ?? this.id,
+        shrubSummaryId: shrubSummaryId ?? this.shrubSummaryId,
+        stumpNum: stumpNum ?? this.stumpNum,
+        origPlotArea: origPlotArea ?? this.origPlotArea,
+        stumpGenus: stumpGenus ?? this.stumpGenus,
+        stumpSpecies: stumpSpecies ?? this.stumpSpecies,
+        stumpVariety: stumpVariety ?? this.stumpVariety,
+        stumpDib: stumpDib ?? this.stumpDib,
+        stumpDiameter: stumpDiameter ?? this.stumpDiameter,
+        stumpDecay: stumpDecay ?? this.stumpDecay,
+        stumpLength: stumpLength ?? this.stumpLength,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('StumpEntryData(')
+          ..write('id: $id, ')
+          ..write('shrubSummaryId: $shrubSummaryId, ')
+          ..write('stumpNum: $stumpNum, ')
+          ..write('origPlotArea: $origPlotArea, ')
+          ..write('stumpGenus: $stumpGenus, ')
+          ..write('stumpSpecies: $stumpSpecies, ')
+          ..write('stumpVariety: $stumpVariety, ')
+          ..write('stumpDib: $stumpDib, ')
+          ..write('stumpDiameter: $stumpDiameter, ')
+          ..write('stumpDecay: $stumpDecay, ')
+          ..write('stumpLength: $stumpLength')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      id,
+      shrubSummaryId,
+      stumpNum,
+      origPlotArea,
+      stumpGenus,
+      stumpSpecies,
+      stumpVariety,
+      stumpDib,
+      stumpDiameter,
+      stumpDecay,
+      stumpLength);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is StumpEntryData &&
+          other.id == this.id &&
+          other.shrubSummaryId == this.shrubSummaryId &&
+          other.stumpNum == this.stumpNum &&
+          other.origPlotArea == this.origPlotArea &&
+          other.stumpGenus == this.stumpGenus &&
+          other.stumpSpecies == this.stumpSpecies &&
+          other.stumpVariety == this.stumpVariety &&
+          other.stumpDib == this.stumpDib &&
+          other.stumpDiameter == this.stumpDiameter &&
+          other.stumpDecay == this.stumpDecay &&
+          other.stumpLength == this.stumpLength);
+}
+
+class StumpEntryCompanion extends UpdateCompanion<StumpEntryData> {
+  final Value<int> id;
+  final Value<int> shrubSummaryId;
+  final Value<int> stumpNum;
+  final Value<String> origPlotArea;
+  final Value<String> stumpGenus;
+  final Value<String> stumpSpecies;
+  final Value<String> stumpVariety;
+  final Value<double> stumpDib;
+  final Value<double> stumpDiameter;
+  final Value<int> stumpDecay;
+  final Value<double> stumpLength;
+  const StumpEntryCompanion({
+    this.id = const Value.absent(),
+    this.shrubSummaryId = const Value.absent(),
+    this.stumpNum = const Value.absent(),
+    this.origPlotArea = const Value.absent(),
+    this.stumpGenus = const Value.absent(),
+    this.stumpSpecies = const Value.absent(),
+    this.stumpVariety = const Value.absent(),
+    this.stumpDib = const Value.absent(),
+    this.stumpDiameter = const Value.absent(),
+    this.stumpDecay = const Value.absent(),
+    this.stumpLength = const Value.absent(),
+  });
+  StumpEntryCompanion.insert({
+    this.id = const Value.absent(),
+    required int shrubSummaryId,
+    required int stumpNum,
+    required String origPlotArea,
+    required String stumpGenus,
+    required String stumpSpecies,
+    required String stumpVariety,
+    required double stumpDib,
+    required double stumpDiameter,
+    required int stumpDecay,
+    required double stumpLength,
+  })  : shrubSummaryId = Value(shrubSummaryId),
+        stumpNum = Value(stumpNum),
+        origPlotArea = Value(origPlotArea),
+        stumpGenus = Value(stumpGenus),
+        stumpSpecies = Value(stumpSpecies),
+        stumpVariety = Value(stumpVariety),
+        stumpDib = Value(stumpDib),
+        stumpDiameter = Value(stumpDiameter),
+        stumpDecay = Value(stumpDecay),
+        stumpLength = Value(stumpLength);
+  static Insertable<StumpEntryData> custom({
+    Expression<int>? id,
+    Expression<int>? shrubSummaryId,
+    Expression<int>? stumpNum,
+    Expression<String>? origPlotArea,
+    Expression<String>? stumpGenus,
+    Expression<String>? stumpSpecies,
+    Expression<String>? stumpVariety,
+    Expression<double>? stumpDib,
+    Expression<double>? stumpDiameter,
+    Expression<int>? stumpDecay,
+    Expression<double>? stumpLength,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (shrubSummaryId != null) 'shrub_summary_id': shrubSummaryId,
+      if (stumpNum != null) 'stump_num': stumpNum,
+      if (origPlotArea != null) 'orig_plot_area': origPlotArea,
+      if (stumpGenus != null) 'stump_genus': stumpGenus,
+      if (stumpSpecies != null) 'stump_species': stumpSpecies,
+      if (stumpVariety != null) 'stump_variety': stumpVariety,
+      if (stumpDib != null) 'stump_dib': stumpDib,
+      if (stumpDiameter != null) 'stump_diameter': stumpDiameter,
+      if (stumpDecay != null) 'stump_decay': stumpDecay,
+      if (stumpLength != null) 'stump_length': stumpLength,
+    });
+  }
+
+  StumpEntryCompanion copyWith(
+      {Value<int>? id,
+      Value<int>? shrubSummaryId,
+      Value<int>? stumpNum,
+      Value<String>? origPlotArea,
+      Value<String>? stumpGenus,
+      Value<String>? stumpSpecies,
+      Value<String>? stumpVariety,
+      Value<double>? stumpDib,
+      Value<double>? stumpDiameter,
+      Value<int>? stumpDecay,
+      Value<double>? stumpLength}) {
+    return StumpEntryCompanion(
+      id: id ?? this.id,
+      shrubSummaryId: shrubSummaryId ?? this.shrubSummaryId,
+      stumpNum: stumpNum ?? this.stumpNum,
+      origPlotArea: origPlotArea ?? this.origPlotArea,
+      stumpGenus: stumpGenus ?? this.stumpGenus,
+      stumpSpecies: stumpSpecies ?? this.stumpSpecies,
+      stumpVariety: stumpVariety ?? this.stumpVariety,
+      stumpDib: stumpDib ?? this.stumpDib,
+      stumpDiameter: stumpDiameter ?? this.stumpDiameter,
+      stumpDecay: stumpDecay ?? this.stumpDecay,
+      stumpLength: stumpLength ?? this.stumpLength,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (shrubSummaryId.present) {
+      map['shrub_summary_id'] = Variable<int>(shrubSummaryId.value);
+    }
+    if (stumpNum.present) {
+      map['stump_num'] = Variable<int>(stumpNum.value);
+    }
+    if (origPlotArea.present) {
+      map['orig_plot_area'] = Variable<String>(origPlotArea.value);
+    }
+    if (stumpGenus.present) {
+      map['stump_genus'] = Variable<String>(stumpGenus.value);
+    }
+    if (stumpSpecies.present) {
+      map['stump_species'] = Variable<String>(stumpSpecies.value);
+    }
+    if (stumpVariety.present) {
+      map['stump_variety'] = Variable<String>(stumpVariety.value);
+    }
+    if (stumpDib.present) {
+      map['stump_dib'] = Variable<double>(stumpDib.value);
+    }
+    if (stumpDiameter.present) {
+      map['stump_diameter'] = Variable<double>(stumpDiameter.value);
+    }
+    if (stumpDecay.present) {
+      map['stump_decay'] = Variable<int>(stumpDecay.value);
+    }
+    if (stumpLength.present) {
+      map['stump_length'] = Variable<double>(stumpLength.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('StumpEntryCompanion(')
+          ..write('id: $id, ')
+          ..write('shrubSummaryId: $shrubSummaryId, ')
+          ..write('stumpNum: $stumpNum, ')
+          ..write('origPlotArea: $origPlotArea, ')
+          ..write('stumpGenus: $stumpGenus, ')
+          ..write('stumpSpecies: $stumpSpecies, ')
+          ..write('stumpVariety: $stumpVariety, ')
+          ..write('stumpDib: $stumpDib, ')
+          ..write('stumpDiameter: $stumpDiameter, ')
+          ..write('stumpDecay: $stumpDecay, ')
+          ..write('stumpLength: $stumpLength')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(e);
   late final $JurisdictionsTable jurisdictions = $JurisdictionsTable(this);
@@ -21598,6 +23498,10 @@ abstract class _$Database extends GeneratedDatabase {
   late final $LtpTreeRenamedTable ltpTreeRenamed = $LtpTreeRenamedTable(this);
   late final $StpSummaryTable stpSummary = $StpSummaryTable(this);
   late final $StpSpeciesTable stpSpecies = $StpSpeciesTable(this);
+  late final $ShrubSummaryTable shrubSummary = $ShrubSummaryTable(this);
+  late final $ShrubListEntryTable shrubListEntry = $ShrubListEntryTable(this);
+  late final $StumpSummaryTable stumpSummary = $StumpSummaryTable(this);
+  late final $StumpEntryTable stumpEntry = $StumpEntryTable(this);
   late final ReferenceTablesDao referenceTablesDao =
       ReferenceTablesDao(this as Database);
   late final SurveyInfoTablesDao surveyInfoTablesDao =
@@ -21687,6 +23591,10 @@ abstract class _$Database extends GeneratedDatabase {
         ltpTreeAge,
         ltpTreeRenamed,
         stpSummary,
-        stpSpecies
+        stpSpecies,
+        shrubSummary,
+        shrubListEntry,
+        stumpSummary,
+        stumpEntry
       ];
 }

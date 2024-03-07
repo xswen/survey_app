@@ -13,7 +13,9 @@ import 'package:survey_app/database/daos/soil_pit_tables_dao.dart';
 import 'package:survey_app/database/database_creation_files/large_tree_plot_tables.dart';
 import 'package:survey_app/database/database_creation_files/small_tree_plot_tables.dart';
 import 'package:survey_app/database/database_creation_files/soil_pit_tables.dart';
+import 'package:survey_app/database/database_creation_files/stump_plot_tables.dart';
 import 'package:survey_app/enums/enums.dart';
+import 'package:survey_app/pages/stump_plot/stump_plot_summary_page.dart';
 import 'package:survey_app/wrappers/survey_card.dart';
 
 import '../database/daos/reference_tables_dao.dart';
@@ -25,6 +27,7 @@ import 'daos/ecological_plot_tables_dao.dart';
 import 'daos/surface_substrate_tables_dao.dart';
 import 'database_creation_files/ecological_plot_tables.dart';
 import 'database_creation_files/metadata_tables.dart';
+import 'database_creation_files/shrub_plot_tables.dart';
 import 'database_creation_files/surface_substrate_tables.dart';
 import 'database_creation_files/woody_debris_tables.dart';
 
@@ -113,6 +116,12 @@ const List<Type> _tables = [
   //STP
   StpSummary,
   StpSpecies,
+  //Shrub
+  ShrubSummary,
+  ShrubListEntry,
+  //Stump
+  StumpSummary,
+  StumpEntry,
 ];
 
 const List<Type> _daos = [
