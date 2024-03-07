@@ -15,20 +15,19 @@ class ShrubSummary extends Table {
   BoolColumn get complete => boolean().withDefault(const Constant(false))();
 }
 
-class ShrubLists extends Table {
+class ShrubListEntry extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get shrubSummaryId =>
       integer().unique().references(ShrubSummary, #id)();
-  //TODO: Handle case of deletion?
-  IntColumn get recordNum => integer()
-      .customConstraint('CHECK(record_num >= 1 AND record_num <= 9999)')();
+  // TODO: check what to do on deletion
+  IntColumn get recordNum =>
+      integer().check(recordNum.isBetweenValues(1, 9999))();
   TextColumn get shrubGenus => text().withLength(min: 0, max: 4)();
   TextColumn get shrubSpecies => text().withLength(min: 0, max: 3)();
   TextColumn get shrubVariety => text().withLength(min: 0, max: 3)();
-  TextColumn get shrubStatus =>
-      text().customConstraint('CHECK(shrub_status IN (\'LV\', \'DS\'))')();
-  IntColumn get bdClass => integer().customConstraint(
-      'CHECK(bd_class >= 0 AND bd_class <= 10 OR bd_class = -1)')();
-  IntColumn get frequency => integer()
-      .customConstraint('CHECK(frequency >= 1 AND frequency <= 999)')();
+  TextColumn get shrubStatus => text().check(shrubStatus.isIn(['LV', 'DS']))();
+  IntColumn get bdClass =>
+      integer().check(bdClass.isBetweenValues(0, 10) | bdClass.equals(-1))();
+  IntColumn get frequency =>
+      integer().check(frequency.isBetweenValues(1, 999))();
 }

@@ -15,6 +15,7 @@ class StpSummary extends Table {
   BoolColumn get complete => boolean().withDefault(const Constant(false))();
 }
 
+@DataClassName("StpSpeciesData")
 class StpSpecies extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get stpSummaryId =>
