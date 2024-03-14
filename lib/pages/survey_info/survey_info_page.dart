@@ -275,7 +275,8 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
         getId(() => db.smallTreePlotTablesDao
             .setAndReturnDefaultSummary(survey.id, survey.measDate)).then(
           (id) => context.pushNamed(SmallTreePlotSummaryPage.routeName,
-              pathParameters: widget.goRouterState.pathParameters),
+              pathParameters: PathParamGenerator.stpSummary(
+                  widget.goRouterState, id.toString())),
         );
         break;
       case SurveyCardCategories.shrubPlot:

@@ -15,4 +15,7 @@ class PathParamsKeys {
 
   static const String soilPitSummaryId = "soilPitSummaryId";
   static const String soilSiteInfoId = "soilSiteInfoId";
+
+  static const String stpSummaryId = "stpSummaryId";
+  static const String stpSpeciesId = "stpSpeciesId";
 }
