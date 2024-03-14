@@ -292,8 +292,11 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
       case SurveyCardCategories.stumpPlot:
         getId(() => db.stumpPlotTablesDao
             .setAndReturnDefaultSummary(survey.id, survey.measDate)).then(
-          (id) => context.pushNamed(StumpPlotSummaryPage.routeName,
-              pathParameters: widget.goRouterState.pathParameters),
+          (id) => context.pushNamed(
+            StumpPlotSummaryPage.routeName,
+            pathParameters: PathParamGenerator.stumpSummary(
+                widget.goRouterState, id.toString()),
+          ),
         );
         break;
       case SurveyCardCategories.largeTreePlot:
