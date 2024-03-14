@@ -182,6 +182,10 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
         markNotAssessed =
             db.soilPitTablesDao.markNotAssessed(surveyId, data?.id);
         break;
+      case SurveyCardCategories.smallTreePlot:
+        markNotAssessed =
+            db.smallTreePlotTablesDao.markNotAssessed(surveyId, data?.id);
+        break;
       default:
         debugPrint("Error: case not handled for $category");
         return;
@@ -260,12 +264,6 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
         );
         break;
       case SurveyCardCategories.smallTreePlot:
-        // if (context.mounted) {
-        //   context
-        //       .pushNamed(SmallTreePlotSummaryPage.routeName,
-        //           pathParameters: widget.goRouterState.pathParameters)
-        //       .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
-        // }
         getId(() => db.smallTreePlotTablesDao
             .setAndReturnDefaultSummary(survey.id, survey.measDate)).then(
           (id) => context.pushNamed(SmallTreePlotSummaryPage.routeName,

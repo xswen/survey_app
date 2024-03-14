@@ -38,21 +38,25 @@ class SmallTreePlotTablesDao extends DatabaseAccessor<Database>
     if (stpSummaryId != null) {
       await deleteStpSummary(stpSummaryId);
     }
-    await addStpSummary(StpSummaryCompanion(
-        surveyId: Value(surveyId),
-        measDate: Value(DateTime.now()),
-        notAssessed: const Value(true),
-        complete: const Value(false)));
+
+    await setAndReturnDefaultSummary(surveyId, DateTime.now(),
+        notAssessed: true);
+    // await addStpSummary(StpSummaryCompanion(
+    //     surveyId: Value(surveyId),
+    //     measDate: Value(DateTime.now()),
+    //     notAssessed: const Value(true),
+    //     complete: const Value(false)));
   }
 
   Future<StpSummaryData> setAndReturnDefaultSummary(
-      int surveyId, DateTime measDate) async {
+      int surveyId, DateTime measDate,
+      {bool notAssessed = false}) async {
     StpSummaryCompanion entry = StpSummaryCompanion(
         surveyId: Value(surveyId),
         measDate: Value(measDate),
         plotType: const Value(""),
         complete: const Value(false),
-        notAssessed: const Value(false));
+        notAssessed: Value(notAssessed));
 
     int summaryId = await into(stpSummary).insert(entry,
         onConflict: DoUpdate((old) => entry, target: [stpSummary.surveyId]));
