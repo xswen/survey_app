@@ -114,4 +114,20 @@ class PathParamGenerator {
             goRouterState.pathParameters[PathParamsKeys.stpSummaryId]!),
         ...{PathParamsKeys.stpSpeciesId: stpSpeciesId}
       };
+
+  //Shrub
+  static Map<String, String> shrubSummary(
+          GoRouterState goRouterState, String shrubSummaryId) =>
+      {
+        ...surveyInfo(goRouterState.pathParameters[PathParamsKeys.surveyId]!),
+        ...{PathParamsKeys.shrubSummaryId: shrubSummaryId}
+      };
+
+  static Map<String, String> shrubSpecies(
+          GoRouterState goRouterState, String shrubSpeciesId) =>
+      {
+        ...shrubSummary(goRouterState,
+            goRouterState.pathParameters[PathParamsKeys.shrubSummaryId]!),
+        ...{PathParamsKeys.shrubSpeciesId: shrubSpeciesId}
+      };
 }

@@ -18,4 +18,7 @@ class PathParamsKeys {
 
   static const String stpSummaryId = "stpSummaryId";
   static const String stpSpeciesId = "stpSpeciesId";
+
+  static const String shrubSummaryId = "shrubSummaryId";
+  static const String shrubSpeciesId = "shrubSpeciesId";
 }
