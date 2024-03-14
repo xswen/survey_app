@@ -22,13 +22,6 @@ class SurveyInfoTablesDao extends DatabaseAccessor<Database>
     with _$SurveyInfoTablesDaoMixin {
   SurveyInfoTablesDao(super.db);
 
-  Future<void> markNotAssessed(int surveyId) async {
-    var tmp = await deleteSurveyHeaderInfo(surveyId);
-
-    int tmp2 = await addSummary(SurveySummaryCompanion(
-        surveyId: Value(surveyId), notAssessed: const Value(true)));
-  }
-
   //===========================Deletion====================================
   void deleteTables() {
     delete(surveyHeaders).go();
@@ -44,26 +37,9 @@ class SurveyInfoTablesDao extends DatabaseAccessor<Database>
     await db.surfaceSubstrateTablesDao.deleteSummaryWithSurveyId(surveyId);
     await db.ecologicalPlotTablesDao.deleteSummaryWithSurveyId(surveyId);
     await db.soilPitTablesDao.deleteSummaryWithSurveyId(surveyId);
-    await deleteSurveyHeaderInfo(surveyId);
+    await deleteSurveySummaryBySurveyId(surveyId);
 
     deleteSiteInfo(surveyId);
-  }
-
-  Future<void> deleteSurveyHeaderInfo(int surveyId) async {
-    await (delete(surveySummary)..where((tbl) => tbl.surveyId.equals(surveyId)))
-        .go();
-    await (delete(surveyHeaderGroundPhoto)
-          ..where((tbl) => tbl.surveyId.equals(surveyId)))
-        .go();
-    await (delete(surveyHeaderTree)
-          ..where((tbl) => tbl.surveyId.equals(surveyId)))
-        .go();
-    await (delete(surveyHeaderEcological)
-          ..where((tbl) => tbl.surveyId.equals(surveyId)))
-        .go();
-    await (delete(surveyHeaderSoil)
-          ..where((tbl) => tbl.surveyId.equals(surveyId)))
-        .go();
   }
 
   //===========================Survey Header====================================
@@ -110,16 +86,7 @@ class SurveyInfoTablesDao extends DatabaseAccessor<Database>
     return surveys.length < 2 ? null : surveys[1].measNum;
   }
 
-  //===========================Survey Summary=====================================
-  Future<int> addSummary(SurveySummaryCompanion entry) =>
-      into(surveySummary).insert(entry);
-
-  Future<SurveySummaryData> getSummaryFromSurveyId(int id) =>
-      (select(surveySummary)..where((tbl) => tbl.surveyId.equals(id)))
-          .getSingle();
-
-  Future<SurveySummaryData> getSummary(int id) =>
-      (select(surveySummary)..where((tbl) => tbl.id.equals(id))).getSingle();
+  //====================Survey Summary Management====================
 
   Future<SurveySummaryData> setAndReturnDefaultSummary(int surveyId) async {
     SurveySummaryCompanion entry = SurveySummaryCompanion(
@@ -130,10 +97,56 @@ class SurveyInfoTablesDao extends DatabaseAccessor<Database>
     int summaryId = await into(surveySummary).insert(entry,
         onConflict: DoUpdate((old) => entry, target: [surveySummary.surveyId]));
 
-    return await getSummary(summaryId);
+    return await getSurveySummary(summaryId);
   }
 
-//===========================Ground Photos=====================================
+  Future<int> addSurveySummary(SurveySummaryCompanion entry) =>
+      into(surveySummary).insert(entry);
+
+  Future<SurveySummaryData> getSurveySummary(int id) =>
+      (select(surveySummary)..where((tbl) => tbl.id.equals(id))).getSingle();
+
+  Future<SurveySummaryData> getSummaryFromSurveyId(int id) =>
+      (select(surveySummary)..where((tbl) => tbl.surveyId.equals(id)))
+          .getSingle();
+
+  Future<void> updateSurveySummary(SurveySummaryCompanion entry) async {
+    await (update(surveySummary)..where((tbl) => tbl.id.equals(entry.id.value)))
+        .write(entry);
+  }
+
+  Future<void> deleteSurveySummaryBySurveyId(int surveyId) async {
+    await (delete(surveyHeaderGroundPhoto)
+          ..where((tbl) => tbl.surveyId.equals(surveyId)))
+        .go();
+    await (delete(surveyHeaderTree)
+          ..where((tbl) => tbl.surveyId.equals(surveyId)))
+        .go();
+    await (delete(surveyHeaderEcological)
+          ..where((tbl) => tbl.surveyId.equals(surveyId)))
+        .go();
+    await (delete(surveyHeaderSoil)
+          ..where((tbl) => tbl.surveyId.equals(surveyId)))
+        .go();
+    await (delete(surveySummary)..where((tbl) => tbl.surveyId.equals(surveyId)))
+        .go();
+  }
+
+  Future<void> markNotAssessed(int surveyId, int? summaryId) async {
+    if (summaryId != null) {
+      await deleteSurveySummaryBySurveyId(summaryId);
+    }
+    await addSurveySummary(SurveySummaryCompanion(
+        surveyId: Value(surveyId),
+        notAssessed: const Value(true),
+        complete: const Value(false)));
+  }
+
+//====================Survey Header Ground Photo Management====================
+
+  Future<int> addGroundPhoto(SurveyHeaderGroundPhotoCompanion entry) =>
+      into(surveyHeaderGroundPhoto).insert(entry);
+
   Future<SurveyHeaderGroundPhotoData> getGroundPhotosFromSurveyId(
       int surveyId) async {
     SurveyHeaderGroundPhotoData? gp = await (select(surveyHeaderGroundPhoto)
@@ -156,30 +169,31 @@ class SurveyInfoTablesDao extends DatabaseAccessor<Database>
     SurveyHeaderGroundPhotoData groundPhoto =
         await getGroundPhotosFromSurveyId(surveyId);
 
-    if (groundPhoto.plotPin) photoList.add("Plot Pin (Center)");
-    if (groundPhoto.transectOneFifteenUnder) {
+    if (groundPhoto.plotPin ?? false) photoList.add("Plot Pin (Center)");
+    if (groundPhoto.transectOneFifteenUnder ?? false) {
       photoList.add("Transect 1 (0-15m)");
     }
-    if (groundPhoto.transectOneFifteenOver) {
+    if (groundPhoto.transectOneFifteenOver ?? false) {
       photoList.add("Transect 1 (15-30m)");
     }
-    if (groundPhoto.transectTwoFifteenUnder) {
+    if (groundPhoto.transectTwoFifteenUnder ?? false) {
       photoList.add("Transect 2 (0-15m)");
     }
-    if (groundPhoto.transectTwoFifteenOver) {
+    if (groundPhoto.transectTwoFifteenOver ?? false) {
       photoList.add("Transect 2 (15-30m)");
     }
-    if (groundPhoto.horizontal) photoList.add("Horizontal");
-    if (groundPhoto.canopy) photoList.add("Canopy");
-    if (groundPhoto.soilProfile) photoList.add("Soil Profile");
-    if (groundPhoto.otherOne) photoList.add("Other1 (describe)");
-    if (groundPhoto.otherTwo) photoList.add("Other2 (describe)");
-    if (groundPhoto.otherThree) photoList.add("Other3 (describe)");
-    if (groundPhoto.otherFour) photoList.add("Other4 (describe)");
+    if (groundPhoto.horizontal ?? false) photoList.add("Horizontal");
+    if (groundPhoto.canopy ?? false) photoList.add("Canopy");
+    if (groundPhoto.soilProfile ?? false) photoList.add("Soil Profile");
+    if (groundPhoto.otherOne ?? false) photoList.add("Other1 (describe)");
+    if (groundPhoto.otherTwo ?? false) photoList.add("Other2 (describe)");
+    if (groundPhoto.otherThree ?? false) photoList.add("Other3 (describe)");
+    if (groundPhoto.otherFour ?? false) photoList.add("Other4 (describe)");
 
     return photoList;
   }
 
+//
   Future<void> updateGroundPhoto(int surveyId, List<String> photos) async {
     int groundId = (await getGroundPhotosFromSurveyId(surveyId)).id;
     SurveyHeaderGroundPhotoCompanion gp = SurveyHeaderGroundPhotoCompanion(
@@ -229,7 +243,11 @@ class SurveyInfoTablesDao extends DatabaseAccessor<Database>
     await update(surveyHeaderGroundPhoto).replace(gp);
   }
 
-//==============================Tree Data======================================
+//====================Survey Header Tree Management====================
+
+  Future<int> addTree(SurveyHeaderTreeCompanion entry) =>
+      into(surveyHeaderTree).insert(entry);
+
   Future<SurveyHeaderTreeData> getTreeDataFromSurveyId(int surveyId) async {
     SurveyHeaderTreeData? data = await (select(surveyHeaderTree)
           ..where((tbl) => tbl.surveyId.equals(surveyId)))
@@ -244,7 +262,17 @@ class SurveyInfoTablesDao extends DatabaseAccessor<Database>
             .getSingle();
   }
 
-//=============================Ecological Data==================================
+  Future<void> updateTree(SurveyHeaderTreeCompanion entry) async {
+    await (update(surveyHeaderTree)
+          ..where((tbl) => tbl.id.equals(entry.id.value)))
+        .write(entry);
+  }
+
+//====================Survey Header Ecological Management====================
+
+  Future<int> addEcological(SurveyHeaderEcologicalCompanion entry) =>
+      into(surveyHeaderEcological).insert(entry);
+
   Future<SurveyHeaderEcologicalData> getEcologicalDataFromSurveyId(
       int surveyId) async {
     SurveyHeaderEcologicalData? data = await (select(surveyHeaderEcological)
@@ -261,7 +289,17 @@ class SurveyInfoTablesDao extends DatabaseAccessor<Database>
             .getSingle();
   }
 
-//===============================Soil Data======================================
+  Future<void> updateEcological(SurveyHeaderEcologicalCompanion entry) async {
+    await (update(surveyHeaderEcological)
+          ..where((tbl) => tbl.id.equals(entry.id.value)))
+        .write(entry);
+  }
+
+//====================Survey Header Soil Management====================
+
+  Future<int> addSoil(SurveyHeaderSoilCompanion entry) =>
+      into(surveyHeaderSoil).insert(entry);
+
   Future<SurveyHeaderSoilData> getSoilDataFromSurveyId(int surveyId) async {
     SurveyHeaderSoilData? data = await (select(surveyHeaderSoil)
           ..where((tbl) => tbl.surveyId.equals(surveyId)))
@@ -275,5 +313,11 @@ class SurveyInfoTablesDao extends DatabaseAccessor<Database>
         await (select(surveyHeaderSoil)
               ..where((tbl) => tbl.surveyId.equals(surveyId)))
             .getSingle();
+  }
+
+  Future<void> updateSoil(SurveyHeaderSoilCompanion entry) async {
+    await (update(surveyHeaderSoil)
+          ..where((tbl) => tbl.id.equals(entry.id.value)))
+        .write(entry);
   }
 }

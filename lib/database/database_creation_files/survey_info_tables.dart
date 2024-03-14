@@ -35,22 +35,18 @@ class SurveySummary extends Table {
 class SurveyHeaderGroundPhoto extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get surveyId => integer().unique().references(SurveyHeaders, #id)();
-  BoolColumn get plotPin => boolean().withDefault(const Constant(false))();
-  BoolColumn get transectOneFifteenUnder =>
-      boolean().withDefault(const Constant(false))();
-  BoolColumn get transectOneFifteenOver =>
-      boolean().withDefault(const Constant(false))();
-  BoolColumn get transectTwoFifteenUnder =>
-      boolean().withDefault(const Constant(false))();
-  BoolColumn get transectTwoFifteenOver =>
-      boolean().withDefault(const Constant(false))();
-  BoolColumn get horizontal => boolean().withDefault(const Constant(false))();
-  BoolColumn get canopy => boolean().withDefault(const Constant(false))();
-  BoolColumn get soilProfile => boolean().withDefault(const Constant(false))();
-  BoolColumn get otherOne => boolean().withDefault(const Constant(false))();
-  BoolColumn get otherTwo => boolean().withDefault(const Constant(false))();
-  BoolColumn get otherThree => boolean().withDefault(const Constant(false))();
-  BoolColumn get otherFour => boolean().withDefault(const Constant(false))();
+  BoolColumn get plotPin => boolean().nullable()();
+  BoolColumn get transectOneFifteenUnder => boolean().nullable()();
+  BoolColumn get transectOneFifteenOver => boolean().nullable()();
+  BoolColumn get transectTwoFifteenUnder => boolean().nullable()();
+  BoolColumn get transectTwoFifteenOver => boolean().nullable()();
+  BoolColumn get horizontal => boolean().nullable()();
+  BoolColumn get canopy => boolean().nullable()();
+  BoolColumn get soilProfile => boolean().nullable()();
+  BoolColumn get otherOne => boolean().nullable()();
+  BoolColumn get otherTwo => boolean().nullable()();
+  BoolColumn get otherThree => boolean().nullable()();
+  BoolColumn get otherFour => boolean().nullable()();
 }
 
 class SurveyHeaderTree extends Table {

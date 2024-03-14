@@ -163,7 +163,8 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
 
     switch (category) {
       case SurveyCardCategories.surveyHeader:
-        markNotAssessed = db.surveyInfoTablesDao.markNotAssessed(surveyId);
+        markNotAssessed =
+            db.surveyInfoTablesDao.markNotAssessed(surveyId, data?.id);
         break;
       case SurveyCardCategories.woodyDebris:
         markNotAssessed =

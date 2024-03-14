@@ -9793,121 +9793,109 @@ class $SurveyHeaderGroundPhotoTable extends SurveyHeaderGroundPhoto
       const VerificationMeta('plotPin');
   @override
   late final GeneratedColumn<bool> plotPin = GeneratedColumn<bool>(
-      'plot_pin', aliasedName, false,
+      'plot_pin', aliasedName, true,
       type: DriftSqlType.bool,
       requiredDuringInsert: false,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('CHECK ("plot_pin" IN (0, 1))'),
-      defaultValue: const Constant(false));
+          GeneratedColumn.constraintIsAlways('CHECK ("plot_pin" IN (0, 1))'));
   static const VerificationMeta _transectOneFifteenUnderMeta =
       const VerificationMeta('transectOneFifteenUnder');
   @override
   late final GeneratedColumn<bool> transectOneFifteenUnder =
-      GeneratedColumn<bool>('transect_one_fifteen_under', aliasedName, false,
+      GeneratedColumn<bool>('transect_one_fifteen_under', aliasedName, true,
           type: DriftSqlType.bool,
           requiredDuringInsert: false,
           defaultConstraints: GeneratedColumn.constraintIsAlways(
-              'CHECK ("transect_one_fifteen_under" IN (0, 1))'),
-          defaultValue: const Constant(false));
+              'CHECK ("transect_one_fifteen_under" IN (0, 1))'));
   static const VerificationMeta _transectOneFifteenOverMeta =
       const VerificationMeta('transectOneFifteenOver');
   @override
   late final GeneratedColumn<bool> transectOneFifteenOver =
-      GeneratedColumn<bool>('transect_one_fifteen_over', aliasedName, false,
+      GeneratedColumn<bool>('transect_one_fifteen_over', aliasedName, true,
           type: DriftSqlType.bool,
           requiredDuringInsert: false,
           defaultConstraints: GeneratedColumn.constraintIsAlways(
-              'CHECK ("transect_one_fifteen_over" IN (0, 1))'),
-          defaultValue: const Constant(false));
+              'CHECK ("transect_one_fifteen_over" IN (0, 1))'));
   static const VerificationMeta _transectTwoFifteenUnderMeta =
       const VerificationMeta('transectTwoFifteenUnder');
   @override
   late final GeneratedColumn<bool> transectTwoFifteenUnder =
-      GeneratedColumn<bool>('transect_two_fifteen_under', aliasedName, false,
+      GeneratedColumn<bool>('transect_two_fifteen_under', aliasedName, true,
           type: DriftSqlType.bool,
           requiredDuringInsert: false,
           defaultConstraints: GeneratedColumn.constraintIsAlways(
-              'CHECK ("transect_two_fifteen_under" IN (0, 1))'),
-          defaultValue: const Constant(false));
+              'CHECK ("transect_two_fifteen_under" IN (0, 1))'));
   static const VerificationMeta _transectTwoFifteenOverMeta =
       const VerificationMeta('transectTwoFifteenOver');
   @override
   late final GeneratedColumn<bool> transectTwoFifteenOver =
-      GeneratedColumn<bool>('transect_two_fifteen_over', aliasedName, false,
+      GeneratedColumn<bool>('transect_two_fifteen_over', aliasedName, true,
           type: DriftSqlType.bool,
           requiredDuringInsert: false,
           defaultConstraints: GeneratedColumn.constraintIsAlways(
-              'CHECK ("transect_two_fifteen_over" IN (0, 1))'),
-          defaultValue: const Constant(false));
+              'CHECK ("transect_two_fifteen_over" IN (0, 1))'));
   static const VerificationMeta _horizontalMeta =
       const VerificationMeta('horizontal');
   @override
   late final GeneratedColumn<bool> horizontal = GeneratedColumn<bool>(
-      'horizontal', aliasedName, false,
+      'horizontal', aliasedName, true,
       type: DriftSqlType.bool,
       requiredDuringInsert: false,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('CHECK ("horizontal" IN (0, 1))'),
-      defaultValue: const Constant(false));
+          GeneratedColumn.constraintIsAlways('CHECK ("horizontal" IN (0, 1))'));
   static const VerificationMeta _canopyMeta = const VerificationMeta('canopy');
   @override
   late final GeneratedColumn<bool> canopy = GeneratedColumn<bool>(
-      'canopy', aliasedName, false,
+      'canopy', aliasedName, true,
       type: DriftSqlType.bool,
       requiredDuringInsert: false,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('CHECK ("canopy" IN (0, 1))'),
-      defaultValue: const Constant(false));
+          GeneratedColumn.constraintIsAlways('CHECK ("canopy" IN (0, 1))'));
   static const VerificationMeta _soilProfileMeta =
       const VerificationMeta('soilProfile');
   @override
   late final GeneratedColumn<bool> soilProfile = GeneratedColumn<bool>(
-      'soil_profile', aliasedName, false,
+      'soil_profile', aliasedName, true,
       type: DriftSqlType.bool,
       requiredDuringInsert: false,
       defaultConstraints: GeneratedColumn.constraintIsAlways(
-          'CHECK ("soil_profile" IN (0, 1))'),
-      defaultValue: const Constant(false));
+          'CHECK ("soil_profile" IN (0, 1))'));
   static const VerificationMeta _otherOneMeta =
       const VerificationMeta('otherOne');
   @override
   late final GeneratedColumn<bool> otherOne = GeneratedColumn<bool>(
-      'other_one', aliasedName, false,
+      'other_one', aliasedName, true,
       type: DriftSqlType.bool,
       requiredDuringInsert: false,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('CHECK ("other_one" IN (0, 1))'),
-      defaultValue: const Constant(false));
+          GeneratedColumn.constraintIsAlways('CHECK ("other_one" IN (0, 1))'));
   static const VerificationMeta _otherTwoMeta =
       const VerificationMeta('otherTwo');
   @override
   late final GeneratedColumn<bool> otherTwo = GeneratedColumn<bool>(
-      'other_two', aliasedName, false,
+      'other_two', aliasedName, true,
       type: DriftSqlType.bool,
       requiredDuringInsert: false,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('CHECK ("other_two" IN (0, 1))'),
-      defaultValue: const Constant(false));
+          GeneratedColumn.constraintIsAlways('CHECK ("other_two" IN (0, 1))'));
   static const VerificationMeta _otherThreeMeta =
       const VerificationMeta('otherThree');
   @override
   late final GeneratedColumn<bool> otherThree = GeneratedColumn<bool>(
-      'other_three', aliasedName, false,
+      'other_three', aliasedName, true,
       type: DriftSqlType.bool,
       requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('CHECK ("other_three" IN (0, 1))'),
-      defaultValue: const Constant(false));
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("other_three" IN (0, 1))'));
   static const VerificationMeta _otherFourMeta =
       const VerificationMeta('otherFour');
   @override
   late final GeneratedColumn<bool> otherFour = GeneratedColumn<bool>(
-      'other_four', aliasedName, false,
+      'other_four', aliasedName, true,
       type: DriftSqlType.bool,
       requiredDuringInsert: false,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('CHECK ("other_four" IN (0, 1))'),
-      defaultValue: const Constant(false));
+          GeneratedColumn.constraintIsAlways('CHECK ("other_four" IN (0, 1))'));
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -10024,33 +10012,33 @@ class $SurveyHeaderGroundPhotoTable extends SurveyHeaderGroundPhoto
       surveyId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}survey_id'])!,
       plotPin: attachedDatabase.typeMapping
-          .read(DriftSqlType.bool, data['${effectivePrefix}plot_pin'])!,
+          .read(DriftSqlType.bool, data['${effectivePrefix}plot_pin']),
       transectOneFifteenUnder: attachedDatabase.typeMapping.read(
           DriftSqlType.bool,
-          data['${effectivePrefix}transect_one_fifteen_under'])!,
+          data['${effectivePrefix}transect_one_fifteen_under']),
       transectOneFifteenOver: attachedDatabase.typeMapping.read(
           DriftSqlType.bool,
-          data['${effectivePrefix}transect_one_fifteen_over'])!,
+          data['${effectivePrefix}transect_one_fifteen_over']),
       transectTwoFifteenUnder: attachedDatabase.typeMapping.read(
           DriftSqlType.bool,
-          data['${effectivePrefix}transect_two_fifteen_under'])!,
+          data['${effectivePrefix}transect_two_fifteen_under']),
       transectTwoFifteenOver: attachedDatabase.typeMapping.read(
           DriftSqlType.bool,
-          data['${effectivePrefix}transect_two_fifteen_over'])!,
+          data['${effectivePrefix}transect_two_fifteen_over']),
       horizontal: attachedDatabase.typeMapping
-          .read(DriftSqlType.bool, data['${effectivePrefix}horizontal'])!,
+          .read(DriftSqlType.bool, data['${effectivePrefix}horizontal']),
       canopy: attachedDatabase.typeMapping
-          .read(DriftSqlType.bool, data['${effectivePrefix}canopy'])!,
+          .read(DriftSqlType.bool, data['${effectivePrefix}canopy']),
       soilProfile: attachedDatabase.typeMapping
-          .read(DriftSqlType.bool, data['${effectivePrefix}soil_profile'])!,
+          .read(DriftSqlType.bool, data['${effectivePrefix}soil_profile']),
       otherOne: attachedDatabase.typeMapping
-          .read(DriftSqlType.bool, data['${effectivePrefix}other_one'])!,
+          .read(DriftSqlType.bool, data['${effectivePrefix}other_one']),
       otherTwo: attachedDatabase.typeMapping
-          .read(DriftSqlType.bool, data['${effectivePrefix}other_two'])!,
+          .read(DriftSqlType.bool, data['${effectivePrefix}other_two']),
       otherThree: attachedDatabase.typeMapping
-          .read(DriftSqlType.bool, data['${effectivePrefix}other_three'])!,
+          .read(DriftSqlType.bool, data['${effectivePrefix}other_three']),
       otherFour: attachedDatabase.typeMapping
-          .read(DriftSqlType.bool, data['${effectivePrefix}other_four'])!,
+          .read(DriftSqlType.bool, data['${effectivePrefix}other_four']),
     );
   }
 
@@ -10064,50 +10052,76 @@ class SurveyHeaderGroundPhotoData extends DataClass
     implements Insertable<SurveyHeaderGroundPhotoData> {
   final int id;
   final int surveyId;
-  final bool plotPin;
-  final bool transectOneFifteenUnder;
-  final bool transectOneFifteenOver;
-  final bool transectTwoFifteenUnder;
-  final bool transectTwoFifteenOver;
-  final bool horizontal;
-  final bool canopy;
-  final bool soilProfile;
-  final bool otherOne;
-  final bool otherTwo;
-  final bool otherThree;
-  final bool otherFour;
+  final bool? plotPin;
+  final bool? transectOneFifteenUnder;
+  final bool? transectOneFifteenOver;
+  final bool? transectTwoFifteenUnder;
+  final bool? transectTwoFifteenOver;
+  final bool? horizontal;
+  final bool? canopy;
+  final bool? soilProfile;
+  final bool? otherOne;
+  final bool? otherTwo;
+  final bool? otherThree;
+  final bool? otherFour;
   const SurveyHeaderGroundPhotoData(
       {required this.id,
       required this.surveyId,
-      required this.plotPin,
-      required this.transectOneFifteenUnder,
-      required this.transectOneFifteenOver,
-      required this.transectTwoFifteenUnder,
-      required this.transectTwoFifteenOver,
-      required this.horizontal,
-      required this.canopy,
-      required this.soilProfile,
-      required this.otherOne,
-      required this.otherTwo,
-      required this.otherThree,
-      required this.otherFour});
+      this.plotPin,
+      this.transectOneFifteenUnder,
+      this.transectOneFifteenOver,
+      this.transectTwoFifteenUnder,
+      this.transectTwoFifteenOver,
+      this.horizontal,
+      this.canopy,
+      this.soilProfile,
+      this.otherOne,
+      this.otherTwo,
+      this.otherThree,
+      this.otherFour});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['survey_id'] = Variable<int>(surveyId);
-    map['plot_pin'] = Variable<bool>(plotPin);
-    map['transect_one_fifteen_under'] = Variable<bool>(transectOneFifteenUnder);
-    map['transect_one_fifteen_over'] = Variable<bool>(transectOneFifteenOver);
-    map['transect_two_fifteen_under'] = Variable<bool>(transectTwoFifteenUnder);
-    map['transect_two_fifteen_over'] = Variable<bool>(transectTwoFifteenOver);
-    map['horizontal'] = Variable<bool>(horizontal);
-    map['canopy'] = Variable<bool>(canopy);
-    map['soil_profile'] = Variable<bool>(soilProfile);
-    map['other_one'] = Variable<bool>(otherOne);
-    map['other_two'] = Variable<bool>(otherTwo);
-    map['other_three'] = Variable<bool>(otherThree);
-    map['other_four'] = Variable<bool>(otherFour);
+    if (!nullToAbsent || plotPin != null) {
+      map['plot_pin'] = Variable<bool>(plotPin);
+    }
+    if (!nullToAbsent || transectOneFifteenUnder != null) {
+      map['transect_one_fifteen_under'] =
+          Variable<bool>(transectOneFifteenUnder);
+    }
+    if (!nullToAbsent || transectOneFifteenOver != null) {
+      map['transect_one_fifteen_over'] = Variable<bool>(transectOneFifteenOver);
+    }
+    if (!nullToAbsent || transectTwoFifteenUnder != null) {
+      map['transect_two_fifteen_under'] =
+          Variable<bool>(transectTwoFifteenUnder);
+    }
+    if (!nullToAbsent || transectTwoFifteenOver != null) {
+      map['transect_two_fifteen_over'] = Variable<bool>(transectTwoFifteenOver);
+    }
+    if (!nullToAbsent || horizontal != null) {
+      map['horizontal'] = Variable<bool>(horizontal);
+    }
+    if (!nullToAbsent || canopy != null) {
+      map['canopy'] = Variable<bool>(canopy);
+    }
+    if (!nullToAbsent || soilProfile != null) {
+      map['soil_profile'] = Variable<bool>(soilProfile);
+    }
+    if (!nullToAbsent || otherOne != null) {
+      map['other_one'] = Variable<bool>(otherOne);
+    }
+    if (!nullToAbsent || otherTwo != null) {
+      map['other_two'] = Variable<bool>(otherTwo);
+    }
+    if (!nullToAbsent || otherThree != null) {
+      map['other_three'] = Variable<bool>(otherThree);
+    }
+    if (!nullToAbsent || otherFour != null) {
+      map['other_four'] = Variable<bool>(otherFour);
+    }
     return map;
   }
 
@@ -10115,18 +10129,41 @@ class SurveyHeaderGroundPhotoData extends DataClass
     return SurveyHeaderGroundPhotoCompanion(
       id: Value(id),
       surveyId: Value(surveyId),
-      plotPin: Value(plotPin),
-      transectOneFifteenUnder: Value(transectOneFifteenUnder),
-      transectOneFifteenOver: Value(transectOneFifteenOver),
-      transectTwoFifteenUnder: Value(transectTwoFifteenUnder),
-      transectTwoFifteenOver: Value(transectTwoFifteenOver),
-      horizontal: Value(horizontal),
-      canopy: Value(canopy),
-      soilProfile: Value(soilProfile),
-      otherOne: Value(otherOne),
-      otherTwo: Value(otherTwo),
-      otherThree: Value(otherThree),
-      otherFour: Value(otherFour),
+      plotPin: plotPin == null && nullToAbsent
+          ? const Value.absent()
+          : Value(plotPin),
+      transectOneFifteenUnder: transectOneFifteenUnder == null && nullToAbsent
+          ? const Value.absent()
+          : Value(transectOneFifteenUnder),
+      transectOneFifteenOver: transectOneFifteenOver == null && nullToAbsent
+          ? const Value.absent()
+          : Value(transectOneFifteenOver),
+      transectTwoFifteenUnder: transectTwoFifteenUnder == null && nullToAbsent
+          ? const Value.absent()
+          : Value(transectTwoFifteenUnder),
+      transectTwoFifteenOver: transectTwoFifteenOver == null && nullToAbsent
+          ? const Value.absent()
+          : Value(transectTwoFifteenOver),
+      horizontal: horizontal == null && nullToAbsent
+          ? const Value.absent()
+          : Value(horizontal),
+      canopy:
+          canopy == null && nullToAbsent ? const Value.absent() : Value(canopy),
+      soilProfile: soilProfile == null && nullToAbsent
+          ? const Value.absent()
+          : Value(soilProfile),
+      otherOne: otherOne == null && nullToAbsent
+          ? const Value.absent()
+          : Value(otherOne),
+      otherTwo: otherTwo == null && nullToAbsent
+          ? const Value.absent()
+          : Value(otherTwo),
+      otherThree: otherThree == null && nullToAbsent
+          ? const Value.absent()
+          : Value(otherThree),
+      otherFour: otherFour == null && nullToAbsent
+          ? const Value.absent()
+          : Value(otherFour),
     );
   }
 
@@ -10136,22 +10173,22 @@ class SurveyHeaderGroundPhotoData extends DataClass
     return SurveyHeaderGroundPhotoData(
       id: serializer.fromJson<int>(json['id']),
       surveyId: serializer.fromJson<int>(json['surveyId']),
-      plotPin: serializer.fromJson<bool>(json['plotPin']),
+      plotPin: serializer.fromJson<bool?>(json['plotPin']),
       transectOneFifteenUnder:
-          serializer.fromJson<bool>(json['transectOneFifteenUnder']),
+          serializer.fromJson<bool?>(json['transectOneFifteenUnder']),
       transectOneFifteenOver:
-          serializer.fromJson<bool>(json['transectOneFifteenOver']),
+          serializer.fromJson<bool?>(json['transectOneFifteenOver']),
       transectTwoFifteenUnder:
-          serializer.fromJson<bool>(json['transectTwoFifteenUnder']),
+          serializer.fromJson<bool?>(json['transectTwoFifteenUnder']),
       transectTwoFifteenOver:
-          serializer.fromJson<bool>(json['transectTwoFifteenOver']),
-      horizontal: serializer.fromJson<bool>(json['horizontal']),
-      canopy: serializer.fromJson<bool>(json['canopy']),
-      soilProfile: serializer.fromJson<bool>(json['soilProfile']),
-      otherOne: serializer.fromJson<bool>(json['otherOne']),
-      otherTwo: serializer.fromJson<bool>(json['otherTwo']),
-      otherThree: serializer.fromJson<bool>(json['otherThree']),
-      otherFour: serializer.fromJson<bool>(json['otherFour']),
+          serializer.fromJson<bool?>(json['transectTwoFifteenOver']),
+      horizontal: serializer.fromJson<bool?>(json['horizontal']),
+      canopy: serializer.fromJson<bool?>(json['canopy']),
+      soilProfile: serializer.fromJson<bool?>(json['soilProfile']),
+      otherOne: serializer.fromJson<bool?>(json['otherOne']),
+      otherTwo: serializer.fromJson<bool?>(json['otherTwo']),
+      otherThree: serializer.fromJson<bool?>(json['otherThree']),
+      otherFour: serializer.fromJson<bool?>(json['otherFour']),
     );
   }
   @override
@@ -10160,57 +10197,63 @@ class SurveyHeaderGroundPhotoData extends DataClass
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'surveyId': serializer.toJson<int>(surveyId),
-      'plotPin': serializer.toJson<bool>(plotPin),
+      'plotPin': serializer.toJson<bool?>(plotPin),
       'transectOneFifteenUnder':
-          serializer.toJson<bool>(transectOneFifteenUnder),
-      'transectOneFifteenOver': serializer.toJson<bool>(transectOneFifteenOver),
+          serializer.toJson<bool?>(transectOneFifteenUnder),
+      'transectOneFifteenOver':
+          serializer.toJson<bool?>(transectOneFifteenOver),
       'transectTwoFifteenUnder':
-          serializer.toJson<bool>(transectTwoFifteenUnder),
-      'transectTwoFifteenOver': serializer.toJson<bool>(transectTwoFifteenOver),
-      'horizontal': serializer.toJson<bool>(horizontal),
-      'canopy': serializer.toJson<bool>(canopy),
-      'soilProfile': serializer.toJson<bool>(soilProfile),
-      'otherOne': serializer.toJson<bool>(otherOne),
-      'otherTwo': serializer.toJson<bool>(otherTwo),
-      'otherThree': serializer.toJson<bool>(otherThree),
-      'otherFour': serializer.toJson<bool>(otherFour),
+          serializer.toJson<bool?>(transectTwoFifteenUnder),
+      'transectTwoFifteenOver':
+          serializer.toJson<bool?>(transectTwoFifteenOver),
+      'horizontal': serializer.toJson<bool?>(horizontal),
+      'canopy': serializer.toJson<bool?>(canopy),
+      'soilProfile': serializer.toJson<bool?>(soilProfile),
+      'otherOne': serializer.toJson<bool?>(otherOne),
+      'otherTwo': serializer.toJson<bool?>(otherTwo),
+      'otherThree': serializer.toJson<bool?>(otherThree),
+      'otherFour': serializer.toJson<bool?>(otherFour),
     };
   }
 
   SurveyHeaderGroundPhotoData copyWith(
           {int? id,
           int? surveyId,
-          bool? plotPin,
-          bool? transectOneFifteenUnder,
-          bool? transectOneFifteenOver,
-          bool? transectTwoFifteenUnder,
-          bool? transectTwoFifteenOver,
-          bool? horizontal,
-          bool? canopy,
-          bool? soilProfile,
-          bool? otherOne,
-          bool? otherTwo,
-          bool? otherThree,
-          bool? otherFour}) =>
+          Value<bool?> plotPin = const Value.absent(),
+          Value<bool?> transectOneFifteenUnder = const Value.absent(),
+          Value<bool?> transectOneFifteenOver = const Value.absent(),
+          Value<bool?> transectTwoFifteenUnder = const Value.absent(),
+          Value<bool?> transectTwoFifteenOver = const Value.absent(),
+          Value<bool?> horizontal = const Value.absent(),
+          Value<bool?> canopy = const Value.absent(),
+          Value<bool?> soilProfile = const Value.absent(),
+          Value<bool?> otherOne = const Value.absent(),
+          Value<bool?> otherTwo = const Value.absent(),
+          Value<bool?> otherThree = const Value.absent(),
+          Value<bool?> otherFour = const Value.absent()}) =>
       SurveyHeaderGroundPhotoData(
         id: id ?? this.id,
         surveyId: surveyId ?? this.surveyId,
-        plotPin: plotPin ?? this.plotPin,
-        transectOneFifteenUnder:
-            transectOneFifteenUnder ?? this.transectOneFifteenUnder,
-        transectOneFifteenOver:
-            transectOneFifteenOver ?? this.transectOneFifteenOver,
-        transectTwoFifteenUnder:
-            transectTwoFifteenUnder ?? this.transectTwoFifteenUnder,
-        transectTwoFifteenOver:
-            transectTwoFifteenOver ?? this.transectTwoFifteenOver,
-        horizontal: horizontal ?? this.horizontal,
-        canopy: canopy ?? this.canopy,
-        soilProfile: soilProfile ?? this.soilProfile,
-        otherOne: otherOne ?? this.otherOne,
-        otherTwo: otherTwo ?? this.otherTwo,
-        otherThree: otherThree ?? this.otherThree,
-        otherFour: otherFour ?? this.otherFour,
+        plotPin: plotPin.present ? plotPin.value : this.plotPin,
+        transectOneFifteenUnder: transectOneFifteenUnder.present
+            ? transectOneFifteenUnder.value
+            : this.transectOneFifteenUnder,
+        transectOneFifteenOver: transectOneFifteenOver.present
+            ? transectOneFifteenOver.value
+            : this.transectOneFifteenOver,
+        transectTwoFifteenUnder: transectTwoFifteenUnder.present
+            ? transectTwoFifteenUnder.value
+            : this.transectTwoFifteenUnder,
+        transectTwoFifteenOver: transectTwoFifteenOver.present
+            ? transectTwoFifteenOver.value
+            : this.transectTwoFifteenOver,
+        horizontal: horizontal.present ? horizontal.value : this.horizontal,
+        canopy: canopy.present ? canopy.value : this.canopy,
+        soilProfile: soilProfile.present ? soilProfile.value : this.soilProfile,
+        otherOne: otherOne.present ? otherOne.value : this.otherOne,
+        otherTwo: otherTwo.present ? otherTwo.value : this.otherTwo,
+        otherThree: otherThree.present ? otherThree.value : this.otherThree,
+        otherFour: otherFour.present ? otherFour.value : this.otherFour,
       );
   @override
   String toString() {
@@ -10273,18 +10316,18 @@ class SurveyHeaderGroundPhotoCompanion
     extends UpdateCompanion<SurveyHeaderGroundPhotoData> {
   final Value<int> id;
   final Value<int> surveyId;
-  final Value<bool> plotPin;
-  final Value<bool> transectOneFifteenUnder;
-  final Value<bool> transectOneFifteenOver;
-  final Value<bool> transectTwoFifteenUnder;
-  final Value<bool> transectTwoFifteenOver;
-  final Value<bool> horizontal;
-  final Value<bool> canopy;
-  final Value<bool> soilProfile;
-  final Value<bool> otherOne;
-  final Value<bool> otherTwo;
-  final Value<bool> otherThree;
-  final Value<bool> otherFour;
+  final Value<bool?> plotPin;
+  final Value<bool?> transectOneFifteenUnder;
+  final Value<bool?> transectOneFifteenOver;
+  final Value<bool?> transectTwoFifteenUnder;
+  final Value<bool?> transectTwoFifteenOver;
+  final Value<bool?> horizontal;
+  final Value<bool?> canopy;
+  final Value<bool?> soilProfile;
+  final Value<bool?> otherOne;
+  final Value<bool?> otherTwo;
+  final Value<bool?> otherThree;
+  final Value<bool?> otherFour;
   const SurveyHeaderGroundPhotoCompanion({
     this.id = const Value.absent(),
     this.surveyId = const Value.absent(),
@@ -10358,18 +10401,18 @@ class SurveyHeaderGroundPhotoCompanion
   SurveyHeaderGroundPhotoCompanion copyWith(
       {Value<int>? id,
       Value<int>? surveyId,
-      Value<bool>? plotPin,
-      Value<bool>? transectOneFifteenUnder,
-      Value<bool>? transectOneFifteenOver,
-      Value<bool>? transectTwoFifteenUnder,
-      Value<bool>? transectTwoFifteenOver,
-      Value<bool>? horizontal,
-      Value<bool>? canopy,
-      Value<bool>? soilProfile,
-      Value<bool>? otherOne,
-      Value<bool>? otherTwo,
-      Value<bool>? otherThree,
-      Value<bool>? otherFour}) {
+      Value<bool?>? plotPin,
+      Value<bool?>? transectOneFifteenUnder,
+      Value<bool?>? transectOneFifteenOver,
+      Value<bool?>? transectTwoFifteenUnder,
+      Value<bool?>? transectTwoFifteenOver,
+      Value<bool?>? horizontal,
+      Value<bool?>? canopy,
+      Value<bool?>? soilProfile,
+      Value<bool?>? otherOne,
+      Value<bool?>? otherTwo,
+      Value<bool?>? otherThree,
+      Value<bool?>? otherFour}) {
     return SurveyHeaderGroundPhotoCompanion(
       id: id ?? this.id,
       surveyId: surveyId ?? this.surveyId,
