@@ -45,11 +45,12 @@ class SmallTreePlotTablesDao extends DatabaseAccessor<Database>
         complete: const Value(false)));
   }
 
-  Future<StpSummaryData> setAndReturnDefaultStpSummary(
+  Future<StpSummaryData> setAndReturnDefaultSummary(
       int surveyId, DateTime measDate) async {
     StpSummaryCompanion entry = StpSummaryCompanion(
         surveyId: Value(surveyId),
         measDate: Value(measDate),
+        plotType: const Value(""),
         complete: const Value(false),
         notAssessed: const Value(false));
 

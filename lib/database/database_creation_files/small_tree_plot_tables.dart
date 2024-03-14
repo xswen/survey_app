@@ -6,7 +6,7 @@ class StpSummary extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get surveyId => integer().unique().references(SurveyHeaders, #id)();
   DateTimeColumn get measDate => dateTime()();
-  TextColumn get plotType => text().withLength(min: 3, max: 3)();
+  TextColumn get plotType => text().withLength(min: 0, max: 3)();
   RealColumn get nomPlotSize =>
       real().check(nomPlotSize.isBetweenValues(-1, 0.04)).nullable()();
   RealColumn get measPlotSize =>

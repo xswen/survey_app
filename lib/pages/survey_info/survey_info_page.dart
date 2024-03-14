@@ -260,12 +260,17 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
         );
         break;
       case SurveyCardCategories.smallTreePlot:
-        if (context.mounted) {
-          context
-              .pushNamed(SmallTreePlotSummaryPage.routeName,
-                  pathParameters: widget.goRouterState.pathParameters)
-              .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
-        }
+        // if (context.mounted) {
+        //   context
+        //       .pushNamed(SmallTreePlotSummaryPage.routeName,
+        //           pathParameters: widget.goRouterState.pathParameters)
+        //       .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
+        // }
+        getId(() => db.smallTreePlotTablesDao
+            .setAndReturnDefaultSummary(survey.id, survey.measDate)).then(
+          (id) => context.pushNamed(SmallTreePlotSummaryPage.routeName,
+              pathParameters: widget.goRouterState.pathParameters),
+        );
         break;
       case SurveyCardCategories.shrubPlot:
         if (context.mounted) {

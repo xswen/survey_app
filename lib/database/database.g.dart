@@ -20596,7 +20596,7 @@ class $StpSummaryTable extends StpSummary
   late final GeneratedColumn<String> plotType = GeneratedColumn<String>(
       'plot_type', aliasedName, false,
       additionalChecks:
-          GeneratedColumn.checkTextLength(minTextLength: 3, maxTextLength: 3),
+          GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 3),
       type: DriftSqlType.string,
       requiredDuringInsert: true);
   static const VerificationMeta _nomPlotSizeMeta =
@@ -23557,6 +23557,8 @@ abstract class _$Database extends GeneratedDatabase {
       EcologicalPlotTablesDao(this as Database);
   late final SoilPitTablesDao soilPitTablesDao =
       SoilPitTablesDao(this as Database);
+  late final SmallTreePlotTablesDao smallTreePlotTablesDao =
+      SmallTreePlotTablesDao(this as Database);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();

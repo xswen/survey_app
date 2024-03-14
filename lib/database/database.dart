@@ -9,13 +9,13 @@ import 'package:flutter/cupertino.dart' as c;
 import 'package:flutter/services.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:survey_app/database/daos/small_tree_plot_tables_dao.dart';
 import 'package:survey_app/database/daos/soil_pit_tables_dao.dart';
 import 'package:survey_app/database/database_creation_files/large_tree_plot_tables.dart';
 import 'package:survey_app/database/database_creation_files/small_tree_plot_tables.dart';
 import 'package:survey_app/database/database_creation_files/soil_pit_tables.dart';
 import 'package:survey_app/database/database_creation_files/stump_plot_tables.dart';
 import 'package:survey_app/enums/enums.dart';
-import 'package:survey_app/pages/stump_plot/stump_plot_summary_page.dart';
 import 'package:survey_app/wrappers/survey_card.dart';
 
 import '../database/daos/reference_tables_dao.dart';
@@ -131,6 +131,7 @@ const List<Type> _daos = [
   SurfaceSubstrateTablesDao,
   EcologicalPlotTablesDao,
   SoilPitTablesDao,
+  SmallTreePlotTablesDao,
 ];
 
 const String woodyDebrisPieceViewQuery =
@@ -1029,7 +1030,6 @@ class Database extends _$Database {
               ..where((tbl) => tbl.surveyId.equals(surveyId)))
             .getSingleOrNull()
       },
-      //TODO: to add
       {
         category: SurveyCardCategories.soilPit,
         name: "Soil Pit",
@@ -1040,17 +1040,23 @@ class Database extends _$Database {
       {
         category: SurveyCardCategories.smallTreePlot,
         name: "Small Tree Plot",
-        surveyCardData: null
+        surveyCardData: await (select(stpSummary)
+              ..where((tbl) => tbl.surveyId.equals(surveyId)))
+            .getSingleOrNull()
       },
       {
         category: SurveyCardCategories.shrubPlot,
         name: "Shrub Plot",
-        surveyCardData: null
+        surveyCardData: await (select(shrubSummary)
+              ..where((tbl) => tbl.surveyId.equals(surveyId)))
+            .getSingleOrNull()
       },
       {
         category: SurveyCardCategories.stumpPlot,
         name: "Stump Plot",
-        surveyCardData: null
+        surveyCardData: await (select(stumpSummary)
+              ..where((tbl) => tbl.surveyId.equals(surveyId)))
+            .getSingleOrNull()
       },
       {
         category: SurveyCardCategories.largeTreePlot,
