@@ -41,11 +41,6 @@ class SmallTreePlotTablesDao extends DatabaseAccessor<Database>
 
     await setAndReturnDefaultSummary(surveyId, DateTime.now(),
         notAssessed: true);
-    // await addStpSummary(StpSummaryCompanion(
-    //     surveyId: Value(surveyId),
-    //     measDate: Value(DateTime.now()),
-    //     notAssessed: const Value(true),
-    //     complete: const Value(false)));
   }
 
   Future<StpSummaryData> setAndReturnDefaultSummary(

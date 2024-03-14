@@ -39,20 +39,19 @@ class ShrubPlotTablesDao extends DatabaseAccessor<Database>
     if (shrubSummaryId != null) {
       await deleteShrubSummary(shrubSummaryId);
     }
-    await addShrubSummary(ShrubSummaryCompanion(
-        surveyId: Value(surveyId),
-        measDate: Value(DateTime.now()),
-        notAssessed: const Value(true),
-        complete: const Value(false)));
+    await setAndReturnDefaultSummary(surveyId, DateTime.now(),
+        notAssessed: true);
   }
 
   Future<ShrubSummaryData> setAndReturnDefaultSummary(
-      int surveyId, DateTime measDate) async {
+      int surveyId, DateTime measDate,
+      {bool notAssessed = false}) async {
     ShrubSummaryCompanion entry = ShrubSummaryCompanion(
         surveyId: Value(surveyId),
         measDate: Value(measDate),
+        plotType: const Value(""),
         complete: const Value(false),
-        notAssessed: const Value(false));
+        notAssessed: Value(notAssessed));
 
     int summaryId = await into(shrubSummary).insert(entry,
         onConflict: DoUpdate((old) => entry, target: [shrubSummary.surveyId]));

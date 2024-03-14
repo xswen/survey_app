@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart' as c;
 import 'package:flutter/services.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:survey_app/database/daos/shrub_plot_tables_dao.dart';
 import 'package:survey_app/database/daos/small_tree_plot_tables_dao.dart';
 import 'package:survey_app/database/daos/soil_pit_tables_dao.dart';
 import 'package:survey_app/database/database_creation_files/large_tree_plot_tables.dart';
@@ -24,6 +25,7 @@ import '../database/daos/woody_debris_tables_dao.dart';
 import '../database/database_creation_files/reference_tables.dart';
 import '../database/database_creation_files/survey_info_tables.dart';
 import 'daos/ecological_plot_tables_dao.dart';
+import 'daos/stump_plot_tables_dao.dart';
 import 'daos/surface_substrate_tables_dao.dart';
 import 'database_creation_files/ecological_plot_tables.dart';
 import 'database_creation_files/metadata_tables.dart';
@@ -132,6 +134,8 @@ const List<Type> _daos = [
   EcologicalPlotTablesDao,
   SoilPitTablesDao,
   SmallTreePlotTablesDao,
+  ShrubPlotTablesDao,
+  StumpPlotTablesDao,
 ];
 
 const String woodyDebrisPieceViewQuery =

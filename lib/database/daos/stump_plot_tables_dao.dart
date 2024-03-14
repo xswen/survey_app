@@ -39,20 +39,19 @@ class StumpPlotTablesDao extends DatabaseAccessor<Database>
     if (stumpSummaryId != null) {
       await deleteStumpSummary(stumpSummaryId);
     }
-    await addStumpSummary(StumpSummaryCompanion(
-        surveyId: Value(surveyId),
-        measDate: Value(DateTime.now()),
-        notAssessed: const Value(true),
-        complete: const Value(false)));
+    await setAndReturnDefaultSummary(surveyId, DateTime.now(),
+        notAssessed: true);
   }
 
-  Future<StumpSummaryData> setAndReturnDefaultStumpSummary(
-      int surveyId, DateTime measDate) async {
+  Future<StumpSummaryData> setAndReturnDefaultSummary(
+      int surveyId, DateTime measDate,
+      {bool notAssessed = false}) async {
     StumpSummaryCompanion entry = StumpSummaryCompanion(
         surveyId: Value(surveyId),
         measDate: Value(measDate),
+        plotType: const Value(""),
         complete: const Value(false),
-        notAssessed: const Value(false));
+        notAssessed: Value(notAssessed));
 
     int summaryId = await into(stumpSummary).insert(entry,
         onConflict: DoUpdate((old) => entry, target: [stumpSummary.surveyId]));

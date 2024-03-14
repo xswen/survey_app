@@ -21572,7 +21572,7 @@ class $ShrubSummaryTable extends ShrubSummary
   late final GeneratedColumn<String> plotType = GeneratedColumn<String>(
       'plot_type', aliasedName, false,
       additionalChecks:
-          GeneratedColumn.checkTextLength(minTextLength: 3, maxTextLength: 3),
+          GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 3),
       type: DriftSqlType.string,
       requiredDuringInsert: true);
   static const VerificationMeta _nomPlotSizeMeta =
@@ -22474,7 +22474,7 @@ class $StumpSummaryTable extends StumpSummary
   late final GeneratedColumn<String> plotType = GeneratedColumn<String>(
       'plot_type', aliasedName, false,
       additionalChecks:
-          GeneratedColumn.checkTextLength(minTextLength: 3, maxTextLength: 3),
+          GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 3),
       type: DriftSqlType.string,
       requiredDuringInsert: true);
   static const VerificationMeta _nomPlotSizeMeta =
@@ -23559,6 +23559,10 @@ abstract class _$Database extends GeneratedDatabase {
       SoilPitTablesDao(this as Database);
   late final SmallTreePlotTablesDao smallTreePlotTablesDao =
       SmallTreePlotTablesDao(this as Database);
+  late final ShrubPlotTablesDao shrubPlotTablesDao =
+      ShrubPlotTablesDao(this as Database);
+  late final StumpPlotTablesDao stumpPlotTablesDao =
+      StumpPlotTablesDao(this as Database);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
