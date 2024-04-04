@@ -38,7 +38,7 @@ class SoilPitHorizonDescriptionEntryPageState
 
   @override
   void initState() {
-    spId = PathParamValue.getSoilPitSummary(widget.state);
+    spId = PathParamValue.getSoilPitSummaryId(widget.state);
     horizon = widget.state.extra as SoilPitHorizonDescriptionCompanion;
     originalHorizon = widget.state.extra as SoilPitHorizonDescriptionCompanion;
     initSoilPit = ref.read(databaseProvider).companionValueToStr(

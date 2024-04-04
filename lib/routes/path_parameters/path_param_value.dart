@@ -36,8 +36,29 @@ class PathParamValue {
       int.parse(goRouterState.pathParameters[PathParamsKeys.ecpSpeciesNum]!);
 
   //Soil Pit
-  static int getSoilPitSummary(GoRouterState goRouterState) =>
+  static int getSoilPitSummaryId(GoRouterState goRouterState) =>
       int.parse(goRouterState.pathParameters[PathParamsKeys.soilPitSummaryId]!);
-  static int getSoilSiteInfo(GoRouterState goRouterState) =>
+  static int getSoilSiteInfoId(GoRouterState goRouterState) =>
       int.parse(goRouterState.pathParameters[PathParamsKeys.soilSiteInfoId]!);
+
+  //Small Tree Plot
+  static int getStpSummaryId(GoRouterState goRouterState) =>
+      int.parse(goRouterState.pathParameters[PathParamsKeys.stpSummaryId]!);
+
+  static int getStpSpeciesId(GoRouterState goRouterState) =>
+      int.parse(goRouterState.pathParameters[PathParamsKeys.stpSpeciesId]!);
+
+  //Shrub Plot
+  static int getShrubSummaryId(GoRouterState goRouterState) =>
+      int.parse(goRouterState.pathParameters[PathParamsKeys.shrubSummaryId]!);
+
+  static int getShrubSpeciesId(GoRouterState goRouterState) =>
+      int.parse(goRouterState.pathParameters[PathParamsKeys.shrubSpeciesId]!);
+
+  //Stump Plot
+  static int getStumpSummaryId(GoRouterState goRouterState) =>
+      int.parse(goRouterState.pathParameters[PathParamsKeys.stumpSummaryId]!);
+
+  static int getStumpSpeciesId(GoRouterState goRouterState) =>
+      int.parse(goRouterState.pathParameters[PathParamsKeys.stumpSpeciesId]!);
 }

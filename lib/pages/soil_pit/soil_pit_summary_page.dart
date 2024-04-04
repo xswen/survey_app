@@ -32,7 +32,7 @@ class SoilPitSummaryPageState extends ConsumerState<SoilPitSummaryPage> {
   @override
   void initState() {
     surveyId = PathParamValue.getSurveyId(widget.state)!;
-    spId = PathParamValue.getSoilPitSummary(widget.state);
+    spId = PathParamValue.getSoilPitSummaryId(widget.state);
     completeWarningPopup = Popups.generateCompleteErrorPopup(title);
 
     super.initState();
@@ -127,7 +127,7 @@ class SoilPitSummaryPageState extends ConsumerState<SoilPitSummaryPage> {
                 label: "Enter Measurement Date",
                 readOnly: spSummary.complete,
                 readOnlyPopup: completeWarningPopup,
-                setStateFn: (DateTime date) async => updateSpSummary(
+                onDateSelected: (DateTime date) async => updateSpSummary(
                     SoilPitSummaryCompanion(measDate: d.Value(date))),
               ),
               IconNavButton(

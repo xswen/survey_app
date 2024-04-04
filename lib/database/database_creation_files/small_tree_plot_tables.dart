@@ -18,8 +18,8 @@ class StpSummary extends Table {
 @DataClassName("StpSpeciesData")
 class StpSpecies extends Table {
   IntColumn get id => integer().autoIncrement()();
-  IntColumn get stpSummaryId =>
-      integer().unique().references(StpSummary, #id)();
+  IntColumn get stpSummaryId => integer().references(StpSummary, #id)();
+  IntColumn get treeNum => integer()();
   TextColumn get origPlotArea => text().withLength(min: 1, max: 1)();
   TextColumn get genus => text().withLength(min: 4, max: 4)();
   TextColumn get species => text().withLength(min: 3, max: 3)();

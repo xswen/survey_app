@@ -33,7 +33,7 @@ class SoilPitFeatureEntryPageState
 
   @override
   void initState() {
-    spId = PathParamValue.getSoilPitSummary(widget.state);
+    spId = PathParamValue.getSoilPitSummaryId(widget.state);
     feature = widget.state.extra as SoilPitFeatureCompanion;
     initSoilPit = ref.read(databaseProvider).companionValueToStr(
         (widget.state.extra as SoilPitFeatureCompanion).soilFeature);

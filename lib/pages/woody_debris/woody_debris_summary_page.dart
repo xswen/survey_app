@@ -171,7 +171,7 @@ class WoodyDebrisSummaryPageState
                 label: "Enter Measurement Date",
                 readOnly: wd.complete,
                 readOnlyPopup: completeWarningPopup,
-                setStateFn: (DateTime date) async => updateWdSummary(
+                onDateSelected: (DateTime date) async => updateWdSummary(
                     WoodyDebrisSummaryCompanion(measDate: d.Value(date))),
               ),
               const SizedBox(height: kPaddingV),

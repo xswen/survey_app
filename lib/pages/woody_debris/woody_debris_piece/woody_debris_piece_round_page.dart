@@ -188,7 +188,7 @@ class _WoodyDebrisPieceRoundPageState extends State<WoodyDebrisPieceRoundPage> {
               ),
               HideInfoCheckbox(
                 title:
-                    "Average decay class is assigned to all pieces of small woody debris along each transect.",
+                    "Average decay class is assigned to foal pieces of small woody debris along each transect.",
                 titleWidget: "Mark decay class as missing",
                 checkValue: piece.decayClass == const d.Value(-1),
                 onChange: (b) {

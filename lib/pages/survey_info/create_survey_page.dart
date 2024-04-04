@@ -94,7 +94,7 @@ class CreateSurveyPageState extends ConsumerState<CreateSurveyPage>
           CalendarSelect(
               date: surveyHeader.measDate.value,
               label: LocaleKeys.enterMeasDate,
-              setStateFn: (DateTime date) => setState(() => surveyHeader =
+              onDateSelected: (DateTime date) => setState(() => surveyHeader =
                   surveyHeader.copyWith(measDate: d.Value(date)))),
           Container(
             margin: const EdgeInsets.fromLTRB(

@@ -143,7 +143,7 @@ class StumpPlotSummaryPageState extends ConsumerState<StumpPlotSummaryPage> {
                 date: DateTime.now(),
                 label: "Enter Measurement Date",
                 readOnly: false,
-                setStateFn: (DateTime date) async => (),
+                onDateSelected: (DateTime date) async => (),
               ),
               ReferenceNameSelectBuilder(
                 name: db.referenceTablesDao.getShrubPlotTypeName(""),

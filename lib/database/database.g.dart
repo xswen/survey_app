@@ -21009,8 +21009,14 @@ class $StpSpeciesTable extends StpSpecies
       'stp_summary_id', aliasedName, false,
       type: DriftSqlType.int,
       requiredDuringInsert: true,
-      defaultConstraints: GeneratedColumn.constraintIsAlways(
-          'UNIQUE REFERENCES stp_summary (id)'));
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES stp_summary (id)'));
+  static const VerificationMeta _treeNumMeta =
+      const VerificationMeta('treeNum');
+  @override
+  late final GeneratedColumn<int> treeNum = GeneratedColumn<int>(
+      'tree_num', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
   static const VerificationMeta _origPlotAreaMeta =
       const VerificationMeta('origPlotArea');
   @override
@@ -21090,6 +21096,7 @@ class $StpSpeciesTable extends StpSpecies
   List<GeneratedColumn> get $columns => [
         id,
         stpSummaryId,
+        treeNum,
         origPlotArea,
         genus,
         species,
@@ -21120,6 +21127,12 @@ class $StpSpeciesTable extends StpSpecies
               data['stp_summary_id']!, _stpSummaryIdMeta));
     } else if (isInserting) {
       context.missing(_stpSummaryIdMeta);
+    }
+    if (data.containsKey('tree_num')) {
+      context.handle(_treeNumMeta,
+          treeNum.isAcceptableOrUnknown(data['tree_num']!, _treeNumMeta));
+    } else if (isInserting) {
+      context.missing(_treeNumMeta);
     }
     if (data.containsKey('orig_plot_area')) {
       context.handle(
@@ -21194,6 +21207,8 @@ class $StpSpeciesTable extends StpSpecies
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       stpSummaryId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}stp_summary_id'])!,
+      treeNum: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}tree_num'])!,
       origPlotArea: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}orig_plot_area'])!,
       genus: attachedDatabase.typeMapping
@@ -21224,6 +21239,7 @@ class $StpSpeciesTable extends StpSpecies
 class StpSpeciesData extends DataClass implements Insertable<StpSpeciesData> {
   final int id;
   final int stpSummaryId;
+  final int treeNum;
   final String origPlotArea;
   final String genus;
   final String species;
@@ -21236,6 +21252,7 @@ class StpSpeciesData extends DataClass implements Insertable<StpSpeciesData> {
   const StpSpeciesData(
       {required this.id,
       required this.stpSummaryId,
+      required this.treeNum,
       required this.origPlotArea,
       required this.genus,
       required this.species,
@@ -21250,6 +21267,7 @@ class StpSpeciesData extends DataClass implements Insertable<StpSpeciesData> {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['stp_summary_id'] = Variable<int>(stpSummaryId);
+    map['tree_num'] = Variable<int>(treeNum);
     map['orig_plot_area'] = Variable<String>(origPlotArea);
     map['genus'] = Variable<String>(genus);
     map['species'] = Variable<String>(species);
@@ -21266,6 +21284,7 @@ class StpSpeciesData extends DataClass implements Insertable<StpSpeciesData> {
     return StpSpeciesCompanion(
       id: Value(id),
       stpSummaryId: Value(stpSummaryId),
+      treeNum: Value(treeNum),
       origPlotArea: Value(origPlotArea),
       genus: Value(genus),
       species: Value(species),
@@ -21284,6 +21303,7 @@ class StpSpeciesData extends DataClass implements Insertable<StpSpeciesData> {
     return StpSpeciesData(
       id: serializer.fromJson<int>(json['id']),
       stpSummaryId: serializer.fromJson<int>(json['stpSummaryId']),
+      treeNum: serializer.fromJson<int>(json['treeNum']),
       origPlotArea: serializer.fromJson<String>(json['origPlotArea']),
       genus: serializer.fromJson<String>(json['genus']),
       species: serializer.fromJson<String>(json['species']),
@@ -21301,6 +21321,7 @@ class StpSpeciesData extends DataClass implements Insertable<StpSpeciesData> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'stpSummaryId': serializer.toJson<int>(stpSummaryId),
+      'treeNum': serializer.toJson<int>(treeNum),
       'origPlotArea': serializer.toJson<String>(origPlotArea),
       'genus': serializer.toJson<String>(genus),
       'species': serializer.toJson<String>(species),
@@ -21316,6 +21337,7 @@ class StpSpeciesData extends DataClass implements Insertable<StpSpeciesData> {
   StpSpeciesData copyWith(
           {int? id,
           int? stpSummaryId,
+          int? treeNum,
           String? origPlotArea,
           String? genus,
           String? species,
@@ -21328,6 +21350,7 @@ class StpSpeciesData extends DataClass implements Insertable<StpSpeciesData> {
       StpSpeciesData(
         id: id ?? this.id,
         stpSummaryId: stpSummaryId ?? this.stpSummaryId,
+        treeNum: treeNum ?? this.treeNum,
         origPlotArea: origPlotArea ?? this.origPlotArea,
         genus: genus ?? this.genus,
         species: species ?? this.species,
@@ -21343,6 +21366,7 @@ class StpSpeciesData extends DataClass implements Insertable<StpSpeciesData> {
     return (StringBuffer('StpSpeciesData(')
           ..write('id: $id, ')
           ..write('stpSummaryId: $stpSummaryId, ')
+          ..write('treeNum: $treeNum, ')
           ..write('origPlotArea: $origPlotArea, ')
           ..write('genus: $genus, ')
           ..write('species: $species, ')
@@ -21357,14 +21381,15 @@ class StpSpeciesData extends DataClass implements Insertable<StpSpeciesData> {
   }
 
   @override
-  int get hashCode => Object.hash(id, stpSummaryId, origPlotArea, genus,
-      species, variety, status, dbh, height, measHeight, stemCondition);
+  int get hashCode => Object.hash(id, stpSummaryId, treeNum, origPlotArea,
+      genus, species, variety, status, dbh, height, measHeight, stemCondition);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is StpSpeciesData &&
           other.id == this.id &&
           other.stpSummaryId == this.stpSummaryId &&
+          other.treeNum == this.treeNum &&
           other.origPlotArea == this.origPlotArea &&
           other.genus == this.genus &&
           other.species == this.species &&
@@ -21379,6 +21404,7 @@ class StpSpeciesData extends DataClass implements Insertable<StpSpeciesData> {
 class StpSpeciesCompanion extends UpdateCompanion<StpSpeciesData> {
   final Value<int> id;
   final Value<int> stpSummaryId;
+  final Value<int> treeNum;
   final Value<String> origPlotArea;
   final Value<String> genus;
   final Value<String> species;
@@ -21391,6 +21417,7 @@ class StpSpeciesCompanion extends UpdateCompanion<StpSpeciesData> {
   const StpSpeciesCompanion({
     this.id = const Value.absent(),
     this.stpSummaryId = const Value.absent(),
+    this.treeNum = const Value.absent(),
     this.origPlotArea = const Value.absent(),
     this.genus = const Value.absent(),
     this.species = const Value.absent(),
@@ -21404,6 +21431,7 @@ class StpSpeciesCompanion extends UpdateCompanion<StpSpeciesData> {
   StpSpeciesCompanion.insert({
     this.id = const Value.absent(),
     required int stpSummaryId,
+    required int treeNum,
     required String origPlotArea,
     required String genus,
     required String species,
@@ -21414,6 +21442,7 @@ class StpSpeciesCompanion extends UpdateCompanion<StpSpeciesData> {
     required String measHeight,
     required String stemCondition,
   })  : stpSummaryId = Value(stpSummaryId),
+        treeNum = Value(treeNum),
         origPlotArea = Value(origPlotArea),
         genus = Value(genus),
         species = Value(species),
@@ -21426,6 +21455,7 @@ class StpSpeciesCompanion extends UpdateCompanion<StpSpeciesData> {
   static Insertable<StpSpeciesData> custom({
     Expression<int>? id,
     Expression<int>? stpSummaryId,
+    Expression<int>? treeNum,
     Expression<String>? origPlotArea,
     Expression<String>? genus,
     Expression<String>? species,
@@ -21439,6 +21469,7 @@ class StpSpeciesCompanion extends UpdateCompanion<StpSpeciesData> {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (stpSummaryId != null) 'stp_summary_id': stpSummaryId,
+      if (treeNum != null) 'tree_num': treeNum,
       if (origPlotArea != null) 'orig_plot_area': origPlotArea,
       if (genus != null) 'genus': genus,
       if (species != null) 'species': species,
@@ -21454,6 +21485,7 @@ class StpSpeciesCompanion extends UpdateCompanion<StpSpeciesData> {
   StpSpeciesCompanion copyWith(
       {Value<int>? id,
       Value<int>? stpSummaryId,
+      Value<int>? treeNum,
       Value<String>? origPlotArea,
       Value<String>? genus,
       Value<String>? species,
@@ -21466,6 +21498,7 @@ class StpSpeciesCompanion extends UpdateCompanion<StpSpeciesData> {
     return StpSpeciesCompanion(
       id: id ?? this.id,
       stpSummaryId: stpSummaryId ?? this.stpSummaryId,
+      treeNum: treeNum ?? this.treeNum,
       origPlotArea: origPlotArea ?? this.origPlotArea,
       genus: genus ?? this.genus,
       species: species ?? this.species,
@@ -21486,6 +21519,9 @@ class StpSpeciesCompanion extends UpdateCompanion<StpSpeciesData> {
     }
     if (stpSummaryId.present) {
       map['stp_summary_id'] = Variable<int>(stpSummaryId.value);
+    }
+    if (treeNum.present) {
+      map['tree_num'] = Variable<int>(treeNum.value);
     }
     if (origPlotArea.present) {
       map['orig_plot_area'] = Variable<String>(origPlotArea.value);
@@ -21522,6 +21558,7 @@ class StpSpeciesCompanion extends UpdateCompanion<StpSpeciesData> {
     return (StringBuffer('StpSpeciesCompanion(')
           ..write('id: $id, ')
           ..write('stpSummaryId: $stpSummaryId, ')
+          ..write('treeNum: $treeNum, ')
           ..write('origPlotArea: $origPlotArea, ')
           ..write('genus: $genus, ')
           ..write('species: $species, ')

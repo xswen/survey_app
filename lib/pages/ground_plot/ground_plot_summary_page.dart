@@ -57,7 +57,7 @@ class GroundPlotSummaryPageState extends ConsumerState<GroundPlotSummaryPage> {
               label: "Enter Measurement Date",
               readOnly: false,
               // readOnlyPopup: completeWarningPopup,
-              setStateFn: (DateTime date) async => null,
+              onDateSelected: (DateTime date) async => null,
             ),
             IconNavButton(
               icon: const Icon(FontAwesomeIcons.info),

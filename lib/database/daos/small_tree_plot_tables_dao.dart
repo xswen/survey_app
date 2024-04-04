@@ -80,4 +80,12 @@ class SmallTreePlotTablesDao extends DatabaseAccessor<Database>
           ..where((tbl) => tbl.stpSummaryId.equals(stpSummaryId)))
         .go();
   }
+
+  Future<List<StpSpeciesData>> getSpeciesList(int summaryId) {
+    final query = select(stpSpecies)
+      ..where((s) => s.stpSummaryId.equals(summaryId))
+      ..orderBy(
+          [(s) => OrderingTerm(expression: s.treeNum, mode: OrderingMode.asc)]);
+    return query.get();
+  }
 }
