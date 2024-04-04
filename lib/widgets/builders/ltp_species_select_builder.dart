@@ -8,12 +8,14 @@ class LtpSpeciesSelectBuilder extends StatelessWidget {
   const LtpSpeciesSelectBuilder(
       {super.key,
       this.onBeforePopup,
+      this.title = "Tree Species",
       required this.enabled,
       required this.selectedSpeciesCode,
       required this.genusCode,
       required this.updateSpeciesFn});
 
   final Future<bool?> Function(String?)? onBeforePopup;
+  final String title;
   final bool enabled;
   final String selectedSpeciesCode;
   final String genusCode;
@@ -48,7 +50,7 @@ class LtpSpeciesSelectBuilder extends StatelessWidget {
           return DropDownAsyncList(
             searchable: true,
             enabled: enabled,
-            title: "Tree Species",
+            title: title,
             onBeforePopup: onBeforePopup,
             onChangedFn: (s) async {
               //Check that the same variety wasn't double selected so

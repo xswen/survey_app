@@ -695,7 +695,6 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
 
   Future<String> getStpStemConditionName(String code) async {
     if (code.isEmpty) return "";
-
     return (select(stpStemCondition, distinct: true)
           ..where((tbl) => tbl.code.equals(code)))
         .map((row) => row.name)
@@ -958,7 +957,8 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
       (select(ltpGenus)
             ..where((tbl) =>
                 tbl.genusCode.equals(genusCode) &
-                tbl.speciesLatinName.equals(speciesName)))
+                tbl.speciesLatinName.equals(speciesName))
+            ..limit(1))
           .map((p0) => p0.speciesCode)
           .getSingle();
 
@@ -966,7 +966,8 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
       (select(ltpGenus)
             ..where((tbl) =>
                 tbl.genusCode.equals(genusCode) &
-                tbl.speciesCode.equals(speciesCode)))
+                tbl.speciesCode.equals(speciesCode))
+            ..limit(1))
           .map((p0) => p0.speciesLatinName)
           .getSingle();
 
@@ -994,6 +995,7 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
         .map((p0) => p0.varietyCode)
         .get());
 
+    print(varietyCodes);
     return varietyCodes.length == 1 && varietyCodes[0] == "NULL";
   }
 
@@ -1003,7 +1005,8 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
             ..where((tbl) =>
                 tbl.genusCode.equals(genusCode) &
                 tbl.speciesCode.equals(speciesCode) &
-                tbl.varietyLatinName.equals(varietyName)))
+                tbl.varietyLatinName.equals(varietyName))
+            ..limit(1))
           .map((p0) => p0.varietyCode)
           .getSingle();
 
@@ -1013,7 +1016,8 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
             ..where((tbl) =>
                 tbl.genusCode.equals(genusCode) &
                 tbl.speciesCode.equals(speciesCode) &
-                tbl.varietyCode.equals(varietyCode)))
+                tbl.varietyCode.equals(varietyCode))
+            ..limit(1))
           .map((p0) => p0.varietyLatinName)
           .getSingle();
 

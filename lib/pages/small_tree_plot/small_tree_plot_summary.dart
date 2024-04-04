@@ -12,7 +12,6 @@ import '../../widgets/checkbox/hide_info_checkbox.dart';
 import '../../widgets/data_input/data_input.dart';
 import '../../widgets/date_select.dart';
 import '../../widgets/popups/popup_errors_found_list.dart';
-import '../../widgets/popups/popup_marked_complete.dart';
 import '../../widgets/tables/table_creation_builder.dart';
 import '../../widgets/tables/table_data_grid_source_builder.dart';
 import '../../wrappers/column_header_object.dart';
@@ -137,6 +136,8 @@ class SmallTreePlotSummaryPageState
               DataGridCell<String>(
                   columnName: columnData.stemCondition.name,
                   value: dataGridRow.stemCondition),
+              DataGridCell<StpSpeciesData>(
+                  columnName: columnData.edit.name, value: dataGridRow),
             ]))
         .toList();
   }
@@ -214,8 +215,8 @@ class SmallTreePlotSummaryPageState
 
       void enterComplete() {
         updateStpData(stp.copyWith(complete: const d.Value(true)));
+        ref.refresh(updateSurveyCardProvider(surveyId));
         context.pop();
-        Popups.show(context, PopupMarkedComplete(title: title));
       }
 
       if (parentComplete) {
@@ -366,8 +367,9 @@ class SmallTreePlotSummaryPageState
                             child: ElevatedButton(
                                 onPressed: () async => context.pushNamed(
                                     SmallTreeSpeciesEntryPage.routeName,
-                                    pathParameters:
-                                        widget.state.pathParameters),
+                                    pathParameters: widget.state.pathParameters,
+                                    extra: StpSpeciesCompanion(
+                                        stpSummaryId: stp.id)),
                                 style: ButtonStyle(
                                     backgroundColor: false
                                         ? MaterialStateProperty.all<Color>(
@@ -399,16 +401,13 @@ class SmallTreePlotSummaryPageState
                                       .getCells()[0]
                                       .value;
 
-                                  // db.smallTreePlotTablesDao
-                                  //     .getStpSpecies(pId)
-                                  //     .then((value) => context.pushNamed(
-                                  //         SurfaceSubstrateStationInfoPage
-                                  //             .routeName,
-                                  //         pathParameters:
-                                  //             PathParamGenerator.ssStationInfo(
-                                  //                 widget.state,
-                                  //                 value.stationNum.toString()),
-                                  //         extra: value.toCompanion(true)));
+                                  db.smallTreePlotTablesDao
+                                      .getStpSpecies(pId)
+                                      .then((value) => context.pushNamed(
+                                          SmallTreeSpeciesEntryPage.routeName,
+                                          pathParameters:
+                                              widget.state.pathParameters,
+                                          extra: value.toCompanion(true)));
                                 }
                               }
                             },

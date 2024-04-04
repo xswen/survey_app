@@ -21016,7 +21016,9 @@ class $StpSpeciesTable extends StpSpecies
   @override
   late final GeneratedColumn<int> treeNum = GeneratedColumn<int>(
       'tree_num', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      check: () => treeNum.isBetweenValues(1, 9999),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
   static const VerificationMeta _origPlotAreaMeta =
       const VerificationMeta('origPlotArea');
   @override
@@ -21048,16 +21050,13 @@ class $StpSpeciesTable extends StpSpecies
   @override
   late final GeneratedColumn<String> variety = GeneratedColumn<String>(
       'variety', aliasedName, false,
-      additionalChecks:
-          GeneratedColumn.checkTextLength(minTextLength: 3, maxTextLength: 3),
-      type: DriftSqlType.string,
-      requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _statusMeta = const VerificationMeta('status');
   @override
   late final GeneratedColumn<String> status = GeneratedColumn<String>(
       'status', aliasedName, false,
       additionalChecks:
-          GeneratedColumn.checkTextLength(minTextLength: 2, maxTextLength: 2),
+          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 2),
       type: DriftSqlType.string,
       requiredDuringInsert: true);
   static const VerificationMeta _dbhMeta = const VerificationMeta('dbh');

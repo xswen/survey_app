@@ -64,6 +64,9 @@ class SmallTreePlotTablesDao extends DatabaseAccessor<Database>
   Future<int> addStpSpecies(StpSpeciesCompanion entry) =>
       into(stpSpecies).insert(entry);
 
+  Future<int> addOrUpdateStpSpecies(StpSpeciesCompanion entry) =>
+      into(stpSpecies).insertOnConflictUpdate(entry);
+
   Future<StpSpeciesData> getStpSpecies(int id) =>
       (select(stpSpecies)..where((tbl) => tbl.id.equals(id))).getSingle();
 

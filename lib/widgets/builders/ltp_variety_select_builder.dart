@@ -54,7 +54,7 @@ class LtpVarietySelectBuilder extends StatelessWidget {
           return DropDownAsyncList(
             searchable: true,
             enabled: enabled,
-            title: "Tree variety",
+            title: title,
             onBeforePopup: onBeforePopup,
             onChangedFn: (s) async {
               String newVarietyCode = await db.referenceTablesDao
