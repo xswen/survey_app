@@ -60,9 +60,16 @@ class ShrubPlotTablesDao extends DatabaseAccessor<Database>
   }
 
 //====================Shrub Lists (Single Entry) Management====================
+  Future<List<ShrubListEntryData>> getShrubEntryList(int shrubId) =>
+      (select(shrubListEntry)
+            ..where((tbl) => tbl.shrubSummaryId.equals(shrubId)))
+          .get();
 
   Future<int> addShrubListEntry(ShrubListEntryCompanion entry) =>
       into(shrubListEntry).insert(entry);
+
+  Future<int> addOrUpdateShrubListEntry(ShrubListEntryCompanion entry) =>
+      into(shrubListEntry).insertOnConflictUpdate(entry);
 
   Future<ShrubListEntryData> getShrubListEntry(int id) =>
       (select(shrubListEntry)..where((tbl) => tbl.id.equals(id))).getSingle();

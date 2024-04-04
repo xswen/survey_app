@@ -22055,18 +22055,13 @@ class $ShrubListEntryTable extends ShrubListEntry
   @override
   late final GeneratedColumn<String> shrubVariety = GeneratedColumn<String>(
       'shrub_variety', aliasedName, false,
-      additionalChecks:
-          GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 3),
-      type: DriftSqlType.string,
-      requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _shrubStatusMeta =
       const VerificationMeta('shrubStatus');
   @override
   late final GeneratedColumn<String> shrubStatus = GeneratedColumn<String>(
       'shrub_status', aliasedName, false,
-      check: () => shrubStatus.isIn(['LV' 'DS']),
-      type: DriftSqlType.string,
-      requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _bdClassMeta =
       const VerificationMeta('bdClass');
   @override

@@ -19,13 +19,12 @@ class ShrubListEntry extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get shrubSummaryId =>
       integer().unique().references(ShrubSummary, #id)();
-  // TODO: check what to do on deletion
   IntColumn get recordNum =>
       integer().check(recordNum.isBetweenValues(1, 9999))();
   TextColumn get shrubGenus => text().withLength(min: 0, max: 4)();
   TextColumn get shrubSpecies => text().withLength(min: 0, max: 3)();
-  TextColumn get shrubVariety => text().withLength(min: 0, max: 3)();
-  TextColumn get shrubStatus => text().check(shrubStatus.isIn(['LV', 'DS']))();
+  TextColumn get shrubVariety => text()();
+  TextColumn get shrubStatus => text()();
   IntColumn get bdClass =>
       integer().check(bdClass.isBetweenValues(0, 10) | bdClass.equals(-1))();
   IntColumn get frequency =>

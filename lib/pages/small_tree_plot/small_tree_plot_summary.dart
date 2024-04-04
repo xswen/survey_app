@@ -1,12 +1,14 @@
 import 'package:drift/drift.dart' as d;
 import 'package:flutter/services.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
+import 'package:survey_app/widgets/disable_widget.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../formatters/thousands_formatter.dart';
 import '../../providers/small_tree_plot_providers.dart';
 import '../../providers/survey_info_providers.dart';
 import '../../widgets/builders/reference_name_select_builder.dart';
+import '../../widgets/buttons/custom_button_styles.dart';
 import '../../widgets/buttons/mark_complete_button.dart';
 import '../../widgets/checkbox/hide_info_checkbox.dart';
 import '../../widgets/data_input/data_input.dart';
@@ -165,7 +167,8 @@ class SmallTreePlotSummaryPageState
         ? results.add("Plot type")
         : null;
 
-    _errorNom(db.companionValueToStr(stp.nomPlotSize)) != null
+    _errorNom(db.companionValueToStr(stp.nomPlotSize)) != null &&
+            stp.nomPlotSize != const d.Value(-1.0)
         ? results.add("Nominal Area of Plot")
         : null;
     _errorMeas(db.companionValueToStr(stp.measPlotSize)) != null
@@ -215,8 +218,6 @@ class SmallTreePlotSummaryPageState
 
       void enterComplete() {
         updateStpData(stp.copyWith(complete: const d.Value(true)));
-        ref.refresh(updateSurveyCardProvider(surveyId));
-        context.pop();
       }
 
       if (parentComplete) {
@@ -238,7 +239,10 @@ class SmallTreePlotSummaryPageState
                               "confirming that the survey was completed and "
                               "there were no pieces to record.\n"
                               "Are you sure you want to continue?",
-                          rightBtnOnPressed: () => enterComplete(),
+                          rightBtnOnPressed: () {
+                            enterComplete();
+                            context.pop();
+                          },
                         ));
                   } else {
                     enterComplete();
@@ -288,24 +292,60 @@ class SmallTreePlotSummaryPageState
                           .then((value) => updateStpData(
                               stp.copyWith(plotType: d.Value(value)))),
                     ),
-                    HideInfoCheckbox(
-                      title: "Nominal Plot Size",
-                      titleWidget: "Unreported",
-                      checkValue: stp.nomPlotSize.value == -1,
-                      onChange: (b) {
-                        stp.nomPlotSize.value == -1
-                            ? updateStpData(
-                                stp.copyWith(nomPlotSize: const d.Value(null)))
-                            : updateStpData(
-                                stp.copyWith(nomPlotSize: const d.Value(-1)));
-                      },
+                    DisableWidget(
+                      disabled: stp.complete.value,
+                      child: HideInfoCheckbox(
+                        title: "Nominal Plot Size",
+                        titleWidget: "Unreported",
+                        checkValue: stp.nomPlotSize.value == -1,
+                        onChange: (b) {
+                          stp.nomPlotSize.value == -1
+                              ? updateStpData(stp.copyWith(
+                                  nomPlotSize: const d.Value(null)))
+                              : updateStpData(
+                                  stp.copyWith(nomPlotSize: const d.Value(-1)));
+                        },
+                        child: DataInput(
+                            boxLabel: "Report to the nearest 0.0001ha",
+                            prefixIcon: FontAwesomeIcons.rulerCombined,
+                            suffixVal: "ha",
+                            inputType: const TextInputType.numberWithOptions(
+                                decimal: true),
+                            startingStr:
+                                db.companionValueToStr(stp.nomPlotSize),
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(6),
+                              ThousandsFormatter(
+                                  allowFraction: true,
+                                  decimalPlaces: 6,
+                                  maxDigitsBeforeDecimal: 1),
+                            ],
+                            paddingGeneral: const EdgeInsets.only(top: 0),
+                            onSubmit: (s) {
+                              s.isEmpty
+                                  ? updateStpData(stp.copyWith(
+                                      nomPlotSize: const d.Value(null)))
+                                  : _errorNom(s) == null
+                                      ? updateStpData(stp.copyWith(
+                                          nomPlotSize:
+                                              d.Value(double.parse(s))))
+                                      : stp = stp.copyWith(
+                                          nomPlotSize:
+                                              d.Value(double.parse(s)));
+                            },
+                            onValidate: _errorNom),
+                      ),
+                    ),
+                    DisableWidget(
+                      disabled: stp.complete.value,
                       child: DataInput(
+                          title: "Measured Plot Size",
                           boxLabel: "Report to the nearest 0.0001ha",
-                          prefixIcon: FontAwesomeIcons.rulerCombined,
+                          prefixIcon: FontAwesomeIcons.chartArea,
                           suffixVal: "ha",
                           inputType: const TextInputType.numberWithOptions(
                               decimal: true),
-                          startingStr: db.companionValueToStr(stp.nomPlotSize),
+                          startingStr: db.companionValueToStr(stp.measPlotSize),
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(6),
                             ThousandsFormatter(
@@ -313,45 +353,18 @@ class SmallTreePlotSummaryPageState
                                 decimalPlaces: 6,
                                 maxDigitsBeforeDecimal: 1),
                           ],
-                          paddingGeneral: const EdgeInsets.only(top: 0),
                           onSubmit: (s) {
                             s.isEmpty
                                 ? updateStpData(stp.copyWith(
-                                    nomPlotSize: const d.Value(null)))
+                                    measPlotSize: const d.Value(null)))
                                 : _errorNom(s) == null
                                     ? updateStpData(stp.copyWith(
-                                        nomPlotSize: d.Value(double.parse(s))))
+                                        measPlotSize: d.Value(double.parse(s))))
                                     : stp = stp.copyWith(
-                                        nomPlotSize: d.Value(double.parse(s)));
+                                        measPlotSize: d.Value(double.parse(s)));
                           },
-                          onValidate: _errorNom),
+                          onValidate: _errorMeas),
                     ),
-                    DataInput(
-                        title: "Measured Plot Size",
-                        boxLabel: "Report to the nearest 0.0001ha",
-                        prefixIcon: FontAwesomeIcons.chartArea,
-                        suffixVal: "ha",
-                        inputType: const TextInputType.numberWithOptions(
-                            decimal: true),
-                        startingStr: db.companionValueToStr(stp.measPlotSize),
-                        inputFormatters: [
-                          LengthLimitingTextInputFormatter(6),
-                          ThousandsFormatter(
-                              allowFraction: true,
-                              decimalPlaces: 6,
-                              maxDigitsBeforeDecimal: 1),
-                        ],
-                        onSubmit: (s) {
-                          s.isEmpty
-                              ? updateStpData(stp.copyWith(
-                                  measPlotSize: const d.Value(null)))
-                              : _errorNom(s) == null
-                                  ? updateStpData(stp.copyWith(
-                                      measPlotSize: d.Value(double.parse(s))))
-                                  : stp = stp.copyWith(
-                                      measPlotSize: d.Value(double.parse(s)));
-                        },
-                        onValidate: _errorMeas),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: kPaddingV * 2, horizontal: kPaddingH / 2),
@@ -365,16 +378,18 @@ class SmallTreePlotSummaryPageState
                           Padding(
                             padding: const EdgeInsets.only(left: kPaddingH),
                             child: ElevatedButton(
-                                onPressed: () async => context.pushNamed(
-                                    SmallTreeSpeciesEntryPage.routeName,
-                                    pathParameters: widget.state.pathParameters,
-                                    extra: StpSpeciesCompanion(
-                                        stpSummaryId: stp.id)),
-                                style: ButtonStyle(
-                                    backgroundColor: false
-                                        ? MaterialStateProperty.all<Color>(
-                                            Colors.grey)
-                                        : null),
+                                onPressed: () async {
+                                  stp.complete.value
+                                      ? Popups.show(context, popupPageComplete)
+                                      : context.pushNamed(
+                                          SmallTreeSpeciesEntryPage.routeName,
+                                          pathParameters:
+                                              widget.state.pathParameters,
+                                          extra: StpSpeciesCompanion(
+                                              stpSummaryId: stp.id));
+                                },
+                                style: CustomButtonStyles.inactiveButton(
+                                    isActive: !stp.complete.value),
                                 child: const Text("Add species")),
                           ),
                         ],

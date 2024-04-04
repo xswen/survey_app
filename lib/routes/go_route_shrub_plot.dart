@@ -11,7 +11,7 @@ GoRoute goRouteShrubPlot = GoRoute(
     routes: [
       GoRoute(
           name: ShrubPlotSpeciesEntryPage.routeName,
-          path: "species/:${PathParamsKeys.shrubSpeciesId}",
+          path: "entry",
           builder: (context, state) => ShrubPlotSpeciesEntryPage(state),
           routes: [])
     ]);

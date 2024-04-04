@@ -1,15 +1,20 @@
+import 'package:drift/drift.dart' as d;
 import 'package:flutter/services.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/pages/shrub_plot/shrub_plot_species_entry_page.dart';
+import 'package:survey_app/providers/shrub_plot_providers.dart';
+import 'package:survey_app/widgets/disable_widget.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../formatters/thousands_formatter.dart';
 import '../../providers/survey_info_providers.dart';
 import '../../widgets/builders/reference_name_select_builder.dart';
+import '../../widgets/buttons/custom_button_styles.dart';
 import '../../widgets/buttons/mark_complete_button.dart';
 import '../../widgets/checkbox/hide_info_checkbox.dart';
 import '../../widgets/data_input/data_input.dart';
 import '../../widgets/date_select.dart';
+import '../../widgets/popups/popup_errors_found_list.dart';
 import '../../widgets/tables/table_creation_builder.dart';
 import '../../widgets/tables/table_data_grid_source_builder.dart';
 import '../../wrappers/column_header_object.dart';
@@ -44,41 +49,106 @@ class ShrubPlotSummaryPage extends ConsumerStatefulWidget {
 
 class ShrubPlotSummaryPageState extends ConsumerState<ShrubPlotSummaryPage> {
   final ColNames columnData = ColNames();
+  final String title = "Shrub Plot";
   late final int surveyId;
+  late final int shrubId;
+
+  //Placeholder values
+  bool parentComplete = false;
+  ShrubSummaryCompanion shrubComp = const ShrubSummaryCompanion();
+  List<ShrubListEntryData> entryList = [];
+
+  late final PopupDismiss popupPageComplete =
+      Popups.generateCompleteErrorPopup(title);
+  final PopupDismiss popupSurveyComplete =
+      Popups.generatePreviousMarkedCompleteErrorPopup("Survey");
+
   @override
   void initState() {
     surveyId = PathParamValue.getSurveyId(widget.state)!;
+    shrubId = PathParamValue.getShrubSummaryId(widget.state);
+    _loadData();
     super.initState();
   }
 
-  List<DataGridRow> generateDataGridRows(List<String> plots) {
-    return [
-      DataGridRow(cells: [
-        DataGridCell<String>(columnName: columnData.id.name, value: "tmp"),
-        DataGridCell<String>(
-            columnName: columnData.recordNumber.name, value: "tmp"),
-        const DataGridCell<String>(columnName: 'genus', value: "tmp"),
-        const DataGridCell<String>(columnName: 'species', value: "tmp"),
-        const DataGridCell<String>(columnName: 'variety', value: "tmp"),
-        const DataGridCell<String>(columnName: 'status', value: "tmp"),
-        const DataGridCell<String>(columnName: 'bdClass', value: "tmp"),
-        const DataGridCell<String>(columnName: 'frequency', value: "tmp"),
-        DataGridCell<String>(
-            columnName: columnData.edit.name,
-            value: "edit"), // Assuming colNames is an instance of ColNames
-      ])
-    ];
+  void _loadData() async {
+    final value =
+        await Database.instance.shrubPlotTablesDao.getShrubSummary(shrubId);
+    final survey =
+        await Database.instance.surveyInfoTablesDao.getSurvey(surveyId);
+
+    if (mounted) {
+      // Only proceed if the widget is still in the tree
+      setState(() {
+        parentComplete = survey.complete;
+        shrubComp = value.toCompanion(true);
+      });
+    }
   }
 
-  DataGridSourceBuilder getSourceBuilder(List<String> stations) {
+  List<DataGridRow> generateDataGridRows(List<ShrubListEntryData> entryList) {
+    return entryList
+        .map<DataGridRow>((dataGridRow) => DataGridRow(cells: [
+              DataGridCell<int>(
+                  columnName: columnData.id.name, value: dataGridRow.id),
+              DataGridCell<int>(
+                  columnName: columnData.recordNumber.name,
+                  value: dataGridRow.recordNum),
+              DataGridCell<String>(
+                  columnName: columnData.genus.name,
+                  value: dataGridRow.shrubGenus),
+              DataGridCell<String>(
+                  columnName: columnData.species.name,
+                  value: dataGridRow.shrubSpecies),
+              DataGridCell<String>(
+                  columnName: columnData.variety.name,
+                  value: dataGridRow.shrubVariety),
+              DataGridCell<String>(
+                  columnName: columnData.status.name,
+                  value: dataGridRow.shrubStatus),
+              DataGridCell<int>(
+                  columnName: columnData.bdClass.name,
+                  value: dataGridRow.bdClass),
+              DataGridCell<int>(
+                  columnName: columnData.frequency.name,
+                  value: dataGridRow.frequency),
+              DataGridCell<ShrubListEntryData>(
+                  columnName: columnData.edit.name, value: dataGridRow),
+            ]))
+        .toList();
+  }
+
+  DataGridSourceBuilder getSourceBuilder(List<ShrubListEntryData> entryList) {
     DataGridSourceBuilder source =
-        DataGridSourceBuilder(dataGridRows: generateDataGridRows(stations));
-    // source.sortedColumns.add(SortColumnDetails(
-    //     name: columnData.stationNum.toString(),
-    //     sortDirection: DataGridSortDirection.ascending));
-    // source.sort();
+        DataGridSourceBuilder(dataGridRows: generateDataGridRows(entryList));
+    source.sortedColumns.add(SortColumnDetails(
+        name: columnData.recordNumber.name,
+        sortDirection: DataGridSortDirection.ascending));
+    source.sort();
 
     return source;
+  }
+
+  //Error Checks
+  List<String>? errorCheck() {
+    final db = ref.read(databaseProvider);
+    List<String> results = [];
+    if (db.companionValueToStr(shrubComp.id).isEmpty) {
+      return results = ["Error getting shrub id"];
+    }
+
+    db.companionValueToStr(shrubComp.plotType).isEmpty
+        ? results.add("Plot type")
+        : null;
+
+    _errorNom(db.companionValueToStr(shrubComp.nomPlotSize)) != null &&
+            shrubComp.nomPlotSize != const d.Value(-1.0)
+        ? results.add("Nominal Area of Plot")
+        : null;
+    _errorMeas(db.companionValueToStr(shrubComp.measPlotSize)) != null
+        ? results.add("Measured Area of Plot")
+        : null;
+    return results.isEmpty ? null : results;
   }
 
   String? _errorNom(String? value) {
@@ -102,118 +172,236 @@ class ShrubPlotSummaryPageState extends ConsumerState<ShrubPlotSummaryPage> {
   @override
   Widget build(BuildContext context) {
     final db = ref.read(databaseProvider);
-    debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
-    return Scaffold(
-      appBar: OurAppBar(
-        "Shrub Plot",
-        backFn: () {
-          ref.refresh(updateSurveyCardProvider(surveyId));
-          context.pop();
-        },
-      ),
-      bottomNavigationBar: MarkCompleteButton(
-          title: "Shrub Plot", complete: false, onPressed: () => null),
-      endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-              vertical: kPaddingV * 2, horizontal: kPaddingH / 2),
-          child: ListView(
-            children: [
-              CalendarSelect(
-                date: DateTime.now(),
-                label: "Enter Measurement Date",
-                readOnly: false,
-                onDateSelected: (DateTime date) async => (),
-              ),
-              ReferenceNameSelectBuilder(
-                name: db.referenceTablesDao.getShrubPlotTypeName(""),
-                asyncListFn: db.referenceTablesDao.getShrubPlotTypeList,
-                enabled: true,
-                onChange: (s) => db.referenceTablesDao
-                    .getShrubPlotTypeCode(s)
-                    .then((value) => null),
-              ),
-              HideInfoCheckbox(
-                title: "Nominal Plot Size",
-                titleWidget: "Unreported",
-                checkValue: false,
-                onChange: (b) => -1,
-                child: DataInput(
-                    boxLabel: "Report to the nearest 0.0001ha",
-                    prefixIcon: FontAwesomeIcons.rulerCombined,
-                    suffixVal: "ha",
-                    inputType:
-                        const TextInputType.numberWithOptions(decimal: true),
-                    startingStr: "",
-                    inputFormatters: [
-                      LengthLimitingTextInputFormatter(6),
-                      ThousandsFormatter(
-                          allowFraction: true,
-                          decimalPlaces: 6,
-                          maxDigitsBeforeDecimal: 1),
-                    ],
-                    paddingGeneral: const EdgeInsets.only(top: 0),
-                    onSubmit: (s) {},
-                    onValidate: _errorNom),
-              ),
-              HideInfoCheckbox(
-                title: "Measured Plot Size",
-                titleWidget: "Unreported",
-                checkValue: false,
-                onChange: (b) => -1,
-                child: DataInput(
-                    boxLabel: "Report to the nearest 0.0001ha",
-                    prefixIcon: FontAwesomeIcons.chartArea,
-                    suffixVal: "ha",
-                    inputType:
-                        const TextInputType.numberWithOptions(decimal: true),
-                    startingStr: "",
-                    inputFormatters: [
-                      LengthLimitingTextInputFormatter(6),
-                      ThousandsFormatter(
-                          allowFraction: true,
-                          decimalPlaces: 6,
-                          maxDigitsBeforeDecimal: 1),
-                    ],
-                    paddingGeneral: const EdgeInsets.only(top: 0),
-                    onSubmit: (s) {},
-                    onValidate: _errorMeas),
-              ),
-              Padding(
+    final AsyncValue<List<ShrubListEntryData>> entryList =
+        ref.watch(shrubEntryListProvider(shrubId));
+
+    void updateData(ShrubSummaryCompanion data) {
+      (db.update(db.shrubSummary)..where((t) => t.id.equals(shrubId)))
+          .write(data)
+          .then((value) => setState(() => shrubComp = data));
+    }
+
+    void markComplete() async {
+      void enterComplete() {
+        updateData(shrubComp.copyWith(complete: const d.Value(true)));
+      }
+
+      if (parentComplete) {
+        Popups.show(context, popupSurveyComplete);
+      } else if (shrubComp.complete.value) {
+        updateData(shrubComp.copyWith(complete: const d.Value(false)));
+      } else {
+        List<String>? errors = errorCheck();
+        errors == null
+            ? db.shrubPlotTablesDao.getShrubEntryList(shrubId).then(
+                (value) {
+                  if (value.isEmpty) {
+                    Popups.show(
+                        context,
+                        PopupContinue(
+                          "Warning: No entries entered",
+                          contentText: "No entries have been recorded for "
+                              "this plot. Pressing continue means you are "
+                              "confirming that the survey was completed and "
+                              "there were no entries to record.\n"
+                              "Are you sure you want to continue?",
+                          rightBtnOnPressed: () {
+                            enterComplete();
+                            context.pop();
+                          },
+                        ));
+                  } else {
+                    enterComplete();
+                  }
+                },
+              )
+            : Popups.show(context, PopupErrorsFoundList(errors: errors));
+      }
+    }
+
+    return db.companionValueToStr(shrubComp.id).isEmpty
+        ? DefaultPageLoadingScaffold(title: title)
+        : Scaffold(
+            appBar: OurAppBar(
+              title,
+              backFn: () {
+                ref.refresh(updateSurveyCardProvider(surveyId));
+                context.pop();
+              },
+            ),
+            bottomNavigationBar: MarkCompleteButton(
+                title: title,
+                complete: shrubComp.complete.value,
+                onPressed: () => markComplete()),
+            endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
+            body: Center(
+              child: Padding(
                 padding: const EdgeInsets.symmetric(
                     vertical: kPaddingV * 2, horizontal: kPaddingH / 2),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: ListView(
                   children: [
-                    const Text(
-                      "Species",
-                      style: TextStyle(fontSize: kTextTitleSize),
+                    CalendarSelect(
+                      date: shrubComp.measDate.value,
+                      label: "Enter Measurement Date",
+                      readOnly: shrubComp.complete.value,
+                      onDateSelected: (DateTime date) => updateData(
+                          shrubComp.copyWith(measDate: d.Value(date))),
+                    ),
+                    ReferenceNameSelectBuilder(
+                      name: db.referenceTablesDao.getShrubPlotTypeName(
+                          db.companionValueToStr(shrubComp.plotType)),
+                      asyncListFn: db.referenceTablesDao.getShrubPlotTypeList,
+                      enabled: shrubComp.complete.value,
+                      onChange: (s) => db.referenceTablesDao
+                          .getShrubPlotTypeCode(s)
+                          .then((value) => updateData(
+                              shrubComp.copyWith(plotType: d.Value(value)))),
+                    ),
+                    DisableWidget(
+                      disabled: shrubComp.complete.value,
+                      child: HideInfoCheckbox(
+                        title: "Nominal Plot Size",
+                        titleWidget: "Unreported",
+                        checkValue: shrubComp.nomPlotSize.value == -1,
+                        onChange: (b) {
+                          shrubComp.nomPlotSize.value == -1
+                              ? updateData(shrubComp.copyWith(
+                                  nomPlotSize: const d.Value(null)))
+                              : updateData(shrubComp.copyWith(
+                                  nomPlotSize: const d.Value(-1)));
+                        },
+                        child: DataInput(
+                            boxLabel: "Report to the nearest 0.0001ha",
+                            prefixIcon: FontAwesomeIcons.rulerCombined,
+                            suffixVal: "ha",
+                            inputType: const TextInputType.numberWithOptions(
+                                decimal: true),
+                            startingStr:
+                                db.companionValueToStr(shrubComp.nomPlotSize),
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(6),
+                              ThousandsFormatter(
+                                  allowFraction: true,
+                                  decimalPlaces: 6,
+                                  maxDigitsBeforeDecimal: 1),
+                            ],
+                            paddingGeneral: const EdgeInsets.only(top: 0),
+                            onSubmit: (s) {
+                              s.isEmpty
+                                  ? updateData(shrubComp.copyWith(
+                                      nomPlotSize: const d.Value(null)))
+                                  : _errorNom(s) == null
+                                      ? updateData(shrubComp.copyWith(
+                                          nomPlotSize:
+                                              d.Value(double.parse(s))))
+                                      : shrubComp = shrubComp.copyWith(
+                                          nomPlotSize:
+                                              d.Value(double.parse(s)));
+                            },
+                            onValidate: _errorNom),
+                      ),
+                    ),
+                    DisableWidget(
+                      disabled: shrubComp.complete.value,
+                      child: DataInput(
+                          title: "Measured Plot Size",
+                          boxLabel: "Report to the nearest 0.0001ha",
+                          prefixIcon: FontAwesomeIcons.chartArea,
+                          suffixVal: "ha",
+                          inputType: const TextInputType.numberWithOptions(
+                              decimal: true),
+                          startingStr:
+                              db.companionValueToStr(shrubComp.measPlotSize),
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(6),
+                            ThousandsFormatter(
+                                allowFraction: true,
+                                decimalPlaces: 6,
+                                maxDigitsBeforeDecimal: 1),
+                          ],
+                          onSubmit: (s) {
+                            s.isEmpty
+                                ? updateData(shrubComp.copyWith(
+                                    measPlotSize: const d.Value(null)))
+                                : _errorNom(s) == null
+                                    ? updateData(shrubComp.copyWith(
+                                        measPlotSize: d.Value(double.parse(s))))
+                                    : shrubComp = shrubComp.copyWith(
+                                        measPlotSize: d.Value(double.parse(s)));
+                          },
+                          onValidate: _errorMeas),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: kPaddingH),
-                      child: ElevatedButton(
-                          onPressed: () async => context.pushNamed(
-                              ShrubPlotSpeciesEntryPage.routeName,
-                              pathParameters: widget.state.pathParameters),
-                          style: ButtonStyle(
-                              backgroundColor: false
-                                  ? MaterialStateProperty.all<Color>(
-                                      Colors.grey)
-                                  : null),
-                          child: const Text("Add species")),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: kPaddingV * 2, horizontal: kPaddingH / 2),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "Species",
+                            style: TextStyle(fontSize: kTextTitleSize),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: kPaddingH),
+                            child: ElevatedButton(
+                                onPressed: () async {
+                                  shrubComp.complete.value
+                                      ? Popups.show(context, popupPageComplete)
+                                      : context.pushNamed(
+                                          ShrubPlotSpeciesEntryPage.routeName,
+                                          pathParameters:
+                                              widget.state.pathParameters,
+                                          extra: ShrubListEntryCompanion(
+                                              shrubSummaryId: shrubComp.id));
+                                },
+                                style: CustomButtonStyles.inactiveButton(
+                                    isActive: !shrubComp.complete.value),
+                                child: const Text("Add entry")),
+                          ),
+                        ],
+                      ),
                     ),
+                    entryList.when(
+                        data: (entryList) {
+                          DataGridSourceBuilder source =
+                              getSourceBuilder(entryList);
+
+                          return TableCreationBuilder(
+                            source: source,
+                            colNames: columnData.getColHeadersList(),
+                            onCellTap: (DataGridCellTapDetails details) async {
+                              // Assuming the "edit" column index is 2
+                              if (details.column.columnName ==
+                                      columnData.edit.name &&
+                                  details.rowColumnIndex.rowIndex != 0) {
+                                if (shrubComp.complete.value ||
+                                    parentComplete) {
+                                  Popups.show(context, popupPageComplete);
+                                } else {
+                                  int pId = source.dataGridRows[
+                                          details.rowColumnIndex.rowIndex - 1]
+                                      .getCells()[0]
+                                      .value;
+
+                                  db.shrubPlotTablesDao
+                                      .getShrubListEntry(pId)
+                                      .then((value) => context.pushNamed(
+                                          ShrubPlotSpeciesEntryPage.routeName,
+                                          pathParameters:
+                                              widget.state.pathParameters,
+                                          extra: value.toCompanion(true)));
+                                }
+                              }
+                            },
+                          );
+                        },
+                        error: (err, stack) => Text("Error: $err"),
+                        loading: () =>
+                            const Center(child: CircularProgressIndicator())),
                   ],
                 ),
               ),
-              TableCreationBuilder(
-                  source: getSourceBuilder(["hi"]),
-                  colNames: columnData.getColHeadersList(),
-                  onCellTap: (DataGridCellTapDetails details) {})
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+          );
   }
 }
