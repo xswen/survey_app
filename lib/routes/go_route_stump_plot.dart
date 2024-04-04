@@ -11,7 +11,7 @@ GoRoute goRouteStumpPlot = GoRoute(
     routes: [
       GoRoute(
           name: StumpPlotSpeciesEntryPage.routeName,
-          path: "species/:${PathParamsKeys.stumpSpeciesId}",
+          path: "species",
           builder: (context, state) => StumpPlotSpeciesEntryPage(state),
           routes: [])
     ]);

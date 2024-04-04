@@ -63,9 +63,15 @@ class StumpPlotTablesDao extends DatabaseAccessor<Database>
 
   Future<int> addStumpEntry(StumpEntryCompanion entry) =>
       into(stumpEntry).insert(entry);
+  Future<int> addOrUpdateStumpEntry(StumpEntryCompanion entry) =>
+      into(stumpEntry).insertOnConflictUpdate(entry);
 
   Future<StumpEntryData> getStumpEntry(int id) =>
       (select(stumpEntry)..where((tbl) => tbl.id.equals(id))).getSingle();
+
+  Future<List<StumpEntryData>> getStumpEntryList(int stumpId) =>
+      (select(stumpEntry)..where((tbl) => tbl.stumpSummaryId.equals(stumpId)))
+          .get();
 
   Future<void> updateStumpEntry(int id, StumpEntryCompanion entry) async {
     await (update(stumpEntry)..where((tbl) => tbl.id.equals(id))).write(entry);
@@ -77,7 +83,7 @@ class StumpPlotTablesDao extends DatabaseAccessor<Database>
 
   Future<void> deleteStumpEntriesByStumpSummaryId(int stumpSummaryId) async {
     await (delete(stumpEntry)
-          ..where((tbl) => tbl.shrubSummaryId.equals(stumpSummaryId)))
+          ..where((tbl) => tbl.stumpSummaryId.equals(stumpSummaryId)))
         .go();
   }
 }

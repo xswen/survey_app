@@ -55,7 +55,7 @@ class ShrubPlotSummaryPageState extends ConsumerState<ShrubPlotSummaryPage> {
 
   //Placeholder values
   bool parentComplete = false;
-  ShrubSummaryCompanion shrubComp = const ShrubSummaryCompanion();
+  late ShrubSummaryCompanion shrubComp;
   List<ShrubListEntryData> entryList = [];
 
   late final PopupDismiss popupPageComplete =
@@ -82,6 +82,7 @@ class ShrubPlotSummaryPageState extends ConsumerState<ShrubPlotSummaryPage> {
       setState(() {
         parentComplete = survey.complete;
         shrubComp = value.toCompanion(true);
+        print("hello");
       });
     }
   }
@@ -175,21 +176,28 @@ class ShrubPlotSummaryPageState extends ConsumerState<ShrubPlotSummaryPage> {
     final AsyncValue<List<ShrubListEntryData>> entryList =
         ref.watch(shrubEntryListProvider(shrubId));
 
-    void updateData(ShrubSummaryCompanion data) {
+    void updateShrubData(ShrubSummaryCompanion data) {
+      // print("Before update: ${shrubComp.toString()}");
       (db.update(db.shrubSummary)..where((t) => t.id.equals(shrubId)))
           .write(data)
-          .then((value) => setState(() => shrubComp = data));
+          .then((value) {
+        // print("After update: ${data.toString()}");
+        shrubComp = data;
+        print(shrubComp);
+        setState(() {});
+        // setState(() => shrubComp = data);
+      });
     }
 
     void markComplete() async {
       void enterComplete() {
-        updateData(shrubComp.copyWith(complete: const d.Value(true)));
+        updateShrubData(shrubComp.copyWith(complete: const d.Value(true)));
       }
 
       if (parentComplete) {
         Popups.show(context, popupSurveyComplete);
       } else if (shrubComp.complete.value) {
-        updateData(shrubComp.copyWith(complete: const d.Value(false)));
+        updateShrubData(shrubComp.copyWith(complete: const d.Value(false)));
       } else {
         List<String>? errors = errorCheck();
         errors == null
@@ -206,12 +214,14 @@ class ShrubPlotSummaryPageState extends ConsumerState<ShrubPlotSummaryPage> {
                               "there were no entries to record.\n"
                               "Are you sure you want to continue?",
                           rightBtnOnPressed: () {
-                            enterComplete();
+                            updateShrubData(shrubComp.copyWith(
+                                complete: const d.Value(true)));
                             context.pop();
                           },
                         ));
                   } else {
-                    enterComplete();
+                    updateShrubData(
+                        shrubComp.copyWith(complete: const d.Value(true)));
                   }
                 },
               )
@@ -224,6 +234,7 @@ class ShrubPlotSummaryPageState extends ConsumerState<ShrubPlotSummaryPage> {
         : Scaffold(
             appBar: OurAppBar(
               title,
+              complete: shrubComp.complete.value,
               backFn: () {
                 ref.refresh(updateSurveyCardProvider(surveyId));
                 context.pop();
@@ -244,17 +255,17 @@ class ShrubPlotSummaryPageState extends ConsumerState<ShrubPlotSummaryPage> {
                       date: shrubComp.measDate.value,
                       label: "Enter Measurement Date",
                       readOnly: shrubComp.complete.value,
-                      onDateSelected: (DateTime date) => updateData(
+                      onDateSelected: (DateTime date) => updateShrubData(
                           shrubComp.copyWith(measDate: d.Value(date))),
                     ),
                     ReferenceNameSelectBuilder(
                       name: db.referenceTablesDao.getShrubPlotTypeName(
                           db.companionValueToStr(shrubComp.plotType)),
                       asyncListFn: db.referenceTablesDao.getShrubPlotTypeList,
-                      enabled: shrubComp.complete.value,
+                      enabled: !shrubComp.complete.value,
                       onChange: (s) => db.referenceTablesDao
                           .getShrubPlotTypeCode(s)
-                          .then((value) => updateData(
+                          .then((value) => updateShrubData(
                               shrubComp.copyWith(plotType: d.Value(value)))),
                     ),
                     DisableWidget(
@@ -264,10 +275,11 @@ class ShrubPlotSummaryPageState extends ConsumerState<ShrubPlotSummaryPage> {
                         titleWidget: "Unreported",
                         checkValue: shrubComp.nomPlotSize.value == -1,
                         onChange: (b) {
+                          print(shrubComp.nomPlotSize.value);
                           shrubComp.nomPlotSize.value == -1
-                              ? updateData(shrubComp.copyWith(
+                              ? updateShrubData(shrubComp.copyWith(
                                   nomPlotSize: const d.Value(null)))
-                              : updateData(shrubComp.copyWith(
+                              : updateShrubData(shrubComp.copyWith(
                                   nomPlotSize: const d.Value(-1)));
                         },
                         child: DataInput(
@@ -288,10 +300,10 @@ class ShrubPlotSummaryPageState extends ConsumerState<ShrubPlotSummaryPage> {
                             paddingGeneral: const EdgeInsets.only(top: 0),
                             onSubmit: (s) {
                               s.isEmpty
-                                  ? updateData(shrubComp.copyWith(
+                                  ? updateShrubData(shrubComp.copyWith(
                                       nomPlotSize: const d.Value(null)))
                                   : _errorNom(s) == null
-                                      ? updateData(shrubComp.copyWith(
+                                      ? updateShrubData(shrubComp.copyWith(
                                           nomPlotSize:
                                               d.Value(double.parse(s))))
                                       : shrubComp = shrubComp.copyWith(
@@ -321,10 +333,10 @@ class ShrubPlotSummaryPageState extends ConsumerState<ShrubPlotSummaryPage> {
                           ],
                           onSubmit: (s) {
                             s.isEmpty
-                                ? updateData(shrubComp.copyWith(
+                                ? updateShrubData(shrubComp.copyWith(
                                     measPlotSize: const d.Value(null)))
                                 : _errorNom(s) == null
-                                    ? updateData(shrubComp.copyWith(
+                                    ? updateShrubData(shrubComp.copyWith(
                                         measPlotSize: d.Value(double.parse(s))))
                                     : shrubComp = shrubComp.copyWith(
                                         measPlotSize: d.Value(double.parse(s)));

@@ -22912,11 +22912,11 @@ class $StumpEntryTable extends StumpEntry
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _shrubSummaryIdMeta =
-      const VerificationMeta('shrubSummaryId');
+  static const VerificationMeta _stumpSummaryIdMeta =
+      const VerificationMeta('stumpSummaryId');
   @override
-  late final GeneratedColumn<int> shrubSummaryId = GeneratedColumn<int>(
-      'shrub_summary_id', aliasedName, false,
+  late final GeneratedColumn<int> stumpSummaryId = GeneratedColumn<int>(
+      'stump_summary_id', aliasedName, false,
       type: DriftSqlType.int,
       requiredDuringInsert: true,
       defaultConstraints: GeneratedColumn.constraintIsAlways(
@@ -22934,9 +22934,7 @@ class $StumpEntryTable extends StumpEntry
   @override
   late final GeneratedColumn<String> origPlotArea = GeneratedColumn<String>(
       'orig_plot_area', aliasedName, false,
-      check: () => origPlotArea.isIn(['Y' 'N' 'X' 'U']),
-      type: DriftSqlType.string,
-      requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _stumpGenusMeta =
       const VerificationMeta('stumpGenus');
   @override
@@ -22960,10 +22958,7 @@ class $StumpEntryTable extends StumpEntry
   @override
   late final GeneratedColumn<String> stumpVariety = GeneratedColumn<String>(
       'stump_variety', aliasedName, false,
-      additionalChecks:
-          GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 3),
-      type: DriftSqlType.string,
-      requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _stumpDibMeta =
       const VerificationMeta('stumpDib');
   @override
@@ -23002,7 +22997,7 @@ class $StumpEntryTable extends StumpEntry
   @override
   List<GeneratedColumn> get $columns => [
         id,
-        shrubSummaryId,
+        stumpSummaryId,
         stumpNum,
         origPlotArea,
         stumpGenus,
@@ -23026,13 +23021,13 @@ class $StumpEntryTable extends StumpEntry
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    if (data.containsKey('shrub_summary_id')) {
+    if (data.containsKey('stump_summary_id')) {
       context.handle(
-          _shrubSummaryIdMeta,
-          shrubSummaryId.isAcceptableOrUnknown(
-              data['shrub_summary_id']!, _shrubSummaryIdMeta));
+          _stumpSummaryIdMeta,
+          stumpSummaryId.isAcceptableOrUnknown(
+              data['stump_summary_id']!, _stumpSummaryIdMeta));
     } else if (isInserting) {
-      context.missing(_shrubSummaryIdMeta);
+      context.missing(_stumpSummaryIdMeta);
     }
     if (data.containsKey('stump_num')) {
       context.handle(_stumpNumMeta,
@@ -23113,8 +23108,8 @@ class $StumpEntryTable extends StumpEntry
     return StumpEntryData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      shrubSummaryId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}shrub_summary_id'])!,
+      stumpSummaryId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}stump_summary_id'])!,
       stumpNum: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}stump_num'])!,
       origPlotArea: attachedDatabase.typeMapping
@@ -23144,7 +23139,7 @@ class $StumpEntryTable extends StumpEntry
 
 class StumpEntryData extends DataClass implements Insertable<StumpEntryData> {
   final int id;
-  final int shrubSummaryId;
+  final int stumpSummaryId;
   final int stumpNum;
   final String origPlotArea;
   final String stumpGenus;
@@ -23156,7 +23151,7 @@ class StumpEntryData extends DataClass implements Insertable<StumpEntryData> {
   final double stumpLength;
   const StumpEntryData(
       {required this.id,
-      required this.shrubSummaryId,
+      required this.stumpSummaryId,
       required this.stumpNum,
       required this.origPlotArea,
       required this.stumpGenus,
@@ -23170,7 +23165,7 @@ class StumpEntryData extends DataClass implements Insertable<StumpEntryData> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
-    map['shrub_summary_id'] = Variable<int>(shrubSummaryId);
+    map['stump_summary_id'] = Variable<int>(stumpSummaryId);
     map['stump_num'] = Variable<int>(stumpNum);
     map['orig_plot_area'] = Variable<String>(origPlotArea);
     map['stump_genus'] = Variable<String>(stumpGenus);
@@ -23186,7 +23181,7 @@ class StumpEntryData extends DataClass implements Insertable<StumpEntryData> {
   StumpEntryCompanion toCompanion(bool nullToAbsent) {
     return StumpEntryCompanion(
       id: Value(id),
-      shrubSummaryId: Value(shrubSummaryId),
+      stumpSummaryId: Value(stumpSummaryId),
       stumpNum: Value(stumpNum),
       origPlotArea: Value(origPlotArea),
       stumpGenus: Value(stumpGenus),
@@ -23204,7 +23199,7 @@ class StumpEntryData extends DataClass implements Insertable<StumpEntryData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return StumpEntryData(
       id: serializer.fromJson<int>(json['id']),
-      shrubSummaryId: serializer.fromJson<int>(json['shrubSummaryId']),
+      stumpSummaryId: serializer.fromJson<int>(json['stumpSummaryId']),
       stumpNum: serializer.fromJson<int>(json['stumpNum']),
       origPlotArea: serializer.fromJson<String>(json['origPlotArea']),
       stumpGenus: serializer.fromJson<String>(json['stumpGenus']),
@@ -23221,7 +23216,7 @@ class StumpEntryData extends DataClass implements Insertable<StumpEntryData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'shrubSummaryId': serializer.toJson<int>(shrubSummaryId),
+      'stumpSummaryId': serializer.toJson<int>(stumpSummaryId),
       'stumpNum': serializer.toJson<int>(stumpNum),
       'origPlotArea': serializer.toJson<String>(origPlotArea),
       'stumpGenus': serializer.toJson<String>(stumpGenus),
@@ -23236,7 +23231,7 @@ class StumpEntryData extends DataClass implements Insertable<StumpEntryData> {
 
   StumpEntryData copyWith(
           {int? id,
-          int? shrubSummaryId,
+          int? stumpSummaryId,
           int? stumpNum,
           String? origPlotArea,
           String? stumpGenus,
@@ -23248,7 +23243,7 @@ class StumpEntryData extends DataClass implements Insertable<StumpEntryData> {
           double? stumpLength}) =>
       StumpEntryData(
         id: id ?? this.id,
-        shrubSummaryId: shrubSummaryId ?? this.shrubSummaryId,
+        stumpSummaryId: stumpSummaryId ?? this.stumpSummaryId,
         stumpNum: stumpNum ?? this.stumpNum,
         origPlotArea: origPlotArea ?? this.origPlotArea,
         stumpGenus: stumpGenus ?? this.stumpGenus,
@@ -23263,7 +23258,7 @@ class StumpEntryData extends DataClass implements Insertable<StumpEntryData> {
   String toString() {
     return (StringBuffer('StumpEntryData(')
           ..write('id: $id, ')
-          ..write('shrubSummaryId: $shrubSummaryId, ')
+          ..write('stumpSummaryId: $stumpSummaryId, ')
           ..write('stumpNum: $stumpNum, ')
           ..write('origPlotArea: $origPlotArea, ')
           ..write('stumpGenus: $stumpGenus, ')
@@ -23280,7 +23275,7 @@ class StumpEntryData extends DataClass implements Insertable<StumpEntryData> {
   @override
   int get hashCode => Object.hash(
       id,
-      shrubSummaryId,
+      stumpSummaryId,
       stumpNum,
       origPlotArea,
       stumpGenus,
@@ -23295,7 +23290,7 @@ class StumpEntryData extends DataClass implements Insertable<StumpEntryData> {
       identical(this, other) ||
       (other is StumpEntryData &&
           other.id == this.id &&
-          other.shrubSummaryId == this.shrubSummaryId &&
+          other.stumpSummaryId == this.stumpSummaryId &&
           other.stumpNum == this.stumpNum &&
           other.origPlotArea == this.origPlotArea &&
           other.stumpGenus == this.stumpGenus &&
@@ -23309,7 +23304,7 @@ class StumpEntryData extends DataClass implements Insertable<StumpEntryData> {
 
 class StumpEntryCompanion extends UpdateCompanion<StumpEntryData> {
   final Value<int> id;
-  final Value<int> shrubSummaryId;
+  final Value<int> stumpSummaryId;
   final Value<int> stumpNum;
   final Value<String> origPlotArea;
   final Value<String> stumpGenus;
@@ -23321,7 +23316,7 @@ class StumpEntryCompanion extends UpdateCompanion<StumpEntryData> {
   final Value<double> stumpLength;
   const StumpEntryCompanion({
     this.id = const Value.absent(),
-    this.shrubSummaryId = const Value.absent(),
+    this.stumpSummaryId = const Value.absent(),
     this.stumpNum = const Value.absent(),
     this.origPlotArea = const Value.absent(),
     this.stumpGenus = const Value.absent(),
@@ -23334,7 +23329,7 @@ class StumpEntryCompanion extends UpdateCompanion<StumpEntryData> {
   });
   StumpEntryCompanion.insert({
     this.id = const Value.absent(),
-    required int shrubSummaryId,
+    required int stumpSummaryId,
     required int stumpNum,
     required String origPlotArea,
     required String stumpGenus,
@@ -23344,7 +23339,7 @@ class StumpEntryCompanion extends UpdateCompanion<StumpEntryData> {
     required double stumpDiameter,
     required int stumpDecay,
     required double stumpLength,
-  })  : shrubSummaryId = Value(shrubSummaryId),
+  })  : stumpSummaryId = Value(stumpSummaryId),
         stumpNum = Value(stumpNum),
         origPlotArea = Value(origPlotArea),
         stumpGenus = Value(stumpGenus),
@@ -23356,7 +23351,7 @@ class StumpEntryCompanion extends UpdateCompanion<StumpEntryData> {
         stumpLength = Value(stumpLength);
   static Insertable<StumpEntryData> custom({
     Expression<int>? id,
-    Expression<int>? shrubSummaryId,
+    Expression<int>? stumpSummaryId,
     Expression<int>? stumpNum,
     Expression<String>? origPlotArea,
     Expression<String>? stumpGenus,
@@ -23369,7 +23364,7 @@ class StumpEntryCompanion extends UpdateCompanion<StumpEntryData> {
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (shrubSummaryId != null) 'shrub_summary_id': shrubSummaryId,
+      if (stumpSummaryId != null) 'stump_summary_id': stumpSummaryId,
       if (stumpNum != null) 'stump_num': stumpNum,
       if (origPlotArea != null) 'orig_plot_area': origPlotArea,
       if (stumpGenus != null) 'stump_genus': stumpGenus,
@@ -23384,7 +23379,7 @@ class StumpEntryCompanion extends UpdateCompanion<StumpEntryData> {
 
   StumpEntryCompanion copyWith(
       {Value<int>? id,
-      Value<int>? shrubSummaryId,
+      Value<int>? stumpSummaryId,
       Value<int>? stumpNum,
       Value<String>? origPlotArea,
       Value<String>? stumpGenus,
@@ -23396,7 +23391,7 @@ class StumpEntryCompanion extends UpdateCompanion<StumpEntryData> {
       Value<double>? stumpLength}) {
     return StumpEntryCompanion(
       id: id ?? this.id,
-      shrubSummaryId: shrubSummaryId ?? this.shrubSummaryId,
+      stumpSummaryId: stumpSummaryId ?? this.stumpSummaryId,
       stumpNum: stumpNum ?? this.stumpNum,
       origPlotArea: origPlotArea ?? this.origPlotArea,
       stumpGenus: stumpGenus ?? this.stumpGenus,
@@ -23415,8 +23410,8 @@ class StumpEntryCompanion extends UpdateCompanion<StumpEntryData> {
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
-    if (shrubSummaryId.present) {
-      map['shrub_summary_id'] = Variable<int>(shrubSummaryId.value);
+    if (stumpSummaryId.present) {
+      map['stump_summary_id'] = Variable<int>(stumpSummaryId.value);
     }
     if (stumpNum.present) {
       map['stump_num'] = Variable<int>(stumpNum.value);
@@ -23452,7 +23447,7 @@ class StumpEntryCompanion extends UpdateCompanion<StumpEntryData> {
   String toString() {
     return (StringBuffer('StumpEntryCompanion(')
           ..write('id: $id, ')
-          ..write('shrubSummaryId: $shrubSummaryId, ')
+          ..write('stumpSummaryId: $stumpSummaryId, ')
           ..write('stumpNum: $stumpNum, ')
           ..write('origPlotArea: $origPlotArea, ')
           ..write('stumpGenus: $stumpGenus, ')
