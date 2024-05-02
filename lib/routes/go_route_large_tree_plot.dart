@@ -22,7 +22,7 @@ GoRoute goRouteLargeTreePlot = GoRoute(
                 path: "entry",
                 builder: (context, state) =>
                     LargeTreePlotTreeInfoListEntryPage(state),
-                routes: []),
+                routes: const []),
           ]),
       GoRoute(
           name: LargeTreePlotTreeRemovedListPage.routeName,
@@ -34,7 +34,7 @@ GoRoute goRouteLargeTreePlot = GoRoute(
                 path: "entry",
                 builder: (context, state) =>
                     LargeTreePlotTreeRemovedListEntryPage(state),
-                routes: []),
+                routes: const []),
           ]),
       GoRoute(
           name: LargeTreePlotSiteTreeInfoAgeListPage.routeName,
@@ -47,6 +47,6 @@ GoRoute goRouteLargeTreePlot = GoRoute(
                 path: "entry",
                 builder: (context, state) =>
                     LargeTreePlotSiteTreeInfoAgeListEntryPage(state),
-                routes: []),
+                routes: const []),
           ]),
     ]);

@@ -44,7 +44,7 @@ class GroundPlotSummaryPageState extends ConsumerState<GroundPlotSummaryPage> {
       bottomNavigationBar: MarkCompleteButton(
         title: "Ground Plot Info Summary",
         complete: false,
-        onPressed: () => null,
+        onPressed: () {},
       ),
       body: Center(
           child: Padding(

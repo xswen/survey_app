@@ -178,7 +178,7 @@ class SoilPitHorizonDescriptionEntryPageState
       return "Can't be empty";
     } else if (-1.0 == double.parse(text!)) {
       return null;
-    } else if (0 > double.parse(text!) || double.parse(text!) > 200) {
+    } else if (0 > double.parse(text) || double.parse(text) > 200) {
       return "Input out of range. Must be between 0.0 to 200.0 inclusive.";
     }
     return null;
@@ -189,7 +189,7 @@ class SoilPitHorizonDescriptionEntryPageState
       return "Can't be empty";
     } else if (-1.0 == double.parse(text!)) {
       return null;
-    } else if (0 > double.parse(text!) || double.parse(text!) > 300) {
+    } else if (0 > double.parse(text) || double.parse(text) > 300) {
       return "Input out of range. Must be between 0.0 to 300.0 inclusive.";
     }
     return null;
@@ -198,9 +198,9 @@ class SoilPitHorizonDescriptionEntryPageState
   String? errorCf(String? text) {
     if (text?.isEmpty ?? true) {
       return "Can't be empty";
-    } else if (-1 == int.parse(text!) || -9 == int.parse(text!)) {
+    } else if (-1 == int.parse(text!) || -9 == int.parse(text)) {
       return null;
-    } else if (0 > int.parse(text!) || int.parse(text!) > 100) {
+    } else if (0 > int.parse(text) || int.parse(text) > 100) {
       return "Input out of range. Must be between 0 to 100 inclusive.";
     }
     return null;

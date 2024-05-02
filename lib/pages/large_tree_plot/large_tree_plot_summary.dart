@@ -62,7 +62,7 @@ class LargeTreePlotSummaryPageState
         },
       ),
       bottomNavigationBar: MarkCompleteButton(
-          title: "Large Tree Plot", complete: false, onPressed: () => null),
+          title: "Large Tree Plot", complete: false, onPressed: () {}),
       endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
       body: Center(
         child: Padding(

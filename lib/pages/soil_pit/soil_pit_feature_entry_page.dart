@@ -122,7 +122,7 @@ class SoilPitFeatureEntryPageState
       return "Can't be empty";
     } else if (-9 == int.parse(text!)) {
       return null;
-    } else if (0 > int.parse(text!) || int.parse(text!) > 200) {
+    } else if (0 > int.parse(text) || int.parse(text) > 200) {
       return "Input out of range. Must be between 0 to 200 inclusive.";
     }
     return null;

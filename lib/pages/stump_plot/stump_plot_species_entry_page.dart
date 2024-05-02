@@ -100,7 +100,7 @@ class StumpPlotSpeciesEntryPageState
     if (entry.stumpDecay == const d.Value.absent()) {
       results.add("Missing stumpDecay");
     }
-    if (entry.stumpLength != d.Value(-1.0) &&
+    if (entry.stumpLength != const d.Value(-1.0) &&
         _errorLength(db.companionValueToStr(entry.stumpLength)) != null) {
       results.add("Missing stumpLength");
     }
@@ -230,7 +230,7 @@ class StumpPlotSpeciesEntryPageState
             HideInfoCheckbox(
               title: "Stump DIB",
               titleWidget: "Unreported",
-              checkValue: entry.stumpDib == d.Value(-1.0),
+              checkValue: entry.stumpDib == const d.Value(-1.0),
               onChange: (b) {
                 entry.stumpDib == const d.Value(-1.0)
                     ? updateSpeciesCompanion(
@@ -345,7 +345,7 @@ class StumpPlotSpeciesEntryPageState
                       : updateSpeciesCompanion(
                           entry.copyWith(stumpDecay: d.Value(int.parse(s!))));
                 },
-                selectedItem: entry.stumpDecay == d.Value(-1)
+                selectedItem: entry.stumpDecay == const d.Value(-1)
                     ? "Unreported"
                     : db.companionValueToStr(entry.stumpDecay),
               ),

@@ -90,11 +90,11 @@ class SmallTreeSpeciesEntryPageState
     if (speciesCompanion.status == const d.Value.absent()) {
       results.add("Missing status");
     }
-    if (speciesCompanion.dbh != d.Value(-1.0) &&
+    if (speciesCompanion.dbh != const d.Value(-1.0) &&
         _errorDbh(db.companionValueToStr(speciesCompanion.dbh)) != null) {
       results.add("Error in Dbh");
     }
-    if (speciesCompanion.height != d.Value(-1.0) &&
+    if (speciesCompanion.height != const d.Value(-1.0) &&
         _errorHeight(db.companionValueToStr(speciesCompanion.height)) != null) {
       results.add("Error in height");
     }

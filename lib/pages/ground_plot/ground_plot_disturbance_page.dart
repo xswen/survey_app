@@ -102,8 +102,8 @@ class GroundPlotDisturbancePageState
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(
-                    child: const Text(
+                  const Expanded(
+                    child: Text(
                       "Natural Disturbance to the Plot Vegetation",
                       style: TextStyle(fontSize: kTextTitleSize),
                     ),

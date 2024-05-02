@@ -31,7 +31,7 @@ class GroundPlotSiteInfoPageState
       appBar: const OurAppBar("Ground Plot Site Info"),
       endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
       bottomNavigationBar:
-          ElevatedButton(child: Text("Save"), onPressed: () => null),
+          ElevatedButton(child: const Text("Save"), onPressed: () {}),
       body: Center(
           child: Padding(
         padding: const EdgeInsets.symmetric(
@@ -74,7 +74,9 @@ class GroundPlotSiteInfoPageState
                 DataInput(
                     title: "Provincial ecosystem type",
                     onSubmit: (s) {},
-                    onValidate: (s) {}),
+                    onValidate: (s) {
+                      return null;
+                    }),
                 HideInfoCheckbox(
                   title: "Provincial Ecosystem type reference",
                   titleWidget: "Unreported",
@@ -83,7 +85,9 @@ class GroundPlotSiteInfoPageState
                     paddingGeneral: EdgeInsets.zero,
                     paddingTextbox: EdgeInsets.zero,
                     onSubmit: (s) {},
-                    onValidate: (s) {},
+                    onValidate: (s) {
+                      return null;
+                    },
                   ),
                 ),
                 HideInfoCheckbox(
@@ -117,7 +121,9 @@ class GroundPlotSiteInfoPageState
                                   paddingGeneral: EdgeInsets.zero,
                                   paddingTextbox: EdgeInsets.zero,
                                   onSubmit: (s) {},
-                                  onValidate: (s) {},
+                                  onValidate: (s) {
+                                    return null;
+                                  },
                                 ),
                                 actions: <Widget>[
                                   ElevatedButton(
@@ -146,7 +152,9 @@ class GroundPlotSiteInfoPageState
                       paddingGeneral: EdgeInsets.zero,
                       paddingTextbox: EdgeInsets.zero,
                       onSubmit: (s) {},
-                      onValidate: (s) {},
+                      onValidate: (s) {
+                        return null;
+                      },
                     ),
                   ),
                 ),
@@ -158,7 +166,9 @@ class GroundPlotSiteInfoPageState
                     paddingGeneral: EdgeInsets.zero,
                     paddingTextbox: EdgeInsets.zero,
                     onSubmit: (s) {},
-                    onValidate: (s) {},
+                    onValidate: (s) {
+                      return null;
+                    },
                   ),
                 ),
               ],
@@ -219,38 +229,52 @@ class GroundPlotSiteInfoPageState
             ExpansionTitle(
               title: "Plot Center Location",
               children: [
-                CustomCheckbox(
+                const CustomCheckbox(
                   title: "Coordinates are post-processed",
                   checkValue: false,
                 ),
                 DataInput(
                     title: "UTM Northing",
                     onSubmit: (s) {},
-                    onValidate: (s) {}),
+                    onValidate: (s) {
+                      return null;
+                    }),
                 DataInput(
-                    title: "UTM Easting", onSubmit: (s) {}, onValidate: (s) {}),
+                    title: "UTM Easting", onSubmit: (s) {}, onValidate: (s) {
+                      return null;
+                    }),
                 DataInput(
                     title: "Field Accuracy Northing",
                     onSubmit: (s) {},
-                    onValidate: (s) {}),
+                    onValidate: (s) {
+                      return null;
+                    }),
                 DataInput(
                     title: "Field Accuracy Easting",
                     onSubmit: (s) {},
-                    onValidate: (s) {}),
+                    onValidate: (s) {
+                      return null;
+                    }),
               ],
             ),
             ExpansionTitle(
               title: "General GPS Information",
               children: [
                 DataInput(
-                    title: "GPS Make", onSubmit: (s) {}, onValidate: (s) {}),
+                    title: "GPS Make", onSubmit: (s) {}, onValidate: (s) {
+                      return null;
+                    }),
                 DataInput(
-                    title: "GPS Model", onSubmit: (s) {}, onValidate: (s) {}),
+                    title: "GPS Model", onSubmit: (s) {}, onValidate: (s) {
+                      return null;
+                    }),
                 HideInfoCheckbox(
                   title: "Points averaged",
                   titleWidget: "Unreported",
                   checkValue: false,
-                  child: DataInput(onSubmit: (s) {}, onValidate: (s) {}),
+                  child: DataInput(onSubmit: (s) {}, onValidate: (s) {
+                    return null;
+                  }),
                 ),
                 DropDownDefault(
                   title: "Density class",

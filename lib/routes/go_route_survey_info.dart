@@ -5,4 +5,4 @@ GoRoute goRouteSurveyInfo = GoRoute(
     name: SurveyInfoSummaryPage.routeName,
     path: "survey-summary",
     builder: (context, state) => SurveyInfoSummaryPage(state),
-    routes: []);
+    routes: const []);

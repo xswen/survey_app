@@ -113,13 +113,17 @@ class LargeTreePlotTreeInfoListEntryPageState
                             paddingGeneral:
                                 const EdgeInsets.only(bottom: kPaddingV),
                             onSubmit: (s) {},
-                            onValidate: (s) {}),
+                            onValidate: (s) {
+                              return null;
+                            }),
                         DataInput(
                             title: "Original tree number",
                             paddingGeneral:
                                 const EdgeInsets.only(bottom: kPaddingV),
                             onSubmit: (s) {},
-                            onValidate: (s) {}),
+                            onValidate: (s) {
+                              return null;
+                            }),
                       ],
                     )),
               ],
@@ -327,7 +331,7 @@ class LargeTreePlotTreeInfoListEntryPageState
               enabled: true,
               onChange: (s) => db.referenceTablesDao
                   .getLtpCrownClassFieldCode(s)
-                  .then((value) => setState(() => null)),
+                  .then((value) => setState(() {})),
             ),
             ReferenceNameSelectBuilder(
               title: "Tree status",
@@ -419,7 +423,7 @@ class LargeTreePlotTreeInfoListEntryPageState
               enabled: true,
               onChange: (s) => db.referenceTablesDao
                   .getLtpStemConditionCode(s)
-                  .then((value) => setState(() => null)),
+                  .then((value) => setState(() {})),
             ),
             ReferenceNameSelectBuilder(
               title: "Crown condition",
@@ -429,7 +433,7 @@ class LargeTreePlotTreeInfoListEntryPageState
               enabled: true,
               onChange: (s) => db.referenceTablesDao
                   .getLtpCrownConditionCode(s)
-                  .then((value) => setState(() => null)),
+                  .then((value) => setState(() {})),
             ),
             ReferenceNameSelectBuilder(
               title: "Bark condition",
@@ -439,7 +443,7 @@ class LargeTreePlotTreeInfoListEntryPageState
               enabled: true,
               onChange: (s) => db.referenceTablesDao
                   .getLtpWoodConditionCode(s)
-                  .then((value) => setState(() => null)),
+                  .then((value) => setState(() {})),
             ),
 
             ReferenceNameSelectBuilder(
@@ -450,7 +454,7 @@ class LargeTreePlotTreeInfoListEntryPageState
               enabled: true,
               onChange: (s) => db.referenceTablesDao
                   .getLtpWoodConditionCode(s)
-                  .then((value) => setState(() => null)),
+                  .then((value) => setState(() {})),
             ),
             const SizedBox(height: kPaddingV * 2),
             const TextHeaderSeparator(
@@ -521,12 +525,12 @@ class LargeTreePlotTreeInfoListEntryPageState
               fontSize: 20,
             ),
             //TODO: Add damage agents
-            Text("TO ADD"),
+            const Text("TO ADD"),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: kPaddingV * 2),
               child: SaveEntryButton(
-                saveRetFn: () => null,
-                saveAndAddFn: () => null,
+                saveRetFn: () {},
+                saveAndAddFn: () {},
                 delVisible: true,
                 deleteFn: () => Popups.show(
                   context,

@@ -1069,6 +1069,13 @@ class Database extends _$Database {
               ..where((tbl) => tbl.surveyId.equals(surveyId)))
             .getSingleOrNull()
       },
+      {
+        category: SurveyCardCategories.microPlot,
+        name: "Microplot",
+        surveyCardData: await (select(ltpSummary)
+              ..where((tbl) => tbl.surveyId.equals(surveyId)))
+            .getSingleOrNull()
+      },
     ];
 
     List<SurveyCard> cards = [];

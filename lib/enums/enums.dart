@@ -11,6 +11,7 @@ enum SurveyCardCategories {
   shrubPlot,
   stumpPlot,
   largeTreePlot,
+  microPlot,
 }
 
 enum SurveyStatus { notStarted, inProgress, notAssessed, complete }

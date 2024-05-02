@@ -149,7 +149,7 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
       return "Can't be empty";
     } else if (double.parse(text!) == -1.0) {
       return null;
-    } else if (0.0 > double.parse(text!) || double.parse(text!) > 250) {
+    } else if (0.0 > double.parse(text) || double.parse(text) > 250) {
       return "Input out of range. Must be between 0.0 to 250.0 inclusive.";
     }
     return null;
@@ -206,7 +206,7 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
                       soilClassSubGroup: const d.Value("Not applicable"),
                       soilClass: kNACode,
                     ));
-                  } else if (s! == "Unknown or not reported") {
+                  } else if (s == "Unknown or not reported") {
                     updateSiteInfo(siteInfo.copyWith(
                       soilClassOrder: d.Value(s),
                       soilClassGreatGroup:
@@ -217,7 +217,7 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
                     ));
                   } else {
                     updateSiteInfo(siteInfo.copyWith(
-                        soilClassOrder: d.Value(s!),
+                        soilClassOrder: d.Value(s),
                         soilClassGreatGroup: const d.Value.absent(),
                         soilClassSubGroup: const d.Value.absent(),
                         soilClass: const d.Value.absent()));
@@ -279,7 +279,7 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
                                     s!)
                                 .then((code) => setState(() {
                                       siteInfo = siteInfo.copyWith(
-                                          soilClassSubGroup: d.Value(s!),
+                                          soilClassSubGroup: d.Value(s),
                                           soilClass: d.Value(code));
                                     }));
                           }

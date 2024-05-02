@@ -22,7 +22,7 @@ class GroundPlotOriginEntryPageState
       appBar: const OurAppBar("Tree Cover Origin Entry"),
       endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
       bottomNavigationBar:
-          ElevatedButton(child: Text("Save"), onPressed: () => null),
+          ElevatedButton(child: const Text("Save"), onPressed: () {}),
       body: Center(
           child: Padding(
         padding: const EdgeInsets.symmetric(
@@ -32,17 +32,19 @@ class GroundPlotOriginEntryPageState
             DropDownDefault(
                 title: "Vegetation cover origin",
                 onChangedFn: (s) {},
-                itemsList: ["SUCC", "HARV"],
+                itemsList: const ["SUCC", "HARV"],
                 selectedItem: ""),
             DropDownDefault(
                 title: "Type of regeneration",
                 onChangedFn: (s) {},
-                itemsList: ["NAT", "SUP"],
+                itemsList: const ["NAT", "SUP"],
                 selectedItem: ""),
             DataInput(
                 title: "Year of regeneration",
                 onSubmit: (s) {},
-                onValidate: (s) {}),
+                onValidate: (s) {
+                  return null;
+                }),
           ],
         ),
       )),

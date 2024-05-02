@@ -23,7 +23,7 @@ class GroundPlotDisturbanceEntryPageState
       appBar: const OurAppBar("Natural Disturbance Entry"),
       endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
       bottomNavigationBar:
-          ElevatedButton(child: Text("Save"), onPressed: () => null),
+          ElevatedButton(child: const Text("Save"), onPressed: () {}),
       body: Center(
           child: Padding(
         padding: const EdgeInsets.symmetric(
@@ -33,7 +33,7 @@ class GroundPlotDisturbanceEntryPageState
             DropDownDefault(
                 title: "Natural disturbance agent",
                 onChangedFn: (s) {},
-                itemsList: ["Fire", "Wind"],
+                itemsList: const ["Fire", "Wind"],
                 selectedItem: ""),
             HideInfoCheckbox(
               title: "Disturbance Year",
@@ -43,7 +43,9 @@ class GroundPlotDisturbanceEntryPageState
                 paddingGeneral: EdgeInsets.zero,
                 paddingTextbox: EdgeInsets.zero,
                 onSubmit: (s) {},
-                onValidate: (s) {},
+                onValidate: (s) {
+                  return null;
+                },
               ),
             ),
             HideInfoCheckbox(
@@ -54,7 +56,9 @@ class GroundPlotDisturbanceEntryPageState
                 paddingGeneral: EdgeInsets.zero,
                 paddingTextbox: EdgeInsets.zero,
                 onSubmit: (s) {},
-                onValidate: (s) {},
+                onValidate: (s) {
+                  return null;
+                },
               ),
             ),
             HideInfoCheckbox(
@@ -65,7 +69,9 @@ class GroundPlotDisturbanceEntryPageState
                 paddingGeneral: EdgeInsets.zero,
                 paddingTextbox: EdgeInsets.zero,
                 onSubmit: (s) {},
-                onValidate: (s) {},
+                onValidate: (s) {
+                  return null;
+                },
               ),
             ),
             DropDownDefault(
@@ -73,7 +79,7 @@ class GroundPlotDisturbanceEntryPageState
                 onChangedFn: (s) {},
                 itemsList: const ["VL", "BA"],
                 selectedItem: ""),
-            SizedBox(
+            const SizedBox(
               height: kPaddingV * 2,
             ),
             const Text("Comment Box. To do"),

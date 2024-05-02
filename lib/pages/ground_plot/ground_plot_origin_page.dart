@@ -92,8 +92,8 @@ class GroundPlotOriginPageState extends ConsumerState<GroundPlotOriginPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(
-                    child: const Text(
+                  const Expanded(
+                    child: Text(
                       "Origins",
                       style: TextStyle(fontSize: kTextTitleSize),
                     ),

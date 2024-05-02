@@ -44,12 +44,16 @@ class LargeTreePlotTreeRemovedListEntryPageState
         child: Center(
           child: ListView(children: [
             DataInput(
-                title: "Tree number", onSubmit: (s) {}, onValidate: (s) {}),
-            DataInput(title: "Reason", onSubmit: (s) {}, onValidate: (s) {}),
+                title: "Tree number", onSubmit: (s) {}, onValidate: (s) {
+                  return null;
+                }),
+            DataInput(title: "Reason", onSubmit: (s) {}, onValidate: (s) {
+              return null;
+            }),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: kPaddingV * 2),
               child: ElevatedButton(
-                  onPressed: () => null, //handleSubmit(goToHorizonPage),
+                  onPressed: () {}, //handleSubmit(goToHorizonPage),
                   child: const Text("Save and return")),
             ),
             // horizon.id != const d.Value.absent()

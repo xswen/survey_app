@@ -13,7 +13,7 @@ GoRoute goRouteSmallTreePlot = GoRoute(
       name: SmallTreeSpeciesEntryPage.routeName,
       path: "species",
       builder: (context, state) => SmallTreeSpeciesEntryPage(state),
-      routes: [],
+      routes: const [],
     ),
   ],
 );

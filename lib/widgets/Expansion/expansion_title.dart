@@ -752,7 +752,7 @@ class _ExpansionTitleState extends State<ExpansionTitle>
           )
       ..end = widget.shape ??
           expansionTileTheme.shape ??
-          Border(
+          const Border(
             top: BorderSide(color: Colors.transparent),
             bottom: BorderSide(color: Colors.transparent),
           );
