@@ -1042,6 +1042,13 @@ class Database extends _$Database {
             .getSingleOrNull()
       },
       {
+        category: SurveyCardCategories.microPlot,
+        name: "Microplot",
+        surveyCardData: await (select(ltpSummary)
+              ..where((tbl) => tbl.surveyId.equals(surveyId)))
+            .getSingleOrNull()
+      },
+      {
         category: SurveyCardCategories.smallTreePlot,
         name: "Small Tree Plot",
         surveyCardData: await (select(stpSummary)
@@ -1065,13 +1072,6 @@ class Database extends _$Database {
       {
         category: SurveyCardCategories.largeTreePlot,
         name: "Large Tree Plot",
-        surveyCardData: await (select(ltpSummary)
-              ..where((tbl) => tbl.surveyId.equals(surveyId)))
-            .getSingleOrNull()
-      },
-      {
-        category: SurveyCardCategories.microPlot,
-        name: "Microplot",
         surveyCardData: await (select(ltpSummary)
               ..where((tbl) => tbl.surveyId.equals(surveyId)))
             .getSingleOrNull()
