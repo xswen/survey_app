@@ -55,7 +55,7 @@ class ShrubPlotSummaryPageState extends ConsumerState<ShrubPlotSummaryPage> {
 
   //Placeholder values
   bool parentComplete = false;
-  late ShrubSummaryCompanion shrubComp;
+  ShrubSummaryCompanion shrubComp = const ShrubSummaryCompanion();
   List<ShrubListEntryData> entryList = [];
 
   late final PopupDismiss popupPageComplete =
@@ -82,7 +82,6 @@ class ShrubPlotSummaryPageState extends ConsumerState<ShrubPlotSummaryPage> {
       setState(() {
         parentComplete = survey.complete;
         shrubComp = value.toCompanion(true);
-        print("hello");
       });
     }
   }
@@ -177,15 +176,11 @@ class ShrubPlotSummaryPageState extends ConsumerState<ShrubPlotSummaryPage> {
         ref.watch(shrubEntryListProvider(shrubId));
 
     void updateShrubData(ShrubSummaryCompanion data) {
-      // print("Before update: ${shrubComp.toString()}");
       (db.update(db.shrubSummary)..where((t) => t.id.equals(shrubId)))
           .write(data)
           .then((value) {
-        // print("After update: ${data.toString()}");
         shrubComp = data;
-        print(shrubComp);
         setState(() {});
-        // setState(() => shrubComp = data);
       });
     }
 
@@ -275,7 +270,6 @@ class ShrubPlotSummaryPageState extends ConsumerState<ShrubPlotSummaryPage> {
                         titleWidget: "Unreported",
                         checkValue: shrubComp.nomPlotSize.value == -1,
                         onChange: (b) {
-                          print(shrubComp.nomPlotSize.value);
                           shrubComp.nomPlotSize.value == -1
                               ? updateShrubData(shrubComp.copyWith(
                                   nomPlotSize: const d.Value(null)))

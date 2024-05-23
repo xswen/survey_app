@@ -346,6 +346,7 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
   void markComplete(bool parentComplete, WoodyDebrisHeaderData wdh) {
     final db = ref.read(databaseProvider);
 
+    print(parentComplete);
     if (parentComplete) {
       Popups.show(context, surveyCompleteWarningPopup);
     } else if (wdh.complete) {
@@ -364,20 +365,21 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
                 const WoodyDebrisHeaderCompanion(complete: d.Value(true)));
             Popups.show(context,
                 const PopupMarkedComplete(title: "Woody debris header"));
+          } else {
+            Popups.show(
+                context,
+                PopupWarningMissingFieldsList(
+                    missingFields: missingData,
+                    rightBtnOnPressed: () {
+                      updateWdhData(const WoodyDebrisHeaderCompanion(
+                          complete: d.Value(true)));
+                      context.pop();
+                      Popups.show(
+                          context,
+                          const PopupMarkedComplete(
+                              title: "Woody debris header"));
+                    }));
           }
-          Popups.show(
-              context,
-              PopupWarningMissingFieldsList(
-                  missingFields: missingData,
-                  rightBtnOnPressed: () {
-                    updateWdhData(const WoodyDebrisHeaderCompanion(
-                        complete: d.Value(true)));
-                    Popups.show(
-                        context,
-                        const PopupMarkedComplete(
-                            title: "Woody debris header"));
-                    context.pop();
-                  }));
         } else {
           Popups.show(
             context,

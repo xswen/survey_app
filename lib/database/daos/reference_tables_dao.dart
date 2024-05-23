@@ -995,7 +995,6 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
         .map((p0) => p0.varietyCode)
         .get());
 
-    print(varietyCodes);
     return varietyCodes.length == 1 && varietyCodes[0] == "NULL";
   }
 

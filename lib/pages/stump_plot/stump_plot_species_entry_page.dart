@@ -90,7 +90,6 @@ class StumpPlotSpeciesEntryPageState
     }
     if (entry.stumpDib != const d.Value(-1.0) &&
         _errorDib(db.companionValueToStr(entry.stumpDib)) != null) {
-      print(entry.stumpDib);
       results.add("Missing stumpDib");
     }
     if (entry.stumpDiameter != const d.Value(-1.0) &&

@@ -48,8 +48,6 @@ class CalendarSelect extends StatelessWidget {
     final TextEditingController dateInput = TextEditingController(
         text: formatDate(date)); // This can be initialized directly
 
-    print(readOnly);
-
     return Container(
       margin: const EdgeInsets.fromLTRB(kPaddingH, kPaddingV, kPaddingH, 0),
       child: Center(
