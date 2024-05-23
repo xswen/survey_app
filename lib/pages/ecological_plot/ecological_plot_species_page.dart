@@ -11,7 +11,7 @@ import 'package:survey_app/widgets/builders/info_popup_builder.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../formatters/thousands_formatter.dart';
-import '../../widgets/buttons/delete_button.dart';
+import '../../widgets/buttons/save_entry_button.dart';
 import '../../widgets/data_input/data_input.dart';
 import '../../widgets/popups/popup_errors_found_list.dart';
 import '../delete_page.dart';
@@ -140,6 +140,15 @@ class EcologicalPlotSpeciesPageState
             ));
       });
 
+  void onSave(void Function() fn) {
+    List<String>? errors = _errorCheck();
+    if (errors != null) {
+      Popups.show(context, PopupErrorsFoundList(errors: errors));
+    } else {
+      addOrUpdateEcpSpecies(fn);
+    }
+  }
+
   List<String>? _errorCheck() {
     List<String> results = [];
     if (layer.layerId == const d.Value.absent()) {
@@ -179,6 +188,12 @@ class EcologicalPlotSpeciesPageState
     return Scaffold(
         appBar: OurAppBar(
           "$title: Species number ${db.companionValueToStr(layer.speciesNum)}",
+          backFn: () {
+            ref.refresh(ecpSpeciesListProvider(ecpHId));
+            context.goNamed(EcologicalPlotHeaderPage.routeName,
+                pathParameters: PathParamGenerator.ecpHeader(
+                    widget.state, ecpHId.toString()));
+          },
         ),
         endDrawer: DrawerMenu(onLocaleChange: () {}),
         body: Padding(
@@ -281,61 +296,37 @@ class EcologicalPlotSpeciesPageState
                 const SizedBox(
                   height: kPaddingV * 2,
                 ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: kPaddingV * 2),
+                  child: SaveEntryButton(
+                    saveRetFn: () => onSave(returnToHeader),
+                    saveAndAddFn: () => onSave(createNewEcpSpeciesCompanion),
+                    delVisible: layer.id != const d.Value.absent(),
+                    deleteFn: () => Popups.show(
+                      context,
+                      PopupContinue("Warning: Deleting $title",
+                          contentText: "You are about to delete this feature. "
+                              "Are you sure you want to continue?",
+                          rightBtnOnPressed: () {
+                        //close popup
+                        context.pop();
+                        context.pushNamed(DeletePage.routeName, extra: {
+                          DeletePage.keyObjectName:
+                              "Ecological Plot Layer: ${layer.toString()}",
+                          DeletePage.keyDeleteFn: () {
+                            (db.delete(db.ecpSpecies)
+                                  ..where(
+                                      (tbl) => tbl.id.equals(layer.id.value)))
+                                .go()
+                                .then((value) => returnToHeader());
+                          },
+                        });
+                      }),
+                    ),
+                  ),
+                ),
                 const Padding(
                     padding: EdgeInsets.symmetric(vertical: kPaddingV)),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
-                        onPressed: () {
-                          List<String>? errors = _errorCheck();
-                          if (errors != null) {
-                            Popups.show(
-                                context, PopupErrorsFoundList(errors: errors));
-                          } else {
-                            addOrUpdateEcpSpecies(returnToHeader);
-                          }
-                        },
-                        child: const Text("Save and Return")),
-                    ElevatedButton(
-                        onPressed: () async {
-                          List<String>? errors = _errorCheck();
-                          if (errors != null) {
-                            Popups.show(
-                                context, PopupErrorsFoundList(errors: errors));
-                          } else {
-                            addOrUpdateEcpSpecies(createNewEcpSpeciesCompanion);
-                          }
-                        },
-                        child: const Text("Save and Add New Species")),
-                  ],
-                ),
-                layer.id != const d.Value.absent()
-                    ? DeleteButton(
-                        delete: () => Popups.show(
-                          context,
-                          PopupContinue("Warning: Deleting Piece",
-                              contentText:
-                                  "You are about to delete this piece. "
-                                  "Are you sure you want to continue?",
-                              rightBtnOnPressed: () {
-                            //close popup
-                            context.pop();
-                            context.pushNamed(DeletePage.routeName, extra: {
-                              DeletePage.keyObjectName:
-                                  "Ecological Plot Layer: ${layer.toString()}",
-                              DeletePage.keyDeleteFn: () {
-                                (db.delete(db.ecpSpecies)
-                                      ..where((tbl) =>
-                                          tbl.id.equals(layer.id.value)))
-                                    .go()
-                                    .then((value) => returnToHeader());
-                              },
-                            });
-                          }),
-                        ),
-                      )
-                    : Container()
               ],
             ),
           ),
