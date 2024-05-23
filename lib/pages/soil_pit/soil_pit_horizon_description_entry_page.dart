@@ -7,7 +7,7 @@ import 'package:survey_app/widgets/dropdowns/drop_down_default.dart';
 
 import '../../formatters/thousands_formatter.dart';
 import '../../widgets/builders/soil_pit_code_select_builder.dart';
-import '../../widgets/buttons/delete_button.dart';
+import '../../widgets/buttons/save_entry_button.dart';
 import '../../widgets/checkbox/hide_info_checkbox.dart';
 import '../../widgets/data_input/data_input.dart';
 import '../../widgets/dropdowns/drop_down_async_list.dart';
@@ -88,7 +88,7 @@ class SoilPitHorizonDescriptionEntryPageState
             soilPitCodeField: horizon.soilPitCodeField));
   }
 
-  void handleSubmit(void Function() fn) {
+  void onSave(void Function() fn) {
     List<String>? errors = errorCheck();
     if (errors != null) {
       Popups.show(context, PopupErrorsFoundList(errors: errors));
@@ -514,39 +514,29 @@ class SoilPitHorizonDescriptionEntryPageState
                 : Container(),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: kPaddingV * 2),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                      onPressed: () => handleSubmit(goToHorizonPage),
-                      child: const Text("Save and return")),
-                  ElevatedButton(
-                      onPressed: () => handleSubmit(goToNewHorizonEntry),
-                      child: const Text("Save and Add New Horizon")),
-                ],
+              child: SaveEntryButton(
+                saveRetFn: () => onSave(goToHorizonPage),
+                saveAndAddFn: () => onSave(goToNewHorizonEntry),
+                delVisible: horizon.id != const d.Value.absent(),
+                deleteFn: () => Popups.show(
+                  context,
+                  PopupContinue("Warning: Deleting $title",
+                      contentText: "You are about to delete this feature. "
+                          "Are you sure you want to continue?",
+                      rightBtnOnPressed: () {
+                    //close popup
+                    context.pop();
+                    context.pushNamed(DeletePage.routeName, extra: {
+                      DeletePage.keyObjectName:
+                          "Soil Pit Feature: ${horizon.toString()}",
+                      DeletePage.keyDeleteFn: () => db.soilPitTablesDao
+                          .deleteSoilPitHorizonDescription(horizon.id.value)
+                          .then((value) => goToHorizonPage()),
+                    });
+                  }),
+                ),
               ),
             ),
-            horizon.id != const d.Value.absent()
-                ? DeleteButton(
-                    delete: () => Popups.show(
-                      context,
-                      PopupContinue("Warning: Deleting Soil Pit Feature",
-                          contentText: "You are about to delete this feature. "
-                              "Are you sure you want to continue?",
-                          rightBtnOnPressed: () {
-                        //close popup
-                        context.pop();
-                        context.pushNamed(DeletePage.routeName, extra: {
-                          DeletePage.keyObjectName:
-                              "Soil Pit Feature: ${horizon.toString()}",
-                          DeletePage.keyDeleteFn: () => db.soilPitTablesDao
-                              .deleteSoilPitHorizonDescription(horizon.id.value)
-                              .then((value) => goToHorizonPage()),
-                        });
-                      }),
-                    ),
-                  )
-                : Container()
           ]),
         ),
       ),
