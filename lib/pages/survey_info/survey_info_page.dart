@@ -272,6 +272,14 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
                   widget.goRouterState, id.toString())),
         );
         break;
+      case SurveyCardCategories.microPlot:
+        if (context.mounted) {
+          context
+              .pushNamed(MicroPlotSummaryPage.routeName,
+                  pathParameters: widget.goRouterState.pathParameters)
+              .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
+        }
+        break;
       case SurveyCardCategories.smallTreePlot:
         getId(() => db.smallTreePlotTablesDao
             .setAndReturnDefaultSummary(survey.id, survey.measDate)).then(
@@ -304,14 +312,6 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
         if (context.mounted) {
           context
               .pushNamed(LargeTreePlotSummaryPage.routeName,
-                  pathParameters: widget.goRouterState.pathParameters)
-              .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
-        }
-        break;
-      case SurveyCardCategories.microPlot:
-        if (context.mounted) {
-          context
-              .pushNamed(MicroPlotSummaryPage.routeName,
                   pathParameters: widget.goRouterState.pathParameters)
               .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
         }
