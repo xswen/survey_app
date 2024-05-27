@@ -71,8 +71,11 @@ class ShrubPlotTablesDao extends DatabaseAccessor<Database>
   Future<int> addOrUpdateShrubListEntry(ShrubListEntryCompanion entry) =>
       into(shrubListEntry).insertOnConflictUpdate(entry);
 
-  Future<ShrubListEntryData> getShrubListEntry(int id) =>
+  Future<ShrubListEntryData> getShrubSpeciesEntry(int id) =>
       (select(shrubListEntry)..where((tbl) => tbl.id.equals(id))).getSingle();
+
+  // Future<ShrubListEntryData> checkShrubEntryUnique(int id, int recordNum) =>
+  //     (select(shrubListEntry)..where((tbl) => tbl.id.equals(id))).getSingle();
 
   Future<void> updateShrubListEntry(
       int id, ShrubListEntryCompanion entry) async {

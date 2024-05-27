@@ -32,6 +32,20 @@ class LargeTreePlotTablesDao extends DatabaseAccessor<Database>
 
   //====================Ltp Summary Management====================
 
+  Future<LtpSummaryData> setAndReturnDefaultSummary(
+      int surveyId, DateTime measDate) async {
+    LtpSummaryCompanion entry = LtpSummaryCompanion(
+        surveyId: Value(surveyId),
+        measDate: Value(measDate),
+        complete: const Value(false),
+        notAssessed: const Value(false));
+
+    int summaryId = await into(ltpSummary).insert(entry,
+        onConflict: DoUpdate((old) => entry, target: [ltpSummary.surveyId]));
+
+    return await getLtpSummary(summaryId);
+  }
+
   Future<int> addLtpSummary(LtpSummaryCompanion entry) =>
       into(ltpSummary).insert(entry);
 

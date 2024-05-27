@@ -24,4 +24,9 @@ class PathParamsKeys {
 
   static const String stumpSummaryId = "stumpSummaryId";
   static const String stumpSpeciesId = "stumpSpeciesId";
+
+  static const String ltpSummaryId = "ltpSummaryId";
+  static const String ltpInfoListId = "ltpInfoListId";
+  static const String ltpRemovedListId = "ltpRemovedListId";
+  static const String ltpInfoAgeListId = "ltpInfoAageListId";
 }

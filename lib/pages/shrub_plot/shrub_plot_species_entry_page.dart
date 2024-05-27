@@ -17,6 +17,7 @@ import '../delete_page.dart';
 class ShrubPlotSpeciesEntryPage extends ConsumerStatefulWidget {
   static const String routeName = "shrubPlotSpeciesEntry";
   final GoRouterState state;
+
   const ShrubPlotSpeciesEntryPage(this.state, {super.key});
 
   @override
@@ -39,12 +40,6 @@ class ShrubPlotSpeciesEntryPageState
     super.initState();
   }
 
-  void addOrUpdateSpecies(void Function() fn) => ref
-      .read(databaseProvider)
-      .shrubPlotTablesDao
-      .addOrUpdateShrubListEntry(shrubEntry)
-      .then((value) => fn());
-
   void returnToHeader() {
     ref.refresh(shrubEntryListProvider(shrubId));
     context.goNamed(ShrubPlotSummaryPage.routeName,
@@ -59,11 +54,36 @@ class ShrubPlotSpeciesEntryPageState
       );
 
   void onSave(void Function() fn) {
+    Database db = ref.read(databaseProvider);
     List<String>? errors = _errorCheck();
     if (errors != null) {
       Popups.show(context, PopupErrorsFoundList(errors: errors));
     } else {
-      addOrUpdateSpecies(fn);
+      if (shrubEntry.id != const d.Value.absent()) {
+        (db.update(db.shrubListEntry)
+              ..where((tbl) => tbl.id.equals(shrubEntry.id.value)))
+            .write(shrubEntry)
+            .then((value) => fn());
+      } else {
+        db.shrubPlotTablesDao
+            .addShrubListEntry(shrubEntry)
+            .then((value) => fn())
+            .catchError((e) => e.extendedResultCode == 2067
+                ? Popups.show(
+                    context,
+                    const PopupDismiss("Error: record number exists",
+                        contentText:
+                            "This record number is already in use. Please go to "
+                            "the table on the previous page to make any "
+                            "edits to the record of this number or choose a "
+                            "new number."))
+                : Popups.show(
+                    context,
+                    const PopupDismiss("Unknown Error Occurred",
+                        contentText:
+                            "An unknown error has occurred. Please notify the "
+                            "development team.")));
+      }
     }
   }
 

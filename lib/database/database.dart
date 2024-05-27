@@ -25,6 +25,7 @@ import '../database/daos/woody_debris_tables_dao.dart';
 import '../database/database_creation_files/reference_tables.dart';
 import '../database/database_creation_files/survey_info_tables.dart';
 import 'daos/ecological_plot_tables_dao.dart';
+import 'daos/large_tree_plot_tables_dao.dart';
 import 'daos/stump_plot_tables_dao.dart';
 import 'daos/surface_substrate_tables_dao.dart';
 import 'database_creation_files/ecological_plot_tables.dart';
@@ -136,6 +137,7 @@ const List<Type> _daos = [
   SmallTreePlotTablesDao,
   ShrubPlotTablesDao,
   StumpPlotTablesDao,
+  LargeTreePlotTablesDao,
 ];
 
 const String woodyDebrisPieceViewQuery =

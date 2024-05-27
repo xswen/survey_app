@@ -61,4 +61,17 @@ class PathParamValue {
 
   static int getStumpSpeciesId(GoRouterState goRouterState) =>
       int.parse(goRouterState.pathParameters[PathParamsKeys.stumpSpeciesId]!);
+
+  //Ltp
+  static int getLtpSummaryId(GoRouterState goRouterState) =>
+      int.parse(goRouterState.pathParameters[PathParamsKeys.ltpSummaryId]!);
+
+  static int getLtpInfoListId(GoRouterState goRouterState) =>
+      int.parse(goRouterState.pathParameters[PathParamsKeys.ltpInfoListId]!);
+
+  static int getRemovedListId(GoRouterState goRouterState) =>
+      int.parse(goRouterState.pathParameters[PathParamsKeys.ltpRemovedListId]!);
+
+  static int getInfoAgeListId(GoRouterState goRouterState) =>
+      int.parse(goRouterState.pathParameters[PathParamsKeys.ltpInfoAgeListId]!);
 }

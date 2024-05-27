@@ -146,4 +146,34 @@ class PathParamGenerator {
             goRouterState.pathParameters[PathParamsKeys.stumpSummaryId]!),
         ...{PathParamsKeys.stumpSpeciesId: stumpSpeciesId}
       };
+
+  //LTP
+  static Map<String, String> ltpSummary(
+          GoRouterState goRouterState, String ltpSummaryId) =>
+      {
+        ...surveyInfo(goRouterState.pathParameters[PathParamsKeys.surveyId]!),
+        ...{PathParamsKeys.ltpSummaryId: ltpSummaryId}
+      };
+
+  static Map<String, String> ltpInfoList(
+          GoRouterState goRouterState, String ltpInfoListId) =>
+      {
+        ...ltpSummary(goRouterState,
+            goRouterState.pathParameters[PathParamsKeys.ltpSummaryId]!),
+        ...{PathParamsKeys.ltpInfoListId: ltpInfoListId}
+      };
+  static Map<String, String> ltpRemovedList(
+          GoRouterState goRouterState, String ltpRemovedListId) =>
+      {
+        ...ltpSummary(goRouterState,
+            goRouterState.pathParameters[PathParamsKeys.ltpSummaryId]!),
+        ...{PathParamsKeys.ltpRemovedListId: ltpRemovedListId}
+      };
+  static Map<String, String> ltpInfoAgeList(
+          GoRouterState goRouterState, String ltpInfoAgeListId) =>
+      {
+        ...ltpSummary(goRouterState,
+            goRouterState.pathParameters[PathParamsKeys.ltpSummaryId]!),
+        ...{PathParamsKeys.ltpInfoAgeListId: ltpInfoAgeListId}
+      };
 }

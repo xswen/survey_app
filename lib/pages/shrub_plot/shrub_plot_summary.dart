@@ -179,8 +179,12 @@ class ShrubPlotSummaryPageState extends ConsumerState<ShrubPlotSummaryPage> {
       (db.update(db.shrubSummary)..where((t) => t.id.equals(shrubId)))
           .write(data)
           .then((value) {
-        shrubComp = data;
-        setState(() {});
+        // print(data);
+        //
+        setState(() {
+          shrubComp = data;
+          print(shrubComp);
+        });
       });
     }
 
@@ -390,7 +394,7 @@ class ShrubPlotSummaryPageState extends ConsumerState<ShrubPlotSummaryPage> {
                                       .value;
 
                                   db.shrubPlotTablesDao
-                                      .getShrubListEntry(pId)
+                                      .getShrubSpeciesEntry(pId)
                                       .then((value) => context.pushNamed(
                                           ShrubPlotSpeciesEntryPage.routeName,
                                           pathParameters:

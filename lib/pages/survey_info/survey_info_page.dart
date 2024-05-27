@@ -291,12 +291,12 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
         }
         break;
       case SurveyCardCategories.largeTreePlot:
-        if (context.mounted) {
-          context
-              .pushNamed(LargeTreePlotSummaryPage.routeName,
-                  pathParameters: widget.goRouterState.pathParameters)
-              .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
-        }
+        getId(() => db.largeTreePlotTablesDao
+            .setAndReturnDefaultSummary(survey.id, survey.measDate)).then(
+          (id) => context.pushNamed(LargeTreePlotSummaryPage.routeName,
+              pathParameters: PathParamGenerator.ltpSummary(
+                  widget.goRouterState, id.toString())),
+        );
         break;
       case SurveyCardCategories.smallTreePlot:
         getId(() => db.smallTreePlotTablesDao

@@ -3,6 +3,7 @@ import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/pages/large_tree_plot/large_tree_plot_site_tree_info_age_list_page.dart';
 import 'package:survey_app/pages/large_tree_plot/large_tree_plot_tree_info_list_page.dart';
 import 'package:survey_app/pages/large_tree_plot/large_tree_plot_tree_removed_list_page.dart';
+import 'package:survey_app/providers/large_tree_plot_providers.dart';
 import 'package:survey_app/widgets/builders/reference_name_select_builder.dart';
 
 import '../../formatters/thousands_formatter.dart';
@@ -24,11 +25,50 @@ class LargeTreePlotSummaryPage extends ConsumerStatefulWidget {
 
 class LargeTreePlotSummaryPageState
     extends ConsumerState<LargeTreePlotSummaryPage> {
+  final String title = "Large Tree Plot";
+  late final PopupDismiss completeWarningPopup;
+  final PopupDismiss surveyCompleteWarningPopup =
+      Popups.generatePreviousMarkedCompleteErrorPopup("Survey");
+
+  late bool parentComplete = false;
+  late LtpSummaryCompanion ltpSummary = const LtpSummaryCompanion();
+  late LtpSummaryData startingLtp;
+
   late final int surveyId;
+  late final int ltpId;
+
   @override
   void initState() {
-    surveyId = PathParamValue.getSurveyId(widget.state)!;
+    // surveyId = PathParamValue.getSurveyId(widget.state)!;
+    // ltpId = PathParamValue.getWdSummaryId(widget.state);
+
+    surveyId = 1;
+    ltpId = 1;
+
+    completeWarningPopup = Popups.generateCompleteErrorPopup(title);
+
     super.initState();
+  }
+
+  void _loadData() async {
+    final survey =
+        await Database.instance.surveyInfoTablesDao.getSurvey(surveyId);
+    final value =
+        await Database.instance.largeTreePlotTablesDao.getLtpSummary(ltpId);
+
+    if (mounted) {
+      setState(() {
+        parentComplete = survey.complete;
+        startingLtp = value;
+        ltpSummary = value.toCompanion(true);
+      });
+    }
+  }
+
+  Future<void> updateSummary(LtpSummaryCompanion entry) async {
+    final db = ref.read(databaseProvider);
+    (db.update(db.ltpSummary)..where((t) => t.id.equals(ltpId))).write(entry);
+    ref.refresh(ltpDataProvider(surveyId));
   }
 
   String? _errorNom(String? value) {
@@ -52,7 +92,7 @@ class LargeTreePlotSummaryPageState
   @override
   Widget build(BuildContext context) {
     final db = ref.read(databaseProvider);
-    debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
+
     return Scaffold(
       appBar: OurAppBar(
         "Large Tree Plot",
@@ -71,11 +111,13 @@ class LargeTreePlotSummaryPageState
           child: ListView(
             children: [
               CalendarSelect(
-                date: DateTime.now(),
-                label: "Enter Measurement Date",
-                readOnly: false,
-                onDateSelected: (DateTime date) async => (),
-              ),
+                  date: DateTime.now(),
+                  label: "Enter Measurement Date",
+                  readOnly: false,
+                  onDateSelected: (DateTime date) async => null
+                  // updateSummary(
+                  // WoodyDebrisSummaryCompanion(measDate: d.Value(date))),
+                  ),
               ReferenceNameSelectBuilder(
                 name: db.referenceTablesDao.getLtpPlotTypeName(""),
                 asyncListFn: db.referenceTablesDao.getLtpPlotTypeList,

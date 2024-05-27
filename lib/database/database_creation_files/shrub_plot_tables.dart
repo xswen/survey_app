@@ -17,8 +17,7 @@ class ShrubSummary extends Table {
 
 class ShrubListEntry extends Table {
   IntColumn get id => integer().autoIncrement()();
-  IntColumn get shrubSummaryId =>
-      integer().unique().references(ShrubSummary, #id)();
+  IntColumn get shrubSummaryId => integer().references(ShrubSummary, #id)();
   IntColumn get recordNum =>
       integer().check(recordNum.isBetweenValues(1, 9999))();
   TextColumn get shrubGenus => text().withLength(min: 0, max: 4)();
@@ -29,4 +28,8 @@ class ShrubListEntry extends Table {
       integer().check(bdClass.isBetweenValues(0, 10) | bdClass.equals(-1))();
   IntColumn get frequency =>
       integer().check(frequency.isBetweenValues(1, 999))();
+
+  @override
+  List<String> get customConstraints =>
+      ['UNIQUE (shrub_summary_id, record_num)'];
 }

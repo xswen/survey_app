@@ -19,6 +19,7 @@ import '../delete_page.dart';
 class SoilPitHorizonDescriptionEntryPage extends ConsumerStatefulWidget {
   static const String routeName = "soilPitHorizonDescriptionEntry";
   final GoRouterState state;
+
   const SoilPitHorizonDescriptionEntryPage(this.state, {super.key});
 
   @override
@@ -376,142 +377,149 @@ class SoilPitHorizonDescriptionEntryPageState
                     db.companionValueToStr(horizon.mineralType).isEmpty
                         ? "Please select mineral type"
                         : db.companionValueToStr(horizon.mineralType)),
-            db.companionValueToStr(horizon.mineralType) == "Mineral"
-                ? FutureBuilder(
-                    future: getSoilTextureName(
-                        db.companionValueToStr(horizon.texture)),
-                    initialData: "Please select texture",
-                    builder:
-                        (BuildContext context, AsyncSnapshot<String> text) {
-                      return DropDownAsyncList(
-                        title: "Soil texture",
-                        searchable: true,
-                        onChangedFn: (s) =>
-                            db.referenceTablesDao.getSoilTextureCode(s!).then(
+            Visibility(
+                visible:
+                    db.companionValueToStr(horizon.mineralType) == "Mineral",
+                child: Column(
+                  children: [
+                    FutureBuilder(
+                        future: getSoilTextureName(
+                            db.companionValueToStr(horizon.texture)),
+                        initialData: "Please select texture",
+                        builder:
+                            (BuildContext context, AsyncSnapshot<String> text) {
+                          return DropDownAsyncList(
+                            title: "Soil texture",
+                            searchable: true,
+                            onChangedFn: (s) => db.referenceTablesDao
+                                .getSoilTextureCode(s!)
+                                .then(
                                   (code) => updateHorizon(
                                       horizon.copyWith(texture: d.Value(code))),
                                 ),
-                        asyncItems: (s) =>
-                            db.referenceTablesDao.getSoilTextureNameList(),
-                        selectedItem: text.data ?? "Error loading texture name",
-                      );
-                    })
-                : Container(),
-            db.companionValueToStr(horizon.mineralType) == "Mineral"
-                ? Column(
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.symmetric(vertical: kPaddingV * 2),
-                        child: TextHeaderSeparator(
-                          title: "Coarse Fragment Content",
-                          fontSize: 20,
+                            asyncItems: (s) =>
+                                db.referenceTablesDao.getSoilTextureNameList(),
+                            selectedItem:
+                                text.data ?? "Error loading texture name",
+                          );
+                        }),
+                    Column(
+                      children: [
+                        const Padding(
+                          padding:
+                              EdgeInsets.symmetric(vertical: kPaddingV * 2),
+                          child: TextHeaderSeparator(
+                            title: "Coarse Fragment Content",
+                            fontSize: 20,
+                          ),
                         ),
-                      ),
-                      HideInfoCheckbox(
-                        title: "Volumetric percent gravel",
-                        titleWidget: "Not applicable",
-                        padding: const EdgeInsets.all(0),
-                        checkValue:
-                            db.companionValueToStr(horizon.cfGrav) == "-9",
-                        onChange: (b) => b!
-                            ? updateHorizon(
-                                horizon.copyWith(cfGrav: const d.Value(-9)))
-                            : updateHorizon(horizon.copyWith(
-                                cfGrav: const d.Value.absent())),
-                        child: DataInput(
-                          boxLabel:
-                              "The percent coarse fragment content by volume of the mineral "
-                              "horizon. (Diameter < 7.5 cm or length < 15 cm.)",
-                          prefixIcon: FontAwesomeIcons.percent,
-                          suffixVal: "%",
-                          startingStr: db.companionValueToStr(horizon.cfGrav),
-                          paddingGeneral: const EdgeInsets.all(0),
-                          onValidate: (s) => errorCf(s),
-                          inputType: const TextInputType.numberWithOptions(
-                              decimal: true),
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(5),
-                            ThousandsFormatter(
-                                allowFraction: true, decimalPlaces: 1),
-                          ],
-                          onSubmit: (s) => s.isEmpty
-                              ? updateHorizon(horizon.copyWith(
-                                  cfGrav: const d.Value.absent()))
+                        HideInfoCheckbox(
+                          title: "Volumetric percent gravel",
+                          titleWidget: "Not applicable",
+                          padding: const EdgeInsets.all(0),
+                          checkValue:
+                              db.companionValueToStr(horizon.cfGrav) == "-9",
+                          onChange: (b) => b!
+                              ? updateHorizon(
+                                  horizon.copyWith(cfGrav: const d.Value(-9)))
                               : updateHorizon(horizon.copyWith(
-                                  cfGrav: d.Value(int.parse(s)))),
+                                  cfGrav: const d.Value.absent())),
+                          child: DataInput(
+                            boxLabel:
+                                "The percent coarse fragment content by volume of the mineral "
+                                "horizon. (Diameter < 7.5 cm or length < 15 cm.)",
+                            prefixIcon: FontAwesomeIcons.percent,
+                            suffixVal: "%",
+                            startingStr: db.companionValueToStr(horizon.cfGrav),
+                            paddingGeneral: const EdgeInsets.all(0),
+                            onValidate: (s) => errorCf(s),
+                            inputType: const TextInputType.numberWithOptions(
+                                decimal: true),
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(5),
+                              ThousandsFormatter(
+                                  allowFraction: true, decimalPlaces: 1),
+                            ],
+                            onSubmit: (s) => s.isEmpty
+                                ? updateHorizon(horizon.copyWith(
+                                    cfGrav: const d.Value.absent()))
+                                : updateHorizon(horizon.copyWith(
+                                    cfGrav: d.Value(int.parse(s)))),
+                          ),
                         ),
-                      ),
-                      HideInfoCheckbox(
-                        title: "Volumetric percent cobbles",
-                        titleWidget: "Not applicable",
-                        padding: const EdgeInsets.all(0),
-                        checkValue:
-                            db.companionValueToStr(horizon.cfCobb) == "-9",
-                        onChange: (b) => b!
-                            ? updateHorizon(
-                                horizon.copyWith(cfCobb: const d.Value(-9)))
-                            : updateHorizon(horizon.copyWith(
-                                cfCobb: const d.Value.absent())),
-                        child: DataInput(
-                          boxLabel:
-                              "The percent coarse fragment (diameter = 7.5 to 25 cm or "
-                              "length = 15 to 38 cm) content by volume of the mineral horizon.",
-                          prefixIcon: FontAwesomeIcons.percent,
-                          suffixVal: "%",
-                          startingStr: db.companionValueToStr(horizon.cfCobb),
-                          paddingGeneral: const EdgeInsets.all(0),
-                          onValidate: (s) => errorCf(s),
-                          inputType: const TextInputType.numberWithOptions(
-                              decimal: true),
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(5),
-                            ThousandsFormatter(
-                                allowFraction: true, decimalPlaces: 1),
-                          ],
-                          onSubmit: (s) => s.isEmpty
-                              ? updateHorizon(horizon.copyWith(
-                                  cfCobb: const d.Value.absent()))
+                        HideInfoCheckbox(
+                          title: "Volumetric percent cobbles",
+                          titleWidget: "Not applicable",
+                          padding: const EdgeInsets.all(0),
+                          checkValue:
+                              db.companionValueToStr(horizon.cfCobb) == "-9",
+                          onChange: (b) => b!
+                              ? updateHorizon(
+                                  horizon.copyWith(cfCobb: const d.Value(-9)))
                               : updateHorizon(horizon.copyWith(
-                                  cfCobb: d.Value(int.parse(s)))),
+                                  cfCobb: const d.Value.absent())),
+                          child: DataInput(
+                            boxLabel:
+                                "The percent coarse fragment (diameter = 7.5 to 25 cm or "
+                                "length = 15 to 38 cm) content by volume of the mineral horizon.",
+                            prefixIcon: FontAwesomeIcons.percent,
+                            suffixVal: "%",
+                            startingStr: db.companionValueToStr(horizon.cfCobb),
+                            paddingGeneral: const EdgeInsets.all(0),
+                            onValidate: (s) => errorCf(s),
+                            inputType: const TextInputType.numberWithOptions(
+                                decimal: true),
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(5),
+                              ThousandsFormatter(
+                                  allowFraction: true, decimalPlaces: 1),
+                            ],
+                            onSubmit: (s) => s.isEmpty
+                                ? updateHorizon(horizon.copyWith(
+                                    cfCobb: const d.Value.absent()))
+                                : updateHorizon(horizon.copyWith(
+                                    cfCobb: d.Value(int.parse(s)))),
+                          ),
                         ),
-                      ),
-                      HideInfoCheckbox(
-                        title: "Volumetric percent stone",
-                        titleWidget: "Not applicable",
-                        padding: const EdgeInsets.all(0),
-                        checkValue:
-                            db.companionValueToStr(horizon.cfStone) == "-9",
-                        onChange: (b) => b!
-                            ? updateHorizon(
-                                horizon.copyWith(cfStone: const d.Value(-9)))
-                            : updateHorizon(horizon.copyWith(
-                                cfStone: const d.Value.absent())),
-                        child: DataInput(
-                          boxLabel:
-                              "The percent coarse fragment (diameter > 25 cm or length > 38 "
-                              "cm) content by volume of the mineral horizon.",
-                          prefixIcon: FontAwesomeIcons.percent,
-                          suffixVal: "%",
-                          startingStr: db.companionValueToStr(horizon.cfStone),
-                          paddingGeneral: const EdgeInsets.all(0),
-                          onValidate: (s) => errorCf(s),
-                          inputType: const TextInputType.numberWithOptions(
-                              decimal: true),
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(5),
-                            ThousandsFormatter(
-                                allowFraction: true, decimalPlaces: 1),
-                          ],
-                          onSubmit: (s) => s.isEmpty
-                              ? updateHorizon(horizon.copyWith(
-                                  cfStone: const d.Value.absent()))
+                        HideInfoCheckbox(
+                          title: "Volumetric percent stone",
+                          titleWidget: "Not applicable",
+                          padding: const EdgeInsets.all(0),
+                          checkValue:
+                              db.companionValueToStr(horizon.cfStone) == "-9",
+                          onChange: (b) => b!
+                              ? updateHorizon(
+                                  horizon.copyWith(cfStone: const d.Value(-9)))
                               : updateHorizon(horizon.copyWith(
-                                  cfStone: d.Value(int.parse(s)))),
+                                  cfStone: const d.Value.absent())),
+                          child: DataInput(
+                            boxLabel:
+                                "The percent coarse fragment (diameter > 25 cm or length > 38 "
+                                "cm) content by volume of the mineral horizon.",
+                            prefixIcon: FontAwesomeIcons.percent,
+                            suffixVal: "%",
+                            startingStr:
+                                db.companionValueToStr(horizon.cfStone),
+                            paddingGeneral: const EdgeInsets.all(0),
+                            onValidate: (s) => errorCf(s),
+                            inputType: const TextInputType.numberWithOptions(
+                                decimal: true),
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(5),
+                              ThousandsFormatter(
+                                  allowFraction: true, decimalPlaces: 1),
+                            ],
+                            onSubmit: (s) => s.isEmpty
+                                ? updateHorizon(horizon.copyWith(
+                                    cfStone: const d.Value.absent()))
+                                : updateHorizon(horizon.copyWith(
+                                    cfStone: d.Value(int.parse(s)))),
+                          ),
                         ),
-                      ),
-                    ],
-                  )
-                : Container(),
+                      ],
+                    )
+                  ],
+                )),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: kPaddingV * 2),
               child: SaveEntryButton(
