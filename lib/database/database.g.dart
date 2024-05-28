@@ -17855,6 +17855,31 @@ class $LtpSummaryTable extends LtpSummary
   late final d.GeneratedColumn<DateTime> measDate = d.GeneratedColumn<DateTime>(
       'meas_date', aliasedName, false,
       type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const d.VerificationMeta _plotTypeMeta =
+      const d.VerificationMeta('plotType');
+  @override
+  late final d.GeneratedColumn<String> plotType = d.GeneratedColumn<String>(
+      'plot_type', aliasedName, true,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 3, maxTextLength: 3),
+      type: DriftSqlType.string,
+      requiredDuringInsert: false);
+  static const d.VerificationMeta _nomPlotSizeMeta =
+      const d.VerificationMeta('nomPlotSize');
+  @override
+  late final d.GeneratedColumn<double> nomPlotSize = d.GeneratedColumn<double>(
+      'nom_plot_size', aliasedName, true,
+      check: () => nomPlotSize.isBetweenValues(-1, 0.1),
+      type: DriftSqlType.double,
+      requiredDuringInsert: false);
+  static const d.VerificationMeta _measPlotSizeMeta =
+      const d.VerificationMeta('measPlotSize');
+  @override
+  late final d.GeneratedColumn<double> measPlotSize = d.GeneratedColumn<double>(
+      'meas_plot_size', aliasedName, true,
+      check: () => measPlotSize.isBetweenValues(0.0075, 0.1),
+      type: DriftSqlType.double,
+      requiredDuringInsert: false);
   static const d.VerificationMeta _notAssessedMeta =
       const d.VerificationMeta('notAssessed');
   @override
@@ -17876,8 +17901,16 @@ class $LtpSummaryTable extends LtpSummary
           GeneratedColumn.constraintIsAlways('CHECK ("complete" IN (0, 1))'),
       defaultValue: const d.Constant(false));
   @override
-  List<d.GeneratedColumn> get $columns =>
-      [id, surveyId, measDate, notAssessed, complete];
+  List<d.GeneratedColumn> get $columns => [
+        id,
+        surveyId,
+        measDate,
+        plotType,
+        nomPlotSize,
+        measPlotSize,
+        notAssessed,
+        complete
+      ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -17902,6 +17935,22 @@ class $LtpSummaryTable extends LtpSummary
           measDate.isAcceptableOrUnknown(data['meas_date']!, _measDateMeta));
     } else if (isInserting) {
       context.missing(_measDateMeta);
+    }
+    if (data.containsKey('plot_type')) {
+      context.handle(_plotTypeMeta,
+          plotType.isAcceptableOrUnknown(data['plot_type']!, _plotTypeMeta));
+    }
+    if (data.containsKey('nom_plot_size')) {
+      context.handle(
+          _nomPlotSizeMeta,
+          nomPlotSize.isAcceptableOrUnknown(
+              data['nom_plot_size']!, _nomPlotSizeMeta));
+    }
+    if (data.containsKey('meas_plot_size')) {
+      context.handle(
+          _measPlotSizeMeta,
+          measPlotSize.isAcceptableOrUnknown(
+              data['meas_plot_size']!, _measPlotSizeMeta));
     }
     if (data.containsKey('not_assessed')) {
       context.handle(
@@ -17928,6 +17977,12 @@ class $LtpSummaryTable extends LtpSummary
           .read(DriftSqlType.int, data['${effectivePrefix}survey_id'])!,
       measDate: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}meas_date'])!,
+      plotType: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}plot_type']),
+      nomPlotSize: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}nom_plot_size']),
+      measPlotSize: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}meas_plot_size']),
       notAssessed: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}not_assessed'])!,
       complete: attachedDatabase.typeMapping
@@ -17946,12 +18001,18 @@ class LtpSummaryData extends d.DataClass
   final int id;
   final int surveyId;
   final DateTime measDate;
+  final String? plotType;
+  final double? nomPlotSize;
+  final double? measPlotSize;
   final bool notAssessed;
   final bool complete;
   const LtpSummaryData(
       {required this.id,
       required this.surveyId,
       required this.measDate,
+      this.plotType,
+      this.nomPlotSize,
+      this.measPlotSize,
       required this.notAssessed,
       required this.complete});
   @override
@@ -17960,6 +18021,15 @@ class LtpSummaryData extends d.DataClass
     map['id'] = d.Variable<int>(id);
     map['survey_id'] = d.Variable<int>(surveyId);
     map['meas_date'] = d.Variable<DateTime>(measDate);
+    if (!nullToAbsent || plotType != null) {
+      map['plot_type'] = d.Variable<String>(plotType);
+    }
+    if (!nullToAbsent || nomPlotSize != null) {
+      map['nom_plot_size'] = d.Variable<double>(nomPlotSize);
+    }
+    if (!nullToAbsent || measPlotSize != null) {
+      map['meas_plot_size'] = d.Variable<double>(measPlotSize);
+    }
     map['not_assessed'] = d.Variable<bool>(notAssessed);
     map['complete'] = d.Variable<bool>(complete);
     return map;
@@ -17970,6 +18040,15 @@ class LtpSummaryData extends d.DataClass
       id: d.Value(id),
       surveyId: d.Value(surveyId),
       measDate: d.Value(measDate),
+      plotType: plotType == null && nullToAbsent
+          ? const d.Value.absent()
+          : d.Value(plotType),
+      nomPlotSize: nomPlotSize == null && nullToAbsent
+          ? const d.Value.absent()
+          : d.Value(nomPlotSize),
+      measPlotSize: measPlotSize == null && nullToAbsent
+          ? const d.Value.absent()
+          : d.Value(measPlotSize),
       notAssessed: d.Value(notAssessed),
       complete: d.Value(complete),
     );
@@ -17982,6 +18061,9 @@ class LtpSummaryData extends d.DataClass
       id: serializer.fromJson<int>(json['id']),
       surveyId: serializer.fromJson<int>(json['surveyId']),
       measDate: serializer.fromJson<DateTime>(json['measDate']),
+      plotType: serializer.fromJson<String?>(json['plotType']),
+      nomPlotSize: serializer.fromJson<double?>(json['nomPlotSize']),
+      measPlotSize: serializer.fromJson<double?>(json['measPlotSize']),
       notAssessed: serializer.fromJson<bool>(json['notAssessed']),
       complete: serializer.fromJson<bool>(json['complete']),
     );
@@ -17993,6 +18075,9 @@ class LtpSummaryData extends d.DataClass
       'id': serializer.toJson<int>(id),
       'surveyId': serializer.toJson<int>(surveyId),
       'measDate': serializer.toJson<DateTime>(measDate),
+      'plotType': serializer.toJson<String?>(plotType),
+      'nomPlotSize': serializer.toJson<double?>(nomPlotSize),
+      'measPlotSize': serializer.toJson<double?>(measPlotSize),
       'notAssessed': serializer.toJson<bool>(notAssessed),
       'complete': serializer.toJson<bool>(complete),
     };
@@ -18002,12 +18087,19 @@ class LtpSummaryData extends d.DataClass
           {int? id,
           int? surveyId,
           DateTime? measDate,
+          d.Value<String?> plotType = const d.Value.absent(),
+          d.Value<double?> nomPlotSize = const d.Value.absent(),
+          d.Value<double?> measPlotSize = const d.Value.absent(),
           bool? notAssessed,
           bool? complete}) =>
       LtpSummaryData(
         id: id ?? this.id,
         surveyId: surveyId ?? this.surveyId,
         measDate: measDate ?? this.measDate,
+        plotType: plotType.present ? plotType.value : this.plotType,
+        nomPlotSize: nomPlotSize.present ? nomPlotSize.value : this.nomPlotSize,
+        measPlotSize:
+            measPlotSize.present ? measPlotSize.value : this.measPlotSize,
         notAssessed: notAssessed ?? this.notAssessed,
         complete: complete ?? this.complete,
       );
@@ -18017,6 +18109,9 @@ class LtpSummaryData extends d.DataClass
           ..write('id: $id, ')
           ..write('surveyId: $surveyId, ')
           ..write('measDate: $measDate, ')
+          ..write('plotType: $plotType, ')
+          ..write('nomPlotSize: $nomPlotSize, ')
+          ..write('measPlotSize: $measPlotSize, ')
           ..write('notAssessed: $notAssessed, ')
           ..write('complete: $complete')
           ..write(')'))
@@ -18024,8 +18119,8 @@ class LtpSummaryData extends d.DataClass
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, surveyId, measDate, notAssessed, complete);
+  int get hashCode => Object.hash(id, surveyId, measDate, plotType, nomPlotSize,
+      measPlotSize, notAssessed, complete);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -18033,6 +18128,9 @@ class LtpSummaryData extends d.DataClass
           other.id == this.id &&
           other.surveyId == this.surveyId &&
           other.measDate == this.measDate &&
+          other.plotType == this.plotType &&
+          other.nomPlotSize == this.nomPlotSize &&
+          other.measPlotSize == this.measPlotSize &&
           other.notAssessed == this.notAssessed &&
           other.complete == this.complete);
 }
@@ -18041,12 +18139,18 @@ class LtpSummaryCompanion extends d.UpdateCompanion<LtpSummaryData> {
   final d.Value<int> id;
   final d.Value<int> surveyId;
   final d.Value<DateTime> measDate;
+  final d.Value<String?> plotType;
+  final d.Value<double?> nomPlotSize;
+  final d.Value<double?> measPlotSize;
   final d.Value<bool> notAssessed;
   final d.Value<bool> complete;
   const LtpSummaryCompanion({
     this.id = const d.Value.absent(),
     this.surveyId = const d.Value.absent(),
     this.measDate = const d.Value.absent(),
+    this.plotType = const d.Value.absent(),
+    this.nomPlotSize = const d.Value.absent(),
+    this.measPlotSize = const d.Value.absent(),
     this.notAssessed = const d.Value.absent(),
     this.complete = const d.Value.absent(),
   });
@@ -18054,6 +18158,9 @@ class LtpSummaryCompanion extends d.UpdateCompanion<LtpSummaryData> {
     this.id = const d.Value.absent(),
     required int surveyId,
     required DateTime measDate,
+    this.plotType = const d.Value.absent(),
+    this.nomPlotSize = const d.Value.absent(),
+    this.measPlotSize = const d.Value.absent(),
     this.notAssessed = const d.Value.absent(),
     this.complete = const d.Value.absent(),
   })  : surveyId = d.Value(surveyId),
@@ -18062,6 +18169,9 @@ class LtpSummaryCompanion extends d.UpdateCompanion<LtpSummaryData> {
     d.Expression<int>? id,
     d.Expression<int>? surveyId,
     d.Expression<DateTime>? measDate,
+    d.Expression<String>? plotType,
+    d.Expression<double>? nomPlotSize,
+    d.Expression<double>? measPlotSize,
     d.Expression<bool>? notAssessed,
     d.Expression<bool>? complete,
   }) {
@@ -18069,6 +18179,9 @@ class LtpSummaryCompanion extends d.UpdateCompanion<LtpSummaryData> {
       if (id != null) 'id': id,
       if (surveyId != null) 'survey_id': surveyId,
       if (measDate != null) 'meas_date': measDate,
+      if (plotType != null) 'plot_type': plotType,
+      if (nomPlotSize != null) 'nom_plot_size': nomPlotSize,
+      if (measPlotSize != null) 'meas_plot_size': measPlotSize,
       if (notAssessed != null) 'not_assessed': notAssessed,
       if (complete != null) 'complete': complete,
     });
@@ -18078,12 +18191,18 @@ class LtpSummaryCompanion extends d.UpdateCompanion<LtpSummaryData> {
       {d.Value<int>? id,
       d.Value<int>? surveyId,
       d.Value<DateTime>? measDate,
+      d.Value<String?>? plotType,
+      d.Value<double?>? nomPlotSize,
+      d.Value<double?>? measPlotSize,
       d.Value<bool>? notAssessed,
       d.Value<bool>? complete}) {
     return LtpSummaryCompanion(
       id: id ?? this.id,
       surveyId: surveyId ?? this.surveyId,
       measDate: measDate ?? this.measDate,
+      plotType: plotType ?? this.plotType,
+      nomPlotSize: nomPlotSize ?? this.nomPlotSize,
+      measPlotSize: measPlotSize ?? this.measPlotSize,
       notAssessed: notAssessed ?? this.notAssessed,
       complete: complete ?? this.complete,
     );
@@ -18101,6 +18220,15 @@ class LtpSummaryCompanion extends d.UpdateCompanion<LtpSummaryData> {
     if (measDate.present) {
       map['meas_date'] = d.Variable<DateTime>(measDate.value);
     }
+    if (plotType.present) {
+      map['plot_type'] = d.Variable<String>(plotType.value);
+    }
+    if (nomPlotSize.present) {
+      map['nom_plot_size'] = d.Variable<double>(nomPlotSize.value);
+    }
+    if (measPlotSize.present) {
+      map['meas_plot_size'] = d.Variable<double>(measPlotSize.value);
+    }
     if (notAssessed.present) {
       map['not_assessed'] = d.Variable<bool>(notAssessed.value);
     }
@@ -18116,6 +18244,9 @@ class LtpSummaryCompanion extends d.UpdateCompanion<LtpSummaryData> {
           ..write('id: $id, ')
           ..write('surveyId: $surveyId, ')
           ..write('measDate: $measDate, ')
+          ..write('plotType: $plotType, ')
+          ..write('nomPlotSize: $nomPlotSize, ')
+          ..write('measPlotSize: $measPlotSize, ')
           ..write('notAssessed: $notAssessed, ')
           ..write('complete: $complete')
           ..write(')'))
@@ -32997,6 +33128,9 @@ typedef $$LtpSummaryTableInsertCompanionBuilder = LtpSummaryCompanion Function({
   d.Value<int> id,
   required int surveyId,
   required DateTime measDate,
+  d.Value<String?> plotType,
+  d.Value<double?> nomPlotSize,
+  d.Value<double?> measPlotSize,
   d.Value<bool> notAssessed,
   d.Value<bool> complete,
 });
@@ -33004,6 +33138,9 @@ typedef $$LtpSummaryTableUpdateCompanionBuilder = LtpSummaryCompanion Function({
   d.Value<int> id,
   d.Value<int> surveyId,
   d.Value<DateTime> measDate,
+  d.Value<String?> plotType,
+  d.Value<double?> nomPlotSize,
+  d.Value<double?> measPlotSize,
   d.Value<bool> notAssessed,
   d.Value<bool> complete,
 });
@@ -33031,6 +33168,9 @@ class $$LtpSummaryTableTableManager extends d.RootTableManager<
             d.Value<int> id = const d.Value.absent(),
             d.Value<int> surveyId = const d.Value.absent(),
             d.Value<DateTime> measDate = const d.Value.absent(),
+            d.Value<String?> plotType = const d.Value.absent(),
+            d.Value<double?> nomPlotSize = const d.Value.absent(),
+            d.Value<double?> measPlotSize = const d.Value.absent(),
             d.Value<bool> notAssessed = const d.Value.absent(),
             d.Value<bool> complete = const d.Value.absent(),
           }) =>
@@ -33038,6 +33178,9 @@ class $$LtpSummaryTableTableManager extends d.RootTableManager<
             id: id,
             surveyId: surveyId,
             measDate: measDate,
+            plotType: plotType,
+            nomPlotSize: nomPlotSize,
+            measPlotSize: measPlotSize,
             notAssessed: notAssessed,
             complete: complete,
           ),
@@ -33045,6 +33188,9 @@ class $$LtpSummaryTableTableManager extends d.RootTableManager<
             d.Value<int> id = const d.Value.absent(),
             required int surveyId,
             required DateTime measDate,
+            d.Value<String?> plotType = const d.Value.absent(),
+            d.Value<double?> nomPlotSize = const d.Value.absent(),
+            d.Value<double?> measPlotSize = const d.Value.absent(),
             d.Value<bool> notAssessed = const d.Value.absent(),
             d.Value<bool> complete = const d.Value.absent(),
           }) =>
@@ -33052,6 +33198,9 @@ class $$LtpSummaryTableTableManager extends d.RootTableManager<
             id: id,
             surveyId: surveyId,
             measDate: measDate,
+            plotType: plotType,
+            nomPlotSize: nomPlotSize,
+            measPlotSize: measPlotSize,
             notAssessed: notAssessed,
             complete: complete,
           ),
@@ -33080,6 +33229,21 @@ class $$LtpSummaryTableFilterComposer
 
   d.ColumnFilters<DateTime> get measDate => $state.composableBuilder(
       column: $state.table.measDate,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get plotType => $state.composableBuilder(
+      column: $state.table.plotType,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<double> get nomPlotSize => $state.composableBuilder(
+      column: $state.table.nomPlotSize,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<double> get measPlotSize => $state.composableBuilder(
+      column: $state.table.measPlotSize,
       builder: (column, joinBuilders) =>
           d.ColumnFilters(column, joinBuilders: joinBuilders));
 
@@ -33181,6 +33345,21 @@ class $$LtpSummaryTableOrderingComposer
 
   d.ColumnOrderings<DateTime> get measDate => $state.composableBuilder(
       column: $state.table.measDate,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get plotType => $state.composableBuilder(
+      column: $state.table.plotType,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<double> get nomPlotSize => $state.composableBuilder(
+      column: $state.table.nomPlotSize,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<double> get measPlotSize => $state.composableBuilder(
+      column: $state.table.measPlotSize,
       builder: (column, joinBuilders) =>
           d.ColumnOrderings(column, joinBuilders: joinBuilders));
 

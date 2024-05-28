@@ -32,6 +32,7 @@ import 'survey_info_header_info/survey_info_summary_page.dart';
 class SurveyInfoPage extends ConsumerStatefulWidget {
   static const String routeName = "surveyInfo";
   final GoRouterState goRouterState;
+
   const SurveyInfoPage({super.key, required this.goRouterState});
 
   @override
@@ -189,9 +190,8 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
             db.soilPitTablesDao.markNotAssessed(surveyId, data?.id);
         break;
       case SurveyCardCategories.largeTreePlot:
-        //TODO
         markNotAssessed =
-            db.soilPitTablesDao.markNotAssessed(surveyId, data?.id);
+            db.largeTreePlotTablesDao.markNotAssessed(surveyId, data?.id);
         break;
       case SurveyCardCategories.smallTreePlot:
         markNotAssessed =

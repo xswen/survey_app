@@ -41,6 +41,7 @@ class ColNames {
 class ShrubPlotSummaryPage extends ConsumerStatefulWidget {
   static const String routeName = "shrubPlotSummary";
   final GoRouterState state;
+
   const ShrubPlotSummaryPage(this.state, {super.key});
 
   @override
@@ -179,11 +180,8 @@ class ShrubPlotSummaryPageState extends ConsumerState<ShrubPlotSummaryPage> {
       (db.update(db.shrubSummary)..where((t) => t.id.equals(shrubId)))
           .write(data)
           .then((value) {
-        // print(data);
-        //
         setState(() {
           shrubComp = data;
-          print(shrubComp);
         });
       });
     }

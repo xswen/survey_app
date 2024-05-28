@@ -17,9 +17,9 @@ class LargeTreePlotTablesDao extends DatabaseAccessor<Database>
     with _$LargeTreePlotTablesDaoMixin {
   LargeTreePlotTablesDao(super.db);
 
-  //====================Mark Not Assessed for Ltp Summary====================
+  //====================Mark Notß Assessed for Ltp Summary====================
 
-  Future<void> markLtpNotAssessed(int surveyId, int? ltpSummaryId) async {
+  Future<void> markNotAssessed(int surveyId, int? ltpSummaryId) async {
     if (ltpSummaryId != null) {
       await deleteLtpSummary(ltpSummaryId);
     }
@@ -80,6 +80,7 @@ class LargeTreePlotTablesDao extends DatabaseAccessor<Database>
     await (delete(ltpSummary)..where((tbl) => tbl.id.equals(ltpSummaryId)))
         .go();
   }
+
 //====================Ltp Tree Management====================
 
   Future<int> addLtpTree(LtpTreeCompanion entry) => into(ltpTree).insert(entry);
