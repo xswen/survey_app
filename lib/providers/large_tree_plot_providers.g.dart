@@ -153,5 +153,142 @@ class _LtpDataProviderElement
   @override
   int get ltpId => (origin as LtpDataProvider).ltpId;
 }
+
+String _$ltpMergedTreeEntryListHash() =>
+    r'1ce8372ea0398e40ae7b9ee81595a29bfc6056d7';
+
+/// See also [ltpMergedTreeEntryList].
+@ProviderFor(ltpMergedTreeEntryList)
+const ltpMergedTreeEntryListProvider = LtpMergedTreeEntryListFamily();
+
+/// See also [ltpMergedTreeEntryList].
+class LtpMergedTreeEntryListFamily
+    extends Family<AsyncValue<List<LtpMergedTreeEntry>>> {
+  /// See also [ltpMergedTreeEntryList].
+  const LtpMergedTreeEntryListFamily();
+
+  /// See also [ltpMergedTreeEntryList].
+  LtpMergedTreeEntryListProvider call(
+    int ltpSummaryId,
+  ) {
+    return LtpMergedTreeEntryListProvider(
+      ltpSummaryId,
+    );
+  }
+
+  @override
+  LtpMergedTreeEntryListProvider getProviderOverride(
+    covariant LtpMergedTreeEntryListProvider provider,
+  ) {
+    return call(
+      provider.ltpSummaryId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'ltpMergedTreeEntryListProvider';
+}
+
+/// See also [ltpMergedTreeEntryList].
+class LtpMergedTreeEntryListProvider
+    extends AutoDisposeFutureProvider<List<LtpMergedTreeEntry>> {
+  /// See also [ltpMergedTreeEntryList].
+  LtpMergedTreeEntryListProvider(
+    int ltpSummaryId,
+  ) : this._internal(
+          (ref) => ltpMergedTreeEntryList(
+            ref as LtpMergedTreeEntryListRef,
+            ltpSummaryId,
+          ),
+          from: ltpMergedTreeEntryListProvider,
+          name: r'ltpMergedTreeEntryListProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$ltpMergedTreeEntryListHash,
+          dependencies: LtpMergedTreeEntryListFamily._dependencies,
+          allTransitiveDependencies:
+              LtpMergedTreeEntryListFamily._allTransitiveDependencies,
+          ltpSummaryId: ltpSummaryId,
+        );
+
+  LtpMergedTreeEntryListProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.ltpSummaryId,
+  }) : super.internal();
+
+  final int ltpSummaryId;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<LtpMergedTreeEntry>> Function(
+            LtpMergedTreeEntryListRef provider)
+        create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: LtpMergedTreeEntryListProvider._internal(
+        (ref) => create(ref as LtpMergedTreeEntryListRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        ltpSummaryId: ltpSummaryId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List<LtpMergedTreeEntry>> createElement() {
+    return _LtpMergedTreeEntryListProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is LtpMergedTreeEntryListProvider &&
+        other.ltpSummaryId == ltpSummaryId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, ltpSummaryId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin LtpMergedTreeEntryListRef
+    on AutoDisposeFutureProviderRef<List<LtpMergedTreeEntry>> {
+  /// The parameter `ltpSummaryId` of this provider.
+  int get ltpSummaryId;
+}
+
+class _LtpMergedTreeEntryListProviderElement
+    extends AutoDisposeFutureProviderElement<List<LtpMergedTreeEntry>>
+    with LtpMergedTreeEntryListRef {
+  _LtpMergedTreeEntryListProviderElement(super.provider);
+
+  @override
+  int get ltpSummaryId =>
+      (origin as LtpMergedTreeEntryListProvider).ltpSummaryId;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

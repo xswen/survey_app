@@ -5,6 +5,20 @@ import '../database_creation_files/large_tree_plot_tables.dart';
 
 part 'large_tree_plot_tables_dao.g.dart';
 
+class LtpMergedTreeEntry {
+  final LtpTreeData ltpTree;
+  final LtpTreeDamageData? ltpTreeDamage;
+  final LtpTreeRemovedData? ltpTreeRemoved;
+  final LtpTreeRenamedData? ltpTreeRenamed;
+
+  LtpMergedTreeEntry({
+    required this.ltpTree,
+    this.ltpTreeDamage,
+    this.ltpTreeRemoved,
+    this.ltpTreeRenamed,
+  });
+}
+
 @DriftAccessor(tables: [
   LtpSummary,
   LtpTree,
@@ -82,6 +96,35 @@ class LargeTreePlotTablesDao extends DatabaseAccessor<Database>
   }
 
 //====================Ltp Tree Management====================
+  Future<List<LtpMergedTreeEntry>> getMergedLtpTreeEntries(
+      int ltpSummaryId) async {
+    final query = select(ltpTree).join([
+      leftOuterJoin(
+          ltpTreeDamage,
+          ltpTree.lptSummaryId.equalsExp(ltpTreeDamage.lptSummaryId) &
+              ltpTree.treeNum.equalsExp(ltpTreeDamage.treeNum)),
+      leftOuterJoin(
+          ltpTreeRemoved,
+          ltpTree.lptSummaryId.equalsExp(ltpTreeRemoved.lptSummaryId) &
+              ltpTree.treeNum.equalsExp(ltpTreeRemoved.treeNum)),
+      leftOuterJoin(
+          ltpTreeRenamed,
+          ltpTree.lptSummaryId.equalsExp(ltpTreeRenamed.lptSummaryId) &
+              ltpTree.treeNum.equalsExp(ltpTreeRenamed.treeNum)),
+    ])
+      ..where(ltpTree.lptSummaryId.equals(ltpSummaryId));
+
+    final result = await query.map((row) {
+      return LtpMergedTreeEntry(
+        ltpTree: row.readTable(ltpTree),
+        ltpTreeDamage: row.readTableOrNull(ltpTreeDamage),
+        ltpTreeRemoved: row.readTableOrNull(ltpTreeRemoved),
+        ltpTreeRenamed: row.readTableOrNull(ltpTreeRenamed),
+      );
+    }).get();
+
+    return result;
+  }
 
   Future<int> addLtpTree(LtpTreeCompanion entry) => into(ltpTree).insert(entry);
 
