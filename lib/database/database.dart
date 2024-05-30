@@ -26,11 +26,13 @@ import '../database/database_creation_files/reference_tables.dart';
 import '../database/database_creation_files/survey_info_tables.dart';
 import 'daos/ecological_plot_tables_dao.dart';
 import 'daos/large_tree_plot_tables_dao.dart';
+import 'daos/site_info_tables_dao.dart';
 import 'daos/stump_plot_tables_dao.dart';
 import 'daos/surface_substrate_tables_dao.dart';
 import 'database_creation_files/ecological_plot_tables.dart';
 import 'database_creation_files/metadata_tables.dart';
 import 'database_creation_files/shrub_plot_tables.dart';
+import 'database_creation_files/site_info_tables.dart';
 import 'database_creation_files/surface_substrate_tables.dart';
 import 'database_creation_files/woody_debris_tables.dart';
 
@@ -125,6 +127,12 @@ const List<Type> _tables = [
   //Stump
   StumpSummary,
   StumpEntry,
+  //Site Plot
+  GpSummary,
+  GpSiteInfo,
+  GpDisturbance,
+  GpOrigin,
+  GpTreatment,
 ];
 
 const List<Type> _daos = [
@@ -138,6 +146,7 @@ const List<Type> _daos = [
   ShrubPlotTablesDao,
   StumpPlotTablesDao,
   LargeTreePlotTablesDao,
+  SiteInfoTablesDao,
 ];
 
 const String woodyDebrisPieceViewQuery =
@@ -162,6 +171,7 @@ class Database extends _$Database {
   Database._() : super(_debugConnection());
 
   static final Database _instance = Database._();
+
   static Database get instance => _instance;
 
   @override

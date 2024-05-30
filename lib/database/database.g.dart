@@ -23684,6 +23684,2359 @@ class StumpEntryCompanion extends d.UpdateCompanion<StumpEntryData> {
   }
 }
 
+class $GpSummaryTable extends GpSummary
+    with d.TableInfo<$GpSummaryTable, GpSummaryData> {
+  @override
+  final d.GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GpSummaryTable(this.attachedDatabase, [this._alias]);
+  static const d.VerificationMeta _idMeta = const d.VerificationMeta('id');
+  @override
+  late final d.GeneratedColumn<int> id = d.GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const d.VerificationMeta _surveyIdMeta =
+      const d.VerificationMeta('surveyId');
+  @override
+  late final d.GeneratedColumn<int> surveyId = d.GeneratedColumn<int>(
+      'survey_id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'UNIQUE REFERENCES survey_headers (id)'));
+  static const d.VerificationMeta _measDateMeta =
+      const d.VerificationMeta('measDate');
+  @override
+  late final d.GeneratedColumn<DateTime> measDate = d.GeneratedColumn<DateTime>(
+      'meas_date', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const d.VerificationMeta _notAssessedMeta =
+      const d.VerificationMeta('notAssessed');
+  @override
+  late final d.GeneratedColumn<bool> notAssessed = d.GeneratedColumn<bool>(
+      'not_assessed', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("not_assessed" IN (0, 1))'),
+      defaultValue: const d.Constant(false));
+  static const d.VerificationMeta _completeMeta =
+      const d.VerificationMeta('complete');
+  @override
+  late final d.GeneratedColumn<bool> complete = d.GeneratedColumn<bool>(
+      'complete', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("complete" IN (0, 1))'),
+      defaultValue: const d.Constant(false));
+  @override
+  List<d.GeneratedColumn> get $columns =>
+      [id, surveyId, measDate, notAssessed, complete];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'gp_summary';
+  @override
+  d.VerificationContext validateIntegrity(d.Insertable<GpSummaryData> instance,
+      {bool isInserting = false}) {
+    final context = d.VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('survey_id')) {
+      context.handle(_surveyIdMeta,
+          surveyId.isAcceptableOrUnknown(data['survey_id']!, _surveyIdMeta));
+    } else if (isInserting) {
+      context.missing(_surveyIdMeta);
+    }
+    if (data.containsKey('meas_date')) {
+      context.handle(_measDateMeta,
+          measDate.isAcceptableOrUnknown(data['meas_date']!, _measDateMeta));
+    } else if (isInserting) {
+      context.missing(_measDateMeta);
+    }
+    if (data.containsKey('not_assessed')) {
+      context.handle(
+          _notAssessedMeta,
+          notAssessed.isAcceptableOrUnknown(
+              data['not_assessed']!, _notAssessedMeta));
+    }
+    if (data.containsKey('complete')) {
+      context.handle(_completeMeta,
+          complete.isAcceptableOrUnknown(data['complete']!, _completeMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<d.GeneratedColumn> get $primaryKey => {id};
+  @override
+  GpSummaryData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return GpSummaryData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      surveyId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}survey_id'])!,
+      measDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}meas_date'])!,
+      notAssessed: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}not_assessed'])!,
+      complete: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}complete'])!,
+    );
+  }
+
+  @override
+  $GpSummaryTable createAlias(String alias) {
+    return $GpSummaryTable(attachedDatabase, alias);
+  }
+}
+
+class GpSummaryData extends d.DataClass implements d.Insertable<GpSummaryData> {
+  final int id;
+  final int surveyId;
+  final DateTime measDate;
+  final bool notAssessed;
+  final bool complete;
+  const GpSummaryData(
+      {required this.id,
+      required this.surveyId,
+      required this.measDate,
+      required this.notAssessed,
+      required this.complete});
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    map['id'] = d.Variable<int>(id);
+    map['survey_id'] = d.Variable<int>(surveyId);
+    map['meas_date'] = d.Variable<DateTime>(measDate);
+    map['not_assessed'] = d.Variable<bool>(notAssessed);
+    map['complete'] = d.Variable<bool>(complete);
+    return map;
+  }
+
+  GpSummaryCompanion toCompanion(bool nullToAbsent) {
+    return GpSummaryCompanion(
+      id: d.Value(id),
+      surveyId: d.Value(surveyId),
+      measDate: d.Value(measDate),
+      notAssessed: d.Value(notAssessed),
+      complete: d.Value(complete),
+    );
+  }
+
+  factory GpSummaryData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return GpSummaryData(
+      id: serializer.fromJson<int>(json['id']),
+      surveyId: serializer.fromJson<int>(json['surveyId']),
+      measDate: serializer.fromJson<DateTime>(json['measDate']),
+      notAssessed: serializer.fromJson<bool>(json['notAssessed']),
+      complete: serializer.fromJson<bool>(json['complete']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'surveyId': serializer.toJson<int>(surveyId),
+      'measDate': serializer.toJson<DateTime>(measDate),
+      'notAssessed': serializer.toJson<bool>(notAssessed),
+      'complete': serializer.toJson<bool>(complete),
+    };
+  }
+
+  GpSummaryData copyWith(
+          {int? id,
+          int? surveyId,
+          DateTime? measDate,
+          bool? notAssessed,
+          bool? complete}) =>
+      GpSummaryData(
+        id: id ?? this.id,
+        surveyId: surveyId ?? this.surveyId,
+        measDate: measDate ?? this.measDate,
+        notAssessed: notAssessed ?? this.notAssessed,
+        complete: complete ?? this.complete,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('GpSummaryData(')
+          ..write('id: $id, ')
+          ..write('surveyId: $surveyId, ')
+          ..write('measDate: $measDate, ')
+          ..write('notAssessed: $notAssessed, ')
+          ..write('complete: $complete')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, surveyId, measDate, notAssessed, complete);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GpSummaryData &&
+          other.id == this.id &&
+          other.surveyId == this.surveyId &&
+          other.measDate == this.measDate &&
+          other.notAssessed == this.notAssessed &&
+          other.complete == this.complete);
+}
+
+class GpSummaryCompanion extends d.UpdateCompanion<GpSummaryData> {
+  final d.Value<int> id;
+  final d.Value<int> surveyId;
+  final d.Value<DateTime> measDate;
+  final d.Value<bool> notAssessed;
+  final d.Value<bool> complete;
+  const GpSummaryCompanion({
+    this.id = const d.Value.absent(),
+    this.surveyId = const d.Value.absent(),
+    this.measDate = const d.Value.absent(),
+    this.notAssessed = const d.Value.absent(),
+    this.complete = const d.Value.absent(),
+  });
+  GpSummaryCompanion.insert({
+    this.id = const d.Value.absent(),
+    required int surveyId,
+    required DateTime measDate,
+    this.notAssessed = const d.Value.absent(),
+    this.complete = const d.Value.absent(),
+  })  : surveyId = d.Value(surveyId),
+        measDate = d.Value(measDate);
+  static d.Insertable<GpSummaryData> custom({
+    d.Expression<int>? id,
+    d.Expression<int>? surveyId,
+    d.Expression<DateTime>? measDate,
+    d.Expression<bool>? notAssessed,
+    d.Expression<bool>? complete,
+  }) {
+    return d.RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (surveyId != null) 'survey_id': surveyId,
+      if (measDate != null) 'meas_date': measDate,
+      if (notAssessed != null) 'not_assessed': notAssessed,
+      if (complete != null) 'complete': complete,
+    });
+  }
+
+  GpSummaryCompanion copyWith(
+      {d.Value<int>? id,
+      d.Value<int>? surveyId,
+      d.Value<DateTime>? measDate,
+      d.Value<bool>? notAssessed,
+      d.Value<bool>? complete}) {
+    return GpSummaryCompanion(
+      id: id ?? this.id,
+      surveyId: surveyId ?? this.surveyId,
+      measDate: measDate ?? this.measDate,
+      notAssessed: notAssessed ?? this.notAssessed,
+      complete: complete ?? this.complete,
+    );
+  }
+
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    if (id.present) {
+      map['id'] = d.Variable<int>(id.value);
+    }
+    if (surveyId.present) {
+      map['survey_id'] = d.Variable<int>(surveyId.value);
+    }
+    if (measDate.present) {
+      map['meas_date'] = d.Variable<DateTime>(measDate.value);
+    }
+    if (notAssessed.present) {
+      map['not_assessed'] = d.Variable<bool>(notAssessed.value);
+    }
+    if (complete.present) {
+      map['complete'] = d.Variable<bool>(complete.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GpSummaryCompanion(')
+          ..write('id: $id, ')
+          ..write('surveyId: $surveyId, ')
+          ..write('measDate: $measDate, ')
+          ..write('notAssessed: $notAssessed, ')
+          ..write('complete: $complete')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $GpSiteInfoTable extends GpSiteInfo
+    with d.TableInfo<$GpSiteInfoTable, GpSiteInfoData> {
+  @override
+  final d.GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GpSiteInfoTable(this.attachedDatabase, [this._alias]);
+  static const d.VerificationMeta _idMeta = const d.VerificationMeta('id');
+  @override
+  late final d.GeneratedColumn<int> id = d.GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const d.VerificationMeta _gpSummaryIdMeta =
+      const d.VerificationMeta('gpSummaryId');
+  @override
+  late final d.GeneratedColumn<int> gpSummaryId = d.GeneratedColumn<int>(
+      'gp_summary_id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES gp_summary (id)'));
+  static const d.VerificationMeta _plotCompletionMeta =
+      const d.VerificationMeta('plotCompletion');
+  @override
+  late final d.GeneratedColumn<String> plotCompletion =
+      d.GeneratedColumn<String>('plot_completion', aliasedName, false,
+          additionalChecks: GeneratedColumn.checkTextLength(
+              minTextLength: 1, maxTextLength: 1),
+          type: DriftSqlType.string,
+          requiredDuringInsert: true);
+  static const d.VerificationMeta _incompReasonMeta =
+      const d.VerificationMeta('incompReason');
+  @override
+  late final d.GeneratedColumn<String> incompReason = d.GeneratedColumn<String>(
+      'incomp_reason', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 2),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const d.VerificationMeta _provinceMeta =
+      const d.VerificationMeta('province');
+  @override
+  late final d.GeneratedColumn<String> province = d.GeneratedColumn<String>(
+      'province', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 2),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const d.VerificationMeta _ecozoneMeta =
+      const d.VerificationMeta('ecozone');
+  @override
+  late final d.GeneratedColumn<int> ecozone = d.GeneratedColumn<int>(
+      'ecozone', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const d.VerificationMeta _provEcoTypeMeta =
+      const d.VerificationMeta('provEcoType');
+  @override
+  late final d.GeneratedColumn<String> provEcoType = d.GeneratedColumn<String>(
+      'prov_eco_type', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const d.VerificationMeta _provEcoRefMeta =
+      const d.VerificationMeta('provEcoRef');
+  @override
+  late final d.GeneratedColumn<int> provEcoRef = d.GeneratedColumn<int>(
+      'prov_eco_ref', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const d.VerificationMeta _utmNMeta = const d.VerificationMeta('utmN');
+  @override
+  late final d.GeneratedColumn<int> utmN = d.GeneratedColumn<int>(
+      'utm_n', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const d.VerificationMeta _utmEMeta = const d.VerificationMeta('utmE');
+  @override
+  late final d.GeneratedColumn<int> utmE = d.GeneratedColumn<int>(
+      'utm_e', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const d.VerificationMeta _utmZoneMeta =
+      const d.VerificationMeta('utmZone');
+  @override
+  late final d.GeneratedColumn<int> utmZone = d.GeneratedColumn<int>(
+      'utm_zone', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const d.VerificationMeta _slopeMeta =
+      const d.VerificationMeta('slope');
+  @override
+  late final d.GeneratedColumn<int> slope = d.GeneratedColumn<int>(
+      'slope', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const d.VerificationMeta _aspectMeta =
+      const d.VerificationMeta('aspect');
+  @override
+  late final d.GeneratedColumn<int> aspect = d.GeneratedColumn<int>(
+      'aspect', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const d.VerificationMeta _elevationMeta =
+      const d.VerificationMeta('elevation');
+  @override
+  late final d.GeneratedColumn<int> elevation = d.GeneratedColumn<int>(
+      'elevation', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const d.VerificationMeta _landBaseMeta =
+      const d.VerificationMeta('landBase');
+  @override
+  late final d.GeneratedColumn<String> landBase = d.GeneratedColumn<String>(
+      'land_base', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 1),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const d.VerificationMeta _landCoverMeta =
+      const d.VerificationMeta('landCover');
+  @override
+  late final d.GeneratedColumn<String> landCover = d.GeneratedColumn<String>(
+      'land_cover', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 1),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const d.VerificationMeta _landPosMeta =
+      const d.VerificationMeta('landPos');
+  @override
+  late final d.GeneratedColumn<String> landPos = d.GeneratedColumn<String>(
+      'land_pos', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 1),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const d.VerificationMeta _vegTypeMeta =
+      const d.VerificationMeta('vegType');
+  @override
+  late final d.GeneratedColumn<String> vegType = d.GeneratedColumn<String>(
+      'veg_type', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 2),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const d.VerificationMeta _densityClMeta =
+      const d.VerificationMeta('densityCl');
+  @override
+  late final d.GeneratedColumn<String> densityCl = d.GeneratedColumn<String>(
+      'density_cl', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 2),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const d.VerificationMeta _standStruMeta =
+      const d.VerificationMeta('standStru');
+  @override
+  late final d.GeneratedColumn<String> standStru = d.GeneratedColumn<String>(
+      'stand_stru', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 4),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const d.VerificationMeta _succStageMeta =
+      const d.VerificationMeta('succStage');
+  @override
+  late final d.GeneratedColumn<String> succStage = d.GeneratedColumn<String>(
+      'succ_stage', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 2),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const d.VerificationMeta _wetlandClassMeta =
+      const d.VerificationMeta('wetlandClass');
+  @override
+  late final d.GeneratedColumn<String> wetlandClass = d.GeneratedColumn<String>(
+      'wetland_class', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 1),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const d.VerificationMeta _userInfoMeta =
+      const d.VerificationMeta('userInfo');
+  @override
+  late final d.GeneratedColumn<String> userInfo = d.GeneratedColumn<String>(
+      'user_info', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  @override
+  List<d.GeneratedColumn> get $columns => [
+        id,
+        gpSummaryId,
+        plotCompletion,
+        incompReason,
+        province,
+        ecozone,
+        provEcoType,
+        provEcoRef,
+        utmN,
+        utmE,
+        utmZone,
+        slope,
+        aspect,
+        elevation,
+        landBase,
+        landCover,
+        landPos,
+        vegType,
+        densityCl,
+        standStru,
+        succStage,
+        wetlandClass,
+        userInfo
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'gp_site_info';
+  @override
+  d.VerificationContext validateIntegrity(d.Insertable<GpSiteInfoData> instance,
+      {bool isInserting = false}) {
+    final context = d.VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('gp_summary_id')) {
+      context.handle(
+          _gpSummaryIdMeta,
+          gpSummaryId.isAcceptableOrUnknown(
+              data['gp_summary_id']!, _gpSummaryIdMeta));
+    } else if (isInserting) {
+      context.missing(_gpSummaryIdMeta);
+    }
+    if (data.containsKey('plot_completion')) {
+      context.handle(
+          _plotCompletionMeta,
+          plotCompletion.isAcceptableOrUnknown(
+              data['plot_completion']!, _plotCompletionMeta));
+    } else if (isInserting) {
+      context.missing(_plotCompletionMeta);
+    }
+    if (data.containsKey('incomp_reason')) {
+      context.handle(
+          _incompReasonMeta,
+          incompReason.isAcceptableOrUnknown(
+              data['incomp_reason']!, _incompReasonMeta));
+    } else if (isInserting) {
+      context.missing(_incompReasonMeta);
+    }
+    if (data.containsKey('province')) {
+      context.handle(_provinceMeta,
+          province.isAcceptableOrUnknown(data['province']!, _provinceMeta));
+    } else if (isInserting) {
+      context.missing(_provinceMeta);
+    }
+    if (data.containsKey('ecozone')) {
+      context.handle(_ecozoneMeta,
+          ecozone.isAcceptableOrUnknown(data['ecozone']!, _ecozoneMeta));
+    } else if (isInserting) {
+      context.missing(_ecozoneMeta);
+    }
+    if (data.containsKey('prov_eco_type')) {
+      context.handle(
+          _provEcoTypeMeta,
+          provEcoType.isAcceptableOrUnknown(
+              data['prov_eco_type']!, _provEcoTypeMeta));
+    }
+    if (data.containsKey('prov_eco_ref')) {
+      context.handle(
+          _provEcoRefMeta,
+          provEcoRef.isAcceptableOrUnknown(
+              data['prov_eco_ref']!, _provEcoRefMeta));
+    } else if (isInserting) {
+      context.missing(_provEcoRefMeta);
+    }
+    if (data.containsKey('utm_n')) {
+      context.handle(
+          _utmNMeta, utmN.isAcceptableOrUnknown(data['utm_n']!, _utmNMeta));
+    } else if (isInserting) {
+      context.missing(_utmNMeta);
+    }
+    if (data.containsKey('utm_e')) {
+      context.handle(
+          _utmEMeta, utmE.isAcceptableOrUnknown(data['utm_e']!, _utmEMeta));
+    } else if (isInserting) {
+      context.missing(_utmEMeta);
+    }
+    if (data.containsKey('utm_zone')) {
+      context.handle(_utmZoneMeta,
+          utmZone.isAcceptableOrUnknown(data['utm_zone']!, _utmZoneMeta));
+    } else if (isInserting) {
+      context.missing(_utmZoneMeta);
+    }
+    if (data.containsKey('slope')) {
+      context.handle(
+          _slopeMeta, slope.isAcceptableOrUnknown(data['slope']!, _slopeMeta));
+    } else if (isInserting) {
+      context.missing(_slopeMeta);
+    }
+    if (data.containsKey('aspect')) {
+      context.handle(_aspectMeta,
+          aspect.isAcceptableOrUnknown(data['aspect']!, _aspectMeta));
+    } else if (isInserting) {
+      context.missing(_aspectMeta);
+    }
+    if (data.containsKey('elevation')) {
+      context.handle(_elevationMeta,
+          elevation.isAcceptableOrUnknown(data['elevation']!, _elevationMeta));
+    } else if (isInserting) {
+      context.missing(_elevationMeta);
+    }
+    if (data.containsKey('land_base')) {
+      context.handle(_landBaseMeta,
+          landBase.isAcceptableOrUnknown(data['land_base']!, _landBaseMeta));
+    } else if (isInserting) {
+      context.missing(_landBaseMeta);
+    }
+    if (data.containsKey('land_cover')) {
+      context.handle(_landCoverMeta,
+          landCover.isAcceptableOrUnknown(data['land_cover']!, _landCoverMeta));
+    } else if (isInserting) {
+      context.missing(_landCoverMeta);
+    }
+    if (data.containsKey('land_pos')) {
+      context.handle(_landPosMeta,
+          landPos.isAcceptableOrUnknown(data['land_pos']!, _landPosMeta));
+    } else if (isInserting) {
+      context.missing(_landPosMeta);
+    }
+    if (data.containsKey('veg_type')) {
+      context.handle(_vegTypeMeta,
+          vegType.isAcceptableOrUnknown(data['veg_type']!, _vegTypeMeta));
+    } else if (isInserting) {
+      context.missing(_vegTypeMeta);
+    }
+    if (data.containsKey('density_cl')) {
+      context.handle(_densityClMeta,
+          densityCl.isAcceptableOrUnknown(data['density_cl']!, _densityClMeta));
+    } else if (isInserting) {
+      context.missing(_densityClMeta);
+    }
+    if (data.containsKey('stand_stru')) {
+      context.handle(_standStruMeta,
+          standStru.isAcceptableOrUnknown(data['stand_stru']!, _standStruMeta));
+    } else if (isInserting) {
+      context.missing(_standStruMeta);
+    }
+    if (data.containsKey('succ_stage')) {
+      context.handle(_succStageMeta,
+          succStage.isAcceptableOrUnknown(data['succ_stage']!, _succStageMeta));
+    } else if (isInserting) {
+      context.missing(_succStageMeta);
+    }
+    if (data.containsKey('wetland_class')) {
+      context.handle(
+          _wetlandClassMeta,
+          wetlandClass.isAcceptableOrUnknown(
+              data['wetland_class']!, _wetlandClassMeta));
+    } else if (isInserting) {
+      context.missing(_wetlandClassMeta);
+    }
+    if (data.containsKey('user_info')) {
+      context.handle(_userInfoMeta,
+          userInfo.isAcceptableOrUnknown(data['user_info']!, _userInfoMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<d.GeneratedColumn> get $primaryKey => {id};
+  @override
+  GpSiteInfoData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return GpSiteInfoData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      gpSummaryId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}gp_summary_id'])!,
+      plotCompletion: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}plot_completion'])!,
+      incompReason: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}incomp_reason'])!,
+      province: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}province'])!,
+      ecozone: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}ecozone'])!,
+      provEcoType: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}prov_eco_type']),
+      provEcoRef: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}prov_eco_ref'])!,
+      utmN: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}utm_n'])!,
+      utmE: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}utm_e'])!,
+      utmZone: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}utm_zone'])!,
+      slope: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}slope'])!,
+      aspect: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}aspect'])!,
+      elevation: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}elevation'])!,
+      landBase: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}land_base'])!,
+      landCover: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}land_cover'])!,
+      landPos: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}land_pos'])!,
+      vegType: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}veg_type'])!,
+      densityCl: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}density_cl'])!,
+      standStru: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}stand_stru'])!,
+      succStage: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}succ_stage'])!,
+      wetlandClass: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}wetland_class'])!,
+      userInfo: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}user_info']),
+    );
+  }
+
+  @override
+  $GpSiteInfoTable createAlias(String alias) {
+    return $GpSiteInfoTable(attachedDatabase, alias);
+  }
+}
+
+class GpSiteInfoData extends d.DataClass
+    implements d.Insertable<GpSiteInfoData> {
+  final int id;
+  final int gpSummaryId;
+  final String plotCompletion;
+  final String incompReason;
+  final String province;
+  final int ecozone;
+  final String? provEcoType;
+  final int provEcoRef;
+  final int utmN;
+  final int utmE;
+  final int utmZone;
+  final int slope;
+  final int aspect;
+  final int elevation;
+  final String landBase;
+  final String landCover;
+  final String landPos;
+  final String vegType;
+  final String densityCl;
+  final String standStru;
+  final String succStage;
+  final String wetlandClass;
+  final String? userInfo;
+  const GpSiteInfoData(
+      {required this.id,
+      required this.gpSummaryId,
+      required this.plotCompletion,
+      required this.incompReason,
+      required this.province,
+      required this.ecozone,
+      this.provEcoType,
+      required this.provEcoRef,
+      required this.utmN,
+      required this.utmE,
+      required this.utmZone,
+      required this.slope,
+      required this.aspect,
+      required this.elevation,
+      required this.landBase,
+      required this.landCover,
+      required this.landPos,
+      required this.vegType,
+      required this.densityCl,
+      required this.standStru,
+      required this.succStage,
+      required this.wetlandClass,
+      this.userInfo});
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    map['id'] = d.Variable<int>(id);
+    map['gp_summary_id'] = d.Variable<int>(gpSummaryId);
+    map['plot_completion'] = d.Variable<String>(plotCompletion);
+    map['incomp_reason'] = d.Variable<String>(incompReason);
+    map['province'] = d.Variable<String>(province);
+    map['ecozone'] = d.Variable<int>(ecozone);
+    if (!nullToAbsent || provEcoType != null) {
+      map['prov_eco_type'] = d.Variable<String>(provEcoType);
+    }
+    map['prov_eco_ref'] = d.Variable<int>(provEcoRef);
+    map['utm_n'] = d.Variable<int>(utmN);
+    map['utm_e'] = d.Variable<int>(utmE);
+    map['utm_zone'] = d.Variable<int>(utmZone);
+    map['slope'] = d.Variable<int>(slope);
+    map['aspect'] = d.Variable<int>(aspect);
+    map['elevation'] = d.Variable<int>(elevation);
+    map['land_base'] = d.Variable<String>(landBase);
+    map['land_cover'] = d.Variable<String>(landCover);
+    map['land_pos'] = d.Variable<String>(landPos);
+    map['veg_type'] = d.Variable<String>(vegType);
+    map['density_cl'] = d.Variable<String>(densityCl);
+    map['stand_stru'] = d.Variable<String>(standStru);
+    map['succ_stage'] = d.Variable<String>(succStage);
+    map['wetland_class'] = d.Variable<String>(wetlandClass);
+    if (!nullToAbsent || userInfo != null) {
+      map['user_info'] = d.Variable<String>(userInfo);
+    }
+    return map;
+  }
+
+  GpSiteInfoCompanion toCompanion(bool nullToAbsent) {
+    return GpSiteInfoCompanion(
+      id: d.Value(id),
+      gpSummaryId: d.Value(gpSummaryId),
+      plotCompletion: d.Value(plotCompletion),
+      incompReason: d.Value(incompReason),
+      province: d.Value(province),
+      ecozone: d.Value(ecozone),
+      provEcoType: provEcoType == null && nullToAbsent
+          ? const d.Value.absent()
+          : d.Value(provEcoType),
+      provEcoRef: d.Value(provEcoRef),
+      utmN: d.Value(utmN),
+      utmE: d.Value(utmE),
+      utmZone: d.Value(utmZone),
+      slope: d.Value(slope),
+      aspect: d.Value(aspect),
+      elevation: d.Value(elevation),
+      landBase: d.Value(landBase),
+      landCover: d.Value(landCover),
+      landPos: d.Value(landPos),
+      vegType: d.Value(vegType),
+      densityCl: d.Value(densityCl),
+      standStru: d.Value(standStru),
+      succStage: d.Value(succStage),
+      wetlandClass: d.Value(wetlandClass),
+      userInfo: userInfo == null && nullToAbsent
+          ? const d.Value.absent()
+          : d.Value(userInfo),
+    );
+  }
+
+  factory GpSiteInfoData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return GpSiteInfoData(
+      id: serializer.fromJson<int>(json['id']),
+      gpSummaryId: serializer.fromJson<int>(json['gpSummaryId']),
+      plotCompletion: serializer.fromJson<String>(json['plotCompletion']),
+      incompReason: serializer.fromJson<String>(json['incompReason']),
+      province: serializer.fromJson<String>(json['province']),
+      ecozone: serializer.fromJson<int>(json['ecozone']),
+      provEcoType: serializer.fromJson<String?>(json['provEcoType']),
+      provEcoRef: serializer.fromJson<int>(json['provEcoRef']),
+      utmN: serializer.fromJson<int>(json['utmN']),
+      utmE: serializer.fromJson<int>(json['utmE']),
+      utmZone: serializer.fromJson<int>(json['utmZone']),
+      slope: serializer.fromJson<int>(json['slope']),
+      aspect: serializer.fromJson<int>(json['aspect']),
+      elevation: serializer.fromJson<int>(json['elevation']),
+      landBase: serializer.fromJson<String>(json['landBase']),
+      landCover: serializer.fromJson<String>(json['landCover']),
+      landPos: serializer.fromJson<String>(json['landPos']),
+      vegType: serializer.fromJson<String>(json['vegType']),
+      densityCl: serializer.fromJson<String>(json['densityCl']),
+      standStru: serializer.fromJson<String>(json['standStru']),
+      succStage: serializer.fromJson<String>(json['succStage']),
+      wetlandClass: serializer.fromJson<String>(json['wetlandClass']),
+      userInfo: serializer.fromJson<String?>(json['userInfo']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'gpSummaryId': serializer.toJson<int>(gpSummaryId),
+      'plotCompletion': serializer.toJson<String>(plotCompletion),
+      'incompReason': serializer.toJson<String>(incompReason),
+      'province': serializer.toJson<String>(province),
+      'ecozone': serializer.toJson<int>(ecozone),
+      'provEcoType': serializer.toJson<String?>(provEcoType),
+      'provEcoRef': serializer.toJson<int>(provEcoRef),
+      'utmN': serializer.toJson<int>(utmN),
+      'utmE': serializer.toJson<int>(utmE),
+      'utmZone': serializer.toJson<int>(utmZone),
+      'slope': serializer.toJson<int>(slope),
+      'aspect': serializer.toJson<int>(aspect),
+      'elevation': serializer.toJson<int>(elevation),
+      'landBase': serializer.toJson<String>(landBase),
+      'landCover': serializer.toJson<String>(landCover),
+      'landPos': serializer.toJson<String>(landPos),
+      'vegType': serializer.toJson<String>(vegType),
+      'densityCl': serializer.toJson<String>(densityCl),
+      'standStru': serializer.toJson<String>(standStru),
+      'succStage': serializer.toJson<String>(succStage),
+      'wetlandClass': serializer.toJson<String>(wetlandClass),
+      'userInfo': serializer.toJson<String?>(userInfo),
+    };
+  }
+
+  GpSiteInfoData copyWith(
+          {int? id,
+          int? gpSummaryId,
+          String? plotCompletion,
+          String? incompReason,
+          String? province,
+          int? ecozone,
+          d.Value<String?> provEcoType = const d.Value.absent(),
+          int? provEcoRef,
+          int? utmN,
+          int? utmE,
+          int? utmZone,
+          int? slope,
+          int? aspect,
+          int? elevation,
+          String? landBase,
+          String? landCover,
+          String? landPos,
+          String? vegType,
+          String? densityCl,
+          String? standStru,
+          String? succStage,
+          String? wetlandClass,
+          d.Value<String?> userInfo = const d.Value.absent()}) =>
+      GpSiteInfoData(
+        id: id ?? this.id,
+        gpSummaryId: gpSummaryId ?? this.gpSummaryId,
+        plotCompletion: plotCompletion ?? this.plotCompletion,
+        incompReason: incompReason ?? this.incompReason,
+        province: province ?? this.province,
+        ecozone: ecozone ?? this.ecozone,
+        provEcoType: provEcoType.present ? provEcoType.value : this.provEcoType,
+        provEcoRef: provEcoRef ?? this.provEcoRef,
+        utmN: utmN ?? this.utmN,
+        utmE: utmE ?? this.utmE,
+        utmZone: utmZone ?? this.utmZone,
+        slope: slope ?? this.slope,
+        aspect: aspect ?? this.aspect,
+        elevation: elevation ?? this.elevation,
+        landBase: landBase ?? this.landBase,
+        landCover: landCover ?? this.landCover,
+        landPos: landPos ?? this.landPos,
+        vegType: vegType ?? this.vegType,
+        densityCl: densityCl ?? this.densityCl,
+        standStru: standStru ?? this.standStru,
+        succStage: succStage ?? this.succStage,
+        wetlandClass: wetlandClass ?? this.wetlandClass,
+        userInfo: userInfo.present ? userInfo.value : this.userInfo,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('GpSiteInfoData(')
+          ..write('id: $id, ')
+          ..write('gpSummaryId: $gpSummaryId, ')
+          ..write('plotCompletion: $plotCompletion, ')
+          ..write('incompReason: $incompReason, ')
+          ..write('province: $province, ')
+          ..write('ecozone: $ecozone, ')
+          ..write('provEcoType: $provEcoType, ')
+          ..write('provEcoRef: $provEcoRef, ')
+          ..write('utmN: $utmN, ')
+          ..write('utmE: $utmE, ')
+          ..write('utmZone: $utmZone, ')
+          ..write('slope: $slope, ')
+          ..write('aspect: $aspect, ')
+          ..write('elevation: $elevation, ')
+          ..write('landBase: $landBase, ')
+          ..write('landCover: $landCover, ')
+          ..write('landPos: $landPos, ')
+          ..write('vegType: $vegType, ')
+          ..write('densityCl: $densityCl, ')
+          ..write('standStru: $standStru, ')
+          ..write('succStage: $succStage, ')
+          ..write('wetlandClass: $wetlandClass, ')
+          ..write('userInfo: $userInfo')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hashAll([
+        id,
+        gpSummaryId,
+        plotCompletion,
+        incompReason,
+        province,
+        ecozone,
+        provEcoType,
+        provEcoRef,
+        utmN,
+        utmE,
+        utmZone,
+        slope,
+        aspect,
+        elevation,
+        landBase,
+        landCover,
+        landPos,
+        vegType,
+        densityCl,
+        standStru,
+        succStage,
+        wetlandClass,
+        userInfo
+      ]);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GpSiteInfoData &&
+          other.id == this.id &&
+          other.gpSummaryId == this.gpSummaryId &&
+          other.plotCompletion == this.plotCompletion &&
+          other.incompReason == this.incompReason &&
+          other.province == this.province &&
+          other.ecozone == this.ecozone &&
+          other.provEcoType == this.provEcoType &&
+          other.provEcoRef == this.provEcoRef &&
+          other.utmN == this.utmN &&
+          other.utmE == this.utmE &&
+          other.utmZone == this.utmZone &&
+          other.slope == this.slope &&
+          other.aspect == this.aspect &&
+          other.elevation == this.elevation &&
+          other.landBase == this.landBase &&
+          other.landCover == this.landCover &&
+          other.landPos == this.landPos &&
+          other.vegType == this.vegType &&
+          other.densityCl == this.densityCl &&
+          other.standStru == this.standStru &&
+          other.succStage == this.succStage &&
+          other.wetlandClass == this.wetlandClass &&
+          other.userInfo == this.userInfo);
+}
+
+class GpSiteInfoCompanion extends d.UpdateCompanion<GpSiteInfoData> {
+  final d.Value<int> id;
+  final d.Value<int> gpSummaryId;
+  final d.Value<String> plotCompletion;
+  final d.Value<String> incompReason;
+  final d.Value<String> province;
+  final d.Value<int> ecozone;
+  final d.Value<String?> provEcoType;
+  final d.Value<int> provEcoRef;
+  final d.Value<int> utmN;
+  final d.Value<int> utmE;
+  final d.Value<int> utmZone;
+  final d.Value<int> slope;
+  final d.Value<int> aspect;
+  final d.Value<int> elevation;
+  final d.Value<String> landBase;
+  final d.Value<String> landCover;
+  final d.Value<String> landPos;
+  final d.Value<String> vegType;
+  final d.Value<String> densityCl;
+  final d.Value<String> standStru;
+  final d.Value<String> succStage;
+  final d.Value<String> wetlandClass;
+  final d.Value<String?> userInfo;
+  const GpSiteInfoCompanion({
+    this.id = const d.Value.absent(),
+    this.gpSummaryId = const d.Value.absent(),
+    this.plotCompletion = const d.Value.absent(),
+    this.incompReason = const d.Value.absent(),
+    this.province = const d.Value.absent(),
+    this.ecozone = const d.Value.absent(),
+    this.provEcoType = const d.Value.absent(),
+    this.provEcoRef = const d.Value.absent(),
+    this.utmN = const d.Value.absent(),
+    this.utmE = const d.Value.absent(),
+    this.utmZone = const d.Value.absent(),
+    this.slope = const d.Value.absent(),
+    this.aspect = const d.Value.absent(),
+    this.elevation = const d.Value.absent(),
+    this.landBase = const d.Value.absent(),
+    this.landCover = const d.Value.absent(),
+    this.landPos = const d.Value.absent(),
+    this.vegType = const d.Value.absent(),
+    this.densityCl = const d.Value.absent(),
+    this.standStru = const d.Value.absent(),
+    this.succStage = const d.Value.absent(),
+    this.wetlandClass = const d.Value.absent(),
+    this.userInfo = const d.Value.absent(),
+  });
+  GpSiteInfoCompanion.insert({
+    this.id = const d.Value.absent(),
+    required int gpSummaryId,
+    required String plotCompletion,
+    required String incompReason,
+    required String province,
+    required int ecozone,
+    this.provEcoType = const d.Value.absent(),
+    required int provEcoRef,
+    required int utmN,
+    required int utmE,
+    required int utmZone,
+    required int slope,
+    required int aspect,
+    required int elevation,
+    required String landBase,
+    required String landCover,
+    required String landPos,
+    required String vegType,
+    required String densityCl,
+    required String standStru,
+    required String succStage,
+    required String wetlandClass,
+    this.userInfo = const d.Value.absent(),
+  })  : gpSummaryId = d.Value(gpSummaryId),
+        plotCompletion = d.Value(plotCompletion),
+        incompReason = d.Value(incompReason),
+        province = d.Value(province),
+        ecozone = d.Value(ecozone),
+        provEcoRef = d.Value(provEcoRef),
+        utmN = d.Value(utmN),
+        utmE = d.Value(utmE),
+        utmZone = d.Value(utmZone),
+        slope = d.Value(slope),
+        aspect = d.Value(aspect),
+        elevation = d.Value(elevation),
+        landBase = d.Value(landBase),
+        landCover = d.Value(landCover),
+        landPos = d.Value(landPos),
+        vegType = d.Value(vegType),
+        densityCl = d.Value(densityCl),
+        standStru = d.Value(standStru),
+        succStage = d.Value(succStage),
+        wetlandClass = d.Value(wetlandClass);
+  static d.Insertable<GpSiteInfoData> custom({
+    d.Expression<int>? id,
+    d.Expression<int>? gpSummaryId,
+    d.Expression<String>? plotCompletion,
+    d.Expression<String>? incompReason,
+    d.Expression<String>? province,
+    d.Expression<int>? ecozone,
+    d.Expression<String>? provEcoType,
+    d.Expression<int>? provEcoRef,
+    d.Expression<int>? utmN,
+    d.Expression<int>? utmE,
+    d.Expression<int>? utmZone,
+    d.Expression<int>? slope,
+    d.Expression<int>? aspect,
+    d.Expression<int>? elevation,
+    d.Expression<String>? landBase,
+    d.Expression<String>? landCover,
+    d.Expression<String>? landPos,
+    d.Expression<String>? vegType,
+    d.Expression<String>? densityCl,
+    d.Expression<String>? standStru,
+    d.Expression<String>? succStage,
+    d.Expression<String>? wetlandClass,
+    d.Expression<String>? userInfo,
+  }) {
+    return d.RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (gpSummaryId != null) 'gp_summary_id': gpSummaryId,
+      if (plotCompletion != null) 'plot_completion': plotCompletion,
+      if (incompReason != null) 'incomp_reason': incompReason,
+      if (province != null) 'province': province,
+      if (ecozone != null) 'ecozone': ecozone,
+      if (provEcoType != null) 'prov_eco_type': provEcoType,
+      if (provEcoRef != null) 'prov_eco_ref': provEcoRef,
+      if (utmN != null) 'utm_n': utmN,
+      if (utmE != null) 'utm_e': utmE,
+      if (utmZone != null) 'utm_zone': utmZone,
+      if (slope != null) 'slope': slope,
+      if (aspect != null) 'aspect': aspect,
+      if (elevation != null) 'elevation': elevation,
+      if (landBase != null) 'land_base': landBase,
+      if (landCover != null) 'land_cover': landCover,
+      if (landPos != null) 'land_pos': landPos,
+      if (vegType != null) 'veg_type': vegType,
+      if (densityCl != null) 'density_cl': densityCl,
+      if (standStru != null) 'stand_stru': standStru,
+      if (succStage != null) 'succ_stage': succStage,
+      if (wetlandClass != null) 'wetland_class': wetlandClass,
+      if (userInfo != null) 'user_info': userInfo,
+    });
+  }
+
+  GpSiteInfoCompanion copyWith(
+      {d.Value<int>? id,
+      d.Value<int>? gpSummaryId,
+      d.Value<String>? plotCompletion,
+      d.Value<String>? incompReason,
+      d.Value<String>? province,
+      d.Value<int>? ecozone,
+      d.Value<String?>? provEcoType,
+      d.Value<int>? provEcoRef,
+      d.Value<int>? utmN,
+      d.Value<int>? utmE,
+      d.Value<int>? utmZone,
+      d.Value<int>? slope,
+      d.Value<int>? aspect,
+      d.Value<int>? elevation,
+      d.Value<String>? landBase,
+      d.Value<String>? landCover,
+      d.Value<String>? landPos,
+      d.Value<String>? vegType,
+      d.Value<String>? densityCl,
+      d.Value<String>? standStru,
+      d.Value<String>? succStage,
+      d.Value<String>? wetlandClass,
+      d.Value<String?>? userInfo}) {
+    return GpSiteInfoCompanion(
+      id: id ?? this.id,
+      gpSummaryId: gpSummaryId ?? this.gpSummaryId,
+      plotCompletion: plotCompletion ?? this.plotCompletion,
+      incompReason: incompReason ?? this.incompReason,
+      province: province ?? this.province,
+      ecozone: ecozone ?? this.ecozone,
+      provEcoType: provEcoType ?? this.provEcoType,
+      provEcoRef: provEcoRef ?? this.provEcoRef,
+      utmN: utmN ?? this.utmN,
+      utmE: utmE ?? this.utmE,
+      utmZone: utmZone ?? this.utmZone,
+      slope: slope ?? this.slope,
+      aspect: aspect ?? this.aspect,
+      elevation: elevation ?? this.elevation,
+      landBase: landBase ?? this.landBase,
+      landCover: landCover ?? this.landCover,
+      landPos: landPos ?? this.landPos,
+      vegType: vegType ?? this.vegType,
+      densityCl: densityCl ?? this.densityCl,
+      standStru: standStru ?? this.standStru,
+      succStage: succStage ?? this.succStage,
+      wetlandClass: wetlandClass ?? this.wetlandClass,
+      userInfo: userInfo ?? this.userInfo,
+    );
+  }
+
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    if (id.present) {
+      map['id'] = d.Variable<int>(id.value);
+    }
+    if (gpSummaryId.present) {
+      map['gp_summary_id'] = d.Variable<int>(gpSummaryId.value);
+    }
+    if (plotCompletion.present) {
+      map['plot_completion'] = d.Variable<String>(plotCompletion.value);
+    }
+    if (incompReason.present) {
+      map['incomp_reason'] = d.Variable<String>(incompReason.value);
+    }
+    if (province.present) {
+      map['province'] = d.Variable<String>(province.value);
+    }
+    if (ecozone.present) {
+      map['ecozone'] = d.Variable<int>(ecozone.value);
+    }
+    if (provEcoType.present) {
+      map['prov_eco_type'] = d.Variable<String>(provEcoType.value);
+    }
+    if (provEcoRef.present) {
+      map['prov_eco_ref'] = d.Variable<int>(provEcoRef.value);
+    }
+    if (utmN.present) {
+      map['utm_n'] = d.Variable<int>(utmN.value);
+    }
+    if (utmE.present) {
+      map['utm_e'] = d.Variable<int>(utmE.value);
+    }
+    if (utmZone.present) {
+      map['utm_zone'] = d.Variable<int>(utmZone.value);
+    }
+    if (slope.present) {
+      map['slope'] = d.Variable<int>(slope.value);
+    }
+    if (aspect.present) {
+      map['aspect'] = d.Variable<int>(aspect.value);
+    }
+    if (elevation.present) {
+      map['elevation'] = d.Variable<int>(elevation.value);
+    }
+    if (landBase.present) {
+      map['land_base'] = d.Variable<String>(landBase.value);
+    }
+    if (landCover.present) {
+      map['land_cover'] = d.Variable<String>(landCover.value);
+    }
+    if (landPos.present) {
+      map['land_pos'] = d.Variable<String>(landPos.value);
+    }
+    if (vegType.present) {
+      map['veg_type'] = d.Variable<String>(vegType.value);
+    }
+    if (densityCl.present) {
+      map['density_cl'] = d.Variable<String>(densityCl.value);
+    }
+    if (standStru.present) {
+      map['stand_stru'] = d.Variable<String>(standStru.value);
+    }
+    if (succStage.present) {
+      map['succ_stage'] = d.Variable<String>(succStage.value);
+    }
+    if (wetlandClass.present) {
+      map['wetland_class'] = d.Variable<String>(wetlandClass.value);
+    }
+    if (userInfo.present) {
+      map['user_info'] = d.Variable<String>(userInfo.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GpSiteInfoCompanion(')
+          ..write('id: $id, ')
+          ..write('gpSummaryId: $gpSummaryId, ')
+          ..write('plotCompletion: $plotCompletion, ')
+          ..write('incompReason: $incompReason, ')
+          ..write('province: $province, ')
+          ..write('ecozone: $ecozone, ')
+          ..write('provEcoType: $provEcoType, ')
+          ..write('provEcoRef: $provEcoRef, ')
+          ..write('utmN: $utmN, ')
+          ..write('utmE: $utmE, ')
+          ..write('utmZone: $utmZone, ')
+          ..write('slope: $slope, ')
+          ..write('aspect: $aspect, ')
+          ..write('elevation: $elevation, ')
+          ..write('landBase: $landBase, ')
+          ..write('landCover: $landCover, ')
+          ..write('landPos: $landPos, ')
+          ..write('vegType: $vegType, ')
+          ..write('densityCl: $densityCl, ')
+          ..write('standStru: $standStru, ')
+          ..write('succStage: $succStage, ')
+          ..write('wetlandClass: $wetlandClass, ')
+          ..write('userInfo: $userInfo')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $GpDisturbanceTable extends GpDisturbance
+    with d.TableInfo<$GpDisturbanceTable, GpDisturbanceData> {
+  @override
+  final d.GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GpDisturbanceTable(this.attachedDatabase, [this._alias]);
+  static const d.VerificationMeta _idMeta = const d.VerificationMeta('id');
+  @override
+  late final d.GeneratedColumn<int> id = d.GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const d.VerificationMeta _gpSummaryIdMeta =
+      const d.VerificationMeta('gpSummaryId');
+  @override
+  late final d.GeneratedColumn<int> gpSummaryId = d.GeneratedColumn<int>(
+      'gp_summary_id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES gp_summary (id)'));
+  static const d.VerificationMeta _distAgentMeta =
+      const d.VerificationMeta('distAgent');
+  @override
+  late final d.GeneratedColumn<String> distAgent = d.GeneratedColumn<String>(
+      'dist_agent', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 20),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const d.VerificationMeta _distYrMeta =
+      const d.VerificationMeta('distYr');
+  @override
+  late final d.GeneratedColumn<int> distYr = d.GeneratedColumn<int>(
+      'dist_yr', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const d.VerificationMeta _distPctMeta =
+      const d.VerificationMeta('distPct');
+  @override
+  late final d.GeneratedColumn<int> distPct = d.GeneratedColumn<int>(
+      'dist_pct', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const d.VerificationMeta _mortPctMeta =
+      const d.VerificationMeta('mortPct');
+  @override
+  late final d.GeneratedColumn<int> mortPct = d.GeneratedColumn<int>(
+      'mort_pct', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const d.VerificationMeta _mortBasisMeta =
+      const d.VerificationMeta('mortBasis');
+  @override
+  late final d.GeneratedColumn<String> mortBasis = d.GeneratedColumn<String>(
+      'mort_basis', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 2),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const d.VerificationMeta _agentTypeMeta =
+      const d.VerificationMeta('agentType');
+  @override
+  late final d.GeneratedColumn<String> agentType = d.GeneratedColumn<String>(
+      'agent_type', aliasedName, true,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 200),
+      type: DriftSqlType.string,
+      requiredDuringInsert: false);
+  @override
+  List<d.GeneratedColumn> get $columns => [
+        id,
+        gpSummaryId,
+        distAgent,
+        distYr,
+        distPct,
+        mortPct,
+        mortBasis,
+        agentType
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'gp_disturbance';
+  @override
+  d.VerificationContext validateIntegrity(
+      d.Insertable<GpDisturbanceData> instance,
+      {bool isInserting = false}) {
+    final context = d.VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('gp_summary_id')) {
+      context.handle(
+          _gpSummaryIdMeta,
+          gpSummaryId.isAcceptableOrUnknown(
+              data['gp_summary_id']!, _gpSummaryIdMeta));
+    } else if (isInserting) {
+      context.missing(_gpSummaryIdMeta);
+    }
+    if (data.containsKey('dist_agent')) {
+      context.handle(_distAgentMeta,
+          distAgent.isAcceptableOrUnknown(data['dist_agent']!, _distAgentMeta));
+    } else if (isInserting) {
+      context.missing(_distAgentMeta);
+    }
+    if (data.containsKey('dist_yr')) {
+      context.handle(_distYrMeta,
+          distYr.isAcceptableOrUnknown(data['dist_yr']!, _distYrMeta));
+    } else if (isInserting) {
+      context.missing(_distYrMeta);
+    }
+    if (data.containsKey('dist_pct')) {
+      context.handle(_distPctMeta,
+          distPct.isAcceptableOrUnknown(data['dist_pct']!, _distPctMeta));
+    } else if (isInserting) {
+      context.missing(_distPctMeta);
+    }
+    if (data.containsKey('mort_pct')) {
+      context.handle(_mortPctMeta,
+          mortPct.isAcceptableOrUnknown(data['mort_pct']!, _mortPctMeta));
+    } else if (isInserting) {
+      context.missing(_mortPctMeta);
+    }
+    if (data.containsKey('mort_basis')) {
+      context.handle(_mortBasisMeta,
+          mortBasis.isAcceptableOrUnknown(data['mort_basis']!, _mortBasisMeta));
+    } else if (isInserting) {
+      context.missing(_mortBasisMeta);
+    }
+    if (data.containsKey('agent_type')) {
+      context.handle(_agentTypeMeta,
+          agentType.isAcceptableOrUnknown(data['agent_type']!, _agentTypeMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<d.GeneratedColumn> get $primaryKey => {id};
+  @override
+  GpDisturbanceData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return GpDisturbanceData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      gpSummaryId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}gp_summary_id'])!,
+      distAgent: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}dist_agent'])!,
+      distYr: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}dist_yr'])!,
+      distPct: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}dist_pct'])!,
+      mortPct: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}mort_pct'])!,
+      mortBasis: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}mort_basis'])!,
+      agentType: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}agent_type']),
+    );
+  }
+
+  @override
+  $GpDisturbanceTable createAlias(String alias) {
+    return $GpDisturbanceTable(attachedDatabase, alias);
+  }
+}
+
+class GpDisturbanceData extends d.DataClass
+    implements d.Insertable<GpDisturbanceData> {
+  final int id;
+  final int gpSummaryId;
+  final String distAgent;
+  final int distYr;
+  final int distPct;
+  final int mortPct;
+  final String mortBasis;
+  final String? agentType;
+  const GpDisturbanceData(
+      {required this.id,
+      required this.gpSummaryId,
+      required this.distAgent,
+      required this.distYr,
+      required this.distPct,
+      required this.mortPct,
+      required this.mortBasis,
+      this.agentType});
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    map['id'] = d.Variable<int>(id);
+    map['gp_summary_id'] = d.Variable<int>(gpSummaryId);
+    map['dist_agent'] = d.Variable<String>(distAgent);
+    map['dist_yr'] = d.Variable<int>(distYr);
+    map['dist_pct'] = d.Variable<int>(distPct);
+    map['mort_pct'] = d.Variable<int>(mortPct);
+    map['mort_basis'] = d.Variable<String>(mortBasis);
+    if (!nullToAbsent || agentType != null) {
+      map['agent_type'] = d.Variable<String>(agentType);
+    }
+    return map;
+  }
+
+  GpDisturbanceCompanion toCompanion(bool nullToAbsent) {
+    return GpDisturbanceCompanion(
+      id: d.Value(id),
+      gpSummaryId: d.Value(gpSummaryId),
+      distAgent: d.Value(distAgent),
+      distYr: d.Value(distYr),
+      distPct: d.Value(distPct),
+      mortPct: d.Value(mortPct),
+      mortBasis: d.Value(mortBasis),
+      agentType: agentType == null && nullToAbsent
+          ? const d.Value.absent()
+          : d.Value(agentType),
+    );
+  }
+
+  factory GpDisturbanceData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return GpDisturbanceData(
+      id: serializer.fromJson<int>(json['id']),
+      gpSummaryId: serializer.fromJson<int>(json['gpSummaryId']),
+      distAgent: serializer.fromJson<String>(json['distAgent']),
+      distYr: serializer.fromJson<int>(json['distYr']),
+      distPct: serializer.fromJson<int>(json['distPct']),
+      mortPct: serializer.fromJson<int>(json['mortPct']),
+      mortBasis: serializer.fromJson<String>(json['mortBasis']),
+      agentType: serializer.fromJson<String?>(json['agentType']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'gpSummaryId': serializer.toJson<int>(gpSummaryId),
+      'distAgent': serializer.toJson<String>(distAgent),
+      'distYr': serializer.toJson<int>(distYr),
+      'distPct': serializer.toJson<int>(distPct),
+      'mortPct': serializer.toJson<int>(mortPct),
+      'mortBasis': serializer.toJson<String>(mortBasis),
+      'agentType': serializer.toJson<String?>(agentType),
+    };
+  }
+
+  GpDisturbanceData copyWith(
+          {int? id,
+          int? gpSummaryId,
+          String? distAgent,
+          int? distYr,
+          int? distPct,
+          int? mortPct,
+          String? mortBasis,
+          d.Value<String?> agentType = const d.Value.absent()}) =>
+      GpDisturbanceData(
+        id: id ?? this.id,
+        gpSummaryId: gpSummaryId ?? this.gpSummaryId,
+        distAgent: distAgent ?? this.distAgent,
+        distYr: distYr ?? this.distYr,
+        distPct: distPct ?? this.distPct,
+        mortPct: mortPct ?? this.mortPct,
+        mortBasis: mortBasis ?? this.mortBasis,
+        agentType: agentType.present ? agentType.value : this.agentType,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('GpDisturbanceData(')
+          ..write('id: $id, ')
+          ..write('gpSummaryId: $gpSummaryId, ')
+          ..write('distAgent: $distAgent, ')
+          ..write('distYr: $distYr, ')
+          ..write('distPct: $distPct, ')
+          ..write('mortPct: $mortPct, ')
+          ..write('mortBasis: $mortBasis, ')
+          ..write('agentType: $agentType')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, gpSummaryId, distAgent, distYr, distPct,
+      mortPct, mortBasis, agentType);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GpDisturbanceData &&
+          other.id == this.id &&
+          other.gpSummaryId == this.gpSummaryId &&
+          other.distAgent == this.distAgent &&
+          other.distYr == this.distYr &&
+          other.distPct == this.distPct &&
+          other.mortPct == this.mortPct &&
+          other.mortBasis == this.mortBasis &&
+          other.agentType == this.agentType);
+}
+
+class GpDisturbanceCompanion extends d.UpdateCompanion<GpDisturbanceData> {
+  final d.Value<int> id;
+  final d.Value<int> gpSummaryId;
+  final d.Value<String> distAgent;
+  final d.Value<int> distYr;
+  final d.Value<int> distPct;
+  final d.Value<int> mortPct;
+  final d.Value<String> mortBasis;
+  final d.Value<String?> agentType;
+  const GpDisturbanceCompanion({
+    this.id = const d.Value.absent(),
+    this.gpSummaryId = const d.Value.absent(),
+    this.distAgent = const d.Value.absent(),
+    this.distYr = const d.Value.absent(),
+    this.distPct = const d.Value.absent(),
+    this.mortPct = const d.Value.absent(),
+    this.mortBasis = const d.Value.absent(),
+    this.agentType = const d.Value.absent(),
+  });
+  GpDisturbanceCompanion.insert({
+    this.id = const d.Value.absent(),
+    required int gpSummaryId,
+    required String distAgent,
+    required int distYr,
+    required int distPct,
+    required int mortPct,
+    required String mortBasis,
+    this.agentType = const d.Value.absent(),
+  })  : gpSummaryId = d.Value(gpSummaryId),
+        distAgent = d.Value(distAgent),
+        distYr = d.Value(distYr),
+        distPct = d.Value(distPct),
+        mortPct = d.Value(mortPct),
+        mortBasis = d.Value(mortBasis);
+  static d.Insertable<GpDisturbanceData> custom({
+    d.Expression<int>? id,
+    d.Expression<int>? gpSummaryId,
+    d.Expression<String>? distAgent,
+    d.Expression<int>? distYr,
+    d.Expression<int>? distPct,
+    d.Expression<int>? mortPct,
+    d.Expression<String>? mortBasis,
+    d.Expression<String>? agentType,
+  }) {
+    return d.RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (gpSummaryId != null) 'gp_summary_id': gpSummaryId,
+      if (distAgent != null) 'dist_agent': distAgent,
+      if (distYr != null) 'dist_yr': distYr,
+      if (distPct != null) 'dist_pct': distPct,
+      if (mortPct != null) 'mort_pct': mortPct,
+      if (mortBasis != null) 'mort_basis': mortBasis,
+      if (agentType != null) 'agent_type': agentType,
+    });
+  }
+
+  GpDisturbanceCompanion copyWith(
+      {d.Value<int>? id,
+      d.Value<int>? gpSummaryId,
+      d.Value<String>? distAgent,
+      d.Value<int>? distYr,
+      d.Value<int>? distPct,
+      d.Value<int>? mortPct,
+      d.Value<String>? mortBasis,
+      d.Value<String?>? agentType}) {
+    return GpDisturbanceCompanion(
+      id: id ?? this.id,
+      gpSummaryId: gpSummaryId ?? this.gpSummaryId,
+      distAgent: distAgent ?? this.distAgent,
+      distYr: distYr ?? this.distYr,
+      distPct: distPct ?? this.distPct,
+      mortPct: mortPct ?? this.mortPct,
+      mortBasis: mortBasis ?? this.mortBasis,
+      agentType: agentType ?? this.agentType,
+    );
+  }
+
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    if (id.present) {
+      map['id'] = d.Variable<int>(id.value);
+    }
+    if (gpSummaryId.present) {
+      map['gp_summary_id'] = d.Variable<int>(gpSummaryId.value);
+    }
+    if (distAgent.present) {
+      map['dist_agent'] = d.Variable<String>(distAgent.value);
+    }
+    if (distYr.present) {
+      map['dist_yr'] = d.Variable<int>(distYr.value);
+    }
+    if (distPct.present) {
+      map['dist_pct'] = d.Variable<int>(distPct.value);
+    }
+    if (mortPct.present) {
+      map['mort_pct'] = d.Variable<int>(mortPct.value);
+    }
+    if (mortBasis.present) {
+      map['mort_basis'] = d.Variable<String>(mortBasis.value);
+    }
+    if (agentType.present) {
+      map['agent_type'] = d.Variable<String>(agentType.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GpDisturbanceCompanion(')
+          ..write('id: $id, ')
+          ..write('gpSummaryId: $gpSummaryId, ')
+          ..write('distAgent: $distAgent, ')
+          ..write('distYr: $distYr, ')
+          ..write('distPct: $distPct, ')
+          ..write('mortPct: $mortPct, ')
+          ..write('mortBasis: $mortBasis, ')
+          ..write('agentType: $agentType')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $GpOriginTable extends GpOrigin
+    with d.TableInfo<$GpOriginTable, GpOriginData> {
+  @override
+  final d.GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GpOriginTable(this.attachedDatabase, [this._alias]);
+  static const d.VerificationMeta _idMeta = const d.VerificationMeta('id');
+  @override
+  late final d.GeneratedColumn<int> id = d.GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const d.VerificationMeta _gpSummaryIdMeta =
+      const d.VerificationMeta('gpSummaryId');
+  @override
+  late final d.GeneratedColumn<int> gpSummaryId = d.GeneratedColumn<int>(
+      'gp_summary_id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES gp_summary (id)'));
+  static const d.VerificationMeta _vegOrigMeta =
+      const d.VerificationMeta('vegOrig');
+  @override
+  late final d.GeneratedColumn<String> vegOrig = d.GeneratedColumn<String>(
+      'veg_orig', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 4),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const d.VerificationMeta _regenTypeMeta =
+      const d.VerificationMeta('regenType');
+  @override
+  late final d.GeneratedColumn<String> regenType = d.GeneratedColumn<String>(
+      'regen_type', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 3),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const d.VerificationMeta _regenYrMeta =
+      const d.VerificationMeta('regenYr');
+  @override
+  late final d.GeneratedColumn<int> regenYr = d.GeneratedColumn<int>(
+      'regen_yr', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  @override
+  List<d.GeneratedColumn> get $columns =>
+      [id, gpSummaryId, vegOrig, regenType, regenYr];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'gp_origin';
+  @override
+  d.VerificationContext validateIntegrity(d.Insertable<GpOriginData> instance,
+      {bool isInserting = false}) {
+    final context = d.VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('gp_summary_id')) {
+      context.handle(
+          _gpSummaryIdMeta,
+          gpSummaryId.isAcceptableOrUnknown(
+              data['gp_summary_id']!, _gpSummaryIdMeta));
+    } else if (isInserting) {
+      context.missing(_gpSummaryIdMeta);
+    }
+    if (data.containsKey('veg_orig')) {
+      context.handle(_vegOrigMeta,
+          vegOrig.isAcceptableOrUnknown(data['veg_orig']!, _vegOrigMeta));
+    } else if (isInserting) {
+      context.missing(_vegOrigMeta);
+    }
+    if (data.containsKey('regen_type')) {
+      context.handle(_regenTypeMeta,
+          regenType.isAcceptableOrUnknown(data['regen_type']!, _regenTypeMeta));
+    } else if (isInserting) {
+      context.missing(_regenTypeMeta);
+    }
+    if (data.containsKey('regen_yr')) {
+      context.handle(_regenYrMeta,
+          regenYr.isAcceptableOrUnknown(data['regen_yr']!, _regenYrMeta));
+    } else if (isInserting) {
+      context.missing(_regenYrMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<d.GeneratedColumn> get $primaryKey => {id};
+  @override
+  GpOriginData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return GpOriginData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      gpSummaryId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}gp_summary_id'])!,
+      vegOrig: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}veg_orig'])!,
+      regenType: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}regen_type'])!,
+      regenYr: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}regen_yr'])!,
+    );
+  }
+
+  @override
+  $GpOriginTable createAlias(String alias) {
+    return $GpOriginTable(attachedDatabase, alias);
+  }
+}
+
+class GpOriginData extends d.DataClass implements d.Insertable<GpOriginData> {
+  final int id;
+  final int gpSummaryId;
+  final String vegOrig;
+  final String regenType;
+  final int regenYr;
+  const GpOriginData(
+      {required this.id,
+      required this.gpSummaryId,
+      required this.vegOrig,
+      required this.regenType,
+      required this.regenYr});
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    map['id'] = d.Variable<int>(id);
+    map['gp_summary_id'] = d.Variable<int>(gpSummaryId);
+    map['veg_orig'] = d.Variable<String>(vegOrig);
+    map['regen_type'] = d.Variable<String>(regenType);
+    map['regen_yr'] = d.Variable<int>(regenYr);
+    return map;
+  }
+
+  GpOriginCompanion toCompanion(bool nullToAbsent) {
+    return GpOriginCompanion(
+      id: d.Value(id),
+      gpSummaryId: d.Value(gpSummaryId),
+      vegOrig: d.Value(vegOrig),
+      regenType: d.Value(regenType),
+      regenYr: d.Value(regenYr),
+    );
+  }
+
+  factory GpOriginData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return GpOriginData(
+      id: serializer.fromJson<int>(json['id']),
+      gpSummaryId: serializer.fromJson<int>(json['gpSummaryId']),
+      vegOrig: serializer.fromJson<String>(json['vegOrig']),
+      regenType: serializer.fromJson<String>(json['regenType']),
+      regenYr: serializer.fromJson<int>(json['regenYr']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'gpSummaryId': serializer.toJson<int>(gpSummaryId),
+      'vegOrig': serializer.toJson<String>(vegOrig),
+      'regenType': serializer.toJson<String>(regenType),
+      'regenYr': serializer.toJson<int>(regenYr),
+    };
+  }
+
+  GpOriginData copyWith(
+          {int? id,
+          int? gpSummaryId,
+          String? vegOrig,
+          String? regenType,
+          int? regenYr}) =>
+      GpOriginData(
+        id: id ?? this.id,
+        gpSummaryId: gpSummaryId ?? this.gpSummaryId,
+        vegOrig: vegOrig ?? this.vegOrig,
+        regenType: regenType ?? this.regenType,
+        regenYr: regenYr ?? this.regenYr,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('GpOriginData(')
+          ..write('id: $id, ')
+          ..write('gpSummaryId: $gpSummaryId, ')
+          ..write('vegOrig: $vegOrig, ')
+          ..write('regenType: $regenType, ')
+          ..write('regenYr: $regenYr')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, gpSummaryId, vegOrig, regenType, regenYr);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GpOriginData &&
+          other.id == this.id &&
+          other.gpSummaryId == this.gpSummaryId &&
+          other.vegOrig == this.vegOrig &&
+          other.regenType == this.regenType &&
+          other.regenYr == this.regenYr);
+}
+
+class GpOriginCompanion extends d.UpdateCompanion<GpOriginData> {
+  final d.Value<int> id;
+  final d.Value<int> gpSummaryId;
+  final d.Value<String> vegOrig;
+  final d.Value<String> regenType;
+  final d.Value<int> regenYr;
+  const GpOriginCompanion({
+    this.id = const d.Value.absent(),
+    this.gpSummaryId = const d.Value.absent(),
+    this.vegOrig = const d.Value.absent(),
+    this.regenType = const d.Value.absent(),
+    this.regenYr = const d.Value.absent(),
+  });
+  GpOriginCompanion.insert({
+    this.id = const d.Value.absent(),
+    required int gpSummaryId,
+    required String vegOrig,
+    required String regenType,
+    required int regenYr,
+  })  : gpSummaryId = d.Value(gpSummaryId),
+        vegOrig = d.Value(vegOrig),
+        regenType = d.Value(regenType),
+        regenYr = d.Value(regenYr);
+  static d.Insertable<GpOriginData> custom({
+    d.Expression<int>? id,
+    d.Expression<int>? gpSummaryId,
+    d.Expression<String>? vegOrig,
+    d.Expression<String>? regenType,
+    d.Expression<int>? regenYr,
+  }) {
+    return d.RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (gpSummaryId != null) 'gp_summary_id': gpSummaryId,
+      if (vegOrig != null) 'veg_orig': vegOrig,
+      if (regenType != null) 'regen_type': regenType,
+      if (regenYr != null) 'regen_yr': regenYr,
+    });
+  }
+
+  GpOriginCompanion copyWith(
+      {d.Value<int>? id,
+      d.Value<int>? gpSummaryId,
+      d.Value<String>? vegOrig,
+      d.Value<String>? regenType,
+      d.Value<int>? regenYr}) {
+    return GpOriginCompanion(
+      id: id ?? this.id,
+      gpSummaryId: gpSummaryId ?? this.gpSummaryId,
+      vegOrig: vegOrig ?? this.vegOrig,
+      regenType: regenType ?? this.regenType,
+      regenYr: regenYr ?? this.regenYr,
+    );
+  }
+
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    if (id.present) {
+      map['id'] = d.Variable<int>(id.value);
+    }
+    if (gpSummaryId.present) {
+      map['gp_summary_id'] = d.Variable<int>(gpSummaryId.value);
+    }
+    if (vegOrig.present) {
+      map['veg_orig'] = d.Variable<String>(vegOrig.value);
+    }
+    if (regenType.present) {
+      map['regen_type'] = d.Variable<String>(regenType.value);
+    }
+    if (regenYr.present) {
+      map['regen_yr'] = d.Variable<int>(regenYr.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GpOriginCompanion(')
+          ..write('id: $id, ')
+          ..write('gpSummaryId: $gpSummaryId, ')
+          ..write('vegOrig: $vegOrig, ')
+          ..write('regenType: $regenType, ')
+          ..write('regenYr: $regenYr')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $GpTreatmentTable extends GpTreatment
+    with d.TableInfo<$GpTreatmentTable, GpTreatmentData> {
+  @override
+  final d.GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GpTreatmentTable(this.attachedDatabase, [this._alias]);
+  static const d.VerificationMeta _idMeta = const d.VerificationMeta('id');
+  @override
+  late final d.GeneratedColumn<int> id = d.GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const d.VerificationMeta _gpSummaryIdMeta =
+      const d.VerificationMeta('gpSummaryId');
+  @override
+  late final d.GeneratedColumn<int> gpSummaryId = d.GeneratedColumn<int>(
+      'gp_summary_id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES gp_summary (id)'));
+  static const d.VerificationMeta _treatTypeMeta =
+      const d.VerificationMeta('treatType');
+  @override
+  late final d.GeneratedColumn<String> treatType = d.GeneratedColumn<String>(
+      'treat_type', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 2),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const d.VerificationMeta _treatYrMeta =
+      const d.VerificationMeta('treatYr');
+  @override
+  late final d.GeneratedColumn<int> treatYr = d.GeneratedColumn<int>(
+      'treat_yr', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const d.VerificationMeta _treatPctMeta =
+      const d.VerificationMeta('treatPct');
+  @override
+  late final d.GeneratedColumn<int> treatPct = d.GeneratedColumn<int>(
+      'treat_pct', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  @override
+  List<d.GeneratedColumn> get $columns =>
+      [id, gpSummaryId, treatType, treatYr, treatPct];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'gp_treatment';
+  @override
+  d.VerificationContext validateIntegrity(
+      d.Insertable<GpTreatmentData> instance,
+      {bool isInserting = false}) {
+    final context = d.VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('gp_summary_id')) {
+      context.handle(
+          _gpSummaryIdMeta,
+          gpSummaryId.isAcceptableOrUnknown(
+              data['gp_summary_id']!, _gpSummaryIdMeta));
+    } else if (isInserting) {
+      context.missing(_gpSummaryIdMeta);
+    }
+    if (data.containsKey('treat_type')) {
+      context.handle(_treatTypeMeta,
+          treatType.isAcceptableOrUnknown(data['treat_type']!, _treatTypeMeta));
+    } else if (isInserting) {
+      context.missing(_treatTypeMeta);
+    }
+    if (data.containsKey('treat_yr')) {
+      context.handle(_treatYrMeta,
+          treatYr.isAcceptableOrUnknown(data['treat_yr']!, _treatYrMeta));
+    } else if (isInserting) {
+      context.missing(_treatYrMeta);
+    }
+    if (data.containsKey('treat_pct')) {
+      context.handle(_treatPctMeta,
+          treatPct.isAcceptableOrUnknown(data['treat_pct']!, _treatPctMeta));
+    } else if (isInserting) {
+      context.missing(_treatPctMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<d.GeneratedColumn> get $primaryKey => {id};
+  @override
+  GpTreatmentData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return GpTreatmentData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      gpSummaryId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}gp_summary_id'])!,
+      treatType: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}treat_type'])!,
+      treatYr: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}treat_yr'])!,
+      treatPct: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}treat_pct'])!,
+    );
+  }
+
+  @override
+  $GpTreatmentTable createAlias(String alias) {
+    return $GpTreatmentTable(attachedDatabase, alias);
+  }
+}
+
+class GpTreatmentData extends d.DataClass
+    implements d.Insertable<GpTreatmentData> {
+  final int id;
+  final int gpSummaryId;
+  final String treatType;
+  final int treatYr;
+  final int treatPct;
+  const GpTreatmentData(
+      {required this.id,
+      required this.gpSummaryId,
+      required this.treatType,
+      required this.treatYr,
+      required this.treatPct});
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    map['id'] = d.Variable<int>(id);
+    map['gp_summary_id'] = d.Variable<int>(gpSummaryId);
+    map['treat_type'] = d.Variable<String>(treatType);
+    map['treat_yr'] = d.Variable<int>(treatYr);
+    map['treat_pct'] = d.Variable<int>(treatPct);
+    return map;
+  }
+
+  GpTreatmentCompanion toCompanion(bool nullToAbsent) {
+    return GpTreatmentCompanion(
+      id: d.Value(id),
+      gpSummaryId: d.Value(gpSummaryId),
+      treatType: d.Value(treatType),
+      treatYr: d.Value(treatYr),
+      treatPct: d.Value(treatPct),
+    );
+  }
+
+  factory GpTreatmentData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return GpTreatmentData(
+      id: serializer.fromJson<int>(json['id']),
+      gpSummaryId: serializer.fromJson<int>(json['gpSummaryId']),
+      treatType: serializer.fromJson<String>(json['treatType']),
+      treatYr: serializer.fromJson<int>(json['treatYr']),
+      treatPct: serializer.fromJson<int>(json['treatPct']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'gpSummaryId': serializer.toJson<int>(gpSummaryId),
+      'treatType': serializer.toJson<String>(treatType),
+      'treatYr': serializer.toJson<int>(treatYr),
+      'treatPct': serializer.toJson<int>(treatPct),
+    };
+  }
+
+  GpTreatmentData copyWith(
+          {int? id,
+          int? gpSummaryId,
+          String? treatType,
+          int? treatYr,
+          int? treatPct}) =>
+      GpTreatmentData(
+        id: id ?? this.id,
+        gpSummaryId: gpSummaryId ?? this.gpSummaryId,
+        treatType: treatType ?? this.treatType,
+        treatYr: treatYr ?? this.treatYr,
+        treatPct: treatPct ?? this.treatPct,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('GpTreatmentData(')
+          ..write('id: $id, ')
+          ..write('gpSummaryId: $gpSummaryId, ')
+          ..write('treatType: $treatType, ')
+          ..write('treatYr: $treatYr, ')
+          ..write('treatPct: $treatPct')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, gpSummaryId, treatType, treatYr, treatPct);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GpTreatmentData &&
+          other.id == this.id &&
+          other.gpSummaryId == this.gpSummaryId &&
+          other.treatType == this.treatType &&
+          other.treatYr == this.treatYr &&
+          other.treatPct == this.treatPct);
+}
+
+class GpTreatmentCompanion extends d.UpdateCompanion<GpTreatmentData> {
+  final d.Value<int> id;
+  final d.Value<int> gpSummaryId;
+  final d.Value<String> treatType;
+  final d.Value<int> treatYr;
+  final d.Value<int> treatPct;
+  const GpTreatmentCompanion({
+    this.id = const d.Value.absent(),
+    this.gpSummaryId = const d.Value.absent(),
+    this.treatType = const d.Value.absent(),
+    this.treatYr = const d.Value.absent(),
+    this.treatPct = const d.Value.absent(),
+  });
+  GpTreatmentCompanion.insert({
+    this.id = const d.Value.absent(),
+    required int gpSummaryId,
+    required String treatType,
+    required int treatYr,
+    required int treatPct,
+  })  : gpSummaryId = d.Value(gpSummaryId),
+        treatType = d.Value(treatType),
+        treatYr = d.Value(treatYr),
+        treatPct = d.Value(treatPct);
+  static d.Insertable<GpTreatmentData> custom({
+    d.Expression<int>? id,
+    d.Expression<int>? gpSummaryId,
+    d.Expression<String>? treatType,
+    d.Expression<int>? treatYr,
+    d.Expression<int>? treatPct,
+  }) {
+    return d.RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (gpSummaryId != null) 'gp_summary_id': gpSummaryId,
+      if (treatType != null) 'treat_type': treatType,
+      if (treatYr != null) 'treat_yr': treatYr,
+      if (treatPct != null) 'treat_pct': treatPct,
+    });
+  }
+
+  GpTreatmentCompanion copyWith(
+      {d.Value<int>? id,
+      d.Value<int>? gpSummaryId,
+      d.Value<String>? treatType,
+      d.Value<int>? treatYr,
+      d.Value<int>? treatPct}) {
+    return GpTreatmentCompanion(
+      id: id ?? this.id,
+      gpSummaryId: gpSummaryId ?? this.gpSummaryId,
+      treatType: treatType ?? this.treatType,
+      treatYr: treatYr ?? this.treatYr,
+      treatPct: treatPct ?? this.treatPct,
+    );
+  }
+
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    if (id.present) {
+      map['id'] = d.Variable<int>(id.value);
+    }
+    if (gpSummaryId.present) {
+      map['gp_summary_id'] = d.Variable<int>(gpSummaryId.value);
+    }
+    if (treatType.present) {
+      map['treat_type'] = d.Variable<String>(treatType.value);
+    }
+    if (treatYr.present) {
+      map['treat_yr'] = d.Variable<int>(treatYr.value);
+    }
+    if (treatPct.present) {
+      map['treat_pct'] = d.Variable<int>(treatPct.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GpTreatmentCompanion(')
+          ..write('id: $id, ')
+          ..write('gpSummaryId: $gpSummaryId, ')
+          ..write('treatType: $treatType, ')
+          ..write('treatYr: $treatYr, ')
+          ..write('treatPct: $treatPct')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$Database extends d.GeneratedDatabase {
   _$Database(QueryExecutor e) : super(e);
   _$DatabaseManager get managers => _$DatabaseManager(this);
@@ -23794,6 +26147,11 @@ abstract class _$Database extends d.GeneratedDatabase {
   late final $ShrubListEntryTable shrubListEntry = $ShrubListEntryTable(this);
   late final $StumpSummaryTable stumpSummary = $StumpSummaryTable(this);
   late final $StumpEntryTable stumpEntry = $StumpEntryTable(this);
+  late final $GpSummaryTable gpSummary = $GpSummaryTable(this);
+  late final $GpSiteInfoTable gpSiteInfo = $GpSiteInfoTable(this);
+  late final $GpDisturbanceTable gpDisturbance = $GpDisturbanceTable(this);
+  late final $GpOriginTable gpOrigin = $GpOriginTable(this);
+  late final $GpTreatmentTable gpTreatment = $GpTreatmentTable(this);
   late final ReferenceTablesDao referenceTablesDao =
       ReferenceTablesDao(this as Database);
   late final SurveyInfoTablesDao surveyInfoTablesDao =
@@ -23814,6 +26172,8 @@ abstract class _$Database extends d.GeneratedDatabase {
       StumpPlotTablesDao(this as Database);
   late final LargeTreePlotTablesDao largeTreePlotTablesDao =
       LargeTreePlotTablesDao(this as Database);
+  late final SiteInfoTablesDao siteInfoTablesDao =
+      SiteInfoTablesDao(this as Database);
   @override
   Iterable<d.TableInfo<d.Table, Object?>> get allTables =>
       allSchemaEntities.whereType<d.TableInfo<d.Table, Object?>>();
@@ -23895,7 +26255,12 @@ abstract class _$Database extends d.GeneratedDatabase {
         shrubSummary,
         shrubListEntry,
         stumpSummary,
-        stumpEntry
+        stumpEntry,
+        gpSummary,
+        gpSiteInfo,
+        gpDisturbance,
+        gpOrigin,
+        gpTreatment
       ];
 }
 
@@ -28686,6 +31051,19 @@ class $$SurveyHeadersTableFilterComposer
         builder: (joinBuilder, parentComposers) =>
             $$StumpSummaryTableFilterComposer(d.ComposerState($state.db,
                 $state.db.stumpSummary, joinBuilder, parentComposers)));
+    return f(composer);
+  }
+
+  d.ComposableFilter gpSummaryRefs(
+      d.ComposableFilter Function($$GpSummaryTableFilterComposer f) f) {
+    final $$GpSummaryTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $state.db.gpSummary,
+        getReferencedColumn: (t) => t.surveyId,
+        builder: (joinBuilder, parentComposers) =>
+            $$GpSummaryTableFilterComposer(d.ComposerState(
+                $state.db, $state.db.gpSummary, joinBuilder, parentComposers)));
     return f(composer);
   }
 }
@@ -35882,6 +38260,1144 @@ class $$StumpEntryTableOrderingComposer
   }
 }
 
+typedef $$GpSummaryTableInsertCompanionBuilder = GpSummaryCompanion Function({
+  d.Value<int> id,
+  required int surveyId,
+  required DateTime measDate,
+  d.Value<bool> notAssessed,
+  d.Value<bool> complete,
+});
+typedef $$GpSummaryTableUpdateCompanionBuilder = GpSummaryCompanion Function({
+  d.Value<int> id,
+  d.Value<int> surveyId,
+  d.Value<DateTime> measDate,
+  d.Value<bool> notAssessed,
+  d.Value<bool> complete,
+});
+
+class $$GpSummaryTableTableManager extends d.RootTableManager<
+    _$Database,
+    $GpSummaryTable,
+    GpSummaryData,
+    $$GpSummaryTableFilterComposer,
+    $$GpSummaryTableOrderingComposer,
+    $$GpSummaryTableProcessedTableManager,
+    $$GpSummaryTableInsertCompanionBuilder,
+    $$GpSummaryTableUpdateCompanionBuilder> {
+  $$GpSummaryTableTableManager(_$Database db, $GpSummaryTable table)
+      : super(d.TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$GpSummaryTableFilterComposer(d.ComposerState(db, table)),
+          orderingComposer:
+              $$GpSummaryTableOrderingComposer(d.ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$GpSummaryTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            d.Value<int> id = const d.Value.absent(),
+            d.Value<int> surveyId = const d.Value.absent(),
+            d.Value<DateTime> measDate = const d.Value.absent(),
+            d.Value<bool> notAssessed = const d.Value.absent(),
+            d.Value<bool> complete = const d.Value.absent(),
+          }) =>
+              GpSummaryCompanion(
+            id: id,
+            surveyId: surveyId,
+            measDate: measDate,
+            notAssessed: notAssessed,
+            complete: complete,
+          ),
+          getInsertCompanionBuilder: ({
+            d.Value<int> id = const d.Value.absent(),
+            required int surveyId,
+            required DateTime measDate,
+            d.Value<bool> notAssessed = const d.Value.absent(),
+            d.Value<bool> complete = const d.Value.absent(),
+          }) =>
+              GpSummaryCompanion.insert(
+            id: id,
+            surveyId: surveyId,
+            measDate: measDate,
+            notAssessed: notAssessed,
+            complete: complete,
+          ),
+        ));
+}
+
+class $$GpSummaryTableProcessedTableManager extends d.ProcessedTableManager<
+    _$Database,
+    $GpSummaryTable,
+    GpSummaryData,
+    $$GpSummaryTableFilterComposer,
+    $$GpSummaryTableOrderingComposer,
+    $$GpSummaryTableProcessedTableManager,
+    $$GpSummaryTableInsertCompanionBuilder,
+    $$GpSummaryTableUpdateCompanionBuilder> {
+  $$GpSummaryTableProcessedTableManager(super.$state);
+}
+
+class $$GpSummaryTableFilterComposer
+    extends d.FilterComposer<_$Database, $GpSummaryTable> {
+  $$GpSummaryTableFilterComposer(super.$state);
+  d.ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<DateTime> get measDate => $state.composableBuilder(
+      column: $state.table.measDate,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<bool> get notAssessed => $state.composableBuilder(
+      column: $state.table.notAssessed,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<bool> get complete => $state.composableBuilder(
+      column: $state.table.complete,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  $$SurveyHeadersTableFilterComposer get surveyId {
+    final $$SurveyHeadersTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.surveyId,
+        referencedTable: $state.db.surveyHeaders,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) =>
+            $$SurveyHeadersTableFilterComposer(d.ComposerState($state.db,
+                $state.db.surveyHeaders, joinBuilder, parentComposers)));
+    return composer;
+  }
+
+  d.ComposableFilter gpSiteInfoRefs(
+      d.ComposableFilter Function($$GpSiteInfoTableFilterComposer f) f) {
+    final $$GpSiteInfoTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $state.db.gpSiteInfo,
+        getReferencedColumn: (t) => t.gpSummaryId,
+        builder: (joinBuilder, parentComposers) =>
+            $$GpSiteInfoTableFilterComposer(d.ComposerState($state.db,
+                $state.db.gpSiteInfo, joinBuilder, parentComposers)));
+    return f(composer);
+  }
+
+  d.ComposableFilter gpDisturbanceRefs(
+      d.ComposableFilter Function($$GpDisturbanceTableFilterComposer f) f) {
+    final $$GpDisturbanceTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $state.db.gpDisturbance,
+        getReferencedColumn: (t) => t.gpSummaryId,
+        builder: (joinBuilder, parentComposers) =>
+            $$GpDisturbanceTableFilterComposer(d.ComposerState($state.db,
+                $state.db.gpDisturbance, joinBuilder, parentComposers)));
+    return f(composer);
+  }
+
+  d.ComposableFilter gpOriginRefs(
+      d.ComposableFilter Function($$GpOriginTableFilterComposer f) f) {
+    final $$GpOriginTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $state.db.gpOrigin,
+        getReferencedColumn: (t) => t.gpSummaryId,
+        builder: (joinBuilder, parentComposers) =>
+            $$GpOriginTableFilterComposer(d.ComposerState(
+                $state.db, $state.db.gpOrigin, joinBuilder, parentComposers)));
+    return f(composer);
+  }
+
+  d.ComposableFilter gpTreatmentRefs(
+      d.ComposableFilter Function($$GpTreatmentTableFilterComposer f) f) {
+    final $$GpTreatmentTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $state.db.gpTreatment,
+        getReferencedColumn: (t) => t.gpSummaryId,
+        builder: (joinBuilder, parentComposers) =>
+            $$GpTreatmentTableFilterComposer(d.ComposerState($state.db,
+                $state.db.gpTreatment, joinBuilder, parentComposers)));
+    return f(composer);
+  }
+}
+
+class $$GpSummaryTableOrderingComposer
+    extends d.OrderingComposer<_$Database, $GpSummaryTable> {
+  $$GpSummaryTableOrderingComposer(super.$state);
+  d.ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<DateTime> get measDate => $state.composableBuilder(
+      column: $state.table.measDate,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<bool> get notAssessed => $state.composableBuilder(
+      column: $state.table.notAssessed,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<bool> get complete => $state.composableBuilder(
+      column: $state.table.complete,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  $$SurveyHeadersTableOrderingComposer get surveyId {
+    final $$SurveyHeadersTableOrderingComposer composer =
+        $state.composerBuilder(
+            composer: this,
+            getCurrentColumn: (t) => t.surveyId,
+            referencedTable: $state.db.surveyHeaders,
+            getReferencedColumn: (t) => t.id,
+            builder: (joinBuilder, parentComposers) =>
+                $$SurveyHeadersTableOrderingComposer(d.ComposerState($state.db,
+                    $state.db.surveyHeaders, joinBuilder, parentComposers)));
+    return composer;
+  }
+}
+
+typedef $$GpSiteInfoTableInsertCompanionBuilder = GpSiteInfoCompanion Function({
+  d.Value<int> id,
+  required int gpSummaryId,
+  required String plotCompletion,
+  required String incompReason,
+  required String province,
+  required int ecozone,
+  d.Value<String?> provEcoType,
+  required int provEcoRef,
+  required int utmN,
+  required int utmE,
+  required int utmZone,
+  required int slope,
+  required int aspect,
+  required int elevation,
+  required String landBase,
+  required String landCover,
+  required String landPos,
+  required String vegType,
+  required String densityCl,
+  required String standStru,
+  required String succStage,
+  required String wetlandClass,
+  d.Value<String?> userInfo,
+});
+typedef $$GpSiteInfoTableUpdateCompanionBuilder = GpSiteInfoCompanion Function({
+  d.Value<int> id,
+  d.Value<int> gpSummaryId,
+  d.Value<String> plotCompletion,
+  d.Value<String> incompReason,
+  d.Value<String> province,
+  d.Value<int> ecozone,
+  d.Value<String?> provEcoType,
+  d.Value<int> provEcoRef,
+  d.Value<int> utmN,
+  d.Value<int> utmE,
+  d.Value<int> utmZone,
+  d.Value<int> slope,
+  d.Value<int> aspect,
+  d.Value<int> elevation,
+  d.Value<String> landBase,
+  d.Value<String> landCover,
+  d.Value<String> landPos,
+  d.Value<String> vegType,
+  d.Value<String> densityCl,
+  d.Value<String> standStru,
+  d.Value<String> succStage,
+  d.Value<String> wetlandClass,
+  d.Value<String?> userInfo,
+});
+
+class $$GpSiteInfoTableTableManager extends d.RootTableManager<
+    _$Database,
+    $GpSiteInfoTable,
+    GpSiteInfoData,
+    $$GpSiteInfoTableFilterComposer,
+    $$GpSiteInfoTableOrderingComposer,
+    $$GpSiteInfoTableProcessedTableManager,
+    $$GpSiteInfoTableInsertCompanionBuilder,
+    $$GpSiteInfoTableUpdateCompanionBuilder> {
+  $$GpSiteInfoTableTableManager(_$Database db, $GpSiteInfoTable table)
+      : super(d.TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$GpSiteInfoTableFilterComposer(d.ComposerState(db, table)),
+          orderingComposer:
+              $$GpSiteInfoTableOrderingComposer(d.ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$GpSiteInfoTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            d.Value<int> id = const d.Value.absent(),
+            d.Value<int> gpSummaryId = const d.Value.absent(),
+            d.Value<String> plotCompletion = const d.Value.absent(),
+            d.Value<String> incompReason = const d.Value.absent(),
+            d.Value<String> province = const d.Value.absent(),
+            d.Value<int> ecozone = const d.Value.absent(),
+            d.Value<String?> provEcoType = const d.Value.absent(),
+            d.Value<int> provEcoRef = const d.Value.absent(),
+            d.Value<int> utmN = const d.Value.absent(),
+            d.Value<int> utmE = const d.Value.absent(),
+            d.Value<int> utmZone = const d.Value.absent(),
+            d.Value<int> slope = const d.Value.absent(),
+            d.Value<int> aspect = const d.Value.absent(),
+            d.Value<int> elevation = const d.Value.absent(),
+            d.Value<String> landBase = const d.Value.absent(),
+            d.Value<String> landCover = const d.Value.absent(),
+            d.Value<String> landPos = const d.Value.absent(),
+            d.Value<String> vegType = const d.Value.absent(),
+            d.Value<String> densityCl = const d.Value.absent(),
+            d.Value<String> standStru = const d.Value.absent(),
+            d.Value<String> succStage = const d.Value.absent(),
+            d.Value<String> wetlandClass = const d.Value.absent(),
+            d.Value<String?> userInfo = const d.Value.absent(),
+          }) =>
+              GpSiteInfoCompanion(
+            id: id,
+            gpSummaryId: gpSummaryId,
+            plotCompletion: plotCompletion,
+            incompReason: incompReason,
+            province: province,
+            ecozone: ecozone,
+            provEcoType: provEcoType,
+            provEcoRef: provEcoRef,
+            utmN: utmN,
+            utmE: utmE,
+            utmZone: utmZone,
+            slope: slope,
+            aspect: aspect,
+            elevation: elevation,
+            landBase: landBase,
+            landCover: landCover,
+            landPos: landPos,
+            vegType: vegType,
+            densityCl: densityCl,
+            standStru: standStru,
+            succStage: succStage,
+            wetlandClass: wetlandClass,
+            userInfo: userInfo,
+          ),
+          getInsertCompanionBuilder: ({
+            d.Value<int> id = const d.Value.absent(),
+            required int gpSummaryId,
+            required String plotCompletion,
+            required String incompReason,
+            required String province,
+            required int ecozone,
+            d.Value<String?> provEcoType = const d.Value.absent(),
+            required int provEcoRef,
+            required int utmN,
+            required int utmE,
+            required int utmZone,
+            required int slope,
+            required int aspect,
+            required int elevation,
+            required String landBase,
+            required String landCover,
+            required String landPos,
+            required String vegType,
+            required String densityCl,
+            required String standStru,
+            required String succStage,
+            required String wetlandClass,
+            d.Value<String?> userInfo = const d.Value.absent(),
+          }) =>
+              GpSiteInfoCompanion.insert(
+            id: id,
+            gpSummaryId: gpSummaryId,
+            plotCompletion: plotCompletion,
+            incompReason: incompReason,
+            province: province,
+            ecozone: ecozone,
+            provEcoType: provEcoType,
+            provEcoRef: provEcoRef,
+            utmN: utmN,
+            utmE: utmE,
+            utmZone: utmZone,
+            slope: slope,
+            aspect: aspect,
+            elevation: elevation,
+            landBase: landBase,
+            landCover: landCover,
+            landPos: landPos,
+            vegType: vegType,
+            densityCl: densityCl,
+            standStru: standStru,
+            succStage: succStage,
+            wetlandClass: wetlandClass,
+            userInfo: userInfo,
+          ),
+        ));
+}
+
+class $$GpSiteInfoTableProcessedTableManager extends d.ProcessedTableManager<
+    _$Database,
+    $GpSiteInfoTable,
+    GpSiteInfoData,
+    $$GpSiteInfoTableFilterComposer,
+    $$GpSiteInfoTableOrderingComposer,
+    $$GpSiteInfoTableProcessedTableManager,
+    $$GpSiteInfoTableInsertCompanionBuilder,
+    $$GpSiteInfoTableUpdateCompanionBuilder> {
+  $$GpSiteInfoTableProcessedTableManager(super.$state);
+}
+
+class $$GpSiteInfoTableFilterComposer
+    extends d.FilterComposer<_$Database, $GpSiteInfoTable> {
+  $$GpSiteInfoTableFilterComposer(super.$state);
+  d.ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get plotCompletion => $state.composableBuilder(
+      column: $state.table.plotCompletion,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get incompReason => $state.composableBuilder(
+      column: $state.table.incompReason,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get province => $state.composableBuilder(
+      column: $state.table.province,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<int> get ecozone => $state.composableBuilder(
+      column: $state.table.ecozone,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get provEcoType => $state.composableBuilder(
+      column: $state.table.provEcoType,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<int> get provEcoRef => $state.composableBuilder(
+      column: $state.table.provEcoRef,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<int> get utmN => $state.composableBuilder(
+      column: $state.table.utmN,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<int> get utmE => $state.composableBuilder(
+      column: $state.table.utmE,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<int> get utmZone => $state.composableBuilder(
+      column: $state.table.utmZone,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<int> get slope => $state.composableBuilder(
+      column: $state.table.slope,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<int> get aspect => $state.composableBuilder(
+      column: $state.table.aspect,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<int> get elevation => $state.composableBuilder(
+      column: $state.table.elevation,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get landBase => $state.composableBuilder(
+      column: $state.table.landBase,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get landCover => $state.composableBuilder(
+      column: $state.table.landCover,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get landPos => $state.composableBuilder(
+      column: $state.table.landPos,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get vegType => $state.composableBuilder(
+      column: $state.table.vegType,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get densityCl => $state.composableBuilder(
+      column: $state.table.densityCl,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get standStru => $state.composableBuilder(
+      column: $state.table.standStru,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get succStage => $state.composableBuilder(
+      column: $state.table.succStage,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get wetlandClass => $state.composableBuilder(
+      column: $state.table.wetlandClass,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get userInfo => $state.composableBuilder(
+      column: $state.table.userInfo,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  $$GpSummaryTableFilterComposer get gpSummaryId {
+    final $$GpSummaryTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.gpSummaryId,
+        referencedTable: $state.db.gpSummary,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) =>
+            $$GpSummaryTableFilterComposer(d.ComposerState(
+                $state.db, $state.db.gpSummary, joinBuilder, parentComposers)));
+    return composer;
+  }
+}
+
+class $$GpSiteInfoTableOrderingComposer
+    extends d.OrderingComposer<_$Database, $GpSiteInfoTable> {
+  $$GpSiteInfoTableOrderingComposer(super.$state);
+  d.ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get plotCompletion => $state.composableBuilder(
+      column: $state.table.plotCompletion,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get incompReason => $state.composableBuilder(
+      column: $state.table.incompReason,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get province => $state.composableBuilder(
+      column: $state.table.province,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<int> get ecozone => $state.composableBuilder(
+      column: $state.table.ecozone,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get provEcoType => $state.composableBuilder(
+      column: $state.table.provEcoType,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<int> get provEcoRef => $state.composableBuilder(
+      column: $state.table.provEcoRef,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<int> get utmN => $state.composableBuilder(
+      column: $state.table.utmN,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<int> get utmE => $state.composableBuilder(
+      column: $state.table.utmE,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<int> get utmZone => $state.composableBuilder(
+      column: $state.table.utmZone,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<int> get slope => $state.composableBuilder(
+      column: $state.table.slope,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<int> get aspect => $state.composableBuilder(
+      column: $state.table.aspect,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<int> get elevation => $state.composableBuilder(
+      column: $state.table.elevation,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get landBase => $state.composableBuilder(
+      column: $state.table.landBase,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get landCover => $state.composableBuilder(
+      column: $state.table.landCover,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get landPos => $state.composableBuilder(
+      column: $state.table.landPos,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get vegType => $state.composableBuilder(
+      column: $state.table.vegType,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get densityCl => $state.composableBuilder(
+      column: $state.table.densityCl,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get standStru => $state.composableBuilder(
+      column: $state.table.standStru,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get succStage => $state.composableBuilder(
+      column: $state.table.succStage,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get wetlandClass => $state.composableBuilder(
+      column: $state.table.wetlandClass,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get userInfo => $state.composableBuilder(
+      column: $state.table.userInfo,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  $$GpSummaryTableOrderingComposer get gpSummaryId {
+    final $$GpSummaryTableOrderingComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.gpSummaryId,
+        referencedTable: $state.db.gpSummary,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) =>
+            $$GpSummaryTableOrderingComposer(d.ComposerState(
+                $state.db, $state.db.gpSummary, joinBuilder, parentComposers)));
+    return composer;
+  }
+}
+
+typedef $$GpDisturbanceTableInsertCompanionBuilder = GpDisturbanceCompanion
+    Function({
+  d.Value<int> id,
+  required int gpSummaryId,
+  required String distAgent,
+  required int distYr,
+  required int distPct,
+  required int mortPct,
+  required String mortBasis,
+  d.Value<String?> agentType,
+});
+typedef $$GpDisturbanceTableUpdateCompanionBuilder = GpDisturbanceCompanion
+    Function({
+  d.Value<int> id,
+  d.Value<int> gpSummaryId,
+  d.Value<String> distAgent,
+  d.Value<int> distYr,
+  d.Value<int> distPct,
+  d.Value<int> mortPct,
+  d.Value<String> mortBasis,
+  d.Value<String?> agentType,
+});
+
+class $$GpDisturbanceTableTableManager extends d.RootTableManager<
+    _$Database,
+    $GpDisturbanceTable,
+    GpDisturbanceData,
+    $$GpDisturbanceTableFilterComposer,
+    $$GpDisturbanceTableOrderingComposer,
+    $$GpDisturbanceTableProcessedTableManager,
+    $$GpDisturbanceTableInsertCompanionBuilder,
+    $$GpDisturbanceTableUpdateCompanionBuilder> {
+  $$GpDisturbanceTableTableManager(_$Database db, $GpDisturbanceTable table)
+      : super(d.TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$GpDisturbanceTableFilterComposer(d.ComposerState(db, table)),
+          orderingComposer:
+              $$GpDisturbanceTableOrderingComposer(d.ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$GpDisturbanceTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            d.Value<int> id = const d.Value.absent(),
+            d.Value<int> gpSummaryId = const d.Value.absent(),
+            d.Value<String> distAgent = const d.Value.absent(),
+            d.Value<int> distYr = const d.Value.absent(),
+            d.Value<int> distPct = const d.Value.absent(),
+            d.Value<int> mortPct = const d.Value.absent(),
+            d.Value<String> mortBasis = const d.Value.absent(),
+            d.Value<String?> agentType = const d.Value.absent(),
+          }) =>
+              GpDisturbanceCompanion(
+            id: id,
+            gpSummaryId: gpSummaryId,
+            distAgent: distAgent,
+            distYr: distYr,
+            distPct: distPct,
+            mortPct: mortPct,
+            mortBasis: mortBasis,
+            agentType: agentType,
+          ),
+          getInsertCompanionBuilder: ({
+            d.Value<int> id = const d.Value.absent(),
+            required int gpSummaryId,
+            required String distAgent,
+            required int distYr,
+            required int distPct,
+            required int mortPct,
+            required String mortBasis,
+            d.Value<String?> agentType = const d.Value.absent(),
+          }) =>
+              GpDisturbanceCompanion.insert(
+            id: id,
+            gpSummaryId: gpSummaryId,
+            distAgent: distAgent,
+            distYr: distYr,
+            distPct: distPct,
+            mortPct: mortPct,
+            mortBasis: mortBasis,
+            agentType: agentType,
+          ),
+        ));
+}
+
+class $$GpDisturbanceTableProcessedTableManager extends d.ProcessedTableManager<
+    _$Database,
+    $GpDisturbanceTable,
+    GpDisturbanceData,
+    $$GpDisturbanceTableFilterComposer,
+    $$GpDisturbanceTableOrderingComposer,
+    $$GpDisturbanceTableProcessedTableManager,
+    $$GpDisturbanceTableInsertCompanionBuilder,
+    $$GpDisturbanceTableUpdateCompanionBuilder> {
+  $$GpDisturbanceTableProcessedTableManager(super.$state);
+}
+
+class $$GpDisturbanceTableFilterComposer
+    extends d.FilterComposer<_$Database, $GpDisturbanceTable> {
+  $$GpDisturbanceTableFilterComposer(super.$state);
+  d.ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get distAgent => $state.composableBuilder(
+      column: $state.table.distAgent,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<int> get distYr => $state.composableBuilder(
+      column: $state.table.distYr,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<int> get distPct => $state.composableBuilder(
+      column: $state.table.distPct,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<int> get mortPct => $state.composableBuilder(
+      column: $state.table.mortPct,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get mortBasis => $state.composableBuilder(
+      column: $state.table.mortBasis,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get agentType => $state.composableBuilder(
+      column: $state.table.agentType,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  $$GpSummaryTableFilterComposer get gpSummaryId {
+    final $$GpSummaryTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.gpSummaryId,
+        referencedTable: $state.db.gpSummary,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) =>
+            $$GpSummaryTableFilterComposer(d.ComposerState(
+                $state.db, $state.db.gpSummary, joinBuilder, parentComposers)));
+    return composer;
+  }
+}
+
+class $$GpDisturbanceTableOrderingComposer
+    extends d.OrderingComposer<_$Database, $GpDisturbanceTable> {
+  $$GpDisturbanceTableOrderingComposer(super.$state);
+  d.ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get distAgent => $state.composableBuilder(
+      column: $state.table.distAgent,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<int> get distYr => $state.composableBuilder(
+      column: $state.table.distYr,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<int> get distPct => $state.composableBuilder(
+      column: $state.table.distPct,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<int> get mortPct => $state.composableBuilder(
+      column: $state.table.mortPct,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get mortBasis => $state.composableBuilder(
+      column: $state.table.mortBasis,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get agentType => $state.composableBuilder(
+      column: $state.table.agentType,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  $$GpSummaryTableOrderingComposer get gpSummaryId {
+    final $$GpSummaryTableOrderingComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.gpSummaryId,
+        referencedTable: $state.db.gpSummary,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) =>
+            $$GpSummaryTableOrderingComposer(d.ComposerState(
+                $state.db, $state.db.gpSummary, joinBuilder, parentComposers)));
+    return composer;
+  }
+}
+
+typedef $$GpOriginTableInsertCompanionBuilder = GpOriginCompanion Function({
+  d.Value<int> id,
+  required int gpSummaryId,
+  required String vegOrig,
+  required String regenType,
+  required int regenYr,
+});
+typedef $$GpOriginTableUpdateCompanionBuilder = GpOriginCompanion Function({
+  d.Value<int> id,
+  d.Value<int> gpSummaryId,
+  d.Value<String> vegOrig,
+  d.Value<String> regenType,
+  d.Value<int> regenYr,
+});
+
+class $$GpOriginTableTableManager extends d.RootTableManager<
+    _$Database,
+    $GpOriginTable,
+    GpOriginData,
+    $$GpOriginTableFilterComposer,
+    $$GpOriginTableOrderingComposer,
+    $$GpOriginTableProcessedTableManager,
+    $$GpOriginTableInsertCompanionBuilder,
+    $$GpOriginTableUpdateCompanionBuilder> {
+  $$GpOriginTableTableManager(_$Database db, $GpOriginTable table)
+      : super(d.TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$GpOriginTableFilterComposer(d.ComposerState(db, table)),
+          orderingComposer:
+              $$GpOriginTableOrderingComposer(d.ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$GpOriginTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            d.Value<int> id = const d.Value.absent(),
+            d.Value<int> gpSummaryId = const d.Value.absent(),
+            d.Value<String> vegOrig = const d.Value.absent(),
+            d.Value<String> regenType = const d.Value.absent(),
+            d.Value<int> regenYr = const d.Value.absent(),
+          }) =>
+              GpOriginCompanion(
+            id: id,
+            gpSummaryId: gpSummaryId,
+            vegOrig: vegOrig,
+            regenType: regenType,
+            regenYr: regenYr,
+          ),
+          getInsertCompanionBuilder: ({
+            d.Value<int> id = const d.Value.absent(),
+            required int gpSummaryId,
+            required String vegOrig,
+            required String regenType,
+            required int regenYr,
+          }) =>
+              GpOriginCompanion.insert(
+            id: id,
+            gpSummaryId: gpSummaryId,
+            vegOrig: vegOrig,
+            regenType: regenType,
+            regenYr: regenYr,
+          ),
+        ));
+}
+
+class $$GpOriginTableProcessedTableManager extends d.ProcessedTableManager<
+    _$Database,
+    $GpOriginTable,
+    GpOriginData,
+    $$GpOriginTableFilterComposer,
+    $$GpOriginTableOrderingComposer,
+    $$GpOriginTableProcessedTableManager,
+    $$GpOriginTableInsertCompanionBuilder,
+    $$GpOriginTableUpdateCompanionBuilder> {
+  $$GpOriginTableProcessedTableManager(super.$state);
+}
+
+class $$GpOriginTableFilterComposer
+    extends d.FilterComposer<_$Database, $GpOriginTable> {
+  $$GpOriginTableFilterComposer(super.$state);
+  d.ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get vegOrig => $state.composableBuilder(
+      column: $state.table.vegOrig,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get regenType => $state.composableBuilder(
+      column: $state.table.regenType,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<int> get regenYr => $state.composableBuilder(
+      column: $state.table.regenYr,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  $$GpSummaryTableFilterComposer get gpSummaryId {
+    final $$GpSummaryTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.gpSummaryId,
+        referencedTable: $state.db.gpSummary,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) =>
+            $$GpSummaryTableFilterComposer(d.ComposerState(
+                $state.db, $state.db.gpSummary, joinBuilder, parentComposers)));
+    return composer;
+  }
+}
+
+class $$GpOriginTableOrderingComposer
+    extends d.OrderingComposer<_$Database, $GpOriginTable> {
+  $$GpOriginTableOrderingComposer(super.$state);
+  d.ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get vegOrig => $state.composableBuilder(
+      column: $state.table.vegOrig,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get regenType => $state.composableBuilder(
+      column: $state.table.regenType,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<int> get regenYr => $state.composableBuilder(
+      column: $state.table.regenYr,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  $$GpSummaryTableOrderingComposer get gpSummaryId {
+    final $$GpSummaryTableOrderingComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.gpSummaryId,
+        referencedTable: $state.db.gpSummary,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) =>
+            $$GpSummaryTableOrderingComposer(d.ComposerState(
+                $state.db, $state.db.gpSummary, joinBuilder, parentComposers)));
+    return composer;
+  }
+}
+
+typedef $$GpTreatmentTableInsertCompanionBuilder = GpTreatmentCompanion
+    Function({
+  d.Value<int> id,
+  required int gpSummaryId,
+  required String treatType,
+  required int treatYr,
+  required int treatPct,
+});
+typedef $$GpTreatmentTableUpdateCompanionBuilder = GpTreatmentCompanion
+    Function({
+  d.Value<int> id,
+  d.Value<int> gpSummaryId,
+  d.Value<String> treatType,
+  d.Value<int> treatYr,
+  d.Value<int> treatPct,
+});
+
+class $$GpTreatmentTableTableManager extends d.RootTableManager<
+    _$Database,
+    $GpTreatmentTable,
+    GpTreatmentData,
+    $$GpTreatmentTableFilterComposer,
+    $$GpTreatmentTableOrderingComposer,
+    $$GpTreatmentTableProcessedTableManager,
+    $$GpTreatmentTableInsertCompanionBuilder,
+    $$GpTreatmentTableUpdateCompanionBuilder> {
+  $$GpTreatmentTableTableManager(_$Database db, $GpTreatmentTable table)
+      : super(d.TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$GpTreatmentTableFilterComposer(d.ComposerState(db, table)),
+          orderingComposer:
+              $$GpTreatmentTableOrderingComposer(d.ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$GpTreatmentTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            d.Value<int> id = const d.Value.absent(),
+            d.Value<int> gpSummaryId = const d.Value.absent(),
+            d.Value<String> treatType = const d.Value.absent(),
+            d.Value<int> treatYr = const d.Value.absent(),
+            d.Value<int> treatPct = const d.Value.absent(),
+          }) =>
+              GpTreatmentCompanion(
+            id: id,
+            gpSummaryId: gpSummaryId,
+            treatType: treatType,
+            treatYr: treatYr,
+            treatPct: treatPct,
+          ),
+          getInsertCompanionBuilder: ({
+            d.Value<int> id = const d.Value.absent(),
+            required int gpSummaryId,
+            required String treatType,
+            required int treatYr,
+            required int treatPct,
+          }) =>
+              GpTreatmentCompanion.insert(
+            id: id,
+            gpSummaryId: gpSummaryId,
+            treatType: treatType,
+            treatYr: treatYr,
+            treatPct: treatPct,
+          ),
+        ));
+}
+
+class $$GpTreatmentTableProcessedTableManager extends d.ProcessedTableManager<
+    _$Database,
+    $GpTreatmentTable,
+    GpTreatmentData,
+    $$GpTreatmentTableFilterComposer,
+    $$GpTreatmentTableOrderingComposer,
+    $$GpTreatmentTableProcessedTableManager,
+    $$GpTreatmentTableInsertCompanionBuilder,
+    $$GpTreatmentTableUpdateCompanionBuilder> {
+  $$GpTreatmentTableProcessedTableManager(super.$state);
+}
+
+class $$GpTreatmentTableFilterComposer
+    extends d.FilterComposer<_$Database, $GpTreatmentTable> {
+  $$GpTreatmentTableFilterComposer(super.$state);
+  d.ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get treatType => $state.composableBuilder(
+      column: $state.table.treatType,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<int> get treatYr => $state.composableBuilder(
+      column: $state.table.treatYr,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<int> get treatPct => $state.composableBuilder(
+      column: $state.table.treatPct,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  $$GpSummaryTableFilterComposer get gpSummaryId {
+    final $$GpSummaryTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.gpSummaryId,
+        referencedTable: $state.db.gpSummary,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) =>
+            $$GpSummaryTableFilterComposer(d.ComposerState(
+                $state.db, $state.db.gpSummary, joinBuilder, parentComposers)));
+    return composer;
+  }
+}
+
+class $$GpTreatmentTableOrderingComposer
+    extends d.OrderingComposer<_$Database, $GpTreatmentTable> {
+  $$GpTreatmentTableOrderingComposer(super.$state);
+  d.ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get treatType => $state.composableBuilder(
+      column: $state.table.treatType,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<int> get treatYr => $state.composableBuilder(
+      column: $state.table.treatYr,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<int> get treatPct => $state.composableBuilder(
+      column: $state.table.treatPct,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  $$GpSummaryTableOrderingComposer get gpSummaryId {
+    final $$GpSummaryTableOrderingComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.gpSummaryId,
+        referencedTable: $state.db.gpSummary,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) =>
+            $$GpSummaryTableOrderingComposer(d.ComposerState(
+                $state.db, $state.db.gpSummary, joinBuilder, parentComposers)));
+    return composer;
+  }
+}
+
 class _$DatabaseManager {
   final _$Database _db;
   _$DatabaseManager(this._db);
@@ -36046,4 +39562,14 @@ class _$DatabaseManager {
       $$StumpSummaryTableTableManager(_db, _db.stumpSummary);
   $$StumpEntryTableTableManager get stumpEntry =>
       $$StumpEntryTableTableManager(_db, _db.stumpEntry);
+  $$GpSummaryTableTableManager get gpSummary =>
+      $$GpSummaryTableTableManager(_db, _db.gpSummary);
+  $$GpSiteInfoTableTableManager get gpSiteInfo =>
+      $$GpSiteInfoTableTableManager(_db, _db.gpSiteInfo);
+  $$GpDisturbanceTableTableManager get gpDisturbance =>
+      $$GpDisturbanceTableTableManager(_db, _db.gpDisturbance);
+  $$GpOriginTableTableManager get gpOrigin =>
+      $$GpOriginTableTableManager(_db, _db.gpOrigin);
+  $$GpTreatmentTableTableManager get gpTreatment =>
+      $$GpTreatmentTableTableManager(_db, _db.gpTreatment);
 }
