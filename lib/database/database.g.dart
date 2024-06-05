@@ -8744,6 +8744,2530 @@ class LtpProrateCompanion extends d.UpdateCompanion<LtpProrateData> {
   }
 }
 
+class $GpSiteInfoStandStructureTable extends GpSiteInfoStandStructure
+    with
+        d.TableInfo<$GpSiteInfoStandStructureTable,
+            GpSiteInfoStandStructureData> {
+  @override
+  final d.GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GpSiteInfoStandStructureTable(this.attachedDatabase, [this._alias]);
+  static const d.VerificationMeta _codeMeta = const d.VerificationMeta('code');
+  @override
+  late final d.GeneratedColumn<String> code = d.GeneratedColumn<String>(
+      'code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const d.VerificationMeta _nameMeta = const d.VerificationMeta('name');
+  @override
+  late final d.GeneratedColumn<String> name = d.GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const d.VerificationMeta _coverMeta =
+      const d.VerificationMeta('cover');
+  @override
+  late final d.GeneratedColumn<String> cover = d.GeneratedColumn<String>(
+      'cover', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  @override
+  List<d.GeneratedColumn> get $columns => [code, name, cover];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'gp_site_info_stand_structure';
+  @override
+  d.VerificationContext validateIntegrity(
+      d.Insertable<GpSiteInfoStandStructureData> instance,
+      {bool isInserting = false}) {
+    final context = d.VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('code')) {
+      context.handle(
+          _codeMeta, code.isAcceptableOrUnknown(data['code']!, _codeMeta));
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('cover')) {
+      context.handle(
+          _coverMeta, cover.isAcceptableOrUnknown(data['cover']!, _coverMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<d.GeneratedColumn> get $primaryKey => const {};
+  @override
+  GpSiteInfoStandStructureData map(Map<String, dynamic> data,
+      {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return GpSiteInfoStandStructureData(
+      code: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}code'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      cover: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}cover']),
+    );
+  }
+
+  @override
+  $GpSiteInfoStandStructureTable createAlias(String alias) {
+    return $GpSiteInfoStandStructureTable(attachedDatabase, alias);
+  }
+}
+
+class GpSiteInfoStandStructureData extends d.DataClass
+    implements d.Insertable<GpSiteInfoStandStructureData> {
+  final String code;
+  final String name;
+  final String? cover;
+  const GpSiteInfoStandStructureData(
+      {required this.code, required this.name, this.cover});
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    map['code'] = d.Variable<String>(code);
+    map['name'] = d.Variable<String>(name);
+    if (!nullToAbsent || cover != null) {
+      map['cover'] = d.Variable<String>(cover);
+    }
+    return map;
+  }
+
+  GpSiteInfoStandStructureCompanion toCompanion(bool nullToAbsent) {
+    return GpSiteInfoStandStructureCompanion(
+      code: d.Value(code),
+      name: d.Value(name),
+      cover: cover == null && nullToAbsent
+          ? const d.Value.absent()
+          : d.Value(cover),
+    );
+  }
+
+  factory GpSiteInfoStandStructureData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return GpSiteInfoStandStructureData(
+      code: serializer.fromJson<String>(json['code']),
+      name: serializer.fromJson<String>(json['name']),
+      cover: serializer.fromJson<String?>(json['cover']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'code': serializer.toJson<String>(code),
+      'name': serializer.toJson<String>(name),
+      'cover': serializer.toJson<String?>(cover),
+    };
+  }
+
+  GpSiteInfoStandStructureData copyWith(
+          {String? code,
+          String? name,
+          d.Value<String?> cover = const d.Value.absent()}) =>
+      GpSiteInfoStandStructureData(
+        code: code ?? this.code,
+        name: name ?? this.name,
+        cover: cover.present ? cover.value : this.cover,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('GpSiteInfoStandStructureData(')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('cover: $cover')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(code, name, cover);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GpSiteInfoStandStructureData &&
+          other.code == this.code &&
+          other.name == this.name &&
+          other.cover == this.cover);
+}
+
+class GpSiteInfoStandStructureCompanion
+    extends d.UpdateCompanion<GpSiteInfoStandStructureData> {
+  final d.Value<String> code;
+  final d.Value<String> name;
+  final d.Value<String?> cover;
+  final d.Value<int> rowid;
+  const GpSiteInfoStandStructureCompanion({
+    this.code = const d.Value.absent(),
+    this.name = const d.Value.absent(),
+    this.cover = const d.Value.absent(),
+    this.rowid = const d.Value.absent(),
+  });
+  GpSiteInfoStandStructureCompanion.insert({
+    required String code,
+    required String name,
+    this.cover = const d.Value.absent(),
+    this.rowid = const d.Value.absent(),
+  })  : code = d.Value(code),
+        name = d.Value(name);
+  static d.Insertable<GpSiteInfoStandStructureData> custom({
+    d.Expression<String>? code,
+    d.Expression<String>? name,
+    d.Expression<String>? cover,
+    d.Expression<int>? rowid,
+  }) {
+    return d.RawValuesInsertable({
+      if (code != null) 'code': code,
+      if (name != null) 'name': name,
+      if (cover != null) 'cover': cover,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  GpSiteInfoStandStructureCompanion copyWith(
+      {d.Value<String>? code,
+      d.Value<String>? name,
+      d.Value<String?>? cover,
+      d.Value<int>? rowid}) {
+    return GpSiteInfoStandStructureCompanion(
+      code: code ?? this.code,
+      name: name ?? this.name,
+      cover: cover ?? this.cover,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    if (code.present) {
+      map['code'] = d.Variable<String>(code.value);
+    }
+    if (name.present) {
+      map['name'] = d.Variable<String>(name.value);
+    }
+    if (cover.present) {
+      map['cover'] = d.Variable<String>(cover.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = d.Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GpSiteInfoStandStructureCompanion(')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('cover: $cover, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $GpSiteInfoSuccessionStageTable extends GpSiteInfoSuccessionStage
+    with
+        d.TableInfo<$GpSiteInfoSuccessionStageTable,
+            GpSiteInfoSuccessionStageData> {
+  @override
+  final d.GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GpSiteInfoSuccessionStageTable(this.attachedDatabase, [this._alias]);
+  static const d.VerificationMeta _codeMeta = const d.VerificationMeta('code');
+  @override
+  late final d.GeneratedColumn<String> code = d.GeneratedColumn<String>(
+      'code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const d.VerificationMeta _nameMeta = const d.VerificationMeta('name');
+  @override
+  late final d.GeneratedColumn<String> name = d.GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<d.GeneratedColumn> get $columns => [code, name];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'gp_site_info_succession_stage';
+  @override
+  d.VerificationContext validateIntegrity(
+      d.Insertable<GpSiteInfoSuccessionStageData> instance,
+      {bool isInserting = false}) {
+    final context = d.VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('code')) {
+      context.handle(
+          _codeMeta, code.isAcceptableOrUnknown(data['code']!, _codeMeta));
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<d.GeneratedColumn> get $primaryKey => const {};
+  @override
+  GpSiteInfoSuccessionStageData map(Map<String, dynamic> data,
+      {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return GpSiteInfoSuccessionStageData(
+      code: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}code'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+    );
+  }
+
+  @override
+  $GpSiteInfoSuccessionStageTable createAlias(String alias) {
+    return $GpSiteInfoSuccessionStageTable(attachedDatabase, alias);
+  }
+}
+
+class GpSiteInfoSuccessionStageData extends d.DataClass
+    implements d.Insertable<GpSiteInfoSuccessionStageData> {
+  final String code;
+  final String name;
+  const GpSiteInfoSuccessionStageData({required this.code, required this.name});
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    map['code'] = d.Variable<String>(code);
+    map['name'] = d.Variable<String>(name);
+    return map;
+  }
+
+  GpSiteInfoSuccessionStageCompanion toCompanion(bool nullToAbsent) {
+    return GpSiteInfoSuccessionStageCompanion(
+      code: d.Value(code),
+      name: d.Value(name),
+    );
+  }
+
+  factory GpSiteInfoSuccessionStageData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return GpSiteInfoSuccessionStageData(
+      code: serializer.fromJson<String>(json['code']),
+      name: serializer.fromJson<String>(json['name']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'code': serializer.toJson<String>(code),
+      'name': serializer.toJson<String>(name),
+    };
+  }
+
+  GpSiteInfoSuccessionStageData copyWith({String? code, String? name}) =>
+      GpSiteInfoSuccessionStageData(
+        code: code ?? this.code,
+        name: name ?? this.name,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('GpSiteInfoSuccessionStageData(')
+          ..write('code: $code, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(code, name);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GpSiteInfoSuccessionStageData &&
+          other.code == this.code &&
+          other.name == this.name);
+}
+
+class GpSiteInfoSuccessionStageCompanion
+    extends d.UpdateCompanion<GpSiteInfoSuccessionStageData> {
+  final d.Value<String> code;
+  final d.Value<String> name;
+  final d.Value<int> rowid;
+  const GpSiteInfoSuccessionStageCompanion({
+    this.code = const d.Value.absent(),
+    this.name = const d.Value.absent(),
+    this.rowid = const d.Value.absent(),
+  });
+  GpSiteInfoSuccessionStageCompanion.insert({
+    required String code,
+    required String name,
+    this.rowid = const d.Value.absent(),
+  })  : code = d.Value(code),
+        name = d.Value(name);
+  static d.Insertable<GpSiteInfoSuccessionStageData> custom({
+    d.Expression<String>? code,
+    d.Expression<String>? name,
+    d.Expression<int>? rowid,
+  }) {
+    return d.RawValuesInsertable({
+      if (code != null) 'code': code,
+      if (name != null) 'name': name,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  GpSiteInfoSuccessionStageCompanion copyWith(
+      {d.Value<String>? code, d.Value<String>? name, d.Value<int>? rowid}) {
+    return GpSiteInfoSuccessionStageCompanion(
+      code: code ?? this.code,
+      name: name ?? this.name,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    if (code.present) {
+      map['code'] = d.Variable<String>(code.value);
+    }
+    if (name.present) {
+      map['name'] = d.Variable<String>(name.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = d.Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GpSiteInfoSuccessionStageCompanion(')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $GpSiteInfoUtmZoneTable extends GpSiteInfoUtmZone
+    with d.TableInfo<$GpSiteInfoUtmZoneTable, GpSiteInfoUtmZoneData> {
+  @override
+  final d.GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GpSiteInfoUtmZoneTable(this.attachedDatabase, [this._alias]);
+  static const d.VerificationMeta _codeMeta = const d.VerificationMeta('code');
+  @override
+  late final d.GeneratedColumn<String> code = d.GeneratedColumn<String>(
+      'code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const d.VerificationMeta _nameMeta = const d.VerificationMeta('name');
+  @override
+  late final d.GeneratedColumn<String> name = d.GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<d.GeneratedColumn> get $columns => [code, name];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'gp_site_info_utm_zone';
+  @override
+  d.VerificationContext validateIntegrity(
+      d.Insertable<GpSiteInfoUtmZoneData> instance,
+      {bool isInserting = false}) {
+    final context = d.VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('code')) {
+      context.handle(
+          _codeMeta, code.isAcceptableOrUnknown(data['code']!, _codeMeta));
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<d.GeneratedColumn> get $primaryKey => const {};
+  @override
+  GpSiteInfoUtmZoneData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return GpSiteInfoUtmZoneData(
+      code: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}code'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+    );
+  }
+
+  @override
+  $GpSiteInfoUtmZoneTable createAlias(String alias) {
+    return $GpSiteInfoUtmZoneTable(attachedDatabase, alias);
+  }
+}
+
+class GpSiteInfoUtmZoneData extends d.DataClass
+    implements d.Insertable<GpSiteInfoUtmZoneData> {
+  final String code;
+  final String name;
+  const GpSiteInfoUtmZoneData({required this.code, required this.name});
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    map['code'] = d.Variable<String>(code);
+    map['name'] = d.Variable<String>(name);
+    return map;
+  }
+
+  GpSiteInfoUtmZoneCompanion toCompanion(bool nullToAbsent) {
+    return GpSiteInfoUtmZoneCompanion(
+      code: d.Value(code),
+      name: d.Value(name),
+    );
+  }
+
+  factory GpSiteInfoUtmZoneData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return GpSiteInfoUtmZoneData(
+      code: serializer.fromJson<String>(json['code']),
+      name: serializer.fromJson<String>(json['name']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'code': serializer.toJson<String>(code),
+      'name': serializer.toJson<String>(name),
+    };
+  }
+
+  GpSiteInfoUtmZoneData copyWith({String? code, String? name}) =>
+      GpSiteInfoUtmZoneData(
+        code: code ?? this.code,
+        name: name ?? this.name,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('GpSiteInfoUtmZoneData(')
+          ..write('code: $code, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(code, name);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GpSiteInfoUtmZoneData &&
+          other.code == this.code &&
+          other.name == this.name);
+}
+
+class GpSiteInfoUtmZoneCompanion
+    extends d.UpdateCompanion<GpSiteInfoUtmZoneData> {
+  final d.Value<String> code;
+  final d.Value<String> name;
+  final d.Value<int> rowid;
+  const GpSiteInfoUtmZoneCompanion({
+    this.code = const d.Value.absent(),
+    this.name = const d.Value.absent(),
+    this.rowid = const d.Value.absent(),
+  });
+  GpSiteInfoUtmZoneCompanion.insert({
+    required String code,
+    required String name,
+    this.rowid = const d.Value.absent(),
+  })  : code = d.Value(code),
+        name = d.Value(name);
+  static d.Insertable<GpSiteInfoUtmZoneData> custom({
+    d.Expression<String>? code,
+    d.Expression<String>? name,
+    d.Expression<int>? rowid,
+  }) {
+    return d.RawValuesInsertable({
+      if (code != null) 'code': code,
+      if (name != null) 'name': name,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  GpSiteInfoUtmZoneCompanion copyWith(
+      {d.Value<String>? code, d.Value<String>? name, d.Value<int>? rowid}) {
+    return GpSiteInfoUtmZoneCompanion(
+      code: code ?? this.code,
+      name: name ?? this.name,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    if (code.present) {
+      map['code'] = d.Variable<String>(code.value);
+    }
+    if (name.present) {
+      map['name'] = d.Variable<String>(name.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = d.Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GpSiteInfoUtmZoneCompanion(')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $GpSiteInfoVegTypeTable extends GpSiteInfoVegType
+    with d.TableInfo<$GpSiteInfoVegTypeTable, GpSiteInfoVegTypeData> {
+  @override
+  final d.GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GpSiteInfoVegTypeTable(this.attachedDatabase, [this._alias]);
+  static const d.VerificationMeta _codeMeta = const d.VerificationMeta('code');
+  @override
+  late final d.GeneratedColumn<String> code = d.GeneratedColumn<String>(
+      'code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const d.VerificationMeta _nameMeta = const d.VerificationMeta('name');
+  @override
+  late final d.GeneratedColumn<String> name = d.GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const d.VerificationMeta _coverMeta =
+      const d.VerificationMeta('cover');
+  @override
+  late final d.GeneratedColumn<String> cover = d.GeneratedColumn<String>(
+      'cover', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const d.VerificationMeta _baseMeta = const d.VerificationMeta('base');
+  @override
+  late final d.GeneratedColumn<String> base = d.GeneratedColumn<String>(
+      'base', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  @override
+  List<d.GeneratedColumn> get $columns => [code, name, cover, base];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'gp_site_info_veg_type';
+  @override
+  d.VerificationContext validateIntegrity(
+      d.Insertable<GpSiteInfoVegTypeData> instance,
+      {bool isInserting = false}) {
+    final context = d.VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('code')) {
+      context.handle(
+          _codeMeta, code.isAcceptableOrUnknown(data['code']!, _codeMeta));
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('cover')) {
+      context.handle(
+          _coverMeta, cover.isAcceptableOrUnknown(data['cover']!, _coverMeta));
+    } else if (isInserting) {
+      context.missing(_coverMeta);
+    }
+    if (data.containsKey('base')) {
+      context.handle(
+          _baseMeta, base.isAcceptableOrUnknown(data['base']!, _baseMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<d.GeneratedColumn> get $primaryKey => const {};
+  @override
+  GpSiteInfoVegTypeData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return GpSiteInfoVegTypeData(
+      code: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}code'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      cover: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}cover'])!,
+      base: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}base']),
+    );
+  }
+
+  @override
+  $GpSiteInfoVegTypeTable createAlias(String alias) {
+    return $GpSiteInfoVegTypeTable(attachedDatabase, alias);
+  }
+}
+
+class GpSiteInfoVegTypeData extends d.DataClass
+    implements d.Insertable<GpSiteInfoVegTypeData> {
+  final String code;
+  final String name;
+  final String cover;
+  final String? base;
+  const GpSiteInfoVegTypeData(
+      {required this.code, required this.name, required this.cover, this.base});
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    map['code'] = d.Variable<String>(code);
+    map['name'] = d.Variable<String>(name);
+    map['cover'] = d.Variable<String>(cover);
+    if (!nullToAbsent || base != null) {
+      map['base'] = d.Variable<String>(base);
+    }
+    return map;
+  }
+
+  GpSiteInfoVegTypeCompanion toCompanion(bool nullToAbsent) {
+    return GpSiteInfoVegTypeCompanion(
+      code: d.Value(code),
+      name: d.Value(name),
+      cover: d.Value(cover),
+      base:
+          base == null && nullToAbsent ? const d.Value.absent() : d.Value(base),
+    );
+  }
+
+  factory GpSiteInfoVegTypeData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return GpSiteInfoVegTypeData(
+      code: serializer.fromJson<String>(json['code']),
+      name: serializer.fromJson<String>(json['name']),
+      cover: serializer.fromJson<String>(json['cover']),
+      base: serializer.fromJson<String?>(json['base']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'code': serializer.toJson<String>(code),
+      'name': serializer.toJson<String>(name),
+      'cover': serializer.toJson<String>(cover),
+      'base': serializer.toJson<String?>(base),
+    };
+  }
+
+  GpSiteInfoVegTypeData copyWith(
+          {String? code,
+          String? name,
+          String? cover,
+          d.Value<String?> base = const d.Value.absent()}) =>
+      GpSiteInfoVegTypeData(
+        code: code ?? this.code,
+        name: name ?? this.name,
+        cover: cover ?? this.cover,
+        base: base.present ? base.value : this.base,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('GpSiteInfoVegTypeData(')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('cover: $cover, ')
+          ..write('base: $base')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(code, name, cover, base);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GpSiteInfoVegTypeData &&
+          other.code == this.code &&
+          other.name == this.name &&
+          other.cover == this.cover &&
+          other.base == this.base);
+}
+
+class GpSiteInfoVegTypeCompanion
+    extends d.UpdateCompanion<GpSiteInfoVegTypeData> {
+  final d.Value<String> code;
+  final d.Value<String> name;
+  final d.Value<String> cover;
+  final d.Value<String?> base;
+  final d.Value<int> rowid;
+  const GpSiteInfoVegTypeCompanion({
+    this.code = const d.Value.absent(),
+    this.name = const d.Value.absent(),
+    this.cover = const d.Value.absent(),
+    this.base = const d.Value.absent(),
+    this.rowid = const d.Value.absent(),
+  });
+  GpSiteInfoVegTypeCompanion.insert({
+    required String code,
+    required String name,
+    required String cover,
+    this.base = const d.Value.absent(),
+    this.rowid = const d.Value.absent(),
+  })  : code = d.Value(code),
+        name = d.Value(name),
+        cover = d.Value(cover);
+  static d.Insertable<GpSiteInfoVegTypeData> custom({
+    d.Expression<String>? code,
+    d.Expression<String>? name,
+    d.Expression<String>? cover,
+    d.Expression<String>? base,
+    d.Expression<int>? rowid,
+  }) {
+    return d.RawValuesInsertable({
+      if (code != null) 'code': code,
+      if (name != null) 'name': name,
+      if (cover != null) 'cover': cover,
+      if (base != null) 'base': base,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  GpSiteInfoVegTypeCompanion copyWith(
+      {d.Value<String>? code,
+      d.Value<String>? name,
+      d.Value<String>? cover,
+      d.Value<String?>? base,
+      d.Value<int>? rowid}) {
+    return GpSiteInfoVegTypeCompanion(
+      code: code ?? this.code,
+      name: name ?? this.name,
+      cover: cover ?? this.cover,
+      base: base ?? this.base,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    if (code.present) {
+      map['code'] = d.Variable<String>(code.value);
+    }
+    if (name.present) {
+      map['name'] = d.Variable<String>(name.value);
+    }
+    if (cover.present) {
+      map['cover'] = d.Variable<String>(cover.value);
+    }
+    if (base.present) {
+      map['base'] = d.Variable<String>(base.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = d.Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GpSiteInfoVegTypeCompanion(')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('cover: $cover, ')
+          ..write('base: $base, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $GpSiteInfoWetlandTable extends GpSiteInfoWetland
+    with d.TableInfo<$GpSiteInfoWetlandTable, GpSiteInfoWetlandData> {
+  @override
+  final d.GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GpSiteInfoWetlandTable(this.attachedDatabase, [this._alias]);
+  static const d.VerificationMeta _codeMeta = const d.VerificationMeta('code');
+  @override
+  late final d.GeneratedColumn<String> code = d.GeneratedColumn<String>(
+      'code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const d.VerificationMeta _nameMeta = const d.VerificationMeta('name');
+  @override
+  late final d.GeneratedColumn<String> name = d.GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<d.GeneratedColumn> get $columns => [code, name];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'gp_site_info_wetland';
+  @override
+  d.VerificationContext validateIntegrity(
+      d.Insertable<GpSiteInfoWetlandData> instance,
+      {bool isInserting = false}) {
+    final context = d.VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('code')) {
+      context.handle(
+          _codeMeta, code.isAcceptableOrUnknown(data['code']!, _codeMeta));
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<d.GeneratedColumn> get $primaryKey => const {};
+  @override
+  GpSiteInfoWetlandData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return GpSiteInfoWetlandData(
+      code: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}code'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+    );
+  }
+
+  @override
+  $GpSiteInfoWetlandTable createAlias(String alias) {
+    return $GpSiteInfoWetlandTable(attachedDatabase, alias);
+  }
+}
+
+class GpSiteInfoWetlandData extends d.DataClass
+    implements d.Insertable<GpSiteInfoWetlandData> {
+  final String code;
+  final String name;
+  const GpSiteInfoWetlandData({required this.code, required this.name});
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    map['code'] = d.Variable<String>(code);
+    map['name'] = d.Variable<String>(name);
+    return map;
+  }
+
+  GpSiteInfoWetlandCompanion toCompanion(bool nullToAbsent) {
+    return GpSiteInfoWetlandCompanion(
+      code: d.Value(code),
+      name: d.Value(name),
+    );
+  }
+
+  factory GpSiteInfoWetlandData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return GpSiteInfoWetlandData(
+      code: serializer.fromJson<String>(json['code']),
+      name: serializer.fromJson<String>(json['name']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'code': serializer.toJson<String>(code),
+      'name': serializer.toJson<String>(name),
+    };
+  }
+
+  GpSiteInfoWetlandData copyWith({String? code, String? name}) =>
+      GpSiteInfoWetlandData(
+        code: code ?? this.code,
+        name: name ?? this.name,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('GpSiteInfoWetlandData(')
+          ..write('code: $code, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(code, name);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GpSiteInfoWetlandData &&
+          other.code == this.code &&
+          other.name == this.name);
+}
+
+class GpSiteInfoWetlandCompanion
+    extends d.UpdateCompanion<GpSiteInfoWetlandData> {
+  final d.Value<String> code;
+  final d.Value<String> name;
+  final d.Value<int> rowid;
+  const GpSiteInfoWetlandCompanion({
+    this.code = const d.Value.absent(),
+    this.name = const d.Value.absent(),
+    this.rowid = const d.Value.absent(),
+  });
+  GpSiteInfoWetlandCompanion.insert({
+    required String code,
+    required String name,
+    this.rowid = const d.Value.absent(),
+  })  : code = d.Value(code),
+        name = d.Value(name);
+  static d.Insertable<GpSiteInfoWetlandData> custom({
+    d.Expression<String>? code,
+    d.Expression<String>? name,
+    d.Expression<int>? rowid,
+  }) {
+    return d.RawValuesInsertable({
+      if (code != null) 'code': code,
+      if (name != null) 'name': name,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  GpSiteInfoWetlandCompanion copyWith(
+      {d.Value<String>? code, d.Value<String>? name, d.Value<int>? rowid}) {
+    return GpSiteInfoWetlandCompanion(
+      code: code ?? this.code,
+      name: name ?? this.name,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    if (code.present) {
+      map['code'] = d.Variable<String>(code.value);
+    }
+    if (name.present) {
+      map['name'] = d.Variable<String>(name.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = d.Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GpSiteInfoWetlandCompanion(')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $GpSiteInfoEcozoneTable extends GpSiteInfoEcozone
+    with d.TableInfo<$GpSiteInfoEcozoneTable, GpSiteInfoEcozoneData> {
+  @override
+  final d.GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GpSiteInfoEcozoneTable(this.attachedDatabase, [this._alias]);
+  static const d.VerificationMeta _codeMeta = const d.VerificationMeta('code');
+  @override
+  late final d.GeneratedColumn<String> code = d.GeneratedColumn<String>(
+      'code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const d.VerificationMeta _nameMeta = const d.VerificationMeta('name');
+  @override
+  late final d.GeneratedColumn<String> name = d.GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<d.GeneratedColumn> get $columns => [code, name];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'gp_site_info_ecozone';
+  @override
+  d.VerificationContext validateIntegrity(
+      d.Insertable<GpSiteInfoEcozoneData> instance,
+      {bool isInserting = false}) {
+    final context = d.VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('code')) {
+      context.handle(
+          _codeMeta, code.isAcceptableOrUnknown(data['code']!, _codeMeta));
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<d.GeneratedColumn> get $primaryKey => const {};
+  @override
+  GpSiteInfoEcozoneData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return GpSiteInfoEcozoneData(
+      code: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}code'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+    );
+  }
+
+  @override
+  $GpSiteInfoEcozoneTable createAlias(String alias) {
+    return $GpSiteInfoEcozoneTable(attachedDatabase, alias);
+  }
+}
+
+class GpSiteInfoEcozoneData extends d.DataClass
+    implements d.Insertable<GpSiteInfoEcozoneData> {
+  final String code;
+  final String name;
+  const GpSiteInfoEcozoneData({required this.code, required this.name});
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    map['code'] = d.Variable<String>(code);
+    map['name'] = d.Variable<String>(name);
+    return map;
+  }
+
+  GpSiteInfoEcozoneCompanion toCompanion(bool nullToAbsent) {
+    return GpSiteInfoEcozoneCompanion(
+      code: d.Value(code),
+      name: d.Value(name),
+    );
+  }
+
+  factory GpSiteInfoEcozoneData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return GpSiteInfoEcozoneData(
+      code: serializer.fromJson<String>(json['code']),
+      name: serializer.fromJson<String>(json['name']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'code': serializer.toJson<String>(code),
+      'name': serializer.toJson<String>(name),
+    };
+  }
+
+  GpSiteInfoEcozoneData copyWith({String? code, String? name}) =>
+      GpSiteInfoEcozoneData(
+        code: code ?? this.code,
+        name: name ?? this.name,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('GpSiteInfoEcozoneData(')
+          ..write('code: $code, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(code, name);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GpSiteInfoEcozoneData &&
+          other.code == this.code &&
+          other.name == this.name);
+}
+
+class GpSiteInfoEcozoneCompanion
+    extends d.UpdateCompanion<GpSiteInfoEcozoneData> {
+  final d.Value<String> code;
+  final d.Value<String> name;
+  final d.Value<int> rowid;
+  const GpSiteInfoEcozoneCompanion({
+    this.code = const d.Value.absent(),
+    this.name = const d.Value.absent(),
+    this.rowid = const d.Value.absent(),
+  });
+  GpSiteInfoEcozoneCompanion.insert({
+    required String code,
+    required String name,
+    this.rowid = const d.Value.absent(),
+  })  : code = d.Value(code),
+        name = d.Value(name);
+  static d.Insertable<GpSiteInfoEcozoneData> custom({
+    d.Expression<String>? code,
+    d.Expression<String>? name,
+    d.Expression<int>? rowid,
+  }) {
+    return d.RawValuesInsertable({
+      if (code != null) 'code': code,
+      if (name != null) 'name': name,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  GpSiteInfoEcozoneCompanion copyWith(
+      {d.Value<String>? code, d.Value<String>? name, d.Value<int>? rowid}) {
+    return GpSiteInfoEcozoneCompanion(
+      code: code ?? this.code,
+      name: name ?? this.name,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    if (code.present) {
+      map['code'] = d.Variable<String>(code.value);
+    }
+    if (name.present) {
+      map['name'] = d.Variable<String>(name.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = d.Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GpSiteInfoEcozoneCompanion(')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $GpSiteInfoPlotCompletionTable extends GpSiteInfoPlotCompletion
+    with
+        d.TableInfo<$GpSiteInfoPlotCompletionTable,
+            GpSiteInfoPlotCompletionData> {
+  @override
+  final d.GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GpSiteInfoPlotCompletionTable(this.attachedDatabase, [this._alias]);
+  static const d.VerificationMeta _codeMeta = const d.VerificationMeta('code');
+  @override
+  late final d.GeneratedColumn<String> code = d.GeneratedColumn<String>(
+      'code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const d.VerificationMeta _nameMeta = const d.VerificationMeta('name');
+  @override
+  late final d.GeneratedColumn<String> name = d.GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<d.GeneratedColumn> get $columns => [code, name];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'gp_site_info_plot_completion';
+  @override
+  d.VerificationContext validateIntegrity(
+      d.Insertable<GpSiteInfoPlotCompletionData> instance,
+      {bool isInserting = false}) {
+    final context = d.VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('code')) {
+      context.handle(
+          _codeMeta, code.isAcceptableOrUnknown(data['code']!, _codeMeta));
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<d.GeneratedColumn> get $primaryKey => const {};
+  @override
+  GpSiteInfoPlotCompletionData map(Map<String, dynamic> data,
+      {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return GpSiteInfoPlotCompletionData(
+      code: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}code'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+    );
+  }
+
+  @override
+  $GpSiteInfoPlotCompletionTable createAlias(String alias) {
+    return $GpSiteInfoPlotCompletionTable(attachedDatabase, alias);
+  }
+}
+
+class GpSiteInfoPlotCompletionData extends d.DataClass
+    implements d.Insertable<GpSiteInfoPlotCompletionData> {
+  final String code;
+  final String name;
+  const GpSiteInfoPlotCompletionData({required this.code, required this.name});
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    map['code'] = d.Variable<String>(code);
+    map['name'] = d.Variable<String>(name);
+    return map;
+  }
+
+  GpSiteInfoPlotCompletionCompanion toCompanion(bool nullToAbsent) {
+    return GpSiteInfoPlotCompletionCompanion(
+      code: d.Value(code),
+      name: d.Value(name),
+    );
+  }
+
+  factory GpSiteInfoPlotCompletionData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return GpSiteInfoPlotCompletionData(
+      code: serializer.fromJson<String>(json['code']),
+      name: serializer.fromJson<String>(json['name']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'code': serializer.toJson<String>(code),
+      'name': serializer.toJson<String>(name),
+    };
+  }
+
+  GpSiteInfoPlotCompletionData copyWith({String? code, String? name}) =>
+      GpSiteInfoPlotCompletionData(
+        code: code ?? this.code,
+        name: name ?? this.name,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('GpSiteInfoPlotCompletionData(')
+          ..write('code: $code, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(code, name);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GpSiteInfoPlotCompletionData &&
+          other.code == this.code &&
+          other.name == this.name);
+}
+
+class GpSiteInfoPlotCompletionCompanion
+    extends d.UpdateCompanion<GpSiteInfoPlotCompletionData> {
+  final d.Value<String> code;
+  final d.Value<String> name;
+  final d.Value<int> rowid;
+  const GpSiteInfoPlotCompletionCompanion({
+    this.code = const d.Value.absent(),
+    this.name = const d.Value.absent(),
+    this.rowid = const d.Value.absent(),
+  });
+  GpSiteInfoPlotCompletionCompanion.insert({
+    required String code,
+    required String name,
+    this.rowid = const d.Value.absent(),
+  })  : code = d.Value(code),
+        name = d.Value(name);
+  static d.Insertable<GpSiteInfoPlotCompletionData> custom({
+    d.Expression<String>? code,
+    d.Expression<String>? name,
+    d.Expression<int>? rowid,
+  }) {
+    return d.RawValuesInsertable({
+      if (code != null) 'code': code,
+      if (name != null) 'name': name,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  GpSiteInfoPlotCompletionCompanion copyWith(
+      {d.Value<String>? code, d.Value<String>? name, d.Value<int>? rowid}) {
+    return GpSiteInfoPlotCompletionCompanion(
+      code: code ?? this.code,
+      name: name ?? this.name,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    if (code.present) {
+      map['code'] = d.Variable<String>(code.value);
+    }
+    if (name.present) {
+      map['name'] = d.Variable<String>(name.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = d.Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GpSiteInfoPlotCompletionCompanion(')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $GpSiteInfoDensityTable extends GpSiteInfoDensity
+    with d.TableInfo<$GpSiteInfoDensityTable, GpSiteInfoDensityData> {
+  @override
+  final d.GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GpSiteInfoDensityTable(this.attachedDatabase, [this._alias]);
+  static const d.VerificationMeta _codeMeta = const d.VerificationMeta('code');
+  @override
+  late final d.GeneratedColumn<String> code = d.GeneratedColumn<String>(
+      'code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const d.VerificationMeta _nameMeta = const d.VerificationMeta('name');
+  @override
+  late final d.GeneratedColumn<String> name = d.GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const d.VerificationMeta _baseMeta = const d.VerificationMeta('base');
+  @override
+  late final d.GeneratedColumn<String> base = d.GeneratedColumn<String>(
+      'base', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const d.VerificationMeta _vegMeta = const d.VerificationMeta('veg');
+  @override
+  late final d.GeneratedColumn<String> veg = d.GeneratedColumn<String>(
+      'veg', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  @override
+  List<d.GeneratedColumn> get $columns => [code, name, base, veg];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'gp_site_info_density';
+  @override
+  d.VerificationContext validateIntegrity(
+      d.Insertable<GpSiteInfoDensityData> instance,
+      {bool isInserting = false}) {
+    final context = d.VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('code')) {
+      context.handle(
+          _codeMeta, code.isAcceptableOrUnknown(data['code']!, _codeMeta));
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('base')) {
+      context.handle(
+          _baseMeta, base.isAcceptableOrUnknown(data['base']!, _baseMeta));
+    }
+    if (data.containsKey('veg')) {
+      context.handle(
+          _vegMeta, veg.isAcceptableOrUnknown(data['veg']!, _vegMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<d.GeneratedColumn> get $primaryKey => const {};
+  @override
+  GpSiteInfoDensityData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return GpSiteInfoDensityData(
+      code: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}code'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      base: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}base']),
+      veg: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}veg']),
+    );
+  }
+
+  @override
+  $GpSiteInfoDensityTable createAlias(String alias) {
+    return $GpSiteInfoDensityTable(attachedDatabase, alias);
+  }
+}
+
+class GpSiteInfoDensityData extends d.DataClass
+    implements d.Insertable<GpSiteInfoDensityData> {
+  final String code;
+  final String name;
+  final String? base;
+  final String? veg;
+  const GpSiteInfoDensityData(
+      {required this.code, required this.name, this.base, this.veg});
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    map['code'] = d.Variable<String>(code);
+    map['name'] = d.Variable<String>(name);
+    if (!nullToAbsent || base != null) {
+      map['base'] = d.Variable<String>(base);
+    }
+    if (!nullToAbsent || veg != null) {
+      map['veg'] = d.Variable<String>(veg);
+    }
+    return map;
+  }
+
+  GpSiteInfoDensityCompanion toCompanion(bool nullToAbsent) {
+    return GpSiteInfoDensityCompanion(
+      code: d.Value(code),
+      name: d.Value(name),
+      base:
+          base == null && nullToAbsent ? const d.Value.absent() : d.Value(base),
+      veg: veg == null && nullToAbsent ? const d.Value.absent() : d.Value(veg),
+    );
+  }
+
+  factory GpSiteInfoDensityData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return GpSiteInfoDensityData(
+      code: serializer.fromJson<String>(json['code']),
+      name: serializer.fromJson<String>(json['name']),
+      base: serializer.fromJson<String?>(json['base']),
+      veg: serializer.fromJson<String?>(json['veg']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'code': serializer.toJson<String>(code),
+      'name': serializer.toJson<String>(name),
+      'base': serializer.toJson<String?>(base),
+      'veg': serializer.toJson<String?>(veg),
+    };
+  }
+
+  GpSiteInfoDensityData copyWith(
+          {String? code,
+          String? name,
+          d.Value<String?> base = const d.Value.absent(),
+          d.Value<String?> veg = const d.Value.absent()}) =>
+      GpSiteInfoDensityData(
+        code: code ?? this.code,
+        name: name ?? this.name,
+        base: base.present ? base.value : this.base,
+        veg: veg.present ? veg.value : this.veg,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('GpSiteInfoDensityData(')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('base: $base, ')
+          ..write('veg: $veg')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(code, name, base, veg);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GpSiteInfoDensityData &&
+          other.code == this.code &&
+          other.name == this.name &&
+          other.base == this.base &&
+          other.veg == this.veg);
+}
+
+class GpSiteInfoDensityCompanion
+    extends d.UpdateCompanion<GpSiteInfoDensityData> {
+  final d.Value<String> code;
+  final d.Value<String> name;
+  final d.Value<String?> base;
+  final d.Value<String?> veg;
+  final d.Value<int> rowid;
+  const GpSiteInfoDensityCompanion({
+    this.code = const d.Value.absent(),
+    this.name = const d.Value.absent(),
+    this.base = const d.Value.absent(),
+    this.veg = const d.Value.absent(),
+    this.rowid = const d.Value.absent(),
+  });
+  GpSiteInfoDensityCompanion.insert({
+    required String code,
+    required String name,
+    this.base = const d.Value.absent(),
+    this.veg = const d.Value.absent(),
+    this.rowid = const d.Value.absent(),
+  })  : code = d.Value(code),
+        name = d.Value(name);
+  static d.Insertable<GpSiteInfoDensityData> custom({
+    d.Expression<String>? code,
+    d.Expression<String>? name,
+    d.Expression<String>? base,
+    d.Expression<String>? veg,
+    d.Expression<int>? rowid,
+  }) {
+    return d.RawValuesInsertable({
+      if (code != null) 'code': code,
+      if (name != null) 'name': name,
+      if (base != null) 'base': base,
+      if (veg != null) 'veg': veg,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  GpSiteInfoDensityCompanion copyWith(
+      {d.Value<String>? code,
+      d.Value<String>? name,
+      d.Value<String?>? base,
+      d.Value<String?>? veg,
+      d.Value<int>? rowid}) {
+    return GpSiteInfoDensityCompanion(
+      code: code ?? this.code,
+      name: name ?? this.name,
+      base: base ?? this.base,
+      veg: veg ?? this.veg,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    if (code.present) {
+      map['code'] = d.Variable<String>(code.value);
+    }
+    if (name.present) {
+      map['name'] = d.Variable<String>(name.value);
+    }
+    if (base.present) {
+      map['base'] = d.Variable<String>(base.value);
+    }
+    if (veg.present) {
+      map['veg'] = d.Variable<String>(veg.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = d.Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GpSiteInfoDensityCompanion(')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('base: $base, ')
+          ..write('veg: $veg, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $GpSiteInfoLandBaseTable extends GpSiteInfoLandBase
+    with d.TableInfo<$GpSiteInfoLandBaseTable, GpSiteInfoLandBaseData> {
+  @override
+  final d.GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GpSiteInfoLandBaseTable(this.attachedDatabase, [this._alias]);
+  static const d.VerificationMeta _codeMeta = const d.VerificationMeta('code');
+  @override
+  late final d.GeneratedColumn<String> code = d.GeneratedColumn<String>(
+      'code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const d.VerificationMeta _nameMeta = const d.VerificationMeta('name');
+  @override
+  late final d.GeneratedColumn<String> name = d.GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const d.VerificationMeta _completionMeta =
+      const d.VerificationMeta('completion');
+  @override
+  late final d.GeneratedColumn<String> completion = d.GeneratedColumn<String>(
+      'completion', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  @override
+  List<d.GeneratedColumn> get $columns => [code, name, completion];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'gp_site_info_land_base';
+  @override
+  d.VerificationContext validateIntegrity(
+      d.Insertable<GpSiteInfoLandBaseData> instance,
+      {bool isInserting = false}) {
+    final context = d.VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('code')) {
+      context.handle(
+          _codeMeta, code.isAcceptableOrUnknown(data['code']!, _codeMeta));
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('completion')) {
+      context.handle(
+          _completionMeta,
+          completion.isAcceptableOrUnknown(
+              data['completion']!, _completionMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<d.GeneratedColumn> get $primaryKey => const {};
+  @override
+  GpSiteInfoLandBaseData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return GpSiteInfoLandBaseData(
+      code: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}code'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      completion: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}completion']),
+    );
+  }
+
+  @override
+  $GpSiteInfoLandBaseTable createAlias(String alias) {
+    return $GpSiteInfoLandBaseTable(attachedDatabase, alias);
+  }
+}
+
+class GpSiteInfoLandBaseData extends d.DataClass
+    implements d.Insertable<GpSiteInfoLandBaseData> {
+  final String code;
+  final String name;
+  final String? completion;
+  const GpSiteInfoLandBaseData(
+      {required this.code, required this.name, this.completion});
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    map['code'] = d.Variable<String>(code);
+    map['name'] = d.Variable<String>(name);
+    if (!nullToAbsent || completion != null) {
+      map['completion'] = d.Variable<String>(completion);
+    }
+    return map;
+  }
+
+  GpSiteInfoLandBaseCompanion toCompanion(bool nullToAbsent) {
+    return GpSiteInfoLandBaseCompanion(
+      code: d.Value(code),
+      name: d.Value(name),
+      completion: completion == null && nullToAbsent
+          ? const d.Value.absent()
+          : d.Value(completion),
+    );
+  }
+
+  factory GpSiteInfoLandBaseData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return GpSiteInfoLandBaseData(
+      code: serializer.fromJson<String>(json['code']),
+      name: serializer.fromJson<String>(json['name']),
+      completion: serializer.fromJson<String?>(json['completion']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'code': serializer.toJson<String>(code),
+      'name': serializer.toJson<String>(name),
+      'completion': serializer.toJson<String?>(completion),
+    };
+  }
+
+  GpSiteInfoLandBaseData copyWith(
+          {String? code,
+          String? name,
+          d.Value<String?> completion = const d.Value.absent()}) =>
+      GpSiteInfoLandBaseData(
+        code: code ?? this.code,
+        name: name ?? this.name,
+        completion: completion.present ? completion.value : this.completion,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('GpSiteInfoLandBaseData(')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('completion: $completion')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(code, name, completion);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GpSiteInfoLandBaseData &&
+          other.code == this.code &&
+          other.name == this.name &&
+          other.completion == this.completion);
+}
+
+class GpSiteInfoLandBaseCompanion
+    extends d.UpdateCompanion<GpSiteInfoLandBaseData> {
+  final d.Value<String> code;
+  final d.Value<String> name;
+  final d.Value<String?> completion;
+  final d.Value<int> rowid;
+  const GpSiteInfoLandBaseCompanion({
+    this.code = const d.Value.absent(),
+    this.name = const d.Value.absent(),
+    this.completion = const d.Value.absent(),
+    this.rowid = const d.Value.absent(),
+  });
+  GpSiteInfoLandBaseCompanion.insert({
+    required String code,
+    required String name,
+    this.completion = const d.Value.absent(),
+    this.rowid = const d.Value.absent(),
+  })  : code = d.Value(code),
+        name = d.Value(name);
+  static d.Insertable<GpSiteInfoLandBaseData> custom({
+    d.Expression<String>? code,
+    d.Expression<String>? name,
+    d.Expression<String>? completion,
+    d.Expression<int>? rowid,
+  }) {
+    return d.RawValuesInsertable({
+      if (code != null) 'code': code,
+      if (name != null) 'name': name,
+      if (completion != null) 'completion': completion,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  GpSiteInfoLandBaseCompanion copyWith(
+      {d.Value<String>? code,
+      d.Value<String>? name,
+      d.Value<String?>? completion,
+      d.Value<int>? rowid}) {
+    return GpSiteInfoLandBaseCompanion(
+      code: code ?? this.code,
+      name: name ?? this.name,
+      completion: completion ?? this.completion,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    if (code.present) {
+      map['code'] = d.Variable<String>(code.value);
+    }
+    if (name.present) {
+      map['name'] = d.Variable<String>(name.value);
+    }
+    if (completion.present) {
+      map['completion'] = d.Variable<String>(completion.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = d.Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GpSiteInfoLandBaseCompanion(')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('completion: $completion, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $GpSiteInfoLandCoverTable extends GpSiteInfoLandCover
+    with d.TableInfo<$GpSiteInfoLandCoverTable, GpSiteInfoLandCoverData> {
+  @override
+  final d.GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GpSiteInfoLandCoverTable(this.attachedDatabase, [this._alias]);
+  static const d.VerificationMeta _codeMeta = const d.VerificationMeta('code');
+  @override
+  late final d.GeneratedColumn<String> code = d.GeneratedColumn<String>(
+      'code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const d.VerificationMeta _nameMeta = const d.VerificationMeta('name');
+  @override
+  late final d.GeneratedColumn<String> name = d.GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const d.VerificationMeta _baseMeta = const d.VerificationMeta('base');
+  @override
+  late final d.GeneratedColumn<String> base = d.GeneratedColumn<String>(
+      'base', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  @override
+  List<d.GeneratedColumn> get $columns => [code, name, base];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'gp_site_info_land_cover';
+  @override
+  d.VerificationContext validateIntegrity(
+      d.Insertable<GpSiteInfoLandCoverData> instance,
+      {bool isInserting = false}) {
+    final context = d.VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('code')) {
+      context.handle(
+          _codeMeta, code.isAcceptableOrUnknown(data['code']!, _codeMeta));
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('base')) {
+      context.handle(
+          _baseMeta, base.isAcceptableOrUnknown(data['base']!, _baseMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<d.GeneratedColumn> get $primaryKey => const {};
+  @override
+  GpSiteInfoLandCoverData map(Map<String, dynamic> data,
+      {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return GpSiteInfoLandCoverData(
+      code: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}code'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      base: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}base']),
+    );
+  }
+
+  @override
+  $GpSiteInfoLandCoverTable createAlias(String alias) {
+    return $GpSiteInfoLandCoverTable(attachedDatabase, alias);
+  }
+}
+
+class GpSiteInfoLandCoverData extends d.DataClass
+    implements d.Insertable<GpSiteInfoLandCoverData> {
+  final String code;
+  final String name;
+  final String? base;
+  const GpSiteInfoLandCoverData(
+      {required this.code, required this.name, this.base});
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    map['code'] = d.Variable<String>(code);
+    map['name'] = d.Variable<String>(name);
+    if (!nullToAbsent || base != null) {
+      map['base'] = d.Variable<String>(base);
+    }
+    return map;
+  }
+
+  GpSiteInfoLandCoverCompanion toCompanion(bool nullToAbsent) {
+    return GpSiteInfoLandCoverCompanion(
+      code: d.Value(code),
+      name: d.Value(name),
+      base:
+          base == null && nullToAbsent ? const d.Value.absent() : d.Value(base),
+    );
+  }
+
+  factory GpSiteInfoLandCoverData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return GpSiteInfoLandCoverData(
+      code: serializer.fromJson<String>(json['code']),
+      name: serializer.fromJson<String>(json['name']),
+      base: serializer.fromJson<String?>(json['base']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'code': serializer.toJson<String>(code),
+      'name': serializer.toJson<String>(name),
+      'base': serializer.toJson<String?>(base),
+    };
+  }
+
+  GpSiteInfoLandCoverData copyWith(
+          {String? code,
+          String? name,
+          d.Value<String?> base = const d.Value.absent()}) =>
+      GpSiteInfoLandCoverData(
+        code: code ?? this.code,
+        name: name ?? this.name,
+        base: base.present ? base.value : this.base,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('GpSiteInfoLandCoverData(')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('base: $base')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(code, name, base);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GpSiteInfoLandCoverData &&
+          other.code == this.code &&
+          other.name == this.name &&
+          other.base == this.base);
+}
+
+class GpSiteInfoLandCoverCompanion
+    extends d.UpdateCompanion<GpSiteInfoLandCoverData> {
+  final d.Value<String> code;
+  final d.Value<String> name;
+  final d.Value<String?> base;
+  final d.Value<int> rowid;
+  const GpSiteInfoLandCoverCompanion({
+    this.code = const d.Value.absent(),
+    this.name = const d.Value.absent(),
+    this.base = const d.Value.absent(),
+    this.rowid = const d.Value.absent(),
+  });
+  GpSiteInfoLandCoverCompanion.insert({
+    required String code,
+    required String name,
+    this.base = const d.Value.absent(),
+    this.rowid = const d.Value.absent(),
+  })  : code = d.Value(code),
+        name = d.Value(name);
+  static d.Insertable<GpSiteInfoLandCoverData> custom({
+    d.Expression<String>? code,
+    d.Expression<String>? name,
+    d.Expression<String>? base,
+    d.Expression<int>? rowid,
+  }) {
+    return d.RawValuesInsertable({
+      if (code != null) 'code': code,
+      if (name != null) 'name': name,
+      if (base != null) 'base': base,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  GpSiteInfoLandCoverCompanion copyWith(
+      {d.Value<String>? code,
+      d.Value<String>? name,
+      d.Value<String?>? base,
+      d.Value<int>? rowid}) {
+    return GpSiteInfoLandCoverCompanion(
+      code: code ?? this.code,
+      name: name ?? this.name,
+      base: base ?? this.base,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    if (code.present) {
+      map['code'] = d.Variable<String>(code.value);
+    }
+    if (name.present) {
+      map['name'] = d.Variable<String>(name.value);
+    }
+    if (base.present) {
+      map['base'] = d.Variable<String>(base.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = d.Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GpSiteInfoLandCoverCompanion(')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('base: $base, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $GpSiteInfoLandPosTable extends GpSiteInfoLandPos
+    with d.TableInfo<$GpSiteInfoLandPosTable, GpSiteInfoLandPo> {
+  @override
+  final d.GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GpSiteInfoLandPosTable(this.attachedDatabase, [this._alias]);
+  static const d.VerificationMeta _codeMeta = const d.VerificationMeta('code');
+  @override
+  late final d.GeneratedColumn<String> code = d.GeneratedColumn<String>(
+      'code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const d.VerificationMeta _nameMeta = const d.VerificationMeta('name');
+  @override
+  late final d.GeneratedColumn<String> name = d.GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<d.GeneratedColumn> get $columns => [code, name];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'gp_site_info_land_pos';
+  @override
+  d.VerificationContext validateIntegrity(
+      d.Insertable<GpSiteInfoLandPo> instance,
+      {bool isInserting = false}) {
+    final context = d.VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('code')) {
+      context.handle(
+          _codeMeta, code.isAcceptableOrUnknown(data['code']!, _codeMeta));
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<d.GeneratedColumn> get $primaryKey => const {};
+  @override
+  GpSiteInfoLandPo map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return GpSiteInfoLandPo(
+      code: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}code'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+    );
+  }
+
+  @override
+  $GpSiteInfoLandPosTable createAlias(String alias) {
+    return $GpSiteInfoLandPosTable(attachedDatabase, alias);
+  }
+}
+
+class GpSiteInfoLandPo extends d.DataClass
+    implements d.Insertable<GpSiteInfoLandPo> {
+  final String code;
+  final String name;
+  const GpSiteInfoLandPo({required this.code, required this.name});
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    map['code'] = d.Variable<String>(code);
+    map['name'] = d.Variable<String>(name);
+    return map;
+  }
+
+  GpSiteInfoLandPosCompanion toCompanion(bool nullToAbsent) {
+    return GpSiteInfoLandPosCompanion(
+      code: d.Value(code),
+      name: d.Value(name),
+    );
+  }
+
+  factory GpSiteInfoLandPo.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return GpSiteInfoLandPo(
+      code: serializer.fromJson<String>(json['code']),
+      name: serializer.fromJson<String>(json['name']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'code': serializer.toJson<String>(code),
+      'name': serializer.toJson<String>(name),
+    };
+  }
+
+  GpSiteInfoLandPo copyWith({String? code, String? name}) => GpSiteInfoLandPo(
+        code: code ?? this.code,
+        name: name ?? this.name,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('GpSiteInfoLandPo(')
+          ..write('code: $code, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(code, name);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GpSiteInfoLandPo &&
+          other.code == this.code &&
+          other.name == this.name);
+}
+
+class GpSiteInfoLandPosCompanion extends d.UpdateCompanion<GpSiteInfoLandPo> {
+  final d.Value<String> code;
+  final d.Value<String> name;
+  final d.Value<int> rowid;
+  const GpSiteInfoLandPosCompanion({
+    this.code = const d.Value.absent(),
+    this.name = const d.Value.absent(),
+    this.rowid = const d.Value.absent(),
+  });
+  GpSiteInfoLandPosCompanion.insert({
+    required String code,
+    required String name,
+    this.rowid = const d.Value.absent(),
+  })  : code = d.Value(code),
+        name = d.Value(name);
+  static d.Insertable<GpSiteInfoLandPo> custom({
+    d.Expression<String>? code,
+    d.Expression<String>? name,
+    d.Expression<int>? rowid,
+  }) {
+    return d.RawValuesInsertable({
+      if (code != null) 'code': code,
+      if (name != null) 'name': name,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  GpSiteInfoLandPosCompanion copyWith(
+      {d.Value<String>? code, d.Value<String>? name, d.Value<int>? rowid}) {
+    return GpSiteInfoLandPosCompanion(
+      code: code ?? this.code,
+      name: name ?? this.name,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    if (code.present) {
+      map['code'] = d.Variable<String>(code.value);
+    }
+    if (name.present) {
+      map['name'] = d.Variable<String>(name.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = d.Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GpSiteInfoLandPosCompanion(')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $GpSiteInfoPostProcessingTable extends GpSiteInfoPostProcessing
+    with
+        d.TableInfo<$GpSiteInfoPostProcessingTable,
+            GpSiteInfoPostProcessingData> {
+  @override
+  final d.GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GpSiteInfoPostProcessingTable(this.attachedDatabase, [this._alias]);
+  static const d.VerificationMeta _codeMeta = const d.VerificationMeta('code');
+  @override
+  late final d.GeneratedColumn<String> code = d.GeneratedColumn<String>(
+      'code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const d.VerificationMeta _nameMeta = const d.VerificationMeta('name');
+  @override
+  late final d.GeneratedColumn<String> name = d.GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<d.GeneratedColumn> get $columns => [code, name];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'gp_site_info_post_processing';
+  @override
+  d.VerificationContext validateIntegrity(
+      d.Insertable<GpSiteInfoPostProcessingData> instance,
+      {bool isInserting = false}) {
+    final context = d.VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('code')) {
+      context.handle(
+          _codeMeta, code.isAcceptableOrUnknown(data['code']!, _codeMeta));
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<d.GeneratedColumn> get $primaryKey => const {};
+  @override
+  GpSiteInfoPostProcessingData map(Map<String, dynamic> data,
+      {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return GpSiteInfoPostProcessingData(
+      code: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}code'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+    );
+  }
+
+  @override
+  $GpSiteInfoPostProcessingTable createAlias(String alias) {
+    return $GpSiteInfoPostProcessingTable(attachedDatabase, alias);
+  }
+}
+
+class GpSiteInfoPostProcessingData extends d.DataClass
+    implements d.Insertable<GpSiteInfoPostProcessingData> {
+  final String code;
+  final String name;
+  const GpSiteInfoPostProcessingData({required this.code, required this.name});
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    map['code'] = d.Variable<String>(code);
+    map['name'] = d.Variable<String>(name);
+    return map;
+  }
+
+  GpSiteInfoPostProcessingCompanion toCompanion(bool nullToAbsent) {
+    return GpSiteInfoPostProcessingCompanion(
+      code: d.Value(code),
+      name: d.Value(name),
+    );
+  }
+
+  factory GpSiteInfoPostProcessingData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return GpSiteInfoPostProcessingData(
+      code: serializer.fromJson<String>(json['code']),
+      name: serializer.fromJson<String>(json['name']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'code': serializer.toJson<String>(code),
+      'name': serializer.toJson<String>(name),
+    };
+  }
+
+  GpSiteInfoPostProcessingData copyWith({String? code, String? name}) =>
+      GpSiteInfoPostProcessingData(
+        code: code ?? this.code,
+        name: name ?? this.name,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('GpSiteInfoPostProcessingData(')
+          ..write('code: $code, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(code, name);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GpSiteInfoPostProcessingData &&
+          other.code == this.code &&
+          other.name == this.name);
+}
+
+class GpSiteInfoPostProcessingCompanion
+    extends d.UpdateCompanion<GpSiteInfoPostProcessingData> {
+  final d.Value<String> code;
+  final d.Value<String> name;
+  final d.Value<int> rowid;
+  const GpSiteInfoPostProcessingCompanion({
+    this.code = const d.Value.absent(),
+    this.name = const d.Value.absent(),
+    this.rowid = const d.Value.absent(),
+  });
+  GpSiteInfoPostProcessingCompanion.insert({
+    required String code,
+    required String name,
+    this.rowid = const d.Value.absent(),
+  })  : code = d.Value(code),
+        name = d.Value(name);
+  static d.Insertable<GpSiteInfoPostProcessingData> custom({
+    d.Expression<String>? code,
+    d.Expression<String>? name,
+    d.Expression<int>? rowid,
+  }) {
+    return d.RawValuesInsertable({
+      if (code != null) 'code': code,
+      if (name != null) 'name': name,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  GpSiteInfoPostProcessingCompanion copyWith(
+      {d.Value<String>? code, d.Value<String>? name, d.Value<int>? rowid}) {
+    return GpSiteInfoPostProcessingCompanion(
+      code: code ?? this.code,
+      name: name ?? this.name,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    if (code.present) {
+      map['code'] = d.Variable<String>(code.value);
+    }
+    if (name.present) {
+      map['name'] = d.Variable<String>(name.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = d.Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GpSiteInfoPostProcessingCompanion(')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $SurveyHeadersTable extends SurveyHeaders
     with d.TableInfo<$SurveyHeadersTable, SurveyHeader> {
   @override
@@ -26101,6 +28625,30 @@ abstract class _$Database extends d.GeneratedDatabase {
   late final $LtpSiteAgeSuitabilityTable ltpSiteAgeSuitability =
       $LtpSiteAgeSuitabilityTable(this);
   late final $LtpProrateTable ltpProrate = $LtpProrateTable(this);
+  late final $GpSiteInfoStandStructureTable gpSiteInfoStandStructure =
+      $GpSiteInfoStandStructureTable(this);
+  late final $GpSiteInfoSuccessionStageTable gpSiteInfoSuccessionStage =
+      $GpSiteInfoSuccessionStageTable(this);
+  late final $GpSiteInfoUtmZoneTable gpSiteInfoUtmZone =
+      $GpSiteInfoUtmZoneTable(this);
+  late final $GpSiteInfoVegTypeTable gpSiteInfoVegType =
+      $GpSiteInfoVegTypeTable(this);
+  late final $GpSiteInfoWetlandTable gpSiteInfoWetland =
+      $GpSiteInfoWetlandTable(this);
+  late final $GpSiteInfoEcozoneTable gpSiteInfoEcozone =
+      $GpSiteInfoEcozoneTable(this);
+  late final $GpSiteInfoPlotCompletionTable gpSiteInfoPlotCompletion =
+      $GpSiteInfoPlotCompletionTable(this);
+  late final $GpSiteInfoDensityTable gpSiteInfoDensity =
+      $GpSiteInfoDensityTable(this);
+  late final $GpSiteInfoLandBaseTable gpSiteInfoLandBase =
+      $GpSiteInfoLandBaseTable(this);
+  late final $GpSiteInfoLandCoverTable gpSiteInfoLandCover =
+      $GpSiteInfoLandCoverTable(this);
+  late final $GpSiteInfoLandPosTable gpSiteInfoLandPos =
+      $GpSiteInfoLandPosTable(this);
+  late final $GpSiteInfoPostProcessingTable gpSiteInfoPostProcessing =
+      $GpSiteInfoPostProcessingTable(this);
   late final $SurveyHeadersTable surveyHeaders = $SurveyHeadersTable(this);
   late final $MetaCommentTable metaComment = $MetaCommentTable(this);
   late final $SurveySummaryTable surveySummary = $SurveySummaryTable(this);
@@ -26222,6 +28770,18 @@ abstract class _$Database extends d.GeneratedDatabase {
         ltpSiteHeightSuitability,
         ltpSiteAgeSuitability,
         ltpProrate,
+        gpSiteInfoStandStructure,
+        gpSiteInfoSuccessionStage,
+        gpSiteInfoUtmZone,
+        gpSiteInfoVegType,
+        gpSiteInfoWetland,
+        gpSiteInfoEcozone,
+        gpSiteInfoPlotCompletion,
+        gpSiteInfoDensity,
+        gpSiteInfoLandBase,
+        gpSiteInfoLandCover,
+        gpSiteInfoLandPos,
+        gpSiteInfoPostProcessing,
         surveyHeaders,
         metaComment,
         surveySummary,
@@ -30705,6 +33265,1282 @@ class $$LtpProrateTableFilterComposer
 class $$LtpProrateTableOrderingComposer
     extends d.OrderingComposer<_$Database, $LtpProrateTable> {
   $$LtpProrateTableOrderingComposer(super.$state);
+  d.ColumnOrderings<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$GpSiteInfoStandStructureTableInsertCompanionBuilder
+    = GpSiteInfoStandStructureCompanion Function({
+  required String code,
+  required String name,
+  d.Value<String?> cover,
+  d.Value<int> rowid,
+});
+typedef $$GpSiteInfoStandStructureTableUpdateCompanionBuilder
+    = GpSiteInfoStandStructureCompanion Function({
+  d.Value<String> code,
+  d.Value<String> name,
+  d.Value<String?> cover,
+  d.Value<int> rowid,
+});
+
+class $$GpSiteInfoStandStructureTableTableManager extends d.RootTableManager<
+    _$Database,
+    $GpSiteInfoStandStructureTable,
+    GpSiteInfoStandStructureData,
+    $$GpSiteInfoStandStructureTableFilterComposer,
+    $$GpSiteInfoStandStructureTableOrderingComposer,
+    $$GpSiteInfoStandStructureTableProcessedTableManager,
+    $$GpSiteInfoStandStructureTableInsertCompanionBuilder,
+    $$GpSiteInfoStandStructureTableUpdateCompanionBuilder> {
+  $$GpSiteInfoStandStructureTableTableManager(
+      _$Database db, $GpSiteInfoStandStructureTable table)
+      : super(d.TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $$GpSiteInfoStandStructureTableFilterComposer(
+              d.ComposerState(db, table)),
+          orderingComposer: $$GpSiteInfoStandStructureTableOrderingComposer(
+              d.ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$GpSiteInfoStandStructureTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            d.Value<String> code = const d.Value.absent(),
+            d.Value<String> name = const d.Value.absent(),
+            d.Value<String?> cover = const d.Value.absent(),
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpSiteInfoStandStructureCompanion(
+            code: code,
+            name: name,
+            cover: cover,
+            rowid: rowid,
+          ),
+          getInsertCompanionBuilder: ({
+            required String code,
+            required String name,
+            d.Value<String?> cover = const d.Value.absent(),
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpSiteInfoStandStructureCompanion.insert(
+            code: code,
+            name: name,
+            cover: cover,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$GpSiteInfoStandStructureTableProcessedTableManager
+    extends d.ProcessedTableManager<
+        _$Database,
+        $GpSiteInfoStandStructureTable,
+        GpSiteInfoStandStructureData,
+        $$GpSiteInfoStandStructureTableFilterComposer,
+        $$GpSiteInfoStandStructureTableOrderingComposer,
+        $$GpSiteInfoStandStructureTableProcessedTableManager,
+        $$GpSiteInfoStandStructureTableInsertCompanionBuilder,
+        $$GpSiteInfoStandStructureTableUpdateCompanionBuilder> {
+  $$GpSiteInfoStandStructureTableProcessedTableManager(super.$state);
+}
+
+class $$GpSiteInfoStandStructureTableFilterComposer
+    extends d.FilterComposer<_$Database, $GpSiteInfoStandStructureTable> {
+  $$GpSiteInfoStandStructureTableFilterComposer(super.$state);
+  d.ColumnFilters<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get cover => $state.composableBuilder(
+      column: $state.table.cover,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$GpSiteInfoStandStructureTableOrderingComposer
+    extends d.OrderingComposer<_$Database, $GpSiteInfoStandStructureTable> {
+  $$GpSiteInfoStandStructureTableOrderingComposer(super.$state);
+  d.ColumnOrderings<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get cover => $state.composableBuilder(
+      column: $state.table.cover,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$GpSiteInfoSuccessionStageTableInsertCompanionBuilder
+    = GpSiteInfoSuccessionStageCompanion Function({
+  required String code,
+  required String name,
+  d.Value<int> rowid,
+});
+typedef $$GpSiteInfoSuccessionStageTableUpdateCompanionBuilder
+    = GpSiteInfoSuccessionStageCompanion Function({
+  d.Value<String> code,
+  d.Value<String> name,
+  d.Value<int> rowid,
+});
+
+class $$GpSiteInfoSuccessionStageTableTableManager extends d.RootTableManager<
+    _$Database,
+    $GpSiteInfoSuccessionStageTable,
+    GpSiteInfoSuccessionStageData,
+    $$GpSiteInfoSuccessionStageTableFilterComposer,
+    $$GpSiteInfoSuccessionStageTableOrderingComposer,
+    $$GpSiteInfoSuccessionStageTableProcessedTableManager,
+    $$GpSiteInfoSuccessionStageTableInsertCompanionBuilder,
+    $$GpSiteInfoSuccessionStageTableUpdateCompanionBuilder> {
+  $$GpSiteInfoSuccessionStageTableTableManager(
+      _$Database db, $GpSiteInfoSuccessionStageTable table)
+      : super(d.TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $$GpSiteInfoSuccessionStageTableFilterComposer(
+              d.ComposerState(db, table)),
+          orderingComposer: $$GpSiteInfoSuccessionStageTableOrderingComposer(
+              d.ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$GpSiteInfoSuccessionStageTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            d.Value<String> code = const d.Value.absent(),
+            d.Value<String> name = const d.Value.absent(),
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpSiteInfoSuccessionStageCompanion(
+            code: code,
+            name: name,
+            rowid: rowid,
+          ),
+          getInsertCompanionBuilder: ({
+            required String code,
+            required String name,
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpSiteInfoSuccessionStageCompanion.insert(
+            code: code,
+            name: name,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$GpSiteInfoSuccessionStageTableProcessedTableManager
+    extends d.ProcessedTableManager<
+        _$Database,
+        $GpSiteInfoSuccessionStageTable,
+        GpSiteInfoSuccessionStageData,
+        $$GpSiteInfoSuccessionStageTableFilterComposer,
+        $$GpSiteInfoSuccessionStageTableOrderingComposer,
+        $$GpSiteInfoSuccessionStageTableProcessedTableManager,
+        $$GpSiteInfoSuccessionStageTableInsertCompanionBuilder,
+        $$GpSiteInfoSuccessionStageTableUpdateCompanionBuilder> {
+  $$GpSiteInfoSuccessionStageTableProcessedTableManager(super.$state);
+}
+
+class $$GpSiteInfoSuccessionStageTableFilterComposer
+    extends d.FilterComposer<_$Database, $GpSiteInfoSuccessionStageTable> {
+  $$GpSiteInfoSuccessionStageTableFilterComposer(super.$state);
+  d.ColumnFilters<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$GpSiteInfoSuccessionStageTableOrderingComposer
+    extends d.OrderingComposer<_$Database, $GpSiteInfoSuccessionStageTable> {
+  $$GpSiteInfoSuccessionStageTableOrderingComposer(super.$state);
+  d.ColumnOrderings<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$GpSiteInfoUtmZoneTableInsertCompanionBuilder
+    = GpSiteInfoUtmZoneCompanion Function({
+  required String code,
+  required String name,
+  d.Value<int> rowid,
+});
+typedef $$GpSiteInfoUtmZoneTableUpdateCompanionBuilder
+    = GpSiteInfoUtmZoneCompanion Function({
+  d.Value<String> code,
+  d.Value<String> name,
+  d.Value<int> rowid,
+});
+
+class $$GpSiteInfoUtmZoneTableTableManager extends d.RootTableManager<
+    _$Database,
+    $GpSiteInfoUtmZoneTable,
+    GpSiteInfoUtmZoneData,
+    $$GpSiteInfoUtmZoneTableFilterComposer,
+    $$GpSiteInfoUtmZoneTableOrderingComposer,
+    $$GpSiteInfoUtmZoneTableProcessedTableManager,
+    $$GpSiteInfoUtmZoneTableInsertCompanionBuilder,
+    $$GpSiteInfoUtmZoneTableUpdateCompanionBuilder> {
+  $$GpSiteInfoUtmZoneTableTableManager(
+      _$Database db, $GpSiteInfoUtmZoneTable table)
+      : super(d.TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $$GpSiteInfoUtmZoneTableFilterComposer(
+              d.ComposerState(db, table)),
+          orderingComposer: $$GpSiteInfoUtmZoneTableOrderingComposer(
+              d.ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$GpSiteInfoUtmZoneTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            d.Value<String> code = const d.Value.absent(),
+            d.Value<String> name = const d.Value.absent(),
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpSiteInfoUtmZoneCompanion(
+            code: code,
+            name: name,
+            rowid: rowid,
+          ),
+          getInsertCompanionBuilder: ({
+            required String code,
+            required String name,
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpSiteInfoUtmZoneCompanion.insert(
+            code: code,
+            name: name,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$GpSiteInfoUtmZoneTableProcessedTableManager
+    extends d.ProcessedTableManager<
+        _$Database,
+        $GpSiteInfoUtmZoneTable,
+        GpSiteInfoUtmZoneData,
+        $$GpSiteInfoUtmZoneTableFilterComposer,
+        $$GpSiteInfoUtmZoneTableOrderingComposer,
+        $$GpSiteInfoUtmZoneTableProcessedTableManager,
+        $$GpSiteInfoUtmZoneTableInsertCompanionBuilder,
+        $$GpSiteInfoUtmZoneTableUpdateCompanionBuilder> {
+  $$GpSiteInfoUtmZoneTableProcessedTableManager(super.$state);
+}
+
+class $$GpSiteInfoUtmZoneTableFilterComposer
+    extends d.FilterComposer<_$Database, $GpSiteInfoUtmZoneTable> {
+  $$GpSiteInfoUtmZoneTableFilterComposer(super.$state);
+  d.ColumnFilters<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$GpSiteInfoUtmZoneTableOrderingComposer
+    extends d.OrderingComposer<_$Database, $GpSiteInfoUtmZoneTable> {
+  $$GpSiteInfoUtmZoneTableOrderingComposer(super.$state);
+  d.ColumnOrderings<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$GpSiteInfoVegTypeTableInsertCompanionBuilder
+    = GpSiteInfoVegTypeCompanion Function({
+  required String code,
+  required String name,
+  required String cover,
+  d.Value<String?> base,
+  d.Value<int> rowid,
+});
+typedef $$GpSiteInfoVegTypeTableUpdateCompanionBuilder
+    = GpSiteInfoVegTypeCompanion Function({
+  d.Value<String> code,
+  d.Value<String> name,
+  d.Value<String> cover,
+  d.Value<String?> base,
+  d.Value<int> rowid,
+});
+
+class $$GpSiteInfoVegTypeTableTableManager extends d.RootTableManager<
+    _$Database,
+    $GpSiteInfoVegTypeTable,
+    GpSiteInfoVegTypeData,
+    $$GpSiteInfoVegTypeTableFilterComposer,
+    $$GpSiteInfoVegTypeTableOrderingComposer,
+    $$GpSiteInfoVegTypeTableProcessedTableManager,
+    $$GpSiteInfoVegTypeTableInsertCompanionBuilder,
+    $$GpSiteInfoVegTypeTableUpdateCompanionBuilder> {
+  $$GpSiteInfoVegTypeTableTableManager(
+      _$Database db, $GpSiteInfoVegTypeTable table)
+      : super(d.TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $$GpSiteInfoVegTypeTableFilterComposer(
+              d.ComposerState(db, table)),
+          orderingComposer: $$GpSiteInfoVegTypeTableOrderingComposer(
+              d.ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$GpSiteInfoVegTypeTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            d.Value<String> code = const d.Value.absent(),
+            d.Value<String> name = const d.Value.absent(),
+            d.Value<String> cover = const d.Value.absent(),
+            d.Value<String?> base = const d.Value.absent(),
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpSiteInfoVegTypeCompanion(
+            code: code,
+            name: name,
+            cover: cover,
+            base: base,
+            rowid: rowid,
+          ),
+          getInsertCompanionBuilder: ({
+            required String code,
+            required String name,
+            required String cover,
+            d.Value<String?> base = const d.Value.absent(),
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpSiteInfoVegTypeCompanion.insert(
+            code: code,
+            name: name,
+            cover: cover,
+            base: base,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$GpSiteInfoVegTypeTableProcessedTableManager
+    extends d.ProcessedTableManager<
+        _$Database,
+        $GpSiteInfoVegTypeTable,
+        GpSiteInfoVegTypeData,
+        $$GpSiteInfoVegTypeTableFilterComposer,
+        $$GpSiteInfoVegTypeTableOrderingComposer,
+        $$GpSiteInfoVegTypeTableProcessedTableManager,
+        $$GpSiteInfoVegTypeTableInsertCompanionBuilder,
+        $$GpSiteInfoVegTypeTableUpdateCompanionBuilder> {
+  $$GpSiteInfoVegTypeTableProcessedTableManager(super.$state);
+}
+
+class $$GpSiteInfoVegTypeTableFilterComposer
+    extends d.FilterComposer<_$Database, $GpSiteInfoVegTypeTable> {
+  $$GpSiteInfoVegTypeTableFilterComposer(super.$state);
+  d.ColumnFilters<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get cover => $state.composableBuilder(
+      column: $state.table.cover,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get base => $state.composableBuilder(
+      column: $state.table.base,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$GpSiteInfoVegTypeTableOrderingComposer
+    extends d.OrderingComposer<_$Database, $GpSiteInfoVegTypeTable> {
+  $$GpSiteInfoVegTypeTableOrderingComposer(super.$state);
+  d.ColumnOrderings<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get cover => $state.composableBuilder(
+      column: $state.table.cover,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get base => $state.composableBuilder(
+      column: $state.table.base,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$GpSiteInfoWetlandTableInsertCompanionBuilder
+    = GpSiteInfoWetlandCompanion Function({
+  required String code,
+  required String name,
+  d.Value<int> rowid,
+});
+typedef $$GpSiteInfoWetlandTableUpdateCompanionBuilder
+    = GpSiteInfoWetlandCompanion Function({
+  d.Value<String> code,
+  d.Value<String> name,
+  d.Value<int> rowid,
+});
+
+class $$GpSiteInfoWetlandTableTableManager extends d.RootTableManager<
+    _$Database,
+    $GpSiteInfoWetlandTable,
+    GpSiteInfoWetlandData,
+    $$GpSiteInfoWetlandTableFilterComposer,
+    $$GpSiteInfoWetlandTableOrderingComposer,
+    $$GpSiteInfoWetlandTableProcessedTableManager,
+    $$GpSiteInfoWetlandTableInsertCompanionBuilder,
+    $$GpSiteInfoWetlandTableUpdateCompanionBuilder> {
+  $$GpSiteInfoWetlandTableTableManager(
+      _$Database db, $GpSiteInfoWetlandTable table)
+      : super(d.TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $$GpSiteInfoWetlandTableFilterComposer(
+              d.ComposerState(db, table)),
+          orderingComposer: $$GpSiteInfoWetlandTableOrderingComposer(
+              d.ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$GpSiteInfoWetlandTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            d.Value<String> code = const d.Value.absent(),
+            d.Value<String> name = const d.Value.absent(),
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpSiteInfoWetlandCompanion(
+            code: code,
+            name: name,
+            rowid: rowid,
+          ),
+          getInsertCompanionBuilder: ({
+            required String code,
+            required String name,
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpSiteInfoWetlandCompanion.insert(
+            code: code,
+            name: name,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$GpSiteInfoWetlandTableProcessedTableManager
+    extends d.ProcessedTableManager<
+        _$Database,
+        $GpSiteInfoWetlandTable,
+        GpSiteInfoWetlandData,
+        $$GpSiteInfoWetlandTableFilterComposer,
+        $$GpSiteInfoWetlandTableOrderingComposer,
+        $$GpSiteInfoWetlandTableProcessedTableManager,
+        $$GpSiteInfoWetlandTableInsertCompanionBuilder,
+        $$GpSiteInfoWetlandTableUpdateCompanionBuilder> {
+  $$GpSiteInfoWetlandTableProcessedTableManager(super.$state);
+}
+
+class $$GpSiteInfoWetlandTableFilterComposer
+    extends d.FilterComposer<_$Database, $GpSiteInfoWetlandTable> {
+  $$GpSiteInfoWetlandTableFilterComposer(super.$state);
+  d.ColumnFilters<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$GpSiteInfoWetlandTableOrderingComposer
+    extends d.OrderingComposer<_$Database, $GpSiteInfoWetlandTable> {
+  $$GpSiteInfoWetlandTableOrderingComposer(super.$state);
+  d.ColumnOrderings<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$GpSiteInfoEcozoneTableInsertCompanionBuilder
+    = GpSiteInfoEcozoneCompanion Function({
+  required String code,
+  required String name,
+  d.Value<int> rowid,
+});
+typedef $$GpSiteInfoEcozoneTableUpdateCompanionBuilder
+    = GpSiteInfoEcozoneCompanion Function({
+  d.Value<String> code,
+  d.Value<String> name,
+  d.Value<int> rowid,
+});
+
+class $$GpSiteInfoEcozoneTableTableManager extends d.RootTableManager<
+    _$Database,
+    $GpSiteInfoEcozoneTable,
+    GpSiteInfoEcozoneData,
+    $$GpSiteInfoEcozoneTableFilterComposer,
+    $$GpSiteInfoEcozoneTableOrderingComposer,
+    $$GpSiteInfoEcozoneTableProcessedTableManager,
+    $$GpSiteInfoEcozoneTableInsertCompanionBuilder,
+    $$GpSiteInfoEcozoneTableUpdateCompanionBuilder> {
+  $$GpSiteInfoEcozoneTableTableManager(
+      _$Database db, $GpSiteInfoEcozoneTable table)
+      : super(d.TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $$GpSiteInfoEcozoneTableFilterComposer(
+              d.ComposerState(db, table)),
+          orderingComposer: $$GpSiteInfoEcozoneTableOrderingComposer(
+              d.ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$GpSiteInfoEcozoneTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            d.Value<String> code = const d.Value.absent(),
+            d.Value<String> name = const d.Value.absent(),
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpSiteInfoEcozoneCompanion(
+            code: code,
+            name: name,
+            rowid: rowid,
+          ),
+          getInsertCompanionBuilder: ({
+            required String code,
+            required String name,
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpSiteInfoEcozoneCompanion.insert(
+            code: code,
+            name: name,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$GpSiteInfoEcozoneTableProcessedTableManager
+    extends d.ProcessedTableManager<
+        _$Database,
+        $GpSiteInfoEcozoneTable,
+        GpSiteInfoEcozoneData,
+        $$GpSiteInfoEcozoneTableFilterComposer,
+        $$GpSiteInfoEcozoneTableOrderingComposer,
+        $$GpSiteInfoEcozoneTableProcessedTableManager,
+        $$GpSiteInfoEcozoneTableInsertCompanionBuilder,
+        $$GpSiteInfoEcozoneTableUpdateCompanionBuilder> {
+  $$GpSiteInfoEcozoneTableProcessedTableManager(super.$state);
+}
+
+class $$GpSiteInfoEcozoneTableFilterComposer
+    extends d.FilterComposer<_$Database, $GpSiteInfoEcozoneTable> {
+  $$GpSiteInfoEcozoneTableFilterComposer(super.$state);
+  d.ColumnFilters<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$GpSiteInfoEcozoneTableOrderingComposer
+    extends d.OrderingComposer<_$Database, $GpSiteInfoEcozoneTable> {
+  $$GpSiteInfoEcozoneTableOrderingComposer(super.$state);
+  d.ColumnOrderings<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$GpSiteInfoPlotCompletionTableInsertCompanionBuilder
+    = GpSiteInfoPlotCompletionCompanion Function({
+  required String code,
+  required String name,
+  d.Value<int> rowid,
+});
+typedef $$GpSiteInfoPlotCompletionTableUpdateCompanionBuilder
+    = GpSiteInfoPlotCompletionCompanion Function({
+  d.Value<String> code,
+  d.Value<String> name,
+  d.Value<int> rowid,
+});
+
+class $$GpSiteInfoPlotCompletionTableTableManager extends d.RootTableManager<
+    _$Database,
+    $GpSiteInfoPlotCompletionTable,
+    GpSiteInfoPlotCompletionData,
+    $$GpSiteInfoPlotCompletionTableFilterComposer,
+    $$GpSiteInfoPlotCompletionTableOrderingComposer,
+    $$GpSiteInfoPlotCompletionTableProcessedTableManager,
+    $$GpSiteInfoPlotCompletionTableInsertCompanionBuilder,
+    $$GpSiteInfoPlotCompletionTableUpdateCompanionBuilder> {
+  $$GpSiteInfoPlotCompletionTableTableManager(
+      _$Database db, $GpSiteInfoPlotCompletionTable table)
+      : super(d.TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $$GpSiteInfoPlotCompletionTableFilterComposer(
+              d.ComposerState(db, table)),
+          orderingComposer: $$GpSiteInfoPlotCompletionTableOrderingComposer(
+              d.ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$GpSiteInfoPlotCompletionTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            d.Value<String> code = const d.Value.absent(),
+            d.Value<String> name = const d.Value.absent(),
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpSiteInfoPlotCompletionCompanion(
+            code: code,
+            name: name,
+            rowid: rowid,
+          ),
+          getInsertCompanionBuilder: ({
+            required String code,
+            required String name,
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpSiteInfoPlotCompletionCompanion.insert(
+            code: code,
+            name: name,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$GpSiteInfoPlotCompletionTableProcessedTableManager
+    extends d.ProcessedTableManager<
+        _$Database,
+        $GpSiteInfoPlotCompletionTable,
+        GpSiteInfoPlotCompletionData,
+        $$GpSiteInfoPlotCompletionTableFilterComposer,
+        $$GpSiteInfoPlotCompletionTableOrderingComposer,
+        $$GpSiteInfoPlotCompletionTableProcessedTableManager,
+        $$GpSiteInfoPlotCompletionTableInsertCompanionBuilder,
+        $$GpSiteInfoPlotCompletionTableUpdateCompanionBuilder> {
+  $$GpSiteInfoPlotCompletionTableProcessedTableManager(super.$state);
+}
+
+class $$GpSiteInfoPlotCompletionTableFilterComposer
+    extends d.FilterComposer<_$Database, $GpSiteInfoPlotCompletionTable> {
+  $$GpSiteInfoPlotCompletionTableFilterComposer(super.$state);
+  d.ColumnFilters<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$GpSiteInfoPlotCompletionTableOrderingComposer
+    extends d.OrderingComposer<_$Database, $GpSiteInfoPlotCompletionTable> {
+  $$GpSiteInfoPlotCompletionTableOrderingComposer(super.$state);
+  d.ColumnOrderings<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$GpSiteInfoDensityTableInsertCompanionBuilder
+    = GpSiteInfoDensityCompanion Function({
+  required String code,
+  required String name,
+  d.Value<String?> base,
+  d.Value<String?> veg,
+  d.Value<int> rowid,
+});
+typedef $$GpSiteInfoDensityTableUpdateCompanionBuilder
+    = GpSiteInfoDensityCompanion Function({
+  d.Value<String> code,
+  d.Value<String> name,
+  d.Value<String?> base,
+  d.Value<String?> veg,
+  d.Value<int> rowid,
+});
+
+class $$GpSiteInfoDensityTableTableManager extends d.RootTableManager<
+    _$Database,
+    $GpSiteInfoDensityTable,
+    GpSiteInfoDensityData,
+    $$GpSiteInfoDensityTableFilterComposer,
+    $$GpSiteInfoDensityTableOrderingComposer,
+    $$GpSiteInfoDensityTableProcessedTableManager,
+    $$GpSiteInfoDensityTableInsertCompanionBuilder,
+    $$GpSiteInfoDensityTableUpdateCompanionBuilder> {
+  $$GpSiteInfoDensityTableTableManager(
+      _$Database db, $GpSiteInfoDensityTable table)
+      : super(d.TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $$GpSiteInfoDensityTableFilterComposer(
+              d.ComposerState(db, table)),
+          orderingComposer: $$GpSiteInfoDensityTableOrderingComposer(
+              d.ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$GpSiteInfoDensityTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            d.Value<String> code = const d.Value.absent(),
+            d.Value<String> name = const d.Value.absent(),
+            d.Value<String?> base = const d.Value.absent(),
+            d.Value<String?> veg = const d.Value.absent(),
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpSiteInfoDensityCompanion(
+            code: code,
+            name: name,
+            base: base,
+            veg: veg,
+            rowid: rowid,
+          ),
+          getInsertCompanionBuilder: ({
+            required String code,
+            required String name,
+            d.Value<String?> base = const d.Value.absent(),
+            d.Value<String?> veg = const d.Value.absent(),
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpSiteInfoDensityCompanion.insert(
+            code: code,
+            name: name,
+            base: base,
+            veg: veg,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$GpSiteInfoDensityTableProcessedTableManager
+    extends d.ProcessedTableManager<
+        _$Database,
+        $GpSiteInfoDensityTable,
+        GpSiteInfoDensityData,
+        $$GpSiteInfoDensityTableFilterComposer,
+        $$GpSiteInfoDensityTableOrderingComposer,
+        $$GpSiteInfoDensityTableProcessedTableManager,
+        $$GpSiteInfoDensityTableInsertCompanionBuilder,
+        $$GpSiteInfoDensityTableUpdateCompanionBuilder> {
+  $$GpSiteInfoDensityTableProcessedTableManager(super.$state);
+}
+
+class $$GpSiteInfoDensityTableFilterComposer
+    extends d.FilterComposer<_$Database, $GpSiteInfoDensityTable> {
+  $$GpSiteInfoDensityTableFilterComposer(super.$state);
+  d.ColumnFilters<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get base => $state.composableBuilder(
+      column: $state.table.base,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get veg => $state.composableBuilder(
+      column: $state.table.veg,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$GpSiteInfoDensityTableOrderingComposer
+    extends d.OrderingComposer<_$Database, $GpSiteInfoDensityTable> {
+  $$GpSiteInfoDensityTableOrderingComposer(super.$state);
+  d.ColumnOrderings<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get base => $state.composableBuilder(
+      column: $state.table.base,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get veg => $state.composableBuilder(
+      column: $state.table.veg,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$GpSiteInfoLandBaseTableInsertCompanionBuilder
+    = GpSiteInfoLandBaseCompanion Function({
+  required String code,
+  required String name,
+  d.Value<String?> completion,
+  d.Value<int> rowid,
+});
+typedef $$GpSiteInfoLandBaseTableUpdateCompanionBuilder
+    = GpSiteInfoLandBaseCompanion Function({
+  d.Value<String> code,
+  d.Value<String> name,
+  d.Value<String?> completion,
+  d.Value<int> rowid,
+});
+
+class $$GpSiteInfoLandBaseTableTableManager extends d.RootTableManager<
+    _$Database,
+    $GpSiteInfoLandBaseTable,
+    GpSiteInfoLandBaseData,
+    $$GpSiteInfoLandBaseTableFilterComposer,
+    $$GpSiteInfoLandBaseTableOrderingComposer,
+    $$GpSiteInfoLandBaseTableProcessedTableManager,
+    $$GpSiteInfoLandBaseTableInsertCompanionBuilder,
+    $$GpSiteInfoLandBaseTableUpdateCompanionBuilder> {
+  $$GpSiteInfoLandBaseTableTableManager(
+      _$Database db, $GpSiteInfoLandBaseTable table)
+      : super(d.TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $$GpSiteInfoLandBaseTableFilterComposer(
+              d.ComposerState(db, table)),
+          orderingComposer: $$GpSiteInfoLandBaseTableOrderingComposer(
+              d.ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$GpSiteInfoLandBaseTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            d.Value<String> code = const d.Value.absent(),
+            d.Value<String> name = const d.Value.absent(),
+            d.Value<String?> completion = const d.Value.absent(),
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpSiteInfoLandBaseCompanion(
+            code: code,
+            name: name,
+            completion: completion,
+            rowid: rowid,
+          ),
+          getInsertCompanionBuilder: ({
+            required String code,
+            required String name,
+            d.Value<String?> completion = const d.Value.absent(),
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpSiteInfoLandBaseCompanion.insert(
+            code: code,
+            name: name,
+            completion: completion,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$GpSiteInfoLandBaseTableProcessedTableManager
+    extends d.ProcessedTableManager<
+        _$Database,
+        $GpSiteInfoLandBaseTable,
+        GpSiteInfoLandBaseData,
+        $$GpSiteInfoLandBaseTableFilterComposer,
+        $$GpSiteInfoLandBaseTableOrderingComposer,
+        $$GpSiteInfoLandBaseTableProcessedTableManager,
+        $$GpSiteInfoLandBaseTableInsertCompanionBuilder,
+        $$GpSiteInfoLandBaseTableUpdateCompanionBuilder> {
+  $$GpSiteInfoLandBaseTableProcessedTableManager(super.$state);
+}
+
+class $$GpSiteInfoLandBaseTableFilterComposer
+    extends d.FilterComposer<_$Database, $GpSiteInfoLandBaseTable> {
+  $$GpSiteInfoLandBaseTableFilterComposer(super.$state);
+  d.ColumnFilters<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get completion => $state.composableBuilder(
+      column: $state.table.completion,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$GpSiteInfoLandBaseTableOrderingComposer
+    extends d.OrderingComposer<_$Database, $GpSiteInfoLandBaseTable> {
+  $$GpSiteInfoLandBaseTableOrderingComposer(super.$state);
+  d.ColumnOrderings<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get completion => $state.composableBuilder(
+      column: $state.table.completion,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$GpSiteInfoLandCoverTableInsertCompanionBuilder
+    = GpSiteInfoLandCoverCompanion Function({
+  required String code,
+  required String name,
+  d.Value<String?> base,
+  d.Value<int> rowid,
+});
+typedef $$GpSiteInfoLandCoverTableUpdateCompanionBuilder
+    = GpSiteInfoLandCoverCompanion Function({
+  d.Value<String> code,
+  d.Value<String> name,
+  d.Value<String?> base,
+  d.Value<int> rowid,
+});
+
+class $$GpSiteInfoLandCoverTableTableManager extends d.RootTableManager<
+    _$Database,
+    $GpSiteInfoLandCoverTable,
+    GpSiteInfoLandCoverData,
+    $$GpSiteInfoLandCoverTableFilterComposer,
+    $$GpSiteInfoLandCoverTableOrderingComposer,
+    $$GpSiteInfoLandCoverTableProcessedTableManager,
+    $$GpSiteInfoLandCoverTableInsertCompanionBuilder,
+    $$GpSiteInfoLandCoverTableUpdateCompanionBuilder> {
+  $$GpSiteInfoLandCoverTableTableManager(
+      _$Database db, $GpSiteInfoLandCoverTable table)
+      : super(d.TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $$GpSiteInfoLandCoverTableFilterComposer(
+              d.ComposerState(db, table)),
+          orderingComposer: $$GpSiteInfoLandCoverTableOrderingComposer(
+              d.ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$GpSiteInfoLandCoverTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            d.Value<String> code = const d.Value.absent(),
+            d.Value<String> name = const d.Value.absent(),
+            d.Value<String?> base = const d.Value.absent(),
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpSiteInfoLandCoverCompanion(
+            code: code,
+            name: name,
+            base: base,
+            rowid: rowid,
+          ),
+          getInsertCompanionBuilder: ({
+            required String code,
+            required String name,
+            d.Value<String?> base = const d.Value.absent(),
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpSiteInfoLandCoverCompanion.insert(
+            code: code,
+            name: name,
+            base: base,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$GpSiteInfoLandCoverTableProcessedTableManager
+    extends d.ProcessedTableManager<
+        _$Database,
+        $GpSiteInfoLandCoverTable,
+        GpSiteInfoLandCoverData,
+        $$GpSiteInfoLandCoverTableFilterComposer,
+        $$GpSiteInfoLandCoverTableOrderingComposer,
+        $$GpSiteInfoLandCoverTableProcessedTableManager,
+        $$GpSiteInfoLandCoverTableInsertCompanionBuilder,
+        $$GpSiteInfoLandCoverTableUpdateCompanionBuilder> {
+  $$GpSiteInfoLandCoverTableProcessedTableManager(super.$state);
+}
+
+class $$GpSiteInfoLandCoverTableFilterComposer
+    extends d.FilterComposer<_$Database, $GpSiteInfoLandCoverTable> {
+  $$GpSiteInfoLandCoverTableFilterComposer(super.$state);
+  d.ColumnFilters<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get base => $state.composableBuilder(
+      column: $state.table.base,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$GpSiteInfoLandCoverTableOrderingComposer
+    extends d.OrderingComposer<_$Database, $GpSiteInfoLandCoverTable> {
+  $$GpSiteInfoLandCoverTableOrderingComposer(super.$state);
+  d.ColumnOrderings<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get base => $state.composableBuilder(
+      column: $state.table.base,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$GpSiteInfoLandPosTableInsertCompanionBuilder
+    = GpSiteInfoLandPosCompanion Function({
+  required String code,
+  required String name,
+  d.Value<int> rowid,
+});
+typedef $$GpSiteInfoLandPosTableUpdateCompanionBuilder
+    = GpSiteInfoLandPosCompanion Function({
+  d.Value<String> code,
+  d.Value<String> name,
+  d.Value<int> rowid,
+});
+
+class $$GpSiteInfoLandPosTableTableManager extends d.RootTableManager<
+    _$Database,
+    $GpSiteInfoLandPosTable,
+    GpSiteInfoLandPo,
+    $$GpSiteInfoLandPosTableFilterComposer,
+    $$GpSiteInfoLandPosTableOrderingComposer,
+    $$GpSiteInfoLandPosTableProcessedTableManager,
+    $$GpSiteInfoLandPosTableInsertCompanionBuilder,
+    $$GpSiteInfoLandPosTableUpdateCompanionBuilder> {
+  $$GpSiteInfoLandPosTableTableManager(
+      _$Database db, $GpSiteInfoLandPosTable table)
+      : super(d.TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $$GpSiteInfoLandPosTableFilterComposer(
+              d.ComposerState(db, table)),
+          orderingComposer: $$GpSiteInfoLandPosTableOrderingComposer(
+              d.ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$GpSiteInfoLandPosTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            d.Value<String> code = const d.Value.absent(),
+            d.Value<String> name = const d.Value.absent(),
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpSiteInfoLandPosCompanion(
+            code: code,
+            name: name,
+            rowid: rowid,
+          ),
+          getInsertCompanionBuilder: ({
+            required String code,
+            required String name,
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpSiteInfoLandPosCompanion.insert(
+            code: code,
+            name: name,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$GpSiteInfoLandPosTableProcessedTableManager
+    extends d.ProcessedTableManager<
+        _$Database,
+        $GpSiteInfoLandPosTable,
+        GpSiteInfoLandPo,
+        $$GpSiteInfoLandPosTableFilterComposer,
+        $$GpSiteInfoLandPosTableOrderingComposer,
+        $$GpSiteInfoLandPosTableProcessedTableManager,
+        $$GpSiteInfoLandPosTableInsertCompanionBuilder,
+        $$GpSiteInfoLandPosTableUpdateCompanionBuilder> {
+  $$GpSiteInfoLandPosTableProcessedTableManager(super.$state);
+}
+
+class $$GpSiteInfoLandPosTableFilterComposer
+    extends d.FilterComposer<_$Database, $GpSiteInfoLandPosTable> {
+  $$GpSiteInfoLandPosTableFilterComposer(super.$state);
+  d.ColumnFilters<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$GpSiteInfoLandPosTableOrderingComposer
+    extends d.OrderingComposer<_$Database, $GpSiteInfoLandPosTable> {
+  $$GpSiteInfoLandPosTableOrderingComposer(super.$state);
+  d.ColumnOrderings<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$GpSiteInfoPostProcessingTableInsertCompanionBuilder
+    = GpSiteInfoPostProcessingCompanion Function({
+  required String code,
+  required String name,
+  d.Value<int> rowid,
+});
+typedef $$GpSiteInfoPostProcessingTableUpdateCompanionBuilder
+    = GpSiteInfoPostProcessingCompanion Function({
+  d.Value<String> code,
+  d.Value<String> name,
+  d.Value<int> rowid,
+});
+
+class $$GpSiteInfoPostProcessingTableTableManager extends d.RootTableManager<
+    _$Database,
+    $GpSiteInfoPostProcessingTable,
+    GpSiteInfoPostProcessingData,
+    $$GpSiteInfoPostProcessingTableFilterComposer,
+    $$GpSiteInfoPostProcessingTableOrderingComposer,
+    $$GpSiteInfoPostProcessingTableProcessedTableManager,
+    $$GpSiteInfoPostProcessingTableInsertCompanionBuilder,
+    $$GpSiteInfoPostProcessingTableUpdateCompanionBuilder> {
+  $$GpSiteInfoPostProcessingTableTableManager(
+      _$Database db, $GpSiteInfoPostProcessingTable table)
+      : super(d.TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $$GpSiteInfoPostProcessingTableFilterComposer(
+              d.ComposerState(db, table)),
+          orderingComposer: $$GpSiteInfoPostProcessingTableOrderingComposer(
+              d.ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$GpSiteInfoPostProcessingTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            d.Value<String> code = const d.Value.absent(),
+            d.Value<String> name = const d.Value.absent(),
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpSiteInfoPostProcessingCompanion(
+            code: code,
+            name: name,
+            rowid: rowid,
+          ),
+          getInsertCompanionBuilder: ({
+            required String code,
+            required String name,
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpSiteInfoPostProcessingCompanion.insert(
+            code: code,
+            name: name,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$GpSiteInfoPostProcessingTableProcessedTableManager
+    extends d.ProcessedTableManager<
+        _$Database,
+        $GpSiteInfoPostProcessingTable,
+        GpSiteInfoPostProcessingData,
+        $$GpSiteInfoPostProcessingTableFilterComposer,
+        $$GpSiteInfoPostProcessingTableOrderingComposer,
+        $$GpSiteInfoPostProcessingTableProcessedTableManager,
+        $$GpSiteInfoPostProcessingTableInsertCompanionBuilder,
+        $$GpSiteInfoPostProcessingTableUpdateCompanionBuilder> {
+  $$GpSiteInfoPostProcessingTableProcessedTableManager(super.$state);
+}
+
+class $$GpSiteInfoPostProcessingTableFilterComposer
+    extends d.FilterComposer<_$Database, $GpSiteInfoPostProcessingTable> {
+  $$GpSiteInfoPostProcessingTableFilterComposer(super.$state);
+  d.ColumnFilters<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$GpSiteInfoPostProcessingTableOrderingComposer
+    extends d.OrderingComposer<_$Database, $GpSiteInfoPostProcessingTable> {
+  $$GpSiteInfoPostProcessingTableOrderingComposer(super.$state);
   d.ColumnOrderings<String> get code => $state.composableBuilder(
       column: $state.table.code,
       builder: (column, joinBuilders) =>
@@ -39489,6 +43325,34 @@ class _$DatabaseManager {
       $$LtpSiteAgeSuitabilityTableTableManager(_db, _db.ltpSiteAgeSuitability);
   $$LtpProrateTableTableManager get ltpProrate =>
       $$LtpProrateTableTableManager(_db, _db.ltpProrate);
+  $$GpSiteInfoStandStructureTableTableManager get gpSiteInfoStandStructure =>
+      $$GpSiteInfoStandStructureTableTableManager(
+          _db, _db.gpSiteInfoStandStructure);
+  $$GpSiteInfoSuccessionStageTableTableManager get gpSiteInfoSuccessionStage =>
+      $$GpSiteInfoSuccessionStageTableTableManager(
+          _db, _db.gpSiteInfoSuccessionStage);
+  $$GpSiteInfoUtmZoneTableTableManager get gpSiteInfoUtmZone =>
+      $$GpSiteInfoUtmZoneTableTableManager(_db, _db.gpSiteInfoUtmZone);
+  $$GpSiteInfoVegTypeTableTableManager get gpSiteInfoVegType =>
+      $$GpSiteInfoVegTypeTableTableManager(_db, _db.gpSiteInfoVegType);
+  $$GpSiteInfoWetlandTableTableManager get gpSiteInfoWetland =>
+      $$GpSiteInfoWetlandTableTableManager(_db, _db.gpSiteInfoWetland);
+  $$GpSiteInfoEcozoneTableTableManager get gpSiteInfoEcozone =>
+      $$GpSiteInfoEcozoneTableTableManager(_db, _db.gpSiteInfoEcozone);
+  $$GpSiteInfoPlotCompletionTableTableManager get gpSiteInfoPlotCompletion =>
+      $$GpSiteInfoPlotCompletionTableTableManager(
+          _db, _db.gpSiteInfoPlotCompletion);
+  $$GpSiteInfoDensityTableTableManager get gpSiteInfoDensity =>
+      $$GpSiteInfoDensityTableTableManager(_db, _db.gpSiteInfoDensity);
+  $$GpSiteInfoLandBaseTableTableManager get gpSiteInfoLandBase =>
+      $$GpSiteInfoLandBaseTableTableManager(_db, _db.gpSiteInfoLandBase);
+  $$GpSiteInfoLandCoverTableTableManager get gpSiteInfoLandCover =>
+      $$GpSiteInfoLandCoverTableTableManager(_db, _db.gpSiteInfoLandCover);
+  $$GpSiteInfoLandPosTableTableManager get gpSiteInfoLandPos =>
+      $$GpSiteInfoLandPosTableTableManager(_db, _db.gpSiteInfoLandPos);
+  $$GpSiteInfoPostProcessingTableTableManager get gpSiteInfoPostProcessing =>
+      $$GpSiteInfoPostProcessingTableTableManager(
+          _db, _db.gpSiteInfoPostProcessing);
   $$SurveyHeadersTableTableManager get surveyHeaders =>
       $$SurveyHeadersTableTableManager(_db, _db.surveyHeaders);
   $$MetaCommentTableTableManager get metaComment =>

@@ -1,0 +1,66 @@
+[
+  {
+    "code": "7",
+    "name": "UTM Zone 7"
+  },
+  {
+    "code": "8",
+    "name": "UTM Zone 8"
+  },
+  {
+    "code": "9",
+    "name": "UTM Zone 9"
+  },
+  {
+    "code": "10",
+    "name": "UTM Zone 10"
+  },
+  {
+    "code": "11",
+    "name": "UTM Zone 11"
+  },
+  {
+    "code": "12",
+    "name": "UTM Zone 12"
+  },
+  {
+    "code": "13",
+    "name": "UTM Zone 13"
+  },
+  {
+    "code": "14",
+    "name": "UTM Zone 14"
+  },
+  {
+    "code": "15",
+    "name": "UTM Zone 15"
+  },
+  {
+    "code": "16",
+    "name": "UTM Zone 16"
+  },
+  {
+    "code": "17",
+    "name": "UTM Zone 17"
+  },
+  {
+    "code": "18",
+    "name": "UTM Zone 18"
+  },
+  {
+    "code": "19",
+    "name": "UTM Zone 19"
+  },
+  {
+    "code": "20",
+    "name": "UTM Zone 20"
+  },
+  {
+    "code": "21",
+    "name": "UTM Zone 21"
+  },
+  {
+    "code": "22",
+    "name": "UTM Zone 22"
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "code": "Y",
+    "name": "Yes, reported UTM coordinate and UTM accuracy values are the post-processed values."
+  },
+  {
+    "code": "N",
+    "name": "No, reported UTM coordinate and UTM accuracy values have not been post processed."
+  },
+  {
+    "code": "S",
+    "name": "Not reported"
+  }
+]

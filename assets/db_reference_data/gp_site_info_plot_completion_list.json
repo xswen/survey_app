@@ -1,0 +1,18 @@
+[
+  {
+    "code": "F",
+    "name": "F: Full plot measured"
+  },
+  {
+    "code": "P",
+    "name": "P: Partial plot measured"
+  },
+  {
+    "code": "U",
+    "name": "U: Plot not measured"
+  },
+  {
+    "code": "N",
+    "name": "N: Not reported"
+  }
+]

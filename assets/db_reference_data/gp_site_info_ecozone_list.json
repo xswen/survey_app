@@ -1,0 +1,58 @@
+[
+  {
+    "code": "1",
+    "name": "1: Arctic Cordillera"
+  },
+  {
+    "code": "2",
+    "name": "2: Northern Arctic"
+  },
+  {
+    "code": "3",
+    "name": "3: Southern Arctic"
+  },
+  {
+    "code": "4",
+    "name": "4: Taiga Plains"
+  },
+  {
+    "code": "5",
+    "name": "5: Taiga Shield"
+  },
+  {
+    "code": "6",
+    "name": "6: Boreal Shield"
+  },
+  {
+    "code": "7",
+    "name": "7: Atlantic Maritime"
+  },
+  {
+    "code": "8",
+    "name": "8: Mixedwood Plains"
+  },
+  {
+    "code": "9",
+    "name": "9: Boreal Plains"
+  },
+  {
+    "code": "10",
+    "name": "10: Prairies"
+  },
+  {
+    "code": "11",
+    "name": "11: Taiga Cordillera"
+  },
+  {
+    "code": "12",
+    "name": "12: Boreal Cordillera"
+  },
+  {
+    "code": "13",
+    "name": "13: Pacific Maritime"
+  },
+  {
+    "code": "14",
+    "name": "14: Montane Cordillera"
+  }
+]

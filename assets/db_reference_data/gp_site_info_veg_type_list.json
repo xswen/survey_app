@@ -1,0 +1,98 @@
+[
+  {
+    "code": "TC",
+    "name": "TC: coniferous",
+    "cover": "T",
+    "base": ""
+  },
+  {
+    "code": "TB",
+    "name": "TB: broadleaf",
+    "cover": "T",
+    "base": ""
+  },
+  {
+    "code": "TM",
+    "name": "TM: mixed",
+    "cover": "T",
+    "base": ""
+  },
+  {
+    "code": "ST",
+    "name": "ST: shrub tall",
+    "cover": "V",
+    "base": "N"
+  },
+  {
+    "code": "SL",
+    "name": "SL: shrub low",
+    "cover": "V",
+    "base": "N"
+  },
+  {
+    "code": "HE",
+    "name": "HE: herb",
+    "cover": "V",
+    "base": "N"
+  },
+  {
+    "code": "HF",
+    "name": "HF: herb forb",
+    "cover": "V",
+    "base": "N"
+  },
+  {
+    "code": "HG",
+    "name": "HG: herb graminoid",
+    "cover": "V",
+    "base": "N"
+  },
+  {
+    "code": "BY",
+    "name": "BY: bryoid",
+    "cover": "V",
+    "base": "N"
+  },
+  {
+    "code": "BM",
+    "name": "BM: bryoid moss",
+    "cover": "V",
+    "base": "N"
+  },
+  {
+    "code": "BL",
+    "name": "BL: bryoid lichen",
+    "cover": "V",
+    "base": "N"
+  },
+  {
+    "code": "SI",
+    "name": "SI: snow/ice",
+    "cover": "L",
+    "base": ""
+  },
+  {
+    "code": "RO",
+    "name": "RO: rock rubble",
+    "cover": "L",
+    "base": ""
+  },
+  {
+    "code": "EL",
+    "name": "EL: exposed land",
+    "cover": "L",
+    "base": ""
+  },
+  {
+    "code": "WA",
+    "name": "WA: water",
+    "cover": "W",
+    "base": ""
+  },
+  {
+    "code": "U",
+    "name": "U: unknown",
+    "cover": "U",
+    "base": ""
+  }
+]

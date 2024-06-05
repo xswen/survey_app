@@ -83,6 +83,18 @@ const List<Type> _tables = [
   LtpSiteHeightSuitability,
   LtpSiteAgeSuitability,
   LtpProrate,
+  GpSiteInfoStandStructure,
+  GpSiteInfoSuccessionStage,
+  GpSiteInfoUtmZone,
+  GpSiteInfoVegType,
+  GpSiteInfoWetland,
+  GpSiteInfoEcozone,
+  GpSiteInfoPlotCompletion,
+  GpSiteInfoDensity,
+  GpSiteInfoLandBase,
+  GpSiteInfoLandCover,
+  GpSiteInfoLandPos,
+  GpSiteInfoPostProcessing,
   //Metadata Tables
   MetaComment,
   //Survey Tables
@@ -277,6 +289,32 @@ class Database extends _$Database {
               await _getLtpSiteAgeSuitability();
           List<LtpProrateCompanion> ltpProrateList = await _getLtpProrate();
 
+          List<GpSiteInfoStandStructureCompanion> gpSiteInfoStandStructureList =
+              await _getGpSiteInfoStandStructure();
+          List<GpSiteInfoSuccessionStageCompanion>
+              gpSiteInfoSuccessionStageList =
+              await _getGpSiteInfoSuccessionStage();
+          List<GpSiteInfoUtmZoneCompanion> gpSiteInfoUtmZoneList =
+              await _getGpSiteInfoUtmZone();
+          List<GpSiteInfoVegTypeCompanion> gpSiteInfoVegTypeList =
+              await _getGpSiteInfoVegType();
+          List<GpSiteInfoWetlandCompanion> gpSiteInfoWetlandList =
+              await _getGpSiteInfoWetland();
+          List<GpSiteInfoEcozoneCompanion> gpSiteInfoEcozoneList =
+              await _getGpSiteInfoEcozone();
+          List<GpSiteInfoPlotCompletionCompanion> gpSiteInfoPlotCompletionList =
+              await _getGpSiteInfoPlotCompletion();
+          List<GpSiteInfoDensityCompanion> gpSiteInfoDensityList =
+              await _getGpSiteInfoDensity();
+          List<GpSiteInfoLandBaseCompanion> gpSiteInfoLandBaseList =
+              await _getGpSiteInfoLandBase();
+          List<GpSiteInfoLandCoverCompanion> gpSiteInfoLandCoverList =
+              await _getGpSiteInfoLandCover();
+          List<GpSiteInfoLandPosCompanion> gpSiteInfoLandPosList =
+              await _getGpSiteInfoLandPos();
+          List<GpSiteInfoPostProcessingCompanion> gpSiteInfoPostProcessingList =
+              await _getGpSiteInfoPostProcessing();
+
           c.debugPrint("Init Values");
           await batch((b) {
             b.insertAll(jurisdictions, jurisdictionsList);
@@ -328,6 +366,20 @@ class Database extends _$Database {
             b.insertAll(ltpSiteHeightSuitability, ltpSiteHeightSuitabilityList);
             b.insertAll(ltpSiteAgeSuitability, ltpSiteAgeSuitabilityList);
             b.insertAll(ltpProrate, ltpProrateList);
+
+            b.insertAll(gpSiteInfoStandStructure, gpSiteInfoStandStructureList);
+            b.insertAll(
+                gpSiteInfoSuccessionStage, gpSiteInfoSuccessionStageList);
+            b.insertAll(gpSiteInfoUtmZone, gpSiteInfoUtmZoneList);
+            b.insertAll(gpSiteInfoVegType, gpSiteInfoVegTypeList);
+            b.insertAll(gpSiteInfoWetland, gpSiteInfoWetlandList);
+            b.insertAll(gpSiteInfoEcozone, gpSiteInfoEcozoneList);
+            b.insertAll(gpSiteInfoPlotCompletion, gpSiteInfoPlotCompletionList);
+            b.insertAll(gpSiteInfoDensity, gpSiteInfoDensityList);
+            b.insertAll(gpSiteInfoLandBase, gpSiteInfoLandBaseList);
+            b.insertAll(gpSiteInfoLandCover, gpSiteInfoLandCoverList);
+            b.insertAll(gpSiteInfoLandPos, gpSiteInfoLandPosList);
+            b.insertAll(gpSiteInfoPostProcessing, gpSiteInfoPostProcessingList);
 
             _initTest(b);
           });
@@ -864,6 +916,161 @@ class Database extends _$Database {
               name: Value(item["name"]),
             ))
         .toList();
+  }
+
+  Future<List<GpSiteInfoStandStructureCompanion>>
+      _getGpSiteInfoStandStructure() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/gp_site_info_stand_structure_list.json');
+
+    return jsonData.map((dynamic item) {
+      return GpSiteInfoStandStructureCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+        cover: Value(item["cover"]),
+      );
+    }).toList();
+  }
+
+  Future<List<GpSiteInfoSuccessionStageCompanion>>
+      _getGpSiteInfoSuccessionStage() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/gp_site_info_sucession_stage_list.json');
+
+    return jsonData.map((dynamic item) {
+      return GpSiteInfoSuccessionStageCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<GpSiteInfoUtmZoneCompanion>> _getGpSiteInfoUtmZone() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/gp_site_info_utm_zone_list.json');
+
+    return jsonData.map((dynamic item) {
+      return GpSiteInfoUtmZoneCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<GpSiteInfoVegTypeCompanion>> _getGpSiteInfoVegType() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/gp_site_info_veg_type_list.json');
+
+    return jsonData.map((dynamic item) {
+      return GpSiteInfoVegTypeCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+        cover: Value(item["cover"]),
+        base: Value(item["base"]),
+      );
+    }).toList();
+  }
+
+  Future<List<GpSiteInfoWetlandCompanion>> _getGpSiteInfoWetland() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/gp_site_info_wetland_class_list.json');
+
+    return jsonData.map((dynamic item) {
+      return GpSiteInfoWetlandCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<GpSiteInfoEcozoneCompanion>> _getGpSiteInfoEcozone() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/gp_site_info_ecozone_list.json');
+
+    return jsonData.map((dynamic item) {
+      return GpSiteInfoEcozoneCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<GpSiteInfoPlotCompletionCompanion>>
+      _getGpSiteInfoPlotCompletion() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/gp_site_info_plot_completion_list.json');
+
+    return jsonData.map((dynamic item) {
+      return GpSiteInfoPlotCompletionCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<GpSiteInfoDensityCompanion>> _getGpSiteInfoDensity() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/gp_site_info_density_list.json');
+
+    return jsonData.map((dynamic item) {
+      return GpSiteInfoDensityCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+        base: Value(item["base"]),
+        veg: Value(item["veg"]),
+      );
+    }).toList();
+  }
+
+  Future<List<GpSiteInfoLandBaseCompanion>> _getGpSiteInfoLandBase() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/gp_site_info_land_base_list.json');
+
+    return jsonData.map((dynamic item) {
+      return GpSiteInfoLandBaseCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+        completion: Value(item["completion"]),
+      );
+    }).toList();
+  }
+
+  Future<List<GpSiteInfoLandCoverCompanion>> _getGpSiteInfoLandCover() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/gp_site_info_land_cover_list.json');
+
+    return jsonData.map((dynamic item) {
+      return GpSiteInfoLandCoverCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+        base: Value(item["base"]),
+      );
+    }).toList();
+  }
+
+  Future<List<GpSiteInfoLandPosCompanion>> _getGpSiteInfoLandPos() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/gp_site_info_land_pos_list.json');
+
+    return jsonData.map((dynamic item) {
+      return GpSiteInfoLandPosCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<GpSiteInfoPostProcessingCompanion>>
+      _getGpSiteInfoPostProcessing() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/gp_site_info_post_processing_list.json');
+
+    return jsonData.map((dynamic item) {
+      return GpSiteInfoPostProcessingCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
   }
 
   void _initTest(Batch b) {
