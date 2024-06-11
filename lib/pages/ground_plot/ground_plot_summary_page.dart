@@ -160,34 +160,22 @@ class GroundPlotSummaryPageState extends ConsumerState<GroundPlotSummaryPage> {
                   IconNavButton(
                     icon: const Icon(FontAwesomeIcons.info),
                     label: 'Site Info',
-                    onPressed: () {
-                      context.pushNamed(GroundPlotSiteInfoPage.routeName,
-                          pathParameters: widget.state.pathParameters);
-                    },
+                    onPressed: navToSiteInfo,
                   ),
                   IconNavButton(
                     label: 'Disturbance',
                     icon: const Icon(FontAwesomeIcons.fire),
-                    onPressed: () {
-                      context.pushNamed(GroundPlotDisturbancePage.routeName,
-                          pathParameters: widget.state.pathParameters);
-                    },
+                    onPressed: navToDisturbance,
                   ),
                   IconNavButton(
                     label: 'Tree Cover Origin',
                     icon: const Icon(FontAwesomeIcons.tree),
-                    onPressed: () {
-                      context.pushNamed(GroundPlotOriginPage.routeName,
-                          pathParameters: widget.state.pathParameters);
-                    },
+                    onPressed: navToOrigin,
                   ),
                   IconNavButton(
                     label: 'Plot Treatment and Activity',
                     icon: const Icon(FontAwesomeIcons.file),
-                    onPressed: () {
-                      context.pushNamed(GroundPlotTreatmentPage.routeName,
-                          pathParameters: widget.state.pathParameters);
-                    },
+                    onPressed: navToTreatment,
                   ),
                   const TextHeaderSeparator(
                       title: "User information and Comments"),
