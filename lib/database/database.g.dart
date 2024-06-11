@@ -9173,9 +9173,9 @@ class $GpSiteInfoUtmZoneTable extends GpSiteInfoUtmZone
   $GpSiteInfoUtmZoneTable(this.attachedDatabase, [this._alias]);
   static const d.VerificationMeta _codeMeta = const d.VerificationMeta('code');
   @override
-  late final d.GeneratedColumn<String> code = d.GeneratedColumn<String>(
+  late final d.GeneratedColumn<int> code = d.GeneratedColumn<int>(
       'code', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+      type: DriftSqlType.int, requiredDuringInsert: true);
   static const d.VerificationMeta _nameMeta = const d.VerificationMeta('name');
   @override
   late final d.GeneratedColumn<String> name = d.GeneratedColumn<String>(
@@ -9216,7 +9216,7 @@ class $GpSiteInfoUtmZoneTable extends GpSiteInfoUtmZone
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return GpSiteInfoUtmZoneData(
       code: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}code'])!,
+          .read(DriftSqlType.int, data['${effectivePrefix}code'])!,
       name: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
     );
@@ -9230,13 +9230,13 @@ class $GpSiteInfoUtmZoneTable extends GpSiteInfoUtmZone
 
 class GpSiteInfoUtmZoneData extends d.DataClass
     implements d.Insertable<GpSiteInfoUtmZoneData> {
-  final String code;
+  final int code;
   final String name;
   const GpSiteInfoUtmZoneData({required this.code, required this.name});
   @override
   Map<String, d.Expression> toColumns(bool nullToAbsent) {
     final map = <String, d.Expression>{};
-    map['code'] = d.Variable<String>(code);
+    map['code'] = d.Variable<int>(code);
     map['name'] = d.Variable<String>(name);
     return map;
   }
@@ -9252,7 +9252,7 @@ class GpSiteInfoUtmZoneData extends d.DataClass
       {ValueSerializer? serializer}) {
     serializer ??= d.driftRuntimeOptions.defaultSerializer;
     return GpSiteInfoUtmZoneData(
-      code: serializer.fromJson<String>(json['code']),
+      code: serializer.fromJson<int>(json['code']),
       name: serializer.fromJson<String>(json['name']),
     );
   }
@@ -9260,12 +9260,12 @@ class GpSiteInfoUtmZoneData extends d.DataClass
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= d.driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'code': serializer.toJson<String>(code),
+      'code': serializer.toJson<int>(code),
       'name': serializer.toJson<String>(name),
     };
   }
 
-  GpSiteInfoUtmZoneData copyWith({String? code, String? name}) =>
+  GpSiteInfoUtmZoneData copyWith({int? code, String? name}) =>
       GpSiteInfoUtmZoneData(
         code: code ?? this.code,
         name: name ?? this.name,
@@ -9291,7 +9291,7 @@ class GpSiteInfoUtmZoneData extends d.DataClass
 
 class GpSiteInfoUtmZoneCompanion
     extends d.UpdateCompanion<GpSiteInfoUtmZoneData> {
-  final d.Value<String> code;
+  final d.Value<int> code;
   final d.Value<String> name;
   final d.Value<int> rowid;
   const GpSiteInfoUtmZoneCompanion({
@@ -9300,13 +9300,13 @@ class GpSiteInfoUtmZoneCompanion
     this.rowid = const d.Value.absent(),
   });
   GpSiteInfoUtmZoneCompanion.insert({
-    required String code,
+    required int code,
     required String name,
     this.rowid = const d.Value.absent(),
   })  : code = d.Value(code),
         name = d.Value(name);
   static d.Insertable<GpSiteInfoUtmZoneData> custom({
-    d.Expression<String>? code,
+    d.Expression<int>? code,
     d.Expression<String>? name,
     d.Expression<int>? rowid,
   }) {
@@ -9318,7 +9318,7 @@ class GpSiteInfoUtmZoneCompanion
   }
 
   GpSiteInfoUtmZoneCompanion copyWith(
-      {d.Value<String>? code, d.Value<String>? name, d.Value<int>? rowid}) {
+      {d.Value<int>? code, d.Value<String>? name, d.Value<int>? rowid}) {
     return GpSiteInfoUtmZoneCompanion(
       code: code ?? this.code,
       name: name ?? this.name,
@@ -9330,7 +9330,7 @@ class GpSiteInfoUtmZoneCompanion
   Map<String, d.Expression> toColumns(bool nullToAbsent) {
     final map = <String, d.Expression>{};
     if (code.present) {
-      map['code'] = d.Variable<String>(code.value);
+      map['code'] = d.Variable<int>(code.value);
     }
     if (name.present) {
       map['name'] = d.Variable<String>(name.value);
@@ -9808,9 +9808,9 @@ class $GpSiteInfoEcozoneTable extends GpSiteInfoEcozone
   $GpSiteInfoEcozoneTable(this.attachedDatabase, [this._alias]);
   static const d.VerificationMeta _codeMeta = const d.VerificationMeta('code');
   @override
-  late final d.GeneratedColumn<String> code = d.GeneratedColumn<String>(
+  late final d.GeneratedColumn<int> code = d.GeneratedColumn<int>(
       'code', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+      type: DriftSqlType.int, requiredDuringInsert: true);
   static const d.VerificationMeta _nameMeta = const d.VerificationMeta('name');
   @override
   late final d.GeneratedColumn<String> name = d.GeneratedColumn<String>(
@@ -9851,7 +9851,7 @@ class $GpSiteInfoEcozoneTable extends GpSiteInfoEcozone
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return GpSiteInfoEcozoneData(
       code: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}code'])!,
+          .read(DriftSqlType.int, data['${effectivePrefix}code'])!,
       name: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
     );
@@ -9865,13 +9865,13 @@ class $GpSiteInfoEcozoneTable extends GpSiteInfoEcozone
 
 class GpSiteInfoEcozoneData extends d.DataClass
     implements d.Insertable<GpSiteInfoEcozoneData> {
-  final String code;
+  final int code;
   final String name;
   const GpSiteInfoEcozoneData({required this.code, required this.name});
   @override
   Map<String, d.Expression> toColumns(bool nullToAbsent) {
     final map = <String, d.Expression>{};
-    map['code'] = d.Variable<String>(code);
+    map['code'] = d.Variable<int>(code);
     map['name'] = d.Variable<String>(name);
     return map;
   }
@@ -9887,7 +9887,7 @@ class GpSiteInfoEcozoneData extends d.DataClass
       {ValueSerializer? serializer}) {
     serializer ??= d.driftRuntimeOptions.defaultSerializer;
     return GpSiteInfoEcozoneData(
-      code: serializer.fromJson<String>(json['code']),
+      code: serializer.fromJson<int>(json['code']),
       name: serializer.fromJson<String>(json['name']),
     );
   }
@@ -9895,12 +9895,12 @@ class GpSiteInfoEcozoneData extends d.DataClass
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= d.driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'code': serializer.toJson<String>(code),
+      'code': serializer.toJson<int>(code),
       'name': serializer.toJson<String>(name),
     };
   }
 
-  GpSiteInfoEcozoneData copyWith({String? code, String? name}) =>
+  GpSiteInfoEcozoneData copyWith({int? code, String? name}) =>
       GpSiteInfoEcozoneData(
         code: code ?? this.code,
         name: name ?? this.name,
@@ -9926,7 +9926,7 @@ class GpSiteInfoEcozoneData extends d.DataClass
 
 class GpSiteInfoEcozoneCompanion
     extends d.UpdateCompanion<GpSiteInfoEcozoneData> {
-  final d.Value<String> code;
+  final d.Value<int> code;
   final d.Value<String> name;
   final d.Value<int> rowid;
   const GpSiteInfoEcozoneCompanion({
@@ -9935,13 +9935,13 @@ class GpSiteInfoEcozoneCompanion
     this.rowid = const d.Value.absent(),
   });
   GpSiteInfoEcozoneCompanion.insert({
-    required String code,
+    required int code,
     required String name,
     this.rowid = const d.Value.absent(),
   })  : code = d.Value(code),
         name = d.Value(name);
   static d.Insertable<GpSiteInfoEcozoneData> custom({
-    d.Expression<String>? code,
+    d.Expression<int>? code,
     d.Expression<String>? name,
     d.Expression<int>? rowid,
   }) {
@@ -9953,7 +9953,7 @@ class GpSiteInfoEcozoneCompanion
   }
 
   GpSiteInfoEcozoneCompanion copyWith(
-      {d.Value<String>? code, d.Value<String>? name, d.Value<int>? rowid}) {
+      {d.Value<int>? code, d.Value<String>? name, d.Value<int>? rowid}) {
     return GpSiteInfoEcozoneCompanion(
       code: code ?? this.code,
       name: name ?? this.name,
@@ -9965,7 +9965,7 @@ class GpSiteInfoEcozoneCompanion
   Map<String, d.Expression> toColumns(bool nullToAbsent) {
     final map = <String, d.Expression>{};
     if (code.present) {
-      map['code'] = d.Variable<String>(code.value);
+      map['code'] = d.Variable<int>(code.value);
     }
     if (name.present) {
       map['name'] = d.Variable<String>(name.value);
@@ -26561,7 +26561,9 @@ class $GpSiteInfoTable extends GpSiteInfo
   @override
   late final d.GeneratedColumn<int> ecozone = d.GeneratedColumn<int>(
       'ecozone', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      check: () => ecozone.isBetweenValues(1, 15),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
   static const d.VerificationMeta _provEcoTypeMeta =
       const d.VerificationMeta('provEcoType');
   @override
@@ -26573,7 +26575,9 @@ class $GpSiteInfoTable extends GpSiteInfo
   @override
   late final d.GeneratedColumn<int> provEcoRef = d.GeneratedColumn<int>(
       'prov_eco_ref', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      check: () => provEcoRef.isBetweenValues(-1, 9999),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
   static const d.VerificationMeta _utmNMeta = const d.VerificationMeta('utmN');
   @override
   late final d.GeneratedColumn<int> utmN = d.GeneratedColumn<int>(
@@ -26595,19 +26599,25 @@ class $GpSiteInfoTable extends GpSiteInfo
   @override
   late final d.GeneratedColumn<int> slope = d.GeneratedColumn<int>(
       'slope', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      check: () => slope.isBetweenValues(-1, 150),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
   static const d.VerificationMeta _aspectMeta =
       const d.VerificationMeta('aspect');
   @override
   late final d.GeneratedColumn<int> aspect = d.GeneratedColumn<int>(
       'aspect', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      check: () => (aspect.isBetweenValues(-1, 999)),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
   static const d.VerificationMeta _elevationMeta =
       const d.VerificationMeta('elevation');
   @override
   late final d.GeneratedColumn<int> elevation = d.GeneratedColumn<int>(
       'elevation', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      check: () => elevation.isBetweenValues(-1, 5951),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
   static const d.VerificationMeta _landBaseMeta =
       const d.VerificationMeta('landBase');
   @override
@@ -27576,19 +27586,25 @@ class $GpDisturbanceTable extends GpDisturbance
   @override
   late final d.GeneratedColumn<int> distYr = d.GeneratedColumn<int>(
       'dist_yr', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      check: () => distYr.isBetweenValues(-9, 9999),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
   static const d.VerificationMeta _distPctMeta =
       const d.VerificationMeta('distPct');
   @override
   late final d.GeneratedColumn<int> distPct = d.GeneratedColumn<int>(
       'dist_pct', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      check: () => distPct.isBetweenValues(-1, 100),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
   static const d.VerificationMeta _mortPctMeta =
       const d.VerificationMeta('mortPct');
   @override
   late final d.GeneratedColumn<int> mortPct = d.GeneratedColumn<int>(
       'mort_pct', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      check: () => mortPct.isBetweenValues(-9, 100),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
   static const d.VerificationMeta _mortBasisMeta =
       const d.VerificationMeta('mortBasis');
   @override
@@ -28008,7 +28024,9 @@ class $GpOriginTable extends GpOrigin
   @override
   late final d.GeneratedColumn<int> regenYr = d.GeneratedColumn<int>(
       'regen_yr', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      check: () => regenYr.isBetweenValues(-9, 9999),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
   @override
   List<d.GeneratedColumn> get $columns =>
       [id, gpSummaryId, vegOrig, regenType, regenYr];
@@ -28299,13 +28317,17 @@ class $GpTreatmentTable extends GpTreatment
   @override
   late final d.GeneratedColumn<int> treatYr = d.GeneratedColumn<int>(
       'treat_yr', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      check: () => treatYr.isBetweenValues(-9, 9999),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
   static const d.VerificationMeta _treatPctMeta =
       const d.VerificationMeta('treatPct');
   @override
   late final d.GeneratedColumn<int> treatPct = d.GeneratedColumn<int>(
       'treat_pct', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      check: () => treatPct.isBetweenValues(-9, 100),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
   @override
   List<d.GeneratedColumn> get $columns =>
       [id, gpSummaryId, treatType, treatYr, treatPct];
@@ -33488,13 +33510,13 @@ class $$GpSiteInfoSuccessionStageTableOrderingComposer
 
 typedef $$GpSiteInfoUtmZoneTableInsertCompanionBuilder
     = GpSiteInfoUtmZoneCompanion Function({
-  required String code,
+  required int code,
   required String name,
   d.Value<int> rowid,
 });
 typedef $$GpSiteInfoUtmZoneTableUpdateCompanionBuilder
     = GpSiteInfoUtmZoneCompanion Function({
-  d.Value<String> code,
+  d.Value<int> code,
   d.Value<String> name,
   d.Value<int> rowid,
 });
@@ -33520,7 +33542,7 @@ class $$GpSiteInfoUtmZoneTableTableManager extends d.RootTableManager<
           getChildManagerBuilder: (p) =>
               $$GpSiteInfoUtmZoneTableProcessedTableManager(p),
           getUpdateCompanionBuilder: ({
-            d.Value<String> code = const d.Value.absent(),
+            d.Value<int> code = const d.Value.absent(),
             d.Value<String> name = const d.Value.absent(),
             d.Value<int> rowid = const d.Value.absent(),
           }) =>
@@ -33530,7 +33552,7 @@ class $$GpSiteInfoUtmZoneTableTableManager extends d.RootTableManager<
             rowid: rowid,
           ),
           getInsertCompanionBuilder: ({
-            required String code,
+            required int code,
             required String name,
             d.Value<int> rowid = const d.Value.absent(),
           }) =>
@@ -33558,7 +33580,7 @@ class $$GpSiteInfoUtmZoneTableProcessedTableManager
 class $$GpSiteInfoUtmZoneTableFilterComposer
     extends d.FilterComposer<_$Database, $GpSiteInfoUtmZoneTable> {
   $$GpSiteInfoUtmZoneTableFilterComposer(super.$state);
-  d.ColumnFilters<String> get code => $state.composableBuilder(
+  d.ColumnFilters<int> get code => $state.composableBuilder(
       column: $state.table.code,
       builder: (column, joinBuilders) =>
           d.ColumnFilters(column, joinBuilders: joinBuilders));
@@ -33572,7 +33594,7 @@ class $$GpSiteInfoUtmZoneTableFilterComposer
 class $$GpSiteInfoUtmZoneTableOrderingComposer
     extends d.OrderingComposer<_$Database, $GpSiteInfoUtmZoneTable> {
   $$GpSiteInfoUtmZoneTableOrderingComposer(super.$state);
-  d.ColumnOrderings<String> get code => $state.composableBuilder(
+  d.ColumnOrderings<int> get code => $state.composableBuilder(
       column: $state.table.code,
       builder: (column, joinBuilders) =>
           d.ColumnOrderings(column, joinBuilders: joinBuilders));
@@ -33811,13 +33833,13 @@ class $$GpSiteInfoWetlandTableOrderingComposer
 
 typedef $$GpSiteInfoEcozoneTableInsertCompanionBuilder
     = GpSiteInfoEcozoneCompanion Function({
-  required String code,
+  required int code,
   required String name,
   d.Value<int> rowid,
 });
 typedef $$GpSiteInfoEcozoneTableUpdateCompanionBuilder
     = GpSiteInfoEcozoneCompanion Function({
-  d.Value<String> code,
+  d.Value<int> code,
   d.Value<String> name,
   d.Value<int> rowid,
 });
@@ -33843,7 +33865,7 @@ class $$GpSiteInfoEcozoneTableTableManager extends d.RootTableManager<
           getChildManagerBuilder: (p) =>
               $$GpSiteInfoEcozoneTableProcessedTableManager(p),
           getUpdateCompanionBuilder: ({
-            d.Value<String> code = const d.Value.absent(),
+            d.Value<int> code = const d.Value.absent(),
             d.Value<String> name = const d.Value.absent(),
             d.Value<int> rowid = const d.Value.absent(),
           }) =>
@@ -33853,7 +33875,7 @@ class $$GpSiteInfoEcozoneTableTableManager extends d.RootTableManager<
             rowid: rowid,
           ),
           getInsertCompanionBuilder: ({
-            required String code,
+            required int code,
             required String name,
             d.Value<int> rowid = const d.Value.absent(),
           }) =>
@@ -33881,7 +33903,7 @@ class $$GpSiteInfoEcozoneTableProcessedTableManager
 class $$GpSiteInfoEcozoneTableFilterComposer
     extends d.FilterComposer<_$Database, $GpSiteInfoEcozoneTable> {
   $$GpSiteInfoEcozoneTableFilterComposer(super.$state);
-  d.ColumnFilters<String> get code => $state.composableBuilder(
+  d.ColumnFilters<int> get code => $state.composableBuilder(
       column: $state.table.code,
       builder: (column, joinBuilders) =>
           d.ColumnFilters(column, joinBuilders: joinBuilders));
@@ -33895,7 +33917,7 @@ class $$GpSiteInfoEcozoneTableFilterComposer
 class $$GpSiteInfoEcozoneTableOrderingComposer
     extends d.OrderingComposer<_$Database, $GpSiteInfoEcozoneTable> {
   $$GpSiteInfoEcozoneTableOrderingComposer(super.$state);
-  d.ColumnOrderings<String> get code => $state.composableBuilder(
+  d.ColumnOrderings<int> get code => $state.composableBuilder(
       column: $state.table.code,
       builder: (column, joinBuilders) =>
           d.ColumnOrderings(column, joinBuilders: joinBuilders));

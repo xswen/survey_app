@@ -1230,7 +1230,9 @@ class Database extends _$Database {
       {
         category: SurveyCardCategories.groundPlot,
         name: "Ground Plot Info",
-        surveyCardData: null
+        surveyCardData: await (select(gpSummary)
+              ..where((tbl) => tbl.surveyId.equals(surveyId)))
+            .getSingleOrNull()
       },
       {
         category: SurveyCardCategories.woodyDebris,

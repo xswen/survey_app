@@ -1364,12 +1364,13 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
 
   Future<String> getGpSiteInfoUtmZoneName(String code) {
     if (code.isEmpty) return Future.value("");
-    return (select(gpSiteInfoUtmZone)..where((tbl) => tbl.code.equals(code)))
+    return (select(gpSiteInfoUtmZone)
+          ..where((tbl) => tbl.code.equals(int.parse(code))))
         .map((row) => row.name)
         .getSingle();
   }
 
-  Future<String> getGpSiteInfoUtmZoneCode(String name) {
+  Future<int> getGpSiteInfoUtmZoneCode(String name) {
     return (select(gpSiteInfoUtmZone)..where((tbl) => tbl.name.equals(name)))
         .map((row) => row.code)
         .getSingle();
@@ -1439,12 +1440,13 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
 
   Future<String> getGpSiteInfoEcozoneName(String code) {
     if (code.isEmpty) return Future.value("");
-    return (select(gpSiteInfoEcozone)..where((tbl) => tbl.code.equals(code)))
+    return (select(gpSiteInfoEcozone)
+          ..where((tbl) => tbl.code.equals(int.parse(code))))
         .map((row) => row.name)
         .getSingle();
   }
 
-  Future<String> getGpSiteInfoEcozoneCode(String name) {
+  Future<int> getGpSiteInfoEcozoneCode(String name) {
     return (select(gpSiteInfoEcozone)..where((tbl) => tbl.name.equals(name)))
         .map((row) => row.code)
         .getSingle();

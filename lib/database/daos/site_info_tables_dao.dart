@@ -19,7 +19,7 @@ class SiteInfoTablesDao extends DatabaseAccessor<Database>
   Future<int> addGpSummary(GpSummaryCompanion entry) =>
       into(gpSummary).insert(entry);
 
-  Future<GpSummaryData> getGpSummary(int id) =>
+  Future<GpSummaryData> getSummary(int id) =>
       (select(gpSummary)..where((tbl) => tbl.id.equals(id))).getSingle();
 
   Future<GpSummaryData> getGpSummaryBySurveyId(int surveyId) =>
@@ -66,6 +66,10 @@ class SiteInfoTablesDao extends DatabaseAccessor<Database>
 
   Future<int> addGpSiteInfo(GpSiteInfoCompanion entry) =>
       into(gpSiteInfo).insert(entry);
+
+  Future<GpSiteInfoData?> getGpSiteInfoFromSummaryId(int id) =>
+      (select(gpSiteInfo)..where((tbl) => tbl.gpSummaryId.equals(id)))
+          .getSingleOrNull();
 
   Future<GpSiteInfoData> getGpSiteInfo(int id) =>
       (select(gpSiteInfo)..where((tbl) => tbl.id.equals(id))).getSingle();

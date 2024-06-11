@@ -344,7 +344,7 @@ class GpSiteInfoSuccessionStage extends Table {
 }
 
 class GpSiteInfoUtmZone extends Table {
-  TextColumn get code => text()();
+  IntColumn get code => integer()();
 
   TextColumn get name => text()();
 }
@@ -366,7 +366,7 @@ class GpSiteInfoWetland extends Table {
 }
 
 class GpSiteInfoEcozone extends Table {
-  TextColumn get code => text()();
+  IntColumn get code => integer()();
 
   TextColumn get name => text()();
 }

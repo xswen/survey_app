@@ -1,6 +1,8 @@
 class PathParamsKeys {
   static const String surveyId = "surveyId";
 
+  static const String gpSummaryId = "gpSummaryId";
+
   static const String wdSummaryId = "wdSummaryId";
   static const String wdHeaderId = "wdHeaderId";
   static const String wdSmallId = "wdSmallId";

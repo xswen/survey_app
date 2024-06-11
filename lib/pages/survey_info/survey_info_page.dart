@@ -168,6 +168,10 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
         markNotAssessed =
             db.surveyInfoTablesDao.markNotAssessed(surveyId, data?.id);
         break;
+      case SurveyCardCategories.groundPlot:
+        markNotAssessed =
+            db.siteInfoTablesDao.markNotAssessed(surveyId, data?.id);
+        break;
       case SurveyCardCategories.woodyDebris:
         markNotAssessed =
             db.woodyDebrisTablesDao.markNotAssessed(surveyId, data?.id);
@@ -246,8 +250,12 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
         );
         break;
       case SurveyCardCategories.groundPlot:
-        context.pushNamed(GroundPlotSummaryPage.routeName,
-            pathParameters: widget.goRouterState.pathParameters);
+        getId(() => db.siteInfoTablesDao
+            .setAndReturnDefaultSummary(survey.id, survey.measDate)).then(
+          (id) => context.pushNamed(GroundPlotSummaryPage.routeName,
+              pathParameters: PathParamGenerator.gpSummary(
+                  widget.goRouterState, id.toString())),
+        );
 
         break;
       case SurveyCardCategories.woodyDebris:

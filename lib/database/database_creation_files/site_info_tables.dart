@@ -27,11 +27,14 @@ class GpSiteInfo extends Table {
   TextColumn get province =>
       text().withLength(min: 0, max: 2).named('province')();
 
-  IntColumn get ecozone => integer().named('ecozone')();
+  IntColumn get ecozone =>
+      integer().named('ecozone').check(ecozone.isBetweenValues(1, 15))();
 
   TextColumn get provEcoType => text().nullable().named('prov_eco_type')();
 
-  IntColumn get provEcoRef => integer().named('prov_eco_ref')();
+  IntColumn get provEcoRef => integer()
+      .named('prov_eco_ref')
+      .check(provEcoRef.isBetweenValues(-1, 9999))();
 
   IntColumn get utmN => integer().named('utm_n')();
 
@@ -39,11 +42,14 @@ class GpSiteInfo extends Table {
 
   IntColumn get utmZone => integer().named('utm_zone')();
 
-  IntColumn get slope => integer().named('slope')();
+  IntColumn get slope =>
+      integer().named('slope').check(slope.isBetweenValues(-1, 150))();
 
-  IntColumn get aspect => integer().named('aspect')();
+  IntColumn get aspect =>
+      integer().named('aspect').check((aspect.isBetweenValues(-1, 999)))();
 
-  IntColumn get elevation => integer().named('elevation')();
+  IntColumn get elevation =>
+      integer().named('elevation').check(elevation.isBetweenValues(-1, 5951))();
 
   TextColumn get landBase =>
       text().withLength(min: 1, max: 1).named('land_base')();
@@ -70,28 +76,6 @@ class GpSiteInfo extends Table {
       text().withLength(min: 1, max: 1).named('wetland_class')();
 
   TextColumn get userInfo => text().nullable().named('user_info')();
-
-  @override
-  List<String> get customConstraints => [
-        'CHECK (((slope <= 2 AND aspect = 999) OR (slope > 2 AND (aspect >= -1 AND aspect <= 359))))',
-        'CHECK (((aspect >= 0 AND aspect <= 359) OR aspect = 999 OR aspect = -1))',
-        "CHECK (density_cl IN ('DE', 'OP', 'SP', 'CL', 'GL', 'SC', 'BR', 'RT', 'MS', 'LB', 'RS', 'ES', 'LS', 'RM', 'BE', 'LL', 'BU', 'RP', 'MU', 'CB', 'MO', 'GP', 'TS', 'RR', 'BP', 'AP', 'PM', 'SW', 'OT', 'U'))",
-        "CHECK ((land_base = 'V' AND density_cl IN ('DE', 'OP', 'SP', 'CL')) OR land_base <> 'V')",
-        "CHECK (((veg_type = 'SI' AND density_cl IN ('GL', 'SC')) OR (veg_type = 'RO' AND density_cl IN ('BR', 'RT', 'MS', 'LB')) OR (veg_type = 'EL' AND density_cl IN ('RS', 'ES', 'LS', 'RM', 'BE', 'LL', 'BU', 'RP', 'MU', 'CB', 'MO', 'GP', 'TS', 'RR', 'BP', 'AP', 'PM', 'OT')) OR veg_type NOT IN ('SI', 'RO', 'EL')))",
-        'CHECK (ecozone > 0 AND ecozone <= 15)',
-        'CHECK (((elevation >= 0 AND elevation <= 5951) OR elevation = -1))',
-        "CHECK (incomp_reason IN ('AD', 'HZ', 'NF', 'SP', 'OT', 'NA', 'NR'))",
-        "CHECK (((land_base = 'V' AND land_cover IN ('T', 'N')) OR (land_base = 'N' AND land_cover IN ('L', 'W')) OR land_base NOT IN ('V', 'N')))",
-        "CHECK (land_base IN ('V', 'N', 'U'))",
-        "CHECK (land_cover IN ('T', 'N', 'L', 'W', 'U'))",
-        'CHECK (((prov_eco_ref >= 0 AND prov_eco_ref <= 9999) OR prov_eco_ref = -1))',
-        'CHECK (((slope >= 0 AND slope <= 150) OR slope = -1))',
-        "CHECK (stand_stru IN ('SNGL', 'MULT', 'COMP', 'NA', 'U'))",
-        "CHECK (((land_cover = 'T' AND stand_stru <> 'NA') OR (land_cover <> 'T' AND stand_stru = 'NA')))",
-        "CHECK (succ_stage IN ('ES', 'MS', 'LS', 'TS', 'OG', 'UR'))",
-        "CHECK (wetland_class IN ('B', 'F', 'S', 'M', 'W', 'N', 'U'))",
-        "CHECK (land_pos IN ('W', 'U', 'A', 'N'))"
-      ];
 }
 
 class GpDisturbance extends Table {
@@ -101,28 +85,15 @@ class GpDisturbance extends Table {
 
   TextColumn get distAgent => text().withLength(min: 1, max: 20)();
 
-  IntColumn get distYr => integer()();
+  IntColumn get distYr => integer().check(distYr.isBetweenValues(-9, 9999))();
 
-  IntColumn get distPct => integer()();
+  IntColumn get distPct => integer().check(distPct.isBetweenValues(-1, 100))();
 
-  IntColumn get mortPct => integer()();
+  IntColumn get mortPct => integer().check(mortPct.isBetweenValues(-9, 100))();
 
   TextColumn get mortBasis => text().withLength(min: 1, max: 2)();
 
   TextColumn get agentType => text().nullable().withLength(min: 1, max: 200)();
-
-  @override
-  List<String> get customConstraints => [
-        'CHECK (((dist_agent = "NONE" AND mort_basis = "NA") OR (dist_agent <> "NONE")))',
-        'CHECK (((dist_agent = "NONE" AND mort_pct = 0) OR (dist_agent <> "NONE")))',
-        'CHECK (((dist_agent = "NONE" AND dist_pct = 0) OR (dist_agent <> "NONE")))',
-        "CHECK (dist_agent IN ('FIRE', 'WIND', 'SNOW', 'INSECT', 'DISEASE', 'ICE', 'OTHER', 'UNKNOWN', 'NONE') OR dist_agent LIKE 'OTHER%')",
-        'CHECK (((dist_agent = "NONE" AND dist_yr = -9) OR (dist_agent <> "NONE")))',
-        'CHECK (((dist_pct >= 0 AND dist_pct <= 100) OR dist_pct = -1))',
-        "CHECK (mort_basis IN ('VL', 'BA', 'CA', 'ST', 'AR', 'NA', 'M'))",
-        'CHECK (((mort_pct > 0 AND mort_basis <> "NA") OR ((mort_pct = 0 OR mort_pct = -9) AND mort_basis = "NA") OR (mort_pct = -1 AND mort_basis IN ("M", "NA"))))',
-        'CHECK (((mort_pct >= 0 AND mort_pct <= 100) OR mort_pct = -1 OR mort_pct = -9))',
-      ];
 }
 
 class GpOrigin extends Table {
@@ -134,15 +105,7 @@ class GpOrigin extends Table {
 
   TextColumn get regenType => text().withLength(min: 1, max: 3)();
 
-  IntColumn get regenYr => integer()();
-
-  @override
-  List<String> get customConstraints => [
-        "CHECK (regen_type IN ('NAT', 'SUP', 'PLA', 'SOW', 'NA', 'UNK'))",
-        'CHECK (((veg_orig = "NA" AND regen_type = "NA") OR veg_orig <> "NA"))',
-        'CHECK (((veg_orig = "NA" AND regen_yr = -9) OR veg_orig <> "NA"))',
-        "CHECK (veg_orig IN ('SUCC', 'HARV', 'DIST', 'AFOR', 'UNK', 'NA'))"
-      ];
+  IntColumn get regenYr => integer().check(regenYr.isBetweenValues(-9, 9999))();
 }
 
 class GpTreatment extends Table {
@@ -152,15 +115,8 @@ class GpTreatment extends Table {
 
   TextColumn get treatType => text().withLength(min: 1, max: 2)();
 
-  IntColumn get treatYr => integer()();
+  IntColumn get treatYr => integer().check(treatYr.isBetweenValues(-9, 9999))();
 
-  IntColumn get treatPct => integer()();
-
-  @override
-  List<String> get customConstraints => [
-        'CHECK (((treat_pct >= 0 AND treat_pct <= 100) OR treat_pct = -1 OR treat_pct = -9))',
-        'CHECK (((treat_type = "NO" AND treat_pct IN (0, -9)) OR (treat_type <> "NO" AND treat_pct <> -9)))',
-        "CHECK (treat_type IN ('CC', 'PC', 'DC', 'CL', 'JS', 'PR', 'PT', 'CT', 'FT', 'SP', 'PB', 'OT', 'HC', 'NO', 'NR'))",
-        'CHECK (((treat_type = "NO" AND treat_yr = -9) OR (treat_type <> "NO" AND treat_yr <> -9)))',
-      ];
+  IntColumn get treatPct =>
+      integer().check(treatPct.isBetweenValues(-9, 100))();
 }

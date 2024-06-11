@@ -7,6 +7,14 @@ class PathParamGenerator {
     return {PathParamsKeys.surveyId: surveyId};
   }
 
+  //Ground Plot
+  static Map<String, String> gpSummary(
+          GoRouterState goRouterState, String gpSummaryId) =>
+      {
+        ...surveyInfo(goRouterState.pathParameters[PathParamsKeys.surveyId]!),
+        ...{PathParamsKeys.gpSummaryId: gpSummaryId}
+      };
+
   //Woody Debris
   static Map<String, String> wdSummary(
           GoRouterState goRouterState, String wdSummaryId) =>
@@ -91,6 +99,7 @@ class PathParamGenerator {
         ...surveyInfo(goRouterState.pathParameters[PathParamsKeys.surveyId]!),
         ...{PathParamsKeys.soilPitSummaryId: soilPitSummaryId}
       };
+
   static Map<String, String> soilSiteInfo(
           GoRouterState goRouterState, String soilSiteInfoId) =>
       {
@@ -162,6 +171,7 @@ class PathParamGenerator {
             goRouterState.pathParameters[PathParamsKeys.ltpSummaryId]!),
         ...{PathParamsKeys.ltpInfoListId: ltpInfoListId}
       };
+
   static Map<String, String> ltpRemovedList(
           GoRouterState goRouterState, String ltpRemovedListId) =>
       {
@@ -169,6 +179,7 @@ class PathParamGenerator {
             goRouterState.pathParameters[PathParamsKeys.ltpSummaryId]!),
         ...{PathParamsKeys.ltpRemovedListId: ltpRemovedListId}
       };
+
   static Map<String, String> ltpInfoAgeList(
           GoRouterState goRouterState, String ltpInfoAgeListId) =>
       {
