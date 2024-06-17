@@ -1,3 +1,5 @@
+// ignore_for_file: unused_result
+
 import 'package:drift/drift.dart' as d;
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
@@ -20,6 +22,7 @@ import 'woody_debris_piece/woody_debris_piece_round_page.dart';
 
 class ColNames {
   ColNames();
+
   ColumnHeaders id = ColumnHeaders(ColumnHeaders.headerNameId, visible: false);
   ColumnHeaders pieceNum = ColumnHeaders("Piece Number");
   ColumnHeaders type = ColumnHeaders("Type");
@@ -51,6 +54,7 @@ class ColNames {
 class WoodyDebrisHeaderPage extends ConsumerStatefulWidget {
   static const String routeName = "woodyDebrisHeader";
   final GoRouterState goRouterState;
+
   const WoodyDebrisHeaderPage(this.goRouterState, {super.key});
 
   @override
@@ -346,7 +350,6 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
   void markComplete(bool parentComplete, WoodyDebrisHeaderData wdh) {
     final db = ref.read(databaseProvider);
 
-    print(parentComplete);
     if (parentComplete) {
       Popups.show(context, surveyCompleteWarningPopup);
     } else if (wdh.complete) {
@@ -580,10 +583,13 @@ class WoodyDebrisHeaderPageState extends ConsumerState<WoodyDebrisHeaderPage> {
                                               context, completeWarningPopup)
                                           : addPiece(),
                                       style: ButtonStyle(
-                                          backgroundColor: wdh.complete
-                                              ? MaterialStateProperty.all<
-                                                  Color>(Colors.grey)
-                                              : null),
+                                        backgroundColor: WidgetStateProperty
+                                            .resolveWith<Color>(
+                                          (states) => wdh.complete
+                                              ? Colors.grey
+                                              : Colors.blue,
+                                        ),
+                                      ),
                                       child: const Text("Add Piece")),
                                 ),
                               ],

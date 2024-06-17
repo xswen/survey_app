@@ -187,10 +187,6 @@ class ShrubPlotSummaryPageState extends ConsumerState<ShrubPlotSummaryPage> {
     }
 
     void markComplete() async {
-      void enterComplete() {
-        updateShrubData(shrubComp.copyWith(complete: const d.Value(true)));
-      }
-
       if (parentComplete) {
         Popups.show(context, popupSurveyComplete);
       } else if (shrubComp.complete.value) {

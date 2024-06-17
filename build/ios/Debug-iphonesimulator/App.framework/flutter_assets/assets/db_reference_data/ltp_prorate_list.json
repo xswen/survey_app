@@ -1,0 +1,22 @@
+[
+  {
+    "code": "ROT",
+    "name": "ROT: Tree core is rotten"
+  },
+  {
+    "code": "CRC",
+    "name": "CRC: Cannot reach centre with increment borer"
+  },
+  {
+    "code": "OTH",
+    "name": "OTH: Other"
+  },
+  {
+    "code": "NA",
+    "name": "NA: Not applicable"
+  },
+  {
+    "code": "NR",
+    "name": "NR: Not reported"
+  }
+]

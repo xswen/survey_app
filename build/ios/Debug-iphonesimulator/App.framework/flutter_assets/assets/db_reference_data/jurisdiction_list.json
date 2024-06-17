@@ -1,0 +1,15 @@
+[
+  {"code": "AB", "nameEn": "Alberta", "nameFr": "L'Alberta"},
+  {"code": "BC", "nameEn": "British Columbia", "nameFr": "La Colombie-Britannique"},
+  {"code": "MB", "nameEn": "Manitoba", "nameFr": "Le Manitoba"},
+  {"code": "NB", "nameEn": "New Brunswick", "nameFr": "Le Nouveau-Brunswick"},
+  {"code": "NL", "nameEn": "Newfoundland and Labrador", "nameFr": "Terre-Neuve-et-Labrador"},
+  {"code": "NS", "nameEn": "Nova Scotia", "nameFr": "La Nouvelle-Écosse"},
+  {"code": "NT", "nameEn": "Northwest Territories", "nameFr": "Territoires du Nord-Ouest"},
+  {"code": "NU", "nameEn": "Nunavut", "nameFr": "Nunavut"},
+  {"code": "ON", "nameEn": "Ontario", "nameFr": "L'Ontario"},
+  {"code": "PE", "nameEn": "Prince Edward Island", "nameFr": "L'Ile-du-Prince-Édouard"},
+  {"code": "QC", "nameEn": "Quebec", "nameFr": "Le Québec"},
+  {"code": "SK", "nameEn": "Saskatchewan", "nameFr": "La Saskatchewan"},
+  {"code": "YT", "nameEn": "Yukon Territory", "nameFr": "Territoire du Yukon"}
+]

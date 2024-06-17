@@ -1,0 +1,2346 @@
+[
+  {
+    "genusCode": "ABIE",
+    "speciesCode": "AMA",
+    "genusLatinName": "Abies",
+    "speciesLatinName": "amabilis",
+    "commonNameEn": "Amabilis fir",
+    "commonNameFr": "Sapin gracieux"
+  },
+  {
+    "genusCode": "ABIE",
+    "speciesCode": "BAL",
+    "genusLatinName": "Abies",
+    "speciesLatinName": "balsamea",
+    "commonNameEn": "Balsam fir",
+    "commonNameFr": "Sapin baumier"
+  },
+  {
+    "genusCode": "ABIE",
+    "speciesCode": "BIF",
+    "genusLatinName": "Abies",
+    "speciesLatinName": "bifolia",
+    "commonNameEn": "Rocky mountain alpine fir",
+    "commonNameFr": "Sapin bifolié"
+  },
+  {
+    "genusCode": "ABIE",
+    "speciesCode": "CON",
+    "genusLatinName": "Abies",
+    "speciesLatinName": "concolor",
+    "commonNameEn": "White fir",
+    "commonNameFr": "Sapin argenté"
+  },
+  {
+    "genusCode": "ABIE",
+    "speciesCode": "GRA",
+    "genusLatinName": "Abies",
+    "speciesLatinName": "grandis",
+    "commonNameEn": "Grand fir",
+    "commonNameFr": "Sapin grandissime"
+  },
+  {
+    "genusCode": "ABIE",
+    "speciesCode": "LAS",
+    "genusLatinName": "Abies",
+    "speciesLatinName": "lasiocarpa",
+    "commonNameEn": "Subalpine fir",
+    "commonNameFr": "Sapin subalpin"
+  },
+  {
+    "genusCode": "ABIE",
+    "speciesCode": "MAG",
+    "genusLatinName": "Abies",
+    "speciesLatinName": "magnifica",
+    "commonNameEn": "Red fir",
+    "commonNameFr": "Sapin rouge"
+  },
+  {
+    "genusCode": "ABIE",
+    "speciesCode": "MAG",
+    "genusLatinName": "Abies",
+    "speciesLatinName": "magnifica",
+    "commonNameEn": "Shasta red fir",
+    "commonNameFr": "Sapin rouge"
+  },
+  {
+    "genusCode": "ABIE",
+    "speciesCode": "NOR",
+    "genusLatinName": "Abies",
+    "speciesLatinName": "nordmanniana",
+    "commonNameEn": "Nordmann fir",
+    "commonNameFr": "Sapin de nordmann"
+  },
+  {
+    "genusCode": "ABIE",
+    "speciesCode": "PIN",
+    "genusLatinName": "Abies",
+    "speciesLatinName": "pinsapo",
+    "commonNameEn": "Spanish fir",
+    "commonNameFr": "Sapin d'espagne"
+  },
+  {
+    "genusCode": "ABIE",
+    "speciesCode": "PRO",
+    "genusLatinName": "Abies",
+    "speciesLatinName": "procera",
+    "commonNameEn": "Noble fir",
+    "commonNameFr": "Sapin noble"
+  },
+  {
+    "genusCode": "ABIE",
+    "speciesCode": "SPP",
+    "genusLatinName": "Abies",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified fir",
+    "commonNameFr": "Sapin non identifié"
+  },
+  {
+    "genusCode": "ACER",
+    "speciesCode": "CIR",
+    "genusLatinName": "Acer",
+    "speciesLatinName": "circinatum",
+    "commonNameEn": "Vine maple",
+    "commonNameFr": "Érable circiné"
+  },
+  {
+    "genusCode": "ACER",
+    "speciesCode": "FRE",
+    "genusLatinName": "Acer",
+    "speciesLatinName": "freemanii",
+    "commonNameEn": "Freeman maple",
+    "commonNameFr": "Érable autumn blaze"
+  },
+  {
+    "genusCode": "ACER",
+    "speciesCode": "GIN",
+    "genusLatinName": "Acer",
+    "speciesLatinName": "ginnala",
+    "commonNameEn": "Amur maple",
+    "commonNameFr": "Érable ginnala"
+  },
+  {
+    "genusCode": "ACER",
+    "speciesCode": "GLA",
+    "genusLatinName": "Acer",
+    "speciesLatinName": "glabrum",
+    "commonNameEn": "Douglas maple",
+    "commonNameFr": "Érable nain"
+  },
+  {
+    "genusCode": "ACER",
+    "speciesCode": "MAC",
+    "genusLatinName": "Acer",
+    "speciesLatinName": "macrophyllum",
+    "commonNameEn": "Bigleaf maple",
+    "commonNameFr": "Érable à grandes feuilles"
+  },
+  {
+    "genusCode": "ACER",
+    "speciesCode": "NEG",
+    "genusLatinName": "Acer",
+    "speciesLatinName": "negundo",
+    "commonNameEn": "Manitoba maple (box-elder)",
+    "commonNameFr": "Érable négondo (à giguère)"
+  },
+  {
+    "genusCode": "ACER",
+    "speciesCode": "NIG",
+    "genusLatinName": "Acer",
+    "speciesLatinName": "nigrum",
+    "commonNameEn": "Black maple",
+    "commonNameFr": "Érable noir"
+  },
+  {
+    "genusCode": "ACER",
+    "speciesCode": "PAL",
+    "genusLatinName": "Acer",
+    "speciesLatinName": "palmatum",
+    "commonNameEn": "Japanese maple",
+    "commonNameFr": "Érable palmé"
+  },
+  {
+    "genusCode": "ACER",
+    "speciesCode": "PEN",
+    "genusLatinName": "Acer",
+    "speciesLatinName": "pensylvanicum",
+    "commonNameEn": "Striped maple",
+    "commonNameFr": "Érable de pennsylvanie"
+  },
+  {
+    "genusCode": "ACER",
+    "speciesCode": "PLA",
+    "genusLatinName": "Acer",
+    "speciesLatinName": "platanoides",
+    "commonNameEn": "Norway maple",
+    "commonNameFr": "Érable de norvège"
+  },
+  {
+    "genusCode": "ACER",
+    "speciesCode": "PSE",
+    "genusLatinName": "Acer",
+    "speciesLatinName": "pseudoplatanus",
+    "commonNameEn": "Sycamore maple",
+    "commonNameFr": "Érable sycomore"
+  },
+  {
+    "genusCode": "ACER",
+    "speciesCode": "RUB",
+    "genusLatinName": "Acer",
+    "speciesLatinName": "rubrum",
+    "commonNameEn": "Red maple",
+    "commonNameFr": "Érable rouge"
+  },
+  {
+    "genusCode": "ACER",
+    "speciesCode": "SAC",
+    "genusLatinName": "Acer",
+    "speciesLatinName": "saccharinum",
+    "commonNameEn": "Silver maple",
+    "commonNameFr": "Érable argenté"
+  },
+  {
+    "genusCode": "ACER",
+    "speciesCode": "SAH",
+    "genusLatinName": "Acer",
+    "speciesLatinName": "saccharum",
+    "commonNameEn": "Sugar maple",
+    "commonNameFr": "Érable à sucre"
+  },
+  {
+    "genusCode": "ACER",
+    "speciesCode": "SAH",
+    "genusLatinName": "Acer",
+    "speciesLatinName": "saccharum",
+    "commonNameEn": "Sugar maple",
+    "commonNameFr": "Érable à sucre"
+  },
+  {
+    "genusCode": "ACER",
+    "speciesCode": "SPI",
+    "genusLatinName": "Acer",
+    "speciesLatinName": "spicatum",
+    "commonNameEn": "Mountain maple",
+    "commonNameFr": "Érable à épis"
+  },
+  {
+    "genusCode": "ACER",
+    "speciesCode": "SPP",
+    "genusLatinName": "Acer",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified maple",
+    "commonNameFr": "Erable non identifié"
+  },
+  {
+    "genusCode": "AESC",
+    "speciesCode": "GLA",
+    "genusLatinName": "Aesculus",
+    "speciesLatinName": "glabra",
+    "commonNameEn": "Ohio buckeye",
+    "commonNameFr": "Marronnier glabre"
+  },
+  {
+    "genusCode": "AESC",
+    "speciesCode": "HIP",
+    "genusLatinName": "Aesculus",
+    "speciesLatinName": "hippocastanum",
+    "commonNameEn": "Horsechestnut",
+    "commonNameFr": "Marronier d'inde"
+  },
+  {
+    "genusCode": "AESC",
+    "speciesCode": "CAR",
+    "genusLatinName": "Aesculus",
+    "speciesLatinName": "xcarnea",
+    "commonNameEn": "Red horsechestnut",
+    "commonNameFr": "Marronnier rouge"
+  },
+  {
+    "genusCode": "AILA",
+    "speciesCode": "ALT",
+    "genusLatinName": "Ailanthus",
+    "speciesLatinName": "altissima",
+    "commonNameEn": "Ailanthus ",
+    "commonNameFr": "Ailante glanduleux"
+  },
+  {
+    "genusCode": "ALNU",
+    "speciesCode": "GLU",
+    "genusLatinName": "Alnus",
+    "speciesLatinName": "glutinosa",
+    "commonNameEn": "European black alder",
+    "commonNameFr": "Aulne glutineux"
+  },
+  {
+    "genusCode": "ALNU",
+    "speciesCode": "INC",
+    "genusLatinName": "Alnus",
+    "speciesLatinName": "incana",
+    "commonNameEn": "Gray alder",
+    "commonNameFr": "Aulne rugueux"
+  },
+  {
+    "genusCode": "ALNU",
+    "speciesCode": "INC",
+    "genusLatinName": "Alnus",
+    "speciesLatinName": "incana",
+    "commonNameEn": "Speckled alder",
+    "commonNameFr": "Aulne rugueux"
+  },
+  {
+    "genusCode": "ALNU",
+    "speciesCode": "INC",
+    "genusLatinName": "Alnus",
+    "speciesLatinName": "incana",
+    "commonNameEn": "Mountain alder",
+    "commonNameFr": "Aulne à feuilles minces"
+  },
+  {
+    "genusCode": "ALNU",
+    "speciesCode": "RUB",
+    "genusLatinName": "Alnus",
+    "speciesLatinName": "rubra",
+    "commonNameEn": "Red alder",
+    "commonNameFr": "Aulne rouge"
+  },
+  {
+    "genusCode": "ALNU",
+    "speciesCode": "RUG",
+    "genusLatinName": "Alnus",
+    "speciesLatinName": "rugosa",
+    "commonNameEn": "Speckled alder",
+    "commonNameFr": "Aulne rugueux"
+  },
+  {
+    "genusCode": "ALNU",
+    "speciesCode": "SER",
+    "genusLatinName": "Alnus",
+    "speciesLatinName": "serrulata",
+    "commonNameEn": "Hazel alder",
+    "commonNameFr": "Aulne blanc"
+  },
+  {
+    "genusCode": "ALNU",
+    "speciesCode": "SIN",
+    "genusLatinName": "Alnus",
+    "speciesLatinName": "sinuata",
+    "commonNameEn": "Sitka alder",
+    "commonNameFr": "Aulne de sitka"
+  },
+  {
+    "genusCode": "ALNU",
+    "speciesCode": "SPP",
+    "genusLatinName": "Alnus",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified alder",
+    "commonNameFr": "Aulne non identifié"
+  },
+  {
+    "genusCode": "ALNU",
+    "speciesCode": "VIR",
+    "genusLatinName": "Alnus",
+    "speciesLatinName": "viridis",
+    "commonNameEn": "Siberian alder",
+    "commonNameFr": "Aulne de sibérie"
+  },
+  {
+    "genusCode": "ALNU",
+    "speciesCode": "VIR",
+    "genusLatinName": "Alnus",
+    "speciesLatinName": "viridis",
+    "commonNameEn": "Sitka alder",
+    "commonNameFr": "Aulne de sitka"
+  },
+  {
+    "genusCode": "AMEL",
+    "speciesCode": "ALN",
+    "genusLatinName": "Amelanchier",
+    "speciesLatinName": "alnifolia",
+    "commonNameEn": "Saskatoon-berry",
+    "commonNameFr": "Amélanchier à feuilles d'aulne"
+  },
+  {
+    "genusCode": "AMEL",
+    "speciesCode": "ARB",
+    "genusLatinName": "Amelanchier",
+    "speciesLatinName": "arborea",
+    "commonNameEn": "Downy serviceberry",
+    "commonNameFr": "Amélanchier aborescent"
+  },
+  {
+    "genusCode": "AMEL",
+    "speciesCode": "BAR",
+    "genusLatinName": "Amelanchier",
+    "speciesLatinName": "bartramiana",
+    "commonNameEn": "Mountain serviceberry",
+    "commonNameFr": "Amélanchier de bartram"
+  },
+  {
+    "genusCode": "AMEL",
+    "speciesCode": "FLO",
+    "genusLatinName": "Amelanchier",
+    "speciesLatinName": "florida",
+    "commonNameEn": "Pacific serviceberry",
+    "commonNameFr": "Amélanchier de l'ouest"
+  },
+  {
+    "genusCode": "AMEL",
+    "speciesCode": "LAE",
+    "genusLatinName": "Amelanchier",
+    "speciesLatinName": "laevis",
+    "commonNameEn": "Smooth juneberry",
+    "commonNameFr": "Amélanchier glabre"
+  },
+  {
+    "genusCode": "AMEL",
+    "speciesCode": "SAN",
+    "genusLatinName": "Amelanchier",
+    "speciesLatinName": "sanguinea",
+    "commonNameEn": "Roundleaf juneberry",
+    "commonNameFr": "Amélanchier sanguin"
+  },
+  {
+    "genusCode": "AMEL",
+    "speciesCode": "SAN",
+    "genusLatinName": "Amelanchier",
+    "speciesLatinName": "sanguinea",
+    "commonNameEn": "Gaspé serviceberry",
+    "commonNameFr": "Amélanchier de gaspésie"
+  },
+  {
+    "genusCode": "AMEL",
+    "speciesCode": "SPP",
+    "genusLatinName": "Amelanchier",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified serviceberry ",
+    "commonNameFr": "Amélanchier non identifié"
+  },
+  {
+    "genusCode": "ARAL",
+    "speciesCode": "ELA",
+    "genusLatinName": "Aralia",
+    "speciesLatinName": "elata",
+    "commonNameEn": "Japanese angelica-tree",
+    "commonNameFr": "Angélique du japon"
+  },
+  {
+    "genusCode": "ARAU",
+    "speciesCode": "ARA",
+    "genusLatinName": "Araucaria",
+    "speciesLatinName": "araucana",
+    "commonNameEn": "Monkey puzzle",
+    "commonNameFr": "Araucaria du chili"
+  },
+  {
+    "genusCode": "ARBU",
+    "speciesCode": "MEN",
+    "genusLatinName": "Arbutus",
+    "speciesLatinName": "menziesii",
+    "commonNameEn": "Arbutus",
+    "commonNameFr": "Arbousier d'amérique"
+  },
+  {
+    "genusCode": "ASIM",
+    "speciesCode": "TRI",
+    "genusLatinName": "Asimina",
+    "speciesLatinName": "triloba",
+    "commonNameEn": "Pawpaw",
+    "commonNameFr": "Asiminier trilobé"
+  },
+  {
+    "genusCode": "ASIM",
+    "speciesCode": "SPP",
+    "genusLatinName": "Asimina",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified asimina",
+    "commonNameFr": "Asiminier non identifié"
+  },
+  {
+    "genusCode": "BETU",
+    "speciesCode": "ALA",
+    "genusLatinName": "Betula",
+    "speciesLatinName": "alaskana",
+    "commonNameEn": "Alaska paper birch",
+    "commonNameFr": "Bouleau d'alaska"
+  },
+  {
+    "genusCode": "BETU",
+    "speciesCode": "ALL",
+    "genusLatinName": "Betula",
+    "speciesLatinName": "alleghaniensis",
+    "commonNameEn": "Yellow birch",
+    "commonNameFr": "Bouleau jaune"
+  },
+  {
+    "genusCode": "BETU",
+    "speciesCode": "COR",
+    "genusLatinName": "Betula",
+    "speciesLatinName": "cordifolia",
+    "commonNameEn": "Mountain paper birch",
+    "commonNameFr": "Bouleau à feuilles cordées"
+  },
+  {
+    "genusCode": "BETU",
+    "speciesCode": "KEN",
+    "genusLatinName": "Betula",
+    "speciesLatinName": "kenaica",
+    "commonNameEn": "Kenai birch",
+    "commonNameFr": "Bouleau kenai"
+  },
+  {
+    "genusCode": "BETU",
+    "speciesCode": "LEN",
+    "genusLatinName": "Betula",
+    "speciesLatinName": "lenta",
+    "commonNameEn": "Cherry birch",
+    "commonNameFr": "Bouleau flexible"
+  },
+  {
+    "genusCode": "BETU",
+    "speciesCode": "NEO",
+    "genusLatinName": "Betula",
+    "speciesLatinName": "neoalaskana",
+    "commonNameEn": "Alaska paper birch",
+    "commonNameFr": "Bouleau d'alaska"
+  },
+  {
+    "genusCode": "BETU",
+    "speciesCode": "OCC",
+    "genusLatinName": "Betula",
+    "speciesLatinName": "occidentalis",
+    "commonNameEn": "Water birch",
+    "commonNameFr": "Bouleau fontinal"
+  },
+  {
+    "genusCode": "BETU",
+    "speciesCode": "PAP",
+    "genusLatinName": "Betula",
+    "speciesLatinName": "papyrifera",
+    "commonNameEn": "White birch",
+    "commonNameFr": "Bouleau à papier (blanc)"
+  },
+  {
+    "genusCode": "BETU",
+    "speciesCode": "PAP",
+    "genusLatinName": "Betula",
+    "speciesLatinName": "papyrifera",
+    "commonNameEn": "Alaska paper birch",
+    "commonNameFr": "Bouleau d'alaska"
+  },
+  {
+    "genusCode": "BETU",
+    "speciesCode": "PAP",
+    "genusLatinName": "Betula",
+    "speciesLatinName": "papyrifera",
+    "commonNameEn": "White birch",
+    "commonNameFr": "Bouleau à papier (blanc)"
+  },
+  {
+    "genusCode": "BETU",
+    "speciesCode": "PEN",
+    "genusLatinName": "Betula",
+    "speciesLatinName": "pendula",
+    "commonNameEn": "European white birch",
+    "commonNameFr": "Bouleau verruqueux"
+  },
+  {
+    "genusCode": "BETU",
+    "speciesCode": "POP",
+    "genusLatinName": "Betula",
+    "speciesLatinName": "populifolia",
+    "commonNameEn": "Gray birch",
+    "commonNameFr": "Bouleau gris"
+  },
+  {
+    "genusCode": "BETU",
+    "speciesCode": "PUB",
+    "genusLatinName": "Betula",
+    "speciesLatinName": "pubescens",
+    "commonNameEn": "Silver (downy) birch",
+    "commonNameFr": "Bouleau pubescent"
+  },
+  {
+    "genusCode": "BETU",
+    "speciesCode": "SPP",
+    "genusLatinName": "Betula",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified birch",
+    "commonNameFr": "Bouleau non identifié"
+  },
+  {
+    "genusCode": "BETU",
+    "speciesCode": "CAE",
+    "genusLatinName": "Betula",
+    "speciesLatinName": "xcaerulea",
+    "commonNameEn": "Blueleaf birch",
+    "commonNameFr": "Bouleau bleu"
+  },
+  {
+    "genusCode": "BETU",
+    "speciesCode": "WIN",
+    "genusLatinName": "Betula",
+    "speciesLatinName": "xwinteri",
+    "commonNameEn": "Alaska x paper birch hybrid",
+    "commonNameFr": "X hybride du bouleau de l'alaska"
+  },
+  {
+    "genusCode": "CALO",
+    "speciesCode": "DEC",
+    "genusLatinName": "Calocedrus",
+    "speciesLatinName": "decurrens",
+    "commonNameEn": "Incense cedar",
+    "commonNameFr": "Cèdre à encens"
+  },
+  {
+    "genusCode": "CARA",
+    "speciesCode": "ARB",
+    "genusLatinName": "Caragana",
+    "speciesLatinName": "arborescens",
+    "commonNameEn": "Siberian pea-tree",
+    "commonNameFr": "Caragana arborescent"
+  },
+  {
+    "genusCode": "CARP",
+    "speciesCode": "CAR",
+    "genusLatinName": "Carpinus",
+    "speciesLatinName": "caroliniana",
+    "commonNameEn": "Blue-beech",
+    "commonNameFr": "Charme de caroline"
+  },
+  {
+    "genusCode": "CARP",
+    "speciesCode": "CAR",
+    "genusLatinName": "Carpinus",
+    "speciesLatinName": "caroliniana",
+    "commonNameEn": "American hornbeam ",
+    "commonNameFr": "Charme de la caroline de virginie"
+  },
+  {
+    "genusCode": "CARP",
+    "speciesCode": "SPP",
+    "genusLatinName": "Carpinus",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified hornbeam",
+    "commonNameFr": "Charme non identifié"
+  },
+  {
+    "genusCode": "CARY",
+    "speciesCode": "COR",
+    "genusLatinName": "Carya",
+    "speciesLatinName": "cordiformis",
+    "commonNameEn": "Bitternut hickory",
+    "commonNameFr": "Caryer cordiforme"
+  },
+  {
+    "genusCode": "CARY",
+    "speciesCode": "GLA",
+    "genusLatinName": "Carya",
+    "speciesLatinName": "glabra",
+    "commonNameEn": "Red hickory",
+    "commonNameFr": "Caryer glabre"
+  },
+  {
+    "genusCode": "CARY",
+    "speciesCode": "LAC",
+    "genusLatinName": "Carya",
+    "speciesLatinName": "liciniosa",
+    "commonNameEn": "Shellbark hickory",
+    "commonNameFr": "Caryer lacinié"
+  },
+  {
+    "genusCode": "CARY",
+    "speciesCode": "OVA",
+    "genusLatinName": "Carya",
+    "speciesLatinName": "ovata",
+    "commonNameEn": "Shagbark hickory",
+    "commonNameFr": "Caryer ovale"
+  },
+  {
+    "genusCode": "CARY",
+    "speciesCode": "OVA",
+    "genusLatinName": "Carya",
+    "speciesLatinName": "ovata",
+    "commonNameEn": "Shagbark hickory",
+    "commonNameFr": "Caryer ovale"
+  },
+  {
+    "genusCode": "CARY",
+    "speciesCode": "TOM",
+    "genusLatinName": "Carya",
+    "speciesLatinName": "tomentosa",
+    "commonNameEn": "Mockernut",
+    "commonNameFr": "Caryer blanc"
+  },
+  {
+    "genusCode": "CARY",
+    "speciesCode": "SPP",
+    "genusLatinName": "Carya",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified hickory",
+    "commonNameFr": "Caryer non identifié"
+  },
+  {
+    "genusCode": "CAST",
+    "speciesCode": "DEN",
+    "genusLatinName": "Castanea",
+    "speciesLatinName": "dentata",
+    "commonNameEn": "American chestnut",
+    "commonNameFr": "Châtaignier d’amérique"
+  },
+  {
+    "genusCode": "CAST",
+    "speciesCode": "MOL",
+    "genusLatinName": "Castanea",
+    "speciesLatinName": "mollissima",
+    "commonNameEn": "Chinese chestnut",
+    "commonNameFr": "Châtaignier de chine"
+  },
+  {
+    "genusCode": "CAST",
+    "speciesCode": "SPP",
+    "genusLatinName": "Castanea",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified chestnut",
+    "commonNameFr": "Châtaignier non identifié"
+  },
+  {
+    "genusCode": "CATA",
+    "speciesCode": "BIG",
+    "genusLatinName": "Catalpa",
+    "speciesLatinName": "bignonioides",
+    "commonNameEn": "Southern catalpa",
+    "commonNameFr": "Catalpa commun"
+  },
+  {
+    "genusCode": "CATA",
+    "speciesCode": "SPE",
+    "genusLatinName": "Catalpa",
+    "speciesLatinName": "speciosa",
+    "commonNameEn": "Northern catalpa",
+    "commonNameFr": "Catalpa à feuilles cordées"
+  },
+  {
+    "genusCode": "CEDR",
+    "speciesCode": "ATL",
+    "genusLatinName": "Cedrus",
+    "speciesLatinName": "atlantica",
+    "commonNameEn": "Atlas cedar",
+    "commonNameFr": "Cèdre de l'atlas"
+  },
+  {
+    "genusCode": "CEDR",
+    "speciesCode": "DEO",
+    "genusLatinName": "Cedrus",
+    "speciesLatinName": "deodara",
+    "commonNameEn": "Deodar cedar",
+    "commonNameFr": "Cèdre de l'himalaya"
+  },
+  {
+    "genusCode": "CEDR",
+    "speciesCode": "LIB",
+    "genusLatinName": "Cedrus",
+    "speciesLatinName": "libani",
+    "commonNameEn": "Cedar-of-lebanon",
+    "commonNameFr": "Cèdre du liban"
+  },
+  {
+    "genusCode": "CELT",
+    "speciesCode": "OCC",
+    "genusLatinName": "Celtis",
+    "speciesLatinName": "occidentalis",
+    "commonNameEn": "Hackberry",
+    "commonNameFr": "Micocoulier occidental"
+  },
+  {
+    "genusCode": "CELT",
+    "speciesCode": "TEN",
+    "genusLatinName": "Celtis",
+    "speciesLatinName": "tenuifolia",
+    "commonNameEn": "Dwarf hackberry",
+    "commonNameFr": "Micocoulier rabougri"
+  },
+  {
+    "genusCode": "CELT",
+    "speciesCode": "SPP",
+    "genusLatinName": "Celtis",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified hackberry",
+    "commonNameFr": "Micocoullier non identifié"
+  },
+  {
+    "genusCode": "CEPH",
+    "speciesCode": "OCC",
+    "genusLatinName": "Cephalanthus",
+    "speciesLatinName": "occidentalis",
+    "commonNameEn": "Button-bush",
+    "commonNameFr": "Céphalante occidental"
+  },
+  {
+    "genusCode": "CERC",
+    "speciesCode": "JAP",
+    "genusLatinName": "Cercidiphyllum",
+    "speciesLatinName": "japonicum",
+    "commonNameEn": "Katsura-tree",
+    "commonNameFr": "Cercidiphyllum du japon"
+  },
+  {
+    "genusCode": "CERC",
+    "speciesCode": "CAN",
+    "genusLatinName": "Cercis",
+    "speciesLatinName": "canadensis",
+    "commonNameEn": "Redbud",
+    "commonNameFr": "Gainier rouge"
+  },
+  {
+    "genusCode": "CHAM",
+    "speciesCode": "LAW",
+    "genusLatinName": "Chamaecyparis",
+    "speciesLatinName": "lawsoniana",
+    "commonNameEn": "Port-orford-cedar",
+    "commonNameFr": "Chamaecyparis de lawson"
+  },
+  {
+    "genusCode": "CHAM",
+    "speciesCode": "NOO",
+    "genusLatinName": "Chamaecyparis",
+    "speciesLatinName": "nootkatensis",
+    "commonNameEn": "Yellow-cedar",
+    "commonNameFr": "Chamaecyparis jaune"
+  },
+  {
+    "genusCode": "CHAM",
+    "speciesCode": "OBT",
+    "genusLatinName": "Chamaecyparis",
+    "speciesLatinName": "obtusa",
+    "commonNameEn": "Hinoki-cypress",
+    "commonNameFr": "Chamaecyparis du japon"
+  },
+  {
+    "genusCode": "CHAM",
+    "speciesCode": "PIS",
+    "genusLatinName": "Chamaecyparis",
+    "speciesLatinName": "pisifera",
+    "commonNameEn": "Sawara-cypress",
+    "commonNameFr": "Chamaecyparis de sawara"
+  },
+  {
+    "genusCode": "CHAM",
+    "speciesCode": "SPP",
+    "genusLatinName": "Chamaecyparis",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified cypress",
+    "commonNameFr": "Chamaecyparis non identifié"
+  },
+  {
+    "genusCode": "CLAD",
+    "speciesCode": "LUT",
+    "genusLatinName": "Cladrastis",
+    "speciesLatinName": "lutea",
+    "commonNameEn": "Yellow-wood",
+    "commonNameFr": "Virgilier à bois jaune"
+  },
+  {
+    "genusCode": "CORN",
+    "speciesCode": "ALT",
+    "genusLatinName": "Cornus",
+    "speciesLatinName": "alternifolia",
+    "commonNameEn": "Alternate-leaf dogwood",
+    "commonNameFr": "Cornouiller à feuilles alternes"
+  },
+  {
+    "genusCode": "CORN",
+    "speciesCode": "FLO",
+    "genusLatinName": "Cornus",
+    "speciesLatinName": "florida",
+    "commonNameEn": "Eastern flowering dogwood",
+    "commonNameFr": "Cornouiller fleuri"
+  },
+  {
+    "genusCode": "CORN",
+    "speciesCode": "KOU",
+    "genusLatinName": "Cornus",
+    "speciesLatinName": "kousa",
+    "commonNameEn": "Kousa dogwood",
+    "commonNameFr": "Cornouiller de kousa"
+  },
+  {
+    "genusCode": "CORN",
+    "speciesCode": "MAS",
+    "genusLatinName": "Cornus",
+    "speciesLatinName": "mas",
+    "commonNameEn": "Cornelian cherry",
+    "commonNameFr": "Cornouiller mâle"
+  },
+  {
+    "genusCode": "CORN",
+    "speciesCode": "NUT",
+    "genusLatinName": "Cornus",
+    "speciesLatinName": "nuttallii",
+    "commonNameEn": "Pacific dogwood",
+    "commonNameFr": "Cornouiller de nuttall"
+  },
+  {
+    "genusCode": "CORN",
+    "speciesCode": "STO",
+    "genusLatinName": "Cornus",
+    "speciesLatinName": "stolonifera",
+    "commonNameEn": "Redosier dogwood",
+    "commonNameFr": "Cornouiller stolonifère"
+  },
+  {
+    "genusCode": "CORN",
+    "speciesCode": "SPP",
+    "genusLatinName": "Cornus",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified dogwood",
+    "commonNameFr": "Cornouiller non identifié"
+  },
+  {
+    "genusCode": "CRAT",
+    "speciesCode": "CHR",
+    "genusLatinName": "Crataegus",
+    "speciesLatinName": "chrysocarpa",
+    "commonNameEn": "Fireberry hawthorn",
+    "commonNameFr": "Aubépine dorée"
+  },
+  {
+    "genusCode": "CRAT",
+    "speciesCode": "PUN",
+    "genusLatinName": "Crataegus",
+    "speciesLatinName": "punctata",
+    "commonNameEn": "Dotted hawthorn",
+    "commonNameFr": "Aubépine ponctuée"
+  },
+  {
+    "genusCode": "CRAT",
+    "speciesCode": "SPP",
+    "genusLatinName": "Crataegus",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Hawthorn",
+    "commonNameFr": "Aubépine"
+  },
+  {
+    "genusCode": "ELAE",
+    "speciesCode": "COM",
+    "genusLatinName": "Elaeagnus",
+    "speciesLatinName": "commutata",
+    "commonNameEn": "Silverberry",
+    "commonNameFr": "Chalef argenté"
+  },
+  {
+    "genusCode": "EUON",
+    "speciesCode": "ATR",
+    "genusLatinName": "Euonymus",
+    "speciesLatinName": "atropurpureus",
+    "commonNameEn": "Burning-bush euonymus",
+    "commonNameFr": "Fusain pourpre"
+  },
+  {
+    "genusCode": "FAGU",
+    "speciesCode": "GRA",
+    "genusLatinName": "Fagus",
+    "speciesLatinName": "grandifolia",
+    "commonNameEn": "American beech",
+    "commonNameFr": "Hêtre à grandes feuilles"
+  },
+  {
+    "genusCode": "FAGU",
+    "speciesCode": "SYL",
+    "genusLatinName": "Fagus",
+    "speciesLatinName": "sylvatica",
+    "commonNameEn": "European beech",
+    "commonNameFr": "Hêtre commun"
+  },
+  {
+    "genusCode": "FAGU",
+    "speciesCode": "SPP",
+    "genusLatinName": "Fagus",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified beech",
+    "commonNameFr": "Hêtre non identifié"
+  },
+  {
+    "genusCode": "FRAN",
+    "speciesCode": "ALN",
+    "genusLatinName": "Frangula",
+    "speciesLatinName": "alnus",
+    "commonNameEn": "Glossy buckthorn",
+    "commonNameFr": "Nerprun bourdaine"
+  },
+  {
+    "genusCode": "FRAX",
+    "speciesCode": "AME",
+    "genusLatinName": "Fraxinus",
+    "speciesLatinName": "americana",
+    "commonNameEn": "White ash",
+    "commonNameFr": "Frêne blanc"
+  },
+  {
+    "genusCode": "FRAX",
+    "speciesCode": "LAT",
+    "genusLatinName": "Fraxinus",
+    "speciesLatinName": "latifolia",
+    "commonNameEn": "Oregon ash",
+    "commonNameFr": "Frêne de l'orégon"
+  },
+  {
+    "genusCode": "FRAX",
+    "speciesCode": "NIG",
+    "genusLatinName": "Fraxinus",
+    "speciesLatinName": "nigra",
+    "commonNameEn": "Black ash",
+    "commonNameFr": "Frêne noir"
+  },
+  {
+    "genusCode": "FRAX",
+    "speciesCode": "PEN",
+    "genusLatinName": "Fraxinus",
+    "speciesLatinName": "pennsylvanica",
+    "commonNameEn": "Red ash",
+    "commonNameFr": "Frêne rouge"
+  },
+  {
+    "genusCode": "FRAX",
+    "speciesCode": "PEN",
+    "genusLatinName": "Fraxinus",
+    "speciesLatinName": "pennsylvanica",
+    "commonNameEn": "Northern red ash",
+    "commonNameFr": "Frêne d'austin"
+  },
+  {
+    "genusCode": "FRAX",
+    "speciesCode": "PEN",
+    "genusLatinName": "Fraxinus",
+    "speciesLatinName": "pennsylvanica",
+    "commonNameEn": "Green ash",
+    "commonNameFr": "Frêne vert"
+  },
+  {
+    "genusCode": "FRAX",
+    "speciesCode": "QUA",
+    "genusLatinName": "Fraxinus",
+    "speciesLatinName": "quadrangulata",
+    "commonNameEn": "Blue ash",
+    "commonNameFr": "Frêne anguleux"
+  },
+  {
+    "genusCode": "FRAX",
+    "speciesCode": "SPP",
+    "genusLatinName": "Fraxinus",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified ash",
+    "commonNameFr": "Frêne non identifié"
+  },
+  {
+    "genusCode": "GINK",
+    "speciesCode": "BIL",
+    "genusLatinName": "Ginkgo",
+    "speciesLatinName": "biloba",
+    "commonNameEn": "Ginkgo",
+    "commonNameFr": "Ginkgo bilobé"
+  },
+  {
+    "genusCode": "GLED",
+    "speciesCode": "TRI",
+    "genusLatinName": "Gleditsia",
+    "speciesLatinName": "triacanthos",
+    "commonNameEn": "Honey-locust",
+    "commonNameFr": "Févier épineux"
+  },
+  {
+    "genusCode": "GYMN",
+    "speciesCode": "DIO",
+    "genusLatinName": "Gymnocladus",
+    "speciesLatinName": "dioicus",
+    "commonNameEn": "Kentucky coffetree",
+    "commonNameFr": "Chicot févier"
+  },
+  {
+    "genusCode": "HAMA",
+    "speciesCode": "VIR",
+    "genusLatinName": "Hamamelis",
+    "speciesLatinName": "virginiana",
+    "commonNameEn": "Witch-hazel",
+    "commonNameFr": "Hamamélis de virginie"
+  },
+  {
+    "genusCode": "ILEX",
+    "speciesCode": "MUC",
+    "genusLatinName": "Ilex",
+    "speciesLatinName": "mucronata",
+    "commonNameEn": "Mountain holly",
+    "commonNameFr": "Faux houx"
+  },
+  {
+    "genusCode": "ILEX",
+    "speciesCode": "SPP",
+    "genusLatinName": "Ilex",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified holly",
+    "commonNameFr": "Houx non identifié"
+  },
+  {
+    "genusCode": "ILEX",
+    "speciesCode": "VER",
+    "genusLatinName": "Ilex",
+    "speciesLatinName": "verticillata",
+    "commonNameEn": "Common winterberry",
+    "commonNameFr": "Houx verticillé"
+  },
+  {
+    "genusCode": "JUGL",
+    "speciesCode": "CIN",
+    "genusLatinName": "Juglans",
+    "speciesLatinName": "cinerea",
+    "commonNameEn": "Butternut",
+    "commonNameFr": "Noyer cendré"
+  },
+  {
+    "genusCode": "JUGL",
+    "speciesCode": "NIG",
+    "genusLatinName": "Juglans",
+    "speciesLatinName": "nigra",
+    "commonNameEn": "Black walnut",
+    "commonNameFr": "Noyer noir"
+  },
+  {
+    "genusCode": "JUGL",
+    "speciesCode": "SPP",
+    "genusLatinName": "Juglans",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified walnut",
+    "commonNameFr": "Noyer non identifié"
+  },
+  {
+    "genusCode": "JUNI",
+    "speciesCode": "SCO",
+    "genusLatinName": "Juniperus",
+    "speciesLatinName": "scopulorum",
+    "commonNameEn": "Rocky mountain juniper",
+    "commonNameFr": "Genévrier des rocheuses"
+  },
+  {
+    "genusCode": "JUNI",
+    "speciesCode": "SPP",
+    "genusLatinName": "Juniperus",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified juniper",
+    "commonNameFr": "Genévrier non identifié"
+  },
+  {
+    "genusCode": "JUNI",
+    "speciesCode": "VIR",
+    "genusLatinName": "Juniperus",
+    "speciesLatinName": "virginiana",
+    "commonNameEn": "Eastern redcedar",
+    "commonNameFr": "Genévrier de virginie"
+  },
+  {
+    "genusCode": "LARI",
+    "speciesCode": "DEC",
+    "genusLatinName": "Larix",
+    "speciesLatinName": "decidua",
+    "commonNameEn": "European larch",
+    "commonNameFr": "Mélèze d'europe"
+  },
+  {
+    "genusCode": "LARI",
+    "speciesCode": "KAE",
+    "genusLatinName": "Larix",
+    "speciesLatinName": "kaempferi",
+    "commonNameEn": "Japanese larch",
+    "commonNameFr": "Mélèze du japon"
+  },
+  {
+    "genusCode": "LARI",
+    "speciesCode": "LAR",
+    "genusLatinName": "Larix",
+    "speciesLatinName": "laricina",
+    "commonNameEn": "Tamarack",
+    "commonNameFr": "Mélèze laricin"
+  },
+  {
+    "genusCode": "LARI",
+    "speciesCode": "LYA",
+    "genusLatinName": "Larix",
+    "speciesLatinName": "lyallii",
+    "commonNameEn": "Subalpine larch",
+    "commonNameFr": "Mélèze subalpin"
+  },
+  {
+    "genusCode": "LARI",
+    "speciesCode": "OCC",
+    "genusLatinName": "Larix",
+    "speciesLatinName": "occidentalis",
+    "commonNameEn": "Western larch",
+    "commonNameFr": "Mélèze de l'ouest"
+  },
+  {
+    "genusCode": "LARI",
+    "speciesCode": "SIB",
+    "genusLatinName": "Larix",
+    "speciesLatinName": "sibirica",
+    "commonNameEn": "Siberian larch",
+    "commonNameFr": "Mélèze de sibérie"
+  },
+  {
+    "genusCode": "LARI",
+    "speciesCode": "SPP",
+    "genusLatinName": "Larix",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified larch",
+    "commonNameFr": "Mélèze non identifié"
+  },
+  {
+    "genusCode": "LIRI",
+    "speciesCode": "TUL",
+    "genusLatinName": "Liriodendron",
+    "speciesLatinName": "tulipifera",
+    "commonNameEn": "Tulip-tree",
+    "commonNameFr": "Tulipier de virginie"
+  },
+  {
+    "genusCode": "LIRI",
+    "speciesCode": "SPP",
+    "genusLatinName": "Liriodendron",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified liriodendron",
+    "commonNameFr": "Tulipier de virginie"
+  },
+  {
+    "genusCode": "MAGN",
+    "speciesCode": "ACU",
+    "genusLatinName": "Magnolia",
+    "speciesLatinName": "acuminata",
+    "commonNameEn": "Cucumber-tree",
+    "commonNameFr": "Magnolia acuminé"
+  },
+  {
+    "genusCode": "MALU",
+    "speciesCode": "COR",
+    "genusLatinName": "Malus",
+    "speciesLatinName": "coronaria",
+    "commonNameEn": "Wild crab apple",
+    "commonNameFr": "Pommier odorant"
+  },
+  {
+    "genusCode": "MALU",
+    "speciesCode": "FUS",
+    "genusLatinName": "Malus",
+    "speciesLatinName": "fusca",
+    "commonNameEn": "Pacific crab apple",
+    "commonNameFr": "Pommier du pacifique"
+  },
+  {
+    "genusCode": "MALU",
+    "speciesCode": "SPP",
+    "genusLatinName": "Malus",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified apple",
+    "commonNameFr": "Pommier non identifié"
+  },
+  {
+    "genusCode": "MORU",
+    "speciesCode": "RUB",
+    "genusLatinName": "Morus",
+    "speciesLatinName": "rubra",
+    "commonNameEn": "Red mulberry",
+    "commonNameFr": "Mûrier rouge"
+  },
+  {
+    "genusCode": "MYRI",
+    "speciesCode": "CAL",
+    "genusLatinName": "Myrica",
+    "speciesLatinName": "californica",
+    "commonNameEn": "Pacific bayberry",
+    "commonNameFr": "Myrique du pacifique"
+  },
+  {
+    "genusCode": "NEMO",
+    "speciesCode": "MUC",
+    "genusLatinName": "Nemopanthus",
+    "speciesLatinName": "mucronatus",
+    "commonNameEn": "Mountain-holly",
+    "commonNameFr": "Némopanthe mucroné"
+  },
+  {
+    "genusCode": "NEMO",
+    "speciesCode": "SPP",
+    "genusLatinName": "Nemopanthus",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified nemopanthus",
+    "commonNameFr": "Némopanthe mucroné"
+  },
+  {
+    "genusCode": "NYSS",
+    "speciesCode": "SYL",
+    "genusLatinName": "Nyssa",
+    "speciesLatinName": "sylvatica",
+    "commonNameEn": "Black-gum",
+    "commonNameFr": "Nyssa sylvestre"
+  },
+  {
+    "genusCode": "NYSS",
+    "speciesCode": "SPP",
+    "genusLatinName": "Nyssa",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Tupelo",
+    "commonNameFr": "Nyssa"
+  },
+  {
+    "genusCode": "OSTR",
+    "speciesCode": "SPP",
+    "genusLatinName": "Ostrya",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified hop-hornbeam",
+    "commonNameFr": "Ostryer non identifié"
+  },
+  {
+    "genusCode": "OSTR",
+    "speciesCode": "VIR",
+    "genusLatinName": "Ostrya",
+    "speciesLatinName": "virginiana",
+    "commonNameEn": "Ironwood (hop-hornbeam)",
+    "commonNameFr": "Ostryer de virginie"
+  },
+  {
+    "genusCode": "PICE",
+    "speciesCode": "ABI",
+    "genusLatinName": "Picea",
+    "speciesLatinName": "abies",
+    "commonNameEn": "Norway spruce",
+    "commonNameFr": "Épicéa commun"
+  },
+  {
+    "genusCode": "PICE",
+    "speciesCode": "ENG",
+    "genusLatinName": "Picea",
+    "speciesLatinName": "engelmannii",
+    "commonNameEn": "Engelmann spruce",
+    "commonNameFr": "Épinette d'engelmann"
+  },
+  {
+    "genusCode": "PICE",
+    "speciesCode": "ENG",
+    "genusLatinName": "Picea",
+    "speciesLatinName": "engelmannii x glauca",
+    "commonNameEn": "Engelmann x white",
+    "commonNameFr": "Hybride épinette d'engelmann et épinette blanche"
+  },
+  {
+    "genusCode": "PICE",
+    "speciesCode": "GLA",
+    "genusLatinName": "Picea",
+    "speciesLatinName": "glauca",
+    "commonNameEn": "White spruce",
+    "commonNameFr": "Épinette blanche"
+  },
+  {
+    "genusCode": "PICE",
+    "speciesCode": "MAR",
+    "genusLatinName": "Picea",
+    "speciesLatinName": "mariana",
+    "commonNameEn": "Black spruce",
+    "commonNameFr": "Épinette noire"
+  },
+  {
+    "genusCode": "PICE",
+    "speciesCode": "PUN",
+    "genusLatinName": "Picea",
+    "speciesLatinName": "pungens",
+    "commonNameEn": "Colorado spruce",
+    "commonNameFr": "Épinette du colorado"
+  },
+  {
+    "genusCode": "PICE",
+    "speciesCode": "RUB",
+    "genusLatinName": "Picea",
+    "speciesLatinName": "rubens",
+    "commonNameEn": "Red spruce",
+    "commonNameFr": "Épinette rouge"
+  },
+  {
+    "genusCode": "PICE",
+    "speciesCode": "SIT",
+    "genusLatinName": "Picea",
+    "speciesLatinName": "sitchensis",
+    "commonNameEn": "Sitka spruce",
+    "commonNameFr": "Épinette de sitka"
+  },
+  {
+    "genusCode": "PICE",
+    "speciesCode": "SIT",
+    "genusLatinName": "Picea",
+    "speciesLatinName": "sitchensis x unknown",
+    "commonNameEn": "Sitka x unidentified",
+    "commonNameFr": "Hybride épinette de sitka et épinette non identifié"
+  },
+  {
+    "genusCode": "PICE",
+    "speciesCode": "SPP",
+    "genusLatinName": "Picea",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified spruce",
+    "commonNameFr": "Épinette non identifié"
+  },
+  {
+    "genusCode": "PICE",
+    "speciesCode": "LUT",
+    "genusLatinName": "Picea",
+    "speciesLatinName": "xlutzii",
+    "commonNameEn": "Sitka x white",
+    "commonNameFr": "Hybride épinette de sitka et épinette blanche"
+  },
+  {
+    "genusCode": "PINU",
+    "speciesCode": "ALB",
+    "genusLatinName": "Pinus",
+    "speciesLatinName": "albicaulis",
+    "commonNameEn": "Whitebark pine",
+    "commonNameFr": "Pin à blanche écorce"
+  },
+  {
+    "genusCode": "PINU",
+    "speciesCode": "BAN",
+    "genusLatinName": "Pinus",
+    "speciesLatinName": "banksiana",
+    "commonNameEn": "Jack pine",
+    "commonNameFr": "Pin gris"
+  },
+  {
+    "genusCode": "PINU",
+    "speciesCode": "CON",
+    "genusLatinName": "Pinus",
+    "speciesLatinName": "contorta",
+    "commonNameEn": "Lodgepole pine",
+    "commonNameFr": "Pin tordu"
+  },
+  {
+    "genusCode": "PINU",
+    "speciesCode": "CON",
+    "genusLatinName": "Pinus",
+    "speciesLatinName": "contorta",
+    "commonNameEn": "Shore pine",
+    "commonNameFr": "Pin tordu"
+  },
+  {
+    "genusCode": "PINU",
+    "speciesCode": "CON",
+    "genusLatinName": "Pinus",
+    "speciesLatinName": "contorta",
+    "commonNameEn": "Lodgepole pine",
+    "commonNameFr": "Pin tordu latifolié"
+  },
+  {
+    "genusCode": "PINU",
+    "speciesCode": "FLE",
+    "genusLatinName": "Pinus",
+    "speciesLatinName": "flexilis",
+    "commonNameEn": "Limber pine",
+    "commonNameFr": "Pin flexible"
+  },
+  {
+    "genusCode": "PINU",
+    "speciesCode": "LAM",
+    "genusLatinName": "Pinus",
+    "speciesLatinName": "lambertiana",
+    "commonNameEn": "Sugar pine",
+    "commonNameFr": "Pin à sucre"
+  },
+  {
+    "genusCode": "PINU",
+    "speciesCode": "MON",
+    "genusLatinName": "Pinus",
+    "speciesLatinName": "monticola",
+    "commonNameEn": "Western white pine",
+    "commonNameFr": "Pin argenté"
+  },
+  {
+    "genusCode": "PINU",
+    "speciesCode": "NIG",
+    "genusLatinName": "Pinus",
+    "speciesLatinName": "nigra",
+    "commonNameEn": "Austrian pine",
+    "commonNameFr": "Pin noir d'autriche"
+  },
+  {
+    "genusCode": "PINU",
+    "speciesCode": "PON",
+    "genusLatinName": "Pinus",
+    "speciesLatinName": "ponderosa",
+    "commonNameEn": "Ponderosa pine",
+    "commonNameFr": "Pin ponderosa"
+  },
+  {
+    "genusCode": "PINU",
+    "speciesCode": "RAD",
+    "genusLatinName": "Pinus",
+    "speciesLatinName": "radiata",
+    "commonNameEn": "Monterey pine",
+    "commonNameFr": "Pin de monterey"
+  },
+  {
+    "genusCode": "PINU",
+    "speciesCode": "RES",
+    "genusLatinName": "Pinus",
+    "speciesLatinName": "resinosa",
+    "commonNameEn": "Red pine",
+    "commonNameFr": "Pin rouge"
+  },
+  {
+    "genusCode": "PINU",
+    "speciesCode": "RIG",
+    "genusLatinName": "Pinus",
+    "speciesLatinName": "rigida",
+    "commonNameEn": "Pitch pine",
+    "commonNameFr": "Pin rigide"
+  },
+  {
+    "genusCode": "PINU",
+    "speciesCode": "STR",
+    "genusLatinName": "Pinus",
+    "speciesLatinName": "strobus",
+    "commonNameEn": "Eastern white pine",
+    "commonNameFr": "Pin blanc"
+  },
+  {
+    "genusCode": "PINU",
+    "speciesCode": "SYL",
+    "genusLatinName": "Pinus",
+    "speciesLatinName": "sylvestris",
+    "commonNameEn": "Scots pine",
+    "commonNameFr": "Pin sylvestre"
+  },
+  {
+    "genusCode": "PINU",
+    "speciesCode": "SPP",
+    "genusLatinName": "Pinus",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified pine",
+    "commonNameFr": "Pin non identifié"
+  },
+  {
+    "genusCode": "PINU",
+    "speciesCode": "MUR",
+    "genusLatinName": "Pinus",
+    "speciesLatinName": "xmurraybanksiana",
+    "commonNameEn": "Lodgepole x jack pine",
+    "commonNameFr": "Pin tordu x pin gris"
+  },
+  {
+    "genusCode": "PLAT",
+    "speciesCode": "OCC",
+    "genusLatinName": "Platanus",
+    "speciesLatinName": "occidentalis",
+    "commonNameEn": "Sycamore",
+    "commonNameFr": "Platane occidental"
+  },
+  {
+    "genusCode": "PLAT",
+    "speciesCode": "SPP",
+    "genusLatinName": "Platanus",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified sycamore",
+    "commonNameFr": "Platane non identifié"
+  },
+  {
+    "genusCode": "POPU",
+    "speciesCode": "ALB",
+    "genusLatinName": "Populus",
+    "speciesLatinName": "alba",
+    "commonNameEn": "European white poplar",
+    "commonNameFr": "Peuplier blanc"
+  },
+  {
+    "genusCode": "POPU",
+    "speciesCode": "AGU",
+    "genusLatinName": "Populus",
+    "speciesLatinName": "angustifolia",
+    "commonNameEn": "Narrowleaf cottonwood",
+    "commonNameFr": "Peuplier à feuilles étroites"
+  },
+  {
+    "genusCode": "POPU",
+    "speciesCode": "BAL",
+    "genusLatinName": "Populus",
+    "speciesLatinName": "balsamifera",
+    "commonNameEn": "Balsam poplar",
+    "commonNameFr": "Peuplier baumier"
+  },
+  {
+    "genusCode": "POPU",
+    "speciesCode": "BAL",
+    "genusLatinName": "Populus",
+    "speciesLatinName": "balsamifera",
+    "commonNameEn": "Balsam poplar",
+    "commonNameFr": "Peuplier baumier"
+  },
+  {
+    "genusCode": "POPU",
+    "speciesCode": "DEL",
+    "genusLatinName": "Populus",
+    "speciesLatinName": "deltoides",
+    "commonNameEn": "Eastern cottonwood",
+    "commonNameFr": "Peuplier deltoïde"
+  },
+  {
+    "genusCode": "POPU",
+    "speciesCode": "DEL",
+    "genusLatinName": "Populus",
+    "speciesLatinName": "deltoides",
+    "commonNameEn": "Eastern cottonwood",
+    "commonNameFr": "Peuplier deltoïde"
+  },
+  {
+    "genusCode": "POPU",
+    "speciesCode": "DEL",
+    "genusLatinName": "Populus",
+    "speciesLatinName": "deltoides",
+    "commonNameEn": "Southern (or plains) cottonwood",
+    "commonNameFr": "Peuplier deltoïde de l'ouest"
+  },
+  {
+    "genusCode": "POPU",
+    "speciesCode": "GRA",
+    "genusLatinName": "Populus",
+    "speciesLatinName": "grandidentata",
+    "commonNameEn": "Largetooth aspen",
+    "commonNameFr": "Peuplier à grandes dents"
+  },
+  {
+    "genusCode": "POPU",
+    "speciesCode": "NIG",
+    "genusLatinName": "Populus",
+    "speciesLatinName": "nigra",
+    "commonNameEn": "Lombardy poplar",
+    "commonNameFr": "Peuplier noir d'italie"
+  },
+  {
+    "genusCode": "POPU",
+    "speciesCode": "TRE",
+    "genusLatinName": "Populus",
+    "speciesLatinName": "tremuloides",
+    "commonNameEn": "Trembling aspen",
+    "commonNameFr": "Peuplier faux-tremble"
+  },
+  {
+    "genusCode": "POPU",
+    "speciesCode": "TRI",
+    "genusLatinName": "Populus",
+    "speciesLatinName": "trichocarpa",
+    "commonNameEn": "Black cottonwood",
+    "commonNameFr": "Peuplier de l'ouest"
+  },
+  {
+    "genusCode": "POPU",
+    "speciesCode": "SPP",
+    "genusLatinName": "Populus",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Hybrid poplars",
+    "commonNameFr": "Peuplier non identifié"
+  },
+  {
+    "genusCode": "POPU",
+    "speciesCode": "SPP",
+    "genusLatinName": "Populus",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified poplar",
+    "commonNameFr": "Peuplier non identifié"
+  },
+  {
+    "genusCode": "POPU",
+    "speciesCode": "JAC",
+    "genusLatinName": "Populus",
+    "speciesLatinName": "xjackii",
+    "commonNameEn": "Jack's hybrid poplar",
+    "commonNameFr": "Peuplier hybride de jack"
+  },
+  {
+    "genusCode": "PRUN",
+    "speciesCode": "AVI",
+    "genusLatinName": "Prunus",
+    "speciesLatinName": "avium",
+    "commonNameEn": "Sweet cherry",
+    "commonNameFr": "Cerisier sauvage"
+  },
+  {
+    "genusCode": "PRUN",
+    "speciesCode": "EMA",
+    "genusLatinName": "Prunus",
+    "speciesLatinName": "emarginata",
+    "commonNameEn": "Bitter cherry",
+    "commonNameFr": "Cerisier amer"
+  },
+  {
+    "genusCode": "PRUN",
+    "speciesCode": "NIG",
+    "genusLatinName": "Prunus",
+    "speciesLatinName": "nigra",
+    "commonNameEn": "Canada plum",
+    "commonNameFr": "Prunier noir"
+  },
+  {
+    "genusCode": "PRUN",
+    "speciesCode": "PEN",
+    "genusLatinName": "Prunus",
+    "speciesLatinName": "pensylvanica",
+    "commonNameEn": "Pin cherry",
+    "commonNameFr": "Cerisier de pennsylvanie"
+  },
+  {
+    "genusCode": "PRUN",
+    "speciesCode": "SER",
+    "genusLatinName": "Prunus",
+    "speciesLatinName": "serotina",
+    "commonNameEn": "Black cherry",
+    "commonNameFr": "Cerisier tardif"
+  },
+  {
+    "genusCode": "PRUN",
+    "speciesCode": "SPP",
+    "genusLatinName": "Prunus",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified cherry",
+    "commonNameFr": "Prunier non identifié"
+  },
+  {
+    "genusCode": "PRUN",
+    "speciesCode": "VIR",
+    "genusLatinName": "Prunus",
+    "speciesLatinName": "virginiana",
+    "commonNameEn": "Choke cherry",
+    "commonNameFr": "Cerisier de virginie"
+  },
+  {
+    "genusCode": "PRUN",
+    "speciesCode": "VIR",
+    "genusLatinName": "Prunus",
+    "speciesLatinName": "virginiana",
+    "commonNameEn": "Choke cherry",
+    "commonNameFr": "Cerisier de virginie"
+  },
+  {
+    "genusCode": "PSEU",
+    "speciesCode": "MEN",
+    "genusLatinName": "Pseudotsuga",
+    "speciesLatinName": "menziesii",
+    "commonNameEn": "Douglas-fir",
+    "commonNameFr": "Douglas vert"
+  },
+  {
+    "genusCode": "PSEU",
+    "speciesCode": "MEN",
+    "genusLatinName": "Pseudotsuga",
+    "speciesLatinName": "menziesii",
+    "commonNameEn": "Interior douglas-fir",
+    "commonNameFr": "Douglas bleu"
+  },
+  {
+    "genusCode": "PSEU",
+    "speciesCode": "MEN",
+    "genusLatinName": "Pseudotsuga",
+    "speciesLatinName": "menziesii",
+    "commonNameEn": "Coastal douglas-fir",
+    "commonNameFr": "Douglas vert"
+  },
+  {
+    "genusCode": "PTEL",
+    "speciesCode": "TRI",
+    "genusLatinName": "Ptelea",
+    "speciesLatinName": "trifoliata",
+    "commonNameEn": "Common hoptree",
+    "commonNameFr": "Ptéléa trifolié"
+  },
+  {
+    "genusCode": "PYRU",
+    "speciesCode": "COM",
+    "genusLatinName": "Pyrus",
+    "speciesLatinName": "communis",
+    "commonNameEn": "Common pear",
+    "commonNameFr": "Poirier commun"
+  },
+  {
+    "genusCode": "QUER",
+    "speciesCode": "ALB",
+    "genusLatinName": "Quercus",
+    "speciesLatinName": "alba",
+    "commonNameEn": "White oak",
+    "commonNameFr": "Chêne blanc"
+  },
+  {
+    "genusCode": "QUER",
+    "speciesCode": "BIC",
+    "genusLatinName": "Quercus",
+    "speciesLatinName": "bicolor",
+    "commonNameEn": "Swamp white oak",
+    "commonNameFr": "Chêne bicolore"
+  },
+  {
+    "genusCode": "QUER",
+    "speciesCode": "ELL",
+    "genusLatinName": "Quercus",
+    "speciesLatinName": "ellipsoidalis",
+    "commonNameEn": "Northern pin oak",
+    "commonNameFr": "Chêne ellipsoïdal"
+  },
+  {
+    "genusCode": "QUER",
+    "speciesCode": "GAR",
+    "genusLatinName": "Quercus",
+    "speciesLatinName": "garryana",
+    "commonNameEn": "Garry oak",
+    "commonNameFr": "Chêne de garry"
+  },
+  {
+    "genusCode": "QUER",
+    "speciesCode": "MAC",
+    "genusLatinName": "Quercus",
+    "speciesLatinName": "macrocarpa",
+    "commonNameEn": "Bur oak",
+    "commonNameFr": "Chêne à gros fruits"
+  },
+  {
+    "genusCode": "QUER",
+    "speciesCode": "MUE",
+    "genusLatinName": "Quercus",
+    "speciesLatinName": "muehlenbergii",
+    "commonNameEn": "Chinquapin oak",
+    "commonNameFr": "Chêne jaune"
+  },
+  {
+    "genusCode": "QUER",
+    "speciesCode": "PAL",
+    "genusLatinName": "Quercus",
+    "speciesLatinName": "palustris",
+    "commonNameEn": "Pin oak",
+    "commonNameFr": "Chêne des marais"
+  },
+  {
+    "genusCode": "QUER",
+    "speciesCode": "PRI",
+    "genusLatinName": "Quercus",
+    "speciesLatinName": "prinoides",
+    "commonNameEn": "Dwarf chinquapin oak",
+    "commonNameFr": "Chêne nain"
+  },
+  {
+    "genusCode": "QUER",
+    "speciesCode": "ROB",
+    "genusLatinName": "Quercus",
+    "speciesLatinName": "robur",
+    "commonNameEn": "English oak",
+    "commonNameFr": "Chêne pédonculé"
+  },
+  {
+    "genusCode": "QUER",
+    "speciesCode": "RUB",
+    "genusLatinName": "Quercus",
+    "speciesLatinName": "rubra",
+    "commonNameEn": "Red oak",
+    "commonNameFr": "Chêne rouge"
+  },
+  {
+    "genusCode": "QUER",
+    "speciesCode": "SHU",
+    "genusLatinName": "Quercus",
+    "speciesLatinName": "shumardii",
+    "commonNameEn": "Shumard oak",
+    "commonNameFr": "Chêne de shumard"
+  },
+  {
+    "genusCode": "QUER",
+    "speciesCode": "SPP",
+    "genusLatinName": "Quercus",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified oak",
+    "commonNameFr": "Chêne non identifié"
+  },
+  {
+    "genusCode": "QUER",
+    "speciesCode": "VEL",
+    "genusLatinName": "Quercus",
+    "speciesLatinName": "velutina",
+    "commonNameEn": "Black oak",
+    "commonNameFr": "Chêne noir"
+  },
+  {
+    "genusCode": "RHAM",
+    "speciesCode": "FRA",
+    "genusLatinName": "Rhamnus",
+    "speciesLatinName": "frangula",
+    "commonNameEn": "Glossy buckthorn",
+    "commonNameFr": "Nerprun bourdaine"
+  },
+  {
+    "genusCode": "RHAM",
+    "speciesCode": "PUR",
+    "genusLatinName": "Rhamnus",
+    "speciesLatinName": "purshiana",
+    "commonNameEn": "Cascara buckthorn",
+    "commonNameFr": "Nerprun cascara"
+  },
+  {
+    "genusCode": "RHAM",
+    "speciesCode": "SPP",
+    "genusLatinName": "Rhamnus",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified buckthorn",
+    "commonNameFr": "Nerprun non identifié"
+  },
+  {
+    "genusCode": "RHUS",
+    "speciesCode": "TYP",
+    "genusLatinName": "Rhus",
+    "speciesLatinName": "typhina",
+    "commonNameEn": "Staghorn sumac",
+    "commonNameFr": "Sumac vinaigrier"
+  },
+  {
+    "genusCode": "RHUS",
+    "speciesCode": "SPP",
+    "genusLatinName": "Rhus",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified sumac",
+    "commonNameFr": "Sumac non identifié"
+  },
+  {
+    "genusCode": "ROBI",
+    "speciesCode": "PSE",
+    "genusLatinName": "Robinia",
+    "speciesLatinName": "pseudoacacia",
+    "commonNameEn": "Black locust",
+    "commonNameFr": "Robinier faux-acacia"
+  },
+  {
+    "genusCode": "ROBI",
+    "speciesCode": "SPP",
+    "genusLatinName": "Robinia",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified robinia",
+    "commonNameFr": "Robinier non identifié"
+  },
+  {
+    "genusCode": "SALI",
+    "speciesCode": "ALB",
+    "genusLatinName": "Salix",
+    "speciesLatinName": "alba",
+    "commonNameEn": "Weeping willow",
+    "commonNameFr": "Saule pleureur doré"
+  },
+  {
+    "genusCode": "SALI",
+    "speciesCode": "AMY",
+    "genusLatinName": "Salix",
+    "speciesLatinName": "amygdaloides",
+    "commonNameEn": "Peachleaf willow",
+    "commonNameFr": "Saule à feuilles de pêcher"
+  },
+  {
+    "genusCode": "SALI",
+    "speciesCode": "BEB",
+    "genusLatinName": "Salix",
+    "speciesLatinName": "bebbiana",
+    "commonNameEn": "Bebb willow",
+    "commonNameFr": "Saule de bebb"
+  },
+  {
+    "genusCode": "SALI",
+    "speciesCode": "DIS",
+    "genusLatinName": "Salix",
+    "speciesLatinName": "discolor",
+    "commonNameEn": "Pussy willow",
+    "commonNameFr": "Saule discolore"
+  },
+  {
+    "genusCode": "SALI",
+    "speciesCode": "LUC",
+    "genusLatinName": "Salix",
+    "speciesLatinName": "lucida",
+    "commonNameEn": "Shining willow",
+    "commonNameFr": "Saule brillant"
+  },
+  {
+    "genusCode": "SALI",
+    "speciesCode": "LUC",
+    "genusLatinName": "Salix",
+    "speciesLatinName": "lucida",
+    "commonNameEn": "Pacific willow",
+    "commonNameFr": "Saule du pacifique"
+  },
+  {
+    "genusCode": "SALI",
+    "speciesCode": "LUC",
+    "genusLatinName": "Salix",
+    "speciesLatinName": "lucida",
+    "commonNameEn": "Shining willow",
+    "commonNameFr": "Saule brillant"
+  },
+  {
+    "genusCode": "SALI",
+    "speciesCode": "NIG",
+    "genusLatinName": "Salix",
+    "speciesLatinName": "nigra",
+    "commonNameEn": "Black willow",
+    "commonNameFr": "Saule noir"
+  },
+  {
+    "genusCode": "SALI",
+    "speciesCode": "PYR",
+    "genusLatinName": "Salix",
+    "speciesLatinName": "pyrifolia",
+    "commonNameEn": "Balsam willow",
+    "commonNameFr": "Saule baumier"
+  },
+  {
+    "genusCode": "SALI",
+    "speciesCode": "SCO",
+    "genusLatinName": "Salix",
+    "speciesLatinName": "scouleriana",
+    "commonNameEn": "Scouler willow",
+    "commonNameFr": "Saule de scouler"
+  },
+  {
+    "genusCode": "SALI",
+    "speciesCode": "SIT",
+    "genusLatinName": "Salix",
+    "speciesLatinName": "sitchensis",
+    "commonNameEn": "Sitka willow",
+    "commonNameFr": "Saule de sitka"
+  },
+  {
+    "genusCode": "SALI",
+    "speciesCode": "SPP",
+    "genusLatinName": "Salix",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified willow",
+    "commonNameFr": "Saule non identifié"
+  },
+  {
+    "genusCode": "SAMB",
+    "speciesCode": "CAL",
+    "genusLatinName": "Sambucus",
+    "speciesLatinName": "callicarpa",
+    "commonNameEn": "Red-berry elder",
+    "commonNameFr": "Sureau rouge du pacifique"
+  },
+  {
+    "genusCode": "SAMB",
+    "speciesCode": "CAN",
+    "genusLatinName": "Sambucus",
+    "speciesLatinName": "canadensis",
+    "commonNameEn": "American elder",
+    "commonNameFr": "Sureau blanc"
+  },
+  {
+    "genusCode": "SAMB",
+    "speciesCode": "CER",
+    "genusLatinName": "Sambucus",
+    "speciesLatinName": "cerulea",
+    "commonNameEn": "Blue-berry elder",
+    "commonNameFr": "Sureau bleu"
+  },
+  {
+    "genusCode": "SAMB",
+    "speciesCode": "RAC",
+    "genusLatinName": "Sambucus",
+    "speciesLatinName": "racemosa",
+    "commonNameEn": "Red elderberry",
+    "commonNameFr": "Sureau rouge"
+  },
+  {
+    "genusCode": "SASS",
+    "speciesCode": "ALB",
+    "genusLatinName": "Sassafras",
+    "speciesLatinName": "albidum",
+    "commonNameEn": "Sassafras",
+    "commonNameFr": "Sassafras officinale"
+  },
+  {
+    "genusCode": "SASS",
+    "speciesCode": "SPP",
+    "genusLatinName": "Sassafras",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified sassafras",
+    "commonNameFr": "Sassafras non identifié"
+  },
+  {
+    "genusCode": "SEQU",
+    "speciesCode": "SEM",
+    "genusLatinName": "Sequoia",
+    "speciesLatinName": "sempervirens",
+    "commonNameEn": "Coast redwood",
+    "commonNameFr": "Séquoia toujours vert"
+  },
+  {
+    "genusCode": "SEQU",
+    "speciesCode": "GIG",
+    "genusLatinName": "Sequoiadendron",
+    "speciesLatinName": "giganteum",
+    "commonNameEn": "Giant sequoia",
+    "commonNameFr": "Séquoia géant"
+  },
+  {
+    "genusCode": "SHEP",
+    "speciesCode": "ARG",
+    "genusLatinName": "Shepherdia",
+    "speciesLatinName": "argentea",
+    "commonNameEn": "Silver buffalo-berry",
+    "commonNameFr": "Shépherdie argentée"
+  },
+  {
+    "genusCode": "SORB",
+    "speciesCode": "AME",
+    "genusLatinName": "Sorbus",
+    "speciesLatinName": "americana",
+    "commonNameEn": "American mountain-ash",
+    "commonNameFr": "Sorbier d'amérique"
+  },
+  {
+    "genusCode": "SORB",
+    "speciesCode": "AUC",
+    "genusLatinName": "Sorbus",
+    "speciesLatinName": "aucuparia",
+    "commonNameEn": "European mountain-ash",
+    "commonNameFr": "Sorbier des oiseleurs"
+  },
+  {
+    "genusCode": "SORB",
+    "speciesCode": "DEC",
+    "genusLatinName": "Sorbus",
+    "speciesLatinName": "decora",
+    "commonNameEn": "Showy mountain-ash",
+    "commonNameFr": "Sorbier des montagnes"
+  },
+  {
+    "genusCode": "SORB",
+    "speciesCode": "SPP",
+    "genusLatinName": "Sorbus",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Mountain-ash",
+    "commonNameFr": "Sorbier"
+  },
+  {
+    "genusCode": "SYRI",
+    "speciesCode": "VUL",
+    "genusLatinName": "Syringa",
+    "speciesLatinName": "vulgaris",
+    "commonNameEn": "Common lilac",
+    "commonNameFr": "Lilas commun"
+  },
+  {
+    "genusCode": "TAXU",
+    "speciesCode": "BAC",
+    "genusLatinName": "Taxus",
+    "speciesLatinName": "baccata",
+    "commonNameEn": "English yew",
+    "commonNameFr": "If commun"
+  },
+  {
+    "genusCode": "TAXU",
+    "speciesCode": "BRE",
+    "genusLatinName": "Taxus",
+    "speciesLatinName": "brevifolia",
+    "commonNameEn": "Western yew",
+    "commonNameFr": "If de l'ouest"
+  },
+  {
+    "genusCode": "TAXU",
+    "speciesCode": "SPP",
+    "genusLatinName": "Taxus",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified yew",
+    "commonNameFr": "If non identifié"
+  },
+  {
+    "genusCode": "THUJ",
+    "speciesCode": "OCC",
+    "genusLatinName": "Thuja",
+    "speciesLatinName": "occidentalis",
+    "commonNameEn": "Eastern white-cedar",
+    "commonNameFr": "Thuya occidental"
+  },
+  {
+    "genusCode": "THUJ",
+    "speciesCode": "PLI",
+    "genusLatinName": "Thuja",
+    "speciesLatinName": "plicata",
+    "commonNameEn": "Western redcedar",
+    "commonNameFr": "Thuya géant"
+  },
+  {
+    "genusCode": "THUJ",
+    "speciesCode": "SPP",
+    "genusLatinName": "Thuja",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified thuja",
+    "commonNameFr": "Thuja non identifié"
+  },
+  {
+    "genusCode": "TILI",
+    "speciesCode": "AME",
+    "genusLatinName": "Tilia",
+    "speciesLatinName": "americana",
+    "commonNameEn": "Basswood",
+    "commonNameFr": "Tilleul d'amérique"
+  },
+  {
+    "genusCode": "TILI",
+    "speciesCode": "SPP",
+    "genusLatinName": "Tilia",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified linden",
+    "commonNameFr": "Tilleul non identifié"
+  },
+  {
+    "genusCode": "TOXI",
+    "speciesCode": "VER",
+    "genusLatinName": "Toxicodendron",
+    "speciesLatinName": "vernix",
+    "commonNameEn": "Poison-sumac",
+    "commonNameFr": "Sumac à vernis"
+  },
+  {
+    "genusCode": "TSUG",
+    "speciesCode": "CAN",
+    "genusLatinName": "Tsuga",
+    "speciesLatinName": "canadensis",
+    "commonNameEn": "Eastern hemlock",
+    "commonNameFr": "Pruche du canada"
+  },
+  {
+    "genusCode": "TSUG",
+    "speciesCode": "HET",
+    "genusLatinName": "Tsuga",
+    "speciesLatinName": "heterophylla",
+    "commonNameEn": "Western hemlock",
+    "commonNameFr": "Pruche de l'ouest"
+  },
+  {
+    "genusCode": "TSUG",
+    "speciesCode": "MER",
+    "genusLatinName": "Tsuga",
+    "speciesLatinName": "mertensiana",
+    "commonNameEn": "Mountain hemlock",
+    "commonNameFr": "Pruche subalpine"
+  },
+  {
+    "genusCode": "TSUG",
+    "speciesCode": "MER",
+    "genusLatinName": "Tsuga",
+    "speciesLatinName": "mertensiana x heterophylla",
+    "commonNameEn": "Mountain x western hemlock hybrid",
+    "commonNameFr": "Hybride pruche subalpine et pruche de l'ouest"
+  },
+  {
+    "genusCode": "TSUG",
+    "speciesCode": "SPP",
+    "genusLatinName": "Tsuga",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified hemlock",
+    "commonNameFr": "Pruche non identifié"
+  },
+  {
+    "genusCode": "ULMU",
+    "speciesCode": "AME",
+    "genusLatinName": "Ulmus",
+    "speciesLatinName": "americana",
+    "commonNameEn": "White elm",
+    "commonNameFr": "Orme d'amérique"
+  },
+  {
+    "genusCode": "ULMU",
+    "speciesCode": "PUM",
+    "genusLatinName": "Ulmus",
+    "speciesLatinName": "pumila",
+    "commonNameEn": "Siberian elm",
+    "commonNameFr": "Orme de sibérie"
+  },
+  {
+    "genusCode": "ULMU",
+    "speciesCode": "RUB",
+    "genusLatinName": "Ulmus",
+    "speciesLatinName": "rubra",
+    "commonNameEn": "Red elm",
+    "commonNameFr": "Orme rouge"
+  },
+  {
+    "genusCode": "ULMU",
+    "speciesCode": "THO",
+    "genusLatinName": "Ulmus",
+    "speciesLatinName": "thomasii",
+    "commonNameEn": "Rock elm",
+    "commonNameFr": "Orme liège"
+  },
+  {
+    "genusCode": "ULMU",
+    "speciesCode": "SPP",
+    "genusLatinName": "Ulmus",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified elm",
+    "commonNameFr": "Orme non identifié"
+  },
+  {
+    "genusCode": "VIBU",
+    "speciesCode": "LEN",
+    "genusLatinName": "Viburnum",
+    "speciesLatinName": "lentago",
+    "commonNameEn": "Nannyberry",
+    "commonNameFr": "Viorne flexible"
+  },
+  {
+    "genusCode": "VIBU",
+    "speciesCode": "OPU",
+    "genusLatinName": "Viburnum",
+    "speciesLatinName": "opulus",
+    "commonNameEn": "European cranberry viburnum",
+    "commonNameFr": "Viorne obier"
+  },
+  {
+    "genusCode": "VIBU",
+    "speciesCode": "SPP",
+    "genusLatinName": "Viburnum",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Viburnum",
+    "commonNameFr": "Viorne"
+  },
+  {
+    "genusCode": "ZANT",
+    "speciesCode": "AME",
+    "genusLatinName": "Zanthoxylum",
+    "speciesLatinName": "americanum",
+    "commonNameEn": "Common prickly-ash",
+    "commonNameFr": "Clavalier d'amérique"
+  },
+  {
+    "genusCode": "GENC",
+    "speciesCode": "SPP",
+    "genusLatinName": "Unidentified conifer",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified softwood",
+    "commonNameFr": "Conifères non identifié"
+  },
+  {
+    "genusCode": "GENH",
+    "speciesCode": "SPP",
+    "genusLatinName": "Unidentified hardwood",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified hardwood",
+    "commonNameFr": "Feuillus non identifié"
+  },
+  {
+    "genusCode": "GENX",
+    "speciesCode": "SPP",
+    "genusLatinName": "Unidentified exotic",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unidentified exotic",
+    "commonNameFr": "Les espèces exotiques non identifié"
+  },
+  {
+    "genusCode": "UNKN",
+    "speciesCode": "SPP",
+    "genusLatinName": "Unknown species",
+    "speciesLatinName": "unknown",
+    "commonNameEn": "Unknown species",
+    "commonNameFr": null
+  }
+]

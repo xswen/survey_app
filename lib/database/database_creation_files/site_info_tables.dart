@@ -1,3 +1,5 @@
+// ignore_for_file: recursive_getters
+
 import 'package:drift/drift.dart';
 import 'package:survey_app/database/database_creation_files/survey_info_tables.dart';
 

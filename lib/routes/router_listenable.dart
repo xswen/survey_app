@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -25,7 +27,6 @@ class RouterListenable extends _$RouterListenable implements Listenable {
   VoidCallback? _routerListener;
 
   final bool _isAuth = false; // Useful for our global redirect function
-
 
   @override
   Future<void> build() async {

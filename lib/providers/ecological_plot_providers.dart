@@ -1,3 +1,4 @@
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 
 part 'ecological_plot_providers.g.dart';

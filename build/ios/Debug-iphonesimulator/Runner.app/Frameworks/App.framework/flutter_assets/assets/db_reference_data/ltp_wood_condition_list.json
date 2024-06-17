@@ -1,0 +1,38 @@
+[
+  {
+    "code": "1",
+    "name": "1: No decay."
+  },
+  {
+    "code": "2",
+    "name": "2: Probable limited internal decay and/or deformities."
+  },
+  {
+    "code": "3",
+    "name": "3: Limited decay, wood essentially hard."
+  },
+  {
+    "code": "4",
+    "name": "4: Wood mostly hard but decay spreading, soft wood present."
+  },
+  {
+    "code": "5",
+    "name": "5: Balance of hard and soft wood, spongy sections."
+  },
+  {
+    "code": "6",
+    "name": "6: More soft and spongy wood than hard wood."
+  },
+  {
+    "code": "7",
+    "name": "7: No more hard wood, all soft or spongy, powdery sections."
+  },
+  {
+    "code": "8",
+    "name": "8: Hollow shell, outer wood mostly hard or firm."
+  },
+  {
+    "code": "-1",
+    "name": "-1: Missing data"
+  }
+]

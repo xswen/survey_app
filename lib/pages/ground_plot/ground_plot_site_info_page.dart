@@ -9,7 +9,6 @@ import 'package:survey_app/widgets/builders/reference_name_select_builder.dart';
 import 'package:survey_app/widgets/checkbox/hide_info_checkbox.dart';
 import 'package:survey_app/widgets/data_input/data_input.dart';
 import 'package:survey_app/widgets/disable_widget.dart';
-import 'package:survey_app/widgets/dropdowns/drop_down_default.dart';
 import 'package:survey_app/widgets/text/text_header_separator.dart';
 
 import '../../formatters/format_string.dart';
@@ -74,7 +73,6 @@ class GroundPlotSiteInfoPageState
   void updateSiteInfo(GpSiteInfoCompanion newSiteInfo) {
     changeMade = true;
     setState(() => siteInfo = newSiteInfo);
-    print(siteInfo);
   }
 
   Future<String> getLandBaseName() {
@@ -243,37 +241,37 @@ class GroundPlotSiteInfoPageState
       results.add("Elevation");
     }
 
-    if (siteInfo.landBase == d.Value.absent()) {
+    if (siteInfo.landBase == const d.Value.absent()) {
       results.add("Land base");
     }
 
-    if (siteInfo.landCover == d.Value.absent()) {
+    if (siteInfo.landCover == const d.Value.absent()) {
       results.add("Land cover");
     }
-    if (siteInfo.landPos == d.Value.absent()) {
+    if (siteInfo.landPos == const d.Value.absent()) {
       results.add("Land position");
     }
-    if (siteInfo.vegType == d.Value.absent()) {
+    if (siteInfo.vegType == const d.Value.absent()) {
       results.add("Vegetation type");
     }
 
-    if (siteInfo.densityCl == d.Value.absent()) {
+    if (siteInfo.densityCl == const d.Value.absent()) {
       results.add("Density class");
     }
 
-    if (siteInfo.standStru == d.Value.absent()) {
+    if (siteInfo.standStru == const d.Value.absent()) {
       results.add("Stand structure");
     }
 
-    if (siteInfo.succStage == d.Value.absent()) {
+    if (siteInfo.succStage == const d.Value.absent()) {
       results.add("Land base");
     }
 
-    if (siteInfo.wetlandClass == d.Value.absent()) {
+    if (siteInfo.wetlandClass == const d.Value.absent()) {
       results.add("Land base");
     }
 
-    if (siteInfo.postProcessing == d.Value.absent()) {
+    if (siteInfo.postProcessing == const d.Value.absent()) {
       results.add("Post processing");
     }
 
@@ -307,7 +305,7 @@ class GroundPlotSiteInfoPageState
       results.add("Gps Points");
     }
 
-    if (siteInfo.utmZone == d.Value.absent()) {
+    if (siteInfo.utmZone == const d.Value.absent()) {
       results.add("Utm Zone");
     }
 
@@ -1043,22 +1041,34 @@ class GroundPlotSiteInfoPageState
                   titleWidget: "Unreported",
                   checkValue: db.companionValueToStr(siteInfo.gpsPoint) == "-1",
                   child: DataInput(
-                      onSubmit: (s) {},
-                      onValidate: (s) {
-                        return null;
-                      }),
+                      startingStr: db.companionValueToStr(siteInfo.gpsPoint),
+                      onSubmit: (s) {
+                        s.isEmpty
+                            ? updateSiteInfo(siteInfo.copyWith(
+                                gpsPoint: const d.Value.absent()))
+                            : updateSiteInfo(siteInfo.copyWith(
+                                gpsPoint: d.Value(int.parse(s))));
+                      },
+                      onValidate: _errorGpsPoints),
                 ),
-                DropDownDefault(
-                  title: "Density class",
-                  onChangedFn: (s) {},
-                  itemsList: [...test, "unreported"],
-                  selectedItem: "Please select",
-                ),
-                DropDownDefault(
+                ReferenceNameSelectBuilder(
                   title: "UTM Zone",
-                  onChangedFn: (s) {},
-                  itemsList: [...test, "unreported"],
-                  selectedItem: "Please select",
+                  name: db.referenceTablesDao.getGpSiteInfoUtmZoneName(
+                      db.companionValueToStr(siteInfo.utmZone)),
+                  asyncListFn: db.referenceTablesDao.getGpSiteInfoUtmZoneList,
+                  enabled: !parentComplete,
+                  disabledFn: (s) {
+                    if (s == "U: unknown" &&
+                        db.companionValueToStr(siteInfo.plotCompletion) ==
+                            "U") {
+                      return true;
+                    }
+                    return false;
+                  },
+                  onChange: (s) => db.referenceTablesDao
+                      .getGpSiteInfoUtmZoneCode(s)
+                      .then((value) => updateSiteInfo(
+                          siteInfo.copyWith(utmZone: d.Value(value)))),
                 ),
               ],
             ),

@@ -1,0 +1,18 @@
+[
+  {
+    "code": "M",
+    "name": "M: Tree height was an actual field measurement"
+  },
+  {
+    "code": "C",
+    "name": "C: Tree height was calculated (e.g. using height diameter curves)"
+  },
+  {
+    "code": "E",
+    "name": "E: Tree height was estimated by field crew"
+  },
+  {
+    "code": "S",
+    "name": "S: Not Specified"
+  }
+]

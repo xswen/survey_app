@@ -66,21 +66,22 @@ class WoodyDebrisTablesDao extends DatabaseAccessor<Database>
   }
 
   Future<void> deleteWoodyDebrisTransect(int wdHeaderId) async {
-    var tmp = await deleteAllPiecesOddByHeader(wdHeaderId);
-    tmp = await deleteAllPiecesRoundByHeader(wdHeaderId);
-    tmp = await deleteWdSmallByHeader(wdHeaderId);
-    tmp = await (delete(woodyDebrisHeader)
-          ..where((tbl) => tbl.id.equals(wdHeaderId)))
+    await deleteAllPiecesOddByHeader(wdHeaderId);
+    await deleteAllPiecesRoundByHeader(wdHeaderId);
+    await deleteWdSmallByHeader(wdHeaderId);
+    await (delete(woodyDebrisHeader)..where((tbl) => tbl.id.equals(wdHeaderId)))
         .go();
   }
 
   Future<int> deleteWdSmallByHeader(int wdHeaderId) => (delete(woodyDebrisSmall)
         ..where((tbl) => tbl.wdHeaderId.equals(wdHeaderId)))
       .go();
+
   Future<int> deleteAllPiecesRoundByHeader(int wdHeaderId) =>
       (delete(woodyDebrisRound)
             ..where((tbl) => tbl.wdHeaderId.equals(wdHeaderId)))
           .go();
+
   Future<int> deleteAllPiecesOddByHeader(int wdHeaderId) =>
       (delete(woodyDebrisOdd)
             ..where((tbl) => tbl.wdHeaderId.equals(wdHeaderId)))
@@ -130,8 +131,7 @@ class WoodyDebrisTablesDao extends DatabaseAccessor<Database>
 
   Future<WoodyDebrisHeaderData> updateWdHeaderTransNum(
       int wdhId, int transNum) async {
-    var tmp = await ((update(woodyDebrisHeader)
-          ..where((tbl) => tbl.id.equals(wdhId)))
+    await ((update(woodyDebrisHeader)..where((tbl) => tbl.id.equals(wdhId)))
         .write(WoodyDebrisHeaderCompanion(
             id: Value(wdhId), transNum: Value(transNum))));
     return getWdHeader(wdhId);
@@ -180,10 +180,12 @@ class WoodyDebrisTablesDao extends DatabaseAccessor<Database>
 
   Future<int> addWdSmall(WoodyDebrisSmallCompanion entry) =>
       into(woodyDebrisSmall).insert(entry);
+
   Future<WoodyDebrisSmallData?> getWdSmall(int wdHeaderId) =>
       (select(woodyDebrisSmall)
             ..where((tbl) => tbl.wdHeaderId.equals(wdHeaderId)))
           .getSingleOrNull();
+
 //====================Woody Debris Pieces====================
   Future<int> addOrUpdateWdPieceOddAccu(WoodyDebrisOddCompanion entry) =>
       into(woodyDebrisOdd).insertOnConflictUpdate(entry);

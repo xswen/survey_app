@@ -7,8 +7,8 @@ import '../../formatters/thousands_formatter.dart';
 import '../checkbox/hide_info_checkbox.dart';
 import '../data_input/data_input.dart';
 
-class soilPitBuildCoarseFragment extends StatelessWidget {
-  const soilPitBuildCoarseFragment({super.key});
+class SoilPitBuildCoarseFragment extends StatelessWidget {
+  const SoilPitBuildCoarseFragment({super.key});
 
   @override
   Widget build(BuildContext context) {

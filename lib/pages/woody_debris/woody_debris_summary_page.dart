@@ -1,3 +1,5 @@
+// ignore_for_file: unused_result
+
 import 'package:drift/drift.dart' as d;
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/pages/woody_debris/woody_debris_header_page.dart';
@@ -17,6 +19,7 @@ import 'woody_debris_header_measurements_page.dart';
 class WoodyDebrisSummaryPage extends ConsumerStatefulWidget {
   static const String routeName = "woodyDebrisSummary";
   final GoRouterState goRouterState;
+
   const WoodyDebrisSummaryPage(this.goRouterState, {super.key});
 
   @override

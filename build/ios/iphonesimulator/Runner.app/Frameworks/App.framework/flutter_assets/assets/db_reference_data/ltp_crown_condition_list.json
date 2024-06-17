@@ -1,0 +1,30 @@
+[
+  {
+    "code": "1",
+    "name": "1: All foliage, twigs, and branches present."
+  },
+  {
+    "code": "2",
+    "name": "2: Some or all foliage lost, possibly some twigs lost, all branches usually present."
+  },
+  {
+    "code": "3",
+    "name": "3: No foliage, up to 50% of twigs lost, most branches present."
+  },
+  {
+    "code": "4",
+    "name": "4: No foliage or twigs, up to 50% of branches lost."
+  },
+  {
+    "code": "5",
+    "name": "5: No foliage or twigs. Some sound and rotting branch stubs may be present."
+  },
+  {
+    "code": "6",
+    "name": "6: No foliage, twigs, branches, or branch stubs."
+  },
+  {
+    "code": "-1",
+    "name": "-1: Missing data"
+  }
+]

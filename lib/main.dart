@@ -38,7 +38,7 @@ class MyApp extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final notifier = ref.watch(routerListenableProvider.notifier);
-    final key = useRef(GlobalKey<NavigatorState>(debugLabel: 'routerKey'));
+
     final router = useMemoized(
       () => GoRouter(
         refreshListenable: notifier,

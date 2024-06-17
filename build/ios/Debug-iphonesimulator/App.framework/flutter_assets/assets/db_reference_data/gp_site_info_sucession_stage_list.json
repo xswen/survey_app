@@ -1,0 +1,26 @@
+[
+  {
+    "code": "ES",
+    "name": "ES: early seral stage"
+  },
+  {
+    "code": "MS",
+    "name": "MS: mid-seral stage"
+  },
+  {
+    "code": "LS",
+    "name": "LS: late seral stage"
+  },
+  {
+    "code": "TS",
+    "name": "TS: mature seral stage"
+  },
+  {
+    "code": "OG",
+    "name": "OG: old growth seral stage"
+  },
+  {
+    "code": "UR",
+    "name": "UR: unreported"
+  }
+]

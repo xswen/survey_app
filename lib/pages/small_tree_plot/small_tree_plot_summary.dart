@@ -21,6 +21,7 @@ import 'small_tree_species_entry_page.dart';
 
 class ColNames {
   ColNames();
+
   ColumnHeaders id = ColumnHeaders(ColumnHeaders.headerNameId, visible: false);
   ColumnHeaders smallTreeNumber = ColumnHeaders("Small Tree Number");
   ColumnHeaders originalPlotArea = ColumnHeaders("Original Plot Area");
@@ -57,6 +58,7 @@ class SmallTreePlotSummaryPage extends ConsumerStatefulWidget {
   static const String listName = "listKey";
 
   final GoRouterState state;
+
   const SmallTreePlotSummaryPage(this.state, {super.key});
 
   @override
@@ -209,9 +211,6 @@ class SmallTreePlotSummaryPageState
           .write(data)
           .then((value) => setState(() => stp = data));
     }
-
-    void updateStpCompanion(StpSummaryCompanion newStp) =>
-        setState(() => stp = newStp);
 
     void markComplete() async {
       final db = Database.instance;

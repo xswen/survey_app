@@ -1,0 +1,18 @@
+[
+  {
+    "code": "W",
+    "name": "W: wetland"
+  },
+  {
+    "code": "U",
+    "name": "U: upland"
+  },
+  {
+    "code": "A",
+    "name": "A: alpine"
+  },
+  {
+    "code": "N",
+    "name": "N: not known"
+  }
+]

@@ -51,9 +51,6 @@ class DataInput extends StatefulWidget {
 }
 
 class _DataInputState extends State<DataInput> {
-  Widget? _prefixIcon;
-  Widget? _suffixVal;
-
   late final TextEditingController _controller;
 
   @override

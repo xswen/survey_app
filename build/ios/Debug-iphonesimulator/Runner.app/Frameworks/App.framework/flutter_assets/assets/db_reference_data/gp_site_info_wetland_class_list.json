@@ -1,0 +1,30 @@
+[
+  {
+    "code": "B",
+    "name": "B: Bog"
+  },
+  {
+    "code": "F",
+    "name": "F: Fen"
+  },
+  {
+    "code": "S",
+    "name": "S: Swamp"
+  },
+  {
+    "code": "M",
+    "name": "M: Marsh"
+  },
+  {
+    "code": "W",
+    "name": "W: Shallow Water"
+  },
+  {
+    "code": "N",
+    "name": "N: Non-wetland, terrestrial system (upland)"
+  },
+  {
+    "code": "U",
+    "name": "U: Unreported"
+  }
+]

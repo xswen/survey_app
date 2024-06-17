@@ -127,7 +127,6 @@ class LargeTreePlotSummaryPageState
                   const LtpSummaryCompanion(complete: d.Value(false)));
             } else {
               List<String>? results = errorCheck(ltpSummary);
-              print(results);
 
               results == null
                   ? updateSummary(

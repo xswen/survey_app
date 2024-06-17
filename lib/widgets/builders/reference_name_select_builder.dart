@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../database/database.dart';
 import '../dropdowns/drop_down_async_list.dart';
 
 class ReferenceNameSelectBuilder extends StatelessWidget {
@@ -27,7 +26,6 @@ class ReferenceNameSelectBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Database db = Database.instance;
     return FutureBuilder(
       future: name,
       builder: (BuildContext context, AsyncSnapshot<String> name) {

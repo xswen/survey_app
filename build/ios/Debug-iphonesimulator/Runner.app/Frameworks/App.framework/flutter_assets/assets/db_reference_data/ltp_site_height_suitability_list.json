@@ -1,0 +1,14 @@
+[
+  {
+    "code": "Y",
+    "name": "Y: Yes"
+  },
+  {
+    "code": "N",
+    "name": "N: No"
+  },
+  {
+    "code": "M",
+    "name": "M: Missing data"
+  }
+]

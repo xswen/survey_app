@@ -2,7 +2,6 @@ export 'package:flutter/material.dart';
 export 'package:flutter_riverpod/flutter_riverpod.dart';
 export 'package:font_awesome_flutter/font_awesome_flutter.dart';
 export 'package:go_router/go_router.dart';
-export 'package:riverpod_annotation/riverpod_annotation.dart';
 export 'package:survey_app/database/database.dart';
 export 'package:survey_app/providers/providers.dart';
 

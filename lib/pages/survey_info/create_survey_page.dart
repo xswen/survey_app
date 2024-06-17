@@ -197,7 +197,7 @@ class CreateSurveyPageState extends ConsumerState<CreateSurveyPage>
                   //if survey is the same with no changes then exit
                   if (db.companionValueToStr(surveyHeader.id) ==
                       existingSurveyId.toString()) {
-                    var tmp = await db
+                    await db
                         .into(db.surveyHeaders)
                         .insertOnConflictUpdate(surveyHeader);
                     if (context.mounted) {
@@ -267,7 +267,7 @@ class CreateSurveyPageState extends ConsumerState<CreateSurveyPage>
     // and not a new one
     if (widget.updateDashboard == null &&
         widget.lastMeasNum == widget.surveyHeader.measNum.value) {
-      var tmp = db.referenceTablesDao.updatePlot(PlotsCompanion(
+      db.referenceTablesDao.updatePlot(PlotsCompanion(
           nfiPlot: widget.surveyHeader.nfiPlot,
           code: widget.surveyHeader.province,
           lastMeasNum: d.Value(await db.surveyInfoTablesDao
@@ -276,7 +276,7 @@ class CreateSurveyPageState extends ConsumerState<CreateSurveyPage>
 
     int id =
         await db.into(db.surveyHeaders).insertOnConflictUpdate(surveyHeader);
-    var val = await db.referenceTablesDao.updatePlot(PlotsCompanion(
+    await db.referenceTablesDao.updatePlot(PlotsCompanion(
         nfiPlot: surveyHeader.nfiPlot,
         code: surveyHeader.province,
         lastMeasNum:

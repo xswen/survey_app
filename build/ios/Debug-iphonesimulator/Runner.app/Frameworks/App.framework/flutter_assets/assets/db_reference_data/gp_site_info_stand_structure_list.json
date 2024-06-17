@@ -1,0 +1,27 @@
+[
+  {
+    "code": "SNGL",
+    "name": "Single storied",
+    "cover": "T"
+  },
+  {
+    "code": "MULT",
+    "name": "Two or more distinct canopy layers",
+    "cover": "T"
+  },
+  {
+    "code": "COMP",
+    "name": "Complex, non-distinct layers",
+    "cover": "T"
+  },
+  {
+    "code": "NA",
+    "name": "Non-applicable",
+    "cover": ""
+  },
+  {
+    "code": "U",
+    "name": "Unknown",
+    "cover": "T"
+  }
+]

@@ -15,6 +15,7 @@ import 'ecological_plot_create_plot_page.dart';
 class EcologicalPlotSummaryPage extends ConsumerStatefulWidget {
   static const String routeName = "ecologicalPlotSummary";
   final GoRouterState state;
+
   const EcologicalPlotSummaryPage(this.state, {super.key});
 
   @override
@@ -49,8 +50,6 @@ class EcologicalPlotSummaryPageState
 
   void createPlot() {
     final db = ref.read(databaseProvider);
-    EcpHeaderCompanion ecpHCompanion = EcpHeaderCompanion(
-        ecpSummaryId: d.Value(ecpId), complete: const d.Value(false));
 
     db.ecologicalPlotTablesDao.ecpPlotAvailable(ecpId).then((available) =>
         !available
@@ -115,8 +114,6 @@ class EcologicalPlotSummaryPageState
 
   @override
   Widget build(BuildContext context) {
-    final db = ref.read(databaseProvider);
-
     AsyncValue<EcpSummaryData> ecpSummary = ref.watch(ecpDataProvider(ecpId));
     AsyncValue<List<EcpHeaderData>> transList =
         ref.watch(ecpTransListProvider(ecpId));

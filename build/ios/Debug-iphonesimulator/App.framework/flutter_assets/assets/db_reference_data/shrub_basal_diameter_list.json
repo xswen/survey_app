@@ -1,0 +1,54 @@
+[
+  {
+    "code": "-1",
+    "name": "Missing"
+  },
+  {
+    "code": "0",
+    "name": "0.1 cm to 1.0 cm"
+  },
+  {
+    "code": "1",
+    "name": "1.1 cm to 3.0 cm"
+  },
+  {
+    "code": "2",
+    "name": "3.1 cm to 5.0 cm"
+  },
+  {
+    "code": "3",
+    "name": "5.1 cm to 7.5 cm"
+  },
+  {
+    "code": "4",
+    "name": "7.6 cm to 10.0 cm"
+  },
+  {
+    "code": "5",
+    "name": "10.1 cm to 12.5 cm"
+  },
+  {
+    "code": "6",
+    "name": "12.6 cm to 15.0 cm"
+  },
+  {
+    "code": "7",
+    "name": "15.1 cm to 17.5 cm"
+  },
+  {
+    "code": "8",
+    "name": "17.6 cm to 20.0 cm"
+  },
+  {
+    "code": "9",
+    "name": "20.1 cm to 22.5 cm"
+  },
+  {
+    "code": "10",
+    "name": "22.6 cm to 25.0 cm"
+  },
+  {
+    "code": "11",
+    "name": "25.1 cm to 27.5 cm"
+  }
+]

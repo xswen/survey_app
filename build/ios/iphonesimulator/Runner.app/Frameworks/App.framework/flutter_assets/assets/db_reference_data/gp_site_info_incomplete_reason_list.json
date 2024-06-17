@@ -1,0 +1,34 @@
+[
+  {
+    "code": "AD",
+    "name": "Access denied"
+  },
+  {
+    "code": "HZ",
+    "name": "Hazardous"
+  },
+  {
+    "code": "NF",
+    "name": "Plot straddles forested and non-forested polygons"
+  },
+  {
+    "code": "SP",
+    "name": "Plot was split in a previous measurement"
+  },
+  {
+    "code": "IN",
+    "name": "NFI plot components incremental to the provincial/territorial inventory program were not assessed"
+  },
+  {
+    "code": "OT",
+    "name": "Other"
+  },
+  {
+    "code": "NA",
+    "name": "Not applicable (i.e. plot was measured in full)"
+  },
+  {
+    "code": "NR",
+    "name": "Not reported"
+  }
+]
