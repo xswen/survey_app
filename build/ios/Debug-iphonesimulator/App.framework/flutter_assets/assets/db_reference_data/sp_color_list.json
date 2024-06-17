@@ -1,7 +1,0 @@
-[
-  {"code": "D", "name": "Dark, chocolate brown or black (Munsell colour value < 4 when moist)"},
-  {"code": "M", "name": "Medium, intermediate colour (most commonly encountered)"},
-  {"code": "L", "name": "Light, very pale soil (Munsell colour value > 6 when moist)"},
-  {"code": "N", "name": "Not applicable (bedrock, no soil)"},
-  {"code": "S", "name": "Missing"}
-]

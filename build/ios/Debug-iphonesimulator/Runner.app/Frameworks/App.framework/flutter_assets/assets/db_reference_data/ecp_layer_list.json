@@ -1,7 +1,0 @@
-[
-  {"code": "A", "name": "A: Trees or shrubs > 10m in height"},
-  {"code": "B1", "name": "B1: Trees or shrubs 2-10m in height"},
-  {"code": "B2", "name": "B2: Trees or shrubs < 2m in height; excludes seedlings < 2 years old"},
-  {"code": "C", "name": "C: Herbaceous species"},
-  {"code": "D", "name": "D: Byroid and seedlings < 2 years old"}
-]
