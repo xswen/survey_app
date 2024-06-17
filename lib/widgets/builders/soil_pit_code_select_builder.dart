@@ -37,7 +37,6 @@ class SoilPitCodeSelectBuilder extends StatelessWidget {
             asyncItems: (s) => db.referenceTablesDao.getSoilPitCodeNameList(),
             selectedItem: name,
           );
-          ;
         });
   }
 }

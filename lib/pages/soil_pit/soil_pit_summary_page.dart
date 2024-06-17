@@ -14,6 +14,7 @@ import '../../widgets/popups/popup_marked_complete.dart';
 class SoilPitSummaryPage extends ConsumerStatefulWidget {
   static const String routeName = "soilPitSummary";
   final GoRouterState state;
+
   const SoilPitSummaryPage(this.state, {super.key});
 
   @override
@@ -23,22 +24,35 @@ class SoilPitSummaryPage extends ConsumerStatefulWidget {
 class SoilPitSummaryPageState extends ConsumerState<SoilPitSummaryPage> {
   final String title = "Soil Pit";
   late final PopupDismiss completeWarningPopup;
-  final PopupDismiss surveyCompleteWarningPopup =
+  final PopupDismiss popupSurveyComplete =
       Popups.generatePreviousMarkedCompleteErrorPopup("Survey");
 
   late final int surveyId;
   late final int spId;
+  late bool parentComplete = false;
 
   @override
   void initState() {
     surveyId = PathParamValue.getSurveyId(widget.state)!;
-    spId = PathParamValue.getSoilPitSummary(widget.state);
+    spId = PathParamValue.getSoilPitSummaryId(widget.state);
     completeWarningPopup = Popups.generateCompleteErrorPopup(title);
+
+    _loadData();
 
     super.initState();
   }
 
-  //TODO: Parent complete
+  void _loadData() async {
+    final survey =
+        await Database.instance.surveyInfoTablesDao.getSurvey(surveyId);
+
+    if (mounted) {
+      // Only proceed if the widget is still in the tree
+      setState(() {
+        parentComplete = survey.complete;
+      });
+    }
+  }
 
   void navToSiteInfo() => ref
           .read(databaseProvider)
@@ -84,6 +98,11 @@ class SoilPitSummaryPageState extends ConsumerState<SoilPitSummaryPage> {
       loading: () => DefaultPageLoadingScaffold(title: title),
       data: (spSummary) {
         void markComplete() {
+          if (parentComplete) {
+            Popups.show(context, popupSurveyComplete);
+            return;
+          }
+
           spSummary.complete
               ? updateSpSummary(
                   const SoilPitSummaryCompanion(complete: d.Value(false)))
@@ -127,7 +146,7 @@ class SoilPitSummaryPageState extends ConsumerState<SoilPitSummaryPage> {
                 label: "Enter Measurement Date",
                 readOnly: spSummary.complete,
                 readOnlyPopup: completeWarningPopup,
-                setStateFn: (DateTime date) async => updateSpSummary(
+                onDateSelected: (DateTime date) async => updateSpSummary(
                     SoilPitSummaryCompanion(measDate: d.Value(date))),
               ),
               IconNavButton(

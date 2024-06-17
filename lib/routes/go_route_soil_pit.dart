@@ -17,7 +17,7 @@ GoRoute goRouteSoilPit = GoRoute(
           name: SoilPitSiteInfoPage.routeName,
           path: "site_info",
           builder: (context, state) => SoilPitSiteInfoPage(state),
-          routes: []),
+          routes: const []),
       GoRoute(
           name: SoilPitFeaturePage.routeName,
           path: "pit_feature_list",
@@ -27,7 +27,7 @@ GoRoute goRouteSoilPit = GoRoute(
                 name: SoilPitFeatureEntryPage.routeName,
                 path: "pit_feature",
                 builder: (context, state) => SoilPitFeatureEntryPage(state),
-                routes: [])
+                routes: const [])
           ]),
       GoRoute(
           name: SoilPitHorizonDescriptionPage.routeName,
@@ -39,6 +39,6 @@ GoRoute goRouteSoilPit = GoRoute(
                 path: "pit_horizon",
                 builder: (context, state) =>
                     SoilPitHorizonDescriptionEntryPage(state),
-                routes: [])
+                routes: const [])
           ]),
     ]);

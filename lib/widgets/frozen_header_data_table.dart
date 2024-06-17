@@ -20,7 +20,7 @@ class FrozenHeaderDataTable extends StatelessWidget {
         children: [
           DataTable(
             headingRowColor:
-                MaterialStateColor.resolveWith((states) => Colors.blue),
+                WidgetStateColor.resolveWith((states) => Colors.blue),
             rows: const [],
             columns: _generateColNames(),
           ),

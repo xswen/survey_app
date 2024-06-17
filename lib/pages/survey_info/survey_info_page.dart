@@ -2,6 +2,7 @@ import 'package:drift/drift.dart' as d;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/pages/ground_plot/ground_plot_summary_page.dart';
+import 'package:survey_app/pages/micro_plot/micro_plot_summary.dart';
 import 'package:survey_app/widgets/popups/popup_notice_survey_complete.dart';
 import 'package:survey_app/widgets/popups/popups_survey_info_mark_not_assessed.dart';
 import 'package:survey_app/widgets/text/notify_no_filter_results.dart';
@@ -31,6 +32,7 @@ import 'survey_info_header_info/survey_info_summary_page.dart';
 class SurveyInfoPage extends ConsumerStatefulWidget {
   static const String routeName = "surveyInfo";
   final GoRouterState goRouterState;
+
   const SurveyInfoPage({super.key, required this.goRouterState});
 
   @override
@@ -166,6 +168,10 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
         markNotAssessed =
             db.surveyInfoTablesDao.markNotAssessed(surveyId, data?.id);
         break;
+      case SurveyCardCategories.groundPlot:
+        markNotAssessed =
+            db.siteInfoTablesDao.markNotAssessed(surveyId, data?.id);
+        break;
       case SurveyCardCategories.woodyDebris:
         markNotAssessed =
             db.woodyDebrisTablesDao.markNotAssessed(surveyId, data?.id);
@@ -181,6 +187,27 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
       case SurveyCardCategories.soilPit:
         markNotAssessed =
             db.soilPitTablesDao.markNotAssessed(surveyId, data?.id);
+        break;
+      case SurveyCardCategories.microPlot:
+        //TODO
+        markNotAssessed =
+            db.soilPitTablesDao.markNotAssessed(surveyId, data?.id);
+        break;
+      case SurveyCardCategories.largeTreePlot:
+        markNotAssessed =
+            db.largeTreePlotTablesDao.markNotAssessed(surveyId, data?.id);
+        break;
+      case SurveyCardCategories.smallTreePlot:
+        markNotAssessed =
+            db.smallTreePlotTablesDao.markNotAssessed(surveyId, data?.id);
+        break;
+      case SurveyCardCategories.shrubPlot:
+        markNotAssessed =
+            db.shrubPlotTablesDao.markNotAssessed(surveyId, data?.id);
+        break;
+      case SurveyCardCategories.stumpPlot:
+        markNotAssessed =
+            db.stumpPlotTablesDao.markNotAssessed(surveyId, data?.id);
         break;
       default:
         debugPrint("Error: case not handled for $category");
@@ -223,8 +250,12 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
         );
         break;
       case SurveyCardCategories.groundPlot:
-        context.pushNamed(GroundPlotSummaryPage.routeName,
-            pathParameters: widget.goRouterState.pathParameters);
+        getId(() => db.siteInfoTablesDao
+            .setAndReturnDefaultSummary(survey.id, survey.measDate)).then(
+          (id) => context.pushNamed(GroundPlotSummaryPage.routeName,
+              pathParameters: PathParamGenerator.gpSummary(
+                  widget.goRouterState, id.toString())),
+        );
 
         break;
       case SurveyCardCategories.woodyDebris:
@@ -259,38 +290,51 @@ class SurveyInfoPageState extends ConsumerState<SurveyInfoPage> {
                   widget.goRouterState, id.toString())),
         );
         break;
-      case SurveyCardCategories.smallTreePlot:
+      case SurveyCardCategories.microPlot:
         if (context.mounted) {
           context
-              .pushNamed(SmallTreePlotSummaryPage.routeName,
-                  pathParameters: widget.goRouterState.pathParameters)
-              .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
-        }
-        break;
-      case SurveyCardCategories.shrubPlot:
-        if (context.mounted) {
-          context
-              .pushNamed(ShrubPlotSummaryPage.routeName,
-                  pathParameters: widget.goRouterState.pathParameters)
-              .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
-        }
-        break;
-      case SurveyCardCategories.stumpPlot:
-        if (context.mounted) {
-          context
-              .pushNamed(StumpPlotSummaryPage.routeName,
+              .pushNamed(MicroPlotSummaryPage.routeName,
                   pathParameters: widget.goRouterState.pathParameters)
               .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
         }
         break;
       case SurveyCardCategories.largeTreePlot:
-        if (context.mounted) {
-          context
-              .pushNamed(LargeTreePlotSummaryPage.routeName,
-                  pathParameters: widget.goRouterState.pathParameters)
-              .then((value) => ref.refresh(updateSurveyCardProvider(surveyId)));
-        }
+        getId(() => db.largeTreePlotTablesDao
+            .setAndReturnDefaultSummary(survey.id, survey.measDate)).then(
+          (id) => context.pushNamed(LargeTreePlotSummaryPage.routeName,
+              pathParameters: PathParamGenerator.ltpSummary(
+                  widget.goRouterState, id.toString())),
+        );
         break;
+      case SurveyCardCategories.smallTreePlot:
+        getId(() => db.smallTreePlotTablesDao
+            .setAndReturnDefaultSummary(survey.id, survey.measDate)).then(
+          (id) => context.pushNamed(SmallTreePlotSummaryPage.routeName,
+              pathParameters: PathParamGenerator.stpSummary(
+                  widget.goRouterState, id.toString())),
+        );
+        break;
+      case SurveyCardCategories.shrubPlot:
+        getId(() => db.shrubPlotTablesDao
+            .setAndReturnDefaultSummary(survey.id, survey.measDate)).then(
+          (id) => context.pushNamed(
+            ShrubPlotSummaryPage.routeName,
+            pathParameters: PathParamGenerator.shrubSummary(
+                widget.goRouterState, id.toString()),
+          ),
+        );
+        break;
+      case SurveyCardCategories.stumpPlot:
+        getId(() => db.stumpPlotTablesDao
+            .setAndReturnDefaultSummary(survey.id, survey.measDate)).then(
+          (id) => context.pushNamed(
+            StumpPlotSummaryPage.routeName,
+            pathParameters: PathParamGenerator.stumpSummary(
+                widget.goRouterState, id.toString()),
+          ),
+        );
+        break;
+
       default:
         debugPrint("Error: case not handled for $category");
         return;

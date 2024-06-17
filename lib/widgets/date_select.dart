@@ -27,65 +27,117 @@ Future<DateTime> datePicker(context, DateTime date) async {
   return date;
 }
 
-class CalendarSelect extends StatefulWidget {
-  const CalendarSelect(
-      {super.key,
-      required this.date,
-      required this.label,
-      required this.setStateFn,
-      this.readOnly,
-      this.readOnlyPopup});
+class CalendarSelect extends StatelessWidget {
+  const CalendarSelect({
+    super.key,
+    required this.date,
+    required this.label,
+    required this.onDateSelected,
+    this.readOnly,
+    this.readOnlyPopup,
+  });
 
   final DateTime date;
   final String label;
-  final Function setStateFn;
+  final Function(DateTime) onDateSelected;
   final bool? readOnly;
   final Widget? readOnlyPopup;
 
   @override
-  State<CalendarSelect> createState() => _CalendarSelectState();
-}
-
-class _CalendarSelectState extends State<CalendarSelect> {
-  final TextEditingController dateInput = TextEditingController();
-
-  @override
-  void initState() {
-    dateInput.text = formatDate(widget.date);
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final TextEditingController dateInput = TextEditingController(
+        text: formatDate(date)); // This can be initialized directly
+
     return Container(
-        margin: const EdgeInsets.fromLTRB(kPaddingH, kPaddingV, kPaddingH, 0),
-        child: Center(
-            child: TextField(
+      margin: const EdgeInsets.fromLTRB(kPaddingH, kPaddingV, kPaddingH, 0),
+      child: Center(
+        child: TextField(
           controller: dateInput,
-          //editing controller of this TextField
           decoration: InputDecoration(
-              icon:
-                  const Icon(FontAwesomeIcons.calendarDay), //icon of text field
-              labelText: tr(widget.label) //label text of field
-              ),
-          readOnly: true,
-          //set it true, so that user will not able to edit text
+            icon:
+                const Icon(FontAwesomeIcons.calendarDay), // Icon of text field
+            labelText: tr(label), // Label text of field
+          ),
+          readOnly: true, // Set it true, so user will not be able to edit text
           onTap: () async {
-            bool readOnly = widget.readOnly ?? false;
-
-            if (readOnly) {
-              widget.readOnlyPopup != null
-                  ? Popups.show(context, widget.readOnlyPopup!)
-                  : null;
+            if (readOnly ?? false) {
+              if (readOnlyPopup != null) {
+                Popups.show(context,
+                    readOnlyPopup!); // Assuming Popups.show is defined somewhere
+              }
             } else {
-              DateTime date = await datePicker(context, widget.date);
-
-              setState(() {
-                dateInput.text = formatDate(date);
-                widget.setStateFn(date);
-              });
+              DateTime newDate = await datePicker(context, date);
+              onDateSelected(newDate);
             }
           },
-        )));
+        ),
+      ),
+    );
   }
 }
+
+// class CalendarSelect extends StatefulWidget {
+//   const CalendarSelect(
+//       {super.key,
+//       required this.date,
+//       required this.label,
+//       required this.onDateSelected,
+//       this.readOnly,
+//       this.readOnlyPopup});
+//
+//   final DateTime date;
+//   final String label;
+//   final Function onDateSelected;
+//   final bool? readOnly;
+//   final Widget? readOnlyPopup;
+//
+//   @override
+//   State<CalendarSelect> createState() => _CalendarSelectState();
+// }
+//
+// class _CalendarSelectState extends State<CalendarSelect> {
+//   final TextEditingController dateInput = TextEditingController();
+//   late DateTime selectedDate;
+//
+//   @override
+//   void initState() {
+//     dateInput.text = formatDate(widget.date);
+//     selectedDate = widget.date;
+//     super.initState();
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//         margin: const EdgeInsets.fromLTRB(kPaddingH, kPaddingV, kPaddingH, 0),
+//         child: Center(
+//             child: TextField(
+//           controller: dateInput,
+//           //editing controller of this TextField
+//           decoration: InputDecoration(
+//               icon:
+//                   const Icon(FontAwesomeIcons.calendarDay), //icon of text field
+//               labelText: tr(widget.label) //label text of field
+//               ),
+//           readOnly: true,
+//           //set it true, so that user will not able to edit text
+//           onTap: () async {
+//             bool readOnly = widget.readOnly ?? false;
+//
+//             if (readOnly) {
+//               widget.readOnlyPopup != null
+//                   ? Popups.show(context, widget.readOnlyPopup!)
+//                   : null;
+//             } else {
+//               DateTime date = await datePicker(context, widget.date);
+//
+//               setState(() {
+//                 dateInput.text = formatDate(date);
+//                 selectedDate = date;
+//                 widget.onDateSelected(date);
+//               });
+//             }
+//           },
+//         )));
+//   }
+// }

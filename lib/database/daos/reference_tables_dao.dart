@@ -52,6 +52,19 @@ part 'reference_tables_dao.g.dart';
   LtpSiteHeightSuitability,
   LtpSiteAgeSuitability,
   LtpProrate,
+  GpSiteInfoStandStructure,
+  GpSiteInfoSuccessionStage,
+  GpSiteInfoUtmZone,
+  GpSiteInfoVegType,
+  GpSiteInfoWetland,
+  GpSiteInfoEcozone,
+  GpSiteInfoPlotCompletion,
+  GpSiteInfoDensity,
+  GpSiteInfoLandBase,
+  GpSiteInfoLandCover,
+  GpSiteInfoLandPos,
+  GpSiteInfoPostProcessing,
+  GpSiteInfoPlotIncompleteReason,
 ])
 class ReferenceTablesDao extends DatabaseAccessor<Database>
     with _$ReferenceTablesDaoMixin {
@@ -197,6 +210,7 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
                 tbl.speciesCode.equals(speciesCode)))
           .map((p0) => p0.speciesLatinName)
           .getSingle();
+
   //====================Surface Substrate====================
   Future<String> getSubstrateTypeNameFromCode(String code) =>
       (select(substrateType)..where((tbl) => tbl.typeCode.equals(code)))
@@ -695,7 +709,6 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
 
   Future<String> getStpStemConditionName(String code) async {
     if (code.isEmpty) return "";
-
     return (select(stpStemCondition, distinct: true)
           ..where((tbl) => tbl.code.equals(code)))
         .map((row) => row.name)
@@ -958,7 +971,8 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
       (select(ltpGenus)
             ..where((tbl) =>
                 tbl.genusCode.equals(genusCode) &
-                tbl.speciesLatinName.equals(speciesName)))
+                tbl.speciesLatinName.equals(speciesName))
+            ..limit(1))
           .map((p0) => p0.speciesCode)
           .getSingle();
 
@@ -966,7 +980,8 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
       (select(ltpGenus)
             ..where((tbl) =>
                 tbl.genusCode.equals(genusCode) &
-                tbl.speciesCode.equals(speciesCode)))
+                tbl.speciesCode.equals(speciesCode))
+            ..limit(1))
           .map((p0) => p0.speciesLatinName)
           .getSingle();
 
@@ -1003,7 +1018,8 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
             ..where((tbl) =>
                 tbl.genusCode.equals(genusCode) &
                 tbl.speciesCode.equals(speciesCode) &
-                tbl.varietyLatinName.equals(varietyName)))
+                tbl.varietyLatinName.equals(varietyName))
+            ..limit(1))
           .map((p0) => p0.varietyCode)
           .getSingle();
 
@@ -1013,7 +1029,8 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
             ..where((tbl) =>
                 tbl.genusCode.equals(genusCode) &
                 tbl.speciesCode.equals(speciesCode) &
-                tbl.varietyCode.equals(varietyCode)))
+                tbl.varietyCode.equals(varietyCode))
+            ..limit(1))
           .map((p0) => p0.varietyLatinName)
           .getSingle();
 
@@ -1279,6 +1296,338 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
 
   Future<String> getLtpProrateCode(String name) {
     return (select(ltpProrate)..where((tbl) => tbl.name.equals(name)))
+        .map((row) => row.code)
+        .getSingle();
+  }
+
+  Future<List<String>> getGpSiteInfoStandStructureList({String? cover}) {
+    final query = selectOnly(gpSiteInfoStandStructure, distinct: true)
+      ..addColumns([gpSiteInfoStandStructure.name])
+      ..where(gpSiteInfoStandStructure.name.isNotNull());
+    if (cover != null) {
+      query.where(gpSiteInfoStandStructure.cover.equals(cover));
+    }
+    return query
+        .map((row) =>
+            row.read(gpSiteInfoStandStructure.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getGpSiteInfoStandStructureName(String code) {
+    if (code.isEmpty) return Future.value("");
+    return (select(gpSiteInfoStandStructure)
+          ..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
+
+  Future<String> getGpSiteInfoStandStructureCode(String name) {
+    return (select(gpSiteInfoStandStructure)
+          ..where((tbl) => tbl.name.equals(name)))
+        .map((row) => row.code)
+        .getSingle();
+  }
+
+  Future<List<String>> getGpSiteInfoSuccessionStageList() {
+    final query = selectOnly(gpSiteInfoSuccessionStage, distinct: true)
+      ..addColumns([gpSiteInfoSuccessionStage.name])
+      ..where(gpSiteInfoSuccessionStage.name.isNotNull());
+    return query
+        .map((row) =>
+            row.read(gpSiteInfoSuccessionStage.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getGpSiteInfoSuccessionStageName(String code) {
+    if (code.isEmpty) return Future.value("");
+    return (select(gpSiteInfoSuccessionStage)
+          ..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
+
+  Future<String> getGpSiteInfoSuccessionStageCode(String name) {
+    return (select(gpSiteInfoSuccessionStage)
+          ..where((tbl) => tbl.name.equals(name)))
+        .map((row) => row.code)
+        .getSingle();
+  }
+
+  Future<List<String>> getGpSiteInfoUtmZoneList() {
+    final query = selectOnly(gpSiteInfoUtmZone, distinct: true)
+      ..addColumns([gpSiteInfoUtmZone.name])
+      ..where(gpSiteInfoUtmZone.name.isNotNull());
+    return query
+        .map((row) =>
+            row.read(gpSiteInfoUtmZone.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getGpSiteInfoUtmZoneName(String code) {
+    if (code.isEmpty) return Future.value("");
+    return (select(gpSiteInfoUtmZone)
+          ..where((tbl) => tbl.code.equals(int.parse(code))))
+        .map((row) => row.name)
+        .getSingle();
+  }
+
+  Future<int> getGpSiteInfoUtmZoneCode(String name) {
+    return (select(gpSiteInfoUtmZone)..where((tbl) => tbl.name.equals(name)))
+        .map((row) => row.code)
+        .getSingle();
+  }
+
+  Future<List<String>> getGpSiteInfoVegTypeList({String? cover, String? base}) {
+    final query = selectOnly(gpSiteInfoVegType, distinct: true)
+      ..addColumns([gpSiteInfoVegType.name])
+      ..where(gpSiteInfoVegType.name.isNotNull());
+    if (cover != null) {
+      query.where(gpSiteInfoVegType.cover.equals(cover));
+    }
+    if (base != null) {
+      query.where(gpSiteInfoVegType.base.equals(base));
+    }
+    return query
+        .map((row) =>
+            row.read(gpSiteInfoVegType.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getGpSiteInfoVegTypeName(String code) {
+    if (code.isEmpty) return Future.value("");
+    return (select(gpSiteInfoVegType)..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
+
+  Future<String> getGpSiteInfoVegTypeCode(String name) {
+    return (select(gpSiteInfoVegType)..where((tbl) => tbl.name.equals(name)))
+        .map((row) => row.code)
+        .getSingle();
+  }
+
+  Future<List<String>> getGpSiteInfoWetlandList() {
+    final query = selectOnly(gpSiteInfoWetland, distinct: true)
+      ..addColumns([gpSiteInfoWetland.name])
+      ..where(gpSiteInfoWetland.name.isNotNull());
+    return query
+        .map((row) =>
+            row.read(gpSiteInfoWetland.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getGpSiteInfoWetlandName(String code) {
+    if (code.isEmpty) return Future.value("");
+    return (select(gpSiteInfoWetland)..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
+
+  Future<String> getGpSiteInfoWetlandCode(String name) {
+    return (select(gpSiteInfoWetland)..where((tbl) => tbl.name.equals(name)))
+        .map((row) => row.code)
+        .getSingle();
+  }
+
+  Future<List<String>> getGpSiteInfoEcozoneList() {
+    final query = selectOnly(gpSiteInfoEcozone, distinct: true)
+      ..addColumns([gpSiteInfoEcozone.name])
+      ..where(gpSiteInfoEcozone.name.isNotNull());
+    return query
+        .map((row) =>
+            row.read(gpSiteInfoEcozone.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getGpSiteInfoEcozoneName(String code) {
+    if (code.isEmpty) return Future.value("");
+    return (select(gpSiteInfoEcozone)
+          ..where((tbl) => tbl.code.equals(int.parse(code))))
+        .map((row) => row.name)
+        .getSingle();
+  }
+
+  Future<int> getGpSiteInfoEcozoneCode(String name) {
+    return (select(gpSiteInfoEcozone)..where((tbl) => tbl.name.equals(name)))
+        .map((row) => row.code)
+        .getSingle();
+  }
+
+  Future<List<String>> getGpSiteInfoPlotCompletionList() {
+    final query = selectOnly(gpSiteInfoPlotCompletion, distinct: true)
+      ..addColumns([gpSiteInfoPlotCompletion.name])
+      ..where(gpSiteInfoPlotCompletion.name.isNotNull());
+    return query
+        .map((row) =>
+            row.read(gpSiteInfoPlotCompletion.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getGpSiteInfoPlotCompletionName(String code) {
+    if (code.isEmpty) return Future.value("");
+    return (select(gpSiteInfoPlotCompletion)
+          ..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
+
+  Future<String> getGpSiteInfoPlotCompletionCode(String name) {
+    return (select(gpSiteInfoPlotCompletion)
+          ..where((tbl) => tbl.name.equals(name)))
+        .map((row) => row.code)
+        .getSingle();
+  }
+
+  Future<List<String>> getGpSiteInfoPlotIncompleteReasonList() {
+    final query = selectOnly(gpSiteInfoPlotIncompleteReason, distinct: true)
+      ..addColumns([gpSiteInfoPlotIncompleteReason.name])
+      ..where(gpSiteInfoPlotIncompleteReason.name.isNotNull() &
+          gpSiteInfoPlotIncompleteReason.code.isNotValue("NA"));
+    return query
+        .map((row) =>
+            row.read(gpSiteInfoPlotIncompleteReason.name) ??
+            "error on loading name")
+        .get();
+  }
+
+  Future<String> getGpSiteInfoPlotIncompleteReasonName(String code) {
+    if (code.isEmpty) return Future.value("");
+
+    return (select(gpSiteInfoPlotIncompleteReason)
+          ..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
+
+  Future<String> getGpSiteInfoPlotIncompleteReasonCode(String name) {
+    return (select(gpSiteInfoPlotIncompleteReason)
+          ..where((tbl) => tbl.name.equals(name)))
+        .map((row) => row.code)
+        .getSingle();
+  }
+
+  Future<List<String>> getGpSiteInfoDensityList({String? base, String? veg}) {
+    final query = selectOnly(gpSiteInfoDensity, distinct: true)
+      ..addColumns([gpSiteInfoDensity.name])
+      ..where(gpSiteInfoDensity.name.isNotNull());
+    if (base != null) {
+      query.where(gpSiteInfoDensity.base.equals(base));
+    }
+    if (veg != null) {
+      query.where(gpSiteInfoDensity.veg.equals(veg));
+    }
+    return query
+        .map((row) =>
+            row.read(gpSiteInfoDensity.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getGpSiteInfoDensityName(String code) {
+    if (code.isEmpty) return Future.value("");
+    return (select(gpSiteInfoDensity)..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
+
+  Future<String> getGpSiteInfoDensityCode(String name) {
+    return (select(gpSiteInfoDensity)..where((tbl) => tbl.name.equals(name)))
+        .map((row) => row.code)
+        .getSingle();
+  }
+
+  Future<List<String>> getGpSiteInfoLandBaseList() {
+    final query = selectOnly(gpSiteInfoLandBase, distinct: true)
+      ..addColumns([gpSiteInfoLandBase.name])
+      ..where(gpSiteInfoLandBase.name.isNotNull());
+    return query
+        .map((row) =>
+            row.read(gpSiteInfoLandBase.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getGpSiteInfoLandBaseName(String code) {
+    if (code.isEmpty) return Future.value("");
+    return (select(gpSiteInfoLandBase)..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
+
+  Future<String> getGpSiteInfoLandBaseCode(String name) {
+    return (select(gpSiteInfoLandBase)..where((tbl) => tbl.name.equals(name)))
+        .map((row) => row.code)
+        .getSingle();
+  }
+
+  Future<List<String>> getGpSiteInfoLandCoverList({String? base}) {
+    final query = selectOnly(gpSiteInfoLandCover, distinct: true)
+      ..addColumns([gpSiteInfoLandCover.name])
+      ..where(gpSiteInfoLandCover.name.isNotNull());
+    if (base != null) {
+      query.where(gpSiteInfoLandCover.base.equals(base));
+    }
+    return query
+        .map((row) =>
+            row.read(gpSiteInfoLandCover.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getGpSiteInfoLandCoverName(String code) {
+    if (code.isEmpty) return Future.value("");
+    return (select(gpSiteInfoLandCover)..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
+
+  Future<String> getGpSiteInfoLandCoverCode(String name) {
+    return (select(gpSiteInfoLandCover)..where((tbl) => tbl.name.equals(name)))
+        .map((row) => row.code)
+        .getSingle();
+  }
+
+  Future<List<String>> getGpSiteInfoLandPosList() {
+    final query = selectOnly(gpSiteInfoLandPos, distinct: true)
+      ..addColumns([gpSiteInfoLandPos.name])
+      ..where(gpSiteInfoLandPos.name.isNotNull());
+    return query
+        .map((row) =>
+            row.read(gpSiteInfoLandPos.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getGpSiteInfoLandPosName(String code) {
+    if (code.isEmpty) return Future.value("");
+    return (select(gpSiteInfoLandPos)..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
+
+  Future<String> getGpSiteInfoLandPosCode(String name) {
+    return (select(gpSiteInfoLandPos)..where((tbl) => tbl.name.equals(name)))
+        .map((row) => row.code)
+        .getSingle();
+  }
+
+  Future<List<String>> getGpSiteInfoPostProcessingList() {
+    final query = selectOnly(gpSiteInfoPostProcessing, distinct: true)
+      ..addColumns([gpSiteInfoPostProcessing.name])
+      ..where(gpSiteInfoPostProcessing.name.isNotNull());
+    return query
+        .map((row) =>
+            row.read(gpSiteInfoPostProcessing.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getGpSiteInfoPostProcessingName(String code) {
+    if (code.isEmpty) return Future.value("");
+    return (select(gpSiteInfoPostProcessing)
+          ..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
+
+  Future<String> getGpSiteInfoPostProcessingCode(String name) {
+    return (select(gpSiteInfoPostProcessing)
+          ..where((tbl) => tbl.name.equals(name)))
         .map((row) => row.code)
         .getSingle();
   }

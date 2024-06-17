@@ -18,8 +18,7 @@ class MarkCompleteButton extends StatelessWidget {
       padding: const EdgeInsets.all(10.0),
       child: ElevatedButton.icon(
         style: ElevatedButton.styleFrom(
-          primary: complete ? Colors.grey : Colors.blue,
-          onPrimary: Colors.white,
+          foregroundColor: Colors.white, backgroundColor: complete ? Colors.grey : Colors.blue,
           elevation: 5,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),

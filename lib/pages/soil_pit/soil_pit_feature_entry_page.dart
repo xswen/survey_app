@@ -8,7 +8,7 @@ import 'package:survey_app/widgets/popups/popup_warning_change_made.dart';
 
 import '../../formatters/thousands_formatter.dart';
 import '../../widgets/builders/soil_pit_code_select_builder.dart';
-import '../../widgets/buttons/delete_button.dart';
+import '../../widgets/buttons/save_entry_button.dart';
 import '../../widgets/data_input/data_input.dart';
 import '../../widgets/dropdowns/drop_down_async_list.dart';
 import '../delete_page.dart';
@@ -33,7 +33,7 @@ class SoilPitFeatureEntryPageState
 
   @override
   void initState() {
-    spId = PathParamValue.getSoilPitSummary(widget.state);
+    spId = PathParamValue.getSoilPitSummaryId(widget.state);
     feature = widget.state.extra as SoilPitFeatureCompanion;
     initSoilPit = ref.read(databaseProvider).companionValueToStr(
         (widget.state.extra as SoilPitFeatureCompanion).soilFeature);
@@ -72,7 +72,7 @@ class SoilPitFeatureEntryPageState
               soilPitSummaryId: feature.soilPitSummaryId,
               soilPitCode: feature.soilPitCode));
 
-  void handleSubmit(void Function() fn) {
+  void onSave(void Function() fn) {
     List<String>? errors = errorCheck();
     if (errors != null) {
       Popups.show(context, PopupErrorsFoundList(errors: errors));
@@ -122,7 +122,7 @@ class SoilPitFeatureEntryPageState
       return "Can't be empty";
     } else if (-9 == int.parse(text!)) {
       return null;
-    } else if (0 > int.parse(text!) || int.parse(text!) > 200) {
+    } else if (0 > int.parse(text) || int.parse(text) > 200) {
       return "Input out of range. Must be between 0 to 200 inclusive.";
     }
     return null;
@@ -223,41 +223,31 @@ class SoilPitFeatureEntryPageState
                 : Container(),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: kPaddingV * 2),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                      onPressed: () => handleSubmit(goToFeaturePage),
-                      child: const Text("Save and return")),
-                  ElevatedButton(
-                      onPressed: () => handleSubmit(goToNewFeatureEntry),
-                      child: const Text("Save and Add New Feature")),
-                ],
+              child: SaveEntryButton(
+                saveRetFn: () => onSave(goToFeaturePage),
+                saveAndAddFn: () => onSave(goToNewFeatureEntry),
+                delVisible: feature.id != const d.Value.absent(),
+                deleteFn: () => Popups.show(
+                  context,
+                  PopupContinue("Warning: Deleting $title",
+                      contentText: "You are about to delete this feature. "
+                          "Are you sure you want to continue?",
+                      rightBtnOnPressed: () {
+                    //close popup
+                    context.pop();
+                    context.pushNamed(DeletePage.routeName, extra: {
+                      DeletePage.keyObjectName:
+                          "Soil Pit Feature: ${feature.toString()}",
+                      DeletePage.keyDeleteFn: () {
+                        db.soilPitTablesDao
+                            .deleteSoilPitFeature(feature.id.value)
+                            .then((value) => goToFeaturePage());
+                      },
+                    });
+                  }),
+                ),
               ),
             ),
-            feature.id != const d.Value.absent()
-                ? DeleteButton(
-                    delete: () => Popups.show(
-                      context,
-                      PopupContinue("Warning: Deleting Soil Pit Feature",
-                          contentText: "You are about to delete this feature. "
-                              "Are you sure you want to continue?",
-                          rightBtnOnPressed: () {
-                        //close popup
-                        context.pop();
-                        context.pushNamed(DeletePage.routeName, extra: {
-                          DeletePage.keyObjectName:
-                              "Soil Pit Feature: ${feature.toString()}",
-                          DeletePage.keyDeleteFn: () {
-                            db.soilPitTablesDao
-                                .deleteSoilPitFeature(feature.id.value)
-                                .then((value) => goToFeaturePage());
-                          },
-                        });
-                      }),
-                    ),
-                  )
-                : Container()
           ]),
         ),
       ),

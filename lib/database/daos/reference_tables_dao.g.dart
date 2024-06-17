@@ -63,4 +63,30 @@ mixin _$ReferenceTablesDaoMixin on DatabaseAccessor<Database> {
   $LtpSiteAgeSuitabilityTable get ltpSiteAgeSuitability =>
       attachedDatabase.ltpSiteAgeSuitability;
   $LtpProrateTable get ltpProrate => attachedDatabase.ltpProrate;
+  $GpSiteInfoStandStructureTable get gpSiteInfoStandStructure =>
+      attachedDatabase.gpSiteInfoStandStructure;
+  $GpSiteInfoSuccessionStageTable get gpSiteInfoSuccessionStage =>
+      attachedDatabase.gpSiteInfoSuccessionStage;
+  $GpSiteInfoUtmZoneTable get gpSiteInfoUtmZone =>
+      attachedDatabase.gpSiteInfoUtmZone;
+  $GpSiteInfoVegTypeTable get gpSiteInfoVegType =>
+      attachedDatabase.gpSiteInfoVegType;
+  $GpSiteInfoWetlandTable get gpSiteInfoWetland =>
+      attachedDatabase.gpSiteInfoWetland;
+  $GpSiteInfoEcozoneTable get gpSiteInfoEcozone =>
+      attachedDatabase.gpSiteInfoEcozone;
+  $GpSiteInfoPlotCompletionTable get gpSiteInfoPlotCompletion =>
+      attachedDatabase.gpSiteInfoPlotCompletion;
+  $GpSiteInfoDensityTable get gpSiteInfoDensity =>
+      attachedDatabase.gpSiteInfoDensity;
+  $GpSiteInfoLandBaseTable get gpSiteInfoLandBase =>
+      attachedDatabase.gpSiteInfoLandBase;
+  $GpSiteInfoLandCoverTable get gpSiteInfoLandCover =>
+      attachedDatabase.gpSiteInfoLandCover;
+  $GpSiteInfoLandPosTable get gpSiteInfoLandPos =>
+      attachedDatabase.gpSiteInfoLandPos;
+  $GpSiteInfoPostProcessingTable get gpSiteInfoPostProcessing =>
+      attachedDatabase.gpSiteInfoPostProcessing;
+  $GpSiteInfoPlotIncompleteReasonTable get gpSiteInfoPlotIncompleteReason =>
+      attachedDatabase.gpSiteInfoPlotIncompleteReason;
 }

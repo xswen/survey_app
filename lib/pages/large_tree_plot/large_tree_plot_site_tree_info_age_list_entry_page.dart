@@ -59,10 +59,12 @@ class LargeTreePlotSiteTreeInfoAgeListEntryPageState
               enabled: true,
               onChange: (s) => db.referenceTablesDao
                   .getLtpQuadrantCode(s)
-                  .then((value) => setState(() => null)),
+                  .then((value) => setState(() {})),
             ),
             DataInput(
-                title: "Tree number", onSubmit: (s) {}, onValidate: (s) {}),
+                title: "Tree number", onSubmit: (s) {}, onValidate: (s) {
+                  return null;
+                }),
             ReferenceNameSelectBuilder(
               title: "Tree type",
               defaultSelectedValue: "Please select tree type",
@@ -72,7 +74,7 @@ class LargeTreePlotSiteTreeInfoAgeListEntryPageState
               searchable: true,
               onChange: (s) => db.referenceTablesDao
                   .getLtpTreeTypeCode(s)
-                  .then((value) => setState(() => null)),
+                  .then((value) => setState(() {})),
             ),
 
             HideInfoCheckbox(
@@ -143,7 +145,7 @@ class LargeTreePlotSiteTreeInfoAgeListEntryPageState
               enabled: true,
               onChange: (s) => db.referenceTablesDao
                   .getLtpSiteHeightSuitabilityCode(s)
-                  .then((value) => setState(() => null)),
+                  .then((value) => setState(() {})),
             ),
             ReferenceNameSelectBuilder(
               title: "Site age suitability",
@@ -153,7 +155,7 @@ class LargeTreePlotSiteTreeInfoAgeListEntryPageState
               enabled: true,
               onChange: (s) => db.referenceTablesDao
                   .getLtpSiteAgeSuitabilityCode(s)
-                  .then((value) => setState(() => null)),
+                  .then((value) => setState(() {})),
             ),
             const Text("Field age", style: kTitleStyle),
             CheckboxListTile(
@@ -208,13 +210,13 @@ class LargeTreePlotSiteTreeInfoAgeListEntryPageState
               enabled: true,
               onChange: (s) => db.referenceTablesDao
                   .getLtpProrateCode(s)
-                  .then((value) => setState(() => null)),
+                  .then((value) => setState(() {})),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: kPaddingV * 2),
               child: SaveEntryButton(
-                saveRetFn: () => null,
-                saveAndAddFn: () => null,
+                saveRetFn: () {},
+                saveAndAddFn: () {},
                 delVisible: true,
                 deleteFn: () => Popups.show(
                   context,

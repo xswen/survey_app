@@ -8,9 +8,11 @@ import 'package:survey_app/pages/ground_plot/ground_plot_summary_page.dart';
 import 'package:survey_app/pages/ground_plot/ground_plot_treatment_entry_page.dart';
 import 'package:survey_app/pages/ground_plot/ground_plot_treatment_page.dart';
 
+import 'path_parameters/path_param_keys.dart';
+
 GoRoute goRouteGroundPlot = GoRoute(
     name: GroundPlotSummaryPage.routeName,
-    path: "ground_plot",
+    path: "ground_plot/:${PathParamsKeys.gpSummaryId}",
     builder: (context, state) => GroundPlotSummaryPage(state),
     routes: [
       GoRoute(

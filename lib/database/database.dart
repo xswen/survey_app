@@ -9,13 +9,14 @@ import 'package:flutter/cupertino.dart' as c;
 import 'package:flutter/services.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:survey_app/database/daos/shrub_plot_tables_dao.dart';
+import 'package:survey_app/database/daos/small_tree_plot_tables_dao.dart';
 import 'package:survey_app/database/daos/soil_pit_tables_dao.dart';
 import 'package:survey_app/database/database_creation_files/large_tree_plot_tables.dart';
 import 'package:survey_app/database/database_creation_files/small_tree_plot_tables.dart';
 import 'package:survey_app/database/database_creation_files/soil_pit_tables.dart';
 import 'package:survey_app/database/database_creation_files/stump_plot_tables.dart';
 import 'package:survey_app/enums/enums.dart';
-import 'package:survey_app/pages/stump_plot/stump_plot_summary_page.dart';
 import 'package:survey_app/wrappers/survey_card.dart';
 
 import '../database/daos/reference_tables_dao.dart';
@@ -24,10 +25,14 @@ import '../database/daos/woody_debris_tables_dao.dart';
 import '../database/database_creation_files/reference_tables.dart';
 import '../database/database_creation_files/survey_info_tables.dart';
 import 'daos/ecological_plot_tables_dao.dart';
+import 'daos/large_tree_plot_tables_dao.dart';
+import 'daos/site_info_tables_dao.dart';
+import 'daos/stump_plot_tables_dao.dart';
 import 'daos/surface_substrate_tables_dao.dart';
 import 'database_creation_files/ecological_plot_tables.dart';
 import 'database_creation_files/metadata_tables.dart';
 import 'database_creation_files/shrub_plot_tables.dart';
+import 'database_creation_files/site_info_tables.dart';
 import 'database_creation_files/surface_substrate_tables.dart';
 import 'database_creation_files/woody_debris_tables.dart';
 
@@ -78,6 +83,18 @@ const List<Type> _tables = [
   LtpSiteHeightSuitability,
   LtpSiteAgeSuitability,
   LtpProrate,
+  GpSiteInfoStandStructure,
+  GpSiteInfoSuccessionStage,
+  GpSiteInfoUtmZone,
+  GpSiteInfoVegType,
+  GpSiteInfoWetland,
+  GpSiteInfoEcozone,
+  GpSiteInfoPlotCompletion,
+  GpSiteInfoDensity,
+  GpSiteInfoLandBase,
+  GpSiteInfoLandCover,
+  GpSiteInfoLandPos,
+  GpSiteInfoPostProcessing, GpSiteInfoPlotIncompleteReason,
   //Metadata Tables
   MetaComment,
   //Survey Tables
@@ -122,6 +139,12 @@ const List<Type> _tables = [
   //Stump
   StumpSummary,
   StumpEntry,
+  //Site Plot
+  GpSummary,
+  GpSiteInfo,
+  GpDisturbance,
+  GpOrigin,
+  GpTreatment,
 ];
 
 const List<Type> _daos = [
@@ -131,6 +154,11 @@ const List<Type> _daos = [
   SurfaceSubstrateTablesDao,
   EcologicalPlotTablesDao,
   SoilPitTablesDao,
+  SmallTreePlotTablesDao,
+  ShrubPlotTablesDao,
+  StumpPlotTablesDao,
+  LargeTreePlotTablesDao,
+  SiteInfoTablesDao,
 ];
 
 const String woodyDebrisPieceViewQuery =
@@ -155,6 +183,7 @@ class Database extends _$Database {
   Database._() : super(_debugConnection());
 
   static final Database _instance = Database._();
+
   static Database get instance => _instance;
 
   @override
@@ -260,6 +289,35 @@ class Database extends _$Database {
               await _getLtpSiteAgeSuitability();
           List<LtpProrateCompanion> ltpProrateList = await _getLtpProrate();
 
+          List<GpSiteInfoStandStructureCompanion> gpSiteInfoStandStructureList =
+              await _getGpSiteInfoStandStructure();
+          List<GpSiteInfoSuccessionStageCompanion>
+              gpSiteInfoSuccessionStageList =
+              await _getGpSiteInfoSuccessionStage();
+          List<GpSiteInfoUtmZoneCompanion> gpSiteInfoUtmZoneList =
+              await _getGpSiteInfoUtmZone();
+          List<GpSiteInfoVegTypeCompanion> gpSiteInfoVegTypeList =
+              await _getGpSiteInfoVegType();
+          List<GpSiteInfoWetlandCompanion> gpSiteInfoWetlandList =
+              await _getGpSiteInfoWetland();
+          List<GpSiteInfoEcozoneCompanion> gpSiteInfoEcozoneList =
+              await _getGpSiteInfoEcozone();
+          List<GpSiteInfoPlotCompletionCompanion> gpSiteInfoPlotCompletionList =
+              await _getGpSiteInfoPlotCompletion();
+          List<GpSiteInfoPlotIncompleteReasonCompanion>
+              gpSiteInfoPlotIncompleteReasonList =
+              await _getGpSiteInfoPlotIncompleteReason();
+          List<GpSiteInfoDensityCompanion> gpSiteInfoDensityList =
+              await _getGpSiteInfoDensity();
+          List<GpSiteInfoLandBaseCompanion> gpSiteInfoLandBaseList =
+              await _getGpSiteInfoLandBase();
+          List<GpSiteInfoLandCoverCompanion> gpSiteInfoLandCoverList =
+              await _getGpSiteInfoLandCover();
+          List<GpSiteInfoLandPosCompanion> gpSiteInfoLandPosList =
+              await _getGpSiteInfoLandPos();
+          List<GpSiteInfoPostProcessingCompanion> gpSiteInfoPostProcessingList =
+              await _getGpSiteInfoPostProcessing();
+
           c.debugPrint("Init Values");
           await batch((b) {
             b.insertAll(jurisdictions, jurisdictionsList);
@@ -311,6 +369,22 @@ class Database extends _$Database {
             b.insertAll(ltpSiteHeightSuitability, ltpSiteHeightSuitabilityList);
             b.insertAll(ltpSiteAgeSuitability, ltpSiteAgeSuitabilityList);
             b.insertAll(ltpProrate, ltpProrateList);
+
+            b.insertAll(gpSiteInfoStandStructure, gpSiteInfoStandStructureList);
+            b.insertAll(
+                gpSiteInfoSuccessionStage, gpSiteInfoSuccessionStageList);
+            b.insertAll(gpSiteInfoUtmZone, gpSiteInfoUtmZoneList);
+            b.insertAll(gpSiteInfoVegType, gpSiteInfoVegTypeList);
+            b.insertAll(gpSiteInfoWetland, gpSiteInfoWetlandList);
+            b.insertAll(gpSiteInfoEcozone, gpSiteInfoEcozoneList);
+            b.insertAll(gpSiteInfoPlotCompletion, gpSiteInfoPlotCompletionList);
+            b.insertAll(gpSiteInfoPlotIncompleteReason,
+                gpSiteInfoPlotIncompleteReasonList);
+            b.insertAll(gpSiteInfoDensity, gpSiteInfoDensityList);
+            b.insertAll(gpSiteInfoLandBase, gpSiteInfoLandBaseList);
+            b.insertAll(gpSiteInfoLandCover, gpSiteInfoLandCoverList);
+            b.insertAll(gpSiteInfoLandPos, gpSiteInfoLandPosList);
+            b.insertAll(gpSiteInfoPostProcessing, gpSiteInfoPostProcessingList);
 
             _initTest(b);
           });
@@ -849,6 +923,174 @@ class Database extends _$Database {
         .toList();
   }
 
+  Future<List<GpSiteInfoStandStructureCompanion>>
+      _getGpSiteInfoStandStructure() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/gp_site_info_stand_structure_list.json');
+
+    return jsonData.map((dynamic item) {
+      return GpSiteInfoStandStructureCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+        cover: Value(item["cover"]),
+      );
+    }).toList();
+  }
+
+  Future<List<GpSiteInfoSuccessionStageCompanion>>
+      _getGpSiteInfoSuccessionStage() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/gp_site_info_sucession_stage_list.json');
+
+    return jsonData.map((dynamic item) {
+      return GpSiteInfoSuccessionStageCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<GpSiteInfoUtmZoneCompanion>> _getGpSiteInfoUtmZone() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/gp_site_info_utm_zone_list.json');
+
+    return jsonData.map((dynamic item) {
+      return GpSiteInfoUtmZoneCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<GpSiteInfoVegTypeCompanion>> _getGpSiteInfoVegType() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/gp_site_info_veg_type_list.json');
+
+    return jsonData.map((dynamic item) {
+      return GpSiteInfoVegTypeCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+        cover: Value(item["cover"]),
+        base: Value(item["base"]),
+      );
+    }).toList();
+  }
+
+  Future<List<GpSiteInfoWetlandCompanion>> _getGpSiteInfoWetland() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/gp_site_info_wetland_class_list.json');
+
+    return jsonData.map((dynamic item) {
+      return GpSiteInfoWetlandCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<GpSiteInfoEcozoneCompanion>> _getGpSiteInfoEcozone() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/gp_site_info_ecozone_list.json');
+
+    return jsonData.map((dynamic item) {
+      return GpSiteInfoEcozoneCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<GpSiteInfoPlotCompletionCompanion>>
+      _getGpSiteInfoPlotCompletion() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/gp_site_info_plot_completion_list.json');
+
+    return jsonData.map((dynamic item) {
+      return GpSiteInfoPlotCompletionCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<GpSiteInfoPlotIncompleteReasonCompanion>>
+      _getGpSiteInfoPlotIncompleteReason() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/gp_site_info_incomplete_reason_list.json');
+
+    return jsonData.map((dynamic item) {
+      return GpSiteInfoPlotIncompleteReasonCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<GpSiteInfoDensityCompanion>> _getGpSiteInfoDensity() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/gp_site_info_density_list.json');
+
+    return jsonData.map((dynamic item) {
+      return GpSiteInfoDensityCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+        base: Value(item["base"]),
+        veg: Value(item["veg"]),
+      );
+    }).toList();
+  }
+
+  Future<List<GpSiteInfoLandBaseCompanion>> _getGpSiteInfoLandBase() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/gp_site_info_land_base_list.json');
+
+    return jsonData.map((dynamic item) {
+      return GpSiteInfoLandBaseCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+        completion: Value(item["completion"]),
+      );
+    }).toList();
+  }
+
+  Future<List<GpSiteInfoLandCoverCompanion>> _getGpSiteInfoLandCover() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/gp_site_info_land_cover_list.json');
+
+    return jsonData.map((dynamic item) {
+      return GpSiteInfoLandCoverCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+        base: Value(item["base"]),
+      );
+    }).toList();
+  }
+
+  Future<List<GpSiteInfoLandPosCompanion>> _getGpSiteInfoLandPos() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/gp_site_info_land_pos_list.json');
+
+    return jsonData.map((dynamic item) {
+      return GpSiteInfoLandPosCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<GpSiteInfoPostProcessingCompanion>>
+      _getGpSiteInfoPostProcessing() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/gp_site_info_post_processing_list.json');
+
+    return jsonData.map((dynamic item) {
+      return GpSiteInfoPostProcessingCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
   void _initTest(Batch b) {
     b.replace(
         plots,
@@ -1006,7 +1248,9 @@ class Database extends _$Database {
       {
         category: SurveyCardCategories.groundPlot,
         name: "Ground Plot Info",
-        surveyCardData: null
+        surveyCardData: await (select(gpSummary)
+              ..where((tbl) => tbl.surveyId.equals(surveyId)))
+            .getSingleOrNull()
       },
       {
         category: SurveyCardCategories.woodyDebris,
@@ -1029,7 +1273,6 @@ class Database extends _$Database {
               ..where((tbl) => tbl.surveyId.equals(surveyId)))
             .getSingleOrNull()
       },
-      //TODO: to add
       {
         category: SurveyCardCategories.soilPit,
         name: "Soil Pit",
@@ -1038,24 +1281,37 @@ class Database extends _$Database {
             .getSingleOrNull()
       },
       {
-        category: SurveyCardCategories.smallTreePlot,
-        name: "Small Tree Plot",
-        surveyCardData: null
-      },
-      {
-        category: SurveyCardCategories.shrubPlot,
-        name: "Shrub Plot",
-        surveyCardData: null
-      },
-      {
-        category: SurveyCardCategories.stumpPlot,
-        name: "Stump Plot",
-        surveyCardData: null
+        category: SurveyCardCategories.microPlot,
+        name: "Microplot",
+        surveyCardData: await (select(ltpSummary)
+              ..where((tbl) => tbl.surveyId.equals(surveyId)))
+            .getSingleOrNull()
       },
       {
         category: SurveyCardCategories.largeTreePlot,
         name: "Large Tree Plot",
         surveyCardData: await (select(ltpSummary)
+              ..where((tbl) => tbl.surveyId.equals(surveyId)))
+            .getSingleOrNull()
+      },
+      {
+        category: SurveyCardCategories.smallTreePlot,
+        name: "Small Tree Plot",
+        surveyCardData: await (select(stpSummary)
+              ..where((tbl) => tbl.surveyId.equals(surveyId)))
+            .getSingleOrNull()
+      },
+      {
+        category: SurveyCardCategories.shrubPlot,
+        name: "Shrub Plot",
+        surveyCardData: await (select(shrubSummary)
+              ..where((tbl) => tbl.surveyId.equals(surveyId)))
+            .getSingleOrNull()
+      },
+      {
+        category: SurveyCardCategories.stumpPlot,
+        name: "Stump Plot",
+        surveyCardData: await (select(stumpSummary)
               ..where((tbl) => tbl.surveyId.equals(surveyId)))
             .getSingleOrNull()
       },

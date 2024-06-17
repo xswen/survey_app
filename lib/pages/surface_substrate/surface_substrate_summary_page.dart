@@ -151,8 +151,8 @@ class SurfaceSubstrateSummaryPageState
                         label: "Enter Measurement Date",
                         readOnly: ss.complete,
                         readOnlyPopup: completeWarningPopup,
-                        setStateFn: (DateTime date) async => updateSsSummary(
-                            SurfaceSubstrateSummaryCompanion(
+                        onDateSelected: (DateTime date) async =>
+                            updateSsSummary(SurfaceSubstrateSummaryCompanion(
                                 measDate: d.Value(date))),
                       ),
                       const SizedBox(height: kPaddingV),

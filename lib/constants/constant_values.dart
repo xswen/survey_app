@@ -29,6 +29,8 @@ const kCardData = "data";
 const kLocaleFr = Locale("fr", "CA");
 const kLocaleEn = Locale("en", "CA");
 
+const kKeyParentComplete = "parentCompleteKey";
+
 const kDegreeSign = "\u00B0";
 
 const kSpeciesUnknownCode = "SPP";

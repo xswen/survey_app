@@ -26,10 +26,10 @@ class SoilPitTablesDao extends DatabaseAccessor<Database>
 
   Future<void> markNotAssessed(int surveyId, int? spId) async {
     if (spId != null) {
-      var tmp = await deleteSoilPitSummary(spId);
+      await deleteSoilPitSummary(spId);
     }
 
-    int tmp2 = await addSummary(SoilPitSummaryCompanion(
+    await addSummary(SoilPitSummaryCompanion(
         surveyId: Value(surveyId),
         measDate: Value(DateTime.now()),
         notAssessed: const Value(true)));
@@ -73,8 +73,10 @@ class SoilPitTablesDao extends DatabaseAccessor<Database>
   //====================Soil Summary====================
   Future<int> addSummary(SoilPitSummaryCompanion entry) =>
       into(soilPitSummary).insert(entry);
+
   Future<SoilPitSummaryData> getSummary(int id) =>
       (select(soilPitSummary)..where((tbl) => tbl.id.equals(id))).getSingle();
+
   Future<SoilPitSummaryData> getSummaryWithSurveyId(int surveyId) =>
       (select(soilPitSummary)..where((tbl) => tbl.surveyId.equals(surveyId)))
           .getSingle();

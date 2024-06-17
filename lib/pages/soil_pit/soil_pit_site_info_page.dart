@@ -13,6 +13,7 @@ import '../../widgets/text/text_header_separator.dart';
 class SoilPitSiteInfoPage extends ConsumerStatefulWidget {
   static const String routeName = "siteInfo";
   final GoRouterState state;
+
   const SoilPitSiteInfoPage(this.state, {super.key});
 
   @override
@@ -36,7 +37,7 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
 
   @override
   void initState() {
-    spId = PathParamValue.getSoilPitSummary(widget.state);
+    spId = PathParamValue.getSoilPitSummaryId(widget.state);
     siteInfo = widget.state.extra as SoilSiteInfoCompanion;
     completeWarningPopup = Popups.generateCompleteErrorPopup(title);
 
@@ -149,7 +150,7 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
       return "Can't be empty";
     } else if (double.parse(text!) == -1.0) {
       return null;
-    } else if (0.0 > double.parse(text!) || double.parse(text!) > 250) {
+    } else if (0.0 > double.parse(text) || double.parse(text) > 250) {
       return "Input out of range. Must be between 0.0 to 250.0 inclusive.";
     }
     return null;
@@ -206,7 +207,7 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
                       soilClassSubGroup: const d.Value("Not applicable"),
                       soilClass: kNACode,
                     ));
-                  } else if (s! == "Unknown or not reported") {
+                  } else if (s == "Unknown or not reported") {
                     updateSiteInfo(siteInfo.copyWith(
                       soilClassOrder: d.Value(s),
                       soilClassGreatGroup:
@@ -217,7 +218,7 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
                     ));
                   } else {
                     updateSiteInfo(siteInfo.copyWith(
-                        soilClassOrder: d.Value(s!),
+                        soilClassOrder: d.Value(s),
                         soilClassGreatGroup: const d.Value.absent(),
                         soilClassSubGroup: const d.Value.absent(),
                         soilClass: const d.Value.absent()));
@@ -279,7 +280,7 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
                                     s!)
                                 .then((code) => setState(() {
                                       siteInfo = siteInfo.copyWith(
-                                          soilClassSubGroup: d.Value(s!),
+                                          soilClassSubGroup: d.Value(s),
                                           soilClass: d.Value(code));
                                     }));
                           }
@@ -451,8 +452,10 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
                 child: ElevatedButton(
                     onPressed: () {
                       if (parentComplete) {
-                        Popups.show(context,
-                            Popups.generateCompleteErrorPopup("Woody Debris"));
+                        Popups.show(
+                            context,
+                            Popups.generateCompleteErrorPopup(
+                                "Soil Pit Site Info"));
                         return;
                       }
 

@@ -33,7 +33,7 @@ class SaveEntryButton extends StatelessWidget {
                   onPressed: saveAndAddFn, child: Text(saveAndAddTitle)),
             ],
           ),
-          Visibility(visible: false, child: DeleteButton(delete: deleteFn))
+          Visibility(visible: delVisible, child: DeleteButton(delete: deleteFn))
         ],
       ),
     );

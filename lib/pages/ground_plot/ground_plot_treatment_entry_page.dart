@@ -24,7 +24,7 @@ class GroundPlotTreatmentEntryPageState
       appBar: const OurAppBar("Treatment Entry"),
       endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
       bottomNavigationBar:
-          ElevatedButton(child: Text("Save"), onPressed: () => null),
+          ElevatedButton(child: const Text("Save"), onPressed: () {}),
       body: Center(
           child: Padding(
         padding: const EdgeInsets.symmetric(
@@ -34,10 +34,12 @@ class GroundPlotTreatmentEntryPageState
             DropDownDefault(
                 title: "Type",
                 onChangedFn: (s) {},
-                itemsList: ["CC", "PC"],
+                itemsList: const ["CC", "PC"],
                 selectedItem: ""),
             DataInput(
-                title: "Treatment year", onSubmit: (s) {}, onValidate: (s) {}),
+                title: "Treatment year", onSubmit: (s) {}, onValidate: (s) {
+                  return null;
+                }),
             HideInfoCheckbox(
               title: "Treatment extent",
               titleWidget: "Unreported",
@@ -46,7 +48,9 @@ class GroundPlotTreatmentEntryPageState
                   paddingGeneral: EdgeInsets.zero,
                   paddingTextbox: EdgeInsets.zero,
                   onSubmit: (s) {},
-                  onValidate: (s) {}),
+                  onValidate: (s) {
+                    return null;
+                  }),
             )
           ],
         ),

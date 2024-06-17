@@ -5,6 +5,20 @@ import '../database_creation_files/large_tree_plot_tables.dart';
 
 part 'large_tree_plot_tables_dao.g.dart';
 
+class LtpMergedTreeEntry {
+  final LtpTreeData ltpTree;
+  final LtpTreeDamageData? ltpTreeDamage;
+  final LtpTreeRemovedData? ltpTreeRemoved;
+  final LtpTreeRenamedData? ltpTreeRenamed;
+
+  LtpMergedTreeEntry({
+    required this.ltpTree,
+    this.ltpTreeDamage,
+    this.ltpTreeRemoved,
+    this.ltpTreeRenamed,
+  });
+}
+
 @DriftAccessor(tables: [
   LtpSummary,
   LtpTree,
@@ -17,9 +31,9 @@ class LargeTreePlotTablesDao extends DatabaseAccessor<Database>
     with _$LargeTreePlotTablesDaoMixin {
   LargeTreePlotTablesDao(super.db);
 
-  //====================Mark Not Assessed for Ltp Summary====================
+  //====================Mark Notß Assessed for Ltp Summary====================
 
-  Future<void> markLtpNotAssessed(int surveyId, int? ltpSummaryId) async {
+  Future<void> markNotAssessed(int surveyId, int? ltpSummaryId) async {
     if (ltpSummaryId != null) {
       await deleteLtpSummary(ltpSummaryId);
     }
@@ -31,6 +45,20 @@ class LargeTreePlotTablesDao extends DatabaseAccessor<Database>
   }
 
   //====================Ltp Summary Management====================
+
+  Future<LtpSummaryData> setAndReturnDefaultSummary(
+      int surveyId, DateTime measDate) async {
+    LtpSummaryCompanion entry = LtpSummaryCompanion(
+        surveyId: Value(surveyId),
+        measDate: Value(measDate),
+        complete: const Value(false),
+        notAssessed: const Value(false));
+
+    int summaryId = await into(ltpSummary).insert(entry,
+        onConflict: DoUpdate((old) => entry, target: [ltpSummary.surveyId]));
+
+    return await getLtpSummary(summaryId);
+  }
 
   Future<int> addLtpSummary(LtpSummaryCompanion entry) =>
       into(ltpSummary).insert(entry);
@@ -66,7 +94,37 @@ class LargeTreePlotTablesDao extends DatabaseAccessor<Database>
     await (delete(ltpSummary)..where((tbl) => tbl.id.equals(ltpSummaryId)))
         .go();
   }
+
 //====================Ltp Tree Management====================
+  Future<List<LtpMergedTreeEntry>> getMergedLtpTreeEntries(
+      int ltpSummaryId) async {
+    final query = select(ltpTree).join([
+      leftOuterJoin(
+          ltpTreeDamage,
+          ltpTree.lptSummaryId.equalsExp(ltpTreeDamage.lptSummaryId) &
+              ltpTree.treeNum.equalsExp(ltpTreeDamage.treeNum)),
+      leftOuterJoin(
+          ltpTreeRemoved,
+          ltpTree.lptSummaryId.equalsExp(ltpTreeRemoved.lptSummaryId) &
+              ltpTree.treeNum.equalsExp(ltpTreeRemoved.treeNum)),
+      leftOuterJoin(
+          ltpTreeRenamed,
+          ltpTree.lptSummaryId.equalsExp(ltpTreeRenamed.lptSummaryId) &
+              ltpTree.treeNum.equalsExp(ltpTreeRenamed.treeNum)),
+    ])
+      ..where(ltpTree.lptSummaryId.equals(ltpSummaryId));
+
+    final result = await query.map((row) {
+      return LtpMergedTreeEntry(
+        ltpTree: row.readTable(ltpTree),
+        ltpTreeDamage: row.readTableOrNull(ltpTreeDamage),
+        ltpTreeRemoved: row.readTableOrNull(ltpTreeRemoved),
+        ltpTreeRenamed: row.readTableOrNull(ltpTreeRenamed),
+      );
+    }).get();
+
+    return result;
+  }
 
   Future<int> addLtpTree(LtpTreeCompanion entry) => into(ltpTree).insert(entry);
 

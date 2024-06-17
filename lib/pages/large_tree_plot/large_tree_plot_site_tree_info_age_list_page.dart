@@ -9,6 +9,7 @@ import '../../wrappers/column_header_object.dart';
 
 class ColNames {
   ColNames();
+
   ColumnHeaders id = ColumnHeaders(ColumnHeaders.headerNameId, visible: false);
   ColumnHeaders quadrant = ColumnHeaders("Quadrant");
   ColumnHeaders treeNum = ColumnHeaders("Tree #");
@@ -40,6 +41,7 @@ class ColNames {
 class LargeTreePlotSiteTreeInfoAgeListPage extends ConsumerStatefulWidget {
   static const String routeName = "largeTreePlotSiteTreeInfoAgeList";
   final GoRouterState state;
+
   const LargeTreePlotSiteTreeInfoAgeListPage(this.state, {super.key});
 
   @override

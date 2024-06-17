@@ -39,20 +39,19 @@ class ShrubPlotTablesDao extends DatabaseAccessor<Database>
     if (shrubSummaryId != null) {
       await deleteShrubSummary(shrubSummaryId);
     }
-    await addShrubSummary(ShrubSummaryCompanion(
-        surveyId: Value(surveyId),
-        measDate: Value(DateTime.now()),
-        notAssessed: const Value(true),
-        complete: const Value(false)));
+    await setAndReturnDefaultSummary(surveyId, DateTime.now(),
+        notAssessed: true);
   }
 
   Future<ShrubSummaryData> setAndReturnDefaultSummary(
-      int surveyId, DateTime measDate) async {
+      int surveyId, DateTime measDate,
+      {bool notAssessed = false}) async {
     ShrubSummaryCompanion entry = ShrubSummaryCompanion(
         surveyId: Value(surveyId),
         measDate: Value(measDate),
+        plotType: const Value(""),
         complete: const Value(false),
-        notAssessed: const Value(false));
+        notAssessed: Value(notAssessed));
 
     int summaryId = await into(shrubSummary).insert(entry,
         onConflict: DoUpdate((old) => entry, target: [shrubSummary.surveyId]));
@@ -61,12 +60,22 @@ class ShrubPlotTablesDao extends DatabaseAccessor<Database>
   }
 
 //====================Shrub Lists (Single Entry) Management====================
+  Future<List<ShrubListEntryData>> getShrubEntryList(int shrubId) =>
+      (select(shrubListEntry)
+            ..where((tbl) => tbl.shrubSummaryId.equals(shrubId)))
+          .get();
 
   Future<int> addShrubListEntry(ShrubListEntryCompanion entry) =>
       into(shrubListEntry).insert(entry);
 
-  Future<ShrubListEntryData> getShrubListEntry(int id) =>
+  Future<int> addOrUpdateShrubListEntry(ShrubListEntryCompanion entry) =>
+      into(shrubListEntry).insertOnConflictUpdate(entry);
+
+  Future<ShrubListEntryData> getShrubSpeciesEntry(int id) =>
       (select(shrubListEntry)..where((tbl) => tbl.id.equals(id))).getSingle();
+
+  // Future<ShrubListEntryData> checkShrubEntryUnique(int id, int recordNum) =>
+  //     (select(shrubListEntry)..where((tbl) => tbl.id.equals(id))).getSingle();
 
   Future<void> updateShrubListEntry(
       int id, ShrubListEntryCompanion entry) async {

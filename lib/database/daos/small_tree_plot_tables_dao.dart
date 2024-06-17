@@ -38,20 +38,20 @@ class SmallTreePlotTablesDao extends DatabaseAccessor<Database>
     if (stpSummaryId != null) {
       await deleteStpSummary(stpSummaryId);
     }
-    await addStpSummary(StpSummaryCompanion(
-        surveyId: Value(surveyId),
-        measDate: Value(DateTime.now()),
-        notAssessed: const Value(true),
-        complete: const Value(false)));
+
+    await setAndReturnDefaultSummary(surveyId, DateTime.now(),
+        notAssessed: true);
   }
 
-  Future<StpSummaryData> setAndReturnDefaultStpSummary(
-      int surveyId, DateTime measDate) async {
+  Future<StpSummaryData> setAndReturnDefaultSummary(
+      int surveyId, DateTime measDate,
+      {bool notAssessed = false}) async {
     StpSummaryCompanion entry = StpSummaryCompanion(
         surveyId: Value(surveyId),
         measDate: Value(measDate),
+        plotType: const Value(""),
         complete: const Value(false),
-        notAssessed: const Value(false));
+        notAssessed: Value(notAssessed));
 
     int summaryId = await into(stpSummary).insert(entry,
         onConflict: DoUpdate((old) => entry, target: [stpSummary.surveyId]));
@@ -63,6 +63,9 @@ class SmallTreePlotTablesDao extends DatabaseAccessor<Database>
 
   Future<int> addStpSpecies(StpSpeciesCompanion entry) =>
       into(stpSpecies).insert(entry);
+
+  Future<int> addOrUpdateStpSpecies(StpSpeciesCompanion entry) =>
+      into(stpSpecies).insertOnConflictUpdate(entry);
 
   Future<StpSpeciesData> getStpSpecies(int id) =>
       (select(stpSpecies)..where((tbl) => tbl.id.equals(id))).getSingle();
@@ -79,5 +82,13 @@ class SmallTreePlotTablesDao extends DatabaseAccessor<Database>
     await (delete(stpSpecies)
           ..where((tbl) => tbl.stpSummaryId.equals(stpSummaryId)))
         .go();
+  }
+
+  Future<List<StpSpeciesData>> getSpeciesList(int summaryId) {
+    final query = select(stpSpecies)
+      ..where((s) => s.stpSummaryId.equals(summaryId))
+      ..orderBy(
+          [(s) => OrderingTerm(expression: s.treeNum, mode: OrderingMode.asc)]);
+    return query.get();
   }
 }

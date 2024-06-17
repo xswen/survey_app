@@ -119,7 +119,7 @@ class WoodyDebrisSummaryPageState
       bool surveyComplete = value.complete;
       if (surveyComplete) {
         Popups.show(context, surveyCompleteWarningPopup);
-      } else if (wd.complete!) {
+      } else if (wd.complete) {
         updateWdSummary(
             const WoodyDebrisSummaryCompanion(complete: d.Value(false)));
       } else if (transList.isEmpty) {
@@ -171,7 +171,7 @@ class WoodyDebrisSummaryPageState
                 label: "Enter Measurement Date",
                 readOnly: wd.complete,
                 readOnlyPopup: completeWarningPopup,
-                setStateFn: (DateTime date) async => updateWdSummary(
+                onDateSelected: (DateTime date) async => updateWdSummary(
                     WoodyDebrisSummaryCompanion(measDate: d.Value(date))),
               ),
               const SizedBox(height: kPaddingV),
@@ -189,7 +189,7 @@ class WoodyDebrisSummaryPageState
                       ),
                     ),
                     ElevatedButton(
-                        onPressed: () => wd.complete!
+                        onPressed: () => wd.complete
                             ? Popups.show(context, completeWarningPopup)
                             : context.pushNamed(
                                 WoodyDebrisHeaderMeasurementsPage.routeName,
@@ -198,7 +198,7 @@ class WoodyDebrisSummaryPageState
                                     kParamMissing,
                                     kParamMissing)),
                         style: CustomButtonStyles.inactiveButton(
-                            isActive: !wd.complete!),
+                            isActive: !wd.complete),
                         child: const Text("Add transect"))
                   ],
                 ),
@@ -215,7 +215,7 @@ class WoodyDebrisSummaryPageState
                           return TileCardTransect(
                             title: "Transect ${wdh.transNum}",
                             onPressed: () async {
-                              wd.complete!
+                              wd.complete
                                   ? Popups.show(
                                       context,
                                       PopupNoticeSurveyComplete(

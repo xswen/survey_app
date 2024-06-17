@@ -390,7 +390,7 @@ class SurveyInfoSummaryPageState extends ConsumerState<SurveyInfoSummaryPage> {
                                   label: "Enter Check Date",
                                   readOnly: summary.complete.value,
                                   readOnlyPopup: completeWarningPopup,
-                                  setStateFn: (DateTime date) async =>
+                                  onDateSelected: (DateTime date) async =>
                                       updateTree(tree.copyWith(
                                           fieldDate: d.Value(date))),
                                 ),
@@ -410,7 +410,7 @@ class SurveyInfoSummaryPageState extends ConsumerState<SurveyInfoSummaryPage> {
                                   label: "Enter Check Date",
                                   readOnly: summary.complete.value,
                                   readOnlyPopup: completeWarningPopup,
-                                  setStateFn: (DateTime date) async =>
+                                  onDateSelected: (DateTime date) async =>
                                       updateTree(tree.copyWith(
                                           officeDate: d.Value(date))),
                                 ),
@@ -452,7 +452,7 @@ class SurveyInfoSummaryPageState extends ConsumerState<SurveyInfoSummaryPage> {
                                   label: "Enter Check Date",
                                   readOnly: summary.complete.value,
                                   readOnlyPopup: completeWarningPopup,
-                                  setStateFn: (DateTime date) async =>
+                                  onDateSelected: (DateTime date) async =>
                                       updateEco(eco.copyWith(
                                           fieldDate: d.Value(date))),
                                 ),
@@ -472,7 +472,7 @@ class SurveyInfoSummaryPageState extends ConsumerState<SurveyInfoSummaryPage> {
                                   label: "Enter Check Date",
                                   readOnly: summary.complete.value,
                                   readOnlyPopup: completeWarningPopup,
-                                  setStateFn: (DateTime date) async =>
+                                  onDateSelected: (DateTime date) async =>
                                       updateEco(eco.copyWith(
                                           officeDate: d.Value(date))),
                                 ),
@@ -513,7 +513,7 @@ class SurveyInfoSummaryPageState extends ConsumerState<SurveyInfoSummaryPage> {
                                   label: "Enter Check Date",
                                   readOnly: summary.complete.value,
                                   readOnlyPopup: completeWarningPopup,
-                                  setStateFn: (DateTime date) async =>
+                                  onDateSelected: (DateTime date) async =>
                                       updateSoil(soil.copyWith(
                                           fieldDate: d.Value(date))),
                                 ),
@@ -533,7 +533,7 @@ class SurveyInfoSummaryPageState extends ConsumerState<SurveyInfoSummaryPage> {
                                   label: "Enter Check Date",
                                   readOnly: summary.complete.value,
                                   readOnlyPopup: completeWarningPopup,
-                                  setStateFn: (DateTime date) async =>
+                                  onDateSelected: (DateTime date) async =>
                                       updateSoil(soil.copyWith(
                                           officeDate: d.Value(date))),
                                 ),

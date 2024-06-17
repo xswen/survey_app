@@ -7,6 +7,7 @@ enum SurveyCardCategories {
   surfaceSubstrate,
   ecologicalPlot,
   soilPit,
+  microPlot,
   smallTreePlot,
   shrubPlot,
   stumpPlot,

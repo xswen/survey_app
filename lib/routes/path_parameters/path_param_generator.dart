@@ -7,6 +7,14 @@ class PathParamGenerator {
     return {PathParamsKeys.surveyId: surveyId};
   }
 
+  //Ground Plot
+  static Map<String, String> gpSummary(
+          GoRouterState goRouterState, String gpSummaryId) =>
+      {
+        ...surveyInfo(goRouterState.pathParameters[PathParamsKeys.surveyId]!),
+        ...{PathParamsKeys.gpSummaryId: gpSummaryId}
+      };
+
   //Woody Debris
   static Map<String, String> wdSummary(
           GoRouterState goRouterState, String wdSummaryId) =>
@@ -91,11 +99,92 @@ class PathParamGenerator {
         ...surveyInfo(goRouterState.pathParameters[PathParamsKeys.surveyId]!),
         ...{PathParamsKeys.soilPitSummaryId: soilPitSummaryId}
       };
+
   static Map<String, String> soilSiteInfo(
           GoRouterState goRouterState, String soilSiteInfoId) =>
       {
         ...soilPitSummary(goRouterState,
             goRouterState.pathParameters[PathParamsKeys.soilPitSummaryId]!),
         ...{PathParamsKeys.soilSiteInfoId: soilSiteInfoId}
+      };
+
+  //STP
+  static Map<String, String> stpSummary(
+          GoRouterState goRouterState, String stpSummaryId) =>
+      {
+        ...surveyInfo(goRouterState.pathParameters[PathParamsKeys.surveyId]!),
+        ...{PathParamsKeys.stpSummaryId: stpSummaryId}
+      };
+
+  static Map<String, String> stpSpecies(
+          GoRouterState goRouterState, String stpSpeciesId) =>
+      {
+        ...stpSummary(goRouterState,
+            goRouterState.pathParameters[PathParamsKeys.stpSummaryId]!),
+        ...{PathParamsKeys.stpSpeciesId: stpSpeciesId}
+      };
+
+  //Shrub
+  static Map<String, String> shrubSummary(
+          GoRouterState goRouterState, String shrubSummaryId) =>
+      {
+        ...surveyInfo(goRouterState.pathParameters[PathParamsKeys.surveyId]!),
+        ...{PathParamsKeys.shrubSummaryId: shrubSummaryId}
+      };
+
+  static Map<String, String> shrubSpecies(
+          GoRouterState goRouterState, String shrubSpeciesId) =>
+      {
+        ...shrubSummary(goRouterState,
+            goRouterState.pathParameters[PathParamsKeys.shrubSummaryId]!),
+        ...{PathParamsKeys.shrubSpeciesId: shrubSpeciesId}
+      };
+
+  //Stump
+  static Map<String, String> stumpSummary(
+          GoRouterState goRouterState, String stumpSummaryId) =>
+      {
+        ...surveyInfo(goRouterState.pathParameters[PathParamsKeys.surveyId]!),
+        ...{PathParamsKeys.stumpSummaryId: stumpSummaryId}
+      };
+
+  static Map<String, String> stumpSpecies(
+          GoRouterState goRouterState, String stumpSpeciesId) =>
+      {
+        ...stumpSummary(goRouterState,
+            goRouterState.pathParameters[PathParamsKeys.stumpSummaryId]!),
+        ...{PathParamsKeys.stumpSpeciesId: stumpSpeciesId}
+      };
+
+  //LTP
+  static Map<String, String> ltpSummary(
+          GoRouterState goRouterState, String ltpSummaryId) =>
+      {
+        ...surveyInfo(goRouterState.pathParameters[PathParamsKeys.surveyId]!),
+        ...{PathParamsKeys.ltpSummaryId: ltpSummaryId}
+      };
+
+  static Map<String, String> ltpInfoList(
+          GoRouterState goRouterState, String ltpInfoListId) =>
+      {
+        ...ltpSummary(goRouterState,
+            goRouterState.pathParameters[PathParamsKeys.ltpSummaryId]!),
+        ...{PathParamsKeys.ltpInfoListId: ltpInfoListId}
+      };
+
+  static Map<String, String> ltpRemovedList(
+          GoRouterState goRouterState, String ltpRemovedListId) =>
+      {
+        ...ltpSummary(goRouterState,
+            goRouterState.pathParameters[PathParamsKeys.ltpSummaryId]!),
+        ...{PathParamsKeys.ltpRemovedListId: ltpRemovedListId}
+      };
+
+  static Map<String, String> ltpInfoAgeList(
+          GoRouterState goRouterState, String ltpInfoAgeListId) =>
+      {
+        ...ltpSummary(goRouterState,
+            goRouterState.pathParameters[PathParamsKeys.ltpSummaryId]!),
+        ...{PathParamsKeys.ltpInfoAgeListId: ltpInfoAgeListId}
       };
 }

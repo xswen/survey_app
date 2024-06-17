@@ -148,7 +148,7 @@ class EcologicalPlotSummaryPageState
                       label: "Enter Measurement Date",
                       readOnly: ecp.complete,
                       readOnlyPopup: completeWarningPopup,
-                      setStateFn: (DateTime date) async => updateEcpSummary(
+                      onDateSelected: (DateTime date) async => updateEcpSummary(
                           EcpSummaryCompanion(measDate: d.Value(date))),
                     ),
                     const SizedBox(height: kPaddingV),

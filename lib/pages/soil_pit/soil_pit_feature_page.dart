@@ -47,7 +47,7 @@ class SoilPitFeaturePageState extends ConsumerState<SoilPitFeaturePage> {
 
   @override
   void initState() {
-    spId = PathParamValue.getSoilPitSummary(widget.state);
+    spId = PathParamValue.getSoilPitSummaryId(widget.state);
     completeWarningPopup = Popups.generateCompleteErrorPopup(title);
     _loadData();
     super.initState();
