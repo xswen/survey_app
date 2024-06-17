@@ -87,7 +87,6 @@ class LargeTreePlotSummaryPageState
   }
 
   String? _errorNom(String? value) {
-    print(value);
     if (value == null || value == "") {
       return "Can't be left empty";
     } else if (value == "-1.0") {

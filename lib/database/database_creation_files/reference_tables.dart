@@ -377,6 +377,12 @@ class GpSiteInfoPlotCompletion extends Table {
   TextColumn get name => text()();
 }
 
+class GpSiteInfoPlotIncompleteReason extends Table {
+  TextColumn get code => text()();
+
+  TextColumn get name => text()();
+}
+
 class GpSiteInfoDensity extends Table {
   TextColumn get code => text()();
 

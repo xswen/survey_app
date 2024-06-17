@@ -64,8 +64,8 @@ class SiteInfoTablesDao extends DatabaseAccessor<Database>
 
   //====================Gp Site Info Management====================
 
-  Future<int> addGpSiteInfo(GpSiteInfoCompanion entry) =>
-      into(gpSiteInfo).insert(entry);
+  Future<int> addOrUpdateGpSiteInfo(GpSiteInfoCompanion entry) =>
+      into(gpSiteInfo).insertOnConflictUpdate(entry);
 
   Future<GpSiteInfoData?> getGpSiteInfoFromSummaryId(int id) =>
       (select(gpSiteInfo)..where((tbl) => tbl.gpSummaryId.equals(id)))

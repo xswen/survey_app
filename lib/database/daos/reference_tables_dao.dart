@@ -64,6 +64,7 @@ part 'reference_tables_dao.g.dart';
   GpSiteInfoLandCover,
   GpSiteInfoLandPos,
   GpSiteInfoPostProcessing,
+  GpSiteInfoPlotIncompleteReason,
 ])
 class ReferenceTablesDao extends DatabaseAccessor<Database>
     with _$ReferenceTablesDaoMixin {
@@ -1472,6 +1473,34 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
 
   Future<String> getGpSiteInfoPlotCompletionCode(String name) {
     return (select(gpSiteInfoPlotCompletion)
+          ..where((tbl) => tbl.name.equals(name)))
+        .map((row) => row.code)
+        .getSingle();
+  }
+
+  Future<List<String>> getGpSiteInfoPlotIncompleteReasonList() {
+    final query = selectOnly(gpSiteInfoPlotIncompleteReason, distinct: true)
+      ..addColumns([gpSiteInfoPlotIncompleteReason.name])
+      ..where(gpSiteInfoPlotIncompleteReason.name.isNotNull() &
+          gpSiteInfoPlotIncompleteReason.code.isNotValue("NA"));
+    return query
+        .map((row) =>
+            row.read(gpSiteInfoPlotIncompleteReason.name) ??
+            "error on loading name")
+        .get();
+  }
+
+  Future<String> getGpSiteInfoPlotIncompleteReasonName(String code) {
+    if (code.isEmpty) return Future.value("");
+
+    return (select(gpSiteInfoPlotIncompleteReason)
+          ..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
+
+  Future<String> getGpSiteInfoPlotIncompleteReasonCode(String name) {
+    return (select(gpSiteInfoPlotIncompleteReason)
           ..where((tbl) => tbl.name.equals(name)))
         .map((row) => row.code)
         .getSingle();

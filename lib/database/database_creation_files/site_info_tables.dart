@@ -36,11 +36,25 @@ class GpSiteInfo extends Table {
       .named('prov_eco_ref')
       .check(provEcoRef.isBetweenValues(-1, 9999))();
 
-  IntColumn get utmN => integer().named('utm_n')();
+  TextColumn get postProcessing =>
+      text().named('post_processing').withLength(min: 1, max: 1)();
 
-  IntColumn get utmE => integer().named('utm_e')();
+  IntColumn get utmN =>
+      integer().named('utm_n').check(utmN.isBetweenValues(4614000, 9297000))();
 
-  IntColumn get utmZone => integer().named('utm_zone')();
+  RealColumn get utmNAccuracy => real()
+      .named('utm_n_accuracy')
+      .check(utmNAccuracy.isBetweenValues(-1, 40.000))();
+
+  IntColumn get utmE =>
+      integer().named('utm_e').check(utmE.isBetweenValues(250000, 750000))();
+
+  RealColumn get utmEAccuracy => real()
+      .named('utm_e_accuracy')
+      .check(utmEAccuracy.isBetweenValues(-1, 40.000))();
+
+  IntColumn get utmZone =>
+      integer().named('utm_zone').check(utmZone.isBetweenValues(7, 22))();
 
   IntColumn get slope =>
       integer().named('slope').check(slope.isBetweenValues(-1, 150))();
@@ -76,6 +90,15 @@ class GpSiteInfo extends Table {
       text().withLength(min: 1, max: 1).named('wetland_class')();
 
   TextColumn get userInfo => text().nullable().named('user_info')();
+
+  TextColumn get gpsMake =>
+      text().withLength(min: 1, max: 25).named('gps_make')();
+
+  TextColumn get gpsModel =>
+      text().withLength(min: 1, max: 25).named('gps_model')();
+
+  IntColumn get gpsPoint =>
+      integer().named('gps_point').check(elevation.isBetweenValues(-1, 999))();
 }
 
 class GpDisturbance extends Table {

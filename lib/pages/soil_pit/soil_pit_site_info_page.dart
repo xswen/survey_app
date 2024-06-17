@@ -13,6 +13,7 @@ import '../../widgets/text/text_header_separator.dart';
 class SoilPitSiteInfoPage extends ConsumerStatefulWidget {
   static const String routeName = "siteInfo";
   final GoRouterState state;
+
   const SoilPitSiteInfoPage(this.state, {super.key});
 
   @override
@@ -451,8 +452,10 @@ class SoilPitSiteInfoPageState extends ConsumerState<SoilPitSiteInfoPage> {
                 child: ElevatedButton(
                     onPressed: () {
                       if (parentComplete) {
-                        Popups.show(context,
-                            Popups.generateCompleteErrorPopup("Woody Debris"));
+                        Popups.show(
+                            context,
+                            Popups.generateCompleteErrorPopup(
+                                "Soil Pit Site Info"));
                         return;
                       }
 

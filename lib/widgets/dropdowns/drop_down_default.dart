@@ -1,5 +1,4 @@
 import 'package:dropdown_search/dropdown_search.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/margins_padding.dart';
@@ -45,8 +44,12 @@ class _DropDownDefaultState extends State<DropDownDefault> {
               ? Container()
               : Padding(
                   padding: const EdgeInsets.only(bottom: 0),
+                  // child: Text(
+                  //   tr(widget.title),
+                  //   style: kTitleStyle,
+                  // ),
                   child: Text(
-                    tr(widget.title),
+                    widget.title,
                     style: kTitleStyle,
                   ),
                 ),

@@ -94,7 +94,7 @@ const List<Type> _tables = [
   GpSiteInfoLandBase,
   GpSiteInfoLandCover,
   GpSiteInfoLandPos,
-  GpSiteInfoPostProcessing,
+  GpSiteInfoPostProcessing, GpSiteInfoPlotIncompleteReason,
   //Metadata Tables
   MetaComment,
   //Survey Tables
@@ -304,6 +304,9 @@ class Database extends _$Database {
               await _getGpSiteInfoEcozone();
           List<GpSiteInfoPlotCompletionCompanion> gpSiteInfoPlotCompletionList =
               await _getGpSiteInfoPlotCompletion();
+          List<GpSiteInfoPlotIncompleteReasonCompanion>
+              gpSiteInfoPlotIncompleteReasonList =
+              await _getGpSiteInfoPlotIncompleteReason();
           List<GpSiteInfoDensityCompanion> gpSiteInfoDensityList =
               await _getGpSiteInfoDensity();
           List<GpSiteInfoLandBaseCompanion> gpSiteInfoLandBaseList =
@@ -375,6 +378,8 @@ class Database extends _$Database {
             b.insertAll(gpSiteInfoWetland, gpSiteInfoWetlandList);
             b.insertAll(gpSiteInfoEcozone, gpSiteInfoEcozoneList);
             b.insertAll(gpSiteInfoPlotCompletion, gpSiteInfoPlotCompletionList);
+            b.insertAll(gpSiteInfoPlotIncompleteReason,
+                gpSiteInfoPlotIncompleteReasonList);
             b.insertAll(gpSiteInfoDensity, gpSiteInfoDensityList);
             b.insertAll(gpSiteInfoLandBase, gpSiteInfoLandBaseList);
             b.insertAll(gpSiteInfoLandCover, gpSiteInfoLandCoverList);
@@ -1002,6 +1007,19 @@ class Database extends _$Database {
 
     return jsonData.map((dynamic item) {
       return GpSiteInfoPlotCompletionCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<GpSiteInfoPlotIncompleteReasonCompanion>>
+      _getGpSiteInfoPlotIncompleteReason() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/gp_site_info_incomplete_reason_list.json');
+
+    return jsonData.map((dynamic item) {
+      return GpSiteInfoPlotIncompleteReasonCompanion(
         code: Value(item["code"]),
         name: Value(item["name"]),
       );

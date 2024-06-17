@@ -87,4 +87,6 @@ mixin _$ReferenceTablesDaoMixin on DatabaseAccessor<Database> {
       attachedDatabase.gpSiteInfoLandPos;
   $GpSiteInfoPostProcessingTable get gpSiteInfoPostProcessing =>
       attachedDatabase.gpSiteInfoPostProcessing;
+  $GpSiteInfoPlotIncompleteReasonTable get gpSiteInfoPlotIncompleteReason =>
+      attachedDatabase.gpSiteInfoPlotIncompleteReason;
 }

@@ -11268,6 +11268,198 @@ class GpSiteInfoPostProcessingCompanion
   }
 }
 
+class $GpSiteInfoPlotIncompleteReasonTable
+    extends GpSiteInfoPlotIncompleteReason
+    with
+        d.TableInfo<$GpSiteInfoPlotIncompleteReasonTable,
+            GpSiteInfoPlotIncompleteReasonData> {
+  @override
+  final d.GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GpSiteInfoPlotIncompleteReasonTable(this.attachedDatabase, [this._alias]);
+  static const d.VerificationMeta _codeMeta = const d.VerificationMeta('code');
+  @override
+  late final d.GeneratedColumn<String> code = d.GeneratedColumn<String>(
+      'code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const d.VerificationMeta _nameMeta = const d.VerificationMeta('name');
+  @override
+  late final d.GeneratedColumn<String> name = d.GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<d.GeneratedColumn> get $columns => [code, name];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'gp_site_info_plot_incomplete_reason';
+  @override
+  d.VerificationContext validateIntegrity(
+      d.Insertable<GpSiteInfoPlotIncompleteReasonData> instance,
+      {bool isInserting = false}) {
+    final context = d.VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('code')) {
+      context.handle(
+          _codeMeta, code.isAcceptableOrUnknown(data['code']!, _codeMeta));
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<d.GeneratedColumn> get $primaryKey => const {};
+  @override
+  GpSiteInfoPlotIncompleteReasonData map(Map<String, dynamic> data,
+      {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return GpSiteInfoPlotIncompleteReasonData(
+      code: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}code'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+    );
+  }
+
+  @override
+  $GpSiteInfoPlotIncompleteReasonTable createAlias(String alias) {
+    return $GpSiteInfoPlotIncompleteReasonTable(attachedDatabase, alias);
+  }
+}
+
+class GpSiteInfoPlotIncompleteReasonData extends d.DataClass
+    implements d.Insertable<GpSiteInfoPlotIncompleteReasonData> {
+  final String code;
+  final String name;
+  const GpSiteInfoPlotIncompleteReasonData(
+      {required this.code, required this.name});
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    map['code'] = d.Variable<String>(code);
+    map['name'] = d.Variable<String>(name);
+    return map;
+  }
+
+  GpSiteInfoPlotIncompleteReasonCompanion toCompanion(bool nullToAbsent) {
+    return GpSiteInfoPlotIncompleteReasonCompanion(
+      code: d.Value(code),
+      name: d.Value(name),
+    );
+  }
+
+  factory GpSiteInfoPlotIncompleteReasonData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return GpSiteInfoPlotIncompleteReasonData(
+      code: serializer.fromJson<String>(json['code']),
+      name: serializer.fromJson<String>(json['name']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'code': serializer.toJson<String>(code),
+      'name': serializer.toJson<String>(name),
+    };
+  }
+
+  GpSiteInfoPlotIncompleteReasonData copyWith({String? code, String? name}) =>
+      GpSiteInfoPlotIncompleteReasonData(
+        code: code ?? this.code,
+        name: name ?? this.name,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('GpSiteInfoPlotIncompleteReasonData(')
+          ..write('code: $code, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(code, name);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GpSiteInfoPlotIncompleteReasonData &&
+          other.code == this.code &&
+          other.name == this.name);
+}
+
+class GpSiteInfoPlotIncompleteReasonCompanion
+    extends d.UpdateCompanion<GpSiteInfoPlotIncompleteReasonData> {
+  final d.Value<String> code;
+  final d.Value<String> name;
+  final d.Value<int> rowid;
+  const GpSiteInfoPlotIncompleteReasonCompanion({
+    this.code = const d.Value.absent(),
+    this.name = const d.Value.absent(),
+    this.rowid = const d.Value.absent(),
+  });
+  GpSiteInfoPlotIncompleteReasonCompanion.insert({
+    required String code,
+    required String name,
+    this.rowid = const d.Value.absent(),
+  })  : code = d.Value(code),
+        name = d.Value(name);
+  static d.Insertable<GpSiteInfoPlotIncompleteReasonData> custom({
+    d.Expression<String>? code,
+    d.Expression<String>? name,
+    d.Expression<int>? rowid,
+  }) {
+    return d.RawValuesInsertable({
+      if (code != null) 'code': code,
+      if (name != null) 'name': name,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  GpSiteInfoPlotIncompleteReasonCompanion copyWith(
+      {d.Value<String>? code, d.Value<String>? name, d.Value<int>? rowid}) {
+    return GpSiteInfoPlotIncompleteReasonCompanion(
+      code: code ?? this.code,
+      name: name ?? this.name,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    if (code.present) {
+      map['code'] = d.Variable<String>(code.value);
+    }
+    if (name.present) {
+      map['name'] = d.Variable<String>(name.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = d.Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GpSiteInfoPlotIncompleteReasonCompanion(')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $SurveyHeadersTable extends SurveyHeaders
     with d.TableInfo<$SurveyHeadersTable, SurveyHeader> {
   @override
@@ -26578,22 +26770,53 @@ class $GpSiteInfoTable extends GpSiteInfo
       check: () => provEcoRef.isBetweenValues(-1, 9999),
       type: DriftSqlType.int,
       requiredDuringInsert: true);
+  static const d.VerificationMeta _postProcessingMeta =
+      const d.VerificationMeta('postProcessing');
+  @override
+  late final d.GeneratedColumn<String> postProcessing =
+      d.GeneratedColumn<String>('post_processing', aliasedName, false,
+          additionalChecks: GeneratedColumn.checkTextLength(
+              minTextLength: 1, maxTextLength: 1),
+          type: DriftSqlType.string,
+          requiredDuringInsert: true);
   static const d.VerificationMeta _utmNMeta = const d.VerificationMeta('utmN');
   @override
   late final d.GeneratedColumn<int> utmN = d.GeneratedColumn<int>(
       'utm_n', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      check: () => utmN.isBetweenValues(4614000, 9297000),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
+  static const d.VerificationMeta _utmNAccuracyMeta =
+      const d.VerificationMeta('utmNAccuracy');
+  @override
+  late final d.GeneratedColumn<double> utmNAccuracy = d.GeneratedColumn<double>(
+      'utm_n_accuracy', aliasedName, false,
+      check: () => utmNAccuracy.isBetweenValues(-1, 40.000),
+      type: DriftSqlType.double,
+      requiredDuringInsert: true);
   static const d.VerificationMeta _utmEMeta = const d.VerificationMeta('utmE');
   @override
   late final d.GeneratedColumn<int> utmE = d.GeneratedColumn<int>(
       'utm_e', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      check: () => utmE.isBetweenValues(250000, 750000),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
+  static const d.VerificationMeta _utmEAccuracyMeta =
+      const d.VerificationMeta('utmEAccuracy');
+  @override
+  late final d.GeneratedColumn<double> utmEAccuracy = d.GeneratedColumn<double>(
+      'utm_e_accuracy', aliasedName, false,
+      check: () => utmEAccuracy.isBetweenValues(-1, 40.000),
+      type: DriftSqlType.double,
+      requiredDuringInsert: true);
   static const d.VerificationMeta _utmZoneMeta =
       const d.VerificationMeta('utmZone');
   @override
   late final d.GeneratedColumn<int> utmZone = d.GeneratedColumn<int>(
       'utm_zone', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      check: () => utmZone.isBetweenValues(7, 22),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
   static const d.VerificationMeta _slopeMeta =
       const d.VerificationMeta('slope');
   @override
@@ -26696,6 +26919,32 @@ class $GpSiteInfoTable extends GpSiteInfo
   late final d.GeneratedColumn<String> userInfo = d.GeneratedColumn<String>(
       'user_info', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
+  static const d.VerificationMeta _gpsMakeMeta =
+      const d.VerificationMeta('gpsMake');
+  @override
+  late final d.GeneratedColumn<String> gpsMake = d.GeneratedColumn<String>(
+      'gps_make', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 25),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const d.VerificationMeta _gpsModelMeta =
+      const d.VerificationMeta('gpsModel');
+  @override
+  late final d.GeneratedColumn<String> gpsModel = d.GeneratedColumn<String>(
+      'gps_model', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 25),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const d.VerificationMeta _gpsPointMeta =
+      const d.VerificationMeta('gpsPoint');
+  @override
+  late final d.GeneratedColumn<int> gpsPoint = d.GeneratedColumn<int>(
+      'gps_point', aliasedName, false,
+      check: () => elevation.isBetweenValues(-1, 999),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
   @override
   List<d.GeneratedColumn> get $columns => [
         id,
@@ -26706,8 +26955,11 @@ class $GpSiteInfoTable extends GpSiteInfo
         ecozone,
         provEcoType,
         provEcoRef,
+        postProcessing,
         utmN,
+        utmNAccuracy,
         utmE,
+        utmEAccuracy,
         utmZone,
         slope,
         aspect,
@@ -26720,7 +26972,10 @@ class $GpSiteInfoTable extends GpSiteInfo
         standStru,
         succStage,
         wetlandClass,
-        userInfo
+        userInfo,
+        gpsMake,
+        gpsModel,
+        gpsPoint
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -26785,17 +27040,41 @@ class $GpSiteInfoTable extends GpSiteInfo
     } else if (isInserting) {
       context.missing(_provEcoRefMeta);
     }
+    if (data.containsKey('post_processing')) {
+      context.handle(
+          _postProcessingMeta,
+          postProcessing.isAcceptableOrUnknown(
+              data['post_processing']!, _postProcessingMeta));
+    } else if (isInserting) {
+      context.missing(_postProcessingMeta);
+    }
     if (data.containsKey('utm_n')) {
       context.handle(
           _utmNMeta, utmN.isAcceptableOrUnknown(data['utm_n']!, _utmNMeta));
     } else if (isInserting) {
       context.missing(_utmNMeta);
     }
+    if (data.containsKey('utm_n_accuracy')) {
+      context.handle(
+          _utmNAccuracyMeta,
+          utmNAccuracy.isAcceptableOrUnknown(
+              data['utm_n_accuracy']!, _utmNAccuracyMeta));
+    } else if (isInserting) {
+      context.missing(_utmNAccuracyMeta);
+    }
     if (data.containsKey('utm_e')) {
       context.handle(
           _utmEMeta, utmE.isAcceptableOrUnknown(data['utm_e']!, _utmEMeta));
     } else if (isInserting) {
       context.missing(_utmEMeta);
+    }
+    if (data.containsKey('utm_e_accuracy')) {
+      context.handle(
+          _utmEAccuracyMeta,
+          utmEAccuracy.isAcceptableOrUnknown(
+              data['utm_e_accuracy']!, _utmEAccuracyMeta));
+    } else if (isInserting) {
+      context.missing(_utmEAccuracyMeta);
     }
     if (data.containsKey('utm_zone')) {
       context.handle(_utmZoneMeta,
@@ -26875,6 +27154,24 @@ class $GpSiteInfoTable extends GpSiteInfo
       context.handle(_userInfoMeta,
           userInfo.isAcceptableOrUnknown(data['user_info']!, _userInfoMeta));
     }
+    if (data.containsKey('gps_make')) {
+      context.handle(_gpsMakeMeta,
+          gpsMake.isAcceptableOrUnknown(data['gps_make']!, _gpsMakeMeta));
+    } else if (isInserting) {
+      context.missing(_gpsMakeMeta);
+    }
+    if (data.containsKey('gps_model')) {
+      context.handle(_gpsModelMeta,
+          gpsModel.isAcceptableOrUnknown(data['gps_model']!, _gpsModelMeta));
+    } else if (isInserting) {
+      context.missing(_gpsModelMeta);
+    }
+    if (data.containsKey('gps_point')) {
+      context.handle(_gpsPointMeta,
+          gpsPoint.isAcceptableOrUnknown(data['gps_point']!, _gpsPointMeta));
+    } else if (isInserting) {
+      context.missing(_gpsPointMeta);
+    }
     return context;
   }
 
@@ -26900,10 +27197,16 @@ class $GpSiteInfoTable extends GpSiteInfo
           .read(DriftSqlType.string, data['${effectivePrefix}prov_eco_type']),
       provEcoRef: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}prov_eco_ref'])!,
+      postProcessing: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}post_processing'])!,
       utmN: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}utm_n'])!,
+      utmNAccuracy: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}utm_n_accuracy'])!,
       utmE: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}utm_e'])!,
+      utmEAccuracy: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}utm_e_accuracy'])!,
       utmZone: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}utm_zone'])!,
       slope: attachedDatabase.typeMapping
@@ -26930,6 +27233,12 @@ class $GpSiteInfoTable extends GpSiteInfo
           .read(DriftSqlType.string, data['${effectivePrefix}wetland_class'])!,
       userInfo: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}user_info']),
+      gpsMake: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}gps_make'])!,
+      gpsModel: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}gps_model'])!,
+      gpsPoint: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}gps_point'])!,
     );
   }
 
@@ -26949,8 +27258,11 @@ class GpSiteInfoData extends d.DataClass
   final int ecozone;
   final String? provEcoType;
   final int provEcoRef;
+  final String postProcessing;
   final int utmN;
+  final double utmNAccuracy;
   final int utmE;
+  final double utmEAccuracy;
   final int utmZone;
   final int slope;
   final int aspect;
@@ -26964,6 +27276,9 @@ class GpSiteInfoData extends d.DataClass
   final String succStage;
   final String wetlandClass;
   final String? userInfo;
+  final String gpsMake;
+  final String gpsModel;
+  final int gpsPoint;
   const GpSiteInfoData(
       {required this.id,
       required this.gpSummaryId,
@@ -26973,8 +27288,11 @@ class GpSiteInfoData extends d.DataClass
       required this.ecozone,
       this.provEcoType,
       required this.provEcoRef,
+      required this.postProcessing,
       required this.utmN,
+      required this.utmNAccuracy,
       required this.utmE,
+      required this.utmEAccuracy,
       required this.utmZone,
       required this.slope,
       required this.aspect,
@@ -26987,7 +27305,10 @@ class GpSiteInfoData extends d.DataClass
       required this.standStru,
       required this.succStage,
       required this.wetlandClass,
-      this.userInfo});
+      this.userInfo,
+      required this.gpsMake,
+      required this.gpsModel,
+      required this.gpsPoint});
   @override
   Map<String, d.Expression> toColumns(bool nullToAbsent) {
     final map = <String, d.Expression>{};
@@ -27001,8 +27322,11 @@ class GpSiteInfoData extends d.DataClass
       map['prov_eco_type'] = d.Variable<String>(provEcoType);
     }
     map['prov_eco_ref'] = d.Variable<int>(provEcoRef);
+    map['post_processing'] = d.Variable<String>(postProcessing);
     map['utm_n'] = d.Variable<int>(utmN);
+    map['utm_n_accuracy'] = d.Variable<double>(utmNAccuracy);
     map['utm_e'] = d.Variable<int>(utmE);
+    map['utm_e_accuracy'] = d.Variable<double>(utmEAccuracy);
     map['utm_zone'] = d.Variable<int>(utmZone);
     map['slope'] = d.Variable<int>(slope);
     map['aspect'] = d.Variable<int>(aspect);
@@ -27018,6 +27342,9 @@ class GpSiteInfoData extends d.DataClass
     if (!nullToAbsent || userInfo != null) {
       map['user_info'] = d.Variable<String>(userInfo);
     }
+    map['gps_make'] = d.Variable<String>(gpsMake);
+    map['gps_model'] = d.Variable<String>(gpsModel);
+    map['gps_point'] = d.Variable<int>(gpsPoint);
     return map;
   }
 
@@ -27033,8 +27360,11 @@ class GpSiteInfoData extends d.DataClass
           ? const d.Value.absent()
           : d.Value(provEcoType),
       provEcoRef: d.Value(provEcoRef),
+      postProcessing: d.Value(postProcessing),
       utmN: d.Value(utmN),
+      utmNAccuracy: d.Value(utmNAccuracy),
       utmE: d.Value(utmE),
+      utmEAccuracy: d.Value(utmEAccuracy),
       utmZone: d.Value(utmZone),
       slope: d.Value(slope),
       aspect: d.Value(aspect),
@@ -27050,6 +27380,9 @@ class GpSiteInfoData extends d.DataClass
       userInfo: userInfo == null && nullToAbsent
           ? const d.Value.absent()
           : d.Value(userInfo),
+      gpsMake: d.Value(gpsMake),
+      gpsModel: d.Value(gpsModel),
+      gpsPoint: d.Value(gpsPoint),
     );
   }
 
@@ -27065,8 +27398,11 @@ class GpSiteInfoData extends d.DataClass
       ecozone: serializer.fromJson<int>(json['ecozone']),
       provEcoType: serializer.fromJson<String?>(json['provEcoType']),
       provEcoRef: serializer.fromJson<int>(json['provEcoRef']),
+      postProcessing: serializer.fromJson<String>(json['postProcessing']),
       utmN: serializer.fromJson<int>(json['utmN']),
+      utmNAccuracy: serializer.fromJson<double>(json['utmNAccuracy']),
       utmE: serializer.fromJson<int>(json['utmE']),
+      utmEAccuracy: serializer.fromJson<double>(json['utmEAccuracy']),
       utmZone: serializer.fromJson<int>(json['utmZone']),
       slope: serializer.fromJson<int>(json['slope']),
       aspect: serializer.fromJson<int>(json['aspect']),
@@ -27080,6 +27416,9 @@ class GpSiteInfoData extends d.DataClass
       succStage: serializer.fromJson<String>(json['succStage']),
       wetlandClass: serializer.fromJson<String>(json['wetlandClass']),
       userInfo: serializer.fromJson<String?>(json['userInfo']),
+      gpsMake: serializer.fromJson<String>(json['gpsMake']),
+      gpsModel: serializer.fromJson<String>(json['gpsModel']),
+      gpsPoint: serializer.fromJson<int>(json['gpsPoint']),
     );
   }
   @override
@@ -27094,8 +27433,11 @@ class GpSiteInfoData extends d.DataClass
       'ecozone': serializer.toJson<int>(ecozone),
       'provEcoType': serializer.toJson<String?>(provEcoType),
       'provEcoRef': serializer.toJson<int>(provEcoRef),
+      'postProcessing': serializer.toJson<String>(postProcessing),
       'utmN': serializer.toJson<int>(utmN),
+      'utmNAccuracy': serializer.toJson<double>(utmNAccuracy),
       'utmE': serializer.toJson<int>(utmE),
+      'utmEAccuracy': serializer.toJson<double>(utmEAccuracy),
       'utmZone': serializer.toJson<int>(utmZone),
       'slope': serializer.toJson<int>(slope),
       'aspect': serializer.toJson<int>(aspect),
@@ -27109,6 +27451,9 @@ class GpSiteInfoData extends d.DataClass
       'succStage': serializer.toJson<String>(succStage),
       'wetlandClass': serializer.toJson<String>(wetlandClass),
       'userInfo': serializer.toJson<String?>(userInfo),
+      'gpsMake': serializer.toJson<String>(gpsMake),
+      'gpsModel': serializer.toJson<String>(gpsModel),
+      'gpsPoint': serializer.toJson<int>(gpsPoint),
     };
   }
 
@@ -27121,8 +27466,11 @@ class GpSiteInfoData extends d.DataClass
           int? ecozone,
           d.Value<String?> provEcoType = const d.Value.absent(),
           int? provEcoRef,
+          String? postProcessing,
           int? utmN,
+          double? utmNAccuracy,
           int? utmE,
+          double? utmEAccuracy,
           int? utmZone,
           int? slope,
           int? aspect,
@@ -27135,7 +27483,10 @@ class GpSiteInfoData extends d.DataClass
           String? standStru,
           String? succStage,
           String? wetlandClass,
-          d.Value<String?> userInfo = const d.Value.absent()}) =>
+          d.Value<String?> userInfo = const d.Value.absent(),
+          String? gpsMake,
+          String? gpsModel,
+          int? gpsPoint}) =>
       GpSiteInfoData(
         id: id ?? this.id,
         gpSummaryId: gpSummaryId ?? this.gpSummaryId,
@@ -27145,8 +27496,11 @@ class GpSiteInfoData extends d.DataClass
         ecozone: ecozone ?? this.ecozone,
         provEcoType: provEcoType.present ? provEcoType.value : this.provEcoType,
         provEcoRef: provEcoRef ?? this.provEcoRef,
+        postProcessing: postProcessing ?? this.postProcessing,
         utmN: utmN ?? this.utmN,
+        utmNAccuracy: utmNAccuracy ?? this.utmNAccuracy,
         utmE: utmE ?? this.utmE,
+        utmEAccuracy: utmEAccuracy ?? this.utmEAccuracy,
         utmZone: utmZone ?? this.utmZone,
         slope: slope ?? this.slope,
         aspect: aspect ?? this.aspect,
@@ -27160,6 +27514,9 @@ class GpSiteInfoData extends d.DataClass
         succStage: succStage ?? this.succStage,
         wetlandClass: wetlandClass ?? this.wetlandClass,
         userInfo: userInfo.present ? userInfo.value : this.userInfo,
+        gpsMake: gpsMake ?? this.gpsMake,
+        gpsModel: gpsModel ?? this.gpsModel,
+        gpsPoint: gpsPoint ?? this.gpsPoint,
       );
   @override
   String toString() {
@@ -27172,8 +27529,11 @@ class GpSiteInfoData extends d.DataClass
           ..write('ecozone: $ecozone, ')
           ..write('provEcoType: $provEcoType, ')
           ..write('provEcoRef: $provEcoRef, ')
+          ..write('postProcessing: $postProcessing, ')
           ..write('utmN: $utmN, ')
+          ..write('utmNAccuracy: $utmNAccuracy, ')
           ..write('utmE: $utmE, ')
+          ..write('utmEAccuracy: $utmEAccuracy, ')
           ..write('utmZone: $utmZone, ')
           ..write('slope: $slope, ')
           ..write('aspect: $aspect, ')
@@ -27186,7 +27546,10 @@ class GpSiteInfoData extends d.DataClass
           ..write('standStru: $standStru, ')
           ..write('succStage: $succStage, ')
           ..write('wetlandClass: $wetlandClass, ')
-          ..write('userInfo: $userInfo')
+          ..write('userInfo: $userInfo, ')
+          ..write('gpsMake: $gpsMake, ')
+          ..write('gpsModel: $gpsModel, ')
+          ..write('gpsPoint: $gpsPoint')
           ..write(')'))
         .toString();
   }
@@ -27201,8 +27564,11 @@ class GpSiteInfoData extends d.DataClass
         ecozone,
         provEcoType,
         provEcoRef,
+        postProcessing,
         utmN,
+        utmNAccuracy,
         utmE,
+        utmEAccuracy,
         utmZone,
         slope,
         aspect,
@@ -27215,7 +27581,10 @@ class GpSiteInfoData extends d.DataClass
         standStru,
         succStage,
         wetlandClass,
-        userInfo
+        userInfo,
+        gpsMake,
+        gpsModel,
+        gpsPoint
       ]);
   @override
   bool operator ==(Object other) =>
@@ -27229,8 +27598,11 @@ class GpSiteInfoData extends d.DataClass
           other.ecozone == this.ecozone &&
           other.provEcoType == this.provEcoType &&
           other.provEcoRef == this.provEcoRef &&
+          other.postProcessing == this.postProcessing &&
           other.utmN == this.utmN &&
+          other.utmNAccuracy == this.utmNAccuracy &&
           other.utmE == this.utmE &&
+          other.utmEAccuracy == this.utmEAccuracy &&
           other.utmZone == this.utmZone &&
           other.slope == this.slope &&
           other.aspect == this.aspect &&
@@ -27243,7 +27615,10 @@ class GpSiteInfoData extends d.DataClass
           other.standStru == this.standStru &&
           other.succStage == this.succStage &&
           other.wetlandClass == this.wetlandClass &&
-          other.userInfo == this.userInfo);
+          other.userInfo == this.userInfo &&
+          other.gpsMake == this.gpsMake &&
+          other.gpsModel == this.gpsModel &&
+          other.gpsPoint == this.gpsPoint);
 }
 
 class GpSiteInfoCompanion extends d.UpdateCompanion<GpSiteInfoData> {
@@ -27255,8 +27630,11 @@ class GpSiteInfoCompanion extends d.UpdateCompanion<GpSiteInfoData> {
   final d.Value<int> ecozone;
   final d.Value<String?> provEcoType;
   final d.Value<int> provEcoRef;
+  final d.Value<String> postProcessing;
   final d.Value<int> utmN;
+  final d.Value<double> utmNAccuracy;
   final d.Value<int> utmE;
+  final d.Value<double> utmEAccuracy;
   final d.Value<int> utmZone;
   final d.Value<int> slope;
   final d.Value<int> aspect;
@@ -27270,6 +27648,9 @@ class GpSiteInfoCompanion extends d.UpdateCompanion<GpSiteInfoData> {
   final d.Value<String> succStage;
   final d.Value<String> wetlandClass;
   final d.Value<String?> userInfo;
+  final d.Value<String> gpsMake;
+  final d.Value<String> gpsModel;
+  final d.Value<int> gpsPoint;
   const GpSiteInfoCompanion({
     this.id = const d.Value.absent(),
     this.gpSummaryId = const d.Value.absent(),
@@ -27279,8 +27660,11 @@ class GpSiteInfoCompanion extends d.UpdateCompanion<GpSiteInfoData> {
     this.ecozone = const d.Value.absent(),
     this.provEcoType = const d.Value.absent(),
     this.provEcoRef = const d.Value.absent(),
+    this.postProcessing = const d.Value.absent(),
     this.utmN = const d.Value.absent(),
+    this.utmNAccuracy = const d.Value.absent(),
     this.utmE = const d.Value.absent(),
+    this.utmEAccuracy = const d.Value.absent(),
     this.utmZone = const d.Value.absent(),
     this.slope = const d.Value.absent(),
     this.aspect = const d.Value.absent(),
@@ -27294,6 +27678,9 @@ class GpSiteInfoCompanion extends d.UpdateCompanion<GpSiteInfoData> {
     this.succStage = const d.Value.absent(),
     this.wetlandClass = const d.Value.absent(),
     this.userInfo = const d.Value.absent(),
+    this.gpsMake = const d.Value.absent(),
+    this.gpsModel = const d.Value.absent(),
+    this.gpsPoint = const d.Value.absent(),
   });
   GpSiteInfoCompanion.insert({
     this.id = const d.Value.absent(),
@@ -27304,8 +27691,11 @@ class GpSiteInfoCompanion extends d.UpdateCompanion<GpSiteInfoData> {
     required int ecozone,
     this.provEcoType = const d.Value.absent(),
     required int provEcoRef,
+    required String postProcessing,
     required int utmN,
+    required double utmNAccuracy,
     required int utmE,
+    required double utmEAccuracy,
     required int utmZone,
     required int slope,
     required int aspect,
@@ -27319,14 +27709,20 @@ class GpSiteInfoCompanion extends d.UpdateCompanion<GpSiteInfoData> {
     required String succStage,
     required String wetlandClass,
     this.userInfo = const d.Value.absent(),
+    required String gpsMake,
+    required String gpsModel,
+    required int gpsPoint,
   })  : gpSummaryId = d.Value(gpSummaryId),
         plotCompletion = d.Value(plotCompletion),
         incompReason = d.Value(incompReason),
         province = d.Value(province),
         ecozone = d.Value(ecozone),
         provEcoRef = d.Value(provEcoRef),
+        postProcessing = d.Value(postProcessing),
         utmN = d.Value(utmN),
+        utmNAccuracy = d.Value(utmNAccuracy),
         utmE = d.Value(utmE),
+        utmEAccuracy = d.Value(utmEAccuracy),
         utmZone = d.Value(utmZone),
         slope = d.Value(slope),
         aspect = d.Value(aspect),
@@ -27338,7 +27734,10 @@ class GpSiteInfoCompanion extends d.UpdateCompanion<GpSiteInfoData> {
         densityCl = d.Value(densityCl),
         standStru = d.Value(standStru),
         succStage = d.Value(succStage),
-        wetlandClass = d.Value(wetlandClass);
+        wetlandClass = d.Value(wetlandClass),
+        gpsMake = d.Value(gpsMake),
+        gpsModel = d.Value(gpsModel),
+        gpsPoint = d.Value(gpsPoint);
   static d.Insertable<GpSiteInfoData> custom({
     d.Expression<int>? id,
     d.Expression<int>? gpSummaryId,
@@ -27348,8 +27747,11 @@ class GpSiteInfoCompanion extends d.UpdateCompanion<GpSiteInfoData> {
     d.Expression<int>? ecozone,
     d.Expression<String>? provEcoType,
     d.Expression<int>? provEcoRef,
+    d.Expression<String>? postProcessing,
     d.Expression<int>? utmN,
+    d.Expression<double>? utmNAccuracy,
     d.Expression<int>? utmE,
+    d.Expression<double>? utmEAccuracy,
     d.Expression<int>? utmZone,
     d.Expression<int>? slope,
     d.Expression<int>? aspect,
@@ -27363,6 +27765,9 @@ class GpSiteInfoCompanion extends d.UpdateCompanion<GpSiteInfoData> {
     d.Expression<String>? succStage,
     d.Expression<String>? wetlandClass,
     d.Expression<String>? userInfo,
+    d.Expression<String>? gpsMake,
+    d.Expression<String>? gpsModel,
+    d.Expression<int>? gpsPoint,
   }) {
     return d.RawValuesInsertable({
       if (id != null) 'id': id,
@@ -27373,8 +27778,11 @@ class GpSiteInfoCompanion extends d.UpdateCompanion<GpSiteInfoData> {
       if (ecozone != null) 'ecozone': ecozone,
       if (provEcoType != null) 'prov_eco_type': provEcoType,
       if (provEcoRef != null) 'prov_eco_ref': provEcoRef,
+      if (postProcessing != null) 'post_processing': postProcessing,
       if (utmN != null) 'utm_n': utmN,
+      if (utmNAccuracy != null) 'utm_n_accuracy': utmNAccuracy,
       if (utmE != null) 'utm_e': utmE,
+      if (utmEAccuracy != null) 'utm_e_accuracy': utmEAccuracy,
       if (utmZone != null) 'utm_zone': utmZone,
       if (slope != null) 'slope': slope,
       if (aspect != null) 'aspect': aspect,
@@ -27388,6 +27796,9 @@ class GpSiteInfoCompanion extends d.UpdateCompanion<GpSiteInfoData> {
       if (succStage != null) 'succ_stage': succStage,
       if (wetlandClass != null) 'wetland_class': wetlandClass,
       if (userInfo != null) 'user_info': userInfo,
+      if (gpsMake != null) 'gps_make': gpsMake,
+      if (gpsModel != null) 'gps_model': gpsModel,
+      if (gpsPoint != null) 'gps_point': gpsPoint,
     });
   }
 
@@ -27400,8 +27811,11 @@ class GpSiteInfoCompanion extends d.UpdateCompanion<GpSiteInfoData> {
       d.Value<int>? ecozone,
       d.Value<String?>? provEcoType,
       d.Value<int>? provEcoRef,
+      d.Value<String>? postProcessing,
       d.Value<int>? utmN,
+      d.Value<double>? utmNAccuracy,
       d.Value<int>? utmE,
+      d.Value<double>? utmEAccuracy,
       d.Value<int>? utmZone,
       d.Value<int>? slope,
       d.Value<int>? aspect,
@@ -27414,7 +27828,10 @@ class GpSiteInfoCompanion extends d.UpdateCompanion<GpSiteInfoData> {
       d.Value<String>? standStru,
       d.Value<String>? succStage,
       d.Value<String>? wetlandClass,
-      d.Value<String?>? userInfo}) {
+      d.Value<String?>? userInfo,
+      d.Value<String>? gpsMake,
+      d.Value<String>? gpsModel,
+      d.Value<int>? gpsPoint}) {
     return GpSiteInfoCompanion(
       id: id ?? this.id,
       gpSummaryId: gpSummaryId ?? this.gpSummaryId,
@@ -27424,8 +27841,11 @@ class GpSiteInfoCompanion extends d.UpdateCompanion<GpSiteInfoData> {
       ecozone: ecozone ?? this.ecozone,
       provEcoType: provEcoType ?? this.provEcoType,
       provEcoRef: provEcoRef ?? this.provEcoRef,
+      postProcessing: postProcessing ?? this.postProcessing,
       utmN: utmN ?? this.utmN,
+      utmNAccuracy: utmNAccuracy ?? this.utmNAccuracy,
       utmE: utmE ?? this.utmE,
+      utmEAccuracy: utmEAccuracy ?? this.utmEAccuracy,
       utmZone: utmZone ?? this.utmZone,
       slope: slope ?? this.slope,
       aspect: aspect ?? this.aspect,
@@ -27439,6 +27859,9 @@ class GpSiteInfoCompanion extends d.UpdateCompanion<GpSiteInfoData> {
       succStage: succStage ?? this.succStage,
       wetlandClass: wetlandClass ?? this.wetlandClass,
       userInfo: userInfo ?? this.userInfo,
+      gpsMake: gpsMake ?? this.gpsMake,
+      gpsModel: gpsModel ?? this.gpsModel,
+      gpsPoint: gpsPoint ?? this.gpsPoint,
     );
   }
 
@@ -27469,11 +27892,20 @@ class GpSiteInfoCompanion extends d.UpdateCompanion<GpSiteInfoData> {
     if (provEcoRef.present) {
       map['prov_eco_ref'] = d.Variable<int>(provEcoRef.value);
     }
+    if (postProcessing.present) {
+      map['post_processing'] = d.Variable<String>(postProcessing.value);
+    }
     if (utmN.present) {
       map['utm_n'] = d.Variable<int>(utmN.value);
     }
+    if (utmNAccuracy.present) {
+      map['utm_n_accuracy'] = d.Variable<double>(utmNAccuracy.value);
+    }
     if (utmE.present) {
       map['utm_e'] = d.Variable<int>(utmE.value);
+    }
+    if (utmEAccuracy.present) {
+      map['utm_e_accuracy'] = d.Variable<double>(utmEAccuracy.value);
     }
     if (utmZone.present) {
       map['utm_zone'] = d.Variable<int>(utmZone.value);
@@ -27514,6 +27946,15 @@ class GpSiteInfoCompanion extends d.UpdateCompanion<GpSiteInfoData> {
     if (userInfo.present) {
       map['user_info'] = d.Variable<String>(userInfo.value);
     }
+    if (gpsMake.present) {
+      map['gps_make'] = d.Variable<String>(gpsMake.value);
+    }
+    if (gpsModel.present) {
+      map['gps_model'] = d.Variable<String>(gpsModel.value);
+    }
+    if (gpsPoint.present) {
+      map['gps_point'] = d.Variable<int>(gpsPoint.value);
+    }
     return map;
   }
 
@@ -27528,8 +27969,11 @@ class GpSiteInfoCompanion extends d.UpdateCompanion<GpSiteInfoData> {
           ..write('ecozone: $ecozone, ')
           ..write('provEcoType: $provEcoType, ')
           ..write('provEcoRef: $provEcoRef, ')
+          ..write('postProcessing: $postProcessing, ')
           ..write('utmN: $utmN, ')
+          ..write('utmNAccuracy: $utmNAccuracy, ')
           ..write('utmE: $utmE, ')
+          ..write('utmEAccuracy: $utmEAccuracy, ')
           ..write('utmZone: $utmZone, ')
           ..write('slope: $slope, ')
           ..write('aspect: $aspect, ')
@@ -27542,7 +27986,10 @@ class GpSiteInfoCompanion extends d.UpdateCompanion<GpSiteInfoData> {
           ..write('standStru: $standStru, ')
           ..write('succStage: $succStage, ')
           ..write('wetlandClass: $wetlandClass, ')
-          ..write('userInfo: $userInfo')
+          ..write('userInfo: $userInfo, ')
+          ..write('gpsMake: $gpsMake, ')
+          ..write('gpsModel: $gpsModel, ')
+          ..write('gpsPoint: $gpsPoint')
           ..write(')'))
         .toString();
   }
@@ -28671,6 +29118,9 @@ abstract class _$Database extends d.GeneratedDatabase {
       $GpSiteInfoLandPosTable(this);
   late final $GpSiteInfoPostProcessingTable gpSiteInfoPostProcessing =
       $GpSiteInfoPostProcessingTable(this);
+  late final $GpSiteInfoPlotIncompleteReasonTable
+      gpSiteInfoPlotIncompleteReason =
+      $GpSiteInfoPlotIncompleteReasonTable(this);
   late final $SurveyHeadersTable surveyHeaders = $SurveyHeadersTable(this);
   late final $MetaCommentTable metaComment = $MetaCommentTable(this);
   late final $SurveySummaryTable surveySummary = $SurveySummaryTable(this);
@@ -28804,6 +29254,7 @@ abstract class _$Database extends d.GeneratedDatabase {
         gpSiteInfoLandCover,
         gpSiteInfoLandPos,
         gpSiteInfoPostProcessing,
+        gpSiteInfoPlotIncompleteReason,
         surveyHeaders,
         metaComment,
         surveySummary,
@@ -34563,6 +35014,106 @@ class $$GpSiteInfoPostProcessingTableFilterComposer
 class $$GpSiteInfoPostProcessingTableOrderingComposer
     extends d.OrderingComposer<_$Database, $GpSiteInfoPostProcessingTable> {
   $$GpSiteInfoPostProcessingTableOrderingComposer(super.$state);
+  d.ColumnOrderings<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$GpSiteInfoPlotIncompleteReasonTableInsertCompanionBuilder
+    = GpSiteInfoPlotIncompleteReasonCompanion Function({
+  required String code,
+  required String name,
+  d.Value<int> rowid,
+});
+typedef $$GpSiteInfoPlotIncompleteReasonTableUpdateCompanionBuilder
+    = GpSiteInfoPlotIncompleteReasonCompanion Function({
+  d.Value<String> code,
+  d.Value<String> name,
+  d.Value<int> rowid,
+});
+
+class $$GpSiteInfoPlotIncompleteReasonTableTableManager
+    extends d.RootTableManager<
+        _$Database,
+        $GpSiteInfoPlotIncompleteReasonTable,
+        GpSiteInfoPlotIncompleteReasonData,
+        $$GpSiteInfoPlotIncompleteReasonTableFilterComposer,
+        $$GpSiteInfoPlotIncompleteReasonTableOrderingComposer,
+        $$GpSiteInfoPlotIncompleteReasonTableProcessedTableManager,
+        $$GpSiteInfoPlotIncompleteReasonTableInsertCompanionBuilder,
+        $$GpSiteInfoPlotIncompleteReasonTableUpdateCompanionBuilder> {
+  $$GpSiteInfoPlotIncompleteReasonTableTableManager(
+      _$Database db, $GpSiteInfoPlotIncompleteReasonTable table)
+      : super(d.TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$GpSiteInfoPlotIncompleteReasonTableFilterComposer(
+                  d.ComposerState(db, table)),
+          orderingComposer:
+              $$GpSiteInfoPlotIncompleteReasonTableOrderingComposer(
+                  d.ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$GpSiteInfoPlotIncompleteReasonTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            d.Value<String> code = const d.Value.absent(),
+            d.Value<String> name = const d.Value.absent(),
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpSiteInfoPlotIncompleteReasonCompanion(
+            code: code,
+            name: name,
+            rowid: rowid,
+          ),
+          getInsertCompanionBuilder: ({
+            required String code,
+            required String name,
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpSiteInfoPlotIncompleteReasonCompanion.insert(
+            code: code,
+            name: name,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$GpSiteInfoPlotIncompleteReasonTableProcessedTableManager
+    extends d.ProcessedTableManager<
+        _$Database,
+        $GpSiteInfoPlotIncompleteReasonTable,
+        GpSiteInfoPlotIncompleteReasonData,
+        $$GpSiteInfoPlotIncompleteReasonTableFilterComposer,
+        $$GpSiteInfoPlotIncompleteReasonTableOrderingComposer,
+        $$GpSiteInfoPlotIncompleteReasonTableProcessedTableManager,
+        $$GpSiteInfoPlotIncompleteReasonTableInsertCompanionBuilder,
+        $$GpSiteInfoPlotIncompleteReasonTableUpdateCompanionBuilder> {
+  $$GpSiteInfoPlotIncompleteReasonTableProcessedTableManager(super.$state);
+}
+
+class $$GpSiteInfoPlotIncompleteReasonTableFilterComposer
+    extends d.FilterComposer<_$Database, $GpSiteInfoPlotIncompleteReasonTable> {
+  $$GpSiteInfoPlotIncompleteReasonTableFilterComposer(super.$state);
+  d.ColumnFilters<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$GpSiteInfoPlotIncompleteReasonTableOrderingComposer extends d
+    .OrderingComposer<_$Database, $GpSiteInfoPlotIncompleteReasonTable> {
+  $$GpSiteInfoPlotIncompleteReasonTableOrderingComposer(super.$state);
   d.ColumnOrderings<String> get code => $state.composableBuilder(
       column: $state.table.code,
       builder: (column, joinBuilders) =>
@@ -42329,8 +42880,11 @@ typedef $$GpSiteInfoTableInsertCompanionBuilder = GpSiteInfoCompanion Function({
   required int ecozone,
   d.Value<String?> provEcoType,
   required int provEcoRef,
+  required String postProcessing,
   required int utmN,
+  required double utmNAccuracy,
   required int utmE,
+  required double utmEAccuracy,
   required int utmZone,
   required int slope,
   required int aspect,
@@ -42344,6 +42898,9 @@ typedef $$GpSiteInfoTableInsertCompanionBuilder = GpSiteInfoCompanion Function({
   required String succStage,
   required String wetlandClass,
   d.Value<String?> userInfo,
+  required String gpsMake,
+  required String gpsModel,
+  required int gpsPoint,
 });
 typedef $$GpSiteInfoTableUpdateCompanionBuilder = GpSiteInfoCompanion Function({
   d.Value<int> id,
@@ -42354,8 +42911,11 @@ typedef $$GpSiteInfoTableUpdateCompanionBuilder = GpSiteInfoCompanion Function({
   d.Value<int> ecozone,
   d.Value<String?> provEcoType,
   d.Value<int> provEcoRef,
+  d.Value<String> postProcessing,
   d.Value<int> utmN,
+  d.Value<double> utmNAccuracy,
   d.Value<int> utmE,
+  d.Value<double> utmEAccuracy,
   d.Value<int> utmZone,
   d.Value<int> slope,
   d.Value<int> aspect,
@@ -42369,6 +42929,9 @@ typedef $$GpSiteInfoTableUpdateCompanionBuilder = GpSiteInfoCompanion Function({
   d.Value<String> succStage,
   d.Value<String> wetlandClass,
   d.Value<String?> userInfo,
+  d.Value<String> gpsMake,
+  d.Value<String> gpsModel,
+  d.Value<int> gpsPoint,
 });
 
 class $$GpSiteInfoTableTableManager extends d.RootTableManager<
@@ -42399,8 +42962,11 @@ class $$GpSiteInfoTableTableManager extends d.RootTableManager<
             d.Value<int> ecozone = const d.Value.absent(),
             d.Value<String?> provEcoType = const d.Value.absent(),
             d.Value<int> provEcoRef = const d.Value.absent(),
+            d.Value<String> postProcessing = const d.Value.absent(),
             d.Value<int> utmN = const d.Value.absent(),
+            d.Value<double> utmNAccuracy = const d.Value.absent(),
             d.Value<int> utmE = const d.Value.absent(),
+            d.Value<double> utmEAccuracy = const d.Value.absent(),
             d.Value<int> utmZone = const d.Value.absent(),
             d.Value<int> slope = const d.Value.absent(),
             d.Value<int> aspect = const d.Value.absent(),
@@ -42414,6 +42980,9 @@ class $$GpSiteInfoTableTableManager extends d.RootTableManager<
             d.Value<String> succStage = const d.Value.absent(),
             d.Value<String> wetlandClass = const d.Value.absent(),
             d.Value<String?> userInfo = const d.Value.absent(),
+            d.Value<String> gpsMake = const d.Value.absent(),
+            d.Value<String> gpsModel = const d.Value.absent(),
+            d.Value<int> gpsPoint = const d.Value.absent(),
           }) =>
               GpSiteInfoCompanion(
             id: id,
@@ -42424,8 +42993,11 @@ class $$GpSiteInfoTableTableManager extends d.RootTableManager<
             ecozone: ecozone,
             provEcoType: provEcoType,
             provEcoRef: provEcoRef,
+            postProcessing: postProcessing,
             utmN: utmN,
+            utmNAccuracy: utmNAccuracy,
             utmE: utmE,
+            utmEAccuracy: utmEAccuracy,
             utmZone: utmZone,
             slope: slope,
             aspect: aspect,
@@ -42439,6 +43011,9 @@ class $$GpSiteInfoTableTableManager extends d.RootTableManager<
             succStage: succStage,
             wetlandClass: wetlandClass,
             userInfo: userInfo,
+            gpsMake: gpsMake,
+            gpsModel: gpsModel,
+            gpsPoint: gpsPoint,
           ),
           getInsertCompanionBuilder: ({
             d.Value<int> id = const d.Value.absent(),
@@ -42449,8 +43024,11 @@ class $$GpSiteInfoTableTableManager extends d.RootTableManager<
             required int ecozone,
             d.Value<String?> provEcoType = const d.Value.absent(),
             required int provEcoRef,
+            required String postProcessing,
             required int utmN,
+            required double utmNAccuracy,
             required int utmE,
+            required double utmEAccuracy,
             required int utmZone,
             required int slope,
             required int aspect,
@@ -42464,6 +43042,9 @@ class $$GpSiteInfoTableTableManager extends d.RootTableManager<
             required String succStage,
             required String wetlandClass,
             d.Value<String?> userInfo = const d.Value.absent(),
+            required String gpsMake,
+            required String gpsModel,
+            required int gpsPoint,
           }) =>
               GpSiteInfoCompanion.insert(
             id: id,
@@ -42474,8 +43055,11 @@ class $$GpSiteInfoTableTableManager extends d.RootTableManager<
             ecozone: ecozone,
             provEcoType: provEcoType,
             provEcoRef: provEcoRef,
+            postProcessing: postProcessing,
             utmN: utmN,
+            utmNAccuracy: utmNAccuracy,
             utmE: utmE,
+            utmEAccuracy: utmEAccuracy,
             utmZone: utmZone,
             slope: slope,
             aspect: aspect,
@@ -42489,6 +43073,9 @@ class $$GpSiteInfoTableTableManager extends d.RootTableManager<
             succStage: succStage,
             wetlandClass: wetlandClass,
             userInfo: userInfo,
+            gpsMake: gpsMake,
+            gpsModel: gpsModel,
+            gpsPoint: gpsPoint,
           ),
         ));
 }
@@ -42543,13 +43130,28 @@ class $$GpSiteInfoTableFilterComposer
       builder: (column, joinBuilders) =>
           d.ColumnFilters(column, joinBuilders: joinBuilders));
 
+  d.ColumnFilters<String> get postProcessing => $state.composableBuilder(
+      column: $state.table.postProcessing,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
   d.ColumnFilters<int> get utmN => $state.composableBuilder(
       column: $state.table.utmN,
       builder: (column, joinBuilders) =>
           d.ColumnFilters(column, joinBuilders: joinBuilders));
 
+  d.ColumnFilters<double> get utmNAccuracy => $state.composableBuilder(
+      column: $state.table.utmNAccuracy,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
   d.ColumnFilters<int> get utmE => $state.composableBuilder(
       column: $state.table.utmE,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<double> get utmEAccuracy => $state.composableBuilder(
+      column: $state.table.utmEAccuracy,
       builder: (column, joinBuilders) =>
           d.ColumnFilters(column, joinBuilders: joinBuilders));
 
@@ -42618,6 +43220,21 @@ class $$GpSiteInfoTableFilterComposer
       builder: (column, joinBuilders) =>
           d.ColumnFilters(column, joinBuilders: joinBuilders));
 
+  d.ColumnFilters<String> get gpsMake => $state.composableBuilder(
+      column: $state.table.gpsMake,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get gpsModel => $state.composableBuilder(
+      column: $state.table.gpsModel,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<int> get gpsPoint => $state.composableBuilder(
+      column: $state.table.gpsPoint,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
   $$GpSummaryTableFilterComposer get gpSummaryId {
     final $$GpSummaryTableFilterComposer composer = $state.composerBuilder(
         composer: this,
@@ -42669,13 +43286,28 @@ class $$GpSiteInfoTableOrderingComposer
       builder: (column, joinBuilders) =>
           d.ColumnOrderings(column, joinBuilders: joinBuilders));
 
+  d.ColumnOrderings<String> get postProcessing => $state.composableBuilder(
+      column: $state.table.postProcessing,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
   d.ColumnOrderings<int> get utmN => $state.composableBuilder(
       column: $state.table.utmN,
       builder: (column, joinBuilders) =>
           d.ColumnOrderings(column, joinBuilders: joinBuilders));
 
+  d.ColumnOrderings<double> get utmNAccuracy => $state.composableBuilder(
+      column: $state.table.utmNAccuracy,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
   d.ColumnOrderings<int> get utmE => $state.composableBuilder(
       column: $state.table.utmE,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<double> get utmEAccuracy => $state.composableBuilder(
+      column: $state.table.utmEAccuracy,
       builder: (column, joinBuilders) =>
           d.ColumnOrderings(column, joinBuilders: joinBuilders));
 
@@ -42741,6 +43373,21 @@ class $$GpSiteInfoTableOrderingComposer
 
   d.ColumnOrderings<String> get userInfo => $state.composableBuilder(
       column: $state.table.userInfo,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get gpsMake => $state.composableBuilder(
+      column: $state.table.gpsMake,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get gpsModel => $state.composableBuilder(
+      column: $state.table.gpsModel,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<int> get gpsPoint => $state.composableBuilder(
+      column: $state.table.gpsPoint,
       builder: (column, joinBuilders) =>
           d.ColumnOrderings(column, joinBuilders: joinBuilders));
 
@@ -43375,6 +44022,10 @@ class _$DatabaseManager {
   $$GpSiteInfoPostProcessingTableTableManager get gpSiteInfoPostProcessing =>
       $$GpSiteInfoPostProcessingTableTableManager(
           _db, _db.gpSiteInfoPostProcessing);
+  $$GpSiteInfoPlotIncompleteReasonTableTableManager
+      get gpSiteInfoPlotIncompleteReason =>
+          $$GpSiteInfoPlotIncompleteReasonTableTableManager(
+              _db, _db.gpSiteInfoPlotIncompleteReason);
   $$SurveyHeadersTableTableManager get surveyHeaders =>
       $$SurveyHeadersTableTableManager(_db, _db.surveyHeaders);
   $$MetaCommentTableTableManager get metaComment =>

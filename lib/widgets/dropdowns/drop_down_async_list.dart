@@ -1,5 +1,4 @@
 import 'package:dropdown_search/dropdown_search.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/margins_padding.dart';
@@ -23,6 +22,7 @@ class DropDownAsyncList extends StatefulWidget {
   final bool searchable;
   final bool enabled;
   final bool Function(String?)? disabledFn;
+
   //return false to prevent popup
   final Future<bool?> Function(String?)? onBeforePopup;
   final void Function(String?) onChangedFn;
@@ -46,8 +46,12 @@ class _DropDownAsyncListState extends State<DropDownAsyncList> {
               ? Container()
               : Padding(
                   padding: const EdgeInsets.only(bottom: 0),
+                  // child: Text(
+                  //   tr(widget.title),
+                  //   style: kTitleStyle,
+                  // ),
                   child: Text(
-                    tr(widget.title),
+                    widget.title,
                     style: kTitleStyle,
                   ),
                 ),
