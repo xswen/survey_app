@@ -18,3 +18,11 @@ Future<GpSummaryData> gpSummaryData(GpSummaryDataRef ref, int gpSummaryId) =>
 // Future<List<SoilPitHorizonDescriptionData>> soilHorizonList(
 //     SoilHorizonListRef ref, int soilSummaryId) =>
 //     ref.read(databaseProvider).soilPitTablesDao.getHorizonList(soilSummaryId);
+
+@riverpod
+Future<List<GpDisturbanceData>> gpDistDataList(
+        GpDistDataListRef ref, int summaryId) =>
+    ref
+        .read(databaseProvider)
+        .siteInfoTablesDao
+        .getGpDisturbanceList(summaryId);

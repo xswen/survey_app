@@ -97,6 +97,7 @@ const List<Type> _tables = [
   GpSiteInfoPostProcessing,
   GpSiteInfoPlotIncompleteReason,
   GpDistAgent,
+  GpDistMortalityBasis,
   //Metadata Tables
   MetaComment,
   //Survey Tables
@@ -320,7 +321,9 @@ class Database extends _$Database {
           List<GpSiteInfoPostProcessingCompanion> gpSiteInfoPostProcessingList =
               await _getGpSiteInfoPostProcessing();
           List<GpDistAgentCompanion> gpDistAgentList =
-              await _getGpSiteInfoDistAgentCompanion();
+              await _getGpDistAgentCompanion();
+          List<GpDistMortalityBasisCompanion> gpDisMortalityBasisList =
+              await _getGpGpDistMortalityBasisCompanion();
 
           c.debugPrint("Init Values");
           await batch((b) {
@@ -390,6 +393,7 @@ class Database extends _$Database {
             b.insertAll(gpSiteInfoLandPos, gpSiteInfoLandPosList);
             b.insertAll(gpSiteInfoPostProcessing, gpSiteInfoPostProcessingList);
             b.insertAll(gpDistAgent, gpDistAgentList);
+            b.insertAll(gpDistMortalityBasis, gpDisMortalityBasisList);
 
             _initTest(b);
           });
@@ -1096,12 +1100,25 @@ class Database extends _$Database {
     }).toList();
   }
 
-  Future<List<GpDistAgentCompanion>> _getGpSiteInfoDistAgentCompanion() async {
+  Future<List<GpDistAgentCompanion>> _getGpDistAgentCompanion() async {
     List<dynamic> jsonData = await _loadJsonData(
         'assets/db_reference_data/gp_disturbance_agent_list.json');
 
     return jsonData.map((dynamic item) {
       return GpDistAgentCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<GpDistMortalityBasisCompanion>>
+      _getGpGpDistMortalityBasisCompanion() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/gp_disturbance_mortality_basis_list.json');
+
+    return jsonData.map((dynamic item) {
+      return GpDistMortalityBasisCompanion(
         code: Value(item["code"]),
         name: Value(item["name"]),
       );

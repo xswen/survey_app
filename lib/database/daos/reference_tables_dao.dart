@@ -65,6 +65,8 @@ part 'reference_tables_dao.g.dart';
   GpSiteInfoLandPos,
   GpSiteInfoPostProcessing,
   GpSiteInfoPlotIncompleteReason,
+  GpDistAgent,
+  GpDistMortalityBasis,
 ])
 class ReferenceTablesDao extends DatabaseAccessor<Database>
     with _$ReferenceTablesDaoMixin {
@@ -1628,6 +1630,51 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
   Future<String> getGpSiteInfoPostProcessingCode(String name) {
     return (select(gpSiteInfoPostProcessing)
           ..where((tbl) => tbl.name.equals(name)))
+        .map((row) => row.code)
+        .getSingle();
+  }
+
+  Future<List<String>> getGpDistAgentList() {
+    final query = selectOnly(gpDistAgent, distinct: true)
+      ..addColumns([gpDistAgent.name])
+      ..where(gpDistAgent.name.isNotNull());
+    return query
+        .map((row) => row.read(gpDistAgent.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getGpDistAgentName(String code) {
+    if (code.isEmpty) return Future.value("");
+    return (select(gpDistAgent)..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
+
+  Future<String> getGpDistAgentCode(String name) {
+    return (select(gpDistAgent)..where((tbl) => tbl.name.equals(name)))
+        .map((row) => row.code)
+        .getSingle();
+  }
+
+  Future<List<String>> getGpDistMortalityBasisList() {
+    final query = selectOnly(gpDistMortalityBasis, distinct: true)
+      ..addColumns([gpDistMortalityBasis.name])
+      ..where(gpDistMortalityBasis.name.isNotNull());
+    return query
+        .map((row) =>
+            row.read(gpDistMortalityBasis.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getGpDistMortalityBasisName(String code) {
+    if (code.isEmpty) return Future.value("");
+    return (select(gpDistMortalityBasis)..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
+
+  Future<String> getGpDistMortalityBasisCode(String name) {
+    return (select(gpDistMortalityBasis)..where((tbl) => tbl.name.equals(name)))
         .map((row) => row.code)
         .getSingle();
   }

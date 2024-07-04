@@ -1,0 +1,30 @@
+[
+  {
+    "code": "VL",
+    "name": "Volume"
+  },
+  {
+    "code": "BA",
+    "name": "Basal area"
+  },
+  {
+    "code": "CA",
+    "name": "Crown area"
+  },
+  {
+    "code": "ST",
+    "name": "Stem numbers"
+  },
+  {
+    "code": "AR",
+    "name": "Area"
+  },
+  {
+    "code": "NA",
+    "name": "Non-applicable (e.g. there are no trees in the plot, no trees were killed, or no disturbance)"
+  },
+  {
+    "code": "M",
+    "name": "Missing"
+  }
+]

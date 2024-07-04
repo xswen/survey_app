@@ -28,6 +28,7 @@ class DataGridSourceBuilder extends DataGridSource {
               : Text(
                   dataGridCell.value.toString(),
                   overflow: TextOverflow.visible,
+                  softWrap: true,
                 ));
     }).toList());
   }

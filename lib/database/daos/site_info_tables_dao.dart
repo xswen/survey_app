@@ -87,6 +87,9 @@ class SiteInfoTablesDao extends DatabaseAccessor<Database>
   Future<int> addGpDisturbance(GpDisturbanceCompanion entry) =>
       into(gpDisturbance).insert(entry);
 
+  Future<int> addorUpdateGpDisturbance(GpDisturbanceCompanion entry) =>
+      into(gpDisturbance).insertOnConflictUpdate(entry);
+
   Future<GpDisturbanceData> getGpDisturbance(int id) =>
       (select(gpDisturbance)..where((tbl) => tbl.id.equals(id))).getSingle();
 

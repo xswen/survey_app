@@ -1,46 +1,46 @@
 [
   {
     "code": "FIRE",
-    "name": "Plot has experienced a fire."
+    "name": "FIRE: Plot has experienced a fire."
   },
   {
     "code": "WIND",
-    "name": "Vegetation in plot has experienced windthrow."
+    "name": "WIND: Vegetation in plot has experienced windthrow."
   },
   {
     "code": "SNOW",
-    "name": "Vegetation in plot has experienced significant snow damage."
+    "name": "SNOW: Vegetation in plot has experienced significant snow damage."
   },
   {
     "code": "INSECT",
-    "name": "Vegetation in plot has experienced insect attack. (Note: It can take several years of defoliation to do permanent damage to a tree. The threshold for significant defoliation varies with pest)."
+    "name": "INSECT: Vegetation in plot has experienced insect attack. (Note: It can take several years of defoliation to do permanent damage to a tree. The threshold for significant defoliation varies with pest)."
   },
   {
     "code": "INSECT2",
-    "name": "Vegetation in plot has experienced insect attack. (Note: It can take several years of defoliation to do permanent damage to a tree. The threshold for significant defoliation varies with pest)."
+    "name": "INSECT2: Vegetation in plot has experienced insect attack. (Note: It can take several years of defoliation to do permanent damage to a tree. The threshold for significant defoliation varies with pest)."
   },
   {
     "code": "DISEASE",
-    "name": "Vegetation in plot has experienced a disease outbreak."
+    "name": "DISEASE: Vegetation in plot has experienced a disease outbreak."
   },
   {
     "code": "DISEASE2",
-    "name": "Vegetation in plot has experienced a disease outbreak."
+    "name": "DISEASE2: Vegetation in plot has experienced a disease outbreak."
   },
   {
     "code": "ICE",
-    "name": "Vegetation in plot has experienced ice damage."
+    "name": "ICE: Vegetation in plot has experienced ice damage."
   },
   {
     "code": "OTHER",
-    "name": "Plot has experienced other disturbances. Enter the code ‘other’ followed by a word that better describes the type of disturbance agent, separated by a hyphen (e.g., OTHER-FLOODING)."
+    "name": "OTHER: Plot has experienced other disturbances. Enter the code ‘other’ followed by a word that better describes the type of disturbance agent, separated by a hyphen (e.g., OTHER-FLOODING)."
   },
   {
     "code": "UNKNOWN",
-    "name": "Plot disturbance is unknown."
+    "name": "UNKNOWN: Plot disturbance is unknown."
   },
   {
     "code": "NONE",
-    "name": "No disturbance observed."
+    "name": "NONE: No disturbance observed."
   }
 ]

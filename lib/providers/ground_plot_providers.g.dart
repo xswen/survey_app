@@ -155,5 +155,137 @@ class _GpSummaryDataProviderElement
   @override
   int get gpSummaryId => (origin as GpSummaryDataProvider).gpSummaryId;
 }
+
+String _$gpDistDataListHash() => r'3a5671ee8d2f6e52af2a42300b770e797608661c';
+
+/// See also [gpDistDataList].
+@ProviderFor(gpDistDataList)
+const gpDistDataListProvider = GpDistDataListFamily();
+
+/// See also [gpDistDataList].
+class GpDistDataListFamily extends Family<AsyncValue<List<GpDisturbanceData>>> {
+  /// See also [gpDistDataList].
+  const GpDistDataListFamily();
+
+  /// See also [gpDistDataList].
+  GpDistDataListProvider call(
+    int summaryId,
+  ) {
+    return GpDistDataListProvider(
+      summaryId,
+    );
+  }
+
+  @override
+  GpDistDataListProvider getProviderOverride(
+    covariant GpDistDataListProvider provider,
+  ) {
+    return call(
+      provider.summaryId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'gpDistDataListProvider';
+}
+
+/// See also [gpDistDataList].
+class GpDistDataListProvider
+    extends AutoDisposeFutureProvider<List<GpDisturbanceData>> {
+  /// See also [gpDistDataList].
+  GpDistDataListProvider(
+    int summaryId,
+  ) : this._internal(
+          (ref) => gpDistDataList(
+            ref as GpDistDataListRef,
+            summaryId,
+          ),
+          from: gpDistDataListProvider,
+          name: r'gpDistDataListProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$gpDistDataListHash,
+          dependencies: GpDistDataListFamily._dependencies,
+          allTransitiveDependencies:
+              GpDistDataListFamily._allTransitiveDependencies,
+          summaryId: summaryId,
+        );
+
+  GpDistDataListProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.summaryId,
+  }) : super.internal();
+
+  final int summaryId;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<GpDisturbanceData>> Function(GpDistDataListRef provider)
+        create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GpDistDataListProvider._internal(
+        (ref) => create(ref as GpDistDataListRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        summaryId: summaryId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List<GpDisturbanceData>> createElement() {
+    return _GpDistDataListProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GpDistDataListProvider && other.summaryId == summaryId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, summaryId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin GpDistDataListRef
+    on AutoDisposeFutureProviderRef<List<GpDisturbanceData>> {
+  /// The parameter `summaryId` of this provider.
+  int get summaryId;
+}
+
+class _GpDistDataListProviderElement
+    extends AutoDisposeFutureProviderElement<List<GpDisturbanceData>>
+    with GpDistDataListRef {
+  _GpDistDataListProviderElement(super.provider);
+
+  @override
+  int get summaryId => (origin as GpDistDataListProvider).summaryId;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

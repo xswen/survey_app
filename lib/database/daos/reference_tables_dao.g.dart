@@ -89,4 +89,7 @@ mixin _$ReferenceTablesDaoMixin on DatabaseAccessor<Database> {
       attachedDatabase.gpSiteInfoPostProcessing;
   $GpSiteInfoPlotIncompleteReasonTable get gpSiteInfoPlotIncompleteReason =>
       attachedDatabase.gpSiteInfoPlotIncompleteReason;
+  $GpDistAgentTable get gpDistAgent => attachedDatabase.gpDistAgent;
+  $GpDistMortalityBasisTable get gpDistMortalityBasis =>
+      attachedDatabase.gpDistMortalityBasis;
 }

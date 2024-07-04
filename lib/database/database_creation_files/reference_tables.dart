@@ -428,3 +428,9 @@ class GpDistAgent extends Table {
 
   TextColumn get name => text()();
 }
+
+class GpDistMortalityBasis extends Table {
+  TextColumn get code => text()();
+
+  TextColumn get name => text()();
+}

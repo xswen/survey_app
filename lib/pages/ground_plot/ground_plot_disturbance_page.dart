@@ -1,5 +1,7 @@
+import 'package:drift/drift.dart' as d;
 import 'package:survey_app/barrels/page_imports_barrel.dart';
 import 'package:survey_app/pages/ground_plot/ground_plot_disturbance_entry_page.dart';
+import 'package:survey_app/providers/ground_plot_providers.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../widgets/buttons/custom_button_styles.dart';
@@ -9,6 +11,7 @@ import '../../wrappers/column_header_object.dart';
 
 class ColNames {
   ColNames();
+
   ColumnHeaders id = ColumnHeaders(ColumnHeaders.headerNameId, visible: false);
   ColumnHeaders agent = ColumnHeaders("Disturbance Agent");
   ColumnHeaders year = ColumnHeaders("Disturbance Year");
@@ -27,6 +30,7 @@ class ColNames {
 class GroundPlotDisturbancePage extends ConsumerStatefulWidget {
   static const String routeName = "groundPlotDisturbance";
   final GoRouterState state;
+
   const GroundPlotDisturbancePage(this.state, {super.key});
 
   @override
@@ -38,55 +42,85 @@ class GroundPlotDisturbancePageState
     extends ConsumerState<GroundPlotDisturbancePage> {
   final ColNames columnData = ColNames();
   late final PopupDismiss completeWarningPopup;
+  late bool parentComplete = false;
+  late final int surveyId;
+  late final int summaryId;
+
+  final PopupDismiss popupSurveyComplete =
+      Popups.generatePreviousMarkedCompleteErrorPopup("Ground plot");
 
   @override
   void initState() {
-    //spId = PathParamValue.getSoilPitSummary(widget.state);
+    surveyId = PathParamValue.getSurveyId(widget.state)!;
+    summaryId = PathParamValue.getGpSummaryId(widget.state);
     completeWarningPopup = Popups.generateCompleteErrorPopup("Large Tree Plot");
-    //_loadData();
+    _loadData();
     super.initState();
   }
 
-  List<DataGridRow> generateDataGridRows(List<LtpTreeData> treeList) {
-    return treeList
+  void _loadData() async {
+    final GpSummaryData data = await Database.instance.siteInfoTablesDao
+        .getGpSummaryBySurveyId(surveyId);
+
+    if (mounted) {
+      // Only proceed if the widget is still in the tree
+      setState(() {
+        parentComplete = data.complete;
+      });
+    }
+  }
+
+  List<DataGridRow> generateDataGridRows(
+      List<GpDisturbanceData> distAgentList) {
+    return distAgentList
         .map<DataGridRow>((dataGridRow) => DataGridRow(cells: [
               DataGridCell<int>(
                   columnName: columnData.id.name, value: dataGridRow.id),
               DataGridCell<String>(
-                  columnName: columnData.agent.name, value: ""),
-              DataGridCell<String>(columnName: columnData.year.name, value: ""),
-              DataGridCell<int>(columnName: columnData.extent.name, value: 0),
+                  columnName: columnData.agent.name,
+                  value: dataGridRow.distAgent),
               DataGridCell<int>(
-                  columnName: columnData.treeMortality.name, value: 0),
+                  columnName: columnData.year.name, value: dataGridRow.distYr),
+              DataGridCell<int>(
+                  columnName: columnData.extent.name,
+                  value: dataGridRow.distPct),
+              DataGridCell<int>(
+                  columnName: columnData.treeMortality.name,
+                  value: dataGridRow.mortPct),
               DataGridCell<String>(
                   columnName: columnData.mortalityBasis.name,
-                  value: dataGridRow.lgTreeSpecies),
+                  value: dataGridRow.mortBasis),
               DataGridCell<String>(
-                  columnName: columnData.comments.name, value: ""),
-              DataGridCell<LtpTreeData>(
+                  columnName: columnData.comments.name,
+                  value: dataGridRow.agentType),
+              DataGridCell<GpDisturbanceData>(
                   columnName: columnData.edit.name, value: dataGridRow),
             ]))
         .toList();
   }
 
-  DataGridSourceBuilder getSourceBuilder(List<LtpTreeData> treeList) {
-    DataGridSourceBuilder source =
-        DataGridSourceBuilder(dataGridRows: generateDataGridRows(treeList));
-    // source.sortedColumns.add(SortColumnDetails(
-    //     name: columnData.sector.toString(),
-    //     sortDirection: DataGridSortDirection.ascending));
-    // source.sortedColumns.add(SortColumnDetails(
-    //     name: columnData.treeNum.toString(),
-    //     sortDirection: DataGridSortDirection.ascending));
-    // source.sort();
+  DataGridSourceBuilder getSourceBuilder(
+      List<GpDisturbanceData> distAgentList) {
+    DataGridSourceBuilder source = DataGridSourceBuilder(
+        dataGridRows: generateDataGridRows(distAgentList));
+    source.sortedColumns.add(SortColumnDetails(
+        name: columnData.id.toString(),
+        sortDirection: DataGridSortDirection.ascending));
+    source.sort();
 
     return source;
   }
 
+  void goToEntryPage(GpDisturbanceCompanion data) =>
+      context.pushNamed(GroundPlotDisturbanceEntryPage.routeName,
+          pathParameters: widget.state.pathParameters, extra: data);
+
   @override
   Widget build(BuildContext context) {
     final db = ref.read(databaseProvider);
-    debugPrint("Going to ${GoRouterState.of(context).uri.toString()}");
+    final AsyncValue<List<GpDisturbanceData>> dataList =
+        ref.watch(gpDistDataListProvider(summaryId));
+
     return Scaffold(
       appBar: const OurAppBar("Disturbances"),
       endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),
@@ -111,11 +145,10 @@ class GroundPlotDisturbancePageState
                   Padding(
                     padding: const EdgeInsets.only(left: kPaddingH),
                     child: ElevatedButton(
-                        onPressed: () async => false
+                        onPressed: () async => parentComplete
                             ? Popups.show(context, completeWarningPopup)
-                            : context.pushNamed(
-                                GroundPlotDisturbanceEntryPage.routeName,
-                                pathParameters: widget.state.pathParameters),
+                            : goToEntryPage(GpDisturbanceCompanion(
+                                gpSummaryId: d.Value(summaryId))),
                         style:
                             CustomButtonStyles.inactiveButton(isActive: !false),
                         child: const Text("Add tree")),
@@ -125,36 +158,39 @@ class GroundPlotDisturbancePageState
             ),
             Expanded(
               child: Center(
-                child: TableCreationBuilder(
-                  source: getSourceBuilder([]),
-                  columnWidthMode: ColumnWidthMode.lastColumnFill,
-                  colNames: columnData.getColHeadersList(),
-                  onCellTap: (DataGridCellTapDetails details) async {
-                    // Assuming the "edit" column index is 2
-                    if (details.column.columnName == columnData.edit.name &&
-                        details.rowColumnIndex.rowIndex != 0) {
-                      // if (ssh.complete.value || parentComplete) {
-                      //   Popups.show(context, popupPageComplete);
-                      // } else {
-                      //   int pId = source.dataGridRows[
-                      //   details.rowColumnIndex.rowIndex - 1]
-                      //       .getCells()[0]
-                      //       .value;
-                      //
-                      //   db.surfaceSubstrateTablesDao
-                      //       .getSsTallyFromId(pId)
-                      //       .then((value) => context.pushNamed(
-                      //       SurfaceSubstrateStationInfoPage
-                      //           .routeName,
-                      //       pathParameters:
-                      //       PathParamGenerator.ssStationInfo(
-                      //           widget.state,
-                      //           value.stationNum.toString()),
-                      //       extra: value.toCompanion(true)));
-                      // }
-                    }
-                  },
-                ),
+                child: dataList.when(
+                    data: (dataList) {
+                      DataGridSourceBuilder source = getSourceBuilder(dataList);
+                      return Center(
+                        child: TableCreationBuilder(
+                          source: source,
+                          columnWidthMode: ColumnWidthMode.lastColumnFill,
+                          colNames: columnData.getColHeadersList(),
+                          onCellTap: (DataGridCellTapDetails details) async {
+                            // Assuming the "edit" column index is 2
+                            if (details.column.columnName ==
+                                    columnData.edit.name &&
+                                details.rowColumnIndex.rowIndex != 0) {
+                              if (parentComplete) {
+                                Popups.show(context, popupSurveyComplete);
+                              } else {
+                                int pId = source.dataGridRows[
+                                        details.rowColumnIndex.rowIndex - 1]
+                                    .getCells()[0]
+                                    .value;
+
+                                db.siteInfoTablesDao.getGpDisturbance(pId).then(
+                                    (value) =>
+                                        goToEntryPage(value.toCompanion(true)));
+                              }
+                            }
+                          },
+                        ),
+                      );
+                    },
+                    error: (err, stack) => Text("Error: $err"),
+                    loading: () =>
+                        const Center(child: CircularProgressIndicator())),
               ),
             )
           ],

@@ -119,7 +119,8 @@ class GpDisturbance extends Table {
 
   TextColumn get mortBasis => text().withLength(min: 1, max: 2)();
 
-  TextColumn get agentType => text().nullable().withLength(min: 1, max: 200)();
+  TextColumn get agentType =>
+      text().withLength(max: 200).withDefault(const Constant(''))();
 }
 
 class GpOrigin extends Table {

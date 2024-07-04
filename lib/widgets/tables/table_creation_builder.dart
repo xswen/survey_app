@@ -30,6 +30,7 @@ class TableCreationBuilder extends StatelessWidget {
                   child: Text(
                     value.name,
                     overflow: TextOverflow.visible,
+                    softWrap: true,
                   )),
               allowSorting: value.sort),
         )

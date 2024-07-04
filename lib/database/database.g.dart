@@ -11645,6 +11645,193 @@ class GpDistAgentCompanion extends d.UpdateCompanion<GpDistAgentData> {
   }
 }
 
+class $GpDistMortalityBasisTable extends GpDistMortalityBasis
+    with d.TableInfo<$GpDistMortalityBasisTable, GpDistMortalityBasi> {
+  @override
+  final d.GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GpDistMortalityBasisTable(this.attachedDatabase, [this._alias]);
+  static const d.VerificationMeta _codeMeta = const d.VerificationMeta('code');
+  @override
+  late final d.GeneratedColumn<String> code = d.GeneratedColumn<String>(
+      'code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const d.VerificationMeta _nameMeta = const d.VerificationMeta('name');
+  @override
+  late final d.GeneratedColumn<String> name = d.GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<d.GeneratedColumn> get $columns => [code, name];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'gp_dist_mortality_basis';
+  @override
+  d.VerificationContext validateIntegrity(
+      d.Insertable<GpDistMortalityBasi> instance,
+      {bool isInserting = false}) {
+    final context = d.VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('code')) {
+      context.handle(
+          _codeMeta, code.isAcceptableOrUnknown(data['code']!, _codeMeta));
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<d.GeneratedColumn> get $primaryKey => const {};
+  @override
+  GpDistMortalityBasi map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return GpDistMortalityBasi(
+      code: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}code'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+    );
+  }
+
+  @override
+  $GpDistMortalityBasisTable createAlias(String alias) {
+    return $GpDistMortalityBasisTable(attachedDatabase, alias);
+  }
+}
+
+class GpDistMortalityBasi extends d.DataClass
+    implements d.Insertable<GpDistMortalityBasi> {
+  final String code;
+  final String name;
+  const GpDistMortalityBasi({required this.code, required this.name});
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    map['code'] = d.Variable<String>(code);
+    map['name'] = d.Variable<String>(name);
+    return map;
+  }
+
+  GpDistMortalityBasisCompanion toCompanion(bool nullToAbsent) {
+    return GpDistMortalityBasisCompanion(
+      code: d.Value(code),
+      name: d.Value(name),
+    );
+  }
+
+  factory GpDistMortalityBasi.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return GpDistMortalityBasi(
+      code: serializer.fromJson<String>(json['code']),
+      name: serializer.fromJson<String>(json['name']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'code': serializer.toJson<String>(code),
+      'name': serializer.toJson<String>(name),
+    };
+  }
+
+  GpDistMortalityBasi copyWith({String? code, String? name}) =>
+      GpDistMortalityBasi(
+        code: code ?? this.code,
+        name: name ?? this.name,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('GpDistMortalityBasi(')
+          ..write('code: $code, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(code, name);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GpDistMortalityBasi &&
+          other.code == this.code &&
+          other.name == this.name);
+}
+
+class GpDistMortalityBasisCompanion
+    extends d.UpdateCompanion<GpDistMortalityBasi> {
+  final d.Value<String> code;
+  final d.Value<String> name;
+  final d.Value<int> rowid;
+  const GpDistMortalityBasisCompanion({
+    this.code = const d.Value.absent(),
+    this.name = const d.Value.absent(),
+    this.rowid = const d.Value.absent(),
+  });
+  GpDistMortalityBasisCompanion.insert({
+    required String code,
+    required String name,
+    this.rowid = const d.Value.absent(),
+  })  : code = d.Value(code),
+        name = d.Value(name);
+  static d.Insertable<GpDistMortalityBasi> custom({
+    d.Expression<String>? code,
+    d.Expression<String>? name,
+    d.Expression<int>? rowid,
+  }) {
+    return d.RawValuesInsertable({
+      if (code != null) 'code': code,
+      if (name != null) 'name': name,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  GpDistMortalityBasisCompanion copyWith(
+      {d.Value<String>? code, d.Value<String>? name, d.Value<int>? rowid}) {
+    return GpDistMortalityBasisCompanion(
+      code: code ?? this.code,
+      name: name ?? this.name,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    if (code.present) {
+      map['code'] = d.Variable<String>(code.value);
+    }
+    if (name.present) {
+      map['name'] = d.Variable<String>(name.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = d.Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GpDistMortalityBasisCompanion(')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $SurveyHeadersTable extends SurveyHeaders
     with d.TableInfo<$SurveyHeadersTable, SurveyHeader> {
   @override
@@ -28209,11 +28396,11 @@ class $GpDisturbanceTable extends GpDisturbance
       const d.VerificationMeta('agentType');
   @override
   late final d.GeneratedColumn<String> agentType = d.GeneratedColumn<String>(
-      'agent_type', aliasedName, true,
-      additionalChecks:
-          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 200),
+      'agent_type', aliasedName, false,
+      additionalChecks: GeneratedColumn.checkTextLength(maxTextLength: 200),
       type: DriftSqlType.string,
-      requiredDuringInsert: false);
+      requiredDuringInsert: false,
+      defaultValue: const d.Constant(''));
   @override
   List<d.GeneratedColumn> get $columns => [
         id,
@@ -28305,7 +28492,7 @@ class $GpDisturbanceTable extends GpDisturbance
       mortBasis: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}mort_basis'])!,
       agentType: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}agent_type']),
+          .read(DriftSqlType.string, data['${effectivePrefix}agent_type'])!,
     );
   }
 
@@ -28324,7 +28511,7 @@ class GpDisturbanceData extends d.DataClass
   final int distPct;
   final int mortPct;
   final String mortBasis;
-  final String? agentType;
+  final String agentType;
   const GpDisturbanceData(
       {required this.id,
       required this.gpSummaryId,
@@ -28333,7 +28520,7 @@ class GpDisturbanceData extends d.DataClass
       required this.distPct,
       required this.mortPct,
       required this.mortBasis,
-      this.agentType});
+      required this.agentType});
   @override
   Map<String, d.Expression> toColumns(bool nullToAbsent) {
     final map = <String, d.Expression>{};
@@ -28344,9 +28531,7 @@ class GpDisturbanceData extends d.DataClass
     map['dist_pct'] = d.Variable<int>(distPct);
     map['mort_pct'] = d.Variable<int>(mortPct);
     map['mort_basis'] = d.Variable<String>(mortBasis);
-    if (!nullToAbsent || agentType != null) {
-      map['agent_type'] = d.Variable<String>(agentType);
-    }
+    map['agent_type'] = d.Variable<String>(agentType);
     return map;
   }
 
@@ -28359,9 +28544,7 @@ class GpDisturbanceData extends d.DataClass
       distPct: d.Value(distPct),
       mortPct: d.Value(mortPct),
       mortBasis: d.Value(mortBasis),
-      agentType: agentType == null && nullToAbsent
-          ? const d.Value.absent()
-          : d.Value(agentType),
+      agentType: d.Value(agentType),
     );
   }
 
@@ -28376,7 +28559,7 @@ class GpDisturbanceData extends d.DataClass
       distPct: serializer.fromJson<int>(json['distPct']),
       mortPct: serializer.fromJson<int>(json['mortPct']),
       mortBasis: serializer.fromJson<String>(json['mortBasis']),
-      agentType: serializer.fromJson<String?>(json['agentType']),
+      agentType: serializer.fromJson<String>(json['agentType']),
     );
   }
   @override
@@ -28390,7 +28573,7 @@ class GpDisturbanceData extends d.DataClass
       'distPct': serializer.toJson<int>(distPct),
       'mortPct': serializer.toJson<int>(mortPct),
       'mortBasis': serializer.toJson<String>(mortBasis),
-      'agentType': serializer.toJson<String?>(agentType),
+      'agentType': serializer.toJson<String>(agentType),
     };
   }
 
@@ -28402,7 +28585,7 @@ class GpDisturbanceData extends d.DataClass
           int? distPct,
           int? mortPct,
           String? mortBasis,
-          d.Value<String?> agentType = const d.Value.absent()}) =>
+          String? agentType}) =>
       GpDisturbanceData(
         id: id ?? this.id,
         gpSummaryId: gpSummaryId ?? this.gpSummaryId,
@@ -28411,7 +28594,7 @@ class GpDisturbanceData extends d.DataClass
         distPct: distPct ?? this.distPct,
         mortPct: mortPct ?? this.mortPct,
         mortBasis: mortBasis ?? this.mortBasis,
-        agentType: agentType.present ? agentType.value : this.agentType,
+        agentType: agentType ?? this.agentType,
       );
   @override
   String toString() {
@@ -28453,7 +28636,7 @@ class GpDisturbanceCompanion extends d.UpdateCompanion<GpDisturbanceData> {
   final d.Value<int> distPct;
   final d.Value<int> mortPct;
   final d.Value<String> mortBasis;
-  final d.Value<String?> agentType;
+  final d.Value<String> agentType;
   const GpDisturbanceCompanion({
     this.id = const d.Value.absent(),
     this.gpSummaryId = const d.Value.absent(),
@@ -28509,7 +28692,7 @@ class GpDisturbanceCompanion extends d.UpdateCompanion<GpDisturbanceData> {
       d.Value<int>? distPct,
       d.Value<int>? mortPct,
       d.Value<String>? mortBasis,
-      d.Value<String?>? agentType}) {
+      d.Value<String>? agentType}) {
     return GpDisturbanceCompanion(
       id: id ?? this.id,
       gpSummaryId: gpSummaryId ?? this.gpSummaryId,
@@ -29266,6 +29449,8 @@ abstract class _$Database extends d.GeneratedDatabase {
       gpSiteInfoPlotIncompleteReason =
       $GpSiteInfoPlotIncompleteReasonTable(this);
   late final $GpDistAgentTable gpDistAgent = $GpDistAgentTable(this);
+  late final $GpDistMortalityBasisTable gpDistMortalityBasis =
+      $GpDistMortalityBasisTable(this);
   late final $SurveyHeadersTable surveyHeaders = $SurveyHeadersTable(this);
   late final $MetaCommentTable metaComment = $MetaCommentTable(this);
   late final $SurveySummaryTable surveySummary = $SurveySummaryTable(this);
@@ -29401,6 +29586,7 @@ abstract class _$Database extends d.GeneratedDatabase {
         gpSiteInfoPostProcessing,
         gpSiteInfoPlotIncompleteReason,
         gpDistAgent,
+        gpDistMortalityBasis,
         surveyHeaders,
         metaComment,
         surveySummary,
@@ -35355,6 +35541,103 @@ class $$GpDistAgentTableFilterComposer
 class $$GpDistAgentTableOrderingComposer
     extends d.OrderingComposer<_$Database, $GpDistAgentTable> {
   $$GpDistAgentTableOrderingComposer(super.$state);
+  d.ColumnOrderings<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$GpDistMortalityBasisTableInsertCompanionBuilder
+    = GpDistMortalityBasisCompanion Function({
+  required String code,
+  required String name,
+  d.Value<int> rowid,
+});
+typedef $$GpDistMortalityBasisTableUpdateCompanionBuilder
+    = GpDistMortalityBasisCompanion Function({
+  d.Value<String> code,
+  d.Value<String> name,
+  d.Value<int> rowid,
+});
+
+class $$GpDistMortalityBasisTableTableManager extends d.RootTableManager<
+    _$Database,
+    $GpDistMortalityBasisTable,
+    GpDistMortalityBasi,
+    $$GpDistMortalityBasisTableFilterComposer,
+    $$GpDistMortalityBasisTableOrderingComposer,
+    $$GpDistMortalityBasisTableProcessedTableManager,
+    $$GpDistMortalityBasisTableInsertCompanionBuilder,
+    $$GpDistMortalityBasisTableUpdateCompanionBuilder> {
+  $$GpDistMortalityBasisTableTableManager(
+      _$Database db, $GpDistMortalityBasisTable table)
+      : super(d.TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $$GpDistMortalityBasisTableFilterComposer(
+              d.ComposerState(db, table)),
+          orderingComposer: $$GpDistMortalityBasisTableOrderingComposer(
+              d.ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$GpDistMortalityBasisTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            d.Value<String> code = const d.Value.absent(),
+            d.Value<String> name = const d.Value.absent(),
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpDistMortalityBasisCompanion(
+            code: code,
+            name: name,
+            rowid: rowid,
+          ),
+          getInsertCompanionBuilder: ({
+            required String code,
+            required String name,
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpDistMortalityBasisCompanion.insert(
+            code: code,
+            name: name,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$GpDistMortalityBasisTableProcessedTableManager
+    extends d.ProcessedTableManager<
+        _$Database,
+        $GpDistMortalityBasisTable,
+        GpDistMortalityBasi,
+        $$GpDistMortalityBasisTableFilterComposer,
+        $$GpDistMortalityBasisTableOrderingComposer,
+        $$GpDistMortalityBasisTableProcessedTableManager,
+        $$GpDistMortalityBasisTableInsertCompanionBuilder,
+        $$GpDistMortalityBasisTableUpdateCompanionBuilder> {
+  $$GpDistMortalityBasisTableProcessedTableManager(super.$state);
+}
+
+class $$GpDistMortalityBasisTableFilterComposer
+    extends d.FilterComposer<_$Database, $GpDistMortalityBasisTable> {
+  $$GpDistMortalityBasisTableFilterComposer(super.$state);
+  d.ColumnFilters<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$GpDistMortalityBasisTableOrderingComposer
+    extends d.OrderingComposer<_$Database, $GpDistMortalityBasisTable> {
+  $$GpDistMortalityBasisTableOrderingComposer(super.$state);
   d.ColumnOrderings<String> get code => $state.composableBuilder(
       column: $state.table.code,
       builder: (column, joinBuilders) =>
@@ -43638,7 +43921,7 @@ typedef $$GpDisturbanceTableInsertCompanionBuilder = GpDisturbanceCompanion
   required int distPct,
   required int mortPct,
   required String mortBasis,
-  d.Value<String?> agentType,
+  d.Value<String> agentType,
 });
 typedef $$GpDisturbanceTableUpdateCompanionBuilder = GpDisturbanceCompanion
     Function({
@@ -43649,7 +43932,7 @@ typedef $$GpDisturbanceTableUpdateCompanionBuilder = GpDisturbanceCompanion
   d.Value<int> distPct,
   d.Value<int> mortPct,
   d.Value<String> mortBasis,
-  d.Value<String?> agentType,
+  d.Value<String> agentType,
 });
 
 class $$GpDisturbanceTableTableManager extends d.RootTableManager<
@@ -43679,7 +43962,7 @@ class $$GpDisturbanceTableTableManager extends d.RootTableManager<
             d.Value<int> distPct = const d.Value.absent(),
             d.Value<int> mortPct = const d.Value.absent(),
             d.Value<String> mortBasis = const d.Value.absent(),
-            d.Value<String?> agentType = const d.Value.absent(),
+            d.Value<String> agentType = const d.Value.absent(),
           }) =>
               GpDisturbanceCompanion(
             id: id,
@@ -43699,7 +43982,7 @@ class $$GpDisturbanceTableTableManager extends d.RootTableManager<
             required int distPct,
             required int mortPct,
             required String mortBasis,
-            d.Value<String?> agentType = const d.Value.absent(),
+            d.Value<String> agentType = const d.Value.absent(),
           }) =>
               GpDisturbanceCompanion.insert(
             id: id,
@@ -44253,6 +44536,8 @@ class _$DatabaseManager {
               _db, _db.gpSiteInfoPlotIncompleteReason);
   $$GpDistAgentTableTableManager get gpDistAgent =>
       $$GpDistAgentTableTableManager(_db, _db.gpDistAgent);
+  $$GpDistMortalityBasisTableTableManager get gpDistMortalityBasis =>
+      $$GpDistMortalityBasisTableTableManager(_db, _db.gpDistMortalityBasis);
   $$SurveyHeadersTableTableManager get surveyHeaders =>
       $$SurveyHeadersTableTableManager(_db, _db.surveyHeaders);
   $$MetaCommentTableTableManager get metaComment =>
