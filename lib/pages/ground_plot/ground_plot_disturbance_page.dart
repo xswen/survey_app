@@ -46,14 +46,11 @@ class GroundPlotDisturbancePageState
   late final int surveyId;
   late final int summaryId;
 
-  final PopupDismiss popupSurveyComplete =
-      Popups.generatePreviousMarkedCompleteErrorPopup("Ground plot");
-
   @override
   void initState() {
     surveyId = PathParamValue.getSurveyId(widget.state)!;
     summaryId = PathParamValue.getGpSummaryId(widget.state);
-    completeWarningPopup = Popups.generateCompleteErrorPopup("Large Tree Plot");
+    completeWarningPopup = Popups.generateCompleteErrorPopup("Ground plot");
     _loadData();
     super.initState();
   }
@@ -172,7 +169,7 @@ class GroundPlotDisturbancePageState
                                     columnData.edit.name &&
                                 details.rowColumnIndex.rowIndex != 0) {
                               if (parentComplete) {
-                                Popups.show(context, popupSurveyComplete);
+                                Popups.show(context, completeWarningPopup);
                               } else {
                                 int pId = source.dataGridRows[
                                         details.rowColumnIndex.rowIndex - 1]

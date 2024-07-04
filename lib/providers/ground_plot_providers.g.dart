@@ -287,5 +287,267 @@ class _GpDistDataListProviderElement
   @override
   int get summaryId => (origin as GpDistDataListProvider).summaryId;
 }
+
+String _$gpOriginListHash() => r'9e5a9c20c000473a43b828c71dde73f9d99fb5ec';
+
+/// See also [gpOriginList].
+@ProviderFor(gpOriginList)
+const gpOriginListProvider = GpOriginListFamily();
+
+/// See also [gpOriginList].
+class GpOriginListFamily extends Family<AsyncValue<List<GpOriginData>>> {
+  /// See also [gpOriginList].
+  const GpOriginListFamily();
+
+  /// See also [gpOriginList].
+  GpOriginListProvider call(
+    int summaryId,
+  ) {
+    return GpOriginListProvider(
+      summaryId,
+    );
+  }
+
+  @override
+  GpOriginListProvider getProviderOverride(
+    covariant GpOriginListProvider provider,
+  ) {
+    return call(
+      provider.summaryId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'gpOriginListProvider';
+}
+
+/// See also [gpOriginList].
+class GpOriginListProvider
+    extends AutoDisposeFutureProvider<List<GpOriginData>> {
+  /// See also [gpOriginList].
+  GpOriginListProvider(
+    int summaryId,
+  ) : this._internal(
+          (ref) => gpOriginList(
+            ref as GpOriginListRef,
+            summaryId,
+          ),
+          from: gpOriginListProvider,
+          name: r'gpOriginListProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$gpOriginListHash,
+          dependencies: GpOriginListFamily._dependencies,
+          allTransitiveDependencies:
+              GpOriginListFamily._allTransitiveDependencies,
+          summaryId: summaryId,
+        );
+
+  GpOriginListProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.summaryId,
+  }) : super.internal();
+
+  final int summaryId;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<GpOriginData>> Function(GpOriginListRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GpOriginListProvider._internal(
+        (ref) => create(ref as GpOriginListRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        summaryId: summaryId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List<GpOriginData>> createElement() {
+    return _GpOriginListProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GpOriginListProvider && other.summaryId == summaryId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, summaryId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin GpOriginListRef on AutoDisposeFutureProviderRef<List<GpOriginData>> {
+  /// The parameter `summaryId` of this provider.
+  int get summaryId;
+}
+
+class _GpOriginListProviderElement
+    extends AutoDisposeFutureProviderElement<List<GpOriginData>>
+    with GpOriginListRef {
+  _GpOriginListProviderElement(super.provider);
+
+  @override
+  int get summaryId => (origin as GpOriginListProvider).summaryId;
+}
+
+String _$gpTreatmentListHash() => r'9ac487861920f4d0cf7d0e365b973b670eed4061';
+
+/// See also [gpTreatmentList].
+@ProviderFor(gpTreatmentList)
+const gpTreatmentListProvider = GpTreatmentListFamily();
+
+/// See also [gpTreatmentList].
+class GpTreatmentListFamily extends Family<AsyncValue<List<GpTreatmentData>>> {
+  /// See also [gpTreatmentList].
+  const GpTreatmentListFamily();
+
+  /// See also [gpTreatmentList].
+  GpTreatmentListProvider call(
+    int summaryId,
+  ) {
+    return GpTreatmentListProvider(
+      summaryId,
+    );
+  }
+
+  @override
+  GpTreatmentListProvider getProviderOverride(
+    covariant GpTreatmentListProvider provider,
+  ) {
+    return call(
+      provider.summaryId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'gpTreatmentListProvider';
+}
+
+/// See also [gpTreatmentList].
+class GpTreatmentListProvider
+    extends AutoDisposeFutureProvider<List<GpTreatmentData>> {
+  /// See also [gpTreatmentList].
+  GpTreatmentListProvider(
+    int summaryId,
+  ) : this._internal(
+          (ref) => gpTreatmentList(
+            ref as GpTreatmentListRef,
+            summaryId,
+          ),
+          from: gpTreatmentListProvider,
+          name: r'gpTreatmentListProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$gpTreatmentListHash,
+          dependencies: GpTreatmentListFamily._dependencies,
+          allTransitiveDependencies:
+              GpTreatmentListFamily._allTransitiveDependencies,
+          summaryId: summaryId,
+        );
+
+  GpTreatmentListProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.summaryId,
+  }) : super.internal();
+
+  final int summaryId;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<GpTreatmentData>> Function(GpTreatmentListRef provider)
+        create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GpTreatmentListProvider._internal(
+        (ref) => create(ref as GpTreatmentListRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        summaryId: summaryId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List<GpTreatmentData>> createElement() {
+    return _GpTreatmentListProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GpTreatmentListProvider && other.summaryId == summaryId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, summaryId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin GpTreatmentListRef
+    on AutoDisposeFutureProviderRef<List<GpTreatmentData>> {
+  /// The parameter `summaryId` of this provider.
+  int get summaryId;
+}
+
+class _GpTreatmentListProviderElement
+    extends AutoDisposeFutureProviderElement<List<GpTreatmentData>>
+    with GpTreatmentListRef {
+  _GpTreatmentListProviderElement(super.provider);
+
+  @override
+  int get summaryId => (origin as GpTreatmentListProvider).summaryId;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

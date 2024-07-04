@@ -67,6 +67,8 @@ part 'reference_tables_dao.g.dart';
   GpSiteInfoPlotIncompleteReason,
   GpDistAgent,
   GpDistMortalityBasis,
+  GpOriginVegCover,
+  GpOriginRegenType,
 ])
 class ReferenceTablesDao extends DatabaseAccessor<Database>
     with _$ReferenceTablesDaoMixin {
@@ -1675,6 +1677,52 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
 
   Future<String> getGpDistMortalityBasisCode(String name) {
     return (select(gpDistMortalityBasis)..where((tbl) => tbl.name.equals(name)))
+        .map((row) => row.code)
+        .getSingle();
+  }
+
+  Future<List<String>> getGpOriginVegCoverList() {
+    final query = selectOnly(gpOriginVegCover, distinct: true)
+      ..addColumns([gpOriginVegCover.name])
+      ..where(gpOriginVegCover.name.isNotNull());
+    return query
+        .map(
+            (row) => row.read(gpOriginVegCover.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getGpOriginVegCoverName(String code) {
+    if (code.isEmpty) return Future.value("");
+    return (select(gpOriginVegCover)..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
+
+  Future<String> getGpOriginVegCoverCode(String name) {
+    return (select(gpOriginVegCover)..where((tbl) => tbl.name.equals(name)))
+        .map((row) => row.code)
+        .getSingle();
+  }
+
+  Future<List<String>> getGpOriginRegenTypeList() {
+    final query = selectOnly(gpOriginRegenType, distinct: true)
+      ..addColumns([gpOriginRegenType.name])
+      ..where(gpOriginRegenType.name.isNotNull());
+    return query
+        .map((row) =>
+            row.read(gpOriginRegenType.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getGpOriginRegenTypeName(String code) {
+    if (code.isEmpty) return Future.value("");
+    return (select(gpOriginRegenType)..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
+
+  Future<String> getGpOriginRegenTypeCode(String name) {
+    return (select(gpOriginRegenType)..where((tbl) => tbl.name.equals(name)))
         .map((row) => row.code)
         .getSingle();
   }

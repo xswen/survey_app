@@ -98,6 +98,9 @@ const List<Type> _tables = [
   GpSiteInfoPlotIncompleteReason,
   GpDistAgent,
   GpDistMortalityBasis,
+  GpOriginVegCover,
+  GpOriginRegenType,
+
   //Metadata Tables
   MetaComment,
   //Survey Tables
@@ -324,6 +327,10 @@ class Database extends _$Database {
               await _getGpDistAgentCompanion();
           List<GpDistMortalityBasisCompanion> gpDisMortalityBasisList =
               await _getGpGpDistMortalityBasisCompanion();
+          List<GpOriginVegCoverCompanion> gpOriginVegCoverList =
+              await _getGpOriginVegCover();
+          List<GpOriginRegenTypeCompanion> gpOriginRegenTypeList =
+              await _getGpOriginRegenType();
 
           c.debugPrint("Init Values");
           await batch((b) {
@@ -394,6 +401,8 @@ class Database extends _$Database {
             b.insertAll(gpSiteInfoPostProcessing, gpSiteInfoPostProcessingList);
             b.insertAll(gpDistAgent, gpDistAgentList);
             b.insertAll(gpDistMortalityBasis, gpDisMortalityBasisList);
+            b.insertAll(gpOriginVegCover, gpOriginVegCoverList);
+            b.insertAll(gpOriginRegenType, gpOriginRegenTypeList);
 
             _initTest(b);
           });
@@ -1119,6 +1128,30 @@ class Database extends _$Database {
 
     return jsonData.map((dynamic item) {
       return GpDistMortalityBasisCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<GpOriginVegCoverCompanion>> _getGpOriginVegCover() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/gp_origin_vegetation_cover_list.json');
+
+    return jsonData.map((dynamic item) {
+      return GpOriginVegCoverCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<GpOriginRegenTypeCompanion>> _getGpOriginRegenType() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/gp_origin_regeneration_type_list.json');
+
+    return jsonData.map((dynamic item) {
+      return GpOriginRegenTypeCompanion(
         code: Value(item["code"]),
         name: Value(item["name"]),
       );

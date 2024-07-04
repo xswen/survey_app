@@ -11832,6 +11832,380 @@ class GpDistMortalityBasisCompanion
   }
 }
 
+class $GpOriginVegCoverTable extends GpOriginVegCover
+    with d.TableInfo<$GpOriginVegCoverTable, GpOriginVegCoverData> {
+  @override
+  final d.GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GpOriginVegCoverTable(this.attachedDatabase, [this._alias]);
+  static const d.VerificationMeta _codeMeta = const d.VerificationMeta('code');
+  @override
+  late final d.GeneratedColumn<String> code = d.GeneratedColumn<String>(
+      'code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const d.VerificationMeta _nameMeta = const d.VerificationMeta('name');
+  @override
+  late final d.GeneratedColumn<String> name = d.GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<d.GeneratedColumn> get $columns => [code, name];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'gp_origin_veg_cover';
+  @override
+  d.VerificationContext validateIntegrity(
+      d.Insertable<GpOriginVegCoverData> instance,
+      {bool isInserting = false}) {
+    final context = d.VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('code')) {
+      context.handle(
+          _codeMeta, code.isAcceptableOrUnknown(data['code']!, _codeMeta));
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<d.GeneratedColumn> get $primaryKey => const {};
+  @override
+  GpOriginVegCoverData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return GpOriginVegCoverData(
+      code: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}code'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+    );
+  }
+
+  @override
+  $GpOriginVegCoverTable createAlias(String alias) {
+    return $GpOriginVegCoverTable(attachedDatabase, alias);
+  }
+}
+
+class GpOriginVegCoverData extends d.DataClass
+    implements d.Insertable<GpOriginVegCoverData> {
+  final String code;
+  final String name;
+  const GpOriginVegCoverData({required this.code, required this.name});
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    map['code'] = d.Variable<String>(code);
+    map['name'] = d.Variable<String>(name);
+    return map;
+  }
+
+  GpOriginVegCoverCompanion toCompanion(bool nullToAbsent) {
+    return GpOriginVegCoverCompanion(
+      code: d.Value(code),
+      name: d.Value(name),
+    );
+  }
+
+  factory GpOriginVegCoverData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return GpOriginVegCoverData(
+      code: serializer.fromJson<String>(json['code']),
+      name: serializer.fromJson<String>(json['name']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'code': serializer.toJson<String>(code),
+      'name': serializer.toJson<String>(name),
+    };
+  }
+
+  GpOriginVegCoverData copyWith({String? code, String? name}) =>
+      GpOriginVegCoverData(
+        code: code ?? this.code,
+        name: name ?? this.name,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('GpOriginVegCoverData(')
+          ..write('code: $code, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(code, name);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GpOriginVegCoverData &&
+          other.code == this.code &&
+          other.name == this.name);
+}
+
+class GpOriginVegCoverCompanion
+    extends d.UpdateCompanion<GpOriginVegCoverData> {
+  final d.Value<String> code;
+  final d.Value<String> name;
+  final d.Value<int> rowid;
+  const GpOriginVegCoverCompanion({
+    this.code = const d.Value.absent(),
+    this.name = const d.Value.absent(),
+    this.rowid = const d.Value.absent(),
+  });
+  GpOriginVegCoverCompanion.insert({
+    required String code,
+    required String name,
+    this.rowid = const d.Value.absent(),
+  })  : code = d.Value(code),
+        name = d.Value(name);
+  static d.Insertable<GpOriginVegCoverData> custom({
+    d.Expression<String>? code,
+    d.Expression<String>? name,
+    d.Expression<int>? rowid,
+  }) {
+    return d.RawValuesInsertable({
+      if (code != null) 'code': code,
+      if (name != null) 'name': name,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  GpOriginVegCoverCompanion copyWith(
+      {d.Value<String>? code, d.Value<String>? name, d.Value<int>? rowid}) {
+    return GpOriginVegCoverCompanion(
+      code: code ?? this.code,
+      name: name ?? this.name,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    if (code.present) {
+      map['code'] = d.Variable<String>(code.value);
+    }
+    if (name.present) {
+      map['name'] = d.Variable<String>(name.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = d.Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GpOriginVegCoverCompanion(')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $GpOriginRegenTypeTable extends GpOriginRegenType
+    with d.TableInfo<$GpOriginRegenTypeTable, GpOriginRegenTypeData> {
+  @override
+  final d.GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GpOriginRegenTypeTable(this.attachedDatabase, [this._alias]);
+  static const d.VerificationMeta _codeMeta = const d.VerificationMeta('code');
+  @override
+  late final d.GeneratedColumn<String> code = d.GeneratedColumn<String>(
+      'code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const d.VerificationMeta _nameMeta = const d.VerificationMeta('name');
+  @override
+  late final d.GeneratedColumn<String> name = d.GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<d.GeneratedColumn> get $columns => [code, name];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'gp_origin_regen_type';
+  @override
+  d.VerificationContext validateIntegrity(
+      d.Insertable<GpOriginRegenTypeData> instance,
+      {bool isInserting = false}) {
+    final context = d.VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('code')) {
+      context.handle(
+          _codeMeta, code.isAcceptableOrUnknown(data['code']!, _codeMeta));
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<d.GeneratedColumn> get $primaryKey => const {};
+  @override
+  GpOriginRegenTypeData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return GpOriginRegenTypeData(
+      code: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}code'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+    );
+  }
+
+  @override
+  $GpOriginRegenTypeTable createAlias(String alias) {
+    return $GpOriginRegenTypeTable(attachedDatabase, alias);
+  }
+}
+
+class GpOriginRegenTypeData extends d.DataClass
+    implements d.Insertable<GpOriginRegenTypeData> {
+  final String code;
+  final String name;
+  const GpOriginRegenTypeData({required this.code, required this.name});
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    map['code'] = d.Variable<String>(code);
+    map['name'] = d.Variable<String>(name);
+    return map;
+  }
+
+  GpOriginRegenTypeCompanion toCompanion(bool nullToAbsent) {
+    return GpOriginRegenTypeCompanion(
+      code: d.Value(code),
+      name: d.Value(name),
+    );
+  }
+
+  factory GpOriginRegenTypeData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return GpOriginRegenTypeData(
+      code: serializer.fromJson<String>(json['code']),
+      name: serializer.fromJson<String>(json['name']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'code': serializer.toJson<String>(code),
+      'name': serializer.toJson<String>(name),
+    };
+  }
+
+  GpOriginRegenTypeData copyWith({String? code, String? name}) =>
+      GpOriginRegenTypeData(
+        code: code ?? this.code,
+        name: name ?? this.name,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('GpOriginRegenTypeData(')
+          ..write('code: $code, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(code, name);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GpOriginRegenTypeData &&
+          other.code == this.code &&
+          other.name == this.name);
+}
+
+class GpOriginRegenTypeCompanion
+    extends d.UpdateCompanion<GpOriginRegenTypeData> {
+  final d.Value<String> code;
+  final d.Value<String> name;
+  final d.Value<int> rowid;
+  const GpOriginRegenTypeCompanion({
+    this.code = const d.Value.absent(),
+    this.name = const d.Value.absent(),
+    this.rowid = const d.Value.absent(),
+  });
+  GpOriginRegenTypeCompanion.insert({
+    required String code,
+    required String name,
+    this.rowid = const d.Value.absent(),
+  })  : code = d.Value(code),
+        name = d.Value(name);
+  static d.Insertable<GpOriginRegenTypeData> custom({
+    d.Expression<String>? code,
+    d.Expression<String>? name,
+    d.Expression<int>? rowid,
+  }) {
+    return d.RawValuesInsertable({
+      if (code != null) 'code': code,
+      if (name != null) 'name': name,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  GpOriginRegenTypeCompanion copyWith(
+      {d.Value<String>? code, d.Value<String>? name, d.Value<int>? rowid}) {
+    return GpOriginRegenTypeCompanion(
+      code: code ?? this.code,
+      name: name ?? this.name,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    if (code.present) {
+      map['code'] = d.Variable<String>(code.value);
+    }
+    if (name.present) {
+      map['name'] = d.Variable<String>(name.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = d.Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GpOriginRegenTypeCompanion(')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $SurveyHeadersTable extends SurveyHeaders
     with d.TableInfo<$SurveyHeadersTable, SurveyHeader> {
   @override
@@ -29451,6 +29825,10 @@ abstract class _$Database extends d.GeneratedDatabase {
   late final $GpDistAgentTable gpDistAgent = $GpDistAgentTable(this);
   late final $GpDistMortalityBasisTable gpDistMortalityBasis =
       $GpDistMortalityBasisTable(this);
+  late final $GpOriginVegCoverTable gpOriginVegCover =
+      $GpOriginVegCoverTable(this);
+  late final $GpOriginRegenTypeTable gpOriginRegenType =
+      $GpOriginRegenTypeTable(this);
   late final $SurveyHeadersTable surveyHeaders = $SurveyHeadersTable(this);
   late final $MetaCommentTable metaComment = $MetaCommentTable(this);
   late final $SurveySummaryTable surveySummary = $SurveySummaryTable(this);
@@ -29587,6 +29965,8 @@ abstract class _$Database extends d.GeneratedDatabase {
         gpSiteInfoPlotIncompleteReason,
         gpDistAgent,
         gpDistMortalityBasis,
+        gpOriginVegCover,
+        gpOriginRegenType,
         surveyHeaders,
         metaComment,
         surveySummary,
@@ -35638,6 +36018,200 @@ class $$GpDistMortalityBasisTableFilterComposer
 class $$GpDistMortalityBasisTableOrderingComposer
     extends d.OrderingComposer<_$Database, $GpDistMortalityBasisTable> {
   $$GpDistMortalityBasisTableOrderingComposer(super.$state);
+  d.ColumnOrderings<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$GpOriginVegCoverTableInsertCompanionBuilder
+    = GpOriginVegCoverCompanion Function({
+  required String code,
+  required String name,
+  d.Value<int> rowid,
+});
+typedef $$GpOriginVegCoverTableUpdateCompanionBuilder
+    = GpOriginVegCoverCompanion Function({
+  d.Value<String> code,
+  d.Value<String> name,
+  d.Value<int> rowid,
+});
+
+class $$GpOriginVegCoverTableTableManager extends d.RootTableManager<
+    _$Database,
+    $GpOriginVegCoverTable,
+    GpOriginVegCoverData,
+    $$GpOriginVegCoverTableFilterComposer,
+    $$GpOriginVegCoverTableOrderingComposer,
+    $$GpOriginVegCoverTableProcessedTableManager,
+    $$GpOriginVegCoverTableInsertCompanionBuilder,
+    $$GpOriginVegCoverTableUpdateCompanionBuilder> {
+  $$GpOriginVegCoverTableTableManager(
+      _$Database db, $GpOriginVegCoverTable table)
+      : super(d.TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$GpOriginVegCoverTableFilterComposer(d.ComposerState(db, table)),
+          orderingComposer: $$GpOriginVegCoverTableOrderingComposer(
+              d.ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$GpOriginVegCoverTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            d.Value<String> code = const d.Value.absent(),
+            d.Value<String> name = const d.Value.absent(),
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpOriginVegCoverCompanion(
+            code: code,
+            name: name,
+            rowid: rowid,
+          ),
+          getInsertCompanionBuilder: ({
+            required String code,
+            required String name,
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpOriginVegCoverCompanion.insert(
+            code: code,
+            name: name,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$GpOriginVegCoverTableProcessedTableManager
+    extends d.ProcessedTableManager<
+        _$Database,
+        $GpOriginVegCoverTable,
+        GpOriginVegCoverData,
+        $$GpOriginVegCoverTableFilterComposer,
+        $$GpOriginVegCoverTableOrderingComposer,
+        $$GpOriginVegCoverTableProcessedTableManager,
+        $$GpOriginVegCoverTableInsertCompanionBuilder,
+        $$GpOriginVegCoverTableUpdateCompanionBuilder> {
+  $$GpOriginVegCoverTableProcessedTableManager(super.$state);
+}
+
+class $$GpOriginVegCoverTableFilterComposer
+    extends d.FilterComposer<_$Database, $GpOriginVegCoverTable> {
+  $$GpOriginVegCoverTableFilterComposer(super.$state);
+  d.ColumnFilters<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$GpOriginVegCoverTableOrderingComposer
+    extends d.OrderingComposer<_$Database, $GpOriginVegCoverTable> {
+  $$GpOriginVegCoverTableOrderingComposer(super.$state);
+  d.ColumnOrderings<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$GpOriginRegenTypeTableInsertCompanionBuilder
+    = GpOriginRegenTypeCompanion Function({
+  required String code,
+  required String name,
+  d.Value<int> rowid,
+});
+typedef $$GpOriginRegenTypeTableUpdateCompanionBuilder
+    = GpOriginRegenTypeCompanion Function({
+  d.Value<String> code,
+  d.Value<String> name,
+  d.Value<int> rowid,
+});
+
+class $$GpOriginRegenTypeTableTableManager extends d.RootTableManager<
+    _$Database,
+    $GpOriginRegenTypeTable,
+    GpOriginRegenTypeData,
+    $$GpOriginRegenTypeTableFilterComposer,
+    $$GpOriginRegenTypeTableOrderingComposer,
+    $$GpOriginRegenTypeTableProcessedTableManager,
+    $$GpOriginRegenTypeTableInsertCompanionBuilder,
+    $$GpOriginRegenTypeTableUpdateCompanionBuilder> {
+  $$GpOriginRegenTypeTableTableManager(
+      _$Database db, $GpOriginRegenTypeTable table)
+      : super(d.TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $$GpOriginRegenTypeTableFilterComposer(
+              d.ComposerState(db, table)),
+          orderingComposer: $$GpOriginRegenTypeTableOrderingComposer(
+              d.ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$GpOriginRegenTypeTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            d.Value<String> code = const d.Value.absent(),
+            d.Value<String> name = const d.Value.absent(),
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpOriginRegenTypeCompanion(
+            code: code,
+            name: name,
+            rowid: rowid,
+          ),
+          getInsertCompanionBuilder: ({
+            required String code,
+            required String name,
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpOriginRegenTypeCompanion.insert(
+            code: code,
+            name: name,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$GpOriginRegenTypeTableProcessedTableManager
+    extends d.ProcessedTableManager<
+        _$Database,
+        $GpOriginRegenTypeTable,
+        GpOriginRegenTypeData,
+        $$GpOriginRegenTypeTableFilterComposer,
+        $$GpOriginRegenTypeTableOrderingComposer,
+        $$GpOriginRegenTypeTableProcessedTableManager,
+        $$GpOriginRegenTypeTableInsertCompanionBuilder,
+        $$GpOriginRegenTypeTableUpdateCompanionBuilder> {
+  $$GpOriginRegenTypeTableProcessedTableManager(super.$state);
+}
+
+class $$GpOriginRegenTypeTableFilterComposer
+    extends d.FilterComposer<_$Database, $GpOriginRegenTypeTable> {
+  $$GpOriginRegenTypeTableFilterComposer(super.$state);
+  d.ColumnFilters<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$GpOriginRegenTypeTableOrderingComposer
+    extends d.OrderingComposer<_$Database, $GpOriginRegenTypeTable> {
+  $$GpOriginRegenTypeTableOrderingComposer(super.$state);
   d.ColumnOrderings<String> get code => $state.composableBuilder(
       column: $state.table.code,
       builder: (column, joinBuilders) =>
@@ -44538,6 +45112,10 @@ class _$DatabaseManager {
       $$GpDistAgentTableTableManager(_db, _db.gpDistAgent);
   $$GpDistMortalityBasisTableTableManager get gpDistMortalityBasis =>
       $$GpDistMortalityBasisTableTableManager(_db, _db.gpDistMortalityBasis);
+  $$GpOriginVegCoverTableTableManager get gpOriginVegCover =>
+      $$GpOriginVegCoverTableTableManager(_db, _db.gpOriginVegCover);
+  $$GpOriginRegenTypeTableTableManager get gpOriginRegenType =>
+      $$GpOriginRegenTypeTableTableManager(_db, _db.gpOriginRegenType);
   $$SurveyHeadersTableTableManager get surveyHeaders =>
       $$SurveyHeadersTableTableManager(_db, _db.surveyHeaders);
   $$MetaCommentTableTableManager get metaComment =>

@@ -1,0 +1,26 @@
+[
+  {
+    "code": "NAT",
+    "name": "Natural regeneration."
+  },
+  {
+    "code": "SUP",
+    "name": "Natural regeneration with supplementary planting (< 50%)."
+  },
+  {
+    "code": "PLA",
+    "name": "Planted regeneration."
+  },
+  {
+    "code": "SOW",
+    "name": "Seeded regeneration."
+  },
+  {
+    "code": "UNK",
+    "name": "Unknown."
+  },
+  {
+    "code": "NA",
+    "name": "Not applicable as site is temporarily non-treed."
+  }
+]

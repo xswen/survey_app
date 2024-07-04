@@ -92,4 +92,8 @@ mixin _$ReferenceTablesDaoMixin on DatabaseAccessor<Database> {
   $GpDistAgentTable get gpDistAgent => attachedDatabase.gpDistAgent;
   $GpDistMortalityBasisTable get gpDistMortalityBasis =>
       attachedDatabase.gpDistMortalityBasis;
+  $GpOriginVegCoverTable get gpOriginVegCover =>
+      attachedDatabase.gpOriginVegCover;
+  $GpOriginRegenTypeTable get gpOriginRegenType =>
+      attachedDatabase.gpOriginRegenType;
 }

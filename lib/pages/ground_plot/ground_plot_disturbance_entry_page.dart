@@ -158,7 +158,7 @@ class GroundPlotDisturbanceEntryPageState
 
     return Scaffold(
       appBar: OurAppBar(
-        "Natural Disturbance Entry",
+        title,
         backFn: returnToTablePage,
       ),
       endDrawer: DrawerMenu(onLocaleChange: () => setState(() {})),

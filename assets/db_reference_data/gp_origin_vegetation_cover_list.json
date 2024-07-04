@@ -1,0 +1,26 @@
+[
+  {
+    "code": "SUCC",
+    "name": "The establishment of trees through secondary succession."
+  },
+  {
+    "code": "HARV",
+    "name": "Regeneration after harvest."
+  },
+  {
+    "code": "DIST",
+    "name": "Regeneration after other disturbance."
+  },
+  {
+    "code": "AFOR",
+    "name": "Aforestation– the establishment of trees on an area that was lacking in forest cover for some time or that was never forested."
+  },
+  {
+    "code": "UNK",
+    "name": "Vegetation cover origin is unknown."
+  },
+  {
+    "code": "NA",
+    "name": "Not applicable as site is temporarily non-treed."
+  }
+]

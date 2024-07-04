@@ -9,16 +9,6 @@ part 'ground_plot_providers.g.dart';
 Future<GpSummaryData> gpSummaryData(GpSummaryDataRef ref, int gpSummaryId) =>
     ref.read(databaseProvider).siteInfoTablesDao.getSummary(gpSummaryId);
 
-// @riverpod
-// Future<List<SoilPitFeatureData>> soilFeatureList(
-//     SoilFeatureListRef ref, int soilSummaryId) =>
-//     ref.read(databaseProvider).soilPitTablesDao.getFeatureList(soilSummaryId);
-//
-// @riverpod
-// Future<List<SoilPitHorizonDescriptionData>> soilHorizonList(
-//     SoilHorizonListRef ref, int soilSummaryId) =>
-//     ref.read(databaseProvider).soilPitTablesDao.getHorizonList(soilSummaryId);
-
 @riverpod
 Future<List<GpDisturbanceData>> gpDistDataList(
         GpDistDataListRef ref, int summaryId) =>
@@ -26,3 +16,12 @@ Future<List<GpDisturbanceData>> gpDistDataList(
         .read(databaseProvider)
         .siteInfoTablesDao
         .getGpDisturbanceList(summaryId);
+
+@riverpod
+Future<List<GpOriginData>> gpOriginList(GpOriginListRef ref, int summaryId) =>
+    ref.read(databaseProvider).siteInfoTablesDao.getGpOriginList(summaryId);
+
+@riverpod
+Future<List<GpTreatmentData>> gpTreatmentList(
+        GpTreatmentListRef ref, int summaryId) =>
+    ref.read(databaseProvider).siteInfoTablesDao.getGpTreatmentList(summaryId);

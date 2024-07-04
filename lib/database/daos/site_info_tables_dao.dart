@@ -121,6 +121,9 @@ class SiteInfoTablesDao extends DatabaseAccessor<Database>
   Future<int> addGpOrigin(GpOriginCompanion entry) =>
       into(gpOrigin).insert(entry);
 
+  Future<int> addOrUpdateGpOrigin(GpOriginCompanion entry) =>
+      into(gpOrigin).insertOnConflictUpdate(entry);
+
   Future<GpOriginData> getGpOrigin(int id) =>
       (select(gpOrigin)..where((tbl) => tbl.id.equals(id))).getSingle();
 
@@ -150,6 +153,9 @@ class SiteInfoTablesDao extends DatabaseAccessor<Database>
 
   Future<int> addGpTreatment(GpTreatmentCompanion entry) =>
       into(gpTreatment).insert(entry);
+
+  Future<int> addOrUpdateGpTreatment(GpTreatmentCompanion entry) =>
+      into(gpTreatment).insertOnConflictUpdate(entry);
 
   Future<GpTreatmentData> getGpTreatment(int id) =>
       (select(gpTreatment)..where((tbl) => tbl.id.equals(id))).getSingle();
