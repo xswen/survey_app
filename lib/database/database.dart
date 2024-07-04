@@ -94,7 +94,9 @@ const List<Type> _tables = [
   GpSiteInfoLandBase,
   GpSiteInfoLandCover,
   GpSiteInfoLandPos,
-  GpSiteInfoPostProcessing, GpSiteInfoPlotIncompleteReason,
+  GpSiteInfoPostProcessing,
+  GpSiteInfoPlotIncompleteReason,
+  GpDistAgent,
   //Metadata Tables
   MetaComment,
   //Survey Tables
@@ -317,6 +319,8 @@ class Database extends _$Database {
               await _getGpSiteInfoLandPos();
           List<GpSiteInfoPostProcessingCompanion> gpSiteInfoPostProcessingList =
               await _getGpSiteInfoPostProcessing();
+          List<GpDistAgentCompanion> gpDistAgentList =
+              await _getGpSiteInfoDistAgentCompanion();
 
           c.debugPrint("Init Values");
           await batch((b) {
@@ -385,6 +389,7 @@ class Database extends _$Database {
             b.insertAll(gpSiteInfoLandCover, gpSiteInfoLandCoverList);
             b.insertAll(gpSiteInfoLandPos, gpSiteInfoLandPosList);
             b.insertAll(gpSiteInfoPostProcessing, gpSiteInfoPostProcessingList);
+            b.insertAll(gpDistAgent, gpDistAgentList);
 
             _initTest(b);
           });
@@ -1085,6 +1090,18 @@ class Database extends _$Database {
 
     return jsonData.map((dynamic item) {
       return GpSiteInfoPostProcessingCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<GpDistAgentCompanion>> _getGpSiteInfoDistAgentCompanion() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/gp_disturbance_agent_list.json');
+
+    return jsonData.map((dynamic item) {
+      return GpDistAgentCompanion(
         code: Value(item["code"]),
         name: Value(item["name"]),
       );

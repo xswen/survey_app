@@ -12,39 +12,48 @@ class TextHeaderSeparator extends StatelessWidget {
     required this.title,
     this.fontSize = kTextTitleSize,
     this.sideWidget = const SizedBox(),
+    this.child,
+    this.verticalPadding = const EdgeInsets.all(0),
   });
+
   final CrossAxisAlignment colAlignment;
   final MainAxisAlignment rowAlignment;
   final EdgeInsetsGeometry? rowPadding;
   final String title;
   final double fontSize;
   final Widget? sideWidget;
+  final Widget? child;
+  final EdgeInsetsGeometry verticalPadding;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: colAlignment,
-      children: [
-        Padding(
-          padding: rowPadding ??
-              const EdgeInsets.symmetric(horizontal: kPaddingH / 2),
-          child: Row(
-            mainAxisAlignment: rowAlignment,
-            children: [
-              Expanded(
-                child: Text(
-                  title,
-                  style: TextStyle(fontSize: fontSize),
+    return Padding(
+      padding: verticalPadding,
+      child: Column(
+        crossAxisAlignment: colAlignment,
+        children: [
+          Padding(
+            padding: rowPadding ??
+                const EdgeInsets.symmetric(horizontal: kPaddingH / 2),
+            child: Row(
+              mainAxisAlignment: rowAlignment,
+              children: [
+                Expanded(
+                  child: Text(
+                    title,
+                    style: TextStyle(fontSize: fontSize),
+                  ),
                 ),
-              ),
-              sideWidget ?? const SizedBox()
-            ],
+                sideWidget ?? const SizedBox()
+              ],
+            ),
           ),
-        ),
-        const Divider(
-          thickness: 2,
-        ),
-      ],
+          const Divider(
+            thickness: 2,
+          ),
+          child ?? const SizedBox(),
+        ],
+      ),
     );
   }
 }

@@ -26,8 +26,9 @@ class GpSiteInfo extends Table {
   TextColumn get incompReason =>
       text().withLength(min: 0, max: 2).named('incomp_reason')();
 
-  TextColumn get province =>
-      text().withLength(min: 0, max: 2).named('province')();
+  //
+  // TextColumn get province =>
+  //     text().withLength(min: 0, max: 2).named('province')();
 
   IntColumn get ecozone =>
       integer().named('ecozone').check(ecozone.isBetweenValues(1, 15))();

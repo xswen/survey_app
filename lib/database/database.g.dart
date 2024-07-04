@@ -11460,6 +11460,191 @@ class GpSiteInfoPlotIncompleteReasonCompanion
   }
 }
 
+class $GpDistAgentTable extends GpDistAgent
+    with d.TableInfo<$GpDistAgentTable, GpDistAgentData> {
+  @override
+  final d.GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GpDistAgentTable(this.attachedDatabase, [this._alias]);
+  static const d.VerificationMeta _codeMeta = const d.VerificationMeta('code');
+  @override
+  late final d.GeneratedColumn<String> code = d.GeneratedColumn<String>(
+      'code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const d.VerificationMeta _nameMeta = const d.VerificationMeta('name');
+  @override
+  late final d.GeneratedColumn<String> name = d.GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<d.GeneratedColumn> get $columns => [code, name];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'gp_dist_agent';
+  @override
+  d.VerificationContext validateIntegrity(
+      d.Insertable<GpDistAgentData> instance,
+      {bool isInserting = false}) {
+    final context = d.VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('code')) {
+      context.handle(
+          _codeMeta, code.isAcceptableOrUnknown(data['code']!, _codeMeta));
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<d.GeneratedColumn> get $primaryKey => const {};
+  @override
+  GpDistAgentData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return GpDistAgentData(
+      code: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}code'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+    );
+  }
+
+  @override
+  $GpDistAgentTable createAlias(String alias) {
+    return $GpDistAgentTable(attachedDatabase, alias);
+  }
+}
+
+class GpDistAgentData extends d.DataClass
+    implements d.Insertable<GpDistAgentData> {
+  final String code;
+  final String name;
+  const GpDistAgentData({required this.code, required this.name});
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    map['code'] = d.Variable<String>(code);
+    map['name'] = d.Variable<String>(name);
+    return map;
+  }
+
+  GpDistAgentCompanion toCompanion(bool nullToAbsent) {
+    return GpDistAgentCompanion(
+      code: d.Value(code),
+      name: d.Value(name),
+    );
+  }
+
+  factory GpDistAgentData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return GpDistAgentData(
+      code: serializer.fromJson<String>(json['code']),
+      name: serializer.fromJson<String>(json['name']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'code': serializer.toJson<String>(code),
+      'name': serializer.toJson<String>(name),
+    };
+  }
+
+  GpDistAgentData copyWith({String? code, String? name}) => GpDistAgentData(
+        code: code ?? this.code,
+        name: name ?? this.name,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('GpDistAgentData(')
+          ..write('code: $code, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(code, name);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GpDistAgentData &&
+          other.code == this.code &&
+          other.name == this.name);
+}
+
+class GpDistAgentCompanion extends d.UpdateCompanion<GpDistAgentData> {
+  final d.Value<String> code;
+  final d.Value<String> name;
+  final d.Value<int> rowid;
+  const GpDistAgentCompanion({
+    this.code = const d.Value.absent(),
+    this.name = const d.Value.absent(),
+    this.rowid = const d.Value.absent(),
+  });
+  GpDistAgentCompanion.insert({
+    required String code,
+    required String name,
+    this.rowid = const d.Value.absent(),
+  })  : code = d.Value(code),
+        name = d.Value(name);
+  static d.Insertable<GpDistAgentData> custom({
+    d.Expression<String>? code,
+    d.Expression<String>? name,
+    d.Expression<int>? rowid,
+  }) {
+    return d.RawValuesInsertable({
+      if (code != null) 'code': code,
+      if (name != null) 'name': name,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  GpDistAgentCompanion copyWith(
+      {d.Value<String>? code, d.Value<String>? name, d.Value<int>? rowid}) {
+    return GpDistAgentCompanion(
+      code: code ?? this.code,
+      name: name ?? this.name,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    if (code.present) {
+      map['code'] = d.Variable<String>(code.value);
+    }
+    if (name.present) {
+      map['name'] = d.Variable<String>(name.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = d.Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GpDistAgentCompanion(')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $SurveyHeadersTable extends SurveyHeaders
     with d.TableInfo<$SurveyHeadersTable, SurveyHeader> {
   @override
@@ -26739,15 +26924,6 @@ class $GpSiteInfoTable extends GpSiteInfo
           GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 2),
       type: DriftSqlType.string,
       requiredDuringInsert: true);
-  static const d.VerificationMeta _provinceMeta =
-      const d.VerificationMeta('province');
-  @override
-  late final d.GeneratedColumn<String> province = d.GeneratedColumn<String>(
-      'province', aliasedName, false,
-      additionalChecks:
-          GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 2),
-      type: DriftSqlType.string,
-      requiredDuringInsert: true);
   static const d.VerificationMeta _ecozoneMeta =
       const d.VerificationMeta('ecozone');
   @override
@@ -26951,7 +27127,6 @@ class $GpSiteInfoTable extends GpSiteInfo
         gpSummaryId,
         plotCompletion,
         incompReason,
-        province,
         ecozone,
         provEcoType,
         provEcoRef,
@@ -27013,12 +27188,6 @@ class $GpSiteInfoTable extends GpSiteInfo
               data['incomp_reason']!, _incompReasonMeta));
     } else if (isInserting) {
       context.missing(_incompReasonMeta);
-    }
-    if (data.containsKey('province')) {
-      context.handle(_provinceMeta,
-          province.isAcceptableOrUnknown(data['province']!, _provinceMeta));
-    } else if (isInserting) {
-      context.missing(_provinceMeta);
     }
     if (data.containsKey('ecozone')) {
       context.handle(_ecozoneMeta,
@@ -27189,8 +27358,6 @@ class $GpSiteInfoTable extends GpSiteInfo
           DriftSqlType.string, data['${effectivePrefix}plot_completion'])!,
       incompReason: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}incomp_reason'])!,
-      province: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}province'])!,
       ecozone: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}ecozone'])!,
       provEcoType: attachedDatabase.typeMapping
@@ -27254,7 +27421,6 @@ class GpSiteInfoData extends d.DataClass
   final int gpSummaryId;
   final String plotCompletion;
   final String incompReason;
-  final String province;
   final int ecozone;
   final String? provEcoType;
   final int provEcoRef;
@@ -27284,7 +27450,6 @@ class GpSiteInfoData extends d.DataClass
       required this.gpSummaryId,
       required this.plotCompletion,
       required this.incompReason,
-      required this.province,
       required this.ecozone,
       this.provEcoType,
       required this.provEcoRef,
@@ -27316,7 +27481,6 @@ class GpSiteInfoData extends d.DataClass
     map['gp_summary_id'] = d.Variable<int>(gpSummaryId);
     map['plot_completion'] = d.Variable<String>(plotCompletion);
     map['incomp_reason'] = d.Variable<String>(incompReason);
-    map['province'] = d.Variable<String>(province);
     map['ecozone'] = d.Variable<int>(ecozone);
     if (!nullToAbsent || provEcoType != null) {
       map['prov_eco_type'] = d.Variable<String>(provEcoType);
@@ -27354,7 +27518,6 @@ class GpSiteInfoData extends d.DataClass
       gpSummaryId: d.Value(gpSummaryId),
       plotCompletion: d.Value(plotCompletion),
       incompReason: d.Value(incompReason),
-      province: d.Value(province),
       ecozone: d.Value(ecozone),
       provEcoType: provEcoType == null && nullToAbsent
           ? const d.Value.absent()
@@ -27394,7 +27557,6 @@ class GpSiteInfoData extends d.DataClass
       gpSummaryId: serializer.fromJson<int>(json['gpSummaryId']),
       plotCompletion: serializer.fromJson<String>(json['plotCompletion']),
       incompReason: serializer.fromJson<String>(json['incompReason']),
-      province: serializer.fromJson<String>(json['province']),
       ecozone: serializer.fromJson<int>(json['ecozone']),
       provEcoType: serializer.fromJson<String?>(json['provEcoType']),
       provEcoRef: serializer.fromJson<int>(json['provEcoRef']),
@@ -27429,7 +27591,6 @@ class GpSiteInfoData extends d.DataClass
       'gpSummaryId': serializer.toJson<int>(gpSummaryId),
       'plotCompletion': serializer.toJson<String>(plotCompletion),
       'incompReason': serializer.toJson<String>(incompReason),
-      'province': serializer.toJson<String>(province),
       'ecozone': serializer.toJson<int>(ecozone),
       'provEcoType': serializer.toJson<String?>(provEcoType),
       'provEcoRef': serializer.toJson<int>(provEcoRef),
@@ -27462,7 +27623,6 @@ class GpSiteInfoData extends d.DataClass
           int? gpSummaryId,
           String? plotCompletion,
           String? incompReason,
-          String? province,
           int? ecozone,
           d.Value<String?> provEcoType = const d.Value.absent(),
           int? provEcoRef,
@@ -27492,7 +27652,6 @@ class GpSiteInfoData extends d.DataClass
         gpSummaryId: gpSummaryId ?? this.gpSummaryId,
         plotCompletion: plotCompletion ?? this.plotCompletion,
         incompReason: incompReason ?? this.incompReason,
-        province: province ?? this.province,
         ecozone: ecozone ?? this.ecozone,
         provEcoType: provEcoType.present ? provEcoType.value : this.provEcoType,
         provEcoRef: provEcoRef ?? this.provEcoRef,
@@ -27525,7 +27684,6 @@ class GpSiteInfoData extends d.DataClass
           ..write('gpSummaryId: $gpSummaryId, ')
           ..write('plotCompletion: $plotCompletion, ')
           ..write('incompReason: $incompReason, ')
-          ..write('province: $province, ')
           ..write('ecozone: $ecozone, ')
           ..write('provEcoType: $provEcoType, ')
           ..write('provEcoRef: $provEcoRef, ')
@@ -27560,7 +27718,6 @@ class GpSiteInfoData extends d.DataClass
         gpSummaryId,
         plotCompletion,
         incompReason,
-        province,
         ecozone,
         provEcoType,
         provEcoRef,
@@ -27594,7 +27751,6 @@ class GpSiteInfoData extends d.DataClass
           other.gpSummaryId == this.gpSummaryId &&
           other.plotCompletion == this.plotCompletion &&
           other.incompReason == this.incompReason &&
-          other.province == this.province &&
           other.ecozone == this.ecozone &&
           other.provEcoType == this.provEcoType &&
           other.provEcoRef == this.provEcoRef &&
@@ -27626,7 +27782,6 @@ class GpSiteInfoCompanion extends d.UpdateCompanion<GpSiteInfoData> {
   final d.Value<int> gpSummaryId;
   final d.Value<String> plotCompletion;
   final d.Value<String> incompReason;
-  final d.Value<String> province;
   final d.Value<int> ecozone;
   final d.Value<String?> provEcoType;
   final d.Value<int> provEcoRef;
@@ -27656,7 +27811,6 @@ class GpSiteInfoCompanion extends d.UpdateCompanion<GpSiteInfoData> {
     this.gpSummaryId = const d.Value.absent(),
     this.plotCompletion = const d.Value.absent(),
     this.incompReason = const d.Value.absent(),
-    this.province = const d.Value.absent(),
     this.ecozone = const d.Value.absent(),
     this.provEcoType = const d.Value.absent(),
     this.provEcoRef = const d.Value.absent(),
@@ -27687,7 +27841,6 @@ class GpSiteInfoCompanion extends d.UpdateCompanion<GpSiteInfoData> {
     required int gpSummaryId,
     required String plotCompletion,
     required String incompReason,
-    required String province,
     required int ecozone,
     this.provEcoType = const d.Value.absent(),
     required int provEcoRef,
@@ -27715,7 +27868,6 @@ class GpSiteInfoCompanion extends d.UpdateCompanion<GpSiteInfoData> {
   })  : gpSummaryId = d.Value(gpSummaryId),
         plotCompletion = d.Value(plotCompletion),
         incompReason = d.Value(incompReason),
-        province = d.Value(province),
         ecozone = d.Value(ecozone),
         provEcoRef = d.Value(provEcoRef),
         postProcessing = d.Value(postProcessing),
@@ -27743,7 +27895,6 @@ class GpSiteInfoCompanion extends d.UpdateCompanion<GpSiteInfoData> {
     d.Expression<int>? gpSummaryId,
     d.Expression<String>? plotCompletion,
     d.Expression<String>? incompReason,
-    d.Expression<String>? province,
     d.Expression<int>? ecozone,
     d.Expression<String>? provEcoType,
     d.Expression<int>? provEcoRef,
@@ -27774,7 +27925,6 @@ class GpSiteInfoCompanion extends d.UpdateCompanion<GpSiteInfoData> {
       if (gpSummaryId != null) 'gp_summary_id': gpSummaryId,
       if (plotCompletion != null) 'plot_completion': plotCompletion,
       if (incompReason != null) 'incomp_reason': incompReason,
-      if (province != null) 'province': province,
       if (ecozone != null) 'ecozone': ecozone,
       if (provEcoType != null) 'prov_eco_type': provEcoType,
       if (provEcoRef != null) 'prov_eco_ref': provEcoRef,
@@ -27807,7 +27957,6 @@ class GpSiteInfoCompanion extends d.UpdateCompanion<GpSiteInfoData> {
       d.Value<int>? gpSummaryId,
       d.Value<String>? plotCompletion,
       d.Value<String>? incompReason,
-      d.Value<String>? province,
       d.Value<int>? ecozone,
       d.Value<String?>? provEcoType,
       d.Value<int>? provEcoRef,
@@ -27837,7 +27986,6 @@ class GpSiteInfoCompanion extends d.UpdateCompanion<GpSiteInfoData> {
       gpSummaryId: gpSummaryId ?? this.gpSummaryId,
       plotCompletion: plotCompletion ?? this.plotCompletion,
       incompReason: incompReason ?? this.incompReason,
-      province: province ?? this.province,
       ecozone: ecozone ?? this.ecozone,
       provEcoType: provEcoType ?? this.provEcoType,
       provEcoRef: provEcoRef ?? this.provEcoRef,
@@ -27879,9 +28027,6 @@ class GpSiteInfoCompanion extends d.UpdateCompanion<GpSiteInfoData> {
     }
     if (incompReason.present) {
       map['incomp_reason'] = d.Variable<String>(incompReason.value);
-    }
-    if (province.present) {
-      map['province'] = d.Variable<String>(province.value);
     }
     if (ecozone.present) {
       map['ecozone'] = d.Variable<int>(ecozone.value);
@@ -27965,7 +28110,6 @@ class GpSiteInfoCompanion extends d.UpdateCompanion<GpSiteInfoData> {
           ..write('gpSummaryId: $gpSummaryId, ')
           ..write('plotCompletion: $plotCompletion, ')
           ..write('incompReason: $incompReason, ')
-          ..write('province: $province, ')
           ..write('ecozone: $ecozone, ')
           ..write('provEcoType: $provEcoType, ')
           ..write('provEcoRef: $provEcoRef, ')
@@ -29121,6 +29265,7 @@ abstract class _$Database extends d.GeneratedDatabase {
   late final $GpSiteInfoPlotIncompleteReasonTable
       gpSiteInfoPlotIncompleteReason =
       $GpSiteInfoPlotIncompleteReasonTable(this);
+  late final $GpDistAgentTable gpDistAgent = $GpDistAgentTable(this);
   late final $SurveyHeadersTable surveyHeaders = $SurveyHeadersTable(this);
   late final $MetaCommentTable metaComment = $MetaCommentTable(this);
   late final $SurveySummaryTable surveySummary = $SurveySummaryTable(this);
@@ -29255,6 +29400,7 @@ abstract class _$Database extends d.GeneratedDatabase {
         gpSiteInfoLandPos,
         gpSiteInfoPostProcessing,
         gpSiteInfoPlotIncompleteReason,
+        gpDistAgent,
         surveyHeaders,
         metaComment,
         surveySummary,
@@ -35114,6 +35260,101 @@ class $$GpSiteInfoPlotIncompleteReasonTableFilterComposer
 class $$GpSiteInfoPlotIncompleteReasonTableOrderingComposer extends d
     .OrderingComposer<_$Database, $GpSiteInfoPlotIncompleteReasonTable> {
   $$GpSiteInfoPlotIncompleteReasonTableOrderingComposer(super.$state);
+  d.ColumnOrderings<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$GpDistAgentTableInsertCompanionBuilder = GpDistAgentCompanion
+    Function({
+  required String code,
+  required String name,
+  d.Value<int> rowid,
+});
+typedef $$GpDistAgentTableUpdateCompanionBuilder = GpDistAgentCompanion
+    Function({
+  d.Value<String> code,
+  d.Value<String> name,
+  d.Value<int> rowid,
+});
+
+class $$GpDistAgentTableTableManager extends d.RootTableManager<
+    _$Database,
+    $GpDistAgentTable,
+    GpDistAgentData,
+    $$GpDistAgentTableFilterComposer,
+    $$GpDistAgentTableOrderingComposer,
+    $$GpDistAgentTableProcessedTableManager,
+    $$GpDistAgentTableInsertCompanionBuilder,
+    $$GpDistAgentTableUpdateCompanionBuilder> {
+  $$GpDistAgentTableTableManager(_$Database db, $GpDistAgentTable table)
+      : super(d.TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$GpDistAgentTableFilterComposer(d.ComposerState(db, table)),
+          orderingComposer:
+              $$GpDistAgentTableOrderingComposer(d.ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$GpDistAgentTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            d.Value<String> code = const d.Value.absent(),
+            d.Value<String> name = const d.Value.absent(),
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpDistAgentCompanion(
+            code: code,
+            name: name,
+            rowid: rowid,
+          ),
+          getInsertCompanionBuilder: ({
+            required String code,
+            required String name,
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpDistAgentCompanion.insert(
+            code: code,
+            name: name,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$GpDistAgentTableProcessedTableManager extends d.ProcessedTableManager<
+    _$Database,
+    $GpDistAgentTable,
+    GpDistAgentData,
+    $$GpDistAgentTableFilterComposer,
+    $$GpDistAgentTableOrderingComposer,
+    $$GpDistAgentTableProcessedTableManager,
+    $$GpDistAgentTableInsertCompanionBuilder,
+    $$GpDistAgentTableUpdateCompanionBuilder> {
+  $$GpDistAgentTableProcessedTableManager(super.$state);
+}
+
+class $$GpDistAgentTableFilterComposer
+    extends d.FilterComposer<_$Database, $GpDistAgentTable> {
+  $$GpDistAgentTableFilterComposer(super.$state);
+  d.ColumnFilters<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$GpDistAgentTableOrderingComposer
+    extends d.OrderingComposer<_$Database, $GpDistAgentTable> {
+  $$GpDistAgentTableOrderingComposer(super.$state);
   d.ColumnOrderings<String> get code => $state.composableBuilder(
       column: $state.table.code,
       builder: (column, joinBuilders) =>
@@ -42876,7 +43117,6 @@ typedef $$GpSiteInfoTableInsertCompanionBuilder = GpSiteInfoCompanion Function({
   required int gpSummaryId,
   required String plotCompletion,
   required String incompReason,
-  required String province,
   required int ecozone,
   d.Value<String?> provEcoType,
   required int provEcoRef,
@@ -42907,7 +43147,6 @@ typedef $$GpSiteInfoTableUpdateCompanionBuilder = GpSiteInfoCompanion Function({
   d.Value<int> gpSummaryId,
   d.Value<String> plotCompletion,
   d.Value<String> incompReason,
-  d.Value<String> province,
   d.Value<int> ecozone,
   d.Value<String?> provEcoType,
   d.Value<int> provEcoRef,
@@ -42958,7 +43197,6 @@ class $$GpSiteInfoTableTableManager extends d.RootTableManager<
             d.Value<int> gpSummaryId = const d.Value.absent(),
             d.Value<String> plotCompletion = const d.Value.absent(),
             d.Value<String> incompReason = const d.Value.absent(),
-            d.Value<String> province = const d.Value.absent(),
             d.Value<int> ecozone = const d.Value.absent(),
             d.Value<String?> provEcoType = const d.Value.absent(),
             d.Value<int> provEcoRef = const d.Value.absent(),
@@ -42989,7 +43227,6 @@ class $$GpSiteInfoTableTableManager extends d.RootTableManager<
             gpSummaryId: gpSummaryId,
             plotCompletion: plotCompletion,
             incompReason: incompReason,
-            province: province,
             ecozone: ecozone,
             provEcoType: provEcoType,
             provEcoRef: provEcoRef,
@@ -43020,7 +43257,6 @@ class $$GpSiteInfoTableTableManager extends d.RootTableManager<
             required int gpSummaryId,
             required String plotCompletion,
             required String incompReason,
-            required String province,
             required int ecozone,
             d.Value<String?> provEcoType = const d.Value.absent(),
             required int provEcoRef,
@@ -43051,7 +43287,6 @@ class $$GpSiteInfoTableTableManager extends d.RootTableManager<
             gpSummaryId: gpSummaryId,
             plotCompletion: plotCompletion,
             incompReason: incompReason,
-            province: province,
             ecozone: ecozone,
             provEcoType: provEcoType,
             provEcoRef: provEcoRef,
@@ -43107,11 +43342,6 @@ class $$GpSiteInfoTableFilterComposer
 
   d.ColumnFilters<String> get incompReason => $state.composableBuilder(
       column: $state.table.incompReason,
-      builder: (column, joinBuilders) =>
-          d.ColumnFilters(column, joinBuilders: joinBuilders));
-
-  d.ColumnFilters<String> get province => $state.composableBuilder(
-      column: $state.table.province,
       builder: (column, joinBuilders) =>
           d.ColumnFilters(column, joinBuilders: joinBuilders));
 
@@ -43263,11 +43493,6 @@ class $$GpSiteInfoTableOrderingComposer
 
   d.ColumnOrderings<String> get incompReason => $state.composableBuilder(
       column: $state.table.incompReason,
-      builder: (column, joinBuilders) =>
-          d.ColumnOrderings(column, joinBuilders: joinBuilders));
-
-  d.ColumnOrderings<String> get province => $state.composableBuilder(
-      column: $state.table.province,
       builder: (column, joinBuilders) =>
           d.ColumnOrderings(column, joinBuilders: joinBuilders));
 
@@ -44026,6 +44251,8 @@ class _$DatabaseManager {
       get gpSiteInfoPlotIncompleteReason =>
           $$GpSiteInfoPlotIncompleteReasonTableTableManager(
               _db, _db.gpSiteInfoPlotIncompleteReason);
+  $$GpDistAgentTableTableManager get gpDistAgent =>
+      $$GpDistAgentTableTableManager(_db, _db.gpDistAgent);
   $$SurveyHeadersTableTableManager get surveyHeaders =>
       $$SurveyHeadersTableTableManager(_db, _db.surveyHeaders);
   $$MetaCommentTableTableManager get metaComment =>

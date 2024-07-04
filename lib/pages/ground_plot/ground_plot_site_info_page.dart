@@ -701,6 +701,7 @@ class GroundPlotSiteInfoPageState
               children: [
                 ReferenceNameSelectBuilder(
                   title: "Land base",
+                  defaultSelectedValue: "Please select land base",
                   name: getLandBaseName(),
                   asyncListFn: db.referenceTablesDao.getGpSiteInfoLandBaseList,
                   enabled: !parentComplete &&
@@ -720,6 +721,7 @@ class GroundPlotSiteInfoPageState
                 ),
                 ReferenceNameSelectBuilder(
                   title: "Land Cover",
+                  defaultSelectedValue: "Please select land cover",
                   name: getLandCoverName(),
                   asyncListFn: db.referenceTablesDao.getGpSiteInfoLandCoverList,
                   enabled: !parentComplete &&
@@ -740,6 +742,7 @@ class GroundPlotSiteInfoPageState
                 ),
                 ReferenceNameSelectBuilder(
                   title: "Land Position",
+                  defaultSelectedValue: "Please select land position",
                   name: db.referenceTablesDao.getGpSiteInfoLandPosName(
                       db.companionValueToStr(siteInfo.landPos)),
                   asyncListFn: db.referenceTablesDao.getGpSiteInfoLandPosList,
@@ -760,6 +763,7 @@ class GroundPlotSiteInfoPageState
                 ),
                 ReferenceNameSelectBuilder(
                   title: "Vegetation type",
+                  defaultSelectedValue: "Please select vegetation type",
                   name: db.referenceTablesDao.getGpSiteInfoVegTypeName(
                       db.companionValueToStr(siteInfo.vegType)),
                   asyncListFn: db.referenceTablesDao.getGpSiteInfoVegTypeList,
@@ -780,6 +784,7 @@ class GroundPlotSiteInfoPageState
                 ),
                 ReferenceNameSelectBuilder(
                   title: "Density class",
+                  defaultSelectedValue: "Please select density class",
                   name: db.referenceTablesDao.getGpSiteInfoDensityName(
                       db.companionValueToStr(siteInfo.densityCl)),
                   asyncListFn: db.referenceTablesDao.getGpSiteInfoDensityList,
@@ -800,6 +805,7 @@ class GroundPlotSiteInfoPageState
                 ),
                 ReferenceNameSelectBuilder(
                   title: "Stand structure",
+                  defaultSelectedValue: "Please select stand structure",
                   name: db.referenceTablesDao.getGpSiteInfoStandStructureName(
                       db.companionValueToStr(siteInfo.standStru)),
                   asyncListFn:
@@ -821,6 +827,7 @@ class GroundPlotSiteInfoPageState
                 ),
                 ReferenceNameSelectBuilder(
                   title: "Succession stage",
+                  defaultSelectedValue: "Please select succession stage",
                   name: db.referenceTablesDao.getGpSiteInfoSuccessionStageName(
                       db.companionValueToStr(siteInfo.succStage)),
                   asyncListFn:
@@ -842,6 +849,7 @@ class GroundPlotSiteInfoPageState
                 ),
                 ReferenceNameSelectBuilder(
                   title: "Wetland class",
+                  defaultSelectedValue: "Please select wetland class",
                   name: db.referenceTablesDao.getGpSiteInfoWetlandName(
                       db.companionValueToStr(siteInfo.wetlandClass)),
                   asyncListFn: db.referenceTablesDao.getGpSiteInfoWetlandList,
@@ -862,215 +870,235 @@ class GroundPlotSiteInfoPageState
                 ),
               ],
             ),
-            ExpansionTitle(
-              title: "Plot Center Location",
-              children: [
-                ReferenceNameSelectBuilder(
-                  title: "Post Processing",
-                  name: db.referenceTablesDao.getGpSiteInfoPostProcessingName(
-                      db.companionValueToStr(siteInfo.postProcessing)),
-                  asyncListFn:
-                      db.referenceTablesDao.getGpSiteInfoPostProcessingList,
-                  enabled: !parentComplete,
-                  onChange: (s) => db.referenceTablesDao
-                      .getGpSiteInfoPostProcessingCode(s)
-                      .then((value) => value == "S"
+
+            DisableWidget(
+              disabled: parentComplete,
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: kPaddingV * 2,
+                  ),
+                  const TextHeaderSeparator(
+                    title: "Plot Center Location",
+                  ),
+                  ReferenceNameSelectBuilder(
+                    title: "Post Processing",
+                    name: db.referenceTablesDao.getGpSiteInfoPostProcessingName(
+                        db.companionValueToStr(siteInfo.postProcessing)),
+                    asyncListFn:
+                        db.referenceTablesDao.getGpSiteInfoPostProcessingList,
+                    enabled: !parentComplete,
+                    onChange: (s) => db.referenceTablesDao
+                        .getGpSiteInfoPostProcessingCode(s)
+                        .then((value) => value == "S"
+                            ? updateSiteInfo(siteInfo.copyWith(
+                                postProcessing: d.Value(value),
+                                utmEAccuracy: const d.Value(-1),
+                                utmNAccuracy: const d.Value(-1)))
+                            : updateSiteInfo(siteInfo.copyWith(
+                                postProcessing: d.Value(value)))),
+                  ),
+                  DisableWidget(
+                    disabled: parentComplete,
+                    child: DataInput(
+                      title: "UTM northing",
+                      boxLabel:
+                          "The UTM northing that describes the centre point location "
+                          "of a ground plot upon the national grid. The"
+                          " coordinate is measured and report to the nearest meter,",
+                      startingStr: db.companionValueToStr(siteInfo.utmN),
+                      inputFormatters: [
+                        LengthLimitingTextInputFormatter(7),
+                        ThousandsFormatter(
+                          allowFraction: false,
+                        ),
+                      ],
+                      onSubmit: (s) {
+                        s.isEmpty
+                            ? updateSiteInfo(
+                                siteInfo.copyWith(utmN: const d.Value.absent()))
+                            : updateSiteInfo(
+                                siteInfo.copyWith(utmN: d.Value(int.parse(s))));
+                      },
+                      onValidate: _errorUtmN,
+                    ),
+                  ),
+                  DisableWidget(
+                    disabled: parentComplete &&
+                        db.companionValueToStr(siteInfo.postProcessing) == "S",
+                    child: HideInfoCheckbox(
+                      title: "Field accuracy northing",
+                      titleWidget: "Not reported",
+                      checkValue:
+                          db.companionValueToStr(siteInfo.utmNAccuracy) ==
+                              "-1.0",
+                      onChange: (b) => b!
                           ? updateSiteInfo(siteInfo.copyWith(
-                              postProcessing: d.Value(value),
-                              utmEAccuracy: const d.Value(-1),
                               utmNAccuracy: const d.Value(-1)))
                           : updateSiteInfo(siteInfo.copyWith(
-                              postProcessing: d.Value(value)))),
-                ),
-                DisableWidget(
-                  disabled: parentComplete,
-                  child: DataInput(
-                    title: "UTM northing",
-                    boxLabel:
-                        "The UTM northing that describes the centre point location "
-                        "of a ground plot upon the national grid. The"
-                        " coordinate is measured and report to the nearest meter,",
-                    startingStr: db.companionValueToStr(siteInfo.utmN),
-                    inputFormatters: [
-                      LengthLimitingTextInputFormatter(7),
-                      ThousandsFormatter(
-                        allowFraction: false,
+                              utmNAccuracy: const d.Value.absent())),
+                      child: DataInput(
+                        boxLabel:
+                            "Describes the accuracy of the UTM northing coordinate reported. Expressed in meters.",
+                        startingStr:
+                            db.companionValueToStr(siteInfo.utmNAccuracy),
+                        paddingGeneral: EdgeInsets.zero,
+                        paddingTextbox: EdgeInsets.zero,
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(6),
+                          ThousandsFormatter(
+                              allowFraction: true,
+                              maxDigitsBeforeDecimal: 2,
+                              decimalPlaces: 3),
+                        ],
+                        onSubmit: (s) {
+                          s.isEmpty
+                              ? updateSiteInfo(siteInfo.copyWith(
+                                  utmNAccuracy: const d.Value.absent()))
+                              : updateSiteInfo(siteInfo.copyWith(
+                                  utmNAccuracy: d.Value(double.parse(s))));
+                        },
+                        onValidate: _errorUtmNAccuracy,
                       ),
-                    ],
-                    onSubmit: (s) {
-                      s.isEmpty
-                          ? updateSiteInfo(
-                              siteInfo.copyWith(utmN: const d.Value.absent()))
-                          : updateSiteInfo(
-                              siteInfo.copyWith(utmN: d.Value(int.parse(s))));
-                    },
-                    onValidate: _errorUtmN,
+                    ),
                   ),
-                ),
-                DisableWidget(
-                  disabled: parentComplete &&
-                      db.companionValueToStr(siteInfo.postProcessing) == "S",
-                  child: HideInfoCheckbox(
-                    title: "Field accuracy northing",
-                    titleWidget: "Not reported",
-                    checkValue:
-                        db.companionValueToStr(siteInfo.utmNAccuracy) == "-1.0",
-                    onChange: (b) => b!
-                        ? updateSiteInfo(
-                            siteInfo.copyWith(utmNAccuracy: const d.Value(-1)))
-                        : updateSiteInfo(siteInfo.copyWith(
-                            utmNAccuracy: const d.Value.absent())),
+                  DisableWidget(
+                    disabled: parentComplete &&
+                        db.companionValueToStr(siteInfo.postProcessing) == "S",
                     child: DataInput(
+                      title: "UTM easting",
                       boxLabel:
-                          "Describes the accuracy of the UTM northing coordinate reported. Expressed in meters.",
-                      startingStr:
-                          db.companionValueToStr(siteInfo.utmNAccuracy),
-                      paddingGeneral: EdgeInsets.zero,
-                      paddingTextbox: EdgeInsets.zero,
+                          "The UTM easting that describes the centre point location "
+                          "of a ground plot upon the national grid. The"
+                          " coordinate is measured and report to the nearest meter,",
+                      startingStr: db.companionValueToStr(siteInfo.utmE),
                       inputFormatters: [
                         LengthLimitingTextInputFormatter(6),
                         ThousandsFormatter(
-                            allowFraction: true,
-                            maxDigitsBeforeDecimal: 2,
-                            decimalPlaces: 3),
+                          allowFraction: false,
+                        ),
                       ],
                       onSubmit: (s) {
                         s.isEmpty
-                            ? updateSiteInfo(siteInfo.copyWith(
-                                utmNAccuracy: const d.Value.absent()))
-                            : updateSiteInfo(siteInfo.copyWith(
-                                utmNAccuracy: d.Value(double.parse(s))));
+                            ? updateSiteInfo(
+                                siteInfo.copyWith(utmE: const d.Value.absent()))
+                            : updateSiteInfo(
+                                siteInfo.copyWith(utmE: d.Value(int.parse(s))));
                       },
-                      onValidate: _errorUtmNAccuracy,
+                      onValidate: _errorUtmE,
                     ),
                   ),
-                ),
-                DisableWidget(
-                  disabled: parentComplete &&
-                      db.companionValueToStr(siteInfo.postProcessing) == "S",
-                  child: DataInput(
-                    title: "UTM easting",
-                    boxLabel:
-                        "The UTM easting that describes the centre point location "
-                        "of a ground plot upon the national grid. The"
-                        " coordinate is measured and report to the nearest meter,",
-                    startingStr: db.companionValueToStr(siteInfo.utmE),
-                    inputFormatters: [
-                      LengthLimitingTextInputFormatter(6),
-                      ThousandsFormatter(
-                        allowFraction: false,
+                  DisableWidget(
+                    disabled: parentComplete,
+                    child: HideInfoCheckbox(
+                      title: "Field accuracy easting",
+                      titleWidget: "Not reported",
+                      checkValue:
+                          db.companionValueToStr(siteInfo.utmEAccuracy) ==
+                              "-1.0",
+                      onChange: (b) => b!
+                          ? updateSiteInfo(siteInfo.copyWith(
+                              utmEAccuracy: const d.Value(-1)))
+                          : updateSiteInfo(siteInfo.copyWith(
+                              utmEAccuracy: const d.Value.absent())),
+                      child: DataInput(
+                        boxLabel:
+                            "Describes the accuracy of the UTM easting coordinate reported. Expressed in meters.",
+                        startingStr:
+                            db.companionValueToStr(siteInfo.utmEAccuracy),
+                        paddingGeneral: EdgeInsets.zero,
+                        paddingTextbox: EdgeInsets.zero,
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(6),
+                          ThousandsFormatter(
+                              allowFraction: true,
+                              maxDigitsBeforeDecimal: 2,
+                              decimalPlaces: 3),
+                        ],
+                        onSubmit: (s) {
+                          s.isEmpty
+                              ? updateSiteInfo(siteInfo.copyWith(
+                                  utmEAccuracy: const d.Value.absent()))
+                              : updateSiteInfo(siteInfo.copyWith(
+                                  utmEAccuracy: d.Value(double.parse(s))));
+                        },
+                        onValidate: _errorUtmEAccuracy,
                       ),
-                    ],
-                    onSubmit: (s) {
-                      s.isEmpty
-                          ? updateSiteInfo(
-                              siteInfo.copyWith(utmE: const d.Value.absent()))
-                          : updateSiteInfo(
-                              siteInfo.copyWith(utmE: d.Value(int.parse(s))));
-                    },
-                    onValidate: _errorUtmE,
-                  ),
-                ),
-                DisableWidget(
-                  disabled: parentComplete,
-                  child: HideInfoCheckbox(
-                    title: "Field accuracy easting",
-                    titleWidget: "Not reported",
-                    checkValue:
-                        db.companionValueToStr(siteInfo.utmEAccuracy) == "-1.0",
-                    onChange: (b) => b!
-                        ? updateSiteInfo(
-                            siteInfo.copyWith(utmEAccuracy: const d.Value(-1)))
-                        : updateSiteInfo(siteInfo.copyWith(
-                            utmEAccuracy: const d.Value.absent())),
-                    child: DataInput(
-                      title: "UTM Easting",
-                      boxLabel:
-                          "Describes the accuracy of the UTM easting coordinate reported. Expressed in meters.",
-                      startingStr:
-                          db.companionValueToStr(siteInfo.utmEAccuracy),
-                      paddingGeneral: EdgeInsets.zero,
-                      paddingTextbox: EdgeInsets.zero,
-                      inputFormatters: [
-                        LengthLimitingTextInputFormatter(6),
-                        ThousandsFormatter(
-                            allowFraction: true,
-                            maxDigitsBeforeDecimal: 2,
-                            decimalPlaces: 3),
-                      ],
-                      onSubmit: (s) {
-                        s.isEmpty
-                            ? updateSiteInfo(siteInfo.copyWith(
-                                utmEAccuracy: const d.Value.absent()))
-                            : updateSiteInfo(siteInfo.copyWith(
-                                utmEAccuracy: d.Value(double.parse(s))));
-                      },
-                      onValidate: _errorUtmEAccuracy,
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-            ExpansionTitle(
-              title: "General GPS Information",
-              children: [
-                DataInput(
-                    title: "GPS Make",
-                    startingStr: db.companionValueToStr(siteInfo.gpsMake),
-                    onSubmit: (s) {
-                      s.isEmpty
-                          ? updateSiteInfo(siteInfo.copyWith(
-                              gpsMake: const d.Value.absent()))
-                          : updateSiteInfo(
-                              siteInfo.copyWith(gpsMake: d.Value(s)));
-                    },
-                    onValidate: _errorGpsMake),
-                DataInput(
-                    title: "GPS Model",
-                    startingStr: db.companionValueToStr(siteInfo.gpsModel),
-                    onSubmit: (s) {
-                      s.isEmpty
-                          ? updateSiteInfo(siteInfo.copyWith(
-                              gpsModel: const d.Value.absent()))
-                          : updateSiteInfo(
-                              siteInfo.copyWith(gpsModel: d.Value(s)));
-                    },
-                    onValidate: _errorGpsModel),
-                HideInfoCheckbox(
-                  title: "Points averaged",
-                  titleWidget: "Unreported",
-                  checkValue: db.companionValueToStr(siteInfo.gpsPoint) == "-1",
-                  child: DataInput(
-                      startingStr: db.companionValueToStr(siteInfo.gpsPoint),
-                      onSubmit: (s) {
-                        s.isEmpty
-                            ? updateSiteInfo(siteInfo.copyWith(
-                                gpsPoint: const d.Value.absent()))
-                            : updateSiteInfo(siteInfo.copyWith(
-                                gpsPoint: d.Value(int.parse(s))));
+
+            DisableWidget(
+              disabled: parentComplete,
+              child: TextHeaderSeparator(
+                verticalPadding: const EdgeInsets.only(top: kPaddingV * 2),
+                title: "General GPS Information",
+                child: Column(
+                  children: [
+                    DataInput(
+                        title: "GPS Make",
+                        startingStr: db.companionValueToStr(siteInfo.gpsMake),
+                        onSubmit: (s) {
+                          s.isEmpty
+                              ? updateSiteInfo(siteInfo.copyWith(
+                                  gpsMake: const d.Value.absent()))
+                              : updateSiteInfo(
+                                  siteInfo.copyWith(gpsMake: d.Value(s)));
+                        },
+                        onValidate: _errorGpsMake),
+                    DataInput(
+                        title: "GPS Model",
+                        startingStr: db.companionValueToStr(siteInfo.gpsModel),
+                        onSubmit: (s) {
+                          s.isEmpty
+                              ? updateSiteInfo(siteInfo.copyWith(
+                                  gpsModel: const d.Value.absent()))
+                              : updateSiteInfo(
+                                  siteInfo.copyWith(gpsModel: d.Value(s)));
+                        },
+                        onValidate: _errorGpsModel),
+                    HideInfoCheckbox(
+                      title: "Points averaged",
+                      titleWidget: "Unreported",
+                      checkValue:
+                          db.companionValueToStr(siteInfo.gpsPoint) == "-1",
+                      child: DataInput(
+                          startingStr:
+                              db.companionValueToStr(siteInfo.gpsPoint),
+                          onSubmit: (s) {
+                            s.isEmpty
+                                ? updateSiteInfo(siteInfo.copyWith(
+                                    gpsPoint: const d.Value.absent()))
+                                : updateSiteInfo(siteInfo.copyWith(
+                                    gpsPoint: d.Value(int.parse(s))));
+                          },
+                          onValidate: _errorGpsPoints),
+                    ),
+                    ReferenceNameSelectBuilder(
+                      title: "UTM Zone",
+                      name: db.referenceTablesDao.getGpSiteInfoUtmZoneName(
+                          db.companionValueToStr(siteInfo.utmZone)),
+                      asyncListFn:
+                          db.referenceTablesDao.getGpSiteInfoUtmZoneList,
+                      enabled: !parentComplete,
+                      disabledFn: (s) {
+                        if (s == "U: unknown" &&
+                            db.companionValueToStr(siteInfo.plotCompletion) ==
+                                "U") {
+                          return true;
+                        }
+                        return false;
                       },
-                      onValidate: _errorGpsPoints),
+                      onChange: (s) => db.referenceTablesDao
+                          .getGpSiteInfoUtmZoneCode(s)
+                          .then((value) => updateSiteInfo(
+                              siteInfo.copyWith(utmZone: d.Value(value)))),
+                    ),
+                  ],
                 ),
-                ReferenceNameSelectBuilder(
-                  title: "UTM Zone",
-                  name: db.referenceTablesDao.getGpSiteInfoUtmZoneName(
-                      db.companionValueToStr(siteInfo.utmZone)),
-                  asyncListFn: db.referenceTablesDao.getGpSiteInfoUtmZoneList,
-                  enabled: !parentComplete,
-                  disabledFn: (s) {
-                    if (s == "U: unknown" &&
-                        db.companionValueToStr(siteInfo.plotCompletion) ==
-                            "U") {
-                      return true;
-                    }
-                    return false;
-                  },
-                  onChange: (s) => db.referenceTablesDao
-                      .getGpSiteInfoUtmZoneCode(s)
-                      .then((value) => updateSiteInfo(
-                          siteInfo.copyWith(utmZone: d.Value(value)))),
-                ),
-              ],
+              ),
             ),
           ],
         ),
