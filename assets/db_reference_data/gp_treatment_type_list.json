@@ -1,0 +1,70 @@
+[
+  {
+    "code": "CC",
+    "name": "Stand has been harvested in full (> 80% by crown area of the previous forest cover has been removed."
+  },
+  {
+    "code": "PC",
+    "name": "Stand has been harvested in part (< 80% by crown area of the previous forest cover has been removed."
+  },
+  {
+    "code": "DC",
+    "name": "Deforestation"
+  },
+  {
+    "code": "CL",
+    "name": "Cleaning, including brushing and weeding."
+  },
+  {
+    "code": "JS",
+    "name": "Juvenile spacing – altering the number of stems in the stand."
+  },
+  {
+    "code": "PR",
+    "name": "Pruning"
+  },
+  {
+    "code": "PT",
+    "name": "Pre-commercial thinning – reduction of number of stems to increase spacing."
+  },
+  {
+    "code": "CT",
+    "name": "Commercial thinning – partial cut in older immature stands."
+  },
+  {
+    "code": "FT",
+    "name": "Fertilization"
+  },
+  {
+    "code": "SP",
+    "name": "Mechanical site preparation"
+  },
+  {
+    "code": "PB",
+    "name": "Prescribed burning"
+  },
+  {
+    "code": "HC",
+    "name": "Herbicide"
+  },
+  {
+    "code": "OT",
+    "name": "Other"
+  },
+  {
+    "code": "NO",
+    "name": "No treatment observed"
+  },
+  {
+    "code": "NR",
+    "name": "Not reported"
+  },
+  {
+    "code": "FP",
+    "name": "FP: FLUXNET treatment code"
+  },
+  {
+    "code": "IC",
+    "name": "IC: FLUXNET treatment code"
+  }
+]

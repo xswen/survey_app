@@ -12206,6 +12206,192 @@ class GpOriginRegenTypeCompanion
   }
 }
 
+class $GpTreatmentTypeTable extends GpTreatmentType
+    with d.TableInfo<$GpTreatmentTypeTable, GpTreatmentTypeData> {
+  @override
+  final d.GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GpTreatmentTypeTable(this.attachedDatabase, [this._alias]);
+  static const d.VerificationMeta _codeMeta = const d.VerificationMeta('code');
+  @override
+  late final d.GeneratedColumn<String> code = d.GeneratedColumn<String>(
+      'code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const d.VerificationMeta _nameMeta = const d.VerificationMeta('name');
+  @override
+  late final d.GeneratedColumn<String> name = d.GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<d.GeneratedColumn> get $columns => [code, name];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'gp_treatment_type';
+  @override
+  d.VerificationContext validateIntegrity(
+      d.Insertable<GpTreatmentTypeData> instance,
+      {bool isInserting = false}) {
+    final context = d.VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('code')) {
+      context.handle(
+          _codeMeta, code.isAcceptableOrUnknown(data['code']!, _codeMeta));
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<d.GeneratedColumn> get $primaryKey => const {};
+  @override
+  GpTreatmentTypeData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return GpTreatmentTypeData(
+      code: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}code'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+    );
+  }
+
+  @override
+  $GpTreatmentTypeTable createAlias(String alias) {
+    return $GpTreatmentTypeTable(attachedDatabase, alias);
+  }
+}
+
+class GpTreatmentTypeData extends d.DataClass
+    implements d.Insertable<GpTreatmentTypeData> {
+  final String code;
+  final String name;
+  const GpTreatmentTypeData({required this.code, required this.name});
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    map['code'] = d.Variable<String>(code);
+    map['name'] = d.Variable<String>(name);
+    return map;
+  }
+
+  GpTreatmentTypeCompanion toCompanion(bool nullToAbsent) {
+    return GpTreatmentTypeCompanion(
+      code: d.Value(code),
+      name: d.Value(name),
+    );
+  }
+
+  factory GpTreatmentTypeData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return GpTreatmentTypeData(
+      code: serializer.fromJson<String>(json['code']),
+      name: serializer.fromJson<String>(json['name']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= d.driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'code': serializer.toJson<String>(code),
+      'name': serializer.toJson<String>(name),
+    };
+  }
+
+  GpTreatmentTypeData copyWith({String? code, String? name}) =>
+      GpTreatmentTypeData(
+        code: code ?? this.code,
+        name: name ?? this.name,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('GpTreatmentTypeData(')
+          ..write('code: $code, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(code, name);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GpTreatmentTypeData &&
+          other.code == this.code &&
+          other.name == this.name);
+}
+
+class GpTreatmentTypeCompanion extends d.UpdateCompanion<GpTreatmentTypeData> {
+  final d.Value<String> code;
+  final d.Value<String> name;
+  final d.Value<int> rowid;
+  const GpTreatmentTypeCompanion({
+    this.code = const d.Value.absent(),
+    this.name = const d.Value.absent(),
+    this.rowid = const d.Value.absent(),
+  });
+  GpTreatmentTypeCompanion.insert({
+    required String code,
+    required String name,
+    this.rowid = const d.Value.absent(),
+  })  : code = d.Value(code),
+        name = d.Value(name);
+  static d.Insertable<GpTreatmentTypeData> custom({
+    d.Expression<String>? code,
+    d.Expression<String>? name,
+    d.Expression<int>? rowid,
+  }) {
+    return d.RawValuesInsertable({
+      if (code != null) 'code': code,
+      if (name != null) 'name': name,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  GpTreatmentTypeCompanion copyWith(
+      {d.Value<String>? code, d.Value<String>? name, d.Value<int>? rowid}) {
+    return GpTreatmentTypeCompanion(
+      code: code ?? this.code,
+      name: name ?? this.name,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, d.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, d.Expression>{};
+    if (code.present) {
+      map['code'] = d.Variable<String>(code.value);
+    }
+    if (name.present) {
+      map['name'] = d.Variable<String>(name.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = d.Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GpTreatmentTypeCompanion(')
+          ..write('code: $code, ')
+          ..write('name: $name, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $SurveyHeadersTable extends SurveyHeaders
     with d.TableInfo<$SurveyHeadersTable, SurveyHeader> {
   @override
@@ -29829,6 +30015,8 @@ abstract class _$Database extends d.GeneratedDatabase {
       $GpOriginVegCoverTable(this);
   late final $GpOriginRegenTypeTable gpOriginRegenType =
       $GpOriginRegenTypeTable(this);
+  late final $GpTreatmentTypeTable gpTreatmentType =
+      $GpTreatmentTypeTable(this);
   late final $SurveyHeadersTable surveyHeaders = $SurveyHeadersTable(this);
   late final $MetaCommentTable metaComment = $MetaCommentTable(this);
   late final $SurveySummaryTable surveySummary = $SurveySummaryTable(this);
@@ -29967,6 +30155,7 @@ abstract class _$Database extends d.GeneratedDatabase {
         gpDistMortalityBasis,
         gpOriginVegCover,
         gpOriginRegenType,
+        gpTreatmentType,
         surveyHeaders,
         metaComment,
         surveySummary,
@@ -36212,6 +36401,102 @@ class $$GpOriginRegenTypeTableFilterComposer
 class $$GpOriginRegenTypeTableOrderingComposer
     extends d.OrderingComposer<_$Database, $GpOriginRegenTypeTable> {
   $$GpOriginRegenTypeTableOrderingComposer(super.$state);
+  d.ColumnOrderings<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  d.ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$GpTreatmentTypeTableInsertCompanionBuilder = GpTreatmentTypeCompanion
+    Function({
+  required String code,
+  required String name,
+  d.Value<int> rowid,
+});
+typedef $$GpTreatmentTypeTableUpdateCompanionBuilder = GpTreatmentTypeCompanion
+    Function({
+  d.Value<String> code,
+  d.Value<String> name,
+  d.Value<int> rowid,
+});
+
+class $$GpTreatmentTypeTableTableManager extends d.RootTableManager<
+    _$Database,
+    $GpTreatmentTypeTable,
+    GpTreatmentTypeData,
+    $$GpTreatmentTypeTableFilterComposer,
+    $$GpTreatmentTypeTableOrderingComposer,
+    $$GpTreatmentTypeTableProcessedTableManager,
+    $$GpTreatmentTypeTableInsertCompanionBuilder,
+    $$GpTreatmentTypeTableUpdateCompanionBuilder> {
+  $$GpTreatmentTypeTableTableManager(_$Database db, $GpTreatmentTypeTable table)
+      : super(d.TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$GpTreatmentTypeTableFilterComposer(d.ComposerState(db, table)),
+          orderingComposer: $$GpTreatmentTypeTableOrderingComposer(
+              d.ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$GpTreatmentTypeTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            d.Value<String> code = const d.Value.absent(),
+            d.Value<String> name = const d.Value.absent(),
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpTreatmentTypeCompanion(
+            code: code,
+            name: name,
+            rowid: rowid,
+          ),
+          getInsertCompanionBuilder: ({
+            required String code,
+            required String name,
+            d.Value<int> rowid = const d.Value.absent(),
+          }) =>
+              GpTreatmentTypeCompanion.insert(
+            code: code,
+            name: name,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$GpTreatmentTypeTableProcessedTableManager
+    extends d.ProcessedTableManager<
+        _$Database,
+        $GpTreatmentTypeTable,
+        GpTreatmentTypeData,
+        $$GpTreatmentTypeTableFilterComposer,
+        $$GpTreatmentTypeTableOrderingComposer,
+        $$GpTreatmentTypeTableProcessedTableManager,
+        $$GpTreatmentTypeTableInsertCompanionBuilder,
+        $$GpTreatmentTypeTableUpdateCompanionBuilder> {
+  $$GpTreatmentTypeTableProcessedTableManager(super.$state);
+}
+
+class $$GpTreatmentTypeTableFilterComposer
+    extends d.FilterComposer<_$Database, $GpTreatmentTypeTable> {
+  $$GpTreatmentTypeTableFilterComposer(super.$state);
+  d.ColumnFilters<String> get code => $state.composableBuilder(
+      column: $state.table.code,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  d.ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          d.ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$GpTreatmentTypeTableOrderingComposer
+    extends d.OrderingComposer<_$Database, $GpTreatmentTypeTable> {
+  $$GpTreatmentTypeTableOrderingComposer(super.$state);
   d.ColumnOrderings<String> get code => $state.composableBuilder(
       column: $state.table.code,
       builder: (column, joinBuilders) =>
@@ -45116,6 +45401,8 @@ class _$DatabaseManager {
       $$GpOriginVegCoverTableTableManager(_db, _db.gpOriginVegCover);
   $$GpOriginRegenTypeTableTableManager get gpOriginRegenType =>
       $$GpOriginRegenTypeTableTableManager(_db, _db.gpOriginRegenType);
+  $$GpTreatmentTypeTableTableManager get gpTreatmentType =>
+      $$GpTreatmentTypeTableTableManager(_db, _db.gpTreatmentType);
   $$SurveyHeadersTableTableManager get surveyHeaders =>
       $$SurveyHeadersTableTableManager(_db, _db.surveyHeaders);
   $$MetaCommentTableTableManager get metaComment =>

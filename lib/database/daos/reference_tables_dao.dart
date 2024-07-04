@@ -69,6 +69,7 @@ part 'reference_tables_dao.g.dart';
   GpDistMortalityBasis,
   GpOriginVegCover,
   GpOriginRegenType,
+  GpTreatmentType,
 ])
 class ReferenceTablesDao extends DatabaseAccessor<Database>
     with _$ReferenceTablesDaoMixin {
@@ -1723,6 +1724,28 @@ class ReferenceTablesDao extends DatabaseAccessor<Database>
 
   Future<String> getGpOriginRegenTypeCode(String name) {
     return (select(gpOriginRegenType)..where((tbl) => tbl.name.equals(name)))
+        .map((row) => row.code)
+        .getSingle();
+  }
+
+  Future<List<String>> getGpTreatmentTypeList() {
+    final query = selectOnly(gpTreatmentType, distinct: true)
+      ..addColumns([gpTreatmentType.name])
+      ..where(gpTreatmentType.name.isNotNull());
+    return query
+        .map((row) => row.read(gpTreatmentType.name) ?? "error on loading name")
+        .get();
+  }
+
+  Future<String> getGpTreatmentTypeName(String code) {
+    if (code.isEmpty) return Future.value("");
+    return (select(gpTreatmentType)..where((tbl) => tbl.code.equals(code)))
+        .map((row) => row.name)
+        .getSingle();
+  }
+
+  Future<String> getGpTreatmentTypeCode(String name) {
+    return (select(gpTreatmentType)..where((tbl) => tbl.name.equals(name)))
         .map((row) => row.code)
         .getSingle();
   }

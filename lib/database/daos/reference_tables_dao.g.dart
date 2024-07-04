@@ -96,4 +96,5 @@ mixin _$ReferenceTablesDaoMixin on DatabaseAccessor<Database> {
       attachedDatabase.gpOriginVegCover;
   $GpOriginRegenTypeTable get gpOriginRegenType =>
       attachedDatabase.gpOriginRegenType;
+  $GpTreatmentTypeTable get gpTreatmentType => attachedDatabase.gpTreatmentType;
 }

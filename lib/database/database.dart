@@ -100,6 +100,7 @@ const List<Type> _tables = [
   GpDistMortalityBasis,
   GpOriginVegCover,
   GpOriginRegenType,
+  GpTreatmentType,
 
   //Metadata Tables
   MetaComment,
@@ -331,6 +332,8 @@ class Database extends _$Database {
               await _getGpOriginVegCover();
           List<GpOriginRegenTypeCompanion> gpOriginRegenTypeList =
               await _getGpOriginRegenType();
+          List<GpTreatmentTypeCompanion> gpTreatmentTypeList =
+              await _getGpTreatmentType();
 
           c.debugPrint("Init Values");
           await batch((b) {
@@ -403,6 +406,7 @@ class Database extends _$Database {
             b.insertAll(gpDistMortalityBasis, gpDisMortalityBasisList);
             b.insertAll(gpOriginVegCover, gpOriginVegCoverList);
             b.insertAll(gpOriginRegenType, gpOriginRegenTypeList);
+            b.insertAll(gpTreatmentType, gpTreatmentTypeList);
 
             _initTest(b);
           });
@@ -1152,6 +1156,18 @@ class Database extends _$Database {
 
     return jsonData.map((dynamic item) {
       return GpOriginRegenTypeCompanion(
+        code: Value(item["code"]),
+        name: Value(item["name"]),
+      );
+    }).toList();
+  }
+
+  Future<List<GpTreatmentTypeCompanion>> _getGpTreatmentType() async {
+    List<dynamic> jsonData = await _loadJsonData(
+        'assets/db_reference_data/gp_treatment_type_list.json');
+
+    return jsonData.map((dynamic item) {
+      return GpTreatmentTypeCompanion(
         code: Value(item["code"]),
         name: Value(item["name"]),
       );

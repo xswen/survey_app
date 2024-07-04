@@ -446,3 +446,9 @@ class GpOriginRegenType extends Table {
 
   TextColumn get name => text()();
 }
+
+class GpTreatmentType extends Table {
+  TextColumn get code => text()();
+
+  TextColumn get name => text()();
+}
